@@ -106,19 +106,6 @@
 
 	<dependencies>
 
-		<!-- Common libraries -->
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>r09</version>
-			<classifier>gwt</classifier>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>r09</version>
-		</dependency>
 
 		<!-- Logging facades -->
 
