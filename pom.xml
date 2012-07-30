@@ -5,7 +5,7 @@
 	<groupId>org.activityinfo</groupId>
 	<artifactId>activityinfo-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2.6.24-SNAPSHOT</version>
+	<version>2.6.25-SNAPSHOT</version>
 	<name>ActivityInfo Parent POM</name>
 	<licenses>
 		<license>
@@ -106,19 +106,6 @@
 
 	<dependencies>
 
-		<!-- Common libraries -->
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>r09</version>
-			<classifier>gwt</classifier>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>r09</version>
-		</dependency>
 
 		<!-- Logging facades -->
 
