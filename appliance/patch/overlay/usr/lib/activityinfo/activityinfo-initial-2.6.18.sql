@@ -9,7 +9,7 @@ CREATE DATABASE activityinfo;
 USE activityinfo;
 
 CREATE USER 'activityinfo'@'localhost';
-GRANT ALL ON activityinfo.* TO 'activityinfo'@'localhost';
+GRANT ALL ON activityinfo.* TO 'activityinfo'@'localhost' IDENTIFIED BY 'activityinfo';
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -967,7 +967,7 @@ CREATE TABLE `userlogin` (
 
 LOCK TABLES `userlogin` WRITE;
 /*!40000 ALTER TABLE `userlogin` DISABLE KEYS */;
-INSERT INTO `userlogin` VALUES (3,NULL,NULL,'joe@ngo.org',NULL,'$2a$10$4xvHuQRLYqRR8WfT8EowgO1IhlqWiidF62BMt8vrbhrgSj5KLnCkm','en','John H. Doe','\0');
+INSERT INTO `userlogin` VALUES (3,NULL,NULL,'test@test.org',NULL,'$2a$10$m4YWq6xm1deWkNqRWJaEkemw4Rrg4J94L/TBoTwjwBOeuogdZZv0C','en','Test  User','\0');
 /*!40000 ALTER TABLE `userlogin` ENABLE KEYS */;
 UNLOCK TABLES;
 

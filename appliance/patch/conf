@@ -1,14 +1,19 @@
 #!/bin/bash -ex
 
-
-
 # set up mysql database
 service mysql start
 mysql --user=root --password=$MYSQL_PASS < /usr/lib/activityinfo/activityinfo-initial-2.6.18.sql
 service mysql stop
 
+
 # Install the ActivityInfo WAR into the tomcat web apps folder
-# Tomcat6 will automatically extract on startup
 rm -rf /var/lib/tomcat6/webapps/ROOT
-wget http://nexus.bedatadriven.com/content/groups/public/org/activityinfo/activityinfo-server/2.6.18/activityinfo-server-2.6.18.war -O /var/lib/tomcat6/webapps/ROOT.war
+mkdir /var/lib/tomcat6/webapps/ROOT
+cd /var/lib/tomcat6/webapps/ROOT
+wget http://nexus.bedatadriven.com/content/groups/public/org/activityinfo/activityinfo-server/2.6.25/activityinfo-server-2.6.25.war -O ai.war
+jar -xf ai.war 
+
+# Clean up files we don't need to copy
+rm ai.war
+rm /usr/lib/activityinfo/activityinfo-initial-2.6.18.sql
 

@@ -8,12 +8,14 @@ then
 fi
 
 # Clean up old build files
-rm patch.tar.gz
 
-# Bundle the patch to patch.tar.gz
-tklpatch-bundle patch
+if [ -f patch.tar.gz ];
+then
+	rm patch.tar.gz
+fi
 
-# Execute 
+# Execute
+sudo tklpatch turnkey-tomcat-11.3-lucid-x86.iso patch
 
-
+mv  turnkey-tomcat-11.3-lucid-x86-patched.iso activityinfo-appliance.iso
 
