@@ -1,12 +1,10 @@
 package org.activityinfo.polygons;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -16,17 +14,12 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryType;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygonal;
-import com.vividsolutions.jts.io.OutStream;
-import com.vividsolutions.jts.io.OutputStreamOutStream;
-import com.vividsolutions.jts.io.WKBWriter;
 
 public class PolygonBuilder {
 	
@@ -35,6 +28,7 @@ public class PolygonBuilder {
 	private List<AdminEntity> entities;
 	private NameMatchingStrategy matchingStrategy;
 	private Properties properties;
+	private List<OutputWriter> writers = Lists.newArrayList();
 
 	public PolygonBuilder(String propertiesPath) throws Exception {
 		propertiesFile = new File(propertiesPath);
@@ -46,6 +40,7 @@ public class PolygonBuilder {
 	
 		fetchEntities();
 		initMatchingStrategy();
+		initWriters();
 		buildPolygons();
 	}
 	
@@ -68,6 +63,15 @@ public class PolygonBuilder {
 			throw new UnsupportedOperationException("invalid matching strategy: " + matchingStrategy);
 		}
 	}
+	
+
+	private void initWriters() throws IOException {
+		File outputDir = propertiesFile.getParentFile();
+		writers.add(new WkbOutput(outputDir, adminLevelId));
+		writers.add(new GoogleMapsWriter(outputDir, adminLevelId));
+	}
+
+
 
 	private void buildPolygons() throws IOException {
 		
@@ -76,32 +80,20 @@ public class PolygonBuilder {
         SimpleFeatureCollection features = featureSource.getFeatures();
         
         matchingStrategy.init(featureSource);
-       
-        List<String> attributes = new ArrayList<String>();
-        for(AttributeDescriptor attribute : featureSource.getSchema().getAttributeDescriptors()) {
-        	if(!(attribute.getType() instanceof GeometryType)) {
-        		attributes.add(attribute.getName().getLocalPart());
-	        	System.out.print(attribute.getName());
-	        	System.out.print(",");
-        	}
+     
+        for(OutputWriter writer : writers) {
+        	writer.start(features);
         }
-        System.out.println("X1,Y1,X2,Y2");
-        
-        DataOutputStream wkbOut = new DataOutputStream(new FileOutputStream(wkbFile()));
-        wkbOut.writeInt(features.size());
         
         SimpleFeatureIterator it = features.features();
         while(it.hasNext()) {
         	SimpleFeature feature = it.next();
         	int entityId = matchingStrategy.match(feature);
-        	Polygonal polygon = (Polygonal) feature.getDefaultGeometry();
+        	Geometry polygon = (Geometry) feature.getDefaultGeometry();
         	
-        	wkbOut.writeInt(entityId);
-        
-        	WKBWriter writer = new WKBWriter();
-        	Geometry geometry = (Geometry) feature.getDefaultGeometry();
-			writer.write(geometry, new OutputStreamOutStream(wkbOut));
-        	
+        	for(OutputWriter writer : writers) {
+        		writer.write(entityId, polygon);
+        	}
         	
         	System.out.println(entityId + " => " + polygon);
 //        	
@@ -117,13 +109,10 @@ public class PolygonBuilder {
 //        	System.out.println(line.toString());
         }
         
-        wkbOut.close();
+        for(OutputWriter writer : writers) {
+        	writer.close();
+        }
 	}
-
-	private File wkbFile() {
-		return new File(propertiesFile.getParentFile(), adminLevelId + ".wkb");
-	}
-
 
 	private File shapeFilePath() {
 		String name = propertiesFile.getName().replace(".aiload", ".shp");
