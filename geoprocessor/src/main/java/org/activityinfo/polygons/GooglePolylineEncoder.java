@@ -116,40 +116,12 @@ public class GooglePolylineEncoder {
 			}
 		}
 
-		// System.out.println("createEncodings(" + track.getTrackpoints().size()
-		// + "," + dists.length + ")");
-		encodedPoints = createEncodings(track, dists);
-		// System.out.println("encodedPoints \t\t: " + encodedPoints);
-		// encodedPoints.replace("\\","\\\\");
-		encodedPoints = replace(encodedPoints, "\\", "\\\\");
-		//System.out.println("encodedPoints slashy?\t\t: " + encodedPoints);
-
+		encodedPoints = createEncodings(track, dists);	
 		encodedLevels = encodeLevels(track, dists, absMaxDist);
-		//System.out.println("encodedLevels: " + encodedLevels);
-//
-//		HashMap<String, String> hm = new HashMap<String, String>();
-//		hm.put("encodedPoints", encodedPoints);
-//		hm.put("encodedLevels", encodedLevels);
 		
 		return new PolylineEncoded(encodedPoints, encodedLevels);
 	}
-
-	public String replace(String s, String one, String another) {
-		// In a string replace one substring with another
-		if (s.equals(""))
-			return "";
-		String res = "";
-		int i = s.indexOf(one, 0);
-		int lastpos = 0;
-		while (i != -1) {
-			res += s.substring(lastpos, i) + another;
-			lastpos = i + one.length();
-			i = s.indexOf(one, lastpos);
-		}
-		res += s.substring(lastpos); // the rest
-		return res;
-	}
-
+	
 	/**
 	 * distance(p0, p1, p2) computes the distance between the point p0 and the
 	 * segment [p1,p2]. This could probably be replaced with something that is a

@@ -18,11 +18,18 @@ import org.opengis.feature.type.GeometryType;
 public class Geotools {
 
 	public static void main(String[] args) throws Exception {
-		if(args[0].equals("bbox")) {
+		if(args.length > 1 && args[0].equals("bbox")) {
 			File shapeFile = new File(args[1]);
 			extractBBox(shapeFile);	
-		} else if(args[0].equals("polygons")) {
+		} else if(args.length > 1 && args[0].equals("polygons")) {
 			new PolygonBuilder(args[1]);
+		} else {
+			System.err.println("Usage: geotools <command> [options...]");
+			System.err.println();
+			System.err.println("Available commands:");
+			System.err.println("\tpolygons shapefiles.aiload");
+			System.err.println("\tbbox shapefile");
+			System.exit(-1);
 		}
 	}
 

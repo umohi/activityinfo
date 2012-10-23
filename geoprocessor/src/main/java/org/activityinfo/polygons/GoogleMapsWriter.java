@@ -3,10 +3,12 @@ package org.activityinfo.polygons;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 
 import com.google.gson.stream.JsonWriter;
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class GoogleMapsWriter implements OutputWriter {
@@ -46,7 +48,7 @@ public class GoogleMapsWriter implements OutputWriter {
 	}
 
 	private void writePolygon(Geometry geometryN) throws IOException {
-		PolylineEncoded encoded = encoder.dpEncode(geometryN.getCoordinates());
+		PolylineEncoded encoded = encoder.dpEncode(closeLinearRing(geometryN.getCoordinates()));
 		writer.beginObject();
 		writer.name("points");	
 		writer.value(encoded.getPoints());
@@ -59,6 +61,16 @@ public class GoogleMapsWriter implements OutputWriter {
 		writer.endArray();
 		writer.endObject();
 		writer.close();
+	}
+	
+	private Coordinate[] closeLinearRing(Coordinate[] coordinates) {
+		if(coordinates[0].equals(coordinates[coordinates.length-1])) {
+			return coordinates;
+		} else {
+			Coordinate[] closed = Arrays.copyOf(coordinates, coordinates.length+1);
+			closed[coordinates.length] = new Coordinate(coordinates[0]);
+			return closed;
+		}
 	}
 
 }
