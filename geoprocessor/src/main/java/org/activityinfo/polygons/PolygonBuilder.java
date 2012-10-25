@@ -78,6 +78,7 @@ public class PolygonBuilder {
         SimpleFeatureSource featureSource = store.getFeatureSource();
         SimpleFeatureCollection features = featureSource.getFeatures();
         
+        MatchChecker matchChecker = new MatchChecker(entities);
         matchingStrategy.init(featureSource);
      
         for(OutputWriter writer : writers) {
@@ -88,25 +89,16 @@ public class PolygonBuilder {
         while(it.hasNext()) {
         	SimpleFeature feature = it.next();
         	int entityId = matchingStrategy.match(feature);
+        	matchChecker.onMatched(entityId);
+        	
         	Geometry polygon = (Geometry) feature.getDefaultGeometry();
         	
         	for(OutputWriter writer : writers) {
         		writer.write(entityId, polygon);
         	}
-        	
-        	System.out.println(entityId + " => " + polygon);
-//        	
-//        	StringBuilder line = new StringBuilder();
-//        	for(String attribute : attributes){
-//        		line.append(feature.getAttribute(attribute)).append(",");
-//        	}
-//        	line.append(
-//        			feature.getBounds().getMinX() + "," +
-//        			feature.getBounds().getMinY() + "," +
-//        			feature.getBounds().getMaxX() + "," +
-//        			feature.getBounds().getMaxY());
-//        	System.out.println(line.toString());
         }
+        
+        matchChecker.check();
         
         for(OutputWriter writer : writers) {
         	writer.close();
