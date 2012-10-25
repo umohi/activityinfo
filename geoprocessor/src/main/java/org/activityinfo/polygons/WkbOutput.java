@@ -1,5 +1,6 @@
 package org.activityinfo.polygons;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,24 +17,31 @@ public class WkbOutput implements OutputWriter {
 
 	private DataOutputStream dataOut;
 	private WKBWriter writer = new WKBWriter();
+	private File outputFile;
+	private ByteArrayOutputStream baos;
+	private int numFeatures = 0;
 
 
 	public WkbOutput(File outputDir, int adminLevelId) throws FileNotFoundException {
-        dataOut = new DataOutputStream(new FileOutputStream(new File(outputDir, adminLevelId + ".wkb")));
+        outputFile = new File(outputDir, adminLevelId + ".wkb");
+		baos = new ByteArrayOutputStream();
+		dataOut = new DataOutputStream(baos);
 	}
 	
 	public void start(SimpleFeatureCollection features) throws IOException {
-        dataOut.writeInt(features.size());
-		
 	}
 	
 	public void write(int adminEntityId, Geometry geometry) throws IOException {
 		dataOut.writeInt(adminEntityId);		
 		writer.write(geometry, new OutputStreamOutStream(dataOut));
+		numFeatures ++;
 	}
 
-	public void close() throws IOException {
-		dataOut.close();
+	public void close() throws IOException {		
+		DataOutputStream out = new DataOutputStream(new FileOutputStream(outputFile));
+		out.writeInt(numFeatures);
+		out.write(baos.toByteArray());
+		out.close();
 	}
  
 }

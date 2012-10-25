@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -22,15 +23,19 @@ import com.vividsolutions.jts.geom.Geometry;
 
 public class PolygonBuilder {
 	
+	private static final Logger LOGGER = Logger.getLogger(PolygonBuilder.class.getName());
+	
 	private int adminLevelId;
 	private File propertiesFile;
 	private List<AdminEntity> entities;
 	private NameMatchingStrategy matchingStrategy;
 	private Properties properties;
 	private List<OutputWriter> writers = Lists.newArrayList();
+	private File geodbRoot;
 
-	public PolygonBuilder(String propertiesPath) throws Exception {
-		propertiesFile = new File(propertiesPath);
+	public PolygonBuilder(File geodbRoot, File propertiesFile) throws Exception {
+		this.geodbRoot = geodbRoot;
+		this.propertiesFile = propertiesFile;
 		
 		properties = new Properties();
 		properties.load(new FileInputStream(propertiesFile));
@@ -51,7 +56,6 @@ public class PolygonBuilder {
 		System.err.println("Fetched " + entities.size() + " entities for level " + adminLevelId);
 	}
 	
-
 	private void initMatchingStrategy() {
 		String strategyName = properties.getProperty("match", "name");
 		if(strategyName.equals("name")) {
@@ -63,14 +67,12 @@ public class PolygonBuilder {
 		}
 	}
 	
-
 	private void initWriters() throws IOException {
-		File outputDir = propertiesFile.getParentFile();
+		File outputDir = new File(geodbRoot, "geometry");
+		outputDir.mkdirs();
 		writers.add(new WkbOutput(outputDir, adminLevelId));
 		writers.add(new GoogleMapsWriter(outputDir, adminLevelId));
 	}
-
-
 
 	private void buildPolygons() throws IOException {
 		
@@ -89,12 +91,15 @@ public class PolygonBuilder {
         while(it.hasNext()) {
         	SimpleFeature feature = it.next();
         	int entityId = matchingStrategy.match(feature);
-        	matchChecker.onMatched(entityId);
-        	
-        	Geometry polygon = (Geometry) feature.getDefaultGeometry();
-        	
-        	for(OutputWriter writer : writers) {
-        		writer.write(entityId, polygon);
+        	if(entityId != -1) {
+	        	
+	        	matchChecker.onMatched(entityId);
+	        	
+	        	Geometry polygon = (Geometry) feature.getDefaultGeometry();
+	        	
+	        	for(OutputWriter writer : writers) {
+	        		writer.write(entityId, polygon);
+	        	}
         	}
         }
         
@@ -106,8 +111,17 @@ public class PolygonBuilder {
 	}
 
 	private File shapeFilePath() {
-		String name = propertiesFile.getName().replace(".aiload", ".shp");
-		return new File(propertiesFile.getParentFile(), name);
+		String source = properties.getProperty("source");
+		File sourceFile = new File(geodbRoot.getAbsolutePath() + File.separator + "sources" + File.separator + source);
+		if(!sourceFile.exists()) {
+			throw new RuntimeException("Source file '" + source + "' cannot be found at '" + sourceFile + "'");
+		}
+		return sourceFile;
+	}
+
+
+	public int getAdminLevelId() {
+		return adminLevelId;
 	}
 
 }

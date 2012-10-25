@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activityinfo.polygons.PolygonBuilder;
+import org.activityinfo.polygons.PolygonTask;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -22,12 +22,12 @@ public class Geotools {
 			File shapeFile = new File(args[1]);
 			extractBBox(shapeFile);	
 		} else if(args.length > 1 && args[0].equals("polygons")) {
-			new PolygonBuilder(args[1]);
+			new PolygonTask().run(args[1]);
 		} else {
 			System.err.println("Usage: geotools <command> [options...]");
 			System.err.println();
 			System.err.println("Available commands:");
-			System.err.println("\tpolygons shapefiles.aiload");
+			System.err.println("\tpolygons <geodb root>");
 			System.err.println("\tbbox shapefile");
 			System.exit(-1);
 		}

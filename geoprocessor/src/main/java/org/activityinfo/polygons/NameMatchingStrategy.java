@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
@@ -13,6 +14,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class NameMatchingStrategy {
+	
+	private static final Logger LOGGER = Logger.getLogger(NameMatchingStrategy.class.getName());
 	
 	private Properties properties;
 	private String nameColumn;
@@ -47,6 +50,12 @@ public class NameMatchingStrategy {
 
 	public int match(SimpleFeature feature) {
 		String name = (String) feature.getAttribute(nameColumn);
+		
+		if(isIgnored(name)) {
+			LOGGER.warning("Ignoring '" + name + "'");
+			return -1;
+		}
+		
 		String alias = null;
 		Integer id = nameMap.get(key(name));
 		if(id == null) {
@@ -67,6 +76,9 @@ public class NameMatchingStrategy {
 		return Strings.emptyToNull(properties.getProperty("alias." + name));
 	}
 
+	private boolean isIgnored(String name) {
+		return !Strings.isNullOrEmpty(properties.getProperty("ignore." + name));
+	}
 
 
 	private void onUnmatched(String name, String alias) {

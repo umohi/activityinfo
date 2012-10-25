@@ -1,9 +1,11 @@
 package org.activityinfo.polygons;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
+import java.util.zip.GZIPOutputStream;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 
@@ -17,9 +19,12 @@ public class GoogleMapsWriter implements OutputWriter {
 	private GooglePolylineEncoder encoder = new GooglePolylineEncoder();
 
 	public GoogleMapsWriter(File outputDir, int adminLevelId) throws IOException {
-		writer = new JsonWriter(new FileWriter(new File(outputDir, adminLevelId + ".json")));
-		writer.setIndent("  ");
-	
+		File outputFile = new File(outputDir, adminLevelId + ".json.gz");
+		FileOutputStream fos = new FileOutputStream(outputFile);
+		GZIPOutputStream zos = new GZIPOutputStream(fos);
+		OutputStreamWriter osw = new OutputStreamWriter(zos);
+		writer = new JsonWriter(osw);
+		//writer.setIndent("  ");
 	}
 	
 	public void start(SimpleFeatureCollection features) throws IOException {
