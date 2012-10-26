@@ -5,9 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Set;
 
+import org.activityinfo.GeoTask;
+
 import com.google.common.collect.Sets;
 
-public class PolygonTask {
+public class PolygonTask implements GeoTask {
 
 	private File root;
 	private File adminRoot;
@@ -35,10 +37,12 @@ public class PolygonTask {
 
 	private void processAll(File parent) throws Exception {
 		for(File child : parent.listFiles()) {
-			if(child.isDirectory()) {
+			if(child.isDirectory() && !child.getName().equals("GAUL")) {
 				processAll(child);
 			} else if(child.getName().endsWith(".properties")) {
 				PolygonBuilder builder = new PolygonBuilder(root, child);	
+				builder.run();
+				
 				adminLevelIds.add(builder.getAdminLevelId());
 			}
 		}		

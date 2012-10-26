@@ -39,7 +39,7 @@ public class GooglePolylineEncoder {
 	public GooglePolylineEncoder(int numLevels, int zoomFactor, double verySmall,
 			boolean forceEndpoints) {
 
-		this.numLevels = numLevels;
+		this.numLevels = numLevels;	
 		this.zoomFactor = zoomFactor;
 		this.verySmall = verySmall;
 		this.forceEndpoints = forceEndpoints;
