@@ -3,17 +3,21 @@ package org.activityinfo.polygons;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.geotools.data.FileDataStore;
+import org.geotools.data.DataStore;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStoreFinder;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureCollection;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
@@ -50,7 +54,7 @@ public class PolygonBuilder {
 	
 
 	private void fetchEntities() throws Exception {
-		URL url = new URL("http://localhost:8888/api/AdminEntities?levelId=" + adminLevelId);
+		URL url = new URL("http://polygons.gactivityinfo.appspot.com/api/AdminEntities?levelId=" + adminLevelId);
 		Gson gson = new Gson();
 		this.entities = gson.fromJson(Resources.toString(url, Charsets.UTF_8), AdminEntityResult.class).getData();
 		System.err.println("Fetched " + entities.size() + " entities for level " + adminLevelId);
@@ -75,27 +79,25 @@ public class PolygonBuilder {
 	}
 
 	private void buildPolygons() throws IOException {
-		
-		FileDataStore store = FileDataStoreFinder.getDataStore(shapeFilePath());
-        SimpleFeatureSource featureSource = store.getFeatureSource();
+		ShapefileDataStore ds = new ShapefileDataStore(shapeFilePath());
+		FeatureSource featureSource = ds.getFeatureSource();
         SimpleFeatureCollection features = featureSource.getFeatures();
         
         MatchChecker matchChecker = new MatchChecker(entities);
-        matchingStrategy.init(featureSource);
      
         for(OutputWriter writer : writers) {
         	writer.start(features);
         }
         
-        SimpleFeatureIterator it = features.features();
+        Iterator it = features.iterator();
         while(it.hasNext()) {
-        	SimpleFeature feature = it.next();
+        	SimpleFeature feature = (SimpleFeature) it.next();
         	int entityId = matchingStrategy.match(feature);
         	if(entityId != -1) {
 	        	
 	        	matchChecker.onMatched(entityId);
 	        	
-	        	Geometry polygon = (Geometry) feature.getDefaultGeometry();
+	        	Geometry polygon = (Geometry) feature.getDefaultGeometry().getValue();
 	        	
 	        	for(OutputWriter writer : writers) {
 	        		writer.write(entityId, polygon);
@@ -110,13 +112,13 @@ public class PolygonBuilder {
         }
 	}
 
-	private File shapeFilePath() {
+	private URL shapeFilePath() throws MalformedURLException {
 		String source = properties.getProperty("source");
 		File sourceFile = new File(geodbRoot.getAbsolutePath() + File.separator + "sources" + File.separator + source);
 		if(!sourceFile.exists()) {
 			throw new RuntimeException("Source file '" + source + "' cannot be found at '" + sourceFile + "'");
 		}
-		return sourceFile;
+		return sourceFile.toURI().toURL();
 	}
 
 

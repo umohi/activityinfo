@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.FeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.google.common.base.Strings;
@@ -42,14 +42,9 @@ public class NameMatchingStrategy {
 	}
 
 
-	public void init(SimpleFeatureSource featureSource) {
-		
-	}
-
-
 
 	public int match(SimpleFeature feature) {
-		String name = (String) feature.getAttribute(nameColumn);
+		String name = (String) feature.getValue(nameColumn);
 		
 		if(isIgnored(name)) {
 			LOGGER.warning("Ignoring '" + name + "'");

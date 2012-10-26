@@ -7,7 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.opengis.feature.FeatureCollection;
+import org.opengis.feature.simple.SimpleFeatureCollection;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.OutputStreamOutStream;
@@ -27,9 +28,12 @@ public class WkbOutput implements OutputWriter {
 		baos = new ByteArrayOutputStream();
 		dataOut = new DataOutputStream(baos);
 	}
+
 	
 	public void start(SimpleFeatureCollection features) throws IOException {
+		
 	}
+ 
 	
 	public void write(int adminEntityId, Geometry geometry) throws IOException {
 		dataOut.writeInt(adminEntityId);		
@@ -43,5 +47,5 @@ public class WkbOutput implements OutputWriter {
 		out.write(baos.toByteArray());
 		out.close();
 	}
- 
+
 }

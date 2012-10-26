@@ -8,7 +8,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<geotools.version>8.0-RC1</geotools.version>
+		<geotools.version>2.5-M1</geotools.version>
 	</properties>
 
 	<dependencies>
@@ -20,12 +20,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt-shapefile</artifactId>
+			<artifactId>gt2-shapefile</artifactId>
 			<version>${geotools.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt-swing</artifactId>
+			<artifactId>gt2-xml-sld</artifactId>
 			<version>${geotools.version}</version>
 		</dependency>
 		<dependency>

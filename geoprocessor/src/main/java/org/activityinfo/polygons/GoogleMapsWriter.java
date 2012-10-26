@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.zip.GZIPOutputStream;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.opengis.feature.simple.SimpleFeatureCollection;
 
 import com.google.gson.stream.JsonWriter;
 import com.vividsolutions.jts.geom.Coordinate;

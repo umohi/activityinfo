@@ -2,7 +2,7 @@ package org.activityinfo.polygons;
 
 import java.io.IOException;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.opengis.feature.simple.SimpleFeatureCollection;
 
 import com.vividsolutions.jts.geom.Geometry;
 
