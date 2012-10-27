@@ -15,6 +15,8 @@ import com.google.common.io.Files;
 import com.google.gson.stream.JsonWriter;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Polygon;
 
 public class GoogleMapsWriter implements OutputWriter {
 	
@@ -51,15 +53,19 @@ public class GoogleMapsWriter implements OutputWriter {
 		writer.beginArray();
 		
 		for(int i=0;i!=geometry.getNumGeometries();++i) {
-			writePolygon(geometry.getGeometryN(i));
+			Polygon polygon = (Polygon) geometry.getGeometryN(i);
+			writeLinearRing(polygon.getExteriorRing());
+			for(int j=0;j!=polygon.getNumInteriorRing();++j) {
+				writeLinearRing(polygon.getInteriorRingN(j));
+			}
 		}
-		
+	
 		writer.endArray();
 		writer.endObject();
 	}
 
-	private void writePolygon(Geometry geometryN) throws IOException {
-		PolylineEncoded encoded = encoder.dpEncode(closeLinearRing(geometryN.getCoordinates()));
+	private void writeLinearRing(LineString ring) throws IOException {
+		PolylineEncoded encoded = encoder.dpEncode(ring.getCoordinates());
 		writer.beginObject();
 		writer.name("points");	
 		writer.value(encoded.getPoints());
@@ -84,16 +90,6 @@ public class GoogleMapsWriter implements OutputWriter {
 		zos.write(baos.toByteArray());
 		zos.finish();
 		zos.close();
-	}
-	
-	private Coordinate[] closeLinearRing(Coordinate[] coordinates) {
-		if(coordinates[0].equals(coordinates[coordinates.length-1])) {
-			return coordinates;
-		} else {
-			Coordinate[] closed = Arrays.copyOf(coordinates, coordinates.length+1);
-			closed[coordinates.length] = new Coordinate(coordinates[0]);
-			return closed;
-		}
 	}
 
 }

@@ -25,7 +25,7 @@ public class WkbOutput implements OutputWriter {
 
 
 	public WkbOutput(File outputDir, int adminLevelId) throws IOException {
-        outputFile = new File(outputDir, adminLevelId + ".wkb");
+        outputFile = new File(outputDir, adminLevelId + ".wkb.gz");
 		baos = new ByteArrayOutputStream();
 		dataOut = new DataOutputStream(baos);
 	}
@@ -47,8 +47,8 @@ public class WkbOutput implements OutputWriter {
 
 	public void close() throws IOException {		
 		DataOutputStream out = new DataOutputStream(
-				//new GZIPOutputStream(
-						new FileOutputStream(outputFile));
+				new GZIPOutputStream(
+						new FileOutputStream(outputFile)));
 		out.writeInt(numFeatures);
 		out.write(baos.toByteArray());
 		out.close();

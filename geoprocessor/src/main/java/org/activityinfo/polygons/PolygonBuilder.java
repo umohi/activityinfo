@@ -27,6 +27,7 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 
 public class PolygonBuilder {
 	
@@ -72,7 +73,7 @@ public class PolygonBuilder {
 		if(adminLevelId == 0) {
 			throw new IllegalStateException("AdminLevelId has not been set");
 		}
-		URL url = new URL("http://localhost:8888/api/AdminEntities?levelId=" + adminLevelId);
+		URL url = new URL("http://polygons.gactivityinfo.appspot.com/api/AdminEntities?levelId=" + adminLevelId);
 		Gson gson = new Gson();
 		this.entities = gson.fromJson(Resources.toString(url, Charsets.UTF_8), AdminEntityResult.class).getData();
 		System.err.println("Fetched " + entities.size() + " entities for level " + adminLevelId);
@@ -99,6 +100,7 @@ public class PolygonBuilder {
 
 	private void buildPolygons() throws Exception {
 		ShapefileDataStore ds = new ShapefileDataStore(shapeFilePath());
+
 		FeatureSource featureSource = ds.getFeatureSource();
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
             
@@ -161,13 +163,12 @@ public class PolygonBuilder {
 
 
 	private Geometry simplify(Geometry polygon) {
-//		double dist = Simplification.getMinDistance(polygon);
-//		Geometry simplified = TopologyPreservingSimplifier.simplify(polygon, dist);
-//		if(!simplified.isValid()) {
-//			throw new IllegalStateException("simplification resulted in invalid geometry");
-//		}
-//		return simplified;
-		return polygon;
+		double dist = Simplification.getMinDistance(polygon);
+		Geometry simplified = TopologyPreservingSimplifier.simplify(polygon, dist);
+		if(!simplified.isValid()) {
+			throw new IllegalStateException("simplification resulted in invalid geometry");
+		}
+		return simplified;
 	}
 
 	private URL shapeFilePath() throws MalformedURLException {
@@ -179,9 +180,7 @@ public class PolygonBuilder {
 		return sourceFile.toURI().toURL();
 	}
 
-
 	public int getAdminLevelId() {
 		return adminLevelId;
 	}
-
 }
