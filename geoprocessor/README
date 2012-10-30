@@ -1,0 +1,7 @@
+
+Set of "offline" tools used to prepare geography/maps for ActivityInfo
+
+- bbox - Generates bounding boxes from shapefiles
+- polygons - Generates WKB/geojson from shapefiles
+
+

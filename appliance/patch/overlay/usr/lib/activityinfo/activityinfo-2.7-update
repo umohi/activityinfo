@@ -1,0 +1,4 @@
+update databasechangelog set md5sum='3:f891f65f1727e70e6a4034cde5f1116f' where id='001-2';
+update databasechangelog set md5sum='3:4f2155c3ddadbc51653bbfa1f2273ebe' where id='001-3';
+update databasechangelog set md5sum='3:fb1333004dfa117cc38ab8d5c231069e' where id='001-4';
+update databasechangelog set md5sum='3:107801c92b429ccf838b21d78e67181c' where id='002-04';
