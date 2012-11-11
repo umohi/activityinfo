@@ -132,7 +132,7 @@ consoleService.logStringMessage("Web SQL starting up!");
 				}
 			},
 			
-			executeSql:	function (sqlStatement, arguments, callbackFunc, errorFunc) {
+			executeSql:	function (sqlStatement, params, callbackFunc, errorFunc) {
 				var self = this;
 
 				this.enqueue(function() {
@@ -146,8 +146,11 @@ consoleService.logStringMessage("Web SQL starting up!");
 					// 6.2 Execute the statement in the context of the transaction. [SQL]
 					var parsedStatementParts = sqlStatement.split('?');
 					var parsedStatement = '';
+					// use named parameters rather than positional params
+					// there seems to be a bug with positional params when used with INSERT
+					// statements...
 					for (var i = 1; i < parsedStatementParts.length; i++)
-						parsedStatement += parsedStatementParts[i - 1] + '?' + i;
+						parsedStatement += parsedStatementParts[i - 1] + ':p' + i;
 					parsedStatement += parsedStatementParts[parsedStatementParts.length - 1];
 					self.trace('parsedStatement = ' + parsedStatement);
 					
@@ -155,14 +158,13 @@ consoleService.logStringMessage("Web SQL starting up!");
 					try {
 						statement = self.db.createStatement(parsedStatement);
 						
-						if (arguments != undefined)
-						{
-							var parameters = statement.newBindingParamsArray();
-							var bp = parameters.newBindingParams();
-							for (var i = 0; i < arguments.length; i++)
-								bp.bindByIndex(i, arguments[i]);
-							parameters.addParams(bp);
-							statement.bindParameters(parameters);
+						if (params && params.length) {
+							var bindingArray = statement.newBindingParamsArray();
+							var bp = bindingArray.newBindingParams();
+							for (var i = 0; i < params.length; i++)
+								bp.bindByName('p'+(i+1), params[i]);
+							bindingArray.addParams(bp);
+							statement.bindParameters(bindingArray);
 						}
 					} catch (e) {
 						self.trace('executeSql: db.createStatement() failed: ' + e);
@@ -231,9 +233,9 @@ consoleService.logStringMessage("Web SQL starting up!");
 			},
 
 			trace: function(msg) {
-//				if(this.window) {
-//					this.window.console.log('[' + this.id + '] ' + msg);					
-//				}
+				if(this.window) {
+					this.window.console.log('[' + this.id + '] ' + msg);					
+				}
 			},
 			
 			translateError: function(e) {
