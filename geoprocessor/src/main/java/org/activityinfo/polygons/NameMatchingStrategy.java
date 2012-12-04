@@ -7,6 +7,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.activityinfo.jsonrpc.AdminEntity;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.google.common.base.Strings;

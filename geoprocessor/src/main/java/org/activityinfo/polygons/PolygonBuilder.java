@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import org.activityinfo.jsonrpc.ActivityInfoService;
+import org.activityinfo.jsonrpc.AdminEntity;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.geometry.jts.JTS;
@@ -21,11 +23,8 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.io.Resources;
-import com.google.gson.Gson;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 
@@ -73,10 +72,9 @@ public class PolygonBuilder {
 		if(adminLevelId == 0) {
 			throw new IllegalStateException("AdminLevelId has not been set");
 		}
-		URL url = new URL("http://polygons.gactivityinfo.appspot.com/api/AdminEntities?levelId=" + adminLevelId);
-		Gson gson = new Gson();
-		this.entities = gson.fromJson(Resources.toString(url, Charsets.UTF_8), AdminEntityResult.class).getData();
-		System.err.println("Fetched " + entities.size() + " entities for level " + adminLevelId);
+		
+		ActivityInfoService service = new ActivityInfoService();
+		this.entities = service.getAdminEntities(adminLevelId);
 	}
 	
 	private void initMatchingStrategy() {

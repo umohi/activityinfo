@@ -3,6 +3,7 @@ package org.activityinfo.polygons;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Set;
 
 import org.activityinfo.GeoTask;
@@ -15,6 +16,10 @@ public class PolygonTask implements GeoTask {
 	private File adminRoot;
 
 	private Set<Integer> adminLevelIds = Sets.newHashSet();
+	
+	public void run(List<String> arguments) throws Exception {
+		run(arguments.get(0));
+	}
 	
 	public void run(String geodbRoot) throws Exception {
 		
@@ -40,10 +45,14 @@ public class PolygonTask implements GeoTask {
 			if(child.isDirectory() && !child.getName().equals("GAUL")) {
 				processAll(child);
 			} else if(child.getName().endsWith(".properties")) {
-				PolygonBuilder builder = new PolygonBuilder(root, child);	
-				builder.run();
-				
-				adminLevelIds.add(builder.getAdminLevelId());
+				try {
+					PolygonBuilder builder = new PolygonBuilder(root, child);	
+					builder.run();
+					
+					adminLevelIds.add(builder.getAdminLevelId());
+				} catch(Exception e) {
+					throw new RuntimeException("Exception thrown while processing " + child.getName(), e);
+				}
 			}
 		}		
 	}

@@ -1,4 +1,4 @@
-package org.activityinfo.polygons;
+package org.activityinfo.jsonrpc;
 
 import java.util.List;
 
@@ -13,7 +13,4 @@ public class AdminEntityResult {
 	public void setData(List<AdminEntity> data) {
 		this.data = data;
 	}
-	
-	
-
 }
