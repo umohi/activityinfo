@@ -1,4 +1,4 @@
-package org.activityinfo.polygons;
+package org.activityinfo.jsonrpc;
 
 public class AdminEntity {
 	private int id;
@@ -24,8 +24,4 @@ public class AdminEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	
-	
 }

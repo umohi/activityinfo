@@ -11,10 +11,8 @@ import java.util.logging.Logger;
 import org.activityinfo.GeoTask;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.FilterVisitor;
 
 import com.google.common.collect.Lists;
 
@@ -25,6 +23,10 @@ public class GaulPolygonTask implements GeoTask {
 	
 	private Logger LOGGER = Logger.getLogger(GaulPolygonTask.class.getName());
 
+	public void run(List<String> arguments) throws Exception {
+		run(arguments.get(0));
+	}
+	
 	public void run(String geodbRoot) throws Exception {
 		this.root = new File(geodbRoot);
 		this.properties = new Properties();

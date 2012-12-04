@@ -24,7 +24,7 @@ public class SqlBoundsOutput implements OutputWriter {
 
 	public void write(int adminEntityId, Geometry geometry) throws IOException {
 		Envelope box = geometry.getEnvelopeInternal();
-		writer.println(String.format("UPDATE AdminEntity SET x1=%f, y1=%f, x2=%f, y2=%f WHERE AdminEntityId=%d",
+		writer.println(String.format("UPDATE adminentity SET x1=%f, y1=%f, x2=%f, y2=%f WHERE AdminEntityId=%d;",
 				box.getMinX(),
 				box.getMinY(),
 				box.getMaxX(),
