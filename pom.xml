@@ -13,6 +13,10 @@
 			<url>http://www.gnu.org/licenses/gpl.html</url>
 		</license>
 	</licenses>
+	<organization>
+		<name>UNICEF</name>
+		<url>http://www.unicef.org</url>
+	</organization>
 
 
 	<description>Web-based database platform for program monitoring and reporting for the UN,
@@ -139,6 +143,16 @@
 	</dependencies>
 
 	<build>
+		<plugins>
+		  <plugin>
+		    <groupId>org.codehaus.mojo</groupId>
+		    <artifactId>license-maven-plugin</artifactId>
+		    <version>1.4</version>
+		    <configuration>
+			<licenseName>gpl_v3</licenseName>
+		    </configuration>
+		</plugin>
+		</plugins>
 
 		<pluginManagement>
 			<plugins>
