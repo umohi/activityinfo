@@ -84,6 +84,10 @@ consoleService.logStringMessage("Web SQL starting up!");
 		
 		SQLTransaction.prototype = {
 				
+			__exposedProps__ : { 
+				executeSql: "r", 
+			}, 
+				
 			begin: function(callback) {
 				
 				transactionInProgress = true;
@@ -396,6 +400,11 @@ consoleService.logStringMessage("Web SQL starting up!");
 		
 		this.readTransaction = this.transaction;
 		this.changeVersion = function() { /* Who cares about versions? */ }
+		
+		this.__exposedProps__ = { 
+			transaction : "r",
+			changeVersion: "r"
+		}; 
 	}
 
 	function WebSqlFactory() {};
@@ -409,7 +418,7 @@ consoleService.logStringMessage("Web SQL starting up!");
 			{
 				return new Database(dbName, dbVersion, dbDescription, dbSize, window);
 			}
-			openDatabase.toString = function(){return 'function openDatabase() {\n    [native code]\n}';};
+			//openDatabase.toString = function(){return 'function openDatabase() {\n    [native code]\n}';};
 			
 			return openDatabase;
 		}
