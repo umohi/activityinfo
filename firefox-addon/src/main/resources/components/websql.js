@@ -78,16 +78,14 @@ consoleService.logStringMessage("Web SQL starting up!");
 			this.wrapper = {
 				executeSql: function (sqlStatement, arguments, callbackFunc, errorFunc) {
 					return self.executeSql(sqlStatement, arguments, callbackFunc, errorFunc);
+				},
+				__exposedProps__: {
+					executeSql: "r"
 				}
 			};
 		};
 		
 		SQLTransaction.prototype = {
-				
-			__exposedProps__ : { 
-				executeSql: "r", 
-			}, 
-				
 			begin: function(callback) {
 				
 				transactionInProgress = true;
@@ -95,11 +93,12 @@ consoleService.logStringMessage("Web SQL starting up!");
 				// 4. If the transaction callback is not null, queue a task to invoke the transaction callback with 
 				// the aforementioned SQLTransaction object as its only argument, and wait for that task to be run.
 				var self = this;
+				self.startTime = new Date().getTime();
 				self.trace('begin: starting...');
 				queueTask(function() {
 					try {
 						self.trace('begin: calling callback...');
-						callback(self);
+						callback(self.wrapper);
 						self.scheduleQueue();
 					} catch(e) {
 						// 5. If the callback raised an exception, jump to the last step.
@@ -150,6 +149,7 @@ consoleService.logStringMessage("Web SQL starting up!");
 					// 6.2 Execute the statement in the context of the transaction. [SQL]
 					var parsedStatementParts = sqlStatement.split('?');
 					var parsedStatement = '';
+					
 					// use named parameters rather than positional params
 					// there seems to be a bug with positional params when used with INSERT
 					// statements...
@@ -178,6 +178,8 @@ consoleService.logStringMessage("Web SQL starting up!");
 					
 					// 6.2 Execute the statement in the context of the transaction
 					var rows = [];
+					var queryStartTime = new Date().getTime();
+
 					statement.executeAsync({
 						handleError: function(aError) {
 							// 6.3. If the statement failed, jump to the "in case of error" steps below.
@@ -185,15 +187,19 @@ consoleService.logStringMessage("Web SQL starting up!");
 						},
 						
 						handleResult: function(aResultSet) {
+							var queryFinishTime = new Date().getTime();
+							var queryTime = queryFinishTime - queryStartTime;
+							self.trace('query completed in ' + queryTime + ' ms')
 							self.trace('handleResult() called.');
 							
 							var nextRow;
 							while (nextRow = aResultSet.getNextRow()) {
-								var row = {};
+								var row = { __exposedProps__: {} };
 								for (var i = 0; i < statement.columnCount; i++)
 								{
 									var colName = statement.getColumnName(i);
 									row[colName] = nextRow.getResultByIndex(i);
+									row.__exposedProps__[colName] = "r";
 								}
 								rows.push(row);
 							}
@@ -203,10 +209,21 @@ consoleService.logStringMessage("Web SQL starting up!");
 							self.trace('handleCompletion() called: aReason = '  + aReason);
 							if (aReason == 0) {
 								// TODO find out how to get the number of rows affected by the query
-								var rs = { 'insertId':self.db.lastInsertRowID, 'rowsAffected':-1, 'rows':rows };
+								var rs = { 
+										insertId: self.db.lastInsertRowID, 
+										rowsAffected: -1, 
+										rows: rows,
+										__exposedProps__: {
+											insertId: "r",
+											rowsAffected: "r",
+											rows: "r"
+										}};
 								rs.rows.item = function(i){ return rows[i]; }
 								rs.rows.length = rows.length;
-								
+								rs.rows.__exposedProps__ = {
+										item: "r",
+										length: "r"
+								};
 								self._handleStatementSuccess(rs, callbackFunc);
 							}
 						}
@@ -305,8 +322,13 @@ consoleService.logStringMessage("Web SQL starting up!");
 					return;
 				}
 				
+				var commitTime = new Date().getTime();
+				var duration = commitTime - self.startTime;
+			
 				self.trace('commit: commit succeeded');
-				
+				self.trace('tx length: ' + duration + ' ms');
+
+
 				// 8. Queue a task to invoke the success callback, if it is not null.
 				if(typeof self.successCallback == 'function') {
 					queueTask(function() {
@@ -418,8 +440,6 @@ consoleService.logStringMessage("Web SQL starting up!");
 			{
 				return new Database(dbName, dbVersion, dbDescription, dbSize, window);
 			}
-			//openDatabase.toString = function(){return 'function openDatabase() {\n    [native code]\n}';};
-			
 			return openDatabase;
 		}
 	};
