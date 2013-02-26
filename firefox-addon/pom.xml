@@ -5,7 +5,7 @@
     <groupId>org.activityinfo</groupId>
     <artifactId>firefox-addon</artifactId>
     <packaging>pom</packaging>
-    <version>0.5</version>
+    <version>0.6</version>
  
     <name>ActivityInfo</name>
 

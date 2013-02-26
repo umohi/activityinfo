@@ -260,8 +260,15 @@ consoleService.logStringMessage("Web SQL starting up!");
 			},
 			
 			translateError: function(e) {
-				//TODO
-				return { message: (''+e), code: UNKNOWN_ERR };
+				//TODO: map to WebSQL error codes
+				return { 
+					message: (''+e), 
+					code: UNKNOWN_ERR,
+					__exposedProps__: { 
+							message : "r",
+							code: "r"
+						}
+					};
 			},
 			
 			handleStatementError: function (statementErrHandler, sqlError) {
