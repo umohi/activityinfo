@@ -107,6 +107,7 @@
 
   <modules>
     <module>server</module>
+    <module>geoadmin</module>
   </modules>
 
   <dependencies>
