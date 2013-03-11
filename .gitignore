@@ -3,3 +3,4 @@ target/
 RemoteSystemsTempFiles/
 .settings
 .project
+geoadmin/.classpath
