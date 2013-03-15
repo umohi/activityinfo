@@ -29,9 +29,10 @@ public class ImportTableCellRenderer extends DefaultTableCellRenderer {
 
 		final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		if(!isSelected) {
+			int featureIndex = table.convertRowIndexToModel(row);
 			if(tableModel.getParent(row) != null) {
-				AdminUnit parent = tableModel.getParent(row);
-				switch(scorer.quality(row, parent)) {
+				AdminUnit parent = tableModel.getParent(featureIndex);
+				switch(scorer.quality(featureIndex, parent)) {
 				case OK:
 					c.setBackground(FOREST_GREEN);
 					break;

@@ -53,6 +53,7 @@ public class ImportWindow extends JDialog {
 	private JLabel scoreLabel;
 	private JMapPane mapPane;
 	private AdminLevel parentLevel;
+	private JTable table;
 	
 
 	public ImportWindow(JFrame parent, GeoClient client, AdminLevel parentLevel, File shapeFile) throws Exception {
@@ -71,7 +72,7 @@ public class ImportWindow extends JDialog {
 		JComboBox parentComboBox = new JComboBox(parentUnits.toArray());
 		parentComboBox.setEditable(false);
 
-		JTable table = new JTable(tableModel);
+		table = new JTable(tableModel);
 		table.getColumnModel().getColumn(0).setCellEditor(
 				new DefaultCellEditor(parentComboBox));
 		table.setDefaultRenderer(Object.class, 
@@ -104,7 +105,9 @@ public class ImportWindow extends JDialog {
 
 
 	private void onSelectionChanged(ListSelectionEvent e) {
-		showScore(e.getFirstIndex());
+		int row = e.getFirstIndex();
+		int featureIndex = table.convertRowIndexToModel(row);
+		showScore(featureIndex);
 	}
 
 	private void showScore(int featureIndex) {

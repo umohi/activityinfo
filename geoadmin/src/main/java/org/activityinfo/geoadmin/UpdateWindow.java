@@ -4,13 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,10 +21,12 @@ import net.miginfocom.swing.MigLayout;
 
 import org.activityinfo.geoadmin.model.AdminLevel;
 import org.activityinfo.geoadmin.model.AdminUnit;
-import org.activityinfo.geoadmin.model.Bounds;
+import org.activityinfo.geoadmin.writer.FileSetWriter;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 public class UpdateWindow extends JDialog {
 
@@ -115,7 +118,7 @@ public class UpdateWindow extends JDialog {
 	private void update() {
 
 		List<AdminUnit> units = Lists.newArrayList();
-
+		
 		for(Join join : joins) {
 			AdminUnit unit = new AdminUnit();
 			unit.setId(join.getUnit().getId());
@@ -123,8 +126,35 @@ public class UpdateWindow extends JDialog {
 			unit.setCode( source.getAttributeStringValue( join.getFeatureIndex(), form.getCodeProperty() ) );
 			unit.setBounds( GeoUtils.toBounds( source.getEnvelope( join.getFeatureIndex() )));
 			units.add(unit);
+			
 		}
 		
 		client.updateAdminEntities(level, units);
+	
+		try {
+			writeGeometry();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeGeometry() throws IOException {
+		Map<Integer, Integer> idMap = featureIndexToIdMap();
+		FileSetWriter fileSetWriter = new FileSetWriter(level.getId());
+		fileSetWriter.start(source.getFeatureSource().getFeatures());
+		
+		int featureIndex = 0;
+		for(Geometry geometry : source.getGeometery()) {
+			fileSetWriter.write(idMap.get(featureIndex), geometry);
+		}
+		fileSetWriter.close();
+	}
+
+	private Map<Integer, Integer> featureIndexToIdMap() {
+		Map<Integer, Integer> map = Maps.newHashMap();
+		for(Join join : joins) {
+			map.put(join.getFeatureIndex(), join.getUnit().getId());
+		}
+		return map;
 	}
 }
