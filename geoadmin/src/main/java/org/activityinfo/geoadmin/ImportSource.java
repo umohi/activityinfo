@@ -2,6 +2,7 @@ package org.activityinfo.geoadmin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.activityinfo.geoadmin.model.Country;
@@ -16,10 +17,13 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.UnmodifiableIterator;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -36,7 +40,7 @@ public class ImportSource {
 
 	public ImportSource(File shapefile) throws Exception {
 		this.file = shapefile;
-		
+
 		ShapefileDataStore ds = new ShapefileDataStore(shapefile.toURI().toURL());
 
 		featureSource = ds.getFeatureSource();
@@ -56,7 +60,6 @@ public class ImportSource {
 
 		rows = Lists.newArrayList();
 		envelopes = Lists.newArrayList();
-
 
 
 		FeatureIterator it = features.features();
@@ -136,7 +139,7 @@ public class ImportSource {
 		return getAttributeValue(featureIndex, attributes.indexOf(attribute));
 
 	}
-	
+
 	public String getAttributeStringValue(int featureIndex, PropertyDescriptor descriptor) {
 		return getAttributeStringValue(featureIndex, attributes.indexOf(descriptor));
 	}
@@ -151,7 +154,7 @@ public class ImportSource {
 			return value.toString();
 		}
 	}
-	
+
 	public String[] getAttributeNames() {
 		String[] names = new String[attributes.size()];
 		for(int i=0;i!=names.length;++i) {
@@ -174,7 +177,7 @@ public class ImportSource {
 		}
 		return sb.toString();
 	}
-	
+
 	public double similarity(int featureIndex, String name) {
 		double nameSimilarity = 0;
 		for(int attributeIndex=0;attributeIndex!=getAttributeCount();++attributeIndex) {
@@ -194,7 +197,7 @@ public class ImportSource {
 			return false;
 		}
 	} 
-	
+
 	/**
 	 * Checks to see whether all geometry at least intersects the country's
 	 * geographic bounds. This is a good check to ensure that we have correctly
@@ -244,6 +247,41 @@ public class ImportSource {
 
 	public File getFile() {
 		return file;
+	}
+
+	public Iterable<Geometry> getGeometery() {
+		return new Iterable<Geometry>() {
+
+			@Override
+			public Iterator<Geometry> iterator() {
+				try {
+					final FeatureIterator featureIt = featureSource.getFeatures().features();
+					final MathTransform transform = createTransform();
+
+					return new UnmodifiableIterator<Geometry>() {
+
+						@Override
+						public boolean hasNext() {
+							return featureIt.hasNext();
+						}
+
+						@Override
+						public Geometry next() {
+							SimpleFeature feature = (SimpleFeature) featureIt.next();
+							Geometry geometry = (Geometry)feature.getDefaultGeometryProperty().getValue();
+
+							try {
+								return JTS.transform(geometry, transform);
+							} catch (Exception e) {
+								throw new RuntimeException(e);
+							}
+						}
+					};
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		};
 	}
 }
 
