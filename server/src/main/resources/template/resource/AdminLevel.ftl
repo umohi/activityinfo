@@ -16,25 +16,37 @@
  
  You should have received a copy of the GNU General Public 
  License along with this program.  If not, see
- <http://www.gnu.org/licenses/gpl-3.0.html>.
+ <http://www.gnu.org/licenses/gpl-3.0.html>
  #L%
 -->
 <#include "../page/Scaffolding.ftl">
 <@scaffolding title="${name}">
 
-	
 	<@content>
 	<h1>${name}</h1>
 	
-	<h2>Administrative Unit Levels</h2>
-	<@showLevels children=adminLevels/>
-	</@content>
-</@scaffolding>
-
-<#macro showLevels children>
+	<p>Administrative Level in ${country.name}</p>
+	
+	<#if parent?has_content >
+	<p>Subdivision of <a href="/resources/adminLevel/${parent.id?c}">${parent.name}</a></p>
+	</#if>
+	
+	<#if childLevels?has_content >
+	<h2>Child Levels</h2>
 	<ul>
-	<#list children as child>
+	<#list childLevels as child>
 	<li><a href="/resources/adminLevel/${child.id?c}">${child.name}</a></li>
 	</#list>
 	</ul>
-</#macro>
+	</#if>
+	
+	<h2>Entities</h2>
+	<ul>
+	<#list entities?sort_by("name") as entity >
+	<#if !entity.deleted>
+		<li><a href="/resources/adminEntity/${entity.id?c}">${entity.name}</a></li>
+	</#if>
+	</#list>
+	</ul>
+	</@content>
+</@scaffolding>

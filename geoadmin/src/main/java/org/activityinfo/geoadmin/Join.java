@@ -1,21 +1,25 @@
 package org.activityinfo.geoadmin;
 
-import org.activityinfo.geoadmin.model.AdminUnit;
+import org.activityinfo.geoadmin.model.AdminEntity;
 
+/**
+ * Represents a join between an existing AdminEntity and an imported feature.
+ * 
+ */
 public class Join {
-	private AdminUnit unit;
-	private int featureIndex;
-	
-	public Join(AdminUnit adminUnit, int bestFeature) {
-		this.unit = adminUnit;
-		this.featureIndex = bestFeature;
-	}
-	
-	public AdminUnit getUnit() {
-		return unit;
-	}
+    private AdminEntity entity;
+    private ImportFeature feature;
 
-	public int getFeatureIndex() {
-		return featureIndex;
-	}
+    public Join(AdminEntity adminUnit, ImportFeature bestFeature) {
+        this.entity = adminUnit;
+        this.feature = bestFeature;
+    }
+
+    public AdminEntity getEntity() {
+        return entity;
+    }
+
+    public ImportFeature getFeature() {
+        return feature;
+    }
 }

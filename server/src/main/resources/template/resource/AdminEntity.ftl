@@ -1,11 +1,28 @@
+<#--
+ #%L
+ ActivityInfo Server
+ %%
+ Copyright (C) 2009 - 2013 UNICEF
+ %%
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as
+ published by the Free Software Foundation, either version 3 of the 
+ License, or (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public 
+ License along with this program.  If not, see
+ <http://www.gnu.org/licenses/gpl-3.0.html>.
+ #L%
+-->
 <#include "../page/Scaffolding.ftl">
+<@scaffolding title="${entity.name}">
 
-<!DOCTYPE html>
-<html>
-<head>
-  <title>${entity.name}</title>
-</head>
-<body>
+	<@content>
 	<h1>${entity.name}</h1>
 	
 	<p><a href="/resources/adminLevel/${entity.level.id?c}">${entity.level.name}</a> in <a href="/resources/country/${entity.level.country.codeISO}">${entity.level.country.name}</a></p>
@@ -18,7 +35,7 @@
 	</ul>
 	</#if>
 	<#if entity.level.childLevels?has_content>
-		<h2>Child units</h2>
+		<h2>Child entities</h2>
 		<#list entity.level.childLevels as childLevel>
 		<h3>${childLevel.name}</h3>
 		<ul>
@@ -30,5 +47,5 @@
 		</ul> 
 		</#list>
 	</#if>
-</body>
-</html>
+	</@content>
+</@scaffolding>
