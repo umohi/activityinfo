@@ -2,7 +2,7 @@ package org.activityinfo.geoadmin.model;
 
 public class AdminEntity {
     private int id;
-    private int parentId;
+    private Integer parentId;
     private String name;
     private String code;
     private Bounds bounds;
@@ -40,11 +40,11 @@ public class AdminEntity {
         this.bounds = bounds;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
