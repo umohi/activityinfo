@@ -2,6 +2,9 @@ package org.activityinfo.geoadmin;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.channels.FileChannel.MapMode;
+import java.security.MessageDigest;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,271 +20,249 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
+import com.google.common.io.Files;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * A set of features from a file to be imported into ActivityInfo's
+ * administrative reference database.
+ * 
+ */
 public class ImportSource {
+    private List<PropertyDescriptor> attributes;
 
+    private FeatureSource featureSource;
+    private MathTransform transform;
+    private File file;
 
-	private List<PropertyDescriptor> attributes;
-	private List<Object[]> rows;
-	private List<Envelope> envelopes;
+    private List<ImportFeature> features = Lists.newArrayList();
 
-	private FeatureSource featureSource;
-	private MathTransform transform;
-	private File file;
+    private String hash;
 
-	public ImportSource(File shapefile) throws Exception {
-		this.file = shapefile;
+    public ImportSource(File shapefile) throws Exception {
+        this.file = shapefile;
 
-		ShapefileDataStore ds = new ShapefileDataStore(shapefile.toURI().toURL());
+        ShapefileDataStore ds = new ShapefileDataStore(shapefile.toURI().toURL());
 
-		featureSource = ds.getFeatureSource();
+        featureSource = ds.getFeatureSource();
 
-		transform = createTransform();
-		loadFeatures();   
-	}
+        transform = createTransform();
+        loadFeatures();
+        calculateHash();
+    }
 
-	/**
-	 * Loads the feature's attributes and the envelope for the 
-	 * geometry into memory.
-	 */
-	private void loadFeatures() throws IOException {
+    /**
+     * Loads the feature's attributes and the envelope for the geometry into
+     * memory.
+     */
+    private void loadFeatures() throws IOException {
 
-		attributes = getNonGeometryAttributes();
-		FeatureCollection features = featureSource.getFeatures();
+        attributes = getNonGeometryAttributes();
+        FeatureCollection features = featureSource.getFeatures();
+        FeatureIterator it = features.features();
+        while (it.hasNext()) {
+            SimpleFeature feature = (SimpleFeature) it.next();
+            ImportFeature importFeature = new ImportFeature(
+                attributes, toAttributeArray(feature), calcWgs84Envelope(feature));
+            this.features.add(importFeature);
+        }
+    }
 
-		rows = Lists.newArrayList();
-		envelopes = Lists.newArrayList();
+    /**
+     * Calculates the geographic envelope of the feature in the WGS 84
+     * Geographic Reference system.
+     */
+    private Envelope calcWgs84Envelope(SimpleFeature feature) {
+        try {
+            Geometry geometry = (Geometry) feature.getDefaultGeometryProperty().getValue();
+            Geometry geometryInWgs84 = JTS.transform(geometry, transform);
+            Envelope envelope = geometryInWgs84.getEnvelopeInternal();
+            return envelope;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    /**
+     * Reads the attribute vaules in an array.
+     * 
+     * @param feature
+     * @return
+     */
+    private Object[] toAttributeArray(SimpleFeature feature) {
+        Object[] attribs = new Object[attributes.size()];
+        for (int i = 0; i != attribs.length; ++i) {
+            attribs[i] = feature.getAttribute(attributes.get(i).getName());
+        }
+        return attribs;
+    }
 
-		FeatureIterator it = features.features();
-		while(it.hasNext()) {
-			SimpleFeature feature = (SimpleFeature) it.next();
+    /**
+     * Finds all the non-geographic attributes in the source.
+     */
+    private List<PropertyDescriptor> getNonGeometryAttributes() {
+        attributes = Lists.newArrayList();
+        for (PropertyDescriptor descriptor : featureSource.getSchema().getDescriptors()) {
+            if (!(descriptor.getType() instanceof GeometryType)) {
+                attributes.add(descriptor);
+            }
+        }
+        return attributes;
+    }
 
-			rows.add(toAttributeArray(feature));
-			envelopes.add(calcWgs84Envelope(feature));
-		}
-	}
+    public List<PropertyDescriptor> getAttributes() {
+        return attributes;
+    }
 
-	private Envelope calcWgs84Envelope(SimpleFeature feature) {
-		try {
-			Geometry geometry = (Geometry)feature.getDefaultGeometryProperty().getValue();
-			Geometry geometryInWgs84 = JTS.transform(geometry, transform);
-			Envelope envelope = geometryInWgs84.getEnvelopeInternal();
-			return envelope;
-		} catch(Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public int getFeatureCount() {
+        return features.size();
+    }
 
-	private Object[] toAttributeArray(SimpleFeature feature) {
-		Object[] attribs = new Object[attributes.size()];
-		for(int i=0;i!=attribs.length;++i) {
-			attribs[i] = feature.getAttribute(attributes.get(i).getName());
-		}
-		return attribs;
-	}
+    private MathTransform createTransform() throws Exception {
+        GeometryDescriptor geometryType = featureSource.getSchema().getGeometryDescriptor();
+        CoordinateReferenceSystem sourceCrs = geometryType.getCoordinateReferenceSystem();
 
-	private List<PropertyDescriptor> getNonGeometryAttributes() {
-		attributes = Lists.newArrayList();
-		for(PropertyDescriptor descriptor : featureSource.getSchema().getDescriptors()) {
-			if(!(descriptor.getType() instanceof GeometryType)) {
-				attributes.add(descriptor);
-			}
-		}
-		return attributes;
-	}
+        CoordinateReferenceSystem geoCRS = DefaultGeographicCRS.WGS84;
+        boolean lenient = true; // allow for some error due to different datums
+        return CRS.findMathTransform(sourceCrs, geoCRS, lenient);
+    }
 
-	public Envelope getEnvelope(int featureIndex) {
-		return envelopes.get(featureIndex);
-	}
+    public int getAttributeCount() {
+        return attributes.size();
+    }
 
-	public List<Object[]> getRows() {
-		return rows;
-	}
+    public String[] getAttributeNames() {
+        String[] names = new String[attributes.size()];
+        for (int i = 0; i != names.length; ++i) {
+            names[i] = attributes.get(i).getName().getLocalPart();
+        }
+        return names;
+    }
 
-	public List<PropertyDescriptor> getAttributes() {
-		return attributes;
-	}
+    public FeatureSource getFeatureSource() {
+        return featureSource;
+    }
 
-	public int getFeatureCount() {
-		return rows.size();
-	}
+    /**
+     * Checks to see whether all geometry at least intersects the country's
+     * geographic bounds. This is a good check to ensure that we have correctly
+     * understood the source's CRS.
+     * 
+     * @param country
+     * @return
+     */
+    public boolean validateGeometry(Country country) {
+        Envelope countryEnvelope = countryBounds(country);
+        for (ImportFeature feature : features) {
+            if (!countryEnvelope.intersects(feature.getEnvelope())) {
+                System.out.println(feature.toString() + " has envelope " + feature.getEnvelope());
+                return false;
+            }
+        }
+        return true;
+    }
 
-	private MathTransform createTransform() throws Exception {
-		GeometryDescriptor geometryType = featureSource.getSchema().getGeometryDescriptor();
-		CoordinateReferenceSystem sourceCrs = geometryType.getCoordinateReferenceSystem();
+    private Envelope countryBounds(Country country) {
+        if (country.getBounds() == null) {
+            return new Envelope(-180, 180, -90, 90);
+        } else {
+            return GeoUtils.toEnvelope(country.getBounds());
+        }
+    }
 
-		CoordinateReferenceSystem geoCRS = DefaultGeographicCRS.WGS84;
-		boolean lenient = true; // allow for some error due to different datums
-		return CRS.findMathTransform(sourceCrs, geoCRS, lenient);
-	}
+    public File getFile() {
+        return file;
+    }
 
-	public int getAttributeCount() {
-		return attributes.size();
-	}
+    public Iterable<Geometry> getGeometery() {
+        return new Iterable<Geometry>() {
 
-	public Object getAttributeValue(int featureIndex, int attribIndex) {
-		return rows.get(featureIndex)[attribIndex];
-	}
+            @Override
+            public Iterator<Geometry> iterator() {
+                try {
+                    final FeatureIterator featureIt = featureSource.getFeatures().features();
+                    final MathTransform transform = createTransform();
 
-	public Object getAttributeValue(int featureIndex,
-			PropertyDescriptor attribute) {
+                    return new UnmodifiableIterator<Geometry>() {
 
-		return getAttributeValue(featureIndex, attributes.indexOf(attribute));
+                        @Override
+                        public boolean hasNext() {
+                            return featureIt.hasNext();
+                        }
 
-	}
+                        @Override
+                        public Geometry next() {
+                            SimpleFeature feature = (SimpleFeature) featureIt.next();
+                            Geometry geometry = (Geometry) feature.getDefaultGeometryProperty().getValue();
 
-	public String getAttributeStringValue(int featureIndex, PropertyDescriptor descriptor) {
-		return getAttributeStringValue(featureIndex, attributes.indexOf(descriptor));
-	}
+                            try {
+                                return JTS.transform(geometry, transform);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    };
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+    }
 
-	public String getAttributeStringValue(int featureIndex,
-			int attribute) {
+    public String getMetadata() throws IOException {
+        File metadataFile = getFile(".shp.xml");
+        if (metadataFile.exists()) {
+            return Files.toString(metadataFile, Charsets.UTF_8);
+        } else {
+            return null;
+        }
+    }
 
-		Object value = getAttributeValue(featureIndex, attribute);
-		if(value == null) {
-			return null;
-		} else {
-			return value.toString();
-		}
-	}
+    public List<ImportFeature> getFeatures() {
+        return features;
+    }
 
-	public String[] getAttributeNames() {
-		String[] names = new String[attributes.size()];
-		for(int i=0;i!=names.length;++i) {
-			names[i] = attributes.get(i).getName().getLocalPart();
-		}
-		return names;
-	}
+    public String getMd5Hash() {
+        return hash;
+    }
 
-	public FeatureSource getFeatureSource() {
-		return featureSource;
-	}
+    private void calculateHash() {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            updateHash(digest, ".shp");
+            updateHash(digest, ".shx");
+            updateHash(digest, ".shp.xml");
+            updateHash(digest, ".dbf");
+            updateHash(digest, ".sbn");
+            updateHash(digest, ".prj");
 
-	public String featureToString(int bestFeature) {
-		StringBuilder sb = new StringBuilder();
-		for(int i=0;i!=getAttributeCount();++i) {
-			if(i > 0) {
-				sb.append(" ");
-			}
-			sb.append(getAttributeValue(bestFeature, i));
-		}
-		return sb.toString();
-	}
+            this.hash = new BigInteger(1, digest.digest()).toString(16);
+        } catch (Exception e) {
+            throw new RuntimeException("Exception generating hash");
+        }
+    }
 
-	public double similarity(int featureIndex, String name) {
-		double nameSimilarity = 0;
-		for(int attributeIndex=0;attributeIndex!=getAttributeCount();++attributeIndex) {
-			Object value = getAttributeValue(featureIndex, attributeIndex);
-			if(value != null) {
-				nameSimilarity = Math.max(nameSimilarity, MatchUtils.similiarity(name, value.toString()));
-			}
-		}
-		return nameSimilarity;
-	}
+    private void updateHash(MessageDigest digest, String extension) throws IOException {
+        File file = getFile(extension);
+        if (file.exists()) {
+            digest.update(Files.map(file, MapMode.READ_ONLY));
+        }
+    }
 
-	public boolean hasCode(int featureIndex, String code) {
-		if(code.matches("\\d+")) {
-			return hasIntCode(featureIndex, Integer.parseInt(code));
-		} else {
-			// TODO
-			return false;
-		}
-	} 
+    private File getFile(String extension) throws AssertionError {
+        String absPath = file.getAbsolutePath();
+        if (!absPath.endsWith(".shp")) {
+            throw new AssertionError();
+        }
+        File file = new File(absPath.substring(0, absPath.length() - 4) + extension);
+        return file;
+    }
 
-	/**
-	 * Checks to see whether all geometry at least intersects the country's
-	 * geographic bounds. This is a good check to ensure that we have correctly
-	 * understood the source's CRS.
-	 * 
-	 * @param country
-	 * @return
-	 */
-	public boolean validateGeometry(Country country) {
-		Envelope countryEnvelope = countryBounds(country);
-		for(int featureIndex=0;featureIndex != getFeatureCount();++featureIndex) {
-			if(!countryEnvelope.intersects(getEnvelope(featureIndex))) {
-				System.out.println(featureToString(featureIndex) + " has envelope " + getEnvelope(featureIndex));
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private Envelope countryBounds(Country country) {
-		if(country.getBounds() == null) {
-			return new Envelope(-180, 180, -90, 90);
-		} else {
-			return GeoUtils.toEnvelope( country.getBounds() );
-		}
-	}
-
-
-	private boolean hasIntCode(int featureIndex, int code) {
-		for(int attributeIndex=0;attributeIndex!=getAttributeCount();++attributeIndex) {
-			try {
-				Object value = getAttributeValue(featureIndex, attributeIndex);
-				if(value instanceof Number) {
-					if(((Number) value).intValue() == code) {
-						return true;
-					}
-				} else if(value instanceof String) {
-					if(Integer.parseInt((String)value) == code) {
-						return true;
-					}
-				}
-			} catch(Exception e) {
-			}
-		}
-		return false;
-	}
-
-	public File getFile() {
-		return file;
-	}
-
-	public Iterable<Geometry> getGeometery() {
-		return new Iterable<Geometry>() {
-
-			@Override
-			public Iterator<Geometry> iterator() {
-				try {
-					final FeatureIterator featureIt = featureSource.getFeatures().features();
-					final MathTransform transform = createTransform();
-
-					return new UnmodifiableIterator<Geometry>() {
-
-						@Override
-						public boolean hasNext() {
-							return featureIt.hasNext();
-						}
-
-						@Override
-						public Geometry next() {
-							SimpleFeature feature = (SimpleFeature) featureIt.next();
-							Geometry geometry = (Geometry)feature.getDefaultGeometryProperty().getValue();
-
-							try {
-								return JTS.transform(geometry, transform);
-							} catch (Exception e) {
-								throw new RuntimeException(e);
-							}
-						}
-					};
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-		};
-	}
 }
-

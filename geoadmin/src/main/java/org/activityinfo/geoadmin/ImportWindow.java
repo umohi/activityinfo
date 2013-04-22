@@ -1,18 +1,15 @@
 package org.activityinfo.geoadmin;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.PrintStream;
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,7 +18,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
@@ -29,198 +25,209 @@ import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.activityinfo.geoadmin.model.ActivityInfoClient;
+import org.activityinfo.geoadmin.model.AdminEntity;
 import org.activityinfo.geoadmin.model.AdminLevel;
-import org.activityinfo.geoadmin.model.AdminUnit;
-import org.geotools.map.FeatureLayer;
-import org.geotools.map.MapContent;
-import org.geotools.styling.SLD;
-import org.geotools.swing.JMapPane;
-import org.geotools.swing.action.ZoomInAction;
-import org.geotools.swing.action.ZoomOutAction;
+import org.activityinfo.geoadmin.model.Bounds;
+import org.activityinfo.geoadmin.model.Country;
 
 import com.google.common.collect.Lists;
-import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * User interface for matching imported features with their parents in the
+ * existing hierarchy.
+ * 
+ */
 public class ImportWindow extends JDialog {
 
-	private GeoClient client;
-	private List<AdminUnit> parentUnits;
-	
-	private ImportTableModel tableModel;
-	private ImportForm importForm;
-	private ImportSource source;
-	private ParentGuesser scorer;
-	private JLabel scoreLabel;
-	private JMapPane mapPane;
-	private AdminLevel parentLevel;
-	private JTable table;
-	
+    private ActivityInfoClient client;
+    private List<AdminEntity> parentEntities;
 
-	public ImportWindow(JFrame parent, GeoClient client, AdminLevel parentLevel, File shapeFile) throws Exception {
-		super(parent, "Import - " + shapeFile.getName(), Dialog.ModalityType.APPLICATION_MODAL);
-		setSize(650, 350);
-		setLocationRelativeTo(parent);
+    private ImportTableModel tableModel;
+    private ImportForm importForm;
+    private ImportSource source;
+    private ParentGuesser scorer;
+    private JLabel scoreLabel;
+    private Country country;
+    private AdminLevel parentLevel;
+    private JTable table;
 
-		this.client = client;
-		this.parentLevel = parentLevel;
-		source = new ImportSource(shapeFile);
-		parentUnits = sort(client.getAdminEntities(parentLevel));
-		scorer = new ParentGuesser(source, parentUnits);
-		importForm = new ImportForm(source, parentUnits);
+    public ImportWindow(JFrame parent, ActivityInfoClient client,
+        Country country,
+        AdminLevel parentLevel,
+        File shapeFile) throws Exception {
 
-		tableModel = new ImportTableModel(source);
-		JComboBox parentComboBox = new JComboBox(parentUnits.toArray());
-		parentComboBox.setEditable(false);
+        super(parent, "Import - " + shapeFile.getName(), Dialog.ModalityType.APPLICATION_MODAL);
+        setSize(650, 350);
+        setLocationRelativeTo(parent);
 
-		table = new JTable(tableModel);
-		table.getColumnModel().getColumn(0).setCellEditor(
-				new DefaultCellEditor(parentComboBox));
-		table.setDefaultRenderer(Object.class, 
-				new ImportTableCellRenderer(tableModel, scorer));
-		table.setAutoCreateRowSorter(true);
-		
-		table.getSelectionModel().addListSelectionListener(new  ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				onSelectionChanged(e);
-			}
-		});
-		
-		scoreLabel = new JLabel();
-		JLabel countLabel = new JLabel(source.getFeatureCount() + " features");
-		//mapPane = createMap();
-		
-		
-		JPanel panel = new JPanel(new MigLayout("fill"));
-		panel.add(importForm, "wrap");
-		panel.add(new JScrollPane(table), "wrap,grow");
-		
-		panel.add(scoreLabel, "height 25!, growx");
-		panel.add(countLabel);
-		
-		getContentPane().add(createToolBar(), BorderLayout.PAGE_START);
-		getContentPane().add(panel, BorderLayout.CENTER);
-	}
+        this.client = client;
+        this.country = country;
+        this.parentLevel = parentLevel;
 
+        source = new ImportSource(shapeFile);
+        if (parentLevel == null) {
+            parentEntities = Lists.newArrayList();
+        } else {
+            parentEntities = sort(client.getAdminEntities(parentLevel));
+        }
 
-	private void onSelectionChanged(ListSelectionEvent e) {
-		int row = e.getFirstIndex();
-		int featureIndex = table.convertRowIndexToModel(row);
-		showScore(featureIndex);
-	}
+        scorer = new ParentGuesser(source, parentEntities);
+        importForm = new ImportForm(source, parentEntities);
 
-	private void showScore(int featureIndex) {
-		AdminUnit parent = tableModel.getParent(featureIndex);
-		if(parent == null) {
-			scoreLabel.setText("");
-		} else {
-			scoreLabel.setText(String.format("Scores:  Geo: %.2f  Name: %.2f  Code: %.2f",
-					scorer.scoreGeography(featureIndex, parent),
-					scorer.scoreName(featureIndex, parent),
-					scorer.scoreCodeMatch(featureIndex, parent)));
-		}
-	}
+        tableModel = new ImportTableModel(source);
+        JComboBox parentComboBox = new JComboBox(parentEntities.toArray());
+        parentComboBox.setEditable(false);
 
+        table = new JTable(tableModel);
+        table.getColumnModel().getColumn(0).setCellEditor(
+            new DefaultCellEditor(parentComboBox));
+        table.setDefaultRenderer(Object.class,
+            new ImportTableCellRenderer(tableModel, scorer));
+        table.setAutoCreateRowSorter(true);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
-	private JToolBar createToolBar() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                onSelectionChanged(e);
+            }
+        });
 
-		JButton guessButton = new JButton("Guess Parents");
-		guessButton.addActionListener(new ActionListener() {
+        scoreLabel = new JLabel();
+        JLabel countLabel = new JLabel(source.getFeatureCount() + " features");
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				guessParents();
-			}
-		});
+        JPanel panel = new JPanel(new MigLayout("fill"));
+        panel.add(importForm, "wrap");
+        panel.add(new JScrollPane(table,
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), "wrap,grow");
 
-		JButton updateButton = new JButton("Import");
-		updateButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doImport();
-			}
-		});
-		
-		JToolBar toolBar = new JToolBar();
-		toolBar.setFloatable(false);
-		toolBar.add(guessButton);
-		toolBar.add(updateButton);
-		toolBar.addSeparator();
-//		
-//        ButtonGroup cursorToolGrp = new ButtonGroup();
-//
-//		JButton zoomInAction = new JButton(new ZoomInAction(mapPane));
-//		toolBar.add(zoomInAction);
-//		cursorToolGrp.add(zoomInAction);
-//
-//		JButton zoomOut = new JButton(new ZoomOutAction(mapPane));
-//		toolBar.add(zoomOut);
-//		cursorToolGrp.add(zoomOut);
-		
+        panel.add(scoreLabel, "height 25!, growx");
+        panel.add(countLabel);
 
-		return toolBar;
-	}
+        getContentPane().add(createToolBar(), BorderLayout.PAGE_START);
+        getContentPane().add(panel, BorderLayout.CENTER);
+    }
 
-	protected void doImport() {
-		int nameAttribute = importForm.getNameAttributeIndex();
-		int codeAttribute = importForm.getCodeAttributeIndex();
+    private void onSelectionChanged(ListSelectionEvent e) {
+        int row = e.getFirstIndex();
+        int featureIndex = table.convertRowIndexToModel(row);
+        showScore(featureIndex);
+    }
 
-		
-		List<AdminUnit> entities = Lists.newArrayList();
-		
-		for(int featureIndex = 0; featureIndex != source.getFeatureCount();++featureIndex) {
-			
-			AdminUnit entity = new AdminUnit();
-			entity.setName( source.getAttributeStringValue(featureIndex, nameAttribute) );
-			entity.setCode( source.getAttributeStringValue(featureIndex, codeAttribute) );
-			entity.setBounds( GeoUtils.toBounds( source.getEnvelope( featureIndex )));
-			entity.setParentId( tableModel.getParent(featureIndex).getId() );
-			entities.add(entity);
-						
-		}		
-		
-		
-		AdminLevel newLevel = new AdminLevel();
-		newLevel.setName(importForm.getLevelName());
-		newLevel.setParentId(parentLevel.getId());
-		newLevel.setEntities(entities);
-		
-		client.postChildLevel(parentLevel, newLevel);
-	}
+    /**
+     * Display the parent match score of the selected item in the status bar
+     * 
+     * @param featureIndex
+     */
+    private void showScore(int featureIndex) {
+        AdminEntity parent = tableModel.getParent(featureIndex);
+        if (parent == null) {
+            scoreLabel.setText("");
+        } else {
+            ImportFeature feature = tableModel.getFeatureAt(featureIndex);
+            scoreLabel.setText(String.format("Scores:  Geo: %.2f  Name: %.2f  Code: %.2f",
+                scorer.scoreGeography(feature, parent),
+                scorer.scoreName(feature, parent),
+                scorer.scoreCodeMatch(feature, parent)));
+        }
+    }
 
+    private JToolBar createToolBar() {
 
+        JButton guessButton = new JButton("Guess Parents");
+        guessButton.addActionListener(new ActionListener() {
 
-	private List<AdminUnit> sort(List<AdminUnit> adminEntities) {
-		Collections.sort(adminEntities, new Comparator<AdminUnit>() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guessParents();
+            }
+        });
 
-			@Override
-			public int compare(AdminUnit a, AdminUnit b) {
-				return a.getName().compareTo(b.getName());
-			}
-		});
-		return adminEntities;
-	}
+        JButton updateButton = new JButton("Import");
+        updateButton.addActionListener(new ActionListener() {
 
-	private JMapPane createMap() {
-		MapContent context = new MapContent();
-		context.addLayer(new FeatureLayer(source.getFeatureSource(), SLD.createPolygonStyle(Color.BLACK, Color.YELLOW, 0)));
-		JMapPane mapPane = new JMapPane(context);
-		return mapPane;
-	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    doImport();
+                } catch (FileNotFoundException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+        });
 
+        JToolBar toolBar = new JToolBar();
+        toolBar.setFloatable(false);
+        toolBar.add(guessButton);
+        toolBar.add(updateButton);
+        toolBar.addSeparator();
 
-	private void guessParents() {
-		try {
+        return toolBar;
+    }
 
-			AdminUnit[] parents = scorer.run();
-			for(int featureIndex=0;featureIndex != parents.length; ++featureIndex) {
-				tableModel.setValueAt(parents[featureIndex], featureIndex, ImportTableModel.PARENT_COLUMN);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+    protected void doImport() throws FileNotFoundException {
+        int nameAttribute = importForm.getNameAttributeIndex();
+        int codeAttribute = importForm.getCodeAttributeIndex();
+
+        List<AdminEntity> entities = Lists.newArrayList();
+
+        for (int i = 0; i != tableModel.getRowCount(); ++i) {
+            ImportFeature feature = tableModel.getFeatureAt(i);
+            AdminEntity parent = tableModel.getParent(i);
+
+            AdminEntity entity = new AdminEntity();
+            entity.setName(feature.getAttributeStringValue(nameAttribute));
+            entity.setCode(feature.getAttributeStringValue(codeAttribute));
+            Bounds bounds = GeoUtils.toBounds(feature.getEnvelope());
+            entity.setBounds(bounds);
+
+            if (parentLevel != null) {
+                entity.setParentId(parent.getId());
+            }
+            entities.add(entity);
+        }
+
+        AdminLevel newLevel = new AdminLevel();
+        newLevel.setName(importForm.getLevelName());
+        if (parentLevel != null) {
+            newLevel.setParentId(parentLevel.getId());
+        }
+        newLevel.setEntities(entities);
+
+        if(parentLevel != null) {
+            client.postChildLevel(parentLevel, newLevel);
+        } else {
+            client.postRootLevel(country, newLevel);
+        }
+
+        // hide window
+        setVisible(false);
+    }
+
+    private List<AdminEntity> sort(List<AdminEntity> adminEntities) {
+        Collections.sort(adminEntities, new Comparator<AdminEntity>() {
+
+            @Override
+            public int compare(AdminEntity a, AdminEntity b) {
+                return a.getName().compareTo(b.getName());
+            }
+        });
+        return adminEntities;
+    }
+
+    private void guessParents() {
+        try {
+
+            AdminEntity[] parents = scorer.run();
+            for (int featureIndex = 0; featureIndex != parents.length; ++featureIndex) {
+                tableModel.setValueAt(parents[featureIndex], featureIndex, ImportTableModel.PARENT_COLUMN);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
