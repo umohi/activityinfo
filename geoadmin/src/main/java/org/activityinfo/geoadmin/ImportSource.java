@@ -29,6 +29,10 @@ import com.google.common.collect.UnmodifiableIterator;
 import com.google.common.io.Files;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * A set of features from a file to be imported into ActivityInfo's
@@ -67,10 +71,13 @@ public class ImportSource {
         attributes = getNonGeometryAttributes();
         FeatureCollection features = featureSource.getFeatures();
         FeatureIterator it = features.features();
+        int index = 0;
         while (it.hasNext()) {
             SimpleFeature feature = (SimpleFeature) it.next();
             ImportFeature importFeature = new ImportFeature(
-                attributes, toAttributeArray(feature), calcWgs84Envelope(feature));
+                attributes,
+                toAttributeArray(feature),
+                calcWgs84Geometry(feature));
             this.features.add(importFeature);
         }
     }
@@ -79,12 +86,11 @@ public class ImportSource {
      * Calculates the geographic envelope of the feature in the WGS 84
      * Geographic Reference system.
      */
-    private Envelope calcWgs84Envelope(SimpleFeature feature) {
+    private Geometry calcWgs84Geometry(SimpleFeature feature) {
         try {
             Geometry geometry = (Geometry) feature.getDefaultGeometryProperty().getValue();
             Geometry geometryInWgs84 = JTS.transform(geometry, transform);
-            Envelope envelope = geometryInWgs84.getEnvelopeInternal();
-            return envelope;
+            return geometryInWgs84;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -203,10 +209,31 @@ public class ImportSource {
                             Geometry geometry = (Geometry) feature.getDefaultGeometryProperty().getValue();
 
                             try {
-                                return JTS.transform(geometry, transform);
+                                Geometry transformed = JTS.transform(geometry, transform);
+                                if (transformed instanceof Polygon || transformed instanceof MultiPolygon) {
+                                    return transformed;
+                                } else if (transformed instanceof GeometryCollection) {
+                                    return toMultiPolygon((GeometryCollection) transformed);
+                                } else {
+                                    throw new UnsupportedOperationException();
+                                }
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
+                        }
+
+                        private MultiPolygon toMultiPolygon(GeometryCollection gc) {
+                            List<Polygon> polygons = Lists.newArrayList();
+                            for (int i = 0; i != gc.getNumGeometries(); ++i) {
+                                Geometry part = gc.getGeometryN(i);
+                                if (part instanceof Polygon) {
+                                    polygons.add((Polygon) part);
+                                } else {
+                                    throw new UnsupportedOperationException();
+                                }
+                            }
+                            GeometryFactory gf = new GeometryFactory();
+                            return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));
                         }
                     };
                 } catch (Exception e) {
