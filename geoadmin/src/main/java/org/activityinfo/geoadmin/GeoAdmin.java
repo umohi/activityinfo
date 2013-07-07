@@ -28,7 +28,7 @@ import com.google.common.collect.Maps;
 /**
  * Swing Application that provides a user interface for managing ActivityInfo's
  * geographic reference databases.
- * 
+ *
  */
 public class GeoAdmin extends JFrame {
 
@@ -158,13 +158,26 @@ public class GeoAdmin extends JFrame {
 
     public static void main(String[] args) {
 
-        final ActivityInfoClient client = new ActivityInfoClient(args[0], args[1], args[2]);
+        final String endpoint;
+        if(args.length == 1) {
+            endpoint = args[0];
+        } else {
+            endpoint = "http://www.activityinfo.org/resources";
+        }
 
-        SwingUtilities.invokeLater(new Runnable() {
+        new PasswordForm().show(new PasswordForm.Callback() {
             @Override
-            public void run() {
-                GeoAdmin ex = new GeoAdmin(client);
-                ex.setVisible(true);
+            public void ok(String username, String password) {
+
+                final ActivityInfoClient client = new ActivityInfoClient(endpoint, username, password);
+
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        GeoAdmin ex = new GeoAdmin(client);
+                        ex.setVisible(true);
+                    }
+                });
             }
         });
     }

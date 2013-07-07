@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.ContextResolver;
 
+import com.sun.jersey.client.urlconnection.HTTPSProperties;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.bedatadriven.geojson.GeoJsonModule;
@@ -51,12 +52,17 @@ public class ActivityInfoClient {
         ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         clientConfig.getClasses().add(ObjectMapperProvider.class);
+//        clientConfig.getProperties().put(com.sun.jersey.client.urlconnection.HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
+//                new HTTPSProperties(new ActivityInfoHostnameVerifier(), getSSLContext()));
+
 
         client = Client.create(clientConfig);
         client.addFilter(new HTTPBasicAuthFilter(username, password));
 
         root = UriBuilder.fromUri(endpoint).build();
     }
+
+
 
     /**
      * @return the list of Countries in ActivityInfo's geographic reference
