@@ -3,14 +3,11 @@ package org.activityinfo.geoadmin;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-import javax.jnlp.BasicService;
-import javax.jnlp.ServiceManager;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -165,7 +162,7 @@ public class GeoAdmin extends JFrame {
         if(args.length == 1) {
             endpoint = args[0];
         } else {
-            endpoint = computeEndpoint();
+            endpoint = "http://www.activityinfo.org/resources";
         }
 
         new PasswordForm().show(new PasswordForm.Callback() {
@@ -185,16 +182,4 @@ public class GeoAdmin extends JFrame {
         });
     }
 
-    private static String computeEndpoint() {
-        try {
-            BasicService bs = (BasicService) ServiceManager.lookup(
-                "javax.jnlp.BasicService");
-            URL codeBase = bs.getCodeBase();
-
-            return "http://" + codeBase.getHost() + "/resources";
-
-        } catch (Exception e) {
-            return "http://www.activityinfo.org/resources";
-        }
-    }
 }

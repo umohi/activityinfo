@@ -74,12 +74,6 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.1</version>
     </dependency>
-    <dependency>
-      <groupId>javax.jnlp</groupId>
-      <artifactId>jnlp-api</artifactId>
-      <version>1.2.2</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <repositories>
@@ -99,5 +93,31 @@
       <url>http://nexus.bedatadriven.com/content/groups/public/</url>
     </repository>
   </repositories>
-  
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>org.activityinfo.geoadmin.GeoAdmin</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
