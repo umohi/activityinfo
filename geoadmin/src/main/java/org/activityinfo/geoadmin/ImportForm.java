@@ -10,7 +10,6 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.activityinfo.geoadmin.model.AdminEntity;
-import org.opengis.feature.type.PropertyDescriptor;
 
 public class ImportForm extends JPanel {
 
@@ -32,8 +31,8 @@ public class ImportForm extends JPanel {
         nameCombo = new JComboBox(source.getAttributeNames());
         nameCombo.setSelectedIndex(guessNameColumn());
 
-        codeCombo = new JComboBox(source.getAttributeNames());
-        codeCombo.setSelectedIndex(guessCodeColumn());
+        codeCombo = new JComboBox(codeChoices(source));
+        codeCombo.setSelectedIndex(0);
 
         add(new JLabel("Level Name:"));
         add(levelNameField, "width 100!, wrap");
@@ -45,6 +44,16 @@ public class ImportForm extends JPanel {
         add(codeCombo, "width 160!, wrap");
 
     }
+
+	private String[] codeChoices(ImportSource source) {	
+		String[] names = source.getAttributeNames();
+		String[] choices = new String[names.length+1];
+		choices[0] = "--NONE--";
+		for(int i=0;i!=names.length;++i) {
+			choices[i+1] = names[i];
+		}
+		return choices;
+	}
 
     private String nameFromFile() {
         String fileName = source.getFile().getName();
@@ -79,7 +88,7 @@ public class ImportForm extends JPanel {
     }
 
     public int getCodeAttributeIndex() {
-        return codeCombo.getSelectedIndex();
+        return codeCombo.getSelectedIndex()-1;
     }
 
 }

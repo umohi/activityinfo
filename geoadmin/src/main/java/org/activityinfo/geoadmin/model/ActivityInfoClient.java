@@ -104,6 +104,16 @@ public class ActivityInfoClient {
             .type(MediaType.APPLICATION_JSON)
             .put(level);
     }
+    
+    public void deleteLevel(AdminLevel level) {
+        URI uri = UriBuilder.fromUri(root)
+                .path("adminLevel")
+                .path(Integer.toString(level.getId()))
+                .build();
+
+        client.resource(uri)
+        	.delete();
+    }
 
     public AdminLevel getAdminLevel(int id) {
         URI build = UriBuilder.fromUri(root)

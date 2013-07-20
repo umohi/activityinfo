@@ -1,5 +1,8 @@
 package org.activityinfo.geoadmin;
 
+import java.awt.Desktop.Action;
+import java.util.Arrays;
+
 import javax.swing.table.AbstractTableModel;
 
 import org.activityinfo.geoadmin.model.AdminEntity;
@@ -11,17 +14,20 @@ import org.activityinfo.geoadmin.model.AdminEntity;
  */
 public class ImportTableModel extends AbstractTableModel {
 
-    public static final int PARENT_COLUMN = 0;
-    public static final int STATUS_COLUMN = 1;
+    public static final int ACTION_COLUMN = 0;
+    public static final int PARENT_COLUMN = 1;
 
-    public static final int NUM_EXTRA_COLUMNS = 1;
+    public static final int NUM_EXTRA_COLUMNS = 2;
 
     private ImportSource source;
     private AdminEntity[] parents;
-
+    private ImportAction[] action;
+    
     public ImportTableModel(ImportSource source) {
         this.source = source;
         this.parents = new AdminEntity[source.getFeatureCount()];
+        this.action = new ImportAction[source.getFeatureCount()];
+        Arrays.fill(this.action, ImportAction.IMPORT);
     }
 
     @Override
@@ -41,26 +47,32 @@ public class ImportTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int colIndex) {
         switch (colIndex) {
-        case 0:
+        case ACTION_COLUMN:
+        	return action[rowIndex];
+        case PARENT_COLUMN:
             return parents[rowIndex];
         default:
-            return source.getFeatures().get(rowIndex).getAttributeValue(colIndex - 1);
+            return source.getFeatures().get(rowIndex).getAttributeValue(colIndex - NUM_EXTRA_COLUMNS);
         }
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
+        case ACTION_COLUMN:
+        	return ImportAction.class;
         case PARENT_COLUMN:
             return AdminEntity.class;
         default:
-            return source.getAttributes().get(columnIndex - 1).getType().getBinding();
+            return source.getAttributes().get(columnIndex - NUM_EXTRA_COLUMNS).getType().getBinding();
         }
     }
 
     @Override
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
+        case ACTION_COLUMN:
+        	return "Action";
         case PARENT_COLUMN:
             return "PARENT";
         default:
@@ -71,6 +83,7 @@ public class ImportTableModel extends AbstractTableModel {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         switch (columnIndex) {
+        case ACTION_COLUMN:
         case PARENT_COLUMN:
             return true;
         default:
@@ -83,6 +96,9 @@ public class ImportTableModel extends AbstractTableModel {
         if (columnIndex == PARENT_COLUMN) {
             parents[rowIndex] = (AdminEntity) aValue;
             fireRowChanged(rowIndex);
+        } else if(columnIndex == ACTION_COLUMN) {
+        	action[rowIndex] = (ImportAction) aValue;
+        	fireRowChanged(rowIndex);
         }
     }
 
@@ -95,4 +111,8 @@ public class ImportTableModel extends AbstractTableModel {
     public AdminEntity getParent(int featureIndex) {
         return parents[featureIndex];
     }
+
+	public ImportAction getActionAt(int featureIndex) {
+		return action[featureIndex];
+	}
 }

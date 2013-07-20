@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -31,7 +33,9 @@ import org.activityinfo.geoadmin.model.AdminLevel;
 import org.activityinfo.geoadmin.model.Bounds;
 import org.activityinfo.geoadmin.model.Country;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * User interface for matching imported features with their parents in the
@@ -40,6 +44,8 @@ import com.google.common.collect.Lists;
  */
 public class ImportWindow extends JDialog {
 
+	private static final Logger LOGGER = Logger.getLogger(ImportWindow.class.getName());
+	
     private ActivityInfoClient client;
     private List<AdminEntity> parentEntities;
 
@@ -78,10 +84,15 @@ public class ImportWindow extends JDialog {
         tableModel = new ImportTableModel(source);
         JComboBox parentComboBox = new JComboBox(parentEntities.toArray());
         parentComboBox.setEditable(false);
+        
+        JComboBox actionComboBox = new JComboBox(ImportAction.values());
+        actionComboBox.setEditable(false);
 
         table = new JTable(tableModel);
-        table.getColumnModel().getColumn(0).setCellEditor(
+        table.getColumnModel().getColumn(ImportTableModel.PARENT_COLUMN).setCellEditor(
             new DefaultCellEditor(parentComboBox));
+        table.getColumnModel().getColumn(ImportTableModel.ACTION_COLUMN).setCellEditor(
+            new DefaultCellEditor(actionComboBox));
         table.setDefaultRenderer(Object.class,
             new ImportTableCellRenderer(tableModel, scorer));
         table.setAutoCreateRowSorter(true);
@@ -101,7 +112,7 @@ public class ImportWindow extends JDialog {
         panel.add(importForm, "wrap");
         panel.add(new JScrollPane(table,
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), "wrap,grow");
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), "span, wrap,grow");
 
         panel.add(scoreLabel, "height 25!, growx");
         panel.add(countLabel);
@@ -173,21 +184,48 @@ public class ImportWindow extends JDialog {
         int codeAttribute = importForm.getCodeAttributeIndex();
 
         List<AdminEntity> entities = Lists.newArrayList();
-
-        for (int i = 0; i != tableModel.getRowCount(); ++i) {
-            ImportFeature feature = tableModel.getFeatureAt(i);
-            AdminEntity parent = tableModel.getParent(i);
-
-            AdminEntity entity = new AdminEntity();
-            entity.setName(feature.getAttributeStringValue(nameAttribute));
-            entity.setCode(feature.getAttributeStringValue(codeAttribute));
-            Bounds bounds = GeoUtils.toBounds(feature.getEnvelope());
-            entity.setBounds(bounds);
-
-            if (parentLevel != null) {
-                entity.setParentId(parent.getId());
-            }
-            entities.add(entity);
+        Map<ImportKey, AdminEntity> entityMap = Maps.newHashMap();
+        
+        for (int i = 0; i != tableModel.getRowCount(); ++i) {        	
+        	if(tableModel.getActionAt(i) == ImportAction.IMPORT) {
+	            ImportFeature feature = tableModel.getFeatureAt(i);
+	            String featureName = feature.getAttributeStringValue(nameAttribute);
+	            AdminEntity parent = tableModel.getParent(i);
+	           
+	            if(Strings.isNullOrEmpty(featureName)) {
+	            	throw new RuntimeException("Feature " + i + " has an empty name");
+	            }
+	            
+	            // we can't have two entities with the same name within a
+	            // given parent. This happens often because secondary exterior rings
+	            // are stored as separate features.
+	        	ImportKey key = new ImportKey(parent, featureName);
+	        	
+	        	if(!entityMap.containsKey(key)) {
+	        		// create a new entity
+		            AdminEntity entity = new AdminEntity();
+					entity.setName(featureName);
+		            if(codeAttribute != -1) {
+		            	entity.setCode(feature.getAttributeStringValue(codeAttribute));
+		            }
+		            Bounds bounds = GeoUtils.toBounds(feature.getEnvelope());
+		            entity.setBounds(bounds);
+		            entity.setGeometry(feature.getGeometry());
+		
+		            if (parentLevel != null) {
+		                entity.setParentId(parent.getId());
+		            }
+		            entities.add(entity);
+		            entityMap.put(key, entity);
+	        	} else {
+	        		// add this geometry to the existing entity
+	        		
+	        		LOGGER.info("Merging geometry for entity named '" + featureName + "'");
+	        		
+	        		AdminEntity entity = entityMap.get(key);
+	        		entity.setGeometry( entity.getGeometry().union(feature.getGeometry()) );
+	        	}
+        	}
         }
 
         AdminLevel newLevel = new AdminLevel();
