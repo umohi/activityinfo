@@ -57,7 +57,7 @@ public class ImportFeature {
         for (int attributeIndex = 0; attributeIndex != attributeValues.length; ++attributeIndex) {
             Object value = attributeValues[attributeIndex];
             if (value != null) {
-                nameSimilarity = Math.max(nameSimilarity, PlaceNames.similiarity(name, value.toString()));
+                nameSimilarity = Math.max(nameSimilarity, PlaceNames.similarity(name, value.toString()));
             }
         }
         return nameSimilarity;

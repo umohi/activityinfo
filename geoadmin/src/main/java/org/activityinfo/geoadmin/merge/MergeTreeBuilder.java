@@ -47,8 +47,8 @@ public class MergeTreeBuilder {
         AdminLevel childLevel = nextParent(adminLevel);
 
         List<AdminEntity> parents = client.getAdminEntities(adminLevel);
-        Joiner joiner = new Joiner(parents, features);
 
+        Joiner joiner = new Joiner(parents, features);
         List<AdminEntity> featureParents = joiner.joinParents();
 
         for (AdminEntity parent : parents) {

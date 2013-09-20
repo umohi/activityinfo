@@ -43,14 +43,43 @@ public class Joiner {
      *         matching parent for the corresponding item in the features list.
      */
     public List<AdminEntity> joinParents() {
+    	
+    	// do the features contain the parent's names at all?
+    	double nameWeight =
+    			probabilityThatFeaturesContainParentNames();
+    	
+    	System.out.println("Probability that features contain parent names = " + nameWeight);
+    	
         List<AdminEntity> parents = Lists.newArrayList();
         for (ImportFeature feature : features) {
-            parents.add(findBestMatch(feature));
+            parents.add(findBestMatchingParentEntity(feature, nameWeight));
         }
         return parents;
     }
 
-    /**
+    private double probabilityThatFeaturesContainParentNames() {
+		double sum = 0;
+    	for(ImportFeature feature : features) {
+			
+			double bestMatch = 0;
+			for(AdminEntity parent : entities) {
+				double match = feature.similarity(parent.getName());
+				if(match > bestMatch) {
+					bestMatch = match;
+				}
+				if(bestMatch == 1.0) {
+					break;
+				}
+			}
+			if(bestMatch > 0.8) {
+				sum += bestMatch;
+			}
+			
+		}
+    	return sum / (double)features.size();
+	}
+
+	/**
      * Joins the imported features on a one-to-one basis with the list of admin
      * entities.
      */
@@ -118,18 +147,18 @@ public class Joiner {
      * Match the admin entity to the closest element in the collection of
      * features
      * 
-     * @param unit
+     * @param entity
      * @param features
      * @return
      */
-    private ImportFeature findBestMatch(AdminEntity unit,
+    private ImportFeature findBestMatch(AdminEntity entity,
         Iterable<ImportFeature> features) {
         double bestScore = 0;
         ImportFeature bestFeature = null;
         for (ImportFeature feature : features) {
 
-            double nameSimilarity = scoreName(unit, feature);
-            double geoScore = calculateOverlap(unit, feature);
+            double nameSimilarity = scoreName(entity, feature);
+            double geoScore = scoreOverlap(entity, feature);
 
             // avoid totally spurious matches...
             if (nameSimilarity > MIN_NAME_MATCH || geoScore > SURE_GEO_MATCH) {
@@ -164,16 +193,18 @@ public class Joiner {
     }
 
     /**
-     * Finds the best match
+     * Finds the admin entity that best matches the 
+     * given the feature.
      * 
      * @param feature
+     * @param nameWeight 
      * @return
      */
-    private AdminEntity findBestMatch(ImportFeature feature) {
+    private AdminEntity findBestMatchingParentEntity(ImportFeature feature, double nameWeight) {
         double bestScore = 0;
         AdminEntity bestEntity = null;
         for (AdminEntity entity : entities) {
-            double score = scoreJoin(entity, feature);
+            double score = scorePotentialParent(entity, feature, nameWeight);
             if (score > bestScore) {
                 bestScore = score;
                 bestEntity = entity;
@@ -182,9 +213,10 @@ public class Joiner {
         return bestEntity;
     }
 
-    public double scoreJoin(AdminEntity entity, ImportFeature feature) {
-        // calculate the proportion of overlap with this admin unit
-        double geoOverlap = calculateOverlap(entity, feature);
+    public double scorePotentialParent(AdminEntity entity, ImportFeature feature, double nameWeight) {
+        // calculate the proportion of this feature that is contained by the
+    	// potential parent
+        double geoScore = scoreContainment(feature, entity);
 
         // calculate the name overlap
         double nameSimilarity = scoreName(entity, feature);
@@ -193,29 +225,41 @@ public class Joiner {
         if (nameSimilarity == 1.0) {
             nameSimilarity += 0.25;
         }
+               
+        // bonus for being perfectly contained
+        if(geoScore > 0.99) {
+        	geoScore += .50;
+        }
 
         System.out.println(String.format("%s <> %s %.2f %.2f", entity.getName(),
             feature.toString(),
-            geoOverlap, nameSimilarity));
+            geoScore, nameSimilarity));
 
-        return nameSimilarity + geoOverlap;
+        return (nameSimilarity * nameWeight) + geoScore;
     }
 
     /**
-     * Calculates the proportion of overlap between the imported feature and the
-     * existing entity.
-     * 
-     * @return score from 0=no overlap, 1=perfect overlap
+     * Calculates the area of intersection of the MBR's of the admin entity and
+     * the feature to import
      */
-    public static double calculateOverlap(AdminEntity unit, ImportFeature feature) {
-        if (unit.getBounds() == null) {
+    public static double areaOfIntersection(AdminEntity entity, ImportFeature feature) {
+        if (entity.getBounds() == null) {
             return 0;
         }
-        Envelope unitEnvelope = GeoUtils.toEnvelope(unit.getBounds());
+        Envelope unitEnvelope = GeoUtils.toEnvelope(entity.getBounds());
         Envelope featureEnvelope = feature.getEnvelope();
-        double geoOverlap = unitEnvelope.intersection(featureEnvelope).getArea() /
-            unitEnvelope.getArea();
-        return geoOverlap;
+        return unitEnvelope.intersection(featureEnvelope).getArea();
+    }
+    
+    public static double scoreOverlap(AdminEntity entity, ImportFeature feature) {
+    	if(entity.getBounds() == null) {
+    		return 0;
+    	}
+    	return areaOfIntersection(entity, feature) / GeoUtils.toEnvelope(entity.getBounds()).getArea();
+    }
+    
+    public static double scoreContainment(ImportFeature feature, AdminEntity entity) {
+    	return areaOfIntersection(entity, feature) / feature.getEnvelope().getArea();
     }
 
     public static double scoreName(AdminEntity entity, ImportFeature feature) {

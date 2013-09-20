@@ -106,7 +106,7 @@ public class UpdateWindow extends JFrame {
             scoreLabel.setText("");
         } else {
             double nameSim = Joiner.scoreName(node.getEntity(), node.getFeature());
-            double intersection = Joiner.calculateOverlap(node.getEntity(), node.getFeature());
+            double intersection = Joiner.areaOfIntersection(node.getEntity(), node.getFeature());
 
             scoreLabel.setText(String.format("Name match: %.2f  Intersection: %.2f",
                 nameSim, intersection));
