@@ -82,16 +82,19 @@ public class ActivityInfoClient {
      *         ActivityInfo's geographic reference database
      */
     public List<AdminLevel> getAdminLevels(Country country) {
-        URI uri = UriBuilder.fromUri(root)
+        return getAdminLevelsByCountryCode(country.getCode());
+    }
+
+	public List<AdminLevel> getAdminLevelsByCountryCode(String countryCode) {
+		URI uri = UriBuilder.fromUri(root)
             .path("country")
-            .path(country.getCode())
+            .path(countryCode)
             .path("adminLevels").build();
         return Arrays.asList(
             client.resource(uri)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .get(AdminLevel[].class));
-
-    }
+	}
 
     public void updateAdminLevel(AdminLevel level) {
         URI uri = UriBuilder.fromUri(root)

@@ -259,6 +259,8 @@ public class UpdateWindow extends JFrame {
         updatedLevel.setVersionMetadata(metadata);
 
         client.updateAdminLevel(updatedLevel);
+        	
+        setVisible(false);
     }
 
 	private List<MergeNode> getLeaves() {
