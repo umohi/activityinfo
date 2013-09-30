@@ -1,11 +1,13 @@
 package org.activityinfo.geoadmin;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import org.activityinfo.geoadmin.model.AdminEntity;
 
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * Given a new set of administrative entities from a shapefile, guess their
@@ -18,8 +20,8 @@ public class ParentGuesser {
     private static final double MIN_SCORE = 0.75;
 
     private ImportSource importSource;
-    private List<AdminEntity> parents;
-
+    private STRtree index;
+    
     public enum Quality {
         OK,
         WARNING,
@@ -36,7 +38,14 @@ public class ParentGuesser {
     public ParentGuesser(ImportSource importSource, List<AdminEntity> parents) {
         super();
         this.importSource = importSource;
-        this.parents = parents;
+        this.index = new STRtree(parents.size());
+        
+        // create a spatial index to help narrow down the search
+        for(AdminEntity entity : parents) {
+        	Envelope mbr = GeoUtils.toEnvelope(entity.getBounds());
+        	mbr.expandBy(mbr.getWidth() * 0.10, mbr.getHeight() * 0.10);
+        	index.insert(mbr, entity);
+        }
     }
 
     public AdminEntity[] run() throws IOException {
@@ -56,9 +65,17 @@ public class ParentGuesser {
      * @return the best matching admin entity
      */
     private AdminEntity findBestMatch(ImportFeature feature) {
-        double bestScore = MIN_SCORE;
+    	
+    	List<AdminEntity> spatialMatches = index.query(feature.getEnvelope());
+    	
+        return findBestParent(feature, spatialMatches);
+    }
+
+	public static AdminEntity findBestParent(ImportFeature feature,
+			Collection<AdminEntity> spatialMatches) {
+		double bestScore = MIN_SCORE;
         AdminEntity bestParent = null;
-        for (AdminEntity parent : parents) {
+        for (AdminEntity parent : spatialMatches) {
             double score = scoreParent(feature, parent);
             if (score > bestScore) {
                 bestScore = score;
@@ -66,7 +83,7 @@ public class ParentGuesser {
             }
         }
         return bestParent;
-    }
+	}
 
     /**
      * Scores a prospective parent based on geography, name and code
@@ -76,7 +93,7 @@ public class ParentGuesser {
      * @return a score describe how will the parent entity matches as a parent
      *         of the feature at feature index. 0 = poor match.
      */
-    private double scoreParent(ImportFeature feature, AdminEntity parent) {
+    private static double scoreParent(ImportFeature feature, AdminEntity parent) {
 
         // parent should completely contain the child
         // find the proportion contained
@@ -105,7 +122,7 @@ public class ParentGuesser {
      *            the prospective parent to evaluate
      * @return a score from 0=poor match, 1=perfect match
      */
-    public double scoreName(ImportFeature feature, AdminEntity parent) {
+    public static double scoreName(ImportFeature feature, AdminEntity parent) {
         return feature.similarity(parent.getName());
     }
 
@@ -119,7 +136,7 @@ public class ParentGuesser {
      *            the prospective parent to evaluate
      * @return a score from 0=poor match, 1=perfect match
      */
-    public double scoreCodeMatch(ImportFeature feature, AdminEntity parent) {
+    public static double scoreCodeMatch(ImportFeature feature, AdminEntity parent) {
         if (parent.getCode() != null) {
             if (Codes.hasCode(feature.getAttributeValues(), parent.getCode())) {
                 return 1;
@@ -138,12 +155,21 @@ public class ParentGuesser {
      * @return a score from 0=poor match, no intersection, 1=perfect match,
      *         competely contained
      */
-    public double scoreGeography(ImportFeature feature, AdminEntity parent) {
+    public static double scoreGeography(ImportFeature feature, AdminEntity parent) {
         Envelope parentEnvelope = GeoUtils.toEnvelope(parent.getBounds());
         Envelope childEnvelope = feature.getEnvelope();
-        double propContained = parentEnvelope.intersection(childEnvelope).getArea() /
-            childEnvelope.getArea();
-        return propContained;
+        
+        if(childEnvelope.getArea() > 0) {
+	        
+	        double propContained = parentEnvelope.intersection(childEnvelope).getArea() /
+	            childEnvelope.getArea();
+	        return propContained;
+        
+        } else {
+        	// we have only a point representation
+        	return parentEnvelope.contains(childEnvelope) ? 1 : 0;
+        	
+        }
     }
 
     /**

@@ -22,12 +22,14 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import org.activityinfo.geoadmin.locations.LocationWindow;
 import org.activityinfo.geoadmin.model.ActivityInfoClient;
 import org.activityinfo.geoadmin.model.AdminLevel;
 import org.activityinfo.geoadmin.model.Country;
+import org.activityinfo.geoadmin.model.LocationType;
 import org.activityinfo.geoadmin.model.VersionMetadata;
 
 import com.google.common.base.Strings;
@@ -51,7 +53,11 @@ public class CountryTab extends JPanel {
 
         setLayout(new GridLayout(1, 1));
 
-        tree = new JTree(createNodes());
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(country.getName());
+        rootNode.add(createAdminNodes());
+        rootNode.add(createLocationTypeNodes());
+        
+        tree = new JTree(rootNode);
         tree.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -72,6 +78,8 @@ public class CountryTab extends JPanel {
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
                         if (node.getUserObject() instanceof AdminLevel) {
                             showAdminLevels(e, (AdminLevel) node.getUserObject());
+                        } else if(node.getUserObject() instanceof LocationType) {
+                        	showLocationType(e, (LocationType) node.getUserObject());
                         }
                     }
                 }
@@ -84,9 +92,16 @@ public class CountryTab extends JPanel {
         AdminListWindow window = new AdminListWindow(getParentFrame(), client, level);
         window.setVisible(true);
     }
+    
 
-    private TreeNode createNodes() {
-        DefaultMutableTreeNode countryNode = new DefaultMutableTreeNode("Admin Levels");
+
+	private void showLocationType(MouseEvent e, LocationType locationType) {
+		LocationWindow window = new LocationWindow(getParentFrame(), country, locationType, client);
+		window.setVisible(true);
+	}
+
+    private MutableTreeNode createAdminNodes() {
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Admin Levels");
         List<AdminLevel> levels = client.getAdminLevels(country);
 
         Map<Integer, DefaultMutableTreeNode> nodes = Maps.newHashMap();
@@ -96,7 +111,7 @@ public class CountryTab extends JPanel {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(level);
             nodes.put(level.getId(), node);
             if (level.isRoot()) {
-                countryNode.add(node);
+                rootNode.add(node);
             }
         }
 
@@ -108,7 +123,19 @@ public class CountryTab extends JPanel {
                 parent.add(node);
             }
         }
-        return countryNode;
+        return rootNode;
+    }
+    
+    private MutableTreeNode createLocationTypeNodes() {
+    	DefaultMutableTreeNode typeNodes = new DefaultMutableTreeNode("Location Types");
+    	List<LocationType> types = client.getLocationTypesByCountryCode(country.getCode());
+
+        // add child nodes
+        for (LocationType type : types) {
+        	typeNodes.add(new DefaultMutableTreeNode(type));
+        }
+        
+        return typeNodes;
     }
 
     private void showAdminLevelContextMenu(MouseEvent e, final AdminLevel level) {
@@ -116,7 +143,7 @@ public class CountryTab extends JPanel {
         JMenuItem renameItem = new JMenuItem("Rename level");
         renameItem.addActionListener(new ActionListener() {
 
-            @Override
+            @Override		
             public void actionPerformed(ActionEvent e) {
                 renameLevel(level);
             }
@@ -130,6 +157,7 @@ public class CountryTab extends JPanel {
                 importChildLevel(level);
             }
         });
+        
         JMenuItem updateItem = new JMenuItem("Update from file");
         updateItem.addActionListener(new ActionListener() {
 
@@ -147,7 +175,8 @@ public class CountryTab extends JPanel {
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 
-    private void showRootContextMenu(MouseEvent e) {
+
+	private void showRootContextMenu(MouseEvent e) {
 
         JMenuItem importChildItem = new JMenuItem("Import new top level");
         importChildItem.addActionListener(new ActionListener() {

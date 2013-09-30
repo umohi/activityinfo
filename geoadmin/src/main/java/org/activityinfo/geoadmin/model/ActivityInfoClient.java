@@ -8,15 +8,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.ContextResolver;
 
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.bedatadriven.geojson.GeoJsonModule;
+import com.google.common.collect.Lists;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * ActivityInfo REST Client
@@ -74,7 +76,6 @@ public class ActivityInfoClient {
             client.resource(uri)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .get(Country[].class));
-
     }
 
     /**
@@ -95,7 +96,42 @@ public class ActivityInfoClient {
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .get(AdminLevel[].class));
 	}
-
+	
+	public List<LocationType> getLocationTypesByCountryCode(String countryCode) {
+		URI uri = UriBuilder.fromUri(root)
+	            .path("country")
+	            .path(countryCode)
+	            .path("locationTypes").build();
+	        return Arrays.asList(
+	            client.resource(uri)
+	                .accept(MediaType.APPLICATION_JSON_TYPE)
+	                .get(LocationType[].class));	
+	}
+	
+	public List<Location> getLocations(int locationType) {
+		URI uri = UriBuilder.fromUri(root)
+	            .path("locations")
+	            .queryParam("type", locationType)
+	            .build();
+        return Arrays.asList(
+            client.resource(uri)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .get(Location[].class));	
+	}
+	
+	public void postNewLocations(int locationType, List<NewLocation> locations) {
+		URI uri = UriBuilder.fromUri(root)
+	            .path("locations")
+	            .path(Integer.toString(locationType))
+	            .build();
+	
+        client.resource(uri)
+            .accept(MediaType.APPLICATION_JSON_TYPE)
+            .type(MediaType.APPLICATION_JSON_TYPE)
+            .post(locations);	
+		
+	}
+	
     public void updateAdminLevel(AdminLevel level) {
         URI uri = UriBuilder.fromUri(root)
             .path("adminLevel")
@@ -174,5 +210,37 @@ public class ActivityInfoClient {
             .accept(MediaType.APPLICATION_JSON)
             .type(MediaType.APPLICATION_JSON)
             .post(newLevel);
+    }
+    
+    public List<AdminEntity> geocode(double latitude, double longitude) {
+	   URI uri = UriBuilder.fromUri(root)
+	            .path("geocode")
+	            .queryParam("lat", latitude)
+	            .queryParam("lng", longitude)
+	            .build();
+
+       return Arrays.asList(
+           client.resource(uri)
+               .accept(MediaType.APPLICATION_JSON_TYPE)
+               .get(AdminEntity[].class));    
+    }
+    
+    public List<List<AdminEntity>> geocode(List<Point> points) {
+    	List<LatLng> latLngs = Lists.newArrayList();
+    	for(Point point : points) {
+    		latLngs.add(new LatLng(point));
+    	}
+    	return geocodePoints(latLngs);
+    }
+    
+    public List<List<AdminEntity>> geocodePoints(List<LatLng> points) {
+    	 URI uri = UriBuilder.fromUri(root)
+ 	            .path("geocode")
+ 	            .build();
+    	 
+        return client.resource(uri)
+            .accept(MediaType.APPLICATION_JSON_TYPE)
+            .type(MediaType.APPLICATION_JSON_TYPE)
+            .post(new GenericType<List<List<AdminEntity>>>() { }, points);
     }
 }

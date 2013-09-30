@@ -54,5 +54,4 @@ public class AdminTableModel extends AbstractTableModel {
         }
         throw new UnsupportedOperationException();
     }
-
 }

@@ -11,8 +11,9 @@ import java.util.List;
 import org.activityinfo.geoadmin.model.Country;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -42,7 +43,7 @@ import com.vividsolutions.jts.geom.Polygon;
 public class ImportSource {
     private List<PropertyDescriptor> attributes;
 
-    private FeatureSource featureSource;
+    private SimpleFeatureSource featureSource;
     private MathTransform transform;
     private File file;
 
@@ -69,9 +70,8 @@ public class ImportSource {
     private void loadFeatures() throws IOException {
 
         attributes = getNonGeometryAttributes();
-        FeatureCollection features = featureSource.getFeatures();
-        FeatureIterator it = features.features();
-        int index = 0;
+        SimpleFeatureCollection features = featureSource.getFeatures();
+        SimpleFeatureIterator it = features.features();
         while (it.hasNext()) {
             SimpleFeature feature = (SimpleFeature) it.next();
             ImportFeature importFeature = new ImportFeature(
@@ -193,7 +193,7 @@ public class ImportSource {
             @Override
             public Iterator<Geometry> iterator() {
                 try {
-                    final FeatureIterator featureIt = featureSource.getFeatures().features();
+                    final SimpleFeatureIterator featureIt = featureSource.getFeatures().features();
                     final MathTransform transform = createTransform();
 
                     return new UnmodifiableIterator<Geometry>() {

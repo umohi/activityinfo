@@ -267,5 +267,4 @@ public class UpdateWindow extends JFrame {
         List<MergeNode> nodes = ((MergeNode) treeModel.getRoot()).getLeaves();
         return nodes;
     }
-
 }

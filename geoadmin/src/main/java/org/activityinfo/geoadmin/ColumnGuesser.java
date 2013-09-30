@@ -1,8 +1,13 @@
 package org.activityinfo.geoadmin;
 
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.activityinfo.geoadmin.model.AdminEntity;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
@@ -13,7 +18,8 @@ import com.google.common.collect.Sets;
  * duplicates.
  */
 public class ColumnGuesser {
-    private Pattern regex;
+    private Predicate<Object> predicate = Predicates.alwaysTrue();
+    private boolean favorUniqueValues;
 
     /**
      * Creates a guesser for a
@@ -22,11 +28,40 @@ public class ColumnGuesser {
      * @return
      */
     public ColumnGuesser forPattern(String pattern) {
-        this.regex = Pattern.compile(pattern);
+    	final Pattern regex = Pattern.compile(pattern);
+        this.predicate = Predicates.and(predicate, new Predicate<Object>() {
+        	public boolean apply(Object value) {
+        		if(value == null) {
+        			return false;
+        		} else {
+        			return regex.matcher(value.toString()).matches();
+        		}
+        	}
+		});
         return this;
     }
+    
+
+	public ColumnGuesser forEntities(List<AdminEntity> entities) {
+		final Set<String> expected = Sets.newHashSet();
+		for(AdminEntity entity : entities) {
+			expected.add(PlaceNames.cleanName(entity.getName()));
+		}
+		this.predicate = Predicates.and(predicate, new Predicate<Object>() {
+			public boolean apply(Object value) {
+				if(value == null) {
+					return false;
+				} else {
+					String stringValue = PlaceNames.cleanName(value.toString());
+					return expected.contains(stringValue);
+				}
+			}
+		});
+		return this;
+	}
 
     public ColumnGuesser favoringUniqueValues() {
+    	favorUniqueValues = true;
         return this;
     }
 
@@ -54,14 +89,16 @@ public class ColumnGuesser {
      */
     private double scoreColumn(ImportSource source, int attributeIndex) {
         double score = 0;
+        
+        score += scorePredicate(source, attributeIndex);
 
-        score += scorePattern(source, attributeIndex);
-        score += scoreUnique(source, attributeIndex);
-
+        if(favorUniqueValues) {
+        	score += scoreUnique(source, attributeIndex);
+        }
         return score;
     }
 
-    /**
+	/**
      * Scores a given column/attribute based on the provided regex.
      * 
      * @param source
@@ -71,12 +108,12 @@ public class ColumnGuesser {
      * @return the proportion of values in the column that match the regex.
      *         (0=poor match,1=perfect match)
      */
-    private double scorePattern(ImportSource source, int attributeIndex) {
+    private double scorePredicate(ImportSource source, int attributeIndex) {
         int numMatching = 0;
 
         for (ImportFeature feature : source.getFeatures()) {
-            String value = feature.getAttributeStringValue(attributeIndex);
-            if (regex.matcher(value).matches()) {
+            Object value = feature.getAttributeValue(attributeIndex);
+            if (predicate.apply(value)) {
                 numMatching++;
             }
         }
@@ -103,4 +140,5 @@ public class ColumnGuesser {
     private double ratio(double numerator, double denominator) {
         return numerator / denominator;
     }
+
 }
