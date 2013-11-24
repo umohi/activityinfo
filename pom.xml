@@ -32,22 +32,20 @@
   <inceptionYear>2009</inceptionYear>
 
   <scm>
-    <connection>scm:git:git@github.com:akbertram/activityinfo.git</connection>
-    <url>scm:git:git@github.com:akbertram/activityinfo.git</url>
-    <developerConnection>scm:git:git@github.com:akbertram/activityinfo.git</developerConnection>
+    <connection>scm:git:git@github.com:bedatadriven/activityinfo.git</connection>
+    <url>scm:git:git@github.com:bedatadriven/activityinfo.git</url>
+    <developerConnection>scm:git:git@github.com:bedatadriven/activityinfo.git</developerConnection>
   </scm>
 
   <properties>
     <netbeans.hint.license>gpl3</netbeans.hint.license>
 
     <!-- convenience to define GWT version in one place -->
-    <gwtVersion>2.3.0</gwtVersion>
-    <rebarVersion>2.3.4-SNAPSHOT</rebarVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <!-- tell the compiler we can use 1.6 -->
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
 
 
     <!-- Allow the build to continue even if there are test failures -->
