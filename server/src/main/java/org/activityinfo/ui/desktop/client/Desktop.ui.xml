@@ -1,0 +1,27 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+  <ui:style>
+    .important {
+    	font-weight: bold;
+    }
+    
+  </ui:style>
+  <g:FlowPanel>
+    <b:ResponsiveNavbar position="TOP" scrollspy="false"
+      inverse="true">
+      <b:Brand href="#">ActivityInfo Redux</b:Brand>
+      <b:NavCollapse>
+        <b:Nav ui:field="nav" />
+      </b:NavCollapse>
+    </b:ResponsiveNavbar>
+
+    <b:Container ui:field="container">
+      <b:Heading size="1">ActivityInfo Redux</b:Heading>
+
+      <g:SimplePanel ui:field="main"/>
+
+
+    </b:Container>
+  </g:FlowPanel>
+</ui:UiBinder>
