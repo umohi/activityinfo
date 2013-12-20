@@ -29,13 +29,14 @@ import java.util.Set;
 import org.activityinfo.client.Log;
 import org.activityinfo.shared.command.Filter;
 import org.activityinfo.shared.command.PivotSites;
+import org.activityinfo.shared.command.handler.pivot.bundler.AdminPointBundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.AttributeBundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.Bundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.EntityBundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.MonthBundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.MySqlYearWeekBundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.OrderedEntityBundler;
-import org.activityinfo.shared.command.handler.pivot.bundler.PointBundler;
+import org.activityinfo.shared.command.handler.pivot.bundler.LocationPointBundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.QuarterBundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.SimpleBundler;
 import org.activityinfo.shared.command.handler.pivot.bundler.YearBundler;
@@ -147,9 +148,22 @@ public class PivotQuery {
         	query.appendColumn("ambr.AX", "AX");
         	query.appendColumn("ambr.AY", "AY");
         	
-        	System.out.println(adminBoundsQuery.sql());
+        	// join the country table to get the country mbr to fall back to
+        	query.leftJoin(Tables.LOCATION_TYPE, "LocationType").on("Location.LocationTypeId=LocationType.LocationTypeId")
+        	     .leftJoin(Tables.COUNTRY, "Country").on("Country.CountryId=LocationType.CountryId");
+        	query.appendColumn("(Country.X1+Country.X2)/2", "CX");
+        	query.appendColumn("(Country.Y1+Country.Y2)/2", "CY");
+        	
 
-        	bundlers.add(new PointBundler());
+        	// if we're rolling up to an admin level, use only the coordinates
+        	// from the admin level and ignore any individual location points
+        	// even if they're present: we don't have a good way of using both admin mbr and location
+        	// together and using only location doesn't seem logical.
+        	if(command.isPivotedBy(DimensionType.AdminLevel) && !command.isPivotedBy(DimensionType.Location)) {
+        	    bundlers.add(new AdminPointBundler());
+        	} else {
+        	    bundlers.add(new LocationPointBundler());
+        	}
         }
 
         addDimensionBundlers();

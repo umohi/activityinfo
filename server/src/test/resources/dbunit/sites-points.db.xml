@@ -30,15 +30,11 @@
   <country countryId="1" name="Rdc" x1="12.18794184" y1="-13.45599996" x2="31.306" y2="5.386098154" />
 
   <adminLevel countryId="1" adminLevelId="1" name="Province" deleted="0"/>
-  <adminLevel countryId="1" adminLevelId="2" name="Territoire"
-    ParentId="1"  deleted="0"/>
+  <adminLevel countryId="1" adminLevelId="2" name="Territoire" ParentId="1"  deleted="0"/>
 
-  <locationType locationTypeId="1" countryId="1" name="localite"
-    reuse="1" />
-  <locationType locationTypeId="2" countryId="1"
-    name="Health Center" reuse="1" />
-  <locationType locationTypeId="3" countryId="1" name="Territorie"
-    reuse="1" BoundAdminLevelId="2" />
+  <locationType locationTypeId="1" countryId="1" name="localite" reuse="1" />
+  <locationType locationTypeId="2" countryId="1" name="Health Center" reuse="1" />
+  <locationType locationTypeId="3" countryId="1" name="Territorie" reuse="1" BoundAdminLevelId="2" />
 
   <adminEntity adminLevelId="1" adminEntityId="1" name="Kinshasa"
     code="10" x1="15.13586844" y1="-5.025401885" x2="16.55381016" y2="-3.936842005"/> 
@@ -50,14 +46,11 @@
     code="40" x1="0" y1="0" x2="0" y2="0" />
 
   <adminEntity adminLevelId="2" adminEntityId="10"
-    adminEntityParentId="4" name="Bukavu" code="203" x1="0" y1="0" x2="0"
-    y2="0" />
+    adminEntityParentId="2" name="Bukavu" code="203" x1="28.30146624" y1="-2.998746978" x2="29.0339514" y2="-2.494392989" />
   <adminEntity adminLevelId="2" adminEntityId="11"
-    adminEntityParentId="2" name="Walungu" code="201" x1="0" y1="0" x2="0"
-    y2="0" />
-  <adminEntity adminLevelId="2" adminEntityId="12"
-    adminEntityParentId="2" name="Shabunda" code="202" x1="26.8106418" y1="-4.022388142"
-     x2="28.37725848" y2="-1.991221064" />
+    adminEntityParentId="2" name="Walungu" code="201" x1="0" y1="0" x2="0" y2="0" />
+  <adminEntity adminLevelId="2" adminEntityId="12" adminEntityParentId="2" name="Shabunda" code="202"
+     x1="26.8106418" y1="-4.022388142" x2="28.37725848" y2="-1.991221064" />
   <adminEntity adminLevelId="2" adminEntityId="13"
     adminEntityParentId="2" name="Kalehe" code="203" x1="-44" y1="-22"
     x2="33.5" y2="40" />
@@ -99,14 +92,20 @@
   <locationAdminLink locationId="1" adminEntityId="12" />
   
   <!-- Location 2- coords to come from location bounds  -->
-  <location locationId="2" name="Penekusu Kivu" locationTypeId="1"
+  <location locationId="2" name="Shabunda" locationTypeId="1"
     x="27.328491" y="-2.712609" timeEdited="1" />
-    
-  <!-- Location 2- coords to come from country bounds  -->
+  <locationAdminLink locationId="2" adminEntityId="2" />
+  <locationAdminLink locationId="2" adminEntityId="12" />
+          
+  <!-- Location 3- coords to come from admin bounds  -->
   <location locationId="3" name="Bukavu" locationTypeId="1" timeEdited="1" />
-    
+  <locationAdminLink locationId="3" adminEntityId="2" />
+  <locationAdminLink locationId="3" adminEntityId="10" />
+  
+  <!-- Location 4 - coords to come from country  -->
+  <location locationId="4" name="Walikale" locationTypeId="1" timeEdited="1"/>
+  
       
-    
   <site siteId="1" activityId="1" locationId="1" partnerId="1"
     Date1="2009-01-01" Date2="2009-01-02" DateCreated="2009-02-01"
     DateEdited="2009-02-01" timeEdited="3" ProjectId="1" Comments="He said 'booyah'" />
@@ -135,6 +134,18 @@
     DateEdited="2009-02-01" />
   <indicatorValue reportingPeriodId="3" indicatorId="1"
     value="10000" />
+
+
+
+  <site siteId="4" activityId="1" locationId="4" partnerId="2"
+    Date1="2008-10-05" Date2="2008-10-06" timeEdited="330" DateCreated="2009-02-01"
+    DateEdited="2009-02-01" ProjectId="2" />
+
+  <reportingPeriod reportingPeriodId="4" siteId="4"
+    date1="2008-10-05" date2="2008-10-06" DateCreated="2009-02-01"
+    DateEdited="2009-02-01" />
+  <indicatorValue reportingPeriodId="4" indicatorId="1"
+    value="44" />
 
 
 </dataset>

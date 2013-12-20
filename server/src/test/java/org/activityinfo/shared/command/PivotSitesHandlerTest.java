@@ -612,12 +612,35 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     	withPoints();
     	execute();
     	
+    	// should be calculated from the territory's MBR
     	assertThat().forLocation(1).thereIsOneBucketWithValue(1500).at(
     			(26.8106418+28.37725848)/2.0,
     			(-4.022388142 + -1.991221064)/2.0);
-    	assertThat().forLocation(2).thereIsOneBucketWithValue(3600).at(
-    			27.328491, -2.712609);
+    	
+    	// should be taken right from the location
+    	assertThat().forLocation(2).thereIsOneBucketWithValue(3600).at(27.328491, -2.712609);
+    	
+    	// should be calculated from RDC's MBR
+    	assertThat().forLocation(4).thereIsOneBucketWithValue(44).at(
+    	        (12.18794184+31.306)/2, 
+    	        (-13.45599996+5.386098154)/2);
     }
+    
+    @Test
+    @OnDataSet("/dbunit/sites-points.db.xml")
+    public void testPointsAdmin() {
+        dimensions.add(new AdminDimension(2));
+        withPoints();
+        execute();
+        
+        assertThat().forTerritoire(10).thereIsOneBucketWithValue(10000).at(
+            (28.30146624+29.0339514)/2.0,
+            (-2.998746978+-2.494392989)/2.0);
+        
+        assertThat().forTerritoire(12).thereIsOneBucketWithValue(5100).at(
+            (26.8106418+28.37725848)/2.0,
+            (-4.022388142 + -1.991221064)/2.0);
+    }    
     
     
     private List<Bucket> findBucketsByCategory(List<Bucket> buckets,
