@@ -1,7 +1,5 @@
-package org.activityinfo.ui.desktop.client;
+package org.activityinfo.ui.core.client.places;
 
-import org.activityinfo.ui.desktop.client.database.DatabasePlace;
-import org.activityinfo.ui.desktop.client.home.HomePlace;
 
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;

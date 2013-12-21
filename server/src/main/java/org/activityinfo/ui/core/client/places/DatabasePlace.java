@@ -1,4 +1,4 @@
-package org.activityinfo.ui.desktop.client.database;
+package org.activityinfo.ui.core.client.places;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;

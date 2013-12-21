@@ -1,8 +1,8 @@
 package org.activityinfo.ui.desktop.client.home;
 
+import org.activityinfo.ui.core.client.ClientFactory;
 import org.activityinfo.ui.core.client.model.DatabaseModel;
-import org.activityinfo.ui.desktop.client.ClientFactory;
-import org.activityinfo.ui.desktop.client.database.DatabasePlace;
+import org.activityinfo.ui.core.client.places.DatabasePlace;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;

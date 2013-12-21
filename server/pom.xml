@@ -381,7 +381,11 @@
       <artifactId>gwt-bootstrap</artifactId>
       <version>2.2.1.0</version>
     </dependency>
-    
+    <dependency>
+      <groupId>com.googlecode.mgwt</groupId>
+      <artifactId>mgwt</artifactId>
+      <version>1.1.2</version>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -554,6 +558,7 @@
                 <module>org.activityinfo.ActivityInfoProduction</module>
                 <module>org.activityinfo.embed.Embed</module>
                 <module>org.activityinfo.ui.desktop.DesktopUI</module>
+                <module>org.activityinfo.ui.desktop.MobileUI</module>                
               </modules>
             </configuration>
           </execution>

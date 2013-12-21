@@ -1,6 +1,7 @@
 package org.activityinfo.ui.desktop.client;
 
-import org.activityinfo.ui.desktop.client.home.HomePlace;
+import org.activityinfo.ui.core.client.ClientFactory;
+import org.activityinfo.ui.core.client.places.HomePlace;
 
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
@@ -41,7 +42,7 @@ public class Desktop extends Composite implements EntryPoint {
         
         initWidget(uiBinder.createAndBindUi(this));
 
-        ActivityMapper activityMapper = new AppActivityMapper(factory);
+        ActivityMapper activityMapper = new DesktopActivityMapper(factory);
         
         ActivityManager activityManager = new ActivityManager(activityMapper, factory.getEventBus());
         activityManager.setDisplay(main);

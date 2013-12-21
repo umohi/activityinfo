@@ -1,7 +1,6 @@
-package org.activityinfo.ui.desktop.client;
+package org.activityinfo.ui.core.client;
 
 
-import org.activityinfo.ui.core.client.ActivityInfoService;
 
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;

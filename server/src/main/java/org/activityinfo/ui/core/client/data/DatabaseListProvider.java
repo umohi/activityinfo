@@ -1,4 +1,4 @@
-package org.activityinfo.ui.desktop.client.home;
+package org.activityinfo.ui.core.client.data;
 
 import java.util.List;
 

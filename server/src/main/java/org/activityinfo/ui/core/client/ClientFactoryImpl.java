@@ -1,6 +1,6 @@
-package org.activityinfo.ui.desktop.client;
+package org.activityinfo.ui.core.client;
 
-import org.activityinfo.ui.core.client.ActivityInfoService;
+import org.activityinfo.ui.core.client.places.DesktopPlaceHistoryMapper;
 import org.fusesource.restygwt.client.Resource;
 import org.fusesource.restygwt.client.RestServiceProxy;
 

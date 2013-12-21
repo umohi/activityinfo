@@ -1,13 +1,10 @@
 package org.activityinfo.ui.desktop.client.home;
 
-import org.activityinfo.ui.core.client.ActivityInfoService;
+import org.activityinfo.ui.core.client.ClientFactory;
+import org.activityinfo.ui.core.client.data.DatabaseListProvider;
 import org.activityinfo.ui.core.client.model.DatabaseModel;
-import org.activityinfo.ui.desktop.client.ClientFactory;
 
-import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
