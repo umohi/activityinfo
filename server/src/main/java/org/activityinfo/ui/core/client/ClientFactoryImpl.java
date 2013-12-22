@@ -1,6 +1,11 @@
 package org.activityinfo.ui.core.client;
 
+import org.activityinfo.ui.core.client.data.DatabaseIndex;
+import org.activityinfo.ui.core.client.model.AiAutoBeanFactory;
 import org.activityinfo.ui.core.client.places.DesktopPlaceHistoryMapper;
+import org.activityinfo.ui.core.client.storage.HashMapKeyValueStorage;
+import org.activityinfo.ui.core.client.storage.KeyValueStorage;
+import org.activityinfo.ui.core.client.storage.LocalKeyValueStorage;
 import org.fusesource.restygwt.client.Resource;
 import org.fusesource.restygwt.client.RestServiceProxy;
 
@@ -8,12 +13,25 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
+import com.google.gwt.storage.client.Storage;
 import com.google.web.bindery.event.shared.EventBus;
 
 public class ClientFactoryImpl implements ClientFactory {
     private final EventBus eventBus = new SimpleEventBus();
     private final PlaceController placeController = new PlaceController(eventBus);
     private PlaceHistoryMapper placeHistoryMapper = GWT.create(DesktopPlaceHistoryMapper.class);
+    private AiAutoBeanFactory beanFactory = GWT.create(AiAutoBeanFactory.class);
+    
+    private KeyValueStorage storage;
+    private DatabaseIndex databaseIndex;
+    
+    public ClientFactoryImpl() {
+        if(Storage.isLocalStorageSupported()) {
+            storage = new LocalKeyValueStorage(Storage.getLocalStorageIfSupported());
+        } else {
+            storage = new HashMapKeyValueStorage();
+        }
+    }
 
     @Override
     public EventBus getEventBus() {
@@ -31,12 +49,10 @@ public class ClientFactoryImpl implements ClientFactory {
     }
 
     @Override
-    public ActivityInfoService getService() {
-        Resource resource = new Resource( "/resources" );
-
-        ActivityInfoService service = GWT.create(ActivityInfoService.class);
-        ((RestServiceProxy)service).setResource(resource);
-        
-        return service;
+    public DatabaseIndex getDatabaseIndex() {
+        if(databaseIndex == null) {
+            databaseIndex = new DatabaseIndex(beanFactory, storage);
+        }
+        return databaseIndex;
     }
 }

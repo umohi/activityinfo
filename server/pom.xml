@@ -558,7 +558,7 @@
                 <module>org.activityinfo.ActivityInfoProduction</module>
                 <module>org.activityinfo.embed.Embed</module>
                 <module>org.activityinfo.ui.desktop.DesktopUI</module>
-                <module>org.activityinfo.ui.desktop.MobileUI</module>                
+                <module>org.activityinfo.ui.mobile.MobileUI</module>                
               </modules>
             </configuration>
           </execution>

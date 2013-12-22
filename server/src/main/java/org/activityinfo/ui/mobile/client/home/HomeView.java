@@ -3,11 +3,13 @@ package org.activityinfo.ui.mobile.client.home;
 import java.util.List;
 
 import org.activityinfo.ui.core.client.ClientFactory;
-import org.activityinfo.ui.core.client.model.DatabaseModel;
+import org.activityinfo.ui.core.client.data.IndexResult;
+import org.activityinfo.ui.core.client.model.DatabaseItem;
 import org.activityinfo.ui.core.client.places.DatabasePlace;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
@@ -24,8 +26,8 @@ public class HomeView implements IsWidget {
     private LayoutPanel main;
     private HeaderPanel headerPanel;
     private HeaderButton forwardButton;
-    private CellListWithHeader<DatabaseModel> cellList;
-    private List<DatabaseModel> databases;
+    private CellListWithHeader<DatabaseItem> cellList;
+    private List<DatabaseItem> databases;
 
     public HomeView(final ClientFactory clientFactory) {
         main = new LayoutPanel();
@@ -35,32 +37,29 @@ public class HomeView implements IsWidget {
 
         main.add(headerPanel);
 
-        cellList = new CellListWithHeader<DatabaseModel>(new BasicCell<DatabaseModel>() {
+        cellList = new CellListWithHeader<DatabaseItem>(new BasicCell<DatabaseItem>() {
 
                 @Override
-                public String getDisplayString(DatabaseModel model) {
+                public String getDisplayString(DatabaseItem model) {
                         return model.getName();
                 }
 
                 @Override
-                public boolean canBeSelected(DatabaseModel model) {
+                public boolean canBeSelected(DatabaseItem model) {
                         return true;
                 }
         });
 
         cellList.getCellList().setRound(true);
-
-        clientFactory.getService().getDatabases(new MethodCallback<List<DatabaseModel>>() {
+        clientFactory.getDatabaseIndex().get(new AsyncCallback<IndexResult<DatabaseItem>>() {
             
             @Override
-            public void onSuccess(Method method, List<DatabaseModel> response) {
-                databases = response;
-                cellList.getCellList().render(response);
+            public void onSuccess(IndexResult<DatabaseItem> result) {
+                cellList.getCellList().render(result.getItems());
             }
             
             @Override
-            public void onFailure(Method method, Throwable exception) {
-                // TODO Auto-generated method stub
+            public void onFailure(Throwable caught) {
                 
             }
         });
@@ -69,7 +68,7 @@ public class HomeView implements IsWidget {
             
             @Override
             public void onCellSelected(CellSelectedEvent event) {
-               DatabaseModel database = databases.get(event.getIndex());
+               DatabaseItem database = databases.get(event.getIndex());
                clientFactory.getPlaceController().goTo(new DatabasePlace(database.getId()));
             }
         });

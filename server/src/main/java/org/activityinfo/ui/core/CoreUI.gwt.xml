@@ -2,10 +2,17 @@
 <module rename-to='DesktopUI'>
   <inherits name='com.google.gwt.user.User' />
   <inherits name="com.google.common.collect.Collect" />
-
-  <inherits name="com.google.gwt.json.JSON" />
-  <inherits name="org.fusesource.restygwt.RestyGWT" />
   
+  <inherits name="com.google.gwt.http.HTTP"/>
+  <inherits name="com.google.gwt.json.JSON" />
+  <inherits name="com.google.web.bindery.autobean.AutoBean" />
+
+  <inherits name="org.fusesource.restygwt.RestyGWT" />
+
+  <replace-with class="org.activityinfo.ui.core.client.ClientFactoryImpl">
+    <when-type-is class="org.activityinfo.ui.core.client.ClientFactory" />
+  </replace-with>
+    
   <source path='client' />
 
 </module>

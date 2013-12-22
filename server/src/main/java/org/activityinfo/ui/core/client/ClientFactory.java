@@ -2,6 +2,8 @@ package org.activityinfo.ui.core.client;
 
 
 
+import org.activityinfo.ui.core.client.data.DatabaseIndex;
+
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.web.bindery.event.shared.EventBus;
@@ -14,6 +16,6 @@ public interface ClientFactory {
    
     PlaceHistoryMapper getPlaceHistoryMapper();
     
-    ActivityInfoService getService();
+    DatabaseIndex getDatabaseIndex();
 
 }

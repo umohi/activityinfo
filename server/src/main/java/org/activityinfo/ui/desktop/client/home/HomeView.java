@@ -2,7 +2,8 @@ package org.activityinfo.ui.desktop.client.home;
 
 import org.activityinfo.ui.core.client.ClientFactory;
 import org.activityinfo.ui.core.client.data.DatabaseListProvider;
-import org.activityinfo.ui.core.client.model.DatabaseModel;
+import org.activityinfo.ui.core.client.model.DatabaseItem;
+import org.activityinfo.ui.desktop.client.widget.list.AsyncCellList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -22,17 +23,18 @@ public class HomeView extends Composite {
     }
 
     @UiField(provided=true)
-    CellList<DatabaseModel> databaseList;
+    Widget databaseList;
        
     public HomeView(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
-        this.databaseList = new CellList<DatabaseModel>(new DatabaseListCell(clientFactory));
-        this.databaseList.setSelectionModel(new NoSelectionModel<DatabaseModel>());
+        
+        CellList<DatabaseItem> cellList = new CellList<DatabaseItem>(new DatabaseListCell(clientFactory));
+        cellList.setSelectionModel(new NoSelectionModel<DatabaseItem>());
+        
+        AsyncCellList<DatabaseItem> asyncList = new AsyncCellList<DatabaseItem>(clientFactory.getDatabaseIndex(), cellList);
+        
+        this.databaseList = asyncList;
+        
         initWidget(uiBinder.createAndBindUi(this));
-
-        DatabaseListProvider provider = new DatabaseListProvider(clientFactory.getService());
-        provider.addDataDisplay(databaseList);
     }
-
-
 }
