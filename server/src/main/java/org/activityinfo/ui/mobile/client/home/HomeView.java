@@ -3,11 +3,9 @@ package org.activityinfo.ui.mobile.client.home;
 import java.util.List;
 
 import org.activityinfo.ui.core.client.ClientFactory;
-import org.activityinfo.ui.core.client.data.IndexResult;
 import org.activityinfo.ui.core.client.model.DatabaseItem;
+import org.activityinfo.ui.core.client.model.ModelList;
 import org.activityinfo.ui.core.client.places.DatabasePlace;
-import org.fusesource.restygwt.client.Method;
-import org.fusesource.restygwt.client.MethodCallback;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -51,10 +49,10 @@ public class HomeView implements IsWidget {
         });
 
         cellList.getCellList().setRound(true);
-        clientFactory.getDatabaseIndex().get(new AsyncCallback<IndexResult<DatabaseItem>>() {
+        clientFactory.getDatabaseIndex().get(new AsyncCallback<ModelList<DatabaseItem>>() {
             
             @Override
-            public void onSuccess(IndexResult<DatabaseItem> result) {
+            public void onSuccess(ModelList<DatabaseItem> result) {
                 cellList.getCellList().render(result.getItems());
             }
             

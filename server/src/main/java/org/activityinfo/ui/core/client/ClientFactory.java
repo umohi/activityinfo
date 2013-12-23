@@ -2,7 +2,7 @@ package org.activityinfo.ui.core.client;
 
 
 
-import org.activityinfo.ui.core.client.data.DatabaseIndex;
+import org.activityinfo.ui.core.client.resources.DatabaseIndex;
 
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;

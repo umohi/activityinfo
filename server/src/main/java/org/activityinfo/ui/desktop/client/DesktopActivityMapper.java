@@ -28,7 +28,7 @@ public class DesktopActivityMapper implements ActivityMapper {
         if(place instanceof HomePlace) {    
             return new HomeActivity(clientFactory); 
         } else if(place instanceof DatabasePlace) {
-            return new DatabaseActivity();
+            return new DatabaseActivity(clientFactory, (DatabasePlace)place);
         } else {
             return new HomeActivity(clientFactory);
         }

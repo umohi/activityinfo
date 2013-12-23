@@ -1,10 +1,11 @@
-package org.activityinfo.ui.core.client.data;
+package org.activityinfo.ui.core.client.resources;
 
 import java.util.Date;
 
-import org.activityinfo.ui.core.client.model.AiAutoBeanFactory;
+import org.activityinfo.ui.core.client.model.ModelFactory;
 import org.activityinfo.ui.core.client.model.DatabaseItem;
 import org.activityinfo.ui.core.client.model.DatabaseItemList;
+import org.activityinfo.ui.core.client.model.ModelList;
 import org.activityinfo.ui.core.client.storage.KeyValueStorage;
 
 import com.google.common.base.Strings;
@@ -22,26 +23,26 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
  * is the collection of databases to which the user has 
  * been explicitly granted access.
  */
-public class DatabaseIndex extends ResourceIndex<DatabaseItem> {
+public class DatabaseIndex extends Resource<ModelList<DatabaseItem>> {
 
     private static final String CACHE_KEY = "my.databases";
     
     private static final long CACHE_MAX_AGE = 60 * 60 * 1000; 
     
     private KeyValueStorage storage;
-    private AiAutoBeanFactory beanFactory;
+    private ModelFactory modelFactory;
     
-    public DatabaseIndex(AiAutoBeanFactory beanFactory, KeyValueStorage storage) {
+    public DatabaseIndex(ModelFactory modelFactory, KeyValueStorage storage) {
         super();
         this.storage = storage;
-        this.beanFactory = beanFactory;
+        this.modelFactory = modelFactory;
     }
 
     @Override
-    public void get(AsyncCallback<IndexResult<DatabaseItem>> callback) {
+    public void get(AsyncCallback<ModelList<DatabaseItem>> callback) {
         String cached = storage.getItem(CACHE_KEY);
         if(!Strings.isNullOrEmpty(cached)) {
-            AutoBean<DatabaseItemList> list = AutoBeanCodex.decode(beanFactory, DatabaseItemList.class, cached);
+            AutoBean<DatabaseItemList> list = AutoBeanCodex.decode(modelFactory, DatabaseItemList.class, cached);
             callback.onSuccess(list.as());
         } else {
             forceRefresh(callback);
@@ -50,7 +51,7 @@ public class DatabaseIndex extends ResourceIndex<DatabaseItem> {
     
     
     @Override
-    public void forceRefresh(final AsyncCallback<IndexResult<DatabaseItem>> callback) {
+    public void forceRefresh(final AsyncCallback<ModelList<DatabaseItem>> callback) {
         RequestBuilder request = new RequestBuilder(RequestBuilder.GET, "/resources/databases");
         request.setCallback(new RequestCallback() {
             
@@ -59,7 +60,7 @@ public class DatabaseIndex extends ResourceIndex<DatabaseItem> {
                 try {
                     String json = "{ \"lastSyncedTime\":" + new Date().getTime() + ", \"items\": " + response.getText() + "}";
                     storage.setItem(CACHE_KEY, json);
-                    AutoBean<DatabaseItemList> list = AutoBeanCodex.decode(beanFactory, DatabaseItemList.class, json);
+                    AutoBean<DatabaseItemList> list = AutoBeanCodex.decode(modelFactory, DatabaseItemList.class, json);
                     callback.onSuccess(list.as());            
                 } catch(Exception parseException) {
                     callback.onFailure(parseException);
@@ -77,4 +78,8 @@ public class DatabaseIndex extends ResourceIndex<DatabaseItem> {
             callback.onFailure(e);
         }
     }    
+    
+    public SchemaResource getSchema(int databaseId) {
+        return new SchemaResource(databaseId, modelFactory, storage);
+    }
 }

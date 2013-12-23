@@ -90,7 +90,7 @@ public final class UserDatabaseDTO
      */
     @Override
     @JsonProperty
-    @JsonView(DTOViews.List.class)
+    @JsonView({ DTOViews.Schema.class, DTOViews.List.class })
     public String getName() {
         return get("name");
     }
@@ -144,7 +144,7 @@ public final class UserDatabaseDTO
     /**
      * Gets the full, descriptive name of this UserDatabase
      */
-    @JsonProperty
+    @JsonProperty("description")
     @JsonView(DTOViews.Schema.class)
     public String getFullName() {
         return get("fullName");
@@ -241,6 +241,8 @@ public final class UserDatabaseDTO
      * @return true if the client receiving the DTO is authorized to edit data
      *         for their Partner in this UserDatabase
      */
+    @JsonProperty
+    @JsonView(DTOViews.Schema.class)
     public boolean isEditAllowed() {
         return (Boolean) get("editAllowed");
     }
@@ -257,6 +259,8 @@ public final class UserDatabaseDTO
      * @return true if the client receiving the DTO is authorized to design
      *         (change indicators, etc) this UserDatabase
      */
+    @JsonProperty
+    @JsonView(DTOViews.Schema.class)
     public boolean isDesignAllowed() {
         return (Boolean) get("designAllowed");
     }
@@ -273,6 +277,8 @@ public final class UserDatabaseDTO
      * @return true if the client receiving the DTO is authorized to edit data
      *         for all Partners in this UserDatabase
      */
+    @JsonProperty
+    @JsonView(DTOViews.Schema.class)
     public boolean isEditAllAllowed() {
         return (Boolean) get("editAllAllowed");
     }
@@ -335,6 +341,8 @@ public final class UserDatabaseDTO
     /**
      * @return true if the client owns this UserDatabase
      */
+    @JsonProperty("owned")
+    @JsonView(DTOViews.Schema.class)
     public boolean getAmOwner() {
         return (Boolean) get("amOwner");
     }

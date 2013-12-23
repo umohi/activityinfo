@@ -1,9 +1,7 @@
 package org.activityinfo.ui.desktop.client.widget.list;
 
-import org.activityinfo.ui.core.client.data.IndexResult;
-import org.activityinfo.ui.core.client.data.ResourceIndex;
+import org.activityinfo.ui.core.client.resources.Resource;
 
-import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
@@ -11,7 +9,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-public class AsyncCellList<T> extends Composite {
+public class ResourcePanel<T> extends Composite {
 
     private static final int LOADING = 0;
     private static final int LOADED = 1;
@@ -20,15 +18,15 @@ public class AsyncCellList<T> extends Composite {
     private DeckPanel deckPanel;
     private Widget loadingWidget;
     private FlowPanel loadedPanel;
-    private CellList<T> cellList;
+    private HasResource<T> resourceWidget;
     private RefreshWidget refreshWidget;
     private LoadingErrorWidget loadingErrorWidget;
     
-    private ResourceIndex<T> index;
+    private Resource<T> index;
 
-    public AsyncCellList(ResourceIndex<T> index, CellList<T> cellList) {
+    public ResourcePanel(Resource<T> index, HasResource<T> resourceWidget) {
         this.index = index;
-        this.cellList = cellList;
+        this.resourceWidget = resourceWidget;
         
         loadingWidget = new Label("Loading...");
         refreshWidget = new RefreshWidget();
@@ -36,7 +34,7 @@ public class AsyncCellList<T> extends Composite {
         loadingErrorWidget = new LoadingErrorWidget();
      
         loadedPanel = new FlowPanel();
-        loadedPanel.add(cellList);
+        loadedPanel.add(resourceWidget);
         loadedPanel.add(refreshWidget);
         
         deckPanel = new DeckPanel();
@@ -51,7 +49,7 @@ public class AsyncCellList<T> extends Composite {
     
     private void load() {
         deckPanel.showWidget(LOADING);
-        index.get(new AsyncCallback<IndexResult<T>>() {
+        index.get(new AsyncCallback<T>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -60,8 +58,8 @@ public class AsyncCellList<T> extends Composite {
             }
 
             @Override
-            public void onSuccess(IndexResult<T> result) {
-                cellList.setRowData(result.getItems());
+            public void onSuccess(T resource) {
+                resourceWidget.showResource(resource);
                 deckPanel.showWidget(LOADED);
             }
         });

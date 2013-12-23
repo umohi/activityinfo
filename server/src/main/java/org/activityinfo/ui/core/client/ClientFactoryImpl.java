@@ -1,8 +1,8 @@
 package org.activityinfo.ui.core.client;
 
-import org.activityinfo.ui.core.client.data.DatabaseIndex;
-import org.activityinfo.ui.core.client.model.AiAutoBeanFactory;
+import org.activityinfo.ui.core.client.model.ModelFactory;
 import org.activityinfo.ui.core.client.places.DesktopPlaceHistoryMapper;
+import org.activityinfo.ui.core.client.resources.DatabaseIndex;
 import org.activityinfo.ui.core.client.storage.HashMapKeyValueStorage;
 import org.activityinfo.ui.core.client.storage.KeyValueStorage;
 import org.activityinfo.ui.core.client.storage.LocalKeyValueStorage;
@@ -20,7 +20,7 @@ public class ClientFactoryImpl implements ClientFactory {
     private final EventBus eventBus = new SimpleEventBus();
     private final PlaceController placeController = new PlaceController(eventBus);
     private PlaceHistoryMapper placeHistoryMapper = GWT.create(DesktopPlaceHistoryMapper.class);
-    private AiAutoBeanFactory beanFactory = GWT.create(AiAutoBeanFactory.class);
+    private ModelFactory beanFactory = GWT.create(ModelFactory.class);
     
     private KeyValueStorage storage;
     private DatabaseIndex databaseIndex;
