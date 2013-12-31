@@ -1,4 +1,4 @@
-package org.activityinfo.ui.desktop.client.widget.list;
+package org.activityinfo.ui.desktop.client.widget.resources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;

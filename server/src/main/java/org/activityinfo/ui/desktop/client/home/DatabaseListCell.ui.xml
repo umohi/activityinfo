@@ -1,15 +1,15 @@
-<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-  xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'>
 
   <ui:with field='name' type='java.lang.String' />
   <ui:with field='link' type='com.google.gwt.safehtml.shared.SafeUri' />
-
-  <div class="well media">
-    <a class="pull-left" href="{link}">
-      <img class="media-object" src="http://placehold.it/64x64" />
+  <ui:with field='b' type='com.bedatadriven.rebar.bootstrap.client.Bootstrap'/>
+  
+  <div class="{b.well} {b.media}">
+    <a class="{b.pullLeft}" href="{link}">
+      <img class="media-object" src="//placehold.it/64x64" />
     </a>
-    <div class="media-body">
-      <h4 class="media-heading"><ui:text from="{name}"/> <small>DR Congo</small></h4>
+    <div class="{b.mediaBody}">
+      <h4 class="{b.mediaHeading}"><ui:text from="{name}"/> <small>DR Congo</small></h4>
       <p>Monitoring database for Syrian Refugee Response</p>
     </div>
   </div>

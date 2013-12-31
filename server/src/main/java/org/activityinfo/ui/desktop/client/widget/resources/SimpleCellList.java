@@ -1,4 +1,4 @@
-package org.activityinfo.ui.desktop.client.widget.list;
+package org.activityinfo.ui.desktop.client.widget.resources;
 
 import org.activityinfo.ui.core.client.model.ModelList;
 

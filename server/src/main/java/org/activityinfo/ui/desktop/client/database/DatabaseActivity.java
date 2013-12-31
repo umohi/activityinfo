@@ -3,7 +3,7 @@ package org.activityinfo.ui.desktop.client.database;
 import org.activityinfo.ui.core.client.ClientFactory;
 import org.activityinfo.ui.core.client.model.SchemaModel;
 import org.activityinfo.ui.core.client.places.DatabasePlace;
-import org.activityinfo.ui.desktop.client.widget.list.ResourcePanel;
+import org.activityinfo.ui.desktop.client.widget.resources.ResourcePanel;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;

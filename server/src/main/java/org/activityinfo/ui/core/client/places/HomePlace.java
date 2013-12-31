@@ -22,7 +22,7 @@ public class HomePlace extends Place {
 
         @Override
         public HomePlace getPlace(String token) {
-            return INSTANCE; 
+            return new HomePlace(); 
         }
 
         @Override

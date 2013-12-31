@@ -3,6 +3,7 @@ package org.activityinfo.ui.desktop.client;
 import org.activityinfo.ui.core.client.ClientFactory;
 import org.activityinfo.ui.core.client.places.HomePlace;
 
+import com.bedatadriven.rebar.bootstrap.client.Bootstrap;
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
@@ -25,7 +26,8 @@ public class Desktop extends Composite implements EntryPoint {
  
     @UiField
     SimplePanel main;
-
+    
+    @UiField Bootstrap b;
 
     private static DesktopUiBinder uiBinder = GWT
             .create(DesktopUiBinder.class);
@@ -37,6 +39,8 @@ public class Desktop extends Composite implements EntryPoint {
     }
 
     public void onModuleLoad() {
+        
+        Bootstrap.INSTANCE.ensureInjected();
         
         ClientFactory factory = GWT.create(ClientFactory.class);
         

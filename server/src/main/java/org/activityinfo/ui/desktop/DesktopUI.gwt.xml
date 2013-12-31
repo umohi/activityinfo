@@ -2,13 +2,11 @@
 <module rename-to='DesktopUI'>
   <inherits name='com.google.gwt.user.User' />
   <inherits name="com.google.gwt.activity.Activity" />
-  <inherits name='com.github.gwtbootstrap.Bootstrap' />
-  <inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
-  <inherits name='com.github.gwtbootstrap.datetimepicker.Datetimepicker' />
   
+  <inherits name="com.bedatadriven.rebar.style.Style"/>
+  <inherits name="com.bedatadriven.rebar.bootstrap.Bootstrap"/>
+    `
   <inherits name="org.activityinfo.ui.core.CoreUI"/>
-
-  <set-property name="bootstrap.responsiveDesign" value="true" />
   
   <entry-point class='org.activityinfo.ui.desktop.client.Desktop' />
   

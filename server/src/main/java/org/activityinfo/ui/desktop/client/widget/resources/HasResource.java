@@ -1,4 +1,4 @@
-package org.activityinfo.ui.desktop.client.widget.list;
+package org.activityinfo.ui.desktop.client.widget.resources;
 
 import com.google.gwt.user.client.ui.IsWidget;
 

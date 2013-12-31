@@ -3,9 +3,9 @@ package org.activityinfo.ui.desktop.client.home;
 import org.activityinfo.ui.core.client.ClientFactory;
 import org.activityinfo.ui.core.client.model.DatabaseItem;
 import org.activityinfo.ui.core.client.model.ModelList;
-import org.activityinfo.ui.desktop.client.widget.list.HasResource;
-import org.activityinfo.ui.desktop.client.widget.list.ListResourcePanel;
-import org.activityinfo.ui.desktop.client.widget.list.SimpleCellList;
+import org.activityinfo.ui.desktop.client.widget.resources.HasResource;
+import org.activityinfo.ui.desktop.client.widget.resources.ListResourcePanel;
+import org.activityinfo.ui.desktop.client.widget.resources.SimpleCellList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
