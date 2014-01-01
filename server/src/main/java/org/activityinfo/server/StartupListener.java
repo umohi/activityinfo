@@ -54,7 +54,6 @@ import org.activityinfo.server.util.config.ConfigModule;
 import org.activityinfo.server.util.jaxrs.JaxRsModule;
 import org.activityinfo.server.util.logging.LoggingModule;
 import org.activityinfo.server.util.monitoring.MonitoringModule;
-import org.activityinfo.server.util.tracking.TrackingModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -102,7 +101,6 @@ public class StartupListener extends GuiceServletContextListener {
             new MonitoringModule(),
             new KmlModule(),
             new BrandingModule(),
-            new TrackingModule(),
             new BlobServiceModule(),
             new LocaleModule(),
             new JaxRsModule(),
