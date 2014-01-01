@@ -47,7 +47,7 @@ public class MapTemplate extends ReportElementTemplate {
 
         final NewLayerWizard wizard = new NewLayerWizard(dispatcher);
         WizardDialog dialog = new WizardDialog(wizard);
-        dialog.setHeading(I18N.CONSTANTS.newMap());
+        dialog.setHeadingText(I18N.CONSTANTS.newMap());
         dialog.show(new WizardCallback() {
 
             @Override

@@ -172,7 +172,7 @@ public class DbListPresenter implements ActionListener {
         final FormDialogImpl dialog = new FormDialogImpl(form);
         dialog.setWidth(400);
         dialog.setHeight(200);
-        dialog.setHeading(I18N.CONSTANTS.newDatabase());
+        dialog.setHeadingText(I18N.CONSTANTS.newDatabase());
 
         dialog.show(new FormDialogCallback() {
             @Override

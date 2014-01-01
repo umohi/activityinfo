@@ -85,7 +85,7 @@ public class ChartOFCView extends ContentPanel implements ChartView {
 
     private void createChart() {
         chart = new Chart(GWT.getModuleBaseURL()
-            + "/gxt224/chart/open-flash-chart.swf");
+            + "/gxt231/chart/open-flash-chart.swf");
         chart.setBorders(false);
         chart.setChartModel(chartModel);
 

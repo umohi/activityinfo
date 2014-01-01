@@ -58,7 +58,7 @@ public class PrintDataEntryForm extends Window {
     public PrintDataEntryForm(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
         
-        setHeading(I18N.CONSTANTS.preview());
+        setHeadingText(I18N.CONSTANTS.preview());
         setWidth(450);
         setHeight(250);
 

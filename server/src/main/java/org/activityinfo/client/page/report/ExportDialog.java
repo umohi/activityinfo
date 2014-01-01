@@ -60,7 +60,7 @@ public class ExportDialog extends Dialog {
 
         setWidth(350);
         setHeight(175);
-        setHeading(I18N.CONSTANTS.export());
+        setHeadingText(I18N.CONSTANTS.export());
         setClosable(false);
         setButtonAlign(HorizontalAlignment.CENTER);
 

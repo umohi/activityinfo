@@ -77,12 +77,12 @@ public class PartnerFilterPanel extends ContentPanel implements FilterPanel {
     }
 
     private void initializeComponent() {
-        setHeading(I18N.CONSTANTS.filterByPartner());
+        setHeadingText(I18N.CONSTANTS.filterByPartner());
         setIcon(IconImageBundle.ICONS.filter());
 
         setLayout(new FitLayout());
         setScrollMode(Style.Scroll.NONE);
-        setHeading(I18N.CONSTANTS.filterByPartner());
+        setHeadingText(I18N.CONSTANTS.filterByPartner());
         setIcon(IconImageBundle.ICONS.filter());
     }
 

@@ -109,7 +109,7 @@ public class DbTargetGrid extends AbstractGridView<TargetDTO, DbTargetEditor>
     public void init(DbTargetEditor editor, UserDatabaseDTO db,
         ListStore<TargetDTO> store) {
         super.init(editor, store);
-        this.setHeading(I18N.MESSAGES.targetsForDatabase(db.getName()));
+        this.setHeadingText(I18N.MESSAGES.targetsForDatabase(db.getName()));
     }
 
     @Override
@@ -123,7 +123,7 @@ public class DbTargetGrid extends AbstractGridView<TargetDTO, DbTargetEditor>
         FormDialogImpl<TargetForm> dlg = new FormDialogImpl<TargetForm>(form);
         dlg.setWidth(450);
         dlg.setHeight(300);
-        dlg.setHeading(messages.createTarget());
+        dlg.setHeadingText(messages.createTarget());
 
         dlg.show(callback);
 

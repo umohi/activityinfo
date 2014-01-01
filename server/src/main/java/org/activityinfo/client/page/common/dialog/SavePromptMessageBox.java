@@ -63,7 +63,7 @@ public class SavePromptMessageBox extends Window implements AsyncMonitor {
         setBodyStyle("padding: 5px;");
         setWidth(450);
         setHeight(200);
-        setHeading(I18N.CONSTANTS.save());
+        setHeadingText(I18N.CONSTANTS.save());
         setLayout(new CenterLayout());
         add(new Html(I18N.CONSTANTS.promptSave()));
 
@@ -148,7 +148,7 @@ public class SavePromptMessageBox extends Window implements AsyncMonitor {
         cancelButton.enable();
         status.clearStatus("");
 
-        MessageBox.alert(this.getHeading(), I18N.CONSTANTS.serverError(), null);
+        MessageBox.alert(this.getHeadingHtml(), I18N.CONSTANTS.serverError(), null);
     }
 
     @Override

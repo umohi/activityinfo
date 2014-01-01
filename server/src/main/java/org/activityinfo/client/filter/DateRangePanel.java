@@ -110,7 +110,7 @@ public class DateRangePanel extends ContentPanel implements HasValue<Filter>,
     }
 
     private void initializeComponent() {
-        setHeading(I18N.CONSTANTS.filterByDate());
+        setHeadingText(I18N.CONSTANTS.filterByDate());
         setIcon(IconImageBundle.ICONS.filter());
     }
 

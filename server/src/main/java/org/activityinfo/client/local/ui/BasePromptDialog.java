@@ -44,7 +44,7 @@ public class BasePromptDialog extends Dialog {
 
         setWidth(500);
         setHeight(350);
-        setHeading(I18N.CONSTANTS.installOffline());
+        setHeadingText(I18N.CONSTANTS.installOffline());
         setModal(true);
         setLayout(new FitLayout());
 

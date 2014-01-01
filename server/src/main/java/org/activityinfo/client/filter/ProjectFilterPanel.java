@@ -60,12 +60,12 @@ public class ProjectFilterPanel extends ContentPanel implements FilterPanel {
 
     public ProjectFilterPanel(Dispatcher service) {
         this.service = service;
-        setHeading(I18N.CONSTANTS.filterByProject());
+        setHeadingText(I18N.CONSTANTS.filterByProject());
         setIcon(IconImageBundle.ICONS.filter());
 
         this.setLayout(new FitLayout());
         this.setScrollMode(Style.Scroll.NONE);
-        this.setHeading(I18N.CONSTANTS.filterByProject());
+        this.setHeadingText(I18N.CONSTANTS.filterByProject());
         this.setIcon(IconImageBundle.ICONS.filter());
 
         loader = new BaseListLoader(new ProjectDataProxy());

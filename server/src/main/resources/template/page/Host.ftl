@@ -91,7 +91,6 @@
         };
     </script>    
 
-    <script language='javascript' src='ActivityInfo/gxt224/flash/swfobject.js'></script>
     <script type="text/javascript" language="javascript" src="ActivityInfo/ActivityInfo.nocache.js"></script>
     <script type="text/javascript">
     
@@ -126,7 +125,7 @@
 <div id="loading">
     <div id="loading-box">
         <div class="loading-indicator">
-            <img src="ActivityInfo/gxt224/images/default/shared/large-loading.gif" alt=""/>
+            <img src="ActivityInfo/gxt231/images/default/shared/large-loading.gif" alt=""/>
             ${label.activityInfo} $[display.version]<br/>
             <span id="loading-msg">${label.loading}</span>
 

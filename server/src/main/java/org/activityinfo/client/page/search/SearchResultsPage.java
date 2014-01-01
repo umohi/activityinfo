@@ -241,6 +241,8 @@ public class SearchResultsPage extends ContentPanel implements SearchView {
         int indicators = 0;
 
         LabelField labelResults = new LabelField();
+        labelResults.setUseHtml(false);
+        
         searchResultsPanel.add(labelResults);
 
         if (pivotContent != null) {
@@ -261,7 +263,7 @@ public class SearchResultsPage extends ContentPanel implements SearchView {
             }
         }
 
-        labelResults.setText(I18N.MESSAGES.searchResultsFound(
+        labelResults.setValue(I18N.MESSAGES.searchResultsFound(
             searchQuery,
             Integer.toString(databases),
             Integer.toString(activities),

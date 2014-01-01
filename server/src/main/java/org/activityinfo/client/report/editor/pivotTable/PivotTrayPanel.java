@@ -57,7 +57,7 @@ public class PivotTrayPanel extends ContentPanel implements
         this.colList = new DimensionSelectionListView(eventBus, dispatcher,
             Axis.COLUMN);
 
-        setHeading(I18N.CONSTANTS.dimensions());
+        setHeadingText(I18N.CONSTANTS.dimensions());
         setScrollMode(Style.Scroll.NONE);
         setIcon(null);
 

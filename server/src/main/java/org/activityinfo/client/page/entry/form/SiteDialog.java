@@ -80,7 +80,7 @@ public class SiteDialog extends Window {
         this.dispatcher = dispatcher;
         this.activity = activity;
 
-        setHeading(I18N.MESSAGES.addNewSiteForActivity(activity.getName()));
+        setHeadingText(I18N.MESSAGES.addNewSiteForActivity(activity.getName()));
         setWidth(WIDTH);
         setHeight(HEIGHT);
 
@@ -213,7 +213,7 @@ public class SiteDialog extends Window {
             if (!section.getSection().validate()) {
                 navigationListView.getSelectionModel().select(section, false);
                 section.getSection().validate(); // validate after render to enable validation-error styling
-                MessageBox.alert(getHeading(), I18N.CONSTANTS.pleaseCompleteForm(), null);
+                MessageBox.alert(getHeadingHtml(), I18N.CONSTANTS.pleaseCompleteForm(), null);
                 return false;
             }
         }

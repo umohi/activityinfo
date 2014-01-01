@@ -61,7 +61,7 @@ public class PromptOfflineDialog extends BasePromptDialog {
 
         setWidth(500);
         setHeight(350);
-        setHeading(I18N.CONSTANTS.installOffline());
+        setHeadingText(I18N.CONSTANTS.installOffline());
         setModal(true);
 
         getButtonBar().removeAll();

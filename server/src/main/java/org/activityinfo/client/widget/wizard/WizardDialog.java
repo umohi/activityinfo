@@ -57,7 +57,7 @@ public class WizardDialog extends Window {
         setWidth(Math.max(550, relativeWidth()));
         setHeight(relativeHeight());
 
-        setHeading(wizard.getTitle());
+        setHeadingText(wizard.getTitle());
 
         for (WizardPage page : pages) {
             add(page);

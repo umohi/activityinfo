@@ -127,7 +127,7 @@ public class ChartEditor extends LayoutContainer implements
         south.setMargins(new Margins(5, 0, 0, 0));
 
         gridPanel = new PivotGridPanel();
-        gridPanel.setHeading("Table");
+        gridPanel.setHeadingText("Table");
         chartView.bindTable(gridPanel);
 
         center.add(gridPanel, south);

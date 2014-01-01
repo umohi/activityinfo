@@ -99,7 +99,7 @@ public class DbUserEditor extends ContentPanel implements DbPage,
         this.eventBus = eventBus;
         this.dispatcher = service;
 
-        setHeading(I18N.CONSTANTS.users());
+        setHeadingText(I18N.CONSTANTS.users());
         setLayout(new FitLayout());
 
         createToolBar();
@@ -381,7 +381,7 @@ public class DbUserEditor extends ContentPanel implements DbPage,
         final UserForm form = new UserForm(db);
 
         final FormDialogImpl dlg = new FormDialogImpl(form);
-        dlg.setHeading(I18N.CONSTANTS.newUser());
+        dlg.setHeadingText(I18N.CONSTANTS.newUser());
         dlg.setWidth(400);
         dlg.setHeight(300);
 

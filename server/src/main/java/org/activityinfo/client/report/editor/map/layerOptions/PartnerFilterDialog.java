@@ -59,13 +59,13 @@ public class PartnerFilterDialog extends Dialog {
     }
 
     private void initializeComponent() {
-        setHeading(I18N.CONSTANTS.filterByPartner());
+        setHeadingText(I18N.CONSTANTS.filterByPartner());
         setIcon(IconImageBundle.ICONS.filter());
         setWidth(250);
         setHeight(350);
         setLayout(new FitLayout());
         setScrollMode(Style.Scroll.NONE);
-        setHeading(I18N.CONSTANTS.filterByPartner());
+        setHeadingText(I18N.CONSTANTS.filterByPartner());
         setIcon(IconImageBundle.ICONS.filter());
     }
 

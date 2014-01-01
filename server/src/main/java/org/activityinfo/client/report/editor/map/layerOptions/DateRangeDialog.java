@@ -47,7 +47,7 @@ public class DateRangeDialog extends Dialog {
 
         setLayout(layout);
         setButtons(OKCANCEL);
-        setHeading(I18N.CONSTANTS.customDateRange());
+        setHeadingText(I18N.CONSTANTS.customDateRange());
         setWidth(200);
         setHeight(150);
         setBodyStyle("padding: 5px");

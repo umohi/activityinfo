@@ -48,6 +48,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AddLockedPeriodDialog extends FormPanel implements
@@ -93,7 +94,7 @@ public class AddLockedPeriodDialog extends FormPanel implements
     public void setUserDatabase(UserDatabaseDTO userDatabase) {
         this.userDatabase = userDatabase;
 
-        labelDatabaseName.setText(userDatabase.getName());
+        labelDatabaseName.setValue(userDatabase.getName());
 
         storeProjects.removeAll();
         storeProjects.add(userDatabase.getProjects());
@@ -109,7 +110,7 @@ public class AddLockedPeriodDialog extends FormPanel implements
         setHeaderVisible(false);
 
         fieldsetContainer = new FieldSet();
-        fieldsetContainer.setHeading(I18N.CONSTANTS.type());
+        fieldsetContainer.setHeadingHtml(SafeHtmlUtils.htmlEscape(I18N.CONSTANTS.type()));
 
         comboboxProjects = new ComboBox<ProjectDTO>();
         storeProjects = new ListStore<ProjectDTO>();
@@ -132,8 +133,10 @@ public class AddLockedPeriodDialog extends FormPanel implements
 
         labelDatabase = new LabelField(I18N.CONSTANTS.database());
         labelDatabase.setWidth(100);
+        labelDatabase.setUseHtml(false);
 
         labelDatabaseName = new LabelField();
+        labelDatabaseName.setUseHtml(false);
 
         radioDatabase = new Radio();
         radioDatabase.setFieldLabel(I18N.CONSTANTS.database());
@@ -155,6 +158,7 @@ public class AddLockedPeriodDialog extends FormPanel implements
 
         labelActivity = new LabelField(I18N.CONSTANTS.activity());
         labelActivity.setWidth(100);
+        labelActivity.setUseHtml(false);
 
         panelActivity = new HorizontalPanel();
         panelActivity.add(labelActivity);
@@ -174,6 +178,7 @@ public class AddLockedPeriodDialog extends FormPanel implements
 
         labelProject = new LabelField(I18N.CONSTANTS.project());
         labelProject.setWidth(100);
+        labelProject.setUseHtml(false);
 
         panelProject = new HorizontalPanel();
         panelProject.add(labelProject);

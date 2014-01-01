@@ -31,7 +31,7 @@ public class ChooseReportsPortlet extends Portlet {
 
     public ChooseReportsPortlet() {
 
-        setHeading(I18N.CONSTANTS.personalizeDashboard());
+        setHeadingText(I18N.CONSTANTS.personalizeDashboard());
         Text label = new Text(I18N.CONSTANTS.emptyDashboard());
         label.setStyleAttribute("padding", "15px");
         label.setStyleAttribute("fontSize", "14px");

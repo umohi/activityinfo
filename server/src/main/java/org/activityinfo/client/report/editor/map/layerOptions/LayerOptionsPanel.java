@@ -150,7 +150,7 @@ public final class LayerOptionsPanel extends LayoutContainer implements
 
         // setFieldsetHeadingToLayerName();
         stylePanel = new ContentPanel();
-        stylePanel.setHeading(I18N.CONSTANTS.style());
+        stylePanel.setHeadingText(I18N.CONSTANTS.style());
         stylePanel.setIcon(AbstractImagePrototype.create(MapResources.INSTANCE
             .styleIcon()));
         stylePanel.setCollapsible(true);
@@ -171,7 +171,7 @@ public final class LayerOptionsPanel extends LayoutContainer implements
         clusteringPanel = new ContentPanel();
         clusteringPanel.setIcon(AbstractImagePrototype
             .create(MapResources.INSTANCE.clusterIcon()));
-        clusteringPanel.setHeading(I18N.CONSTANTS.clustering());
+        clusteringPanel.setHeadingText(I18N.CONSTANTS.clustering());
         clusteringPanel.setCollapsible(true);
         clusteringPanel.setHideCollapseTool(true);
         clusteringPanel.setAnimCollapse(true);

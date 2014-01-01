@@ -65,7 +65,7 @@ public class DbListPage extends ContentPanel implements DbListPresenter.View,
         presenter = new DbListPresenter(eventBus, dispatcher, this);
 
         setLayout(new FitLayout());
-        setHeading(I18N.CONSTANTS.databases());
+        setHeadingText(I18N.CONSTANTS.databases());
         setIcon(IconImageBundle.ICONS.database());
 
         createGrid();

@@ -94,7 +94,7 @@ public class IndicatorTreePanel extends ContentPanel {
         final boolean multipleSelection) {
         this.dispatcher = dispatcher;
 
-        this.setHeading(I18N.CONSTANTS.indicators());
+        this.setHeadingText(I18N.CONSTANTS.indicators());
         this.setIcon(IconImageBundle.ICONS.indicator());
         this.setLayout(new FitLayout());
         this.setScrollMode(Style.Scroll.NONE);
@@ -208,8 +208,8 @@ public class IndicatorTreePanel extends ContentPanel {
     }
 
     @Override
-    public void setHeading(String heading) {
-        super.setHeading(heading);
+    public void setHeadingText(String heading) {
+        super.setHeadingText(heading);
     }
 
     private void createFilterBar() {

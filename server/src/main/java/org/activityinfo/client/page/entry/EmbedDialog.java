@@ -59,7 +59,7 @@ public class EmbedDialog extends Dialog {
         this.dispatcher = dispatcher;
         setWidth(300);
         setHeight(200);
-        setHeading(I18N.CONSTANTS.embed());
+        setHeadingText(I18N.CONSTANTS.embed());
 
         VBoxLayout layout = new VBoxLayout();
         layout.setVBoxLayoutAlign(VBoxLayoutAlign.STRETCH);

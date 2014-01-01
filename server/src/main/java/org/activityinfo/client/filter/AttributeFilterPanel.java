@@ -65,7 +65,7 @@ public class AttributeFilterPanel extends ContentPanel implements FilterPanel {
 
         setLayout(new RowLayout(Orientation.VERTICAL));
         setScrollMode(Style.Scroll.AUTO);
-        setHeading(I18N.CONSTANTS.filterByAttribute());
+        setHeadingHtml(I18N.CONSTANTS.filterByAttribute());
         setIcon(IconImageBundle.ICONS.filter());
 
         createFilterToolBar();

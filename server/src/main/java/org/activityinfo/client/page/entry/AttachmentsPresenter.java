@@ -101,7 +101,7 @@ public class AttachmentsPresenter implements ActionListener {
         final FormDialogImpl dialog = new FormDialogImpl(form);
         dialog.setWidth(400);
         dialog.setHeight(200);
-        dialog.setHeading(I18N.CONSTANTS.newAttachment());
+        dialog.setHeadingText(I18N.CONSTANTS.newAttachment());
 
         dialog.show(new FormDialogCallback() {
             @Override

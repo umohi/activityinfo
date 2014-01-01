@@ -73,7 +73,7 @@ public class ReportPortlet extends Portlet {
         this.eventBus = eventBus;
         this.metadata = report;
 
-        setHeading(report.getTitle());
+        setHeadingText(report.getTitle());
         setHeight(275);
         setLayout(new FitLayout());
 

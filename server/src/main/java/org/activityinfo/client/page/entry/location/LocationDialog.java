@@ -76,7 +76,7 @@ public class LocationDialog extends Window {
             locationType);
         this.newLocationPresenter = new NewLocationPresenter(country);
 
-        setHeading(I18N.CONSTANTS.chooseLocation());
+        setHeadingText(I18N.CONSTANTS.chooseLocation());
         setWidth((int) (com.google.gwt.user.client.Window.getClientWidth() * 0.95));
         setHeight((int) (com.google.gwt.user.client.Window.getClientHeight() * 0.95));
         setLayout(new BorderLayout());

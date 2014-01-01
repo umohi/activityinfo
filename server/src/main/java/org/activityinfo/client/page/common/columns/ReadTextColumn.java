@@ -28,7 +28,7 @@ public class ReadTextColumn extends ColumnConfig {
     public ReadTextColumn(String property, String header, int width) {
         super();
 
-        setHeader(header);
+        setHeaderText(header);
         setId(property);
         setWidth(width);
     }

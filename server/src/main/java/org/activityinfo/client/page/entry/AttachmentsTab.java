@@ -70,7 +70,7 @@ public class AttachmentsTab extends TabItem implements
         createToolBar();
 
         panel = new ContentPanel();
-        panel.setHeading(I18N.CONSTANTS.attachment());
+        panel.setHeadingText(I18N.CONSTANTS.attachment());
         panel.setScrollMode(Style.Scroll.AUTOY);
         panel.setTopComponent(toolBar);
         panel.setLayout(new FitLayout());
@@ -126,7 +126,7 @@ public class AttachmentsTab extends TabItem implements
 
     @Override
     public void setSelectionTitle(String title) {
-        panel.setHeading(I18N.CONSTANTS.attachment() + " - " + title);
+        panel.setHeadingText(I18N.CONSTANTS.attachment() + " - " + title);
 
     }
 

@@ -43,6 +43,7 @@ import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HasValue;
@@ -56,14 +57,14 @@ public class BaseMapPanel extends ContentPanel implements HasValue<String> {
 
     private final Dispatcher dispatcher;
     private String value;
-    private Label label;
+    private LabelWithText label;
 
     public BaseMapPanel(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
 
         setCollapsible(false);
         setFrame(true);
-        setHeading(I18N.CONSTANTS.basemap());
+        setHeadingText(I18N.CONSTANTS.basemap());
         setBodyBorder(false);
         setIcon(AbstractImagePrototype.create(MapResources.INSTANCE.layers()));
 
@@ -73,7 +74,7 @@ public class BaseMapPanel extends ContentPanel implements HasValue<String> {
         setLayout(layout);
 
         Image icon = new Image(MapResources.INSTANCE.globe());
-        label = new Label();
+        label = new LabelWithText();
         Button button = new Button("Change",
             new SelectionListener<ButtonEvent>() {
 
@@ -92,7 +93,7 @@ public class BaseMapPanel extends ContentPanel implements HasValue<String> {
 
         add(button);
 
-        label.setText(I18N.CONSTANTS.loading());
+        label.setHtml(I18N.CONSTANTS.loading());
     }
 
     private void chooseBaseMap() {

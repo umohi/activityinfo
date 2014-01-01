@@ -55,7 +55,7 @@ public class NewsPortlet extends Portlet {
 
     public NewsPortlet() {
 
-        setHeading("ActivityInfo News");
+        setHeadingText("ActivityInfo News");
 
         html = new Html();
         add(html);

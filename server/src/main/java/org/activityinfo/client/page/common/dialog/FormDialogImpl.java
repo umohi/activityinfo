@@ -97,7 +97,7 @@ public class FormDialogImpl<FormT extends FormPanel> extends Window implements
                     @Override
                     public void execute() {
                         if (!form.isValid()) {
-                            MessageBox.alert(getHeading(),
+                            MessageBox.alert(getHeadingHtml(),
                                 I18N.CONSTANTS.pleaseCompleteForm(), null);
                         } else {
                             onValidated();
@@ -198,7 +198,7 @@ public class FormDialogImpl<FormT extends FormPanel> extends Window implements
         saveButton.enable();
         cancelButton.enable();
         status.clearStatus("");
-        MessageBox.alert(this.getHeading(), I18N.CONSTANTS.serverError(), null);
+        MessageBox.alert(this.getHeadingHtml(), I18N.CONSTANTS.serverError(), null);
     }
 
     @Override

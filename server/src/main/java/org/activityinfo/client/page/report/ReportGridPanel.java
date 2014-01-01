@@ -77,7 +77,7 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
         this.eventBus = eventBus;
         this.dispatcher = dispatcher;
 
-        setHeading("Saved Reports");
+        setHeadingText("Saved Reports");
 
         toolBar = new ActionToolBar(this);
         toolBar.addButton(UIActions.PRINT, I18N.CONSTANTS.open(),
@@ -149,7 +149,7 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
 
     private ColumnModel createColumnModel() {
         ColumnConfig dashboard = new ColumnConfig("dashboard", "", 28);
-        dashboard.setHeader(IconImageBundle.ICONS.star().getHTML());
+        dashboard.setHeaderHtml(IconImageBundle.ICONS.star().getHTML());
         dashboard.setResizable(false);
         dashboard.setMenuDisabled(true);
         dashboard.setRenderer(new GridCellRenderer<ReportMetadataDTO>() {

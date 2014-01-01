@@ -38,7 +38,7 @@ public class FilterPane extends ContentPanel {
     private final FilterPanelSet filterPanelSet;
 
     public FilterPane(Dispatcher dispatcher) {
-        setHeading(I18N.CONSTANTS.filter());
+        setHeadingText(I18N.CONSTANTS.filter());
         setLayout(new AccordionLayout());
 
         ActivityFilterPanel activityFilterPanel = new ActivityFilterPanel(

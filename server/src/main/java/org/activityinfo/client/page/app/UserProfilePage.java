@@ -45,7 +45,7 @@ public class UserProfilePage extends FormPanel implements Page {
         super();
         this.dispatcher = dispatcher;
 
-        this.setHeading(I18N.CONSTANTS.userProfile());
+        this.setHeadingText(I18N.CONSTANTS.userProfile());
 
         this.hide(); // avoid showing an unbound form, will be shown when bound
 

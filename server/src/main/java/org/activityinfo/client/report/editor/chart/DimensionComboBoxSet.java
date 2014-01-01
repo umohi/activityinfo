@@ -45,6 +45,7 @@ import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 public class DimensionComboBoxSet implements
     HasReportElement<PivotChartReportElement> {
@@ -53,8 +54,8 @@ public class DimensionComboBoxSet implements
     private final DimensionProxy proxy;
     private final ListStore<DimensionModel> store;
     private final ListLoader<ListLoadResult<DimensionModel>> loader;
-    private final LabelToolItem categoryLabel;
-    private final LabelToolItem seriesLabel;
+    private final LabelToolItemWithText categoryLabel;
+    private final LabelToolItemWithText seriesLabel;
     private final DimensionCombo categoryCombo;
     private final DimensionCombo seriesCombo;
 
@@ -89,8 +90,8 @@ public class DimensionComboBoxSet implements
                     }
                 }
             });
-        this.categoryLabel = new LabelToolItem();
-        this.seriesLabel = new LabelToolItem();
+        this.categoryLabel = new LabelToolItemWithText();
+        this.seriesLabel = new LabelToolItemWithText();
         this.reportEventBus = new ReportEventBus(eventBus, this);
         this.reportEventBus.listen(new ReportChangeHandler() {
 
@@ -134,13 +135,13 @@ public class DimensionComboBoxSet implements
     private void updateLabels() {
         Type type = model.getType();
         if (type == Type.ClusteredBar || type == Type.Bar) {
-            categoryLabel.setLabel(I18N.CONSTANTS.horizontalAxis());
-            seriesLabel.setLabel(I18N.CONSTANTS.bars());
+            categoryLabel.setText(I18N.CONSTANTS.horizontalAxis());
+            seriesLabel.setText(I18N.CONSTANTS.bars());
         } else if (type == Type.Line) {
-            categoryLabel.setLabel(I18N.CONSTANTS.horizontalAxis());
-            seriesLabel.setLabel(I18N.CONSTANTS.lines());
+            categoryLabel.setText(I18N.CONSTANTS.horizontalAxis());
+            seriesLabel.setText(I18N.CONSTANTS.lines());
         } else if (type == Type.Pie) {
-            categoryLabel.setLabel(I18N.CONSTANTS.slices());
+            categoryLabel.setText(I18N.CONSTANTS.slices());
         }
         seriesCombo.setEnabled(type != Type.Pie);
         seriesCombo.setEnabled(type != Type.Pie);

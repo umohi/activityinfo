@@ -61,7 +61,7 @@ public class MailingListDialog extends Window {
     }
 
     private void initializeComponent() {
-        setHeading(I18N.CONSTANTS.mailingList());
+        setHeadingText(I18N.CONSTANTS.mailingList());
         setModal(true);
         setLayout(new FitLayout());
         setModal(true);

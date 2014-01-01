@@ -62,7 +62,7 @@ public class NewReportPanel extends ContentPanel {
         this.reportSerializer = reportSerializer;
         this.dispatcher = dispatcher;
 
-        setHeading(I18N.CONSTANTS.createNewReport());
+        setHeadingText(I18N.CONSTANTS.createNewReport());
         setLayout(new FitLayout());
 
         store = new ListStore<ReportTemplate>();

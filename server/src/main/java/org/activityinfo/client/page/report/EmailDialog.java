@@ -70,7 +70,7 @@ public class EmailDialog extends Dialog {
 
     public EmailDialog(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
-        setHeading("Email options");
+        setHeadingText("Email options");
         setWidth(450);
         setHeight(250);
 

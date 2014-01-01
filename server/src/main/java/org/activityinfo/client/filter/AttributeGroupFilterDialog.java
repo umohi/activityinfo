@@ -55,7 +55,7 @@ public class AttributeGroupFilterDialog extends Dialog {
     }
 
     private void initializeComponent() {
-        setHeading(I18N.MESSAGES.filterBy(group.getName()));
+        setHeadingText(I18N.MESSAGES.filterBy(group.getName()));
         setIcon(IconImageBundle.ICONS.filter());
         setWidth(250);
         setHeight(350);

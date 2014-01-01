@@ -139,7 +139,7 @@ public class LockedPeriodGrid extends ContentPanel implements
     }
 
     private void initializeComponent() {
-        setHeading(I18N.CONSTANTS.lockPanelTitle());
+        setHeadingText(I18N.CONSTANTS.lockPanelTitle());
         setLayout(new FitLayout());
     }
 
@@ -400,7 +400,7 @@ public class LockedPeriodGrid extends ContentPanel implements
     public void startCreate() {
         addLockedPeriod.startCreate();
         form = new FormDialogImpl<AddLockedPeriodDialog>(addLockedPeriod);
-        form.setHeading(I18N.CONSTANTS.addTimeLock());
+        form.setHeadingText(I18N.CONSTANTS.addTimeLock());
         form.setWidth(400);
         form.setHeight(350);
 
@@ -520,6 +520,6 @@ public class LockedPeriodGrid extends ContentPanel implements
 
     @Override
     public void setTitle(String title) {
-        setHeading(title);
+        setHeadingText(title);
     }
 }

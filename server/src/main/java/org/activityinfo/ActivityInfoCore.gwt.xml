@@ -22,10 +22,10 @@
 
 <module rename-to="ActivityInfo">
 
-    <!-- Inherit the core Web Toolkit stuff.                        -->
+  <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User' />
-  <stylesheet src="gxt224/css/gxt-all.css" />
-    <!-- Inherit additional dependencies  -->
+
+  <!-- Inherit additional dependencies  -->
   <inherits name='com.google.gwt.inject.Inject' />
   <inherits name="com.google.gwt.i18n.I18N" />
   <inherits name="com.google.gson.Gson" />

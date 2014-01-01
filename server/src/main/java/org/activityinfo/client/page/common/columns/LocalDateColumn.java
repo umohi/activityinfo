@@ -41,7 +41,7 @@ public class LocalDateColumn extends ReadTextColumn {
         super(property, header, width);
 
         setId(property);
-        setHeader(header);
+        setHeaderText(header);
         setWidth(width);
         setRowHeader(true);
         setRenderer(new GridCellRenderer<ModelData>() {

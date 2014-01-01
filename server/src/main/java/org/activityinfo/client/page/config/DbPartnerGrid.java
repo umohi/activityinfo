@@ -66,7 +66,7 @@ public class DbPartnerGrid extends
     public void init(DbPartnerEditor editor, UserDatabaseDTO db,
         ListStore<PartnerDTO> store) {
         super.init(editor, store);
-        this.setHeading(db.getName() + " - " + messages.partners());
+        this.setHeadingText(db.getName() + " - " + messages.partners());
 
     }
 
@@ -107,7 +107,7 @@ public class DbPartnerGrid extends
         FormDialogImpl dlg = new FormDialogImpl(form);
         dlg.setWidth(450);
         dlg.setHeight(300);
-        dlg.setHeading(messages.newPartner());
+        dlg.setHeadingText(messages.newPartner());
 
         dlg.show(callback);
 

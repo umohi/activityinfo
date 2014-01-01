@@ -133,7 +133,7 @@ public class PivotTableEditor extends LayoutContainer implements
 
         gridPanel = new PivotGridPanel();
         gridPanel.setHeaderVisible(true);
-        gridPanel.setHeading(I18N.CONSTANTS.preview());
+        gridPanel.setHeadingText(I18N.CONSTANTS.preview());
 
         center.add(gridPanel, new BorderLayoutData(
             Style.LayoutRegion.CENTER));

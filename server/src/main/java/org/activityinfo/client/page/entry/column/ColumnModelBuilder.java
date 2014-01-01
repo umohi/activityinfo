@@ -122,7 +122,7 @@ public class ColumnModelBuilder {
     public void createGeographyColumn(ActivityDTO activity) {
         if (activity.getDatabase().isViewAllAllowed()) {
             ColumnConfig columnGeography = new ColumnConfig();
-            columnGeography.setHeader(I18N.CONSTANTS.geography());
+            columnGeography.setHeaderText(I18N.CONSTANTS.geography());
             columnGeography.setWidth(100);
             columns.add(columnGeography);
         }

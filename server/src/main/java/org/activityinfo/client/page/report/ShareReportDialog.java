@@ -77,7 +77,7 @@ public class ShareReportDialog extends Dialog {
     public ShareReportDialog(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
 
-        setHeading(I18N.CONSTANTS.shareReport());
+        setHeadingText(I18N.CONSTANTS.shareReport());
         setWidth(450);
         setHeight(350);
         setButtons(Dialog.OKCANCEL);

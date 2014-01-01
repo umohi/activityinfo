@@ -69,7 +69,7 @@ public class SearchFilterView extends ContentPanel {
 
         SearchResources.INSTANCE.searchStyles().ensureInjected();
         setStylePrimaryName("filterView");
-        setHeading(I18N.CONSTANTS.showingSearchResultFor());
+        setHeadingText(I18N.CONSTANTS.showingSearchResultFor());
         setHeight(350);
         // setStyleAttribute("height", "auto");
         // setHeight("auto");

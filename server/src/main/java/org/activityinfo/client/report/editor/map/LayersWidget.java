@@ -158,7 +158,7 @@ public final class LayersWidget extends LayoutContainer implements
         layersPanel = new ContentPanel();
         layersPanel.setCollapsible(false);
         layersPanel.setFrame(true);
-        layersPanel.setHeading(I18N.CONSTANTS.layers());
+        layersPanel.setHeadingText(I18N.CONSTANTS.layers());
         layersPanel.setBodyBorder(false);
         layersPanel.setHeaderVisible(true);
         layersPanel.setIcon(AbstractImagePrototype.create(MapResources.INSTANCE

@@ -83,7 +83,7 @@ public class BaseMapDialog extends Dialog {
     private void initializeComponent() {
         setWidth(675);
         setHeight(400);
-        setHeading(I18N.CONSTANTS.basemap());
+        setHeadingText(I18N.CONSTANTS.basemap());
         setLayout(new FitLayout());
         addStyleName("basemap-dlg");
         setBodyBorder(false);

@@ -109,7 +109,7 @@ public class LayerFilterPanel extends ContentPanel implements HasValue<Filter> {
     }
 
     private void initializeComponent() {
-        setHeading(I18N.CONSTANTS.filter());
+        setHeadingText(I18N.CONSTANTS.filter());
         setIcon(IconImageBundle.ICONS.filter());
     }
 

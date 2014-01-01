@@ -55,11 +55,11 @@ public class WarningBar extends LayoutContainer {
     }
 
     public String getWarning() {
-        return labelMessage.getText();
+        return (String) labelMessage.getValue();
     }
 
     public void setWarning(String message) {
-        labelMessage.setText(message);
+        labelMessage.setValue(message);
     }
 
 }

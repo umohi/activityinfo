@@ -40,7 +40,7 @@ public class GoogleEarthPortlet extends Portlet {
     public static final Templates TEMPLATES = GWT.create(Templates.class);
 
     public GoogleEarthPortlet() {
-        setHeading("Google Earth");
+        setHeadingText("Google Earth");
         setLayout(new FitLayout());
         add(new Html(TEMPLATES.googleEarthText().getText()));
 

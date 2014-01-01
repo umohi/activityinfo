@@ -78,9 +78,9 @@ public class ElementDialog extends Dialog implements
         setWidth((int) (Window.getClientWidth() * 0.90));
         setHeight((int) (Window.getClientHeight() * 0.90));
         if (element.getTitle() == null) {
-            setHeading("New Report Element");
+            setHeadingText("New Report Element");
         } else {
-            setHeading(element.getTitle());
+            setHeadingText(element.getTitle());
         }
 
         removeAll();

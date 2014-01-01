@@ -60,7 +60,7 @@ public class ActivityFilterPanel extends ContentPanel implements FilterPanel {
 
     public ActivityFilterPanel(Dispatcher dispatcher) {
 
-        setHeading(I18N.CONSTANTS.activities());
+        setHeadingHtml(I18N.CONSTANTS.activities());
         setLayout(new FitLayout());
 
         tree = new LinkTreePanel(new TreeProxy(dispatcher), "activityFilter");

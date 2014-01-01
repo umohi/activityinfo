@@ -72,7 +72,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
     public MonthlyReportsPanel(Dispatcher service) {
         this.service = service;
 
-        setHeading(I18N.CONSTANTS.monthlyReports());
+        setHeadingText(I18N.CONSTANTS.monthlyReports());
         setIcon(IconImageBundle.ICONS.table());
         setLayout(new FitLayout());
 

@@ -97,7 +97,7 @@ public class PreviewGridPage extends WizardPage {
         header.append("<br><b>");
         header.append(columnModel.getBinding().getLabel());
         header.append("</b>");
-        gridColumnModel.setHeader(header.toString());
+        gridColumnModel.setHeaderText(header.toString());
         grid.getView().getHeader().refresh();
     }
 }

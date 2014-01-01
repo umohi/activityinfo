@@ -136,7 +136,7 @@ public class DesignView extends
         this.db = db;
 
         setLayout(new BorderLayout());
-        setHeading(I18N.CONSTANTS.design() + " - " + db.getName());
+        setHeadingText(I18N.CONSTANTS.design() + " - " + db.getName());
         setIcon(IconImageBundle.ICONS.design());
 
         super.init(presenter, store);
@@ -412,13 +412,13 @@ public class DesignView extends
         dlg.setScrollMode(Style.Scroll.AUTOY);
 
         if (entity instanceof ActivityDTO) {
-            dlg.setHeading(I18N.CONSTANTS.newActivity());
+            dlg.setHeadingText(I18N.CONSTANTS.newActivity());
         } else if (entity instanceof AttributeGroupDTO) {
-            dlg.setHeading(I18N.CONSTANTS.newAttributeGroup());
+            dlg.setHeadingText(I18N.CONSTANTS.newAttributeGroup());
         } else if (entity instanceof AttributeDTO) {
-            dlg.setHeading(I18N.CONSTANTS.newAttribute());
+            dlg.setHeadingText(I18N.CONSTANTS.newAttribute());
         } else if (entity instanceof IndicatorDTO) {
-            dlg.setHeading(I18N.CONSTANTS.newIndicator());
+            dlg.setHeadingText(I18N.CONSTANTS.newIndicator());
         }
 
         dlg.show(callback);

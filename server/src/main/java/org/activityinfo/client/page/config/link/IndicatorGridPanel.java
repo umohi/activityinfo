@@ -177,7 +177,7 @@ public class IndicatorGridPanel extends ContentPanel {
     }
 
     public void setDatabase(UserDatabaseDTO db) {
-        setHeading(db.getName());
+        setHeadingText(db.getName());
         store.removeAll();
         for (ActivityDTO activity : db.getActivities()) {
             store.add(activity);

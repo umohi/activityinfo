@@ -47,7 +47,7 @@ public class IncompatibleRemoteDialog extends Dialog implements
     public IncompatibleRemoteDialog() {
         appCache = AppCacheFactory.get();
 
-        setHeading(I18N.CONSTANTS.newVersion());
+        setHeadingText(I18N.CONSTANTS.newVersion());
         setModal(true);
         setBodyStyle("padding: 15px");
         add(new Text(I18N.CONSTANTS.newVersionPrompt()));

@@ -59,7 +59,7 @@ public class NavigationPanel extends ContentPanel {
     public NavigationPanel(final EventBus eventBus, final Navigator navigator) {
         this.eventBus = eventBus;
 
-        this.setHeading(navigator.getHeading());
+        this.setHeadingText(navigator.getHeading());
         this.setScrollMode(Scroll.NONE);
         this.setLayout(new FitLayout());
 

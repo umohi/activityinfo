@@ -53,7 +53,7 @@ public class PivotFilterPanel extends ContentPanel implements
         this.reportEventBus = new ReportEventBus(eventBus, this);
 
         setLayout(new AccordionLayout());
-        setHeading(I18N.CONSTANTS.filter());
+        setHeadingText(I18N.CONSTANTS.filter());
 
         IndicatorFilterPanel indicatorPanel = new IndicatorFilterPanel(dispatcher, true);
         indicatorPanel.setHeaderVisible(true);

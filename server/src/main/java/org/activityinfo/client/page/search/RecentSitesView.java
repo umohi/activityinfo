@@ -58,7 +58,7 @@ public class RecentSitesView extends ContentPanel {
     }
 
     private void initializeComponent() {
-        setHeading(I18N.MESSAGES.recentlyEditedSites("10"));
+        setHeadingText(I18N.MESSAGES.recentlyEditedSites("10"));
         VBoxLayout vboxLayout = new VBoxLayout();
         vboxLayout.setVBoxLayoutAlign(VBoxLayoutAlign.STRETCH);
         vboxLayout.setPadding(new Padding(5));

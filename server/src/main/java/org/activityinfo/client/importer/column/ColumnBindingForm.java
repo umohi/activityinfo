@@ -54,7 +54,7 @@ public class ColumnBindingForm extends ContentPanel {
 
         setScrollMode(Scroll.AUTOY);
         setLayout(new FlowLayout());
-        setHeading("What does this column contain?");
+        setHeadingText("What does this column contain?");
         setWidth(350);
         add(radioGroup);
     }
@@ -67,7 +67,7 @@ public class ColumnBindingForm extends ContentPanel {
     public void showColumnConfig(int columnIndex) {
         selectedColumn = model.getData().getColumns().get(columnIndex);
         
-        setHeading(selectedColumn.getHeader());
+        setHeadingText(selectedColumn.getHeader());
         
         radioGroup.setValue( radioMap.get(selectedColumn.getBinding()) );
     }

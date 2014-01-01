@@ -141,7 +141,7 @@ public class MapEditor extends ContentPanel implements
     protected void createMap() {
 
         mapPanel = new MapEditorMapView(dispatcher, eventBus);
-        mapPanel.setHeading(I18N.CONSTANTS.preview());
+        mapPanel.setHeadingText(I18N.CONSTANTS.preview());
         mapPanel.setZoomControlOffsetX(ZOOM_CONTROL_LEFT_MARGIN);
 
         AbsoluteData layout = new AbsoluteData();

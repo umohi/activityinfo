@@ -90,7 +90,7 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
         layout.setHBoxLayoutAlign(HBoxLayoutAlign.STRETCH);
         layout.setPadding(new Padding(10, 5, 5, 5));
         setLayout(layout);
-        setHeading(I18N.CONSTANTS.linkIndicators());
+        setHeadingText(I18N.CONSTANTS.linkIndicators());
 
         addSourceContainer();
         addGalley();
@@ -197,7 +197,7 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
         new Html("");
 
         sourceDatabaseGrid = new DatabaseGridPanel(dispatcher);
-        sourceDatabaseGrid.setHeading("Source Database");
+        sourceDatabaseGrid.setHeadingText("Source Database");
         container.add(sourceDatabaseGrid, vflex(3));
 
         sourceIndicatorGrid = new IndicatorGridPanel();
@@ -243,7 +243,7 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
         LayoutContainer container = createContainer();
 
         destDatabaseGrid = new DatabaseGridPanel(dispatcher);
-        destDatabaseGrid.setHeading("Destination Database");
+        destDatabaseGrid.setHeadingText("Destination Database");
         container.add(destDatabaseGrid, vflex(3));
 
         destIndicatorGrid = new IndicatorGridPanel();

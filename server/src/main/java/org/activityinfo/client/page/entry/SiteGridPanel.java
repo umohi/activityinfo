@@ -70,7 +70,7 @@ public final class SiteGridPanel extends ContentPanel {
         this.dispatcher = dispatcher;
         this.columnModelProvider = columnModelProvider;
 
-        setHeading(I18N.CONSTANTS.sitesHeader());
+        setHeadingText(I18N.CONSTANTS.sitesHeader());
         setIcon(IconImageBundle.ICONS.table());
         setLayout(new FitLayout());
     }
@@ -95,7 +95,7 @@ public final class SiteGridPanel extends ContentPanel {
     }
 
     private void updateHeading(final Filter filter) {
-        setHeading(I18N.CONSTANTS.sitesHeader());
+        setHeadingText(I18N.CONSTANTS.sitesHeader());
 
         dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
 
@@ -112,14 +112,14 @@ public final class SiteGridPanel extends ContentPanel {
                     int activityId = filter
                         .getRestrictedCategory(DimensionType.Activity);
                     ActivityDTO activity = result.getActivityById(activityId);
-                    setHeading(activity.getDatabase().getName() + " - "
+                    setHeadingText(activity.getDatabase().getName() + " - "
                         + activity.getName());
                 } else if (filter
                     .isDimensionRestrictedToSingleCategory(DimensionType.Database)) {
                     int databaseId = filter
                         .getRestrictedCategory(DimensionType.Database);
                     UserDatabaseDTO db = result.getDatabaseById(databaseId);
-                    setHeading(db.getName());
+                    setHeadingText(db.getName());
                 }
             }
         });

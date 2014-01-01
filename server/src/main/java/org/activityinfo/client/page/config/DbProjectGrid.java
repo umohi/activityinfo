@@ -92,7 +92,7 @@ public class DbProjectGrid extends
     public void init(DbProjectEditor editor, UserDatabaseDTO db,
         ListStore<ProjectDTO> store) {
         super.init(editor, store);
-        this.setHeading(I18N.MESSAGES.projectsForDatabase(db.getName()));
+        this.setHeadingText(I18N.MESSAGES.projectsForDatabase(db.getName()));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class DbProjectGrid extends
         FormDialogImpl<ProjectForm> dlg = new FormDialogImpl<ProjectForm>(form);
         dlg.setWidth(450);
         dlg.setHeight(300);
-        dlg.setHeading(messages.createProject());
+        dlg.setHeadingText(messages.createProject());
 
         dlg.show(callback);
 
