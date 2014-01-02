@@ -2,11 +2,11 @@ package org.activityinfo.ui.core.client.storage;
 
 import com.google.gwt.storage.client.Storage;
 
-public class LocalKeyValueStorage implements KeyValueStorage {
+public class LocalKeyValueStore implements KeyValueStore {
 
     private final Storage storage;
 
-    public LocalKeyValueStorage(Storage storage) {
+    public LocalKeyValueStore(Storage storage) {
         super();
         this.storage = storage;
     }

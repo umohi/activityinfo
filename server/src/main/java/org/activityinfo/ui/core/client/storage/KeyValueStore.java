@@ -5,7 +5,7 @@ package org.activityinfo.ui.core.client.storage;
  * from HTML5. Can be decorated to carve out subdomains for individual
  * users using prefixes.
  */
-public interface KeyValueStorage {
+public interface KeyValueStore {
 
     /**
      * Returns the item in the Storage associated with the specified key.

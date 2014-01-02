@@ -3,11 +3,7 @@ package org.activityinfo.ui.core.client;
 import org.activityinfo.ui.core.client.model.ModelFactory;
 import org.activityinfo.ui.core.client.places.DesktopPlaceHistoryMapper;
 import org.activityinfo.ui.core.client.resources.DatabaseIndex;
-import org.activityinfo.ui.core.client.storage.HashMapKeyValueStorage;
-import org.activityinfo.ui.core.client.storage.KeyValueStorage;
-import org.activityinfo.ui.core.client.storage.LocalKeyValueStorage;
-import org.fusesource.restygwt.client.Resource;
-import org.fusesource.restygwt.client.RestServiceProxy;
+import org.activityinfo.ui.core.client.storage.Cache;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -21,16 +17,13 @@ public class ClientFactoryImpl implements ClientFactory {
     private final PlaceController placeController = new PlaceController(eventBus);
     private PlaceHistoryMapper placeHistoryMapper = GWT.create(DesktopPlaceHistoryMapper.class);
     private ModelFactory beanFactory = GWT.create(ModelFactory.class);
+    private AuthenticationController authController = new AuthenticationController();
     
-    private KeyValueStorage storage;
+    private Cache cache = new Cache(authController);
     private DatabaseIndex databaseIndex;
     
     public ClientFactoryImpl() {
-        if(Storage.isLocalStorageSupported()) {
-            storage = new LocalKeyValueStorage(Storage.getLocalStorageIfSupported());
-        } else {
-            storage = new HashMapKeyValueStorage();
-        }
+       
     }
 
     @Override
@@ -51,7 +44,7 @@ public class ClientFactoryImpl implements ClientFactory {
     @Override
     public DatabaseIndex getDatabaseIndex() {
         if(databaseIndex == null) {
-            databaseIndex = new DatabaseIndex(beanFactory, storage);
+            databaseIndex = new DatabaseIndex(beanFactory, cache);
         }
         return databaseIndex;
     }

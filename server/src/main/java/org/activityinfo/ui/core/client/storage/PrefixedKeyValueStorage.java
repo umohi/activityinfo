@@ -1,17 +1,19 @@
 package org.activityinfo.ui.core.client.storage;
 
+import com.google.common.base.Supplier;
+
 /**
  * Key/Value storage for a specific user.
  */
-public class UserKeyValueStorage implements KeyValueStorage {
+public class PrefixedKeyValueStorage implements KeyValueStore {
 
-    private int userId;
-    private KeyValueStorage storage;
+    private KeyValueStore storage;
+    private Supplier<String> prefixSupplier;
     
-    public UserKeyValueStorage(int userId, KeyValueStorage storage) {
+    public PrefixedKeyValueStorage(KeyValueStore storage, Supplier<String> prefixSupplier) {
         super();
-        this.userId = userId;
         this.storage = storage;
+        this.prefixSupplier = prefixSupplier;
     }
 
     @Override
@@ -30,6 +32,6 @@ public class UserKeyValueStorage implements KeyValueStorage {
     }
     
     private String decorateKey(String key) {
-        return "u" + userId + "." + key;
+        return prefixSupplier.get() + "." + key;
     }
 }

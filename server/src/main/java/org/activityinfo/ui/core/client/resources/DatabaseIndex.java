@@ -2,11 +2,11 @@ package org.activityinfo.ui.core.client.resources;
 
 import java.util.Date;
 
-import org.activityinfo.ui.core.client.model.ModelFactory;
 import org.activityinfo.ui.core.client.model.DatabaseItem;
 import org.activityinfo.ui.core.client.model.DatabaseItemList;
+import org.activityinfo.ui.core.client.model.ModelFactory;
 import org.activityinfo.ui.core.client.model.ModelList;
-import org.activityinfo.ui.core.client.storage.KeyValueStorage;
+import org.activityinfo.ui.core.client.storage.Cache;
 
 import com.google.common.base.Strings;
 import com.google.gwt.http.client.Request;
@@ -29,18 +29,18 @@ public class DatabaseIndex extends Resource<ModelList<DatabaseItem>> {
     
     private static final long CACHE_MAX_AGE = 60 * 60 * 1000; 
     
-    private KeyValueStorage storage;
+    private Cache cache;
     private ModelFactory modelFactory;
     
-    public DatabaseIndex(ModelFactory modelFactory, KeyValueStorage storage) {
+    public DatabaseIndex(ModelFactory modelFactory, Cache cache) {
         super();
-        this.storage = storage;
+        this.cache = cache;
         this.modelFactory = modelFactory;
     }
 
     @Override
     public void get(AsyncCallback<ModelList<DatabaseItem>> callback) {
-        String cached = storage.getItem(CACHE_KEY);
+        String cached = cache.getUserStore().getItem(CACHE_KEY);
         if(!Strings.isNullOrEmpty(cached)) {
             AutoBean<DatabaseItemList> list = AutoBeanCodex.decode(modelFactory, DatabaseItemList.class, cached);
             callback.onSuccess(list.as());
@@ -48,7 +48,6 @@ public class DatabaseIndex extends Resource<ModelList<DatabaseItem>> {
             forceRefresh(callback);
         }
     }
-    
     
     @Override
     public void forceRefresh(final AsyncCallback<ModelList<DatabaseItem>> callback) {
@@ -59,7 +58,7 @@ public class DatabaseIndex extends Resource<ModelList<DatabaseItem>> {
             public void onResponseReceived(Request request, Response response) {
                 try {
                     String json = "{ \"lastSyncedTime\":" + new Date().getTime() + ", \"items\": " + response.getText() + "}";
-                    storage.setItem(CACHE_KEY, json);
+                    cache.getUserStore().setItem(CACHE_KEY, json);
                     AutoBean<DatabaseItemList> list = AutoBeanCodex.decode(modelFactory, DatabaseItemList.class, json);
                     callback.onSuccess(list.as());            
                 } catch(Exception parseException) {
@@ -80,6 +79,6 @@ public class DatabaseIndex extends Resource<ModelList<DatabaseItem>> {
     }    
     
     public SchemaResource getSchema(int databaseId) {
-        return new SchemaResource(databaseId, modelFactory, storage);
+        return new SchemaResource(databaseId, modelFactory, cache);
     }
 }

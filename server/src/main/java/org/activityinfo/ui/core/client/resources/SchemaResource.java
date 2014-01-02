@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.activityinfo.ui.core.client.model.ModelFactory;
 import org.activityinfo.ui.core.client.model.SchemaModel;
-import org.activityinfo.ui.core.client.storage.KeyValueStorage;
+import org.activityinfo.ui.core.client.storage.Cache;
 
 import com.google.common.base.Strings;
 import com.google.gwt.http.client.Request;
@@ -18,24 +18,24 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 public class SchemaResource extends Resource<SchemaModel> {
     
     private final int databaseId;
-    private final KeyValueStorage storage;
+    private final Cache cache;
     private final ModelFactory modelFactory;
 
-    public SchemaResource(int databaseId, ModelFactory modelFactory, KeyValueStorage storage) {
+    public SchemaResource(int databaseId, ModelFactory modelFactory, Cache cache) {
         super();
         this.databaseId = databaseId;
         this.modelFactory = modelFactory;
-        this.storage = storage;
+        this.cache = cache;
     }
 
     @Override 
     public void get(AsyncCallback<SchemaModel> callback) {
-        String cached = storage.getItem(cacheKey());
+        String cached = cache.getUserStore().getItem(cacheKey());
         if(Strings.isNullOrEmpty(cached)) {
             forceRefresh(callback);            
         } else {
             SchemaModel schema = decode(cached);
-            schema.setLastSyncedTime(Long.parseLong(storage.getItem(cacheTimeKey())));
+            schema.setLastSyncedTime(Long.parseLong(cache.getUserStore().getItem(cacheTimeKey())));
             callback.onSuccess(schema);
         }
     }
@@ -51,8 +51,8 @@ public class SchemaResource extends Resource<SchemaModel> {
                     // record the time we got fresh data from the server
                     long syncTime = new Date().getTime();
 
-                    storage.setItem(cacheKey(), response.getText());
-                    storage.setItem(cacheTimeKey(), Long.toString(syncTime));
+                    cache.getUserStore().setItem(cacheKey(), response.getText());
+                    cache.getUserStore().setItem(cacheTimeKey(), Long.toString(syncTime));
 
                     // build entity and return
                     SchemaModel model = decode(response.getText()); 

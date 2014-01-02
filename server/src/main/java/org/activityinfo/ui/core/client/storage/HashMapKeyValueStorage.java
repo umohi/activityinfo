@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public class HashMapKeyValueStorage implements KeyValueStorage {
+public class HashMapKeyValueStorage implements KeyValueStore {
 
     private Map<String, String> map = Maps.newHashMap();
     

@@ -10,4 +10,6 @@ public interface EditorStylesheet extends Stylesheet {
     public static final EditorStylesheet INSTANCE = GWT.create(EditorStylesheet.class);
     
     String editable();
+    
+    String editableValue();
 }
