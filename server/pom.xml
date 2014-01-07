@@ -555,7 +555,7 @@
               <goal>compile</goal>
             </goals>
             <configuration>
-              <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+              <extraJvmArgs>-Xmx4048M -Xss1024k</extraJvmArgs>
               <logLevel>INFO</logLevel>
               <compileReport>true</compileReport>
               <modules>
