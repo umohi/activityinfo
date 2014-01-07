@@ -531,7 +531,7 @@
           <port>9090</port>
           <webappDirectory>${basedir}/war</webappDirectory>
           <warSourceDirectory>${basedir}/war</warSourceDirectory>
-          <extraJvmArgs>-Xmx512M -Xss1M</extraJvmArgs>
+          <extraJvmArgs>-Xmx2048M -Xss1M</extraJvmArgs>
           <hostedWebapp>war</hostedWebapp>
         </configuration>
 
