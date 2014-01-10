@@ -3,13 +3,17 @@ package org.activityinfo.ui.desktop.client.home;
 import org.activityinfo.ui.core.client.ClientFactory;
 import org.activityinfo.ui.core.client.model.DatabaseItem;
 import org.activityinfo.ui.core.client.model.ModelList;
+import org.activityinfo.ui.desktop.client.widget.editor.ModalDialog;
 import org.activityinfo.ui.desktop.client.widget.resources.HasResource;
 import org.activityinfo.ui.desktop.client.widget.resources.ListResourcePanel;
 import org.activityinfo.ui.desktop.client.widget.resources.SimpleCellList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,6 +28,8 @@ public class HomeView extends Composite {
 
     @UiField(provided=true)
     Widget databaseList;
+    
+    @UiField Anchor newDatabaseLink;
        
     public HomeView(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
@@ -35,5 +41,11 @@ public class HomeView extends Composite {
         this.databaseList = panel;
         
         initWidget(uiBinder.createAndBindUi(this));
+    }
+    
+    @UiHandler("newDatabaseLink")
+    public void onNewDatabaseClick(ClickEvent event) {
+    	ModalDialog dialog = new ModalDialog();
+    	dialog.show();
     }
 }

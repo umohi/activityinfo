@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui">
+  <ui:style>
+    .important {
+    	font-weight: bold;
+    }
+  </ui:style>
+  <ui:with field='b' type='com.bedatadriven.rebar.bootstrap.client.Bootstrap'/>
+  
+  <g:HTMLPanel>
+      <div class="{b.modalDialog}">
+        <div class="{b.modalContent}">
+          <div class="{b.modalHeader}">
+            <button type="button" class="{b.close}" aria-hidden="true">&times;</button>
+            <h4 class="{b.modalTitle}">Modal title</h4>
+          </div>
+          <div class="{b.modalBody}">
+            <p>One fine body&hellip;</p>
+          </div>
+          <div class="{b.modalFooter}">
+            <button type="button" class="{b.btn} {b.btnDefault}">Close</button>
+            <button type="button" class="{b.btn} {b.btnPrimary}">Save changes</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </g:HTMLPanel>
+</ui:UiBinder> 

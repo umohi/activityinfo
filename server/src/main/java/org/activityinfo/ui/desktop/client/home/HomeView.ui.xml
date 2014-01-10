@@ -16,6 +16,9 @@
       </div>
       <div class="{b.colMd4}">
         <h2>Help</h2>   
+        
+        <g:Anchor ui:field="newDatabaseLink" styleName="{b.btn}" text="Create a new database"/>
+        
       </div>
   </div>
   </g:HTMLPanel>
