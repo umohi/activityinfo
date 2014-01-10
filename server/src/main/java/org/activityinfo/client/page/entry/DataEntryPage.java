@@ -30,7 +30,7 @@ import org.activityinfo.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.client.event.NavigationEvent;
 import org.activityinfo.client.i18n.I18N;
 import org.activityinfo.client.icon.IconImageBundle;
-import org.activityinfo.client.importer.ImporterWizard;
+import org.activityinfo.client.importer.SiteImporterWizard;
 import org.activityinfo.client.page.NavigationCallback;
 import org.activityinfo.client.page.NavigationHandler;
 import org.activityinfo.client.page.Page;
@@ -212,7 +212,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
 
         toolBar.add(new SeparatorToolItem());
 
-        toolBar.addButton("IMPORT", "Import", IconImageBundle.ICONS.importIcon());
+       //toolBar.addImportButton();
         toolBar.addExcelExportButton();
 
         toolBar.addPrintButton();
@@ -438,12 +438,12 @@ public class DataEntryPage extends LayoutContainer implements Page,
 
             @Override
             public void onSuccess(SchemaDTO result) {
-                Wizard wizard = new ImporterWizard(dispatcher, result.getActivityById(activityId));
-                WizardDialog dialog = new WizardDialog(wizard);
-                dialog.show(new WizardCallback() {
-                    
-                    
-                });
+//                Wizard wizard = new SiteImporterWizard(dispatcher, result.getActivityById(activityId));
+//                WizardDialog dialog = new WizardDialog(wizard);
+//                dialog.show(new WizardCallback() {
+//                    
+//                    
+//                });
             }
             
         });

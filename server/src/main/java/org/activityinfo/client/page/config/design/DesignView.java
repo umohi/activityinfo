@@ -235,8 +235,9 @@ public class DesignView extends
         toolBar.addDeleteButton();
         
         toolBar.add(new SeparatorToolItem());
+        
+        toolBar.addImportButton();
         toolBar.addExcelExportButton();
-
 
     }
 

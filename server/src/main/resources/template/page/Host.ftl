@@ -20,7 +20,7 @@
  #L%
 -->
 <#-- @ftlvariable name="" type="org.activityinfo.server.bootstrap.model.HostPageModel" -->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <#if appCacheEnabled>
 <html manifest="ActivityInfo/ActivityInfo.appcache">
 <#else>

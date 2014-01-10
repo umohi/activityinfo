@@ -285,4 +285,7 @@ public interface UIMessages extends com.google.gwt.i18n.client.Messages {
 
     @DefaultMessage("{0} update(s) on {1,date,dd-MM-yyyy}")
     String activityDigestGraphTooltip(int updates, Date date);
+
+    @DefaultMessage("Set all rows to ''{0}''")
+    String updateAllRowsTo(String value);
 }

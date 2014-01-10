@@ -68,4 +68,5 @@ public final class UIActions {
 
     public static final String ADDTABLE = "addTable";
 
+    public static final String IMPORT = "import";
 }
