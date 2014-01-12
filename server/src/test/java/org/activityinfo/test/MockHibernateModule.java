@@ -75,6 +75,7 @@ public class MockHibernateModule extends AbstractModule {
         return validatorFactory.getValidator();
     }
 
+    
     protected void configureEmf() {
         bind(EntityManagerFactory.class).toProvider(
             new Provider<EntityManagerFactory>() {
@@ -85,27 +86,8 @@ public class MockHibernateModule extends AbstractModule {
                     // need to restart hibernate for each test class, and we
                     // save quite a bit of time
                     if (emf == null) {
-                        Ejb3Configuration config = new Ejb3Configuration();
-                        config.setProperty("hibernate.dialect",
-                            "org.hibernate.spatial.dialect.mysql.MySQLSpatialInnoDBDialect");
-                        config.setProperty("hibernate.connection.driver_class",
-                            "com.mysql.jdbc.Driver");
-                        config.setProperty("hibernate.connection.url",
-                            TestConnectionProvider.URL);
-                        config.setProperty("hibernate.connection.username",
-                            TestConnectionProvider.USERNAME);
-                        config.setProperty("hibernate.connection.password",
-                            TestConnectionProvider.PASSWORD);
-                        config.setProperty("hibernate.hbm2ddl.auto", "none");
-                        config.setProperty("hibernate.show_sql", "true");
-                        config.setProperty("hibernate.connection.pool_size", "0");
-                        config.setNamingStrategy(new AINamingStrategy());
-                        for (Class clazz : HibernateModule
-                            .getPersistentClasses()) {
-                            config.addAnnotatedClass(clazz);
-                        }
-
-                        emf = config.buildEntityManagerFactory();
+                       
+                        emf = createEmf();
 
                         System.err
                             .println("GUICE: EntityManagerFACTORY created");
@@ -114,5 +96,28 @@ public class MockHibernateModule extends AbstractModule {
                 }
             }).in(Singleton.class);
     }
+
+	public EntityManagerFactory createEmf() {
+		Ejb3Configuration config = new Ejb3Configuration();
+		config.setProperty("hibernate.dialect",
+		    "org.hibernate.spatial.dialect.mysql.MySQLSpatialInnoDBDialect");
+		config.setProperty("hibernate.connection.driver_class",
+		    "com.mysql.jdbc.Driver");
+		config.setProperty("hibernate.connection.url",
+		    TestConnectionProvider.URL);
+		config.setProperty("hibernate.connection.username",
+		    TestConnectionProvider.USERNAME);
+		config.setProperty("hibernate.connection.password",
+		    TestConnectionProvider.PASSWORD);
+		config.setProperty("hibernate.hbm2ddl.auto", "none");
+		config.setProperty("hibernate.show_sql", "true");
+		config.setProperty("hibernate.connection.pool_size", "0");
+		config.setNamingStrategy(new AINamingStrategy());
+		for (Class clazz : HibernateModule
+		    .getPersistentClasses()) {
+		    config.addAnnotatedClass(clazz);
+		}
+		return config.buildEntityManagerFactory();
+	}
 
 }
