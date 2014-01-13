@@ -2,7 +2,7 @@ package org.activityinfo.client.importer.page;
 
 import org.activityinfo.client.importer.binding.ImportModel;
 import org.activityinfo.client.importer.binding.ImportedColumnBinding;
-import org.activityinfo.client.importer.binding.Property;
+import org.activityinfo.client.importer.ont.DataTypeProperty;
 import org.activityinfo.client.importer.page.ColumnSelectionChangedEvent.Handler;
 
 import com.google.gwt.core.client.GWT;
@@ -61,10 +61,10 @@ public class ColumnMappingPage<T> extends ResizeComposite {
 			}
 		});
 		
-		propertyChooser.addValueChangeHandler(new ValueChangeHandler<Property<T, ?>>() {
+		propertyChooser.addValueChangeHandler(new ValueChangeHandler<DataTypeProperty<T, ?>>() {
 
 			@Override
-			public void onValueChange(ValueChangeEvent<Property<T, ?>> event) {
+			public void onValueChange(ValueChangeEvent<DataTypeProperty<T, ?>> event) {
 				updateColumnMapping(event.getValue());
 			}
 		});
@@ -84,10 +84,10 @@ public class ColumnMappingPage<T> extends ResizeComposite {
 		columnChooserHeader.setInnerText(importModel.getSource().getColumnHeader(selectedColumnIndex));
 	}
 
-	private void updateColumnMapping(Property<T, ?> property) {
+	private void updateColumnMapping(DataTypeProperty<T, ?> property) {
 		
 		if(property == null) {
-			Property<T, ?> oldProperty = importModel.propertyForColumn(selectedColumnIndex);
+			DataTypeProperty<T, ?> oldProperty = importModel.propertyForColumn(selectedColumnIndex);
 			if(oldProperty != null) {
 				importModel.clearColumnBinding(oldProperty);
 			}

@@ -204,6 +204,14 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
     public void setCategory(String category) {
         set("category", category);
     }
+    
+    public int getActivityId() {
+    	return get("activityId");
+    }
+    
+    public void setActivityId(int id) {
+    	set("activityId", id);
+    }
 
     /**
      * 

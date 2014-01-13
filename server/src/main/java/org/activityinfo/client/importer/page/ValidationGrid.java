@@ -6,7 +6,7 @@ import org.activityinfo.client.importer.binding.ColumnBinding;
 import org.activityinfo.client.importer.binding.ConstantColumnBinding;
 import org.activityinfo.client.importer.binding.DraftModel;
 import org.activityinfo.client.importer.binding.ImportModel;
-import org.activityinfo.client.importer.binding.Property;
+import org.activityinfo.client.importer.ont.DataTypeProperty;
 
 import com.google.common.collect.Maps;
 import com.google.gwt.cell.client.Cell;
@@ -23,11 +23,11 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 
 	private DataGrid<DraftModel<T>> dataGrid;
 	private ImportModel<T> importModel;
-	private Map<Property<T, ?>, PropertyColumn<T>> columns;
+	private Map<DataTypeProperty<T, ?>, PropertyColumn<T>> columns;
 	
 	public ValidationGrid(ImportModel<T> importModel) {
 		this.importModel = importModel;
-		this.dataGrid = new DataGrid<DraftModel<T>>();
+		this.dataGrid = new BootstrapDataGrid<DraftModel<T>>(100);
 		
 		syncColumns();
 		
@@ -39,8 +39,8 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 			dataGrid.removeColumn(0);
 		}
 		columns = Maps.newHashMap();
-		for(Map.Entry<Property<T, ?>, ColumnBinding> binding : importModel.getColumnBindings().entrySet()) {
-			PropertyColumn<T> column = new PropertyColumn<T>(createCell(binding.getKey()));
+		for(Map.Entry<DataTypeProperty<T, ?>, ColumnBinding> binding : importModel.getColumnBindings().entrySet()) {
+			PropertyColumn<T> column = new PropertyColumn<T>(binding.getKey(), createCell(binding.getKey()));
 			column.setBinding(binding.getValue());
 			
 			columns.put(binding.getKey(), column);
@@ -48,7 +48,7 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 		}
 	}
 	
-	private Cell<String> createCell(Property<T, ?> property) {
+	private Cell<String> createCell(DataTypeProperty<T, ?> property) {
 		switch(property.getType()) {
 		case FREE_TEXT:
 			return new EditTextCell();
@@ -66,7 +66,7 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 	}
 
 	@Override
-	public ScheduledCommand setColumnValue(final Property<T, ?> property, final String value) {
+	public ScheduledCommand setColumnValue(final DataTypeProperty<T, ?> property, final String value) {
 		return new ScheduledCommand() {
 			
 			@Override

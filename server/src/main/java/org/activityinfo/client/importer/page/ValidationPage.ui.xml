@@ -5,16 +5,11 @@
   <ui:style>
     
   </ui:style>
-   <g:DockLayoutPanel unit="PX">
-
-    <g:north size="35">
+   <g:HeaderPanel>
       <g:HTMLPanel>
-        <h2>Validate the imported rows</h2>
+        <h3>Validate the imported rows</h3>
         <p>Correct any problems with the imported rows and fill in missing columns</p>
       </g:HTMLPanel>
-    </g:north>
-    <g:center>
-      <a:ValidationGrid ui:field="dataGrid" width="100%" />
-    </g:center>
-  </g:DockLayoutPanel>
-</ui:UiBinder> 
+      <a:ValidationGrid ui:field="dataGrid" width="100%" height="100%"/>   
+   </g:HeaderPanel>
+  </ui:UiBinder> 

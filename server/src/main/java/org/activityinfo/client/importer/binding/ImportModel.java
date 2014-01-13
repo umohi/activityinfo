@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.activityinfo.client.importer.data.ImportSource;
+import org.activityinfo.client.importer.ont.DataTypeProperty;
+import org.activityinfo.client.importer.ont.ModelBinder;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -14,7 +16,7 @@ import com.google.common.collect.Maps;
  */
 public class ImportModel<T> {
 	
-	private Binder<T> binder;
+	private ModelBinder<T> binder;
 	private ImportSource source;
 	private List<DraftModel<T>> models;
 	
@@ -22,17 +24,17 @@ public class ImportModel<T> {
 	/**
 	 * Defines the binding of a property to an imported or user-provided column.
 	 */
-	private Map<Property<T, ?>, ColumnBinding> bindings = Maps.newHashMap();
+	private Map<DataTypeProperty<T, ?>, ColumnBinding> bindings = Maps.newHashMap();
 	
 	
-	public ImportModel(Binder<T> binder) {
+	public ImportModel(ModelBinder<T> binder) {
 		this.binder = binder;
 		bindRequiredProperties();
 	}
 
 	private void bindRequiredProperties() {
 		// create bindings for required properties
-		for(Property<T, ?> property : binder.getProperties()) {
+		for(DataTypeProperty<T, ?> property : binder.getProperties()) {
 			if(property.isRequired()) {
 				bindings.put(property, new ConstantColumnBinding(null));
 			}
@@ -53,9 +55,27 @@ public class ImportModel<T> {
 		if(models == null) {
 			models = Lists.newArrayListWithCapacity(source.getRows().size());
 			for(int i=0;i!=source.getRows().size();++i) {
-				models.add(new DraftModel<T>(binder.createNew(), i));
+				models.add(new DraftModel<T>(i));
 			}
 		}
+		return models;
+	}
+	
+	/**
+	 * Rebinds all draft models to their columns
+	 */
+	public List<T> bind() {
+		List<T> models = Lists.newArrayList();
+		for(DraftModel<T> draftModel : getDraftModels()) {
+			T model = binder.newModel();
+			for(Map.Entry<DataTypeProperty<T, ?>, ColumnBinding> binding : bindings.entrySet() ) {
+				String importedValue = binding.getValue().getValue(draftModel.getRowIndex());
+				if(importedValue != null) {
+					binding.getKey().tryConvertAndUpdate(model, importedValue);
+				}
+			}
+			models.add(model);
+		}	
 		return models;
 	}
 	
@@ -63,19 +83,19 @@ public class ImportModel<T> {
 		return source;
 	}
 	
-	public Binder<T> getBinder() {
+	public ModelBinder<T> getBinder() {
 		return binder;
 	}
 	
-	public Map<Property<T, ?>, ColumnBinding> getColumnBindings() {
+	public Map<DataTypeProperty<T, ?>, ColumnBinding> getColumnBindings() {
 		return bindings;
 	}
 	
-	public void setColumnBinding(Property<T, ?> property, ColumnBinding binding) {
+	public void setColumnBinding(DataTypeProperty<T, ?> property, ColumnBinding binding) {
 		bindings.put(property, binding);
 	}
 
-	public void clearColumnBinding(Property<T, ?> property) {
+	public void clearColumnBinding(DataTypeProperty<T, ?> property) {
 		if(property.isRequired()) {
 			bindings.put(property, new ConstantColumnBinding(null));
 		} else {
@@ -88,8 +108,8 @@ public class ImportModel<T> {
 	 * @param columnIndex the index of the column
 	 * @return the 
 	 */
-	public Property<T, ?> propertyForColumn(int columnIndex) {
-		for(Map.Entry<Property<T, ?>, ColumnBinding> binding : bindings.entrySet()) {
+	public DataTypeProperty<T, ?> propertyForColumn(int columnIndex) {
+		for(Map.Entry<DataTypeProperty<T, ?>, ColumnBinding> binding : bindings.entrySet()) {
 			if(binding.getValue() instanceof ImportedColumnBinding) {
 				ImportedColumnBinding columnBinding = (ImportedColumnBinding) binding.getValue();
 				if(columnBinding.getColumnIndex() == columnIndex) {

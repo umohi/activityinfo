@@ -1,7 +1,7 @@
 package org.activityinfo.client.importer.page;
 
 import org.activityinfo.client.i18n.I18N;
-import org.activityinfo.client.importer.binding.Property;
+import org.activityinfo.client.importer.ont.DataTypeProperty;
 
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.Widget;
@@ -15,10 +15,10 @@ import com.google.gwt.user.client.ui.Widget;
 public class ChoiceCellPopup<T> implements CellPopup {
 	
 	private MenuBar menuBar = new MenuBar();
-	private final Property<T, ?> property;
+	private final DataTypeProperty<T, ?> property;
 	private UpdateCommandFactory<T> commandFactory;
 	
-	public ChoiceCellPopup(Property<T, ?> property, UpdateCommandFactory<T> commandFactory) {
+	public ChoiceCellPopup(DataTypeProperty<T, ?> property, UpdateCommandFactory<T> commandFactory) {
 		super();
 		this.property = property;
 		this.commandFactory = commandFactory;

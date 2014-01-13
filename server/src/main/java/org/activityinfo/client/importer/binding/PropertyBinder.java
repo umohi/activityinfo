@@ -14,4 +14,6 @@ public interface PropertyBinder<T, C> {
 	 */
 	boolean update(T model, C value);
 	
+	C get(T model);
+
 }

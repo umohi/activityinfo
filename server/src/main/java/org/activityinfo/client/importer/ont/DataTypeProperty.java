@@ -1,9 +1,11 @@
-package org.activityinfo.client.importer.binding;
+package org.activityinfo.client.importer.ont;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import org.activityinfo.client.importer.binding.PropertyBinder;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
@@ -16,7 +18,7 @@ import com.google.common.collect.Lists;
  * 
  *  @param <T> the type of the model
  */
-public class Property<T, C>  {
+public class DataTypeProperty<T, C> implements Property  {
 		
 	public enum Type {
 		FREE_TEXT,
@@ -24,6 +26,7 @@ public class Property<T, C>  {
 		DATE
 	}
 	
+	private String id;
 	private String label;
 	private PropertyBinder<T, C> binder;
 	private Function<String, C> converter;
@@ -31,34 +34,35 @@ public class Property<T, C>  {
 	private Type type;
 
 	
-	private Property(String label) {
+	private DataTypeProperty(String id, String label) {
 		super();
+		this.id = id;
 		this.label = label;
 	}
 
-	public static <T> Property<T, String> create(String label, PropertyBinder<T, String> binder) {
-		Property<T, String> property = new Property<T, String>(label);
+	public static <T> DataTypeProperty<T, String> create(String id, String label, PropertyBinder<T, String> binder) {
+		DataTypeProperty<T, String> property = new DataTypeProperty<T, String>(id, label);
 		property.binder = binder;
 		property.converter = Functions.identity();
 		property.type = Type.FREE_TEXT;
 		return property;
 	}
 	
-	public static <T, C> Property<T, C> create(String label, 
+	public static <T, C> DataTypeProperty<T, C> create(String id, String label, 
 			Type type,
 			PropertyBinder<T, C> binder, 
 			Function<String, C> converter) {
-		Property<T, C> property = new Property<T, C>(label);
+		DataTypeProperty<T, C> property = new DataTypeProperty<T, C>(id, label);
 		property.binder = binder;
 		property.converter = converter;
 		property.type = type;
 		return property;
 	}
 
-	public static <T, C> Property<T, C> create(String label, 
+	public static <T, C> DataTypeProperty<T, C> create(String id, String label, 
 			Map<String, C> map,
 			PropertyBinder<T, C> binder) {
-		Property<T, C> property = new Property<T, C>(label);
+		DataTypeProperty<T, C> property = new DataTypeProperty<T, C>(id, label);
 		property.binder = binder;
 		property.type = Type.CHOICE;
 		property.converter = Functions.forMap(map, null);
@@ -66,6 +70,12 @@ public class Property<T, C>  {
 		return property;
 	}
 	
+	@Override
+	public String getId() {
+		return id;
+	}
+	
+	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -115,5 +125,4 @@ public class Property<T, C>  {
 			return suggestions;
 		}
 	}
-
 }

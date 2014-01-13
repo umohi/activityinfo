@@ -1,9 +1,9 @@
 package org.activityinfo.client.importer.page;
 
 import org.activityinfo.client.importer.binding.ImportModel;
-import org.activityinfo.client.importer.binding.Property;
 import org.activityinfo.client.importer.data.ImportColumnDescriptor;
 import org.activityinfo.client.importer.data.ImportRow;
+import org.activityinfo.client.importer.ont.DataTypeProperty;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.shared.GWT;
@@ -12,6 +12,7 @@ import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -34,8 +35,11 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
 		
 		this.mapping = mapping;
 		
-		dataGrid = new DataGrid<ImportRow>();
+		dataGrid = new BootstrapDataGrid<ImportRow>(100);
+		dataGrid.setWidth("100%");
+		dataGrid.setHeight("100%");
 		dataGrid.setSelectionModel(new NullRowSelectionModel());
+		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
 		dataGrid.addCellPreviewHandler(new Handler<ImportRow>() {
 
 			@Override
@@ -85,7 +89,7 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
 		@Override
 		public void render(Context context, Integer columnIndex, SafeHtmlBuilder sb) {
 			String header = mapping.getSource().getColumnHeader(columnIndex);
-			Property<T, ?> binding = mapping.propertyForColumn(columnIndex);
+			DataTypeProperty<T, ?> binding = mapping.propertyForColumn(columnIndex);
 			
 			if(binding == null) {
 				sb.append(TEMPLATES.ignoredColumn(header));
@@ -96,7 +100,6 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
 	}
 	
 	private class ImportColumnHeader extends Header<Integer> {
-
 		private int index;
 
 		public ImportColumnHeader(int index) {
