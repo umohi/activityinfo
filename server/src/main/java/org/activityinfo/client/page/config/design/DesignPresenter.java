@@ -30,7 +30,9 @@ import org.activityinfo.client.dispatch.Dispatcher;
 import org.activityinfo.client.i18n.UIConstants;
 import org.activityinfo.client.importer.ImportPresenter;
 import org.activityinfo.client.importer.schema.ActivityClass;
+import org.activityinfo.client.importer.schema.ImportSchemaDialog;
 import org.activityinfo.client.importer.schema.IndicatorImporter;
+import org.activityinfo.client.importer.schema.SchemaImporter;
 import org.activityinfo.client.page.PageId;
 import org.activityinfo.client.page.PageState;
 import org.activityinfo.client.page.common.dialog.FormDialogCallback;
@@ -180,9 +182,9 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
 			Window.open("/resources/database/" + db.getId() + "/schema.csv", "_blank", null);
 		
 		} else if(UIActions.IMPORT.equals(actionId)) {
-			ImportPresenter<ActivityDTO> importer = 
-					new ImportPresenter<ActivityDTO>(service, new IndicatorImporter(db));
-			importer.show();
+			SchemaImporter importer = new SchemaImporter(service, db);
+			ImportSchemaDialog dialog = new ImportSchemaDialog(importer);
+			dialog.show();
 		}
 	}
 

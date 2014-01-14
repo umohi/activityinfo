@@ -6,7 +6,7 @@
 // .modal           - container to scroll within
 // .modal-dialog    - positioning shell for the actual modal
 // .modal-content   - actual modal w/ bg and corners and shit
-
+  
 // Kill the scroll on the body
 .modal-open {
   overflow: hidden;
@@ -28,7 +28,7 @@
   &.fade .modal-dialog {
     .translate(0, -25%);
     .transition-transform(~"0.3s ease-out");
-  }
+  }   
   &.in .modal-dialog { .translate(0, 0)}
 }
 
@@ -40,7 +40,7 @@
   z-index: (@zindex-modal-background + 10);
 }
 
-// Actual modal
+/ / Actual modal
 .modal-content {
   position: relative;
   background-color: @modal-content-bg;

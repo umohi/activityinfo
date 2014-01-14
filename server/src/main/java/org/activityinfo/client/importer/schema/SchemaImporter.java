@@ -91,8 +91,7 @@ public class SchemaImporter {
 		public String get(ImportRow row) {
 			String value = row.getColumnValue(index);
 			if(value.length() > maxLength) {
-				warn(String.format("Truncating value '%s' for column '%s': max length is %d", 
-						value, name, maxLength));
+				warn("Truncating value '" + value + "' for column '" + name + "': max length is " + maxLength);
 				value = value.substring(0, maxLength);
 			} 
 			return value;
@@ -140,15 +139,19 @@ public class SchemaImporter {
 	}
 	
 	
-	public boolean parse(ImportSource source) {
+	public boolean parseColumns(ImportSource source) {
 		this.source = source;
 		findColumns();
+		return !fatalError;
+	}
+	
+	public boolean processRows() {
 		processRows(source);
 		return !fatalError;
 	}
 	
 	public List<Warning> getWarnings() {
-		return warnings;
+		return warnings;	
 	}
 	
 	private void processRows(ImportSource source) {
@@ -230,12 +233,12 @@ public class SchemaImporter {
 	private int findLocationType(ActivityDTO activity, ImportRow row) {
 		String name = locationType.get(row);
 		if(Strings.isNullOrEmpty(name)) {
-			warn(String.format("No location type given for Activity %s", activity.getName()));
+			warn("No location type given for Activity " + activity.getName());
 			return defaultLocationType.getId();
 		}
 		Integer typeId = locationTypeMap.get(name.toLowerCase());
 		if(typeId == null) {
-			warn(String.format("Invalid location type '%s' given for Activity %s", activity.getName()));
+			warn("Invalid location type '%s' given for Activity " + activity.getName());
 			return defaultLocationType.getId();
 		}
 		return typeId;
@@ -268,12 +271,12 @@ public class SchemaImporter {
 		int col = findColumn(name);
 		if(col == -1) {
 			if(required) {
-				error(String.format("Required column '%s' not found", name));
+				error("Required column not found: " + name);
 			} else {
-				warn(String.format("Optional column '%s' not found", name));
+				warn("Optional column not found: " + name);
 			}
 		} 
-		return new Column(col, source.getColumnHeader(col), maxLength);
+		return new Column(col, col == -1 ? name : source.getColumnHeader(col), maxLength);
 	}
 	
 

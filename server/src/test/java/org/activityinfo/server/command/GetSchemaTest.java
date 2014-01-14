@@ -254,8 +254,11 @@ public class GetSchemaTest extends CommandTestCase2 {
 				System.out.println("Submitting batch " + batchNumber + " of " + batchCount);
 			}
 		});
-		boolean success = importer.parse(source);
-	
+		boolean success = importer.parseColumns(source);
+		if(success) {
+			importer.processRows();
+		}
+		
 		for(Warning warning : importer.getWarnings()) {
 			System.err.println(warning);
 		}

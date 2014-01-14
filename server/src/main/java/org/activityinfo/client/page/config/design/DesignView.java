@@ -236,23 +236,6 @@ public class DesignView extends
         
         toolBar.add(new SeparatorToolItem());
         
-        SelectionListener<MenuEvent> importListener = new SelectionListener<MenuEvent>() {
-
-			@Override
-			public void componentSelected(MenuEvent ce) {
-				presenter.onImport(ce.getItem().getId());
-			}
-        };
-        
-        Menu importMenu = new Menu();
-        importMenu.add(newMenuItem("Activity", "Indicators", IconImageBundle.ICONS.activity(), importListener));
-        importMenu.add(newMenuItem("Indicator", "Indicators", IconImageBundle.ICONS.indicator(), importListener));
-        importMenu.add(newMenuItem("AttributeGroup", "Indicators", IconImageBundle.ICONS.attributeGroup(), importListener));
-
-        
-        Button importButton = new Button("Import", IconImageBundle.ICONS.importIcon());
-        
-        
         toolBar.addImportButton();
         toolBar.addExcelExportButton();
 

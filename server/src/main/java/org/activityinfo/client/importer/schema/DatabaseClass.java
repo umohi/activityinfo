@@ -15,5 +15,5 @@ public class DatabaseClass extends OntClass {
 	public List<Property> getProperties() {
 		return Arrays.asList((Property)NAME);
 	}
-
+	
 }
