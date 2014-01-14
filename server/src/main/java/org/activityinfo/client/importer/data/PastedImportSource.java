@@ -2,6 +2,8 @@ package org.activityinfo.client.importer.data;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
+
 import com.google.common.collect.Lists;
 
 /** 
@@ -10,6 +12,7 @@ import com.google.common.collect.Lists;
  */
 public class PastedImportSource implements ImportSource {
 
+	private static final char QUOTE_CHAR = '"';
 	private String text;
 	//private List<Integer> rowStarts;
 	private List<ImportColumnDescriptor> columns;
@@ -21,6 +24,7 @@ public class PastedImportSource implements ImportSource {
 		this.text = text;
 	}
 
+	
 	@Override
 	public List<ImportColumnDescriptor> getColumns() {
 		ensureParsed();
@@ -49,13 +53,57 @@ public class PastedImportSource implements ImportSource {
 			if(rowEnds == -1) {
 				return;
 			}
+			
 			rows.add(new PastedImportRow(parseRow(text.substring(rowStarts, rowEnds))));
 			rowStarts = rowEnds + 1;
 		}
 	}
 
+
 	private String[] parseRow(String row) {
-		return maybeRemoveCarriageReturn(row).split(delimeter);
+		row = maybeRemoveCarriageReturn(row);
+		boolean usesQuote = row.indexOf(QUOTE_CHAR) != -1;
+		if(usesQuote) {
+			String[] cols = new String[columns.size()];
+			int colIndex = 0;
+			boolean quoted = false;
+			char delimiterChar = delimeter.charAt(0);
+			StringBuilder col = new StringBuilder();
+			
+			int charIndex = 0;
+			int numChars = row.length();
+			while(charIndex < numChars) {
+				char c = row.charAt(charIndex);
+				if(c == QUOTE_CHAR) {
+					if(charIndex+1 < numChars && row.charAt(charIndex+1) == QUOTE_CHAR) {
+						col.append(QUOTE_CHAR);
+						charIndex += 2;
+					} else {
+						quoted = !quoted;
+						charIndex ++;
+					}
+				} else if(!quoted && c == delimiterChar) {
+					cols[colIndex] = col.toString();
+					col.setLength(0);
+					charIndex++;
+					colIndex++;
+					if(colIndex >= cols.length) {
+						return cols;
+					}
+				} else {
+					col.append(c);
+					charIndex ++;
+				}
+			}
+			
+			// final column
+			cols[colIndex] = col.toString();
+			
+			return cols;
+			
+		} else {
+			return row.split(delimeter);
+		}
 	}
 	
 	private String guessDelimeter(String headerRow) {
@@ -78,8 +126,14 @@ public class PastedImportSource implements ImportSource {
 	
     @Override
 	public List<ImportRow> getRows() {
+    	ensureParsed();
 		return rows;
 	}
+    
+    public String get(int row, int column) {
+    	ensureParsed();
+    	return rows.get(row).getColumnValue(column);
+    }
 
 	private String maybeRemoveCarriageReturn(String row) {
         if(row.endsWith("\r")) {

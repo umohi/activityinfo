@@ -1,8 +1,7 @@
 package org.activityinfo.client.importer.page;
 
 import org.activityinfo.client.importer.binding.ImportModel;
-import org.activityinfo.client.importer.binding.ImportedColumnBinding;
-import org.activityinfo.client.importer.ont.DataTypeProperty;
+import org.activityinfo.client.importer.ont.PropertyPath;
 import org.activityinfo.client.importer.page.ColumnSelectionChangedEvent.Handler;
 
 import com.google.gwt.core.client.GWT;
@@ -39,7 +38,7 @@ public class ColumnMappingPage<T> extends ResizeComposite {
 	@UiField(provided=true) ColumnMappingGrid<T> dataGrid;
 	
 	@UiField HeadingElement columnChooserHeader;
-	@UiField(provided=true) PropertyChooser<T> propertyChooser;
+	@UiField(provided=true) PropertyChooser propertyChooser;
 	
 	private final ImportModel<T> importModel;
 
@@ -49,7 +48,7 @@ public class ColumnMappingPage<T> extends ResizeComposite {
 		this.importModel = importModel;
 		
 		dataGrid = new ColumnMappingGrid<T>(importModel);
-		propertyChooser = new PropertyChooser<T>(importModel.getBinder().getProperties());
+		propertyChooser = new PropertyChooser(importModel.getDataTypePropertiesToMatch());
 		
 		initWidget(uiBinder.createAndBindUi(this));		
 		
@@ -61,10 +60,10 @@ public class ColumnMappingPage<T> extends ResizeComposite {
 			}
 		});
 		
-		propertyChooser.addValueChangeHandler(new ValueChangeHandler<DataTypeProperty<T, ?>>() {
+		propertyChooser.addValueChangeHandler(new ValueChangeHandler<PropertyPath>() {
 
 			@Override
-			public void onValueChange(ValueChangeEvent<DataTypeProperty<T, ?>> event) {
+			public void onValueChange(ValueChangeEvent<PropertyPath> event) {
 				updateColumnMapping(event.getValue());
 			}
 		});
@@ -80,20 +79,16 @@ public class ColumnMappingPage<T> extends ResizeComposite {
 
 	private void onColumnChanged(ColumnSelectionChangedEvent e) {
 		selectedColumnIndex = e.getSelectedColumnIndex();
-		propertyChooser.setValue(importModel.propertyForColumn(selectedColumnIndex), false);
+		propertyChooser.setValue(importModel.getColumnBindings().get(selectedColumnIndex), false);
 		columnChooserHeader.setInnerText(importModel.getSource().getColumnHeader(selectedColumnIndex));
 	}
 
-	private void updateColumnMapping(DataTypeProperty<T, ?> property) {
+	private void updateColumnMapping(PropertyPath property) {
 		
 		if(property == null) {
-			DataTypeProperty<T, ?> oldProperty = importModel.propertyForColumn(selectedColumnIndex);
-			if(oldProperty != null) {
-				importModel.clearColumnBinding(oldProperty);
-			}
+			importModel.clearColumnBinding(selectedColumnIndex);
 		} else {
-			importModel.setColumnBinding(property, 
-					new ImportedColumnBinding(importModel.getSource(), selectedColumnIndex));
+			importModel.setColumnBinding(property, selectedColumnIndex);
 		}
 		
 		dataGrid.refreshMappings();

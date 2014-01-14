@@ -6,7 +6,7 @@
   </ui:style>
   <g:HTMLPanel>
   
-    <h2>Import Wizard</h2>
+    <h3>Import Wizard</h3>
   
     <p>The import wizard allows you to import a table of data directly into ActivityInfo. In order
     to match your table with the right fields in ActivityInfo, you will need to tell AI about what

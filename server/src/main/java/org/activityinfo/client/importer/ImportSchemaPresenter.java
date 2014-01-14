@@ -6,10 +6,12 @@ import org.activityinfo.client.importer.binding.ImportModel;
 import org.activityinfo.client.importer.binding.InstanceImporter;
 import org.activityinfo.client.importer.page.ChooseSourcePage;
 import org.activityinfo.client.importer.page.ColumnMappingPage;
+import org.activityinfo.client.importer.page.ImportSchemaView;
 import org.activityinfo.client.importer.page.ValidationPage;
 import org.activityinfo.client.widget.FullScreenOverlay;
 import org.activityinfo.shared.command.BatchCommand;
 import org.activityinfo.shared.command.result.BatchResult;
+import org.apache.poi.ss.formula.functions.T;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,16 +20,12 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class ImportPresenter<T> {
-
-	private EventBus eventBus = GWT.create(SimpleEventBus.class);
+public class ImportSchemaPresenter {
 	
 	private ImportDialog dialogBox = new ImportDialog();
 	private FullScreenOverlay overlay = new FullScreenOverlay();
 	
-	private ChooseSourcePage chooseSourcePage;
-	private ColumnMappingPage<T> matchingPage;
-	private ValidationPage<T> validationPage;
+	private ImportSchemaView view;
 	
 	private enum Step {
 		CHOOSE_SOURCE,

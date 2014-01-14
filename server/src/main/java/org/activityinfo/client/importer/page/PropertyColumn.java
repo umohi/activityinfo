@@ -1,45 +1,33 @@
 package org.activityinfo.client.importer.page;
 
-import org.activityinfo.client.importer.binding.ColumnBinding;
 import org.activityinfo.client.importer.binding.DraftModel;
-import org.activityinfo.client.importer.ont.DataTypeProperty;
+import org.activityinfo.client.importer.ont.PropertyPath;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.user.cellview.client.Column;
 
-public class PropertyColumn<T> extends Column<DraftModel<T>, String> {
+public class PropertyColumn<C> extends Column<DraftModel, C> {
 
-	private final DataTypeProperty<T, ?> property;
-	private ColumnBinding binding;
+	private final PropertyPath property;
 
-	protected PropertyColumn(DataTypeProperty<T, ?> property, Cell<String> cell) {
+	public PropertyColumn(PropertyPath property, Cell<C> cell) {
 		super(cell);
 		this.property = property;
 	}
-	
-	public void setBinding(ColumnBinding binding) {
-		this.binding = binding;
-	}
 
 	@Override
-	public String getValue(DraftModel<T> object) {
-		String value = getImportedValue(object);
-		if(value == null) {
-			return "";
- 		} else {
- 			return value;
- 		}
-	}
-
-	private String getImportedValue(DraftModel<T> object) {
-		String value = binding.getValue(object.getRowIndex());
+	public C getValue(DraftModel object) {
+		C value = (C)object.getValue(property.getKey());
 		return value;
 	}
 
 	@Override
-	public String getCellStyleNames(Context context, DraftModel<T> object) {
-		if(object != null && property.isRequired() && getImportedValue(object) == null) {
+	public String getCellStyleNames(Context context, DraftModel object) {
+		if(object == null) {
+			return null;
+		}
+		if(object.getValue(property.getKey()) == null) {
 			return "danger";
 		} 
 		return null;

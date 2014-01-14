@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.activityinfo.client.importer.ont.DataTypeProperty;
+import org.activityinfo.client.importer.ont.PropertyPath;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
@@ -19,27 +20,27 @@ import com.google.gwt.user.client.ui.RadioButton;
  * A simple panel that provides the user with a list of possible properties
  * to which to map the column as a list of radio buttons.
  */
-public class PropertyChooser<T> extends Composite implements HasValue<DataTypeProperty<T, ?>> {
+public class PropertyChooser extends Composite implements HasValue<PropertyPath> {
 	
 	private static int nextUniqueGroupNum = 1;
 
 	private String group = "columnBinding" + (nextUniqueGroupNum++);
 	
-	private Map<DataTypeProperty<T, ?>, RadioButton> buttons = Maps.newHashMap();
-	private DataTypeProperty<T, ?> value;
+	private Map<PropertyPath, RadioButton> buttons = Maps.newHashMap();
+	private PropertyPath value;
 
-	public PropertyChooser(List<DataTypeProperty<T, ?>> properties) {
-		FlowPanel panel = new FlowPanel();
+	public PropertyChooser(List<PropertyPath> properties) {
+		BootstrapFormBuilder form = new BootstrapFormBuilder();
 		
-		panel.add(addRadioButton(null, "Ignore"));
+		addRadioButton(form, null, "Ignore");
 		
-		for(final DataTypeProperty<T, ?> property : properties) {
-			panel.add(addRadioButton(property, property.getLabel()));
+		for(final PropertyPath property : properties) {
+			addRadioButton(form, property, property.getLabel());
 		}
-		initWidget(panel);
+		initWidget(form.buildForm());
 	}
 
-	private RadioButton addRadioButton(final DataTypeProperty<T, ?> property, String label) {
+	private RadioButton addRadioButton(BootstrapFormBuilder form, final PropertyPath property, String label) {
 		RadioButton button = new RadioButton(group, label);
 		button.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			
@@ -57,22 +58,22 @@ public class PropertyChooser<T> extends Composite implements HasValue<DataTypePr
 
 	@Override
 	public HandlerRegistration addValueChangeHandler(
-			ValueChangeHandler<DataTypeProperty<T, ?>> handler) {
+			ValueChangeHandler<PropertyPath> handler) {
 		return addHandler(handler, ValueChangeEvent.getType());
 	}
 
 	@Override
-	public DataTypeProperty<T, ?> getValue() {
+	public PropertyPath getValue() {
 		return value;
 	}
 
 	@Override
-	public void setValue(DataTypeProperty<T, ?> value) {
+	public void setValue(PropertyPath value) {
 		setValue(value, true);
 	}
 
 	@Override
-	public void setValue(DataTypeProperty<T, ?> newValue, boolean fireEvents) {
+	public void setValue(PropertyPath newValue, boolean fireEvents) {
 		if(!Objects.equal(this.value, newValue)) {
 			this.value = newValue;
 			

@@ -1,7 +1,7 @@
 package org.activityinfo.client.importer.ont;
 
 
-public class ObjectProperty<T, C> implements Property {
+public class ObjectProperty implements Property {
 	
 	private String id;
 	private String label;

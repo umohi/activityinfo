@@ -24,6 +24,8 @@ package org.activityinfo.server.command;
 
 import javax.persistence.EntityManager;
 
+import org.activityinfo.client.dispatch.AsyncMonitor;
+import org.activityinfo.client.dispatch.Dispatcher;
 import org.activityinfo.server.authentication.AuthenticationModuleStub;
 import org.activityinfo.server.database.TestDatabaseModule;
 import org.activityinfo.server.database.hibernate.entity.User;
@@ -40,8 +42,10 @@ import org.activityinfo.shared.exception.CommandException;
 import org.activityinfo.test.MockHibernateModule;
 import org.activityinfo.test.Modules;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
 
 /**
@@ -123,4 +127,21 @@ public class CommandTestCase2 {
         };
     }
 
+    public Dispatcher getDispatcher() {
+    	return new Dispatcher() {
+			
+			@Override
+			public <T extends CommandResult> void execute(Command<T> command,
+					AsyncCallback<T> callback) {
+				T result = CommandTestCase2.this.execute(command);
+				callback.onSuccess(result);
+			}
+			
+			@Override
+			public <T extends CommandResult> void execute(Command<T> command,
+					AsyncMonitor monitor, AsyncCallback<T> callback) {
+				execute(command, callback);
+			}
+		};
+    }
 }

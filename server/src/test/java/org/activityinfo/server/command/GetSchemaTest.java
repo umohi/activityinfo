@@ -31,8 +31,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+
+import org.activityinfo.client.importer.data.PastedImportSource;
+import org.activityinfo.client.importer.schema.SchemaImporter;
+import org.activityinfo.client.importer.schema.SchemaImporter.ProgressListener;
+import org.activityinfo.client.importer.schema.SchemaImporter.Warning;
 import org.activityinfo.client.page.entry.LockedPeriodSet;
 import org.activityinfo.server.database.OnDataSet;
+import org.activityinfo.shared.command.CreateEntity;
 import org.activityinfo.shared.command.GetSchema;
 import org.activityinfo.shared.dto.ActivityDTO;
 import org.activityinfo.shared.dto.AdminLevelDTO;
@@ -40,6 +49,7 @@ import org.activityinfo.shared.dto.AttributeDTO;
 import org.activityinfo.shared.dto.IndicatorDTO;
 import org.activityinfo.shared.dto.SchemaCsvWriter;
 import org.activityinfo.shared.dto.SchemaDTO;
+import org.activityinfo.shared.dto.UserDatabaseDTO;
 import org.activityinfo.shared.exception.CommandException;
 import org.activityinfo.test.InjectionSupport;
 import org.junit.Before;
@@ -48,6 +58,11 @@ import org.junit.runner.RunWith;
 
 import com.bedatadriven.rebar.sql.server.jdbc.JdbcScheduler;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
+import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
+import com.google.common.io.Resources;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")
@@ -206,4 +221,68 @@ public class GetSchemaTest extends CommandTestCase2 {
     	
     	System.out.println(writer.toString());
     }
+    
+    @Test
+    public void importCsv() throws IOException {
+    	
+		String csv = Resources.toString(Resources.getResource("schema_1064.csv"), Charsets.UTF_8);
+		PastedImportSource source = new PastedImportSource(csv);
+		
+		Map<String, Object> dbProps = Maps.newHashMap();
+		dbProps.put("name", "Syria");
+		dbProps.put("countryId", 1);
+		
+		execute(new CreateEntity("UserDatabase", dbProps));
+		
+		SchemaDTO schema = execute(new GetSchema());
+		UserDatabaseDTO syria = null;
+		for(UserDatabaseDTO db : schema.getDatabases()) {
+			if(db.getName().equals("Syria")) {
+				syria = db;
+				break;
+			}
+		}
+		if(syria == null) {
+			throw new AssertionError("database not created");
+		}
+		
+		SchemaImporter importer = new SchemaImporter(getDispatcher(), syria);
+		importer.setProgressListener(new ProgressListener() {
+			
+			@Override
+			public void submittingBatch(int batchNumber, int batchCount) {
+				System.out.println("Submitting batch " + batchNumber + " of " + batchCount);
+			}
+		});
+		boolean success = importer.parse(source);
+	
+		for(Warning warning : importer.getWarnings()) {
+			System.err.println(warning);
+		}
+		
+		if(!success) {
+			throw new AssertionError("there were fatal errors");
+		}
+		
+		importer.persist(new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				System.out.println("Success");
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				throw new AssertionError(caught);
+			}
+		});
+		
+		syria = execute(new GetSchema()).getDatabaseById(syria.getId());
+		
+		SchemaCsvWriter writer = new SchemaCsvWriter();
+		writer.write(syria);
+		
+		Files.write(writer.toString(), new File("target/syria.csv"), Charsets.UTF_8);
+    }
+    
 }

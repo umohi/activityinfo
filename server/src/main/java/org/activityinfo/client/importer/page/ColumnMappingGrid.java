@@ -3,7 +3,7 @@ package org.activityinfo.client.importer.page;
 import org.activityinfo.client.importer.binding.ImportModel;
 import org.activityinfo.client.importer.data.ImportColumnDescriptor;
 import org.activityinfo.client.importer.data.ImportRow;
-import org.activityinfo.client.importer.ont.DataTypeProperty;
+import org.activityinfo.client.importer.ont.PropertyPath;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.shared.GWT;
@@ -89,7 +89,7 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
 		@Override
 		public void render(Context context, Integer columnIndex, SafeHtmlBuilder sb) {
 			String header = mapping.getSource().getColumnHeader(columnIndex);
-			DataTypeProperty<T, ?> binding = mapping.propertyForColumn(columnIndex);
+			PropertyPath binding = mapping.getColumnBindings().get(columnIndex);
 			
 			if(binding == null) {
 				sb.append(TEMPLATES.ignoredColumn(header));

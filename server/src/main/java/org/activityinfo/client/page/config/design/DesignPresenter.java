@@ -30,6 +30,7 @@ import org.activityinfo.client.dispatch.Dispatcher;
 import org.activityinfo.client.i18n.UIConstants;
 import org.activityinfo.client.importer.ImportPresenter;
 import org.activityinfo.client.importer.schema.ActivityClass;
+import org.activityinfo.client.importer.schema.IndicatorImporter;
 import org.activityinfo.client.page.PageId;
 import org.activityinfo.client.page.PageState;
 import org.activityinfo.client.page.common.dialog.FormDialogCallback;
@@ -58,6 +59,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.store.TreeStore;
+import com.extjs.gxt.ui.client.widget.Component;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -178,7 +180,8 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
 			Window.open("/resources/database/" + db.getId() + "/schema.csv", "_blank", null);
 		
 		} else if(UIActions.IMPORT.equals(actionId)) {
-			ImportPresenter<ActivityDTO> importer = new ImportPresenter<ActivityDTO>(service, new ActivityClass(db));
+			ImportPresenter<ActivityDTO> importer = 
+					new ImportPresenter<ActivityDTO>(service, new IndicatorImporter(db));
 			importer.show();
 		}
 	}
@@ -372,4 +375,9 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
     protected void onSaved() {
         eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
     }
+
+	public void onImport(String item) {
+		// TODO Auto-generated method stub
+		
+	}
 }

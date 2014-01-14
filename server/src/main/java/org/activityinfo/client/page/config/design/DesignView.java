@@ -236,6 +236,23 @@ public class DesignView extends
         
         toolBar.add(new SeparatorToolItem());
         
+        SelectionListener<MenuEvent> importListener = new SelectionListener<MenuEvent>() {
+
+			@Override
+			public void componentSelected(MenuEvent ce) {
+				presenter.onImport(ce.getItem().getId());
+			}
+        };
+        
+        Menu importMenu = new Menu();
+        importMenu.add(newMenuItem("Activity", "Indicators", IconImageBundle.ICONS.activity(), importListener));
+        importMenu.add(newMenuItem("Indicator", "Indicators", IconImageBundle.ICONS.indicator(), importListener));
+        importMenu.add(newMenuItem("AttributeGroup", "Indicators", IconImageBundle.ICONS.attributeGroup(), importListener));
+
+        
+        Button importButton = new Button("Import", IconImageBundle.ICONS.importIcon());
+        
+        
         toolBar.addImportButton();
         toolBar.addExcelExportButton();
 
@@ -248,17 +265,11 @@ public class DesignView extends
         newActivity.setItemId("Activity");
         menu.add(newActivity);
 
-        final MenuItem newAttributeGroup = new MenuItem(
-            I18N.CONSTANTS.newAttributeGroup(),
-            IconImageBundle.ICONS.attributeGroup(), listener);
-        newAttributeGroup.setItemId("AttributeGroup");
-        menu.add(newAttributeGroup);
+        final MenuItem newAttributeGroup = newMenuItem("AttributeGroup", I18N.CONSTANTS.newAttributeGroup(), IconImageBundle.ICONS.attribute(), listener);
+		menu.add(newAttributeGroup);
 
-        final MenuItem newAttribute = new MenuItem(
-            I18N.CONSTANTS.newAttribute(), IconImageBundle.ICONS.attribute(),
-            listener);
-        newAttribute.setItemId("Attribute");
-        menu.add(newAttribute);
+        final MenuItem newAttribute = newMenuItem("Attribute", I18N.CONSTANTS.newAttribute(), IconImageBundle.ICONS.attribute(), listener);
+		menu.add(newAttribute);
 
         final MenuItem newIndicator = new MenuItem(
             I18N.CONSTANTS.newIndicator(), IconImageBundle.ICONS.indicator(),
@@ -279,6 +290,13 @@ public class DesignView extends
             }
         });
     }
+
+	private MenuItem newMenuItem(String itemId, String label, AbstractImagePrototype icon, SelectionListener<MenuEvent> listener) {
+		final MenuItem newAttribute = new MenuItem(label, icon,
+            listener);
+        newAttribute.setItemId(itemId);
+		return newAttribute;
+	}
 
     protected void initRemoveMenu(Menu menu) {
         final MenuItem removeItem = new MenuItem(I18N.CONSTANTS.delete(),

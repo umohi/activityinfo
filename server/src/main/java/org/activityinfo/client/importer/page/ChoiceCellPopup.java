@@ -1,7 +1,6 @@
 package org.activityinfo.client.importer.page;
 
-import org.activityinfo.client.i18n.I18N;
-import org.activityinfo.client.importer.ont.DataTypeProperty;
+import org.activityinfo.client.importer.ont.PropertyPath;
 
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.Widget;
@@ -15,10 +14,10 @@ import com.google.gwt.user.client.ui.Widget;
 public class ChoiceCellPopup<T> implements CellPopup {
 	
 	private MenuBar menuBar = new MenuBar();
-	private final DataTypeProperty<T, ?> property;
+	private final PropertyPath property;
 	private UpdateCommandFactory<T> commandFactory;
 	
-	public ChoiceCellPopup(DataTypeProperty<T, ?> property, UpdateCommandFactory<T> commandFactory) {
+	public ChoiceCellPopup(PropertyPath property, UpdateCommandFactory<T> commandFactory) {
 		super();
 		this.property = property;
 		this.commandFactory = commandFactory;
@@ -31,11 +30,11 @@ public class ChoiceCellPopup<T> implements CellPopup {
 
 	@Override
 	public void prepare(String cellValue) {
-		menuBar.clearItems();
-		
-		for(String suggestion : property.getSuggestionOracle().apply(cellValue)) {
-			menuBar.addItem(I18N.MESSAGES.updateAllRowsTo(suggestion), 
-					commandFactory.setColumnValue(property, suggestion));
-		}
+//		menuBar.clearItems();
+//		
+//		for(String suggestion : property.getSuggestionOracle().apply(cellValue)) {
+//			menuBar.addItem(I18N.MESSAGES.updateAllRowsTo(suggestion), 
+//					commandFactory.setColumnValue(property, suggestion));
+//		}
 	}
 }

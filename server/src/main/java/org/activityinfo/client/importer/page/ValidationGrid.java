@@ -2,14 +2,13 @@ package org.activityinfo.client.importer.page;
 
 import java.util.Map;
 
-import org.activityinfo.client.importer.binding.ColumnBinding;
-import org.activityinfo.client.importer.binding.ConstantColumnBinding;
 import org.activityinfo.client.importer.binding.DraftModel;
 import org.activityinfo.client.importer.binding.ImportModel;
+import org.activityinfo.client.importer.binding.InstanceMatch;
 import org.activityinfo.client.importer.ont.DataTypeProperty;
+import org.activityinfo.client.importer.ont.PropertyPath;
 
 import com.google.common.collect.Maps;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -21,13 +20,13 @@ import com.google.gwt.user.client.ui.ResizeComposite;
  */
 public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandFactory<T> {
 
-	private DataGrid<DraftModel<T>> dataGrid;
+	private DataGrid<DraftModel> dataGrid;
 	private ImportModel<T> importModel;
-	private Map<DataTypeProperty<T, ?>, PropertyColumn<T>> columns;
+	private Map<PropertyPath, PropertyColumn<?>> columns;
 	
 	public ValidationGrid(ImportModel<T> importModel) {
 		this.importModel = importModel;
-		this.dataGrid = new BootstrapDataGrid<DraftModel<T>>(100);
+		this.dataGrid = new BootstrapDataGrid<DraftModel>(100);
 		
 		syncColumns();
 		
@@ -39,41 +38,43 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 			dataGrid.removeColumn(0);
 		}
 		columns = Maps.newHashMap();
-		for(Map.Entry<DataTypeProperty<T, ?>, ColumnBinding> binding : importModel.getColumnBindings().entrySet()) {
-			PropertyColumn<T> column = new PropertyColumn<T>(binding.getKey(), createCell(binding.getKey()));
-			column.setBinding(binding.getValue());
+	
+		for(PropertyPath property : importModel.getPropertiesToValidate()) {
+			PropertyColumn<?> column = createColumn(property);
 			
-			columns.put(binding.getKey(), column);
-			dataGrid.addColumn(column, binding.getKey().getLabel());
+			columns.put(property, column);
+			dataGrid.addColumn(column, property.getLabel());
 		}
 	}
 	
-	private Cell<String> createCell(DataTypeProperty<T, ?> property) {
-		switch(property.getType()) {
-		case FREE_TEXT:
-			return new EditTextCell();
 
-		case CHOICE:
-			return new PopupEditorCell(new ChoiceCellPopup<T>(property, this));
+	private PropertyColumn<?> createColumn(PropertyPath path) {
+		if(path.getProperty() instanceof DataTypeProperty) {
+			switch(path.asDatatypeProperty().getType()) {
+			case STRING:
+				return new PropertyColumn<String>(path, new EditTextCell());
+			}
+			throw new IllegalArgumentException(path.asDatatypeProperty().getType().name());
+		} else {
+			return new PropertyColumn<InstanceMatch>(path, new InstanceMatchCell());
 		}
 		
-		throw new IllegalArgumentException();
 	}
-
+	
 	public void refreshRows() {
 		syncColumns();
 		dataGrid.setRowData(importModel.getDraftModels());
 	}
 
 	@Override
-	public ScheduledCommand setColumnValue(final DataTypeProperty<T, ?> property, final String value) {
+	public ScheduledCommand setColumnValue(final PropertyPath property, final String value) {
 		return new ScheduledCommand() {
 			
 			@Override
 			public void execute() {
-				ConstantColumnBinding binding = new ConstantColumnBinding(value);
-				importModel.setColumnBinding(property, binding);
-				columns.get(property).setBinding(binding);
+				for(DraftModel draftModel : importModel.getDraftModels()) {
+					draftModel.setValue(property.getKey(), value);
+				}
 				dataGrid.redraw();
 			}
 		};
