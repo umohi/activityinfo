@@ -282,6 +282,8 @@ public class GetSchemaTest extends CommandTestCase2 {
 		
 		syria = execute(new GetSchema()).getDatabaseById(syria.getId());
 		
+		assertThat(syria.getActivities().get(0).getAttributeGroups().size(), equalTo(3));
+		
 		SchemaCsvWriter writer = new SchemaCsvWriter();
 		writer.write(syria);
 		

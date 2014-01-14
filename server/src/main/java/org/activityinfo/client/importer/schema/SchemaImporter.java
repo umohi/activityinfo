@@ -89,6 +89,9 @@ public class SchemaImporter {
 		}
 		
 		public String get(ImportRow row) {
+			if(index < 0) {
+				return null;
+			}
 			String value = row.getColumnValue(index);
 			if(value.length() > maxLength) {
 				warn("Truncating value '" + value + "' for column '" + name + "': max length is " + maxLength);
@@ -183,6 +186,7 @@ public class SchemaImporter {
 					if(isTruthy(fieldMandatory.get(row))) {
 						group.setMandatory(true);
 					}
+					activity.getAttributeGroups().add(group);
 					newAttributeGroups.add(group);
 				}
 				String attribName = attributeValue.get(row);
@@ -259,7 +263,6 @@ public class SchemaImporter {
 				return col.getIndex();
 			}
 		}
-		
 		return -1;
 	}
 	
@@ -283,7 +286,7 @@ public class SchemaImporter {
 	private void findColumns() {
 		activityCategory = findColumn("ActivityCategory", OPTIONAL, 255);
 		activityName = findColumn("ActivityName", REQUIRED, 45);
-		locationType = findColumn("LocationType", REQUIRED);
+		locationType = findColumn("LocationType", OPTIONAL);
 		formFieldType = findColumn("FormFieldType", REQUIRED);
 		fieldName = findColumn("Name", REQUIRED);
 		fieldCategory = findColumn("Category", OPTIONAL, 50);
