@@ -5,6 +5,6 @@ package org.activityinfo.model.shared;
  */
 public interface DimensionValueRef {
 
-	Cuid getCuid();
+	Iri getCuid();
 	
 }

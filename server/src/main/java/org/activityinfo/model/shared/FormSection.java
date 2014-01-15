@@ -13,7 +13,7 @@ public interface FormSection {
 	 * @return the cuid of this section
 	 */
 	@NotNull
-	Cuid getCuid();
+	Iri getCuid();
 	
 	/**
 	 * 
@@ -21,7 +21,7 @@ public interface FormSection {
 	 * if nested
 	 */
 	@Nullable
-	Cuid getParentSectionCuid();
+	Iri getParentSectionCuid();
 		
 	
 	/**

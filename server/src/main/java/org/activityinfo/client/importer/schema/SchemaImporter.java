@@ -115,6 +115,7 @@ public class SchemaImporter {
 	private Column multipleAllowed;
 	private Column attributeValue;
 	private Column locationType;
+	private Column reportingFrequency;
 	
 	private int batchNumber;
 	private int batchCount;
@@ -226,6 +227,12 @@ public class SchemaImporter {
 			activity.setName(name);
 			activity.setCategory(category);
 			activity.setLocationTypeId(findLocationType(activity, row));
+			
+			String frequency = Strings.nullToEmpty(reportingFrequency.get(row));
+			if(frequency.toLowerCase().contains("month")) {
+				activity.setReportingFrequency(ActivityDTO.REPORT_MONTHLY);
+			}
+			
 			activityMap.put(name + category, activity);
 			newActivities.add(activity);
 		}
@@ -295,6 +302,7 @@ public class SchemaImporter {
 		fieldMandatory = findColumn("Mandatory", OPTIONAL);
 		multipleAllowed = findColumn("multipleAllowed", OPTIONAL);
 		attributeValue = findColumn("AttributeValue", REQUIRED, 50);
+		reportingFrequency = findColumn("ReprotingFrequency", OPTIONAL);
 	}
 	
 	public void persist(AsyncCallback<Void> callback) {
@@ -310,7 +318,6 @@ public class SchemaImporter {
 		batchNumber = 1;
 		
 		persistBatch(batches.iterator());
-		
 	}
 	
 	private void persistBatch(final Iterator<List<? extends EntityDTO>> batchIterator) {

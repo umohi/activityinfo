@@ -10,7 +10,7 @@ package org.activityinfo.model.shared;
  */
 public interface Form {
 
-	Cuid getCuid();
+	Iri getCuid();
 
 	@Localizable
 	String getName();

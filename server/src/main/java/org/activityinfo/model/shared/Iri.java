@@ -5,7 +5,7 @@ package org.activityinfo.model.shared;
  * in a distributed manner
  *
  */
-public interface Cuid {
+public interface Iri {
 	
 	/**
 	 * 

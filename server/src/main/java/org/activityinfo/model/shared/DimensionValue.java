@@ -1,5 +1,7 @@
 package org.activityinfo.model.shared;
 
+import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -8,16 +10,18 @@ import javax.validation.constraints.NotNull;
 public interface DimensionValue {
 	
 	@NotNull
-	Cuid getCuid();
+	Iri getCuid();
 	
 	/**
 	 * @return the human-readable label 
 	 */
-	@Localizable
 	@NotNull
+	@Localizable
 	String getLabel();
 	
 	
-	Cuid getParent();
+	Set<Iri> getSuperClasses();
+	
+	Set<Iri> getSubClassess();
 
 }

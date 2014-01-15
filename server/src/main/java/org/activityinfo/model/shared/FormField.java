@@ -16,7 +16,7 @@ public interface FormField {
 	 * 
 	 * @return the form's cuid
 	 */
-	Cuid getCuid();
+	Iri getCuid();
 	
 	@Nullable
 	FormSection getSectionCuid();
@@ -25,7 +25,7 @@ public interface FormField {
 	 * @return this field's label, presented to the user during data entry
 	 */
 	@NotNull
-	@Localizable
+	@Localizable	
 	String getLabel();
 	
 	/**
@@ -65,7 +65,7 @@ public interface FormField {
 	 * @return a list of dimensions for which the user is to provide 
 	 * responses
 	 */
-	List<DimensionRef> getDisaggregation();
+	List<Iri> getDisaggregationDimensions();
 	
 	/**
 	 * 
@@ -74,10 +74,5 @@ public interface FormField {
 	 */
 	Set<DimensionValueRef> getLoadings();
 	
-	/**
-	 * 
-	 * @return for choice fields, 
-	 */
-	DimensionRef getChoices();
 	
 }

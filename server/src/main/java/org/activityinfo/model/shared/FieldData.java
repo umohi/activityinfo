@@ -5,7 +5,7 @@ public interface FieldData {
 	/**
 	 * @return the cuid of the field for which this object provides data
 	 */
-	Cuid getFieldCuid();
+	Iri getFieldCuid();
 	
 	Number getNumericValue();
 	

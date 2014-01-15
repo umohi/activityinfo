@@ -5,7 +5,7 @@ package org.activityinfo.model.shared;
  */
 public interface FormInstance {
 
-	Cuid getCuid();
+	Iri getCuid();
 	
 	
 	
