@@ -7,7 +7,7 @@ import com.vividsolutions.jts.geom.Point;
 public class JtsUtil {
 
     public static boolean contains(Geometry geometry, Point point) {
-        // MySQL seems to store all of our multipolygons as GeometryCollections
+        // MySQL seems to tree all of our multipolygons as GeometryCollections
         
         if(geometry instanceof GeometryCollection) {
             GeometryCollection collection = (GeometryCollection) geometry;

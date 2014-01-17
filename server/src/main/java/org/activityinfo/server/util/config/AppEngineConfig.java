@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.Text;
  * datastore.
  * 
  * <p>
- * We just store the text of the configuration file to a single key in the
+ * We just tree the text of the configuration file to a single key in the
  * datastore.
  * 
  */

@@ -1,173 +1,187 @@
 package org.activityinfo.rdf;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Properties;
+import com.hp.hpl.jena.ontology.*;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.sdb.SDBException;
+import com.hp.hpl.jena.sdb.Store;
+import com.hp.hpl.jena.sdb.StoreDesc;
+import com.hp.hpl.jena.sdb.sql.SDBConnection;
+import com.hp.hpl.jena.sdb.store.DatabaseType;
+import com.hp.hpl.jena.sdb.store.DatasetStore;
+import com.hp.hpl.jena.sdb.store.LayoutType;
+import com.hp.hpl.jena.sdb.store.StoreFactory;
+import org.activityinfo.graph.shared.ActivityInfoNamespace;
+import org.activityinfo.graph.shared.Sparql;
+import org.activityinfo.server.database.hibernate.AINamingStrategy;
+import org.activityinfo.server.database.hibernate.HibernateModule;
+import org.activityinfo.server.database.hibernate.entity.*;
+import org.activityinfo.server.database.migration.GraphLoader;
+import org.hibernate.ejb.Ejb3Configuration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-import org.activityinfo.server.DeploymentEnvironment;
-import org.activityinfo.server.database.TestConnectionProvider;
-import org.activityinfo.server.database.hibernate.AINamingStrategy;
-import org.activityinfo.server.database.hibernate.SchemaServlet;
-import org.activityinfo.server.database.hibernate.entity.Activity;
-import org.activityinfo.server.database.hibernate.entity.Indicator;
-import org.activityinfo.test.MockHibernateModule;
-import org.apache.jena.atlas.lib.NotImplemented;
-import org.hibernate.cfg.Environment;
-import org.hibernate.ejb.Ejb3Configuration;
-import org.hibernate.ejb.HibernateEntityManager;
-
-import com.hp.hpl.jena.ontology.DatatypeProperty;
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.ontology.Ontology;
-import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.ModelGetter;
-import com.hp.hpl.jena.rdf.model.ModelReader;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.tdb.TDB;
-import com.hp.hpl.jena.tdb.TDBFactory;
-import com.hp.hpl.jena.vocabulary.DCTerms;
-import com.hp.hpl.jena.vocabulary.OWL;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.mysql.jdbc.Driver;
+import static org.activityinfo.graph.shared.ActivityInfoNamespace.uri;
 
 
 public class RdfExperiment {
 
-	// some definitions
-	static String personURI    = "http://somewhere/JohnSmith";
-	static String fullName     = "John Smith";
+    // some definitions
+    static String personURI    = "http://somewhere/JohnSmith";
+    static String fullName     = "John Smith";
+    private final Dataset dataset;
+    private final Store store;
 
-	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
-		//	
 
-		Class.forName(Driver.class.getName());
-		
-		TestConnectionProvider.URL = "http://localhost/activityinfo";
-		//		 
-		//		  dataset.begin(ReadWrite.WRITE) ;
+    public static void main(String...argv) throws IOException, ClassNotFoundException {
+        // Setup - make the JDBC connection and read the tree description once.
+        //StoreDesc storeDesc = StoreDesc.read("sdb-tree.ttl") ;
 
-		// open our sql database
-		EntityManagerFactory emf = createEmf();
-		EntityManager em = emf.createEntityManager();
-		
-		// Make a TDB-backed dataset
-		Dataset dataset = initialiseTDB();
-		
+        // Make a tree description without any connection information.
 
-        OntModelSpec spec = new OntModelSpec( OntModelSpec.OWL_MEM );
-        spec.setImportModelGetter( new LocalTDBModelGetter( dataset ) );
- 
-        OntModel om = ModelFactory.createOntologyModel( spec, dataset.getDefaultModel() );
- 
-        
-		Activity activity = em.find(Activity.class, 33);
+        RdfExperiment experiment = new RdfExperiment();
+        experiment.loadTables();
 
-		String databaseUri = "http://www.activityinfo.org/rdf/db/" + activity.getDatabase().getId();
-		
-		String activityUri = databaseUri + "/activity/" + activity.getId();
-		
-		
-		OntClass classForActivity = om.createClass(activityUri);
-		
-		classForActivity.setLabel(activity.getName(), "en");
-		classForActivity.setSuperClass( om.getOntClass( Hxl.NS + "LocatedBase" ) );
+        //experiment.querySiteTable();
 
-		for(Indicator indicator : activity.getIndicators()) {
-			
-			DatatypeProperty propertyForIndicator = om.createDatatypeProperty(activityUri + "/" + indicator);
-			propertyForIndicator.setDomain(classForActivity);
-			propertyForIndicator.setLabel(indicator.getCategory(), "en");
-		}
-		
-		dataset.end();
-	}
+        experiment.query(Sparql.select("?p", "?v")
+                .where(Sparql.uri(uri(LocationType.class, 1)), "?p", "?v")
+                .toString());
 
-	public static EntityManagerFactory createEmf() throws FileNotFoundException, IOException {
 
-		
-		
-		MockHibernateModule module = new MockHibernateModule();
-		return module.createEmf();
-	}
-	
+                // experiment.query(String.format("SELECT ?d ?l WHERE { ?d <%s> <%s> ." +
+                //                                     " ?d <%s> ?l  }",
+//                ActivityInfoNamespace.SUB_DIVISION_OF, ActivityInfoNamespace.uri(Country.class, 1),
+//                ActivityInfoNamespace.RDFS_LABEL));
+                experiment.close();
 
-    /**
-     * Initialise the local TDB image if necessary.
-     */
-    private static Dataset initialiseTDB() {
-        String tdbPath = "/home/alex/tdb";
-        new File( tdbPath ).mkdirs();
-        return TDBFactory.createDataset( tdbPath );
+        // Make some calls to the tree, using the same JDBC connection and tree description.
+//        System.out.println("Subjects: ") ;
+//        query("SELECT DISTINCT ?s { ?s ?p ?o }", storeDesc, jdbc) ;
+//        System.out.println("Predicates: ") ;
+//        query("SELECT DISTINCT ?p { ?s ?p ?o }", storeDesc, jdbc) ;
+//        System.out.println("Objects: ") ;
+//        query("SELECT DISTINCT ?o { ?s ?p ?o }", storeDesc, jdbc) ;
     }
 
-    static void loadTDBContent( Dataset ds ) {
-        if (!ds.containsNamedModel( Hxl.NS )) {
-            loadExampleGraph( Hxl.NS, ds, "The Dread Pirate Roberts" );
+    public RdfExperiment() {
+        Connection jdbc = makeConnection() ;
+
+        SDBConnection conn = new SDBConnection(jdbc) ;
+
+        StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash,
+                DatabaseType.MySQL) ;
+
+        store = StoreFactory.create(storeDesc, conn);
+       // tree.getTableFormatter().truncate();
+
+        dataset = DatasetStore.create(store);
+    }
+
+
+    public void close() {
+        store.close() ;
+    }
+
+
+    public void query(String queryString)
+    {
+        OntModel model1 = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, dataset.getDefaultModel());
+
+        Query query = QueryFactory.create(queryString) ;
+
+        QueryExecution qe = QueryExecutionFactory.create(query, model1) ;
+        try {
+            ResultSet rs = qe.execSelect() ;
+            ResultSetFormatter.out(rs) ;
+        } finally { qe.close() ; }
+        // Does not close the JDBC connection.
+        // Do not call : tree.getConnection().close() , which does close the underlying connection.
+        store.close() ;
+    }
+
+    public void querySiteTable() {
+
+        query(String.format("SELECT ?rp ?p ?v WHERE { ?rp <%s> <%s> ." +
+                " ?rp  ?p  ?v   }",  ActivityInfoNamespace.REPORTS_ON, ActivityInfoNamespace.uri(Site.class, 2000488932)));
+
+    }
+
+    public static Connection makeConnection()
+    {
+        try {
+            return DriverManager.getConnection("jdbc:mysql://localhost/activityinfo?useUnicode=true&characterEncoding=utf8",
+                    "root", "root") ;
+        } catch (SQLException ex)
+        {
+            throw new SDBException("SQL Exception while connecting to database: "+ex.getMessage()) ;
         }
     }
-    /**
-     * Create a graph with the given name in the dataset, and initialise it with
-     * some fake content (namely an owl:Ontology resource). This is a proxy for
-     * loading a real ontology into the model.
-     *
-     * @param graphName
-     * @param ds
-     * @param creator
-     */
-    static void loadExampleGraph( String graphName, Dataset ds, String creator ) {
-        Model m = ModelFactory.createDefaultModel();
- 
-        m.createResource( graphName )
-         .addProperty( RDF.type, OWL.Ontology)
-         .addProperty( DCTerms.creator, creator );
- 
-        ds.addNamedModel( graphName, m );
-        TDB.sync( m );
+
+    public void loadTables() throws FileNotFoundException, IOException, ClassNotFoundException {
+
+        //
+        //		  dataset.begin(ReadWrite.WRITE) ;
+
+        // open our sql database
+        EntityManagerFactory emf = createEmf();
+        EntityManager em = emf.createEntityManager();
+
+
+        OntModel om = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, dataset.getDefaultModel());
+
+        om.read(getClass().getResource("/org/activityinfo/legacy.owl").toString());
+
+//		Activity activity = em.find(Activity.class, 33);
+//
+//        loadActivity(em, om, activity);
+
+        GraphLoader loader = new GraphLoader(em, store, om);
+       // loader.loadLocations();
+        //loader.loadLocations();
+//
+//        loader.loadUsersTable();
+//        loader.loadDatabases();
+//        loader.loadPartnerTable();
+//        loader.loadActivityTable();
+//        loader.loadSites();
+        loader.loadReportingPeriods();
+        loader.loadIndicatorValues();
+
+        om.close();
     }
-    
-    
-    /**
-     * <p>A type of model getter that loads models from a local TDB instance,
-     * if they exist as named graphs using the model URI as the graph name.</p>
-     */
-    static class LocalTDBModelGetter implements ModelGetter {
- 
-        private Dataset ds;
- 
-        public LocalTDBModelGetter( Dataset dataset ) {
-            ds = dataset;
+
+    private OntModel createOntModel() {
+        OntModelSpec spec = OntModelSpec.OWL_MEM;
+        return ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF, dataset.getDefaultModel());
+    }
+
+    public static EntityManagerFactory createEmf() {
+        Ejb3Configuration config = new Ejb3Configuration();
+        config.setProperty("hibernate.dialect",
+                "org.hibernate.spatial.dialect.mysql.MySQLSpatialInnoDBDialect");
+        config.setProperty("hibernate.connection.driver_class",
+                "com.mysql.jdbc.Driver");
+        config.setProperty("hibernate.connection.url",
+                "jdbc:mysql://localhost/activityinfo?useUnicode=true&characterEncoding=utf8");
+        config.setProperty("hibernate.connection.username",
+                "root");
+        config.setProperty("hibernate.connection.password",
+                "root");
+        config.setProperty("hibernate.hbm2ddl.auto", "none");
+        config.setProperty("hibernate.show_sql", "true");
+        config.setProperty("hibernate.connection.pool_size", "0");
+        config.setNamingStrategy(new AINamingStrategy());
+        for (Class clazz : HibernateModule
+                .getPersistentClasses()) {
+            config.addAnnotatedClass(clazz);
         }
- 
-        @Override
-        public Model getModel( String uri ) {
-            throw new NotImplemented( "getModel( String  ) is not implemented" );
-        }
- 
-        @Override
-        public Model getModel( String uri, ModelReader loadIfAbsent ) {
-            Model m = ds.getNamedModel( uri );
- 
-            // create the model if necessary. In actual fact, this example code
-            // will not exercise this code path, since we pre-define the models
-            // we want to see in TDB
-            if (m == null) {
-                m = ModelFactory.createDefaultModel();
-                loadIfAbsent.readModel( m, uri );
-                ds.addNamedModel( uri, m );
-            }
- 
-            return m;
-        }
-    } // LocalTDBModelGetter
+        return config.buildEntityManagerFactory();
+    }
 }

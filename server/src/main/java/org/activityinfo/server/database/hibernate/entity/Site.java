@@ -69,7 +69,7 @@ import javax.persistence.Transient;
         name = "hideDeleted",
         condition = "DateDeleted is null"
     ) })
-public class Site implements java.io.Serializable, Deleteable {
+public class Site implements java.io.Serializable, Deleteable, LegacyResource {
 
     private int id;
     private Project project;

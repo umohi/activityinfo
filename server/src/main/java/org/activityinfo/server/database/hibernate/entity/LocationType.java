@@ -46,7 +46,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 @Entity
 @JsonAutoDetect(JsonMethod.NONE)
-public class LocationType implements Serializable {
+public class LocationType implements Serializable, LegacyResource {
     
     private int id;
     private boolean reuse;

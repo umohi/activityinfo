@@ -43,7 +43,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 @Entity
 @JsonAutoDetect(JsonMethod.NONE)
-public class AdminLevel implements java.io.Serializable {
+public class AdminLevel implements java.io.Serializable, LegacyResource {
 
     private int id;
     private Country country;

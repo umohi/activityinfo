@@ -52,7 +52,7 @@ import org.mindrot.bcrypt.BCrypt;
 @NamedQueries({
     @NamedQuery(name = "findUserByEmail", query = "select u from User u where u.email = :email"),
     @NamedQuery(name = "findUserByChangePasswordKey", query = "select u from User u where u.changePasswordKey = :key") })
-public class User implements java.io.Serializable {
+public class User implements java.io.Serializable, LegacyResource {
 
     private static final long serialVersionUID = 6486007767204653799L;
 

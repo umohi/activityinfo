@@ -41,7 +41,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-public class ReportingPeriod implements java.io.Serializable, Deleteable {
+public class ReportingPeriod implements java.io.Serializable, Deleteable, LegacyResource {
 
     private int id;
     private Site site;

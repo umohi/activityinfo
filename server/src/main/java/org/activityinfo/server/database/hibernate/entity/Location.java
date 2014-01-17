@@ -50,7 +50,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 @Entity
 @JsonAutoDetect(JsonMethod.NONE)
-public class Location implements java.io.Serializable {
+public class Location implements java.io.Serializable, LegacyResource {
 
     private int id;
     private LocationType locationType;

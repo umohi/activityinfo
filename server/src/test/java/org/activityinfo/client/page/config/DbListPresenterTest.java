@@ -114,7 +114,7 @@ public class DbListPresenterTest {
         createPresenter();
         ListStore<UserDatabaseDTO> store = presenter.getStore();
 
-        assertThat("store.getCount()", store.getCount(), is(equalTo(3)));
+        assertThat("tree.getCount()", store.getCount(), is(equalTo(3)));
 
         verify(dispatcher);
     }

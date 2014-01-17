@@ -79,7 +79,7 @@ public class StartupListener extends GuiceServletContextListener {
     @Override
     protected Injector getInjector() {
 
-        return Guice.createInjector(
+        Injector injector = Guice.createInjector(
             new HibernateModule(),
             new ConfigModule(),
             new LoggingModule(),
@@ -107,6 +107,10 @@ public class StartupListener extends GuiceServletContextListener {
             new RestApiModule(),
             new ODKModule(),
             new AdminReportModule());
+
+        DependencyInjection.INJECTOR = injector;
+
+        return injector;
     }
 
 }

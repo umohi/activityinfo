@@ -51,12 +51,31 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-testing</artifactId>
+      <version>${gae.version}</version>
+    </dependency>
+
+      <dependency>
+          <groupId>com.google.appengine</groupId>
+          <artifactId>appengine-api-stubs</artifactId>
+          <version>${gae.version}</version>
+      </dependency>
+
+
+    <dependency>
+      <groupId>com.google.appengine.tools</groupId>
+      <artifactId>appengine-mapreduce</artifactId>
+      <version>0.3</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.google.code.gaxb</groupId>
       <artifactId>gaxb</artifactId>
       <version>1.0</version>
       <scope>provided</scope>
     </dependency>
- 
+
     <dependency>
       <groupId>com.teklabs.gwt-i18n-server</groupId>
       <artifactId>gwt-i18n-server</artifactId>
@@ -82,7 +101,7 @@
       <artifactId>aws-java-sdk</artifactId>
       <version>1.2.2</version>
     </dependency>
-  
+
     <dependency>
       <groupId>org.mindrot.bcrypt</groupId>
       <artifactId>bcrypt</artifactId>
@@ -190,18 +209,24 @@
       <artifactId>freemarker-gae</artifactId>
       <version>2.3.20</version>
     </dependency>
-    
+
     <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-core</artifactId>
         <version>2.11.0</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
-    <dependency>
-        <groupId>org.apache.jena</groupId>
-        <artifactId>jena-tdb</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-    
+      <dependency>
+          <groupId>org.apache.jena</groupId>
+          <artifactId>jena-sdb</artifactId>
+          <version>1.4.0</version>
+      </dependency>
+
     <!-- Other clientside APIs -->
     <dependency>
       <groupId>com.extjs</groupId>
@@ -212,7 +237,7 @@
       <groupId>org.discotools.gwt.leaflet</groupId>
       <artifactId>gwtl-core</artifactId>
       <version>0.3-SNAPSHOT</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>com.google.gwt.google-apis</groupId>
       <artifactId>gwt-gears</artifactId>
@@ -243,7 +268,7 @@
       <artifactId>rebar-time</artifactId>
       <version>${rebarVersion}</version>
     </dependency>
-    <dependency>	
+    <dependency>
       <groupId>com.bedatadriven.rebar</groupId>
       <artifactId>rebar-sql</artifactId>
       <version>${rebarVersion}</version>
@@ -326,7 +351,7 @@
       <version>1.2.2</version>
     </dependency>
 
-    <!-- Required for DiskFileFactory but declared optional in commons-upload 
+    <!-- Required for DiskFileFactory but declared optional in commons-upload
          so needs to be redeclared here -->
     <dependency>
       <groupId>commons-io</groupId>
@@ -379,7 +404,7 @@
       <artifactId>jackson-geojson</artifactId>
       <version>0.7</version>
     </dependency>
-    
+
     <!--  NEW UI  -->
     <dependency>
       <groupId>org.fusesource.restygwt</groupId>
@@ -432,8 +457,8 @@
         </includes>
       </resource>
     </resources>
-    
-    <!-- Compile classes into the war directory for hosted mode live 
+
+    <!-- Compile classes into the war directory for hosted mode live
         editing -->
     <outputDirectory>${gwt.output.directory}/WEB-INF/classes</outputDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -502,7 +527,7 @@
         <configuration>
           <encoding>UTF-8</encoding>
 
-          <!-- Change the delimiters used for filtering to avoid 
+          <!-- Change the delimiters used for filtering to avoid
               colliding with FTL template syntaxt -->
           <delimiters>
             <delimeter>$[*]</delimeter>
@@ -510,7 +535,7 @@
           <useDefaultDelimiters>false</useDefaultDelimiters>
         </configuration>
       </plugin>
-      
+
       <!--<plugin>-->
         <!--<groupId>org.apache.maven.plugins</groupId>-->
         <!--<artifactId>maven-checkstyle-plugin</artifactId>-->
@@ -573,7 +598,7 @@
                 <module>org.activityinfo.ActivityInfoProduction</module>
                 <module>org.activityinfo.embed.Embed</module>
                 <module>org.activityinfo.ui.desktop.DesktopUI</module>
-              <!--      <module>org.activityinfo.ui.mobile.MobileUI</module>       -->          
+              <!--      <module>org.activityinfo.ui.mobile.MobileUI</module>       -->
               </modules>
             </configuration>
           </execution>
@@ -615,7 +640,7 @@
       </plugin>
 
       <!-- Exclude GWT integration tests from the test phase -->
-      <!-- we want to run them during the integration-test phase with 
+      <!-- we want to run them during the integration-test phase with
           the gwt-maven plugin -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -633,7 +658,7 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-    
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -650,7 +675,7 @@
 
       <!-- Embedded web server for testing -->
       <!-- You can start by invoking mvn jetty:run -->
-      <!-- The server was also be started for the integration testing 
+      <!-- The server was also be started for the integration testing
           phase -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -702,7 +727,7 @@
     </plugins>
     <pluginManagement>
       <plugins>
-        <!--This plugin's configuration is used to store Eclipse 
+        <!--This plugin's configuration is used to tree Eclipse
             m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>

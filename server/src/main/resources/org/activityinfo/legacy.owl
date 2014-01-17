@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.activityinfo.org/ns/"
+     xml:base="http://www.activityinfo.org/ns/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://www.activityinfo.org/resources/core"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#atLocation -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#atLocation">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#contains -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#contains">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:range rdf:resource="http://www.activityinfo.org/resources/core#Geographic"/>
+        <rdfs:domain rdf:resource="http://www.activityinfo.org/resources/core#GeographicArea"/>
+        <owl:inverseOf rdf:resource="http://www.activityinfo.org/resources/core#within"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#implementedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#implementedBy">
+        <rdfs:range rdf:resource="http://www.activityinfo.org/resources/core#Partner"/>
+        <rdfs:domain rdf:resource="http://www.activityinfo.org/resources/core#Site"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#memberOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#memberOf">
+        <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.activityinfo.org/resources/core#PoliticalEntity"/>
+        <rdfs:domain rdf:resource="http://www.activityinfo.org/resources/core#PoliticalLevel"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#owns -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#owns">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.activityinfo.org/resources/core#User"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#reportsOn -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#reportsOn">
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#subdivisionOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#subdivisionOf">
+        <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.activityinfo.org/resources/core#PoliticalEntity"/>
+        <rdfs:range rdf:resource="http://www.activityinfo.org/resources/core#PoliticalEntity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.activityinfo.org/resources/core#within"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#within -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#within">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.activityinfo.org/resources/core#Geographic"/>
+        <rdfs:range rdf:resource="http://www.activityinfo.org/resources/core#Geographic"/>
+        <owl:inverseOf rdf:resource="http://www.activityinfo.org/resources/core#within"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#code -->
+
+    <owl:DatatypeProperty rdf:about="http://www.activityinfo.org/resources/core#code">
+        <rdfs:comment>A code assigned to an entity by an authority</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="&owl;topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#iso3166_1_alpha_2 -->
+
+    <owl:DatatypeProperty rdf:about="http://www.activityinfo.org/resources/core#iso3166_1_alpha_2">
+        <rdfs:subPropertyOf rdf:resource="http://www.activityinfo.org/resources/core#code"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Activity -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Activity">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#Form"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#AdminEntity -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#AdminEntity">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#PoliticalEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#AdminLevel -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#AdminLevel"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Attribute -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Attribute"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#AttributeGroup -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#AttributeGroup"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Country -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Country">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#PoliticalEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Form -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Form"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Geographic -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Geographic"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#GeographicArea -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#GeographicArea">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#Geographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#GeographicPoint -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#GeographicPoint">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#Geographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#HealthFacility -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#HealthFacility">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#Location"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Indicator -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Indicator"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Location -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Location">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#GeographicPoint"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Partner -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Partner"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#PoliticalEntity -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#PoliticalEntity">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#GeographicArea"/>
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#Population"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#PoliticalLevel -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#PoliticalLevel"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#PopulatedPlace -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#PopulatedPlace">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#Location"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Population -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Population">
+        <rdfs:comment>Well-defined population in the sense that a given individual can be determined to be a member or not a member of the population</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#ReportingPeriod -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#ReportingPeriod"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#School -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#School">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#Location"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#Site -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#Site"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#User -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#User"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#UserDatabase -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#UserDatabase"/>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#WaterPoint -->
+
+    <owl:Class rdf:about="http://www.activityinfo.org/resources/core#WaterPoint">
+        <rdfs:subClassOf rdf:resource="http://www.activityinfo.org/resources/core#Location"/>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
+

@@ -14,6 +14,28 @@
     <listener-class>org.activityinfo.server.StartupListener</listener-class>
   </listener>
 
+  <servlet>
+    <servlet-name>mapreduce</servlet-name>
+    <servlet-class>
+      com.google.appengine.tools.mapreduce.MapReduceServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mapreduce</servlet-name>
+    <url-pattern>/mapreduce/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>pipeline</servlet-name>
+    <servlet-class>
+      com.google.appengine.tools.pipeline.impl.servlets.PipelineServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>pipeline</servlet-name>
+    <url-pattern>/_ah/pipeline/*</url-pattern>
+  </servlet-mapping>
+
   <error-page>
     <error-code>404</error-code>
     <location>/not_found.html</location>
@@ -36,15 +58,24 @@
       <role-name>admin</role-name>
     </auth-constraint>
   </security-constraint>
-  
+
+  <security-constraint>
+    <web-resource-collection>
+      <url-pattern>/mapreduce/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+
   <!--  Require SSL for login at least -->
   <security-constraint>
-       <web-resource-collection>
-           <url-pattern>/login</url-pattern>
-       </web-resource-collection>
-       <user-data-constraint>
-           <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-       </user-data-constraint>
-   </security-constraint>
+    <web-resource-collection>
+      <url-pattern>/login</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
 
 </web-app>

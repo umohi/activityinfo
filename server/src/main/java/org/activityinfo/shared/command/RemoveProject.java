@@ -25,7 +25,7 @@ package org.activityinfo.shared.command;
 import org.activityinfo.shared.command.result.VoidResult;
 
 /*
- * Removes Project with given projectId from the persistence store
+ * Removes Project with given projectId from the persistence tree
  */
 public class RemoveProject implements Command<VoidResult> {
     private int id;

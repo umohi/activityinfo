@@ -24,6 +24,10 @@
 <module rename-to="ActivityInfo">
   <inherits name="org.activityinfo.ActivityInfo" />
 	
+  <!-- Enable the ie6 permutation, which is disabled by default in GWT 2.6 -->
+  <extend-property name="user.agent" values="ie6" />
+  
+  
 	<!-- work-around to eliminate "default locale" permutations -->
 	<!-- http://www.google.com/url?sa=D&q=http://code.google.com/p/google-web-toolkit/issues/detail%3Fid%3D5769%23c1 -->
 

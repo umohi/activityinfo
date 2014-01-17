@@ -51,7 +51,7 @@ public interface CanDelete<M extends DTO> {
     // The user confirmed his request to remove an item
     HandlerRegistration addCancelDeleteHandler(CancelDeleteHandler handler);
 
-    // Update the views' store with deletion information
+    // Update the views' tree with deletion information
     void delete(M item);
 
     // The presenter wants to know from the user if he really intends to remove

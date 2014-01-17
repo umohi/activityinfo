@@ -5,7 +5,7 @@ import org.activityinfo.ui.core.client.model.Model;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * Resources store and make {@link Model}s available. 
+ * Resources tree and make {@link Model}s available.
  * 
  * @param M the Model class
  */

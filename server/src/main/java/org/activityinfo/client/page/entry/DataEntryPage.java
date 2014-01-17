@@ -30,7 +30,6 @@ import org.activityinfo.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.client.event.NavigationEvent;
 import org.activityinfo.client.i18n.I18N;
 import org.activityinfo.client.icon.IconImageBundle;
-import org.activityinfo.client.importer.SiteImporterWizard;
 import org.activityinfo.client.page.NavigationCallback;
 import org.activityinfo.client.page.NavigationHandler;
 import org.activityinfo.client.page.Page;

@@ -61,6 +61,7 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
  */
 public class HibernateModule extends ServletModule {
 
+
     @Override
     protected void configureServlets() {
 

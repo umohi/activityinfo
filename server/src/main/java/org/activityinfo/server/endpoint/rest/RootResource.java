@@ -34,6 +34,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.vividsolutions.jts.geom.Geometry;
+import org.activityinfo.geo.GeoResource;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.AdminLevel;
@@ -164,5 +166,10 @@ public class RootResource {
     @Path("/locations")
     public LocationsResource getLocations() {
         return new LocationsResource();
+    }
+
+    @Path("/geometry")
+    public GeoResource getGeometry() {
+        return new GeoResource();
     }
 }

@@ -2,7 +2,7 @@ package org.activityinfo.model.shared.expr;
 
 /**
  * Root of the expression hierarchy. Expressions are used for validation and
- * calculation by AI
+ * calculation by ActivityInfoNamespace
  */
 public abstract class ExprNode {
 

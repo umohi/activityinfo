@@ -56,7 +56,7 @@ import com.vividsolutions.jts.geom.Geometry;
 @Entity
 @Table(name = "AdminEntity")
 @JsonAutoDetect(JsonMethod.NONE)
-public class AdminEntity implements java.io.Serializable {
+public class AdminEntity implements java.io.Serializable, LegacyResource {
 
     private int id;
     private AdminLevel level;

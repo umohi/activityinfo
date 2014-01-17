@@ -332,7 +332,7 @@ public final class LayersWidget extends LayoutContainer implements
     }
 
     private void updateStore() {
-        // Save the selecteditem, because removing all items from the store
+        // Save the selecteditem, because removing all items from the tree
         // triggers
         // a selecteditem change
         int selectedItemIndex = store.indexOf(view.getSelectionModel()

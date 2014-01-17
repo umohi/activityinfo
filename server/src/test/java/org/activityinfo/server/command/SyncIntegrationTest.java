@@ -191,7 +191,7 @@ public class SyncIntegrationTest extends LocalHandlerTestCase {
         newRequest();
         synchronize();
 
-        // todo: store milliseconds in mysql rather than as
+        // todo: tree milliseconds in mysql rather than as
         // date time which has resolution limited to 1 second
         Thread.sleep(1000);
 
