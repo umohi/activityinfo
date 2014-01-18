@@ -343,18 +343,31 @@ public class RTree
         assert (dimensions.length == numDims);
         Entry e = new Entry(coords, dimensions, entry);
         Node l = chooseLeaf(store.getRootNode(), e);
-        l.addChild(e);
-        size++;
-        e.setParent(l);
-        if (l.getChildren().size() > maxEntries)
-        {
-            Node[] splits = splitNode(l);
-            adjustTree(splits[0], splits[1]);
+
+        // has this node already been added?
+        if(!containsData(e.entry, l)) {
+            l.addChild(e);
+            size++;
+            e.setParent(l);
+            if (l.getChildren().size() > maxEntries)
+            {
+                Node[] splits = splitNode(l);
+                adjustTree(splits[0], splits[1]);
+            }
+            else
+            {
+                adjustTree(l, null);
+            }
         }
-        else
-        {
-            adjustTree(l, null);
+    }
+
+    private boolean containsData(Data data, Node l) {
+        for(Node node : l.getChildren()) {
+            if(node instanceof Entry && ((Entry) node).entry.equals(data)) {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -755,36 +768,50 @@ public class RTree
     private static final int elemWidth = 150;
     private static final int elemHeight = 120;
 
-    String visualize()
+    public String visualize()
     {
         int ubDepth = (int)Math.ceil(Math.log(size)/Math.log(minEntries)) * elemHeight;
         int ubWidth = size * elemWidth;
         java.io.StringWriter sw = new java.io.StringWriter();
         java.io.PrintWriter pw = new java.io.PrintWriter(sw);
-        pw.println( "<html><head></head><body>");
-        visualize(store.getRootNode(), pw, 0, 0, ubWidth, ubDepth);
-        pw.println( "</body>");
+        pw.println( "<html><head></head><body><svg width=\"300\" height=\"200\" " +
+                "viewBox=\"" + viewBox(this.store.getRootNode()) + "\">");
+        visualize(store.getRootNode(), pw);
+        pw.println( "</svg></body>");
         pw.flush();
         return sw.toString();
     }
 
-    private void visualize(Node n, java.io.PrintWriter pw, int x0, int y0, int w, int h)
+    private String viewBox(Node n) {
+        return String.format("%f %f %f %f", n.getCoords()[0], n.getCoords()[1], n.getDimensions()[0], n.getDimensions()[1]);
+    }
+
+    private void visualize(Node n, java.io.PrintWriter pw)
     {
-        pw.printf( "<div style=\"position:absolute; left: %d; top: %d; width: %d; height: %d; border: 1px dashed\">\n",
-                x0, y0, w, h);
-        pw.println( "<pre>");
-        pw.println( "Node: " + n.toString() + " (root==" + (n == store.getRootNode()) + ") \n" );
-        pw.println( "Coords: " + Arrays.toString(n.getCoords()) + "\n");
-        pw.println( "Dimensions: " + Arrays.toString(n.getDimensions()) + "\n");
-        pw.println( "# Children: " + ((n.getChildren() == null) ? 0 : n.getChildren().size()) + "\n" );
-        pw.println( "isLeaf: " + n.isLeaf() + "\n");
-        pw.println( "</pre>");
-        int numChildren = (n.getChildren() == null) ? 0 : n.getChildren().size();
-        for ( int i = 0; i < numChildren; i++ )
-        {
-            visualize(n.getChildren().get(i), pw, (int)(x0 + (i * w/(float)numChildren)),
-                    y0 + elemHeight, (int)(w/(float)numChildren), h - elemHeight);
+
+//
+//        pw.println("<pre>");
+//        pw.println( "Node: " + n.toString() + " (root==" + (n == store.getRootNode()) + ") \n" );
+//        pw.println( "Coords: " + Arrays.toString(n.getCoords()) + "\n");
+//        pw.println( "Dimensions: " + Arrays.toString(n.getDimensions()) + "\n");
+//        pw.println( "# Children: " + ((n.getChildren() == null) ? 0 : n.getChildren().size()) + "\n" );
+//        pw.println( "isLeaf: " + n.isLeaf() + "\n");
+//        pw.println( "</pre>");
+//        int numChildren = (n.getChildren() == null) ? 0 : n.getChildren().size();
+        for ( Node node : n.getChildren() ) {
+           visualize(node, pw);
         }
-        pw.println( "</div>" );
+        pw.printf(String.format("<rect x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\" style=\"%s\" title=\"%s\"/>\n",
+                n.getCoords()[0], n.getCoords()[1], n.getDimensions()[0], n.getDimensions()[1],
+                style(n), n.toString()));
+    }
+
+
+    private String style(Node n) {
+        if(n instanceof Entry) {
+            return "fill: red; fill-opacity: 0.30; stroke: none; ";
+        } else {
+            return "fill: none; stroke: blue; stroke-dasharray: 1,1;";
+        }
     }
 }

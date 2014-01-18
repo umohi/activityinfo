@@ -12,9 +12,9 @@ import java.io.IOException;
 
 public class StoreGeometryMapper extends Mapper<AdminEntity, Void, Void> {
 
-    private DatastoreMutationPool mutationPool;
-    private RTree index;
-    private DatastoreNodeStore store;
+    private transient DatastoreMutationPool mutationPool;
+    private transient RTree index;
+    private transient  DatastoreNodeStore store;
 
     @Override
     public void beginSlice() {
@@ -28,25 +28,27 @@ public class StoreGeometryMapper extends Mapper<AdminEntity, Void, Void> {
     public void map(AdminEntity value) {
 
         // serialize to the data store
-        WKBWriter writer = new WKBWriter();
-        byte[] bytes = writer.write(value.getGeometry());
+//        WKBWriter writer = new WKBWriter();
+//        byte[] bytes = writer.write(value.getGeometry());
+//
+//        Entity entity = new Entity("Geom", uri);
+//        entity.setProperty("wkb", new Blob(bytes));
+//
+//        mutationPool.put(entity);
 
         String uri = "adminEntity/" + value.getId();
-        Entity entity = new Entity("Geom", uri);
-        entity.setProperty("wkb", new Blob(bytes));
-
-        mutationPool.put(entity);
         index.insert(value.getGeometry().getEnvelopeInternal(), new Data(uri));
+        try {
+            store.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void endSlice() {
         super.endSlice();
         mutationPool.flush();
-        try {
-            store.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 }

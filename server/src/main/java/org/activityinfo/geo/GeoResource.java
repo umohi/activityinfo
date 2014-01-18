@@ -17,9 +17,7 @@ import org.activityinfo.geo.rtree.DatastoreNodeStore;
 import org.activityinfo.geo.rtree.DatastoreRTreeFactory;
 import org.activityinfo.geo.rtree.RTree;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,7 +27,8 @@ public class GeoResource {
     @Path("/migrate")
     public Response migrateGeometry() throws URISyntaxException {
         MapReduceSettings settings = new MapReduceSettings().setWorkerQueueName("mapreduce-workers")
-                .setBucketName("activityinfo").setModule("mapreduce");
+                .setBucketName("activityinfo")
+                .setModule(null);
         String jobId = MapReduceJob.start(
                 MapReduceSpecification.of(
                         "Create MapReduce entities",
@@ -44,6 +43,17 @@ public class GeoResource {
         return Response.seeOther(new URI("/_ah/pipeline/status.html?root=" + jobId)).build();
     }
 
+    @GET
+    @Path("/rtree/{name}")
+    @Produces("text/html")
+    public String getRtree(@PathParam("name") String name) throws EntityNotFoundException {
+        DatastoreNodeStore store = DatastoreRTreeFactory.get(name);
+        RTree tree = new RTree(store);
+        return tree.visualize();
+    }
+
+
+    @GET
     @Path("/query")
     @Produces("text/plain")
     public String query(@QueryParam("x") double x, @QueryParam("y") double y) throws EntityNotFoundException {

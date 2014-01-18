@@ -55,12 +55,19 @@ public class DatastoreNodeStore implements Store {
                 return null;
             }
             root = new DatastoreNode();
+
             fetchNode(root, rootId);
+            if(root.getCoords() == null || root.getDimensions() == null) {
+                throw new IllegalStateException();
+            }
         }
         return root;
     }
 
     private void fetchNode(DatastoreNode node, long id) {
+        if(id == 0) {
+            throw new IllegalArgumentException("Node id cannot be zero!");
+        }
         try {
             Entity entity = datastore.get(KeyFactory.createKey(treeKey, NODE_KIND, id));
             Blob b = (Blob) entity.getProperty("b");
@@ -81,6 +88,9 @@ public class DatastoreNodeStore implements Store {
 
         // and the version...
         node.version = in.readLong();
+
+        node.coords = readFloatArray(in);
+        node.dimensions = readFloatArray(in);
 
         // read children in
         node.children = Lists.newLinkedList();
@@ -247,11 +257,15 @@ public class DatastoreNodeStore implements Store {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             DataOutputStream dos = new DataOutputStream(bos);
 
-            // write this nodes id
+            // write this node's id
             dos.writeLong(parent == null ? 0 : parent.id);
 
             // and the verison...
             dos.writeLong(version);
+
+            // bounds
+            writeFloatArray(dos, coords);
+            writeFloatArray(dos, dimensions);
 
             // write children
             if(children == null) {

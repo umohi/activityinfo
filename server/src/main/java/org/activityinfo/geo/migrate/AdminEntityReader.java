@@ -17,7 +17,7 @@ public class AdminEntityReader extends InputReader<AdminEntity> {
 
     private int startId;
 
-    private transient Iterator<AdminEntity> queryIterator;
+    private transient EntityManagerFactory emf;
 
 
     public AdminEntityReader(int startId) {
@@ -26,15 +26,20 @@ public class AdminEntityReader extends InputReader<AdminEntity> {
 
     @Override
     public void beginSlice() throws IOException {
-        EntityManagerFactory emf = DependencyInjection.INJECTOR.getInstance(EntityManagerFactory.class);
-        EntityManager em = emf.createEntityManager();
-        queryIterator = em.createQuery("select e from AdminEntity e where e.id >= :start and e.level.id=1 and geometry is not null order by e.id")
-                .getResultList().iterator();
+        emf = DependencyInjection.INJECTOR.getInstance(EntityManagerFactory.class);
     }
 
     @Override
     public AdminEntity next() throws IOException, NoSuchElementException {
-        AdminEntity entity = queryIterator.next();
+
+        EntityManager em = emf.createEntityManager();
+        AdminEntity entity = em.createQuery("select e from AdminEntity e " +
+                "where e.id >= :start and geometry is not null order by e.id", AdminEntity.class)
+                .setParameter("start", startId)
+                .setMaxResults(1)
+                .getResultList().iterator().next();
+        em.close();
+
         startId = entity.getId() + 1;
         return entity;
     }

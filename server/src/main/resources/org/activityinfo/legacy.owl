@@ -30,15 +30,6 @@
     
 
 
-    <!-- http://www.activityinfo.org/resources/core#atLocation -->
-
-    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#atLocation">
-        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
-        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://www.activityinfo.org/resources/core#contains -->
 
     <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#contains">
@@ -55,6 +46,15 @@
     <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#implementedBy">
         <rdfs:range rdf:resource="http://www.activityinfo.org/resources/core#Partner"/>
         <rdfs:domain rdf:resource="http://www.activityinfo.org/resources/core#Site"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.activityinfo.org/resources/core#locatedAt -->
+
+    <owl:ObjectProperty rdf:about="http://www.activityinfo.org/resources/core#locatedAt">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
     </owl:ObjectProperty>
     
 
@@ -105,6 +105,7 @@
         <rdf:type rdf:resource="&owl;TransitiveProperty"/>
         <rdfs:domain rdf:resource="http://www.activityinfo.org/resources/core#Geographic"/>
         <rdfs:range rdf:resource="http://www.activityinfo.org/resources/core#Geographic"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.activityinfo.org/resources/core#locatedAt"/>
         <owl:inverseOf rdf:resource="http://www.activityinfo.org/resources/core#within"/>
         <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
     </owl:ObjectProperty>

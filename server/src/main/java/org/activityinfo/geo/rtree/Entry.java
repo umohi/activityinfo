@@ -1,7 +1,9 @@
 package org.activityinfo.geo.rtree;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 
 class Entry implements Node
@@ -45,8 +47,8 @@ class Entry implements Node
     }
 
     @Override
-    public LinkedList<Node> getChildren() {
-        throw new UnsupportedOperationException();
+    public List<Node> getChildren() {
+        return Collections.emptyList();
     }
 
     @Override
@@ -71,4 +73,7 @@ class Entry implements Node
     public void addChildren(Collection<Node> nodes) {
         throw new UnsupportedOperationException();
     }
+
+
+
 }

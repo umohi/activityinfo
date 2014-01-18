@@ -1,0 +1,2204 @@
+@prefix map: <#> .
+@prefix db: <> .
+@prefix vocab: <vocab/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix ai: <http://www.activityinfo.org/resources/#> .
+
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "com.mysql.jdbc.Driver";
+	d2rq:jdbcDSN "jdbc:mysql://localhost/activityinfo";
+	d2rq:username "root";
+	d2rq:password "root";
+	jdbc:autoReconnect "true";
+	jdbc:zeroDateTimeBehavior "convertToNull";
+	.
+
+
+# Table activity
+map:activity a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "activity/@@activity.ActivityId@@";
+	d2rq:class ai:Activity;
+	d2rq:classDefinitionLabel "activity";
+	.
+map:activity__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+	d2rq:property rdfs:label;
+	d2rq:column "activity.Name";
+  .
+
+map:activity_category a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+	d2rq:property ai:category;
+	d2rq:column "activity.category";
+	.
+map:activity_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+	d2rq:property ai:deletedOn;
+	d2rq:column "activity.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+
+map:activity_ReportingFrequency a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+	d2rq:property ai:reportingFrequency;
+	d2rq:condition "reportingFrequency = 0"
+	d2rq:constantValue ai:Once
+	.
+
+
+map:activity_ReportingFrequency a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+	d2rq:property ai:reportingFrequency;
+	d2rq:condition "reportingFrequency = 1"
+	d2rq:constantValue ai:Monthly
+	.
+
+map:activity_SortOrder a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+	d2rq:property ai:sortOrder;
+	d2rq:column "activity.SortOrder";
+	d2rq:datatype xsd:integer;
+	.
+
+map:activity_DatabaseId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+    d2rq:refersToClassMap map:userdatabase;
+    d2rq:property: ai:ownedBy
+    d2rq:join "activity.DatabaseId => userdatabase.DatabaseId"
+	.
+map:activity_LocationTypeId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+    d2rq:refersToClassMap map:locationtype;
+	d2rq:property ai:geographyType
+    d2rq:join "activity.LocationTypeId => locationtype.LocationTypeId"
+	.
+map:activity_published a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:activity;
+	d2rq:property ai:published
+	d2rq:column "activity.published";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table adminentity
+map:adminentity a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "adminentity/@@adminentity.AdminEntityId@@";
+	d2rq:class ai:AdminEntity;
+	.
+map:adminentity__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminentity;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@adminentity.Name@@";
+	.
+
+map:adminentity_Code a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminentity;
+	d2rq:property ai:code;
+	d2rq:column "adminentity.Code";
+	.
+
+map:adminentity_AdminLevelId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminentity;
+	d2rq:property vocab:adminentity_AdminLevelId;
+	d2rq:column "adminentity.AdminLevelId";
+	d2rq:datatype xsd:integer;
+	.
+map:adminentity_deleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminentity;
+	d2rq:property vocab:adminentity_deleted;
+	d2rq:column "adminentity.deleted";
+	d2rq:datatype xsd:boolean;
+	.
+
+map:adminentity_AdminEntityParentId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminentity;
+	d2rq:property vocab:adminentity_AdminEntityParentId;
+	d2rq:refersToClassMap map:adminentity;
+	d2rq:alias "adminentity AS adminentity__alias";
+	d2rq:join "adminentity.AdminEntityParentId => adminentity__alias.AdminEntityId";
+	.
+
+# Table adminlevel
+map:adminlevel a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "adminlevel/@@adminlevel.AdminLevelId@@";
+	d2rq:class vocab:adminlevel;
+	d2rq:classDefinitionLabel "adminlevel";
+	.
+map:adminlevel__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevel;
+	d2rq:property rdfs:label;
+	d2rq:pattern "adminlevel #@@adminlevel.AdminLevelId@@";
+	.
+map:adminlevel_AdminLevelId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevel;
+	d2rq:property vocab:adminlevel_AdminLevelId;
+	d2rq:column "adminlevel.AdminLevelId";
+	d2rq:datatype xsd:integer;
+	.
+map:adminlevel_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevel;
+	d2rq:property vocab:adminlevel_Name;
+	d2rq:column "adminlevel.Name";
+	.
+map:adminlevel_CountryId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevel;
+	d2rq:property vocab:adminlevel_CountryId;
+	d2rq:column "adminlevel.CountryId";
+	d2rq:datatype xsd:integer;
+	.
+map:adminlevel_ParentId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevel;
+	d2rq:property vocab:adminlevel_ParentId;
+	d2rq:column "adminlevel.ParentId";
+	d2rq:datatype xsd:integer;
+	.
+map:adminlevel_polygons a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevel;
+	d2rq:property vocab:adminlevel_polygons;
+	d2rq:column "adminlevel.polygons";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:adminlevel_version a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevel;
+	d2rq:property vocab:adminlevel_version;
+	d2rq:column "adminlevel.version";
+	d2rq:datatype xsd:integer;
+	.
+map:adminlevel_deleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevel;
+	d2rq:property vocab:adminlevel_deleted;
+	d2rq:column "adminlevel.deleted";
+	d2rq:datatype xsd:boolean;
+	.
+
+# Table adminlevelversion
+map:adminlevelversion a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "adminlevelversion/@@adminlevelversion.id@@";
+	d2rq:class vocab:adminlevelversion;
+	d2rq:classDefinitionLabel "adminlevelversion";
+	.
+map:adminlevelversion__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property rdfs:label;
+	d2rq:pattern "adminlevelversion #@@adminlevelversion.id@@";
+	.
+map:adminlevelversion_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_id;
+	d2rq:column "adminlevelversion.id";
+	d2rq:datatype xsd:integer;
+	.
+map:adminlevelversion_version a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_version;
+	d2rq:column "adminlevelversion.version";
+	d2rq:datatype xsd:integer;
+	.
+map:adminlevelversion_timecreated a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_timecreated;
+	d2rq:column "adminlevelversion.timecreated";
+	d2rq:datatype xsd:integer;
+	.
+map:adminlevelversion_json a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_json;
+	d2rq:column "adminlevelversion.json";
+	.
+map:adminlevelversion_sourceMetadata a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_sourceMetadata;
+	d2rq:column "adminlevelversion.sourceMetadata";
+	.
+map:adminlevelversion_sourceFilename a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_sourceFilename;
+	d2rq:column "adminlevelversion.sourceFilename";
+	.
+map:adminlevelversion_sourceUrl a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_sourceUrl;
+	d2rq:column "adminlevelversion.sourceUrl";
+	.
+map:adminlevelversion_sourceHash a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_sourceHash;
+	d2rq:column "adminlevelversion.sourceHash";
+	.
+map:adminlevelversion_message a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_message;
+	d2rq:column "adminlevelversion.message";
+	.
+map:adminlevelversion_userid__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_userid;
+	d2rq:refersToClassMap map:userlogin;
+	d2rq:join "adminlevelversion.userid => userlogin.UserId";
+	.
+map:adminlevelversion_adminlevelid__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:adminlevelversion;
+	d2rq:property vocab:adminlevelversion_adminlevelid;
+	d2rq:refersToClassMap map:adminlevel;
+	d2rq:join "adminlevelversion.adminlevelid => adminlevel.AdminLevelId";
+	.
+
+# Table attribute
+map:attribute a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "attribute/@@attribute.AttributeId@@";
+	d2rq:class vocab:attribute;
+	d2rq:classDefinitionLabel "attribute";
+	.
+map:attribute__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attribute;
+	d2rq:property rdfs:label;
+	d2rq:pattern "attribute #@@attribute.AttributeId@@";
+	.
+map:attribute_AttributeId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attribute;
+	d2rq:property vocab:attribute_AttributeId;
+	d2rq:column "attribute.AttributeId";
+	d2rq:datatype xsd:integer;
+	.
+map:attribute_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attribute;
+	d2rq:property vocab:attribute_dateDeleted;
+	d2rq:column "attribute.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+map:attribute_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attribute;
+	d2rq:property vocab:attribute_Name;
+	d2rq:column "attribute.Name";
+	.
+map:attribute_SortOrder a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attribute;
+	d2rq:property vocab:attribute_SortOrder;
+	d2rq:column "attribute.SortOrder";
+	d2rq:datatype xsd:integer;
+	.
+map:attribute_AttributeGroupId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attribute;
+	d2rq:property vocab:attribute_AttributeGroupId;
+	d2rq:column "attribute.AttributeGroupId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table attributegroup
+map:attributegroup a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "attributegroup/@@attributegroup.AttributeGroupId@@";
+	d2rq:class vocab:attributegroup;
+	d2rq:classDefinitionLabel "attributegroup";
+	.
+map:attributegroup__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroup;
+	d2rq:property rdfs:label;
+	d2rq:pattern "attributegroup #@@attributegroup.AttributeGroupId@@";
+	.
+map:attributegroup_AttributeGroupId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroup;
+	d2rq:property vocab:attributegroup_AttributeGroupId;
+	d2rq:column "attributegroup.AttributeGroupId";
+	d2rq:datatype xsd:integer;
+	.
+map:attributegroup_category a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroup;
+	d2rq:property vocab:attributegroup_category;
+	d2rq:column "attributegroup.category";
+	.
+map:attributegroup_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroup;
+	d2rq:property vocab:attributegroup_dateDeleted;
+	d2rq:column "attributegroup.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+map:attributegroup_multipleAllowed a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroup;
+	d2rq:property vocab:attributegroup_multipleAllowed;
+	d2rq:column "attributegroup.multipleAllowed";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:attributegroup_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroup;
+	d2rq:property vocab:attributegroup_name;
+	d2rq:column "attributegroup.name";
+	.
+map:attributegroup_sortOrder a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroup;
+	d2rq:property vocab:attributegroup_sortOrder;
+	d2rq:column "attributegroup.sortOrder";
+	d2rq:datatype xsd:integer;
+	.
+map:attributegroup_mandatory a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroup;
+	d2rq:property vocab:attributegroup_mandatory;
+	d2rq:column "attributegroup.mandatory";
+	d2rq:valueRegex "^[01]*$";
+	.
+
+# Table attributegroupinactivity
+map:attributegroupinactivity a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "attributegroupinactivity/@@attributegroupinactivity.ActivityId@@/@@attributegroupinactivity.AttributeGroupId@@";
+	d2rq:class vocab:attributegroupinactivity;
+	d2rq:classDefinitionLabel "attributegroupinactivity";
+	.
+map:attributegroupinactivity__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroupinactivity;
+	d2rq:property rdfs:label;
+	d2rq:pattern "attributegroupinactivity #@@attributegroupinactivity.ActivityId@@/@@attributegroupinactivity.AttributeGroupId@@";
+	.
+map:attributegroupinactivity_AttributeGroupId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroupinactivity;
+	d2rq:property vocab:attributegroupinactivity_AttributeGroupId;
+	d2rq:column "attributegroupinactivity.AttributeGroupId";
+	d2rq:datatype xsd:integer;
+	.
+map:attributegroupinactivity_ActivityId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributegroupinactivity;
+	d2rq:property vocab:attributegroupinactivity_ActivityId;
+	d2rq:column "attributegroupinactivity.ActivityId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table attributevalue
+map:attributevalue a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "attributevalue/@@attributevalue.AttributeId@@/@@attributevalue.SiteId@@";
+	d2rq:class vocab:attributevalue;
+	d2rq:classDefinitionLabel "attributevalue";
+	.
+map:attributevalue__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributevalue;
+	d2rq:property rdfs:label;
+	d2rq:pattern "attributevalue #@@attributevalue.AttributeId@@/@@attributevalue.SiteId@@";
+	.
+map:attributevalue_AttributeId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributevalue;
+	d2rq:property vocab:attributevalue_AttributeId;
+	d2rq:column "attributevalue.AttributeId";
+	d2rq:datatype xsd:integer;
+	.
+map:attributevalue_SiteId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributevalue;
+	d2rq:property vocab:attributevalue_SiteId;
+	d2rq:column "attributevalue.SiteId";
+	d2rq:datatype xsd:integer;
+	.
+map:attributevalue_Value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:attributevalue;
+	d2rq:property vocab:attributevalue_Value;
+	d2rq:column "attributevalue.Value";
+	d2rq:valueRegex "^[01]*$";
+	.
+
+# Table authentication
+map:authentication a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "authentication/@@authentication.AuthToken|urlify@@";
+	d2rq:class vocab:authentication;
+	d2rq:classDefinitionLabel "authentication";
+	.
+map:authentication__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:authentication;
+	d2rq:property rdfs:label;
+	d2rq:pattern "authentication #@@authentication.AuthToken@@";
+	.
+map:authentication_AuthToken a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:authentication;
+	d2rq:property vocab:authentication_AuthToken;
+	d2rq:column "authentication.AuthToken";
+	.
+map:authentication_dateCreated a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:authentication;
+	d2rq:property vocab:authentication_dateCreated;
+	d2rq:column "authentication.dateCreated";
+	d2rq:datatype xsd:dateTime;
+	.
+map:authentication_dateLastActive a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:authentication;
+	d2rq:property vocab:authentication_dateLastActive;
+	d2rq:column "authentication.dateLastActive";
+	d2rq:datatype xsd:dateTime;
+	.
+map:authentication_UserId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:authentication;
+	d2rq:property vocab:authentication_UserId;
+	d2rq:column "authentication.UserId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table basemap
+map:basemap a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "basemap/@@basemap.id|urlify@@";
+	d2rq:class vocab:basemap;
+	d2rq:classDefinitionLabel "basemap";
+	.
+map:basemap__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:basemap;
+	d2rq:property rdfs:label;
+	d2rq:pattern "basemap #@@basemap.id@@";
+	.
+map:basemap_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:basemap;
+	d2rq:property vocab:basemap_id;
+	d2rq:column "basemap.id";
+	.
+map:basemap_copyright a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:basemap;
+	d2rq:property vocab:basemap_copyright;
+	d2rq:column "basemap.copyright";
+	.
+map:basemap_maxZoom a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:basemap;
+	d2rq:property vocab:basemap_maxZoom;
+	d2rq:column "basemap.maxZoom";
+	d2rq:datatype xsd:integer;
+	.
+map:basemap_minZoom a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:basemap;
+	d2rq:property vocab:basemap_minZoom;
+	d2rq:column "basemap.minZoom";
+	d2rq:datatype xsd:integer;
+	.
+map:basemap_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:basemap;
+	d2rq:property vocab:basemap_name;
+	d2rq:column "basemap.name";
+	.
+map:basemap_tileUrlPattern a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:basemap;
+	d2rq:property vocab:basemap_tileUrlPattern;
+	d2rq:column "basemap.tileUrlPattern";
+	.
+map:basemap_thumbnailUrl a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:basemap;
+	d2rq:property vocab:basemap_thumbnailUrl;
+	d2rq:column "basemap.thumbnailUrl";
+	.
+
+# Table country
+map:country a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	# Sorry, I don't know which columns to put into the uriPattern
+	#     for "country" because the table doesn't have a primary key.
+	#     Please specify it manually.
+	d2rq:uriPattern "country";
+	d2rq:class vocab:country;
+	d2rq:classDefinitionLabel "country";
+	.
+map:country_CountryId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:country;
+	d2rq:property vocab:country_CountryId;
+	d2rq:column "country.CountryId";
+	d2rq:datatype xsd:integer;
+	.
+map:country_x1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:country;
+	d2rq:property vocab:country_x1;
+	d2rq:column "country.x1";
+	d2rq:datatype xsd:double;
+	.
+map:country_y1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:country;
+	d2rq:property vocab:country_y1;
+	d2rq:column "country.y1";
+	d2rq:datatype xsd:double;
+	.
+map:country_x2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:country;
+	d2rq:property vocab:country_x2;
+	d2rq:column "country.x2";
+	d2rq:datatype xsd:double;
+	.
+map:country_y2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:country;
+	d2rq:property vocab:country_y2;
+	d2rq:column "country.y2";
+	d2rq:datatype xsd:double;
+	.
+map:country_ISO2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:country;
+	d2rq:property vocab:country_ISO2;
+	d2rq:column "country.ISO2";
+	.
+map:country_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:country;
+	d2rq:property vocab:country_Name;
+	d2rq:column "country.Name";
+	.
+
+# Table domain
+map:domain a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "domain/@@domain.host|urlify@@";
+	d2rq:class vocab:domain;
+	d2rq:classDefinitionLabel "domain";
+	.
+map:domain__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domain;
+	d2rq:property rdfs:label;
+	d2rq:pattern "domain #@@domain.host@@";
+	.
+map:domain_host a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domain;
+	d2rq:property vocab:domain_host;
+	d2rq:column "domain.host";
+	.
+map:domain_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domain;
+	d2rq:property vocab:domain_title;
+	d2rq:column "domain.title";
+	.
+map:domain_bucket a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domain;
+	d2rq:property vocab:domain_bucket;
+	d2rq:column "domain.bucket";
+	.
+map:domain_scaffolding a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domain;
+	d2rq:property vocab:domain_scaffolding;
+	d2rq:column "domain.scaffolding";
+	.
+map:domain_homePageBody a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domain;
+	d2rq:property vocab:domain_homePageBody;
+	d2rq:column "domain.homePageBody";
+	.
+map:domain_signUpAllowed a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domain;
+	d2rq:property vocab:domain_signUpAllowed;
+	d2rq:column "domain.signUpAllowed";
+	d2rq:valueRegex "^[01]*$";
+	.
+
+# Table domaintemplate
+map:domaintemplate a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "domaintemplate/@@domaintemplate.id@@";
+	d2rq:class vocab:domaintemplate;
+	d2rq:classDefinitionLabel "domaintemplate";
+	.
+map:domaintemplate__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domaintemplate;
+	d2rq:property rdfs:label;
+	d2rq:pattern "domaintemplate #@@domaintemplate.id@@";
+	.
+map:domaintemplate_host a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domaintemplate;
+	d2rq:property vocab:domaintemplate_host;
+	d2rq:column "domaintemplate.host";
+	.
+map:domaintemplate_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domaintemplate;
+	d2rq:property vocab:domaintemplate_id;
+	d2rq:column "domaintemplate.id";
+	d2rq:datatype xsd:integer;
+	.
+map:domaintemplate_source a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:domaintemplate;
+	d2rq:property vocab:domaintemplate_source;
+	d2rq:column "domaintemplate.source";
+	.
+
+# Table indicator
+map:indicator a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "indicator/@@indicator.IndicatorId@@";
+	d2rq:class vocab:indicator;
+	d2rq:classDefinitionLabel "indicator";
+	.
+map:indicator__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property rdfs:label;
+	d2rq:pattern "indicator #@@indicator.IndicatorId@@";
+	.
+map:indicator_IndicatorId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_IndicatorId;
+	d2rq:column "indicator.IndicatorId";
+	d2rq:datatype xsd:integer;
+	.
+map:indicator_Aggregation a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_Aggregation;
+	d2rq:column "indicator.Aggregation";
+	d2rq:datatype xsd:integer;
+	.
+map:indicator_Category a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_Category;
+	d2rq:column "indicator.Category";
+	.
+map:indicator_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_dateDeleted;
+	d2rq:column "indicator.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+map:indicator_description a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_description;
+	d2rq:column "indicator.description";
+	.
+map:indicator_ListHeader a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_ListHeader;
+	d2rq:column "indicator.ListHeader";
+	.
+map:indicator_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_name;
+	d2rq:column "indicator.name";
+	.
+map:indicator_SortOrder a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_SortOrder;
+	d2rq:column "indicator.SortOrder";
+	d2rq:datatype xsd:integer;
+	.
+map:indicator_Units a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_Units;
+	d2rq:column "indicator.Units";
+	.
+map:indicator_ActivityId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_ActivityId;
+	d2rq:column "indicator.ActivityId";
+	d2rq:datatype xsd:integer;
+	.
+map:indicator_mandatory a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicator;
+	d2rq:property vocab:indicator_mandatory;
+	d2rq:column "indicator.mandatory";
+	d2rq:valueRegex "^[01]*$";
+	.
+
+# Table indicatorlink
+map:indicatorlink a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "indicatorlink/@@indicatorlink.DestinationIndicatorId@@/@@indicatorlink.SourceIndicatorId@@";
+	d2rq:class vocab:indicatorlink;
+	d2rq:classDefinitionLabel "indicatorlink";
+	.
+map:indicatorlink__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicatorlink;
+	d2rq:property rdfs:label;
+	d2rq:pattern "indicatorlink #@@indicatorlink.DestinationIndicatorId@@/@@indicatorlink.SourceIndicatorId@@";
+	.
+map:indicatorlink_SourceIndicatorId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicatorlink;
+	d2rq:property vocab:indicatorlink_SourceIndicatorId;
+	d2rq:column "indicatorlink.SourceIndicatorId";
+	d2rq:datatype xsd:integer;
+	.
+map:indicatorlink_DestinationIndicatorId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicatorlink;
+	d2rq:property vocab:indicatorlink_DestinationIndicatorId;
+	d2rq:column "indicatorlink.DestinationIndicatorId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table indicatorvalue
+map:indicatorvalue a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "indicatorvalue/@@indicatorvalue.IndicatorId@@/@@indicatorvalue.ReportingPeriodId@@";
+	d2rq:class vocab:indicatorvalue;
+	d2rq:classDefinitionLabel "indicatorvalue";
+	.
+map:indicatorvalue__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicatorvalue;
+	d2rq:property rdfs:label;
+	d2rq:pattern "indicatorvalue #@@indicatorvalue.IndicatorId@@/@@indicatorvalue.ReportingPeriodId@@";
+	.
+map:indicatorvalue_IndicatorId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicatorvalue;
+	d2rq:property vocab:indicatorvalue_IndicatorId;
+	d2rq:column "indicatorvalue.IndicatorId";
+	d2rq:datatype xsd:integer;
+	.
+map:indicatorvalue_ReportingPeriodId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicatorvalue;
+	d2rq:property vocab:indicatorvalue_ReportingPeriodId;
+	d2rq:column "indicatorvalue.ReportingPeriodId";
+	d2rq:datatype xsd:integer;
+	.
+map:indicatorvalue_Value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:indicatorvalue;
+	d2rq:property vocab:indicatorvalue_Value;
+	d2rq:column "indicatorvalue.Value";
+	d2rq:datatype xsd:double;
+	.
+
+# Table location
+map:location a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "location/@@location.LocationID@@";
+	d2rq:class vocab:location;
+	d2rq:classDefinitionLabel "location";
+	.
+map:location__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property rdfs:label;
+	d2rq:pattern "location #@@location.LocationID@@";
+	.
+map:location_LocationID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_LocationID;
+	d2rq:column "location.LocationID";
+	d2rq:datatype xsd:integer;
+	.
+map:location_Axe a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_Axe;
+	d2rq:column "location.Axe";
+	.
+map:location_LocationGuid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_LocationGuid;
+	d2rq:column "location.LocationGuid";
+	.
+map:location_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_Name;
+	d2rq:column "location.Name";
+	.
+map:location_X a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_X;
+	d2rq:column "location.X";
+	d2rq:datatype xsd:double;
+	.
+map:location_Y a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_Y;
+	d2rq:column "location.Y";
+	d2rq:datatype xsd:double;
+	.
+map:location_LocationTypeID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_LocationTypeID;
+	d2rq:column "location.LocationTypeID";
+	d2rq:datatype xsd:integer;
+	.
+map:location_timeEdited a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_timeEdited;
+	d2rq:column "location.timeEdited";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table locationadminlink
+map:locationadminlink a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "locationadminlink/@@locationadminlink.AdminEntityId@@/@@locationadminlink.LocationId@@";
+	d2rq:class vocab:locationadminlink;
+	d2rq:classDefinitionLabel "locationadminlink";
+	.
+map:locationadminlink__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationadminlink;
+	d2rq:property rdfs:label;
+	d2rq:pattern "locationadminlink #@@locationadminlink.AdminEntityId@@/@@locationadminlink.LocationId@@";
+	.
+map:locationadminlink_AdminEntityId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationadminlink;
+	d2rq:property vocab:locationadminlink_AdminEntityId;
+	d2rq:column "locationadminlink.AdminEntityId";
+	d2rq:datatype xsd:integer;
+	.
+map:locationadminlink_LocationId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationadminlink;
+	d2rq:property vocab:locationadminlink_LocationId;
+	d2rq:column "locationadminlink.LocationId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table locationtype
+map:locationtype a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "locationtype/@@locationtype.locationtypeid@@";
+	d2rq:class vocab:locationtype;
+	d2rq:classDefinitionLabel "locationtype";
+	.
+map:locationtype__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationtype;
+	d2rq:property rdfs:label;
+	d2rq:pattern "locationtype #@@locationtype.locationtypeid@@";
+	.
+map:locationtype_locationtypeid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationtype;
+	d2rq:property vocab:locationtype_locationtypeid;
+	d2rq:column "locationtype.locationtypeid";
+	d2rq:datatype xsd:integer;
+	.
+map:locationtype_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationtype;
+	d2rq:property vocab:locationtype_Name;
+	d2rq:column "locationtype.Name";
+	.
+map:locationtype_Reuse a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationtype;
+	d2rq:property vocab:locationtype_Reuse;
+	d2rq:column "locationtype.Reuse";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:locationtype_BoundAdminLevelId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationtype;
+	d2rq:property vocab:locationtype_BoundAdminLevelId;
+	d2rq:column "locationtype.BoundAdminLevelId";
+	d2rq:datatype xsd:integer;
+	.
+map:locationtype_CountryId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:locationtype;
+	d2rq:property vocab:locationtype_CountryId;
+	d2rq:column "locationtype.CountryId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table lockedperiod
+map:lockedperiod a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "lockedperiod/@@lockedperiod.LockedPeriodId@@";
+	d2rq:class vocab:lockedperiod;
+	d2rq:classDefinitionLabel "lockedperiod";
+	.
+map:lockedperiod__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property rdfs:label;
+	d2rq:pattern "lockedperiod #@@lockedperiod.LockedPeriodId@@";
+	.
+map:lockedperiod_LockedPeriodId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property vocab:lockedperiod_LockedPeriodId;
+	d2rq:column "lockedperiod.LockedPeriodId";
+	d2rq:datatype xsd:integer;
+	.
+map:lockedperiod_FromDate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property vocab:lockedperiod_FromDate;
+	d2rq:column "lockedperiod.FromDate";
+	d2rq:datatype xsd:dateTime;
+	.
+map:lockedperiod_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property vocab:lockedperiod_Name;
+	d2rq:column "lockedperiod.Name";
+	.
+map:lockedperiod_ToDate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property vocab:lockedperiod_ToDate;
+	d2rq:column "lockedperiod.ToDate";
+	d2rq:datatype xsd:dateTime;
+	.
+map:lockedperiod_UserDatabaseId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property vocab:lockedperiod_UserDatabaseId;
+	d2rq:column "lockedperiod.UserDatabaseId";
+	d2rq:datatype xsd:integer;
+	.
+map:lockedperiod_enabled a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property vocab:lockedperiod_enabled;
+	d2rq:column "lockedperiod.enabled";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:lockedperiod_ActivityId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property vocab:lockedperiod_ActivityId;
+	d2rq:column "lockedperiod.ActivityId";
+	d2rq:datatype xsd:integer;
+	.
+map:lockedperiod_ProjectId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:lockedperiod;
+	d2rq:property vocab:lockedperiod_ProjectId;
+	d2rq:refersToClassMap map:project;
+	d2rq:join "lockedperiod.ProjectId => project.ProjectId";
+	.
+
+# Table maliadmin
+map:maliadmin a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	# Sorry, I don't know which columns to put into the uriPattern
+	#     for "maliadmin" because the table doesn't have a primary key.
+	#     Please specify it manually.
+	d2rq:uriPattern "maliadmin";
+	d2rq:class vocab:maliadmin;
+	d2rq:classDefinitionLabel "maliadmin";
+	.
+map:maliadmin_code a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:maliadmin;
+	d2rq:property vocab:maliadmin_code;
+	d2rq:column "maliadmin.code";
+	.
+map:maliadmin_commune_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:maliadmin;
+	d2rq:property vocab:maliadmin_commune_id;
+	d2rq:column "maliadmin.commune_id";
+	d2rq:datatype xsd:integer;
+	.
+map:maliadmin_cercle_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:maliadmin;
+	d2rq:property vocab:maliadmin_cercle_id;
+	d2rq:column "maliadmin.cercle_id";
+	d2rq:datatype xsd:integer;
+	.
+map:maliadmin_region_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:maliadmin;
+	d2rq:property vocab:maliadmin_region_id;
+	d2rq:column "maliadmin.region_id";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table metmp
+map:metmp a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	# Sorry, I don't know which columns to put into the uriPattern
+	#     for "metmp" because the table doesn't have a primary key.
+	#     Please specify it manually.
+	d2rq:uriPattern "metmp";
+	d2rq:class vocab:metmp;
+	d2rq:classDefinitionLabel "metmp";
+	.
+map:metmp_Region a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_Region;
+	d2rq:column "metmp.Region";
+	.
+map:metmp_AE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_AE;
+	d2rq:column "metmp.AE";
+	.
+map:metmp_CAP a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_CAP;
+	d2rq:column "metmp.CAP";
+	.
+map:metmp_AE_PK a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_AE_PK;
+	d2rq:column "metmp.AE_PK";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_CAP_PK a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_CAP_PK;
+	d2rq:column "metmp.CAP_PK";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_Cercle a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_Cercle;
+	d2rq:column "metmp.Cercle";
+	.
+map:metmp_Commune a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_Commune;
+	d2rq:column "metmp.Commune";
+	.
+map:metmp_NOM_ETABLISSEMENT a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_NOM_ETABLISSEMENT;
+	d2rq:column "metmp.NOM_ETABLISSEMENT";
+	.
+map:metmp_CODE_ETABLISSEMENT a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_CODE_ETABLISSEMENT;
+	d2rq:column "metmp.CODE_ETABLISSEMENT";
+	.
+map:metmp_CYCLE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_CYCLE;
+	d2rq:column "metmp.CYCLE";
+	.
+map:metmp_STATUT a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_STATUT;
+	d2rq:column "metmp.STATUT";
+	.
+map:metmp_PRESENCE_RESTAURANT a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_PRESENCE_RESTAURANT;
+	d2rq:column "metmp.PRESENCE_RESTAURANT";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_PRESENCE_LATRINES a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_PRESENCE_LATRINES;
+	d2rq:column "metmp.PRESENCE_LATRINES";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_LATRINES_FILLES_SEPAREES a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_LATRINES_FILLES_SEPAREES;
+	d2rq:column "metmp.LATRINES_FILLES_SEPAREES";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_NOMBRE_LATRINES a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_NOMBRE_LATRINES;
+	d2rq:column "metmp.NOMBRE_LATRINES";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_EAU_POTABLE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_EAU_POTABLE;
+	d2rq:column "metmp.EAU_POTABLE";
+	.
+map:metmp_GARCONS a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_GARCONS;
+	d2rq:column "metmp.GARCONS";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_FILLES a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_FILLES;
+	d2rq:column "metmp.FILLES";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_NBR_EENSEIGNANTS a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_NBR_EENSEIGNANTS;
+	d2rq:column "metmp.NBR_EENSEIGNANTS";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_CERCLE_PK a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_CERCLE_PK;
+	d2rq:column "metmp.CERCLE_PK";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_REGION_PK a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_REGION_PK;
+	d2rq:column "metmp.REGION_PK";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_COMMUNE_KEY a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_COMMUNE_KEY;
+	d2rq:column "metmp.COMMUNE_KEY";
+	.
+map:metmp_COMMUNE_PK a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_COMMUNE_PK;
+	d2rq:column "metmp.COMMUNE_PK";
+	d2rq:datatype xsd:integer;
+	.
+map:metmp_LOCATION_PK a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:metmp;
+	d2rq:property vocab:metmp_LOCATION_PK;
+	d2rq:column "metmp.LOCATION_PK";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table mvtmp
+map:mvtmp a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	# Sorry, I don't know which columns to put into the uriPattern
+	#     for "mvtmp" because the table doesn't have a primary key.
+	#     Please specify it manually.
+	d2rq:uriPattern "mvtmp";
+	d2rq:class vocab:mvtmp;
+	d2rq:classDefinitionLabel "mvtmp";
+	.
+map:mvtmp_ogc_fid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_ogc_fid;
+	d2rq:column "mvtmp.ogc_fid";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_objectid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_objectid;
+	d2rq:column "mvtmp.objectid";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_codec a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_codec;
+	d2rq:column "mvtmp.codec";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_cregion98 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_cregion98;
+	d2rq:column "mvtmp.cregion98";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_ccercle98 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_ccercle98;
+	d2rq:column "mvtmp.ccercle98";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_cercle98 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_cercle98;
+	d2rq:column "mvtmp.cercle98";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_commune a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_commune;
+	d2rq:column "mvtmp.commune";
+	.
+map:mvtmp_ncommune a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_ncommune;
+	d2rq:column "mvtmp.ncommune";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_cheflieu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_cheflieu;
+	d2rq:column "mvtmp.cheflieu";
+	.
+map:mvtmp_cvillage98 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_cvillage98;
+	d2rq:column "mvtmp.cvillage98";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_nom1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_nom1;
+	d2rq:column "mvtmp.nom1";
+	.
+map:mvtmp_nom2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_nom2;
+	d2rq:column "mvtmp.nom2";
+	.
+map:mvtmp_village a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_village;
+	d2rq:column "mvtmp.village";
+	.
+map:mvtmp_hommes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_hommes;
+	d2rq:column "mvtmp.hommes";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_femmes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_femmes;
+	d2rq:column "mvtmp.femmes";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_rec98 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_rec98;
+	d2rq:column "mvtmp.rec98";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_menages a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_menages;
+	d2rq:column "mvtmp.menages";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_concession a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_concession;
+	d2rq:column "mvtmp.concession";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_lon87 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_lon87;
+	d2rq:column "mvtmp.lon87";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_lat87 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_lat87;
+	d2rq:column "mvtmp.lat87";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_lon98 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_lon98;
+	d2rq:column "mvtmp.lon98";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_lat98 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_lat98;
+	d2rq:column "mvtmp.lat98";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_long_ a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_long_;
+	d2rq:column "mvtmp.long_";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_lat a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_lat;
+	d2rq:column "mvtmp.lat";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_coordsourc a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_coordsourc;
+	d2rq:column "mvtmp.coordsourc";
+	.
+map:mvtmp_newlong a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_newlong;
+	d2rq:column "mvtmp.newlong";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_newlat a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_newlat;
+	d2rq:column "mvtmp.newlat";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_statut a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_statut;
+	d2rq:column "mvtmp.statut";
+	.
+map:mvtmp_village_ra a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_village_ra;
+	d2rq:column "mvtmp.village_ra";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_idt a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_idt;
+	d2rq:column "mvtmp.idt";
+	.
+map:mvtmp_sitearv a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_sitearv;
+	d2rq:column "mvtmp.sitearv";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_villes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_villes;
+	d2rq:column "mvtmp.villes";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_ecole a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_ecole;
+	d2rq:column "mvtmp.ecole";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_X1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_X1;
+	d2rq:column "mvtmp.X1";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_Y1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_Y1;
+	d2rq:column "mvtmp.Y1";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_X2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_X2;
+	d2rq:column "mvtmp.X2";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_Y2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_Y2;
+	d2rq:column "mvtmp.Y2";
+	d2rq:datatype xsd:double;
+	.
+map:mvtmp_locationid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_locationid;
+	d2rq:column "mvtmp.locationid";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_timeEdited a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_timeEdited;
+	d2rq:column "mvtmp.timeEdited";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_communecode a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_communecode;
+	d2rq:column "mvtmp.communecode";
+	d2rq:datatype xsd:integer;
+	.
+map:mvtmp_cerclecode a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:mvtmp;
+	d2rq:property vocab:mvtmp_cerclecode;
+	d2rq:column "mvtmp.cerclecode";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table partner
+map:partner a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "partner/@@partner.PartnerId@@";
+	d2rq:class vocab:partner;
+	d2rq:classDefinitionLabel "partner";
+	.
+map:partner__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partner;
+	d2rq:property rdfs:label;
+	d2rq:pattern "partner #@@partner.PartnerId@@";
+	.
+map:partner_PartnerId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partner;
+	d2rq:property vocab:partner_PartnerId;
+	d2rq:column "partner.PartnerId";
+	d2rq:datatype xsd:integer;
+	.
+map:partner_FullName a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partner;
+	d2rq:property vocab:partner_FullName;
+	d2rq:column "partner.FullName";
+	.
+map:partner_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partner;
+	d2rq:property vocab:partner_Name;
+	d2rq:column "partner.Name";
+	.
+map:partner_location_LocationID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partner;
+	d2rq:property vocab:partner_location_LocationID;
+	d2rq:column "partner.location_LocationID";
+	d2rq:datatype xsd:integer;
+	.
+map:partner_id_org_unit_model a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partner;
+	d2rq:property vocab:partner_id_org_unit_model;
+	d2rq:column "partner.id_org_unit_model";
+	d2rq:datatype xsd:integer;
+	.
+map:partner_organization_id_organization a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partner;
+	d2rq:property vocab:partner_organization_id_organization;
+	d2rq:column "partner.organization_id_organization";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table partnerindatabase
+map:partnerindatabase a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "partnerindatabase/@@partnerindatabase.DatabaseId@@/@@partnerindatabase.PartnerId@@";
+	d2rq:class vocab:partnerindatabase;
+	d2rq:classDefinitionLabel "partnerindatabase";
+	.
+map:partnerindatabase__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partnerindatabase;
+	d2rq:property rdfs:label;
+	d2rq:pattern "partnerindatabase #@@partnerindatabase.DatabaseId@@/@@partnerindatabase.PartnerId@@";
+	.
+map:partnerindatabase_PartnerId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partnerindatabase;
+	d2rq:property vocab:partnerindatabase_PartnerId;
+	d2rq:column "partnerindatabase.PartnerId";
+	d2rq:datatype xsd:integer;
+	.
+map:partnerindatabase_DatabaseId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:partnerindatabase;
+	d2rq:property vocab:partnerindatabase_DatabaseId;
+	d2rq:column "partnerindatabase.DatabaseId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table project
+map:project a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "project/@@project.ProjectId@@";
+	d2rq:class vocab:project;
+	d2rq:classDefinitionLabel "project";
+	.
+map:project__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:project;
+	d2rq:property rdfs:label;
+	d2rq:pattern "project #@@project.ProjectId@@";
+	.
+map:project_ProjectId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:project;
+	d2rq:property vocab:project_ProjectId;
+	d2rq:column "project.ProjectId";
+	d2rq:datatype xsd:integer;
+	.
+map:project_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:project;
+	d2rq:property vocab:project_dateDeleted;
+	d2rq:column "project.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+map:project_description a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:project;
+	d2rq:property vocab:project_description;
+	d2rq:column "project.description";
+	.
+map:project_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:project;
+	d2rq:property vocab:project_name;
+	d2rq:column "project.name";
+	.
+map:project_DatabaseId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:project;
+	d2rq:property vocab:project_DatabaseId;
+	d2rq:column "project.DatabaseId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table projectreportmodel
+map:projectreportmodel a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "projectreportmodel/@@projectreportmodel.id@@";
+	d2rq:class vocab:projectreportmodel;
+	d2rq:classDefinitionLabel "projectreportmodel";
+	.
+map:projectreportmodel__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:projectreportmodel;
+	d2rq:property rdfs:label;
+	d2rq:pattern "projectreportmodel #@@projectreportmodel.id@@";
+	.
+map:projectreportmodel_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:projectreportmodel;
+	d2rq:property vocab:projectreportmodel_id;
+	d2rq:column "projectreportmodel.id";
+	d2rq:datatype xsd:integer;
+	.
+map:projectreportmodel_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:projectreportmodel;
+	d2rq:property vocab:projectreportmodel_name;
+	d2rq:column "projectreportmodel.name";
+	.
+
+# Table reportingperiod
+map:reportingperiod a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "reportingperiod/@@reportingperiod.ReportingPeriodId@@";
+	d2rq:class vocab:reportingperiod;
+	d2rq:classDefinitionLabel "reportingperiod";
+	.
+map:reportingperiod__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property rdfs:label;
+	d2rq:pattern "reportingperiod #@@reportingperiod.ReportingPeriodId@@";
+	.
+map:reportingperiod_ReportingPeriodId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property vocab:reportingperiod_ReportingPeriodId;
+	d2rq:column "reportingperiod.ReportingPeriodId";
+	d2rq:datatype xsd:integer;
+	.
+map:reportingperiod_comments a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property vocab:reportingperiod_comments;
+	d2rq:column "reportingperiod.comments";
+	.
+map:reportingperiod_Date1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property vocab:reportingperiod_Date1;
+	d2rq:column "reportingperiod.Date1";
+	d2rq:datatype xsd:date;
+	.
+map:reportingperiod_Date2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property vocab:reportingperiod_Date2;
+	d2rq:column "reportingperiod.Date2";
+	d2rq:datatype xsd:date;
+	.
+map:reportingperiod_DateCreated a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property vocab:reportingperiod_DateCreated;
+	d2rq:column "reportingperiod.DateCreated";
+	d2rq:datatype xsd:dateTime;
+	.
+map:reportingperiod_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property vocab:reportingperiod_dateDeleted;
+	d2rq:column "reportingperiod.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+map:reportingperiod_DateEdited a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property vocab:reportingperiod_DateEdited;
+	d2rq:column "reportingperiod.DateEdited";
+	d2rq:datatype xsd:dateTime;
+	.
+map:reportingperiod_SiteId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportingperiod;
+	d2rq:property vocab:reportingperiod_SiteId;
+	d2rq:column "reportingperiod.SiteId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table reportsubscription
+map:reportsubscription a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "reportsubscription/@@reportsubscription.reportid@@/@@reportsubscription.userId@@";
+	d2rq:class vocab:reportsubscription;
+	d2rq:classDefinitionLabel "reportsubscription";
+	.
+map:reportsubscription__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportsubscription;
+	d2rq:property rdfs:label;
+	d2rq:pattern "reportsubscription #@@reportsubscription.reportid@@/@@reportsubscription.userId@@";
+	.
+map:reportsubscription_reportid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportsubscription;
+	d2rq:property vocab:reportsubscription_reportid;
+	d2rq:column "reportsubscription.reportid";
+	d2rq:datatype xsd:integer;
+	.
+map:reportsubscription_userId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportsubscription;
+	d2rq:property vocab:reportsubscription_userId;
+	d2rq:column "reportsubscription.userId";
+	d2rq:datatype xsd:integer;
+	.
+map:reportsubscription_subscribed a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportsubscription;
+	d2rq:property vocab:reportsubscription_subscribed;
+	d2rq:column "reportsubscription.subscribed";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:reportsubscription_invitingUserId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportsubscription;
+	d2rq:property vocab:reportsubscription_invitingUserId;
+	d2rq:column "reportsubscription.invitingUserId";
+	d2rq:datatype xsd:integer;
+	.
+map:reportsubscription_dashboard a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportsubscription;
+	d2rq:property vocab:reportsubscription_dashboard;
+	d2rq:column "reportsubscription.dashboard";
+	d2rq:datatype xsd:boolean;
+	.
+map:reportsubscription_emaildelivery a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportsubscription;
+	d2rq:property vocab:reportsubscription_emaildelivery;
+	d2rq:column "reportsubscription.emaildelivery";
+	.
+map:reportsubscription_emailday a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportsubscription;
+	d2rq:property vocab:reportsubscription_emailday;
+	d2rq:column "reportsubscription.emailday";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table reporttemplate
+map:reporttemplate a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "reporttemplate/@@reporttemplate.ReportTemplateId@@";
+	d2rq:class vocab:reporttemplate;
+	d2rq:classDefinitionLabel "reporttemplate";
+	.
+map:reporttemplate__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property rdfs:label;
+	d2rq:pattern "reporttemplate #@@reporttemplate.ReportTemplateId@@";
+	.
+map:reporttemplate_ReportTemplateId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_ReportTemplateId;
+	d2rq:column "reporttemplate.ReportTemplateId";
+	d2rq:datatype xsd:integer;
+	.
+map:reporttemplate_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_dateDeleted;
+	d2rq:column "reporttemplate.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+map:reporttemplate_description a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_description;
+	d2rq:column "reporttemplate.description";
+	.
+map:reporttemplate_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_title;
+	d2rq:column "reporttemplate.title";
+	.
+map:reporttemplate_visibility a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_visibility;
+	d2rq:column "reporttemplate.visibility";
+	d2rq:datatype xsd:integer;
+	.
+map:reporttemplate_xml a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_xml;
+	d2rq:column "reporttemplate.xml";
+	.
+map:reporttemplate_DatabaseId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_DatabaseId;
+	d2rq:column "reporttemplate.DatabaseId";
+	d2rq:datatype xsd:integer;
+	.
+map:reporttemplate_OwnerUserId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_OwnerUserId;
+	d2rq:column "reporttemplate.OwnerUserId";
+	d2rq:datatype xsd:integer;
+	.
+map:reporttemplate_json a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reporttemplate;
+	d2rq:property vocab:reporttemplate_json;
+	d2rq:column "reporttemplate.json";
+	.
+
+# Table reportvisibility
+map:reportvisibility a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	# Sorry, I don't know which columns to put into the uriPattern
+	#     for "reportvisibility" because the table doesn't have a primary key.
+	#     Please specify it manually.
+	d2rq:uriPattern "reportvisibility";
+	d2rq:class vocab:reportvisibility;
+	d2rq:classDefinitionLabel "reportvisibility";
+	.
+map:reportvisibility_reportid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportvisibility;
+	d2rq:property vocab:reportvisibility_reportid;
+	d2rq:column "reportvisibility.reportid";
+	d2rq:datatype xsd:integer;
+	.
+map:reportvisibility_databaseid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportvisibility;
+	d2rq:property vocab:reportvisibility_databaseid;
+	d2rq:column "reportvisibility.databaseid";
+	d2rq:datatype xsd:integer;
+	.
+map:reportvisibility_defaultDashboard a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reportvisibility;
+	d2rq:property vocab:reportvisibility_defaultDashboard;
+	d2rq:column "reportvisibility.defaultDashboard";
+	d2rq:datatype xsd:boolean;
+	.
+
+# Table site
+map:site a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "site/@@site.SiteId@@";
+	d2rq:class vocab:site;
+	d2rq:classDefinitionLabel "site";
+	.
+map:site__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property rdfs:label;
+	d2rq:pattern "site #@@site.SiteId@@";
+	.
+map:site_SiteId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_SiteId;
+	d2rq:column "site.SiteId";
+	d2rq:datatype xsd:integer;
+	.
+map:site_comments a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_comments;
+	d2rq:column "site.comments";
+	.
+map:site_Date1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_Date1;
+	d2rq:column "site.Date1";
+	d2rq:datatype xsd:date;
+	.
+map:site_Date2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_Date2;
+	d2rq:column "site.Date2";
+	d2rq:datatype xsd:date;
+	.
+map:site_DateCreated a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_DateCreated;
+	d2rq:column "site.DateCreated";
+	d2rq:datatype xsd:dateTime;
+	.
+map:site_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_dateDeleted;
+	d2rq:column "site.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+map:site_DateEdited a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_DateEdited;
+	d2rq:column "site.DateEdited";
+	d2rq:datatype xsd:dateTime;
+	.
+map:site_DateSynchronized a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_DateSynchronized;
+	d2rq:column "site.DateSynchronized";
+	d2rq:datatype xsd:dateTime;
+	.
+map:site_SiteGuid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_SiteGuid;
+	d2rq:column "site.SiteGuid";
+	.
+map:site_ActivityId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_ActivityId;
+	d2rq:column "site.ActivityId";
+	d2rq:datatype xsd:integer;
+	.
+map:site_PartnerId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_PartnerId;
+	d2rq:column "site.PartnerId";
+	d2rq:datatype xsd:integer;
+	.
+map:site_ProjectId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_ProjectId;
+	d2rq:column "site.ProjectId";
+	d2rq:datatype xsd:integer;
+	.
+map:site_timeEdited a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_timeEdited;
+	d2rq:column "site.timeEdited";
+	d2rq:datatype xsd:integer;
+	.
+map:site_LocationId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:site;
+	d2rq:property vocab:site_LocationId;
+	d2rq:refersToClassMap map:location;
+	d2rq:join "site.LocationId => location.LocationID";
+	.
+
+# Table siteattachment
+map:siteattachment a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "siteattachment/@@siteattachment.blobid|urlify@@";
+	d2rq:class vocab:siteattachment;
+	d2rq:classDefinitionLabel "siteattachment";
+	.
+map:siteattachment__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:siteattachment;
+	d2rq:property rdfs:label;
+	d2rq:pattern "siteattachment #@@siteattachment.blobid@@";
+	.
+map:siteattachment_blobid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:siteattachment;
+	d2rq:property vocab:siteattachment_blobid;
+	d2rq:column "siteattachment.blobid";
+	.
+map:siteattachment_siteid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:siteattachment;
+	d2rq:property vocab:siteattachment_siteid;
+	d2rq:column "siteattachment.siteid";
+	d2rq:datatype xsd:integer;
+	.
+map:siteattachment_filename a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:siteattachment;
+	d2rq:property vocab:siteattachment_filename;
+	d2rq:column "siteattachment.filename";
+	.
+map:siteattachment_uploadedby a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:siteattachment;
+	d2rq:property vocab:siteattachment_uploadedby;
+	d2rq:column "siteattachment.uploadedby";
+	d2rq:datatype xsd:integer;
+	.
+map:siteattachment_blobsize a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:siteattachment;
+	d2rq:property vocab:siteattachment_blobsize;
+	d2rq:column "siteattachment.blobsize";
+	d2rq:datatype xsd:double;
+	.
+map:siteattachment_contenttype a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:siteattachment;
+	d2rq:property vocab:siteattachment_contenttype;
+	d2rq:column "siteattachment.contenttype";
+	.
+
+# Table sitehistory
+map:sitehistory a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "sitehistory/@@sitehistory.id@@";
+	d2rq:class vocab:sitehistory;
+	d2rq:classDefinitionLabel "sitehistory";
+	.
+map:sitehistory__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:sitehistory;
+	d2rq:property rdfs:label;
+	d2rq:pattern "sitehistory #@@sitehistory.id@@";
+	.
+map:sitehistory_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:sitehistory;
+	d2rq:property vocab:sitehistory_id;
+	d2rq:column "sitehistory.id";
+	d2rq:datatype xsd:integer;
+	.
+map:sitehistory_timecreated a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:sitehistory;
+	d2rq:property vocab:sitehistory_timecreated;
+	d2rq:column "sitehistory.timecreated";
+	d2rq:datatype xsd:integer;
+	.
+map:sitehistory_initial a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:sitehistory;
+	d2rq:property vocab:sitehistory_initial;
+	d2rq:column "sitehistory.initial";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:sitehistory_json a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:sitehistory;
+	d2rq:property vocab:sitehistory_json;
+	d2rq:column "sitehistory.json";
+	.
+map:sitehistory_userid__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:sitehistory;
+	d2rq:property vocab:sitehistory_userid;
+	d2rq:refersToClassMap map:userlogin;
+	d2rq:join "sitehistory.userid => userlogin.UserId";
+	.
+map:sitehistory_siteid__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:sitehistory;
+	d2rq:property vocab:sitehistory_siteid;
+	d2rq:refersToClassMap map:site;
+	d2rq:join "sitehistory.siteid => site.SiteId";
+	.
+
+# Table target
+map:target a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "target/@@target.targetId@@";
+	d2rq:class vocab:target;
+	d2rq:classDefinitionLabel "target";
+	.
+map:target__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property rdfs:label;
+	d2rq:pattern "target #@@target.targetId@@";
+	.
+map:target_targetId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property vocab:target_targetId;
+	d2rq:column "target.targetId";
+	d2rq:datatype xsd:integer;
+	.
+map:target_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property vocab:target_Name;
+	d2rq:column "target.Name";
+	.
+map:target_Date1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property vocab:target_Date1;
+	d2rq:column "target.Date1";
+	d2rq:datatype xsd:dateTime;
+	.
+map:target_Date2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property vocab:target_Date2;
+	d2rq:column "target.Date2";
+	d2rq:datatype xsd:dateTime;
+	.
+map:target_ProjectId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property vocab:target_ProjectId;
+	d2rq:column "target.ProjectId";
+	d2rq:datatype xsd:integer;
+	.
+map:target_PartnerId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property vocab:target_PartnerId;
+	d2rq:column "target.PartnerId";
+	d2rq:datatype xsd:integer;
+	.
+map:target_AdminEntityId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property vocab:target_AdminEntityId;
+	d2rq:column "target.AdminEntityId";
+	d2rq:datatype xsd:integer;
+	.
+map:target_DatabaseId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:target;
+	d2rq:property vocab:target_DatabaseId;
+	d2rq:column "target.DatabaseId";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table targetvalue
+map:targetvalue a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	# Sorry, I don't know which columns to put into the uriPattern
+	#     for "targetvalue" because the table doesn't have a primary key.
+	#     Please specify it manually.
+	d2rq:uriPattern "targetvalue";
+	d2rq:class vocab:targetvalue;
+	d2rq:classDefinitionLabel "targetvalue";
+	.
+map:targetvalue_TargetId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:targetvalue;
+	d2rq:property vocab:targetvalue_TargetId;
+	d2rq:column "targetvalue.TargetId";
+	d2rq:datatype xsd:integer;
+	.
+map:targetvalue_IndicatorId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:targetvalue;
+	d2rq:property vocab:targetvalue_IndicatorId;
+	d2rq:column "targetvalue.IndicatorId";
+	d2rq:datatype xsd:integer;
+	.
+map:targetvalue_Value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:targetvalue;
+	d2rq:property vocab:targetvalue_Value;
+	d2rq:column "targetvalue.Value";
+	d2rq:datatype xsd:double;
+	.
+
+# Table userdatabase
+map:userdatabase a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "userdatabase/@@userdatabase.DatabaseId@@";
+	d2rq:class vocab:userdatabase;
+	d2rq:classDefinitionLabel "userdatabase";
+	.
+map:userdatabase__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property rdfs:label;
+	d2rq:pattern "userdatabase #@@userdatabase.DatabaseId@@";
+	.
+map:userdatabase_DatabaseId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_DatabaseId;
+	d2rq:column "userdatabase.DatabaseId";
+	d2rq:datatype xsd:integer;
+	.
+map:userdatabase_dateDeleted a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_dateDeleted;
+	d2rq:column "userdatabase.dateDeleted";
+	d2rq:datatype xsd:dateTime;
+	.
+map:userdatabase_FullName a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_FullName;
+	d2rq:column "userdatabase.FullName";
+	.
+map:userdatabase_lastSchemaUpdate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_lastSchemaUpdate;
+	d2rq:column "userdatabase.lastSchemaUpdate";
+	d2rq:datatype xsd:dateTime;
+	.
+map:userdatabase_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_Name;
+	d2rq:column "userdatabase.Name";
+	.
+map:userdatabase_StartDate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_StartDate;
+	d2rq:column "userdatabase.StartDate";
+	d2rq:datatype xsd:date;
+	.
+map:userdatabase_CountryId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_CountryId;
+	d2rq:column "userdatabase.CountryId";
+	d2rq:datatype xsd:integer;
+	.
+map:userdatabase_OwnerUserId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_OwnerUserId;
+	d2rq:column "userdatabase.OwnerUserId";
+	d2rq:datatype xsd:integer;
+	.
+map:userdatabase_version a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userdatabase;
+	d2rq:property vocab:userdatabase_version;
+	d2rq:column "userdatabase.version";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table userlogin
+map:userlogin a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "userlogin/@@userlogin.UserId@@";
+	d2rq:class vocab:userlogin;
+	d2rq:classDefinitionLabel "userlogin";
+	.
+map:userlogin__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property rdfs:label;
+	d2rq:pattern "userlogin #@@userlogin.UserId@@";
+	.
+map:userlogin_changePasswordKey a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_changePasswordKey;
+	d2rq:column "userlogin.changePasswordKey";
+	.
+map:userlogin_dateChangePasswordKeyIssued a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_dateChangePasswordKeyIssued;
+	d2rq:column "userlogin.dateChangePasswordKeyIssued";
+	d2rq:datatype xsd:dateTime;
+	.
+map:userlogin_Email a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_Email;
+	d2rq:column "userlogin.Email";
+	.
+map:userlogin_Password a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_Password;
+	d2rq:column "userlogin.Password";
+	.
+map:userlogin_Locale a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_Locale;
+	d2rq:column "userlogin.Locale";
+	.
+map:userlogin_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_Name;
+	d2rq:column "userlogin.Name";
+	.
+map:userlogin_emailnotification a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_emailnotification;
+	d2rq:column "userlogin.emailnotification";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:userlogin_organization a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_organization;
+	d2rq:column "userlogin.organization";
+	.
+map:userlogin_jobtitle a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_jobtitle;
+	d2rq:column "userlogin.jobtitle";
+	.
+map:userlogin_dateCreated a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_dateCreated;
+	d2rq:column "userlogin.dateCreated";
+	d2rq:datatype xsd:date;
+	.
+map:userlogin_invitedBy__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userlogin;
+	d2rq:property vocab:userlogin_invitedBy;
+	d2rq:refersToClassMap map:userlogin;
+	d2rq:alias "userlogin AS userlogin__alias";
+	d2rq:join "userlogin.invitedBy => userlogin__alias.UserId";
+	.
+
+# Table userpermission
+map:userpermission a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "userpermission/@@userpermission.UserPermissionId@@";
+	d2rq:class vocab:userpermission;
+	d2rq:classDefinitionLabel "userpermission";
+	.
+map:userpermission__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property rdfs:label;
+	d2rq:pattern "userpermission #@@userpermission.UserPermissionId@@";
+	.
+map:userpermission_UserPermissionId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_UserPermissionId;
+	d2rq:column "userpermission.UserPermissionId";
+	d2rq:datatype xsd:integer;
+	.
+map:userpermission_AllowDesign a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_AllowDesign;
+	d2rq:column "userpermission.AllowDesign";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:userpermission_AllowEdit a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_AllowEdit;
+	d2rq:column "userpermission.AllowEdit";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:userpermission_AllowEditAll a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_AllowEditAll;
+	d2rq:column "userpermission.AllowEditAll";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:userpermission_allowManageAllUsers a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_allowManageAllUsers;
+	d2rq:column "userpermission.allowManageAllUsers";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:userpermission_allowManageUsers a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_allowManageUsers;
+	d2rq:column "userpermission.allowManageUsers";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:userpermission_AllowView a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_AllowView;
+	d2rq:column "userpermission.AllowView";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:userpermission_AllowViewAll a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_AllowViewAll;
+	d2rq:column "userpermission.AllowViewAll";
+	d2rq:valueRegex "^[01]*$";
+	.
+map:userpermission_lastSchemaUpdate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_lastSchemaUpdate;
+	d2rq:column "userpermission.lastSchemaUpdate";
+	d2rq:datatype xsd:dateTime;
+	.
+map:userpermission_DatabaseId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_DatabaseId;
+	d2rq:column "userpermission.DatabaseId";
+	d2rq:datatype xsd:integer;
+	.
+map:userpermission_PartnerId a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_PartnerId;
+	d2rq:column "userpermission.PartnerId";
+	d2rq:datatype xsd:integer;
+	.
+map:userpermission_version a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_version;
+	d2rq:column "userpermission.version";
+	d2rq:datatype xsd:integer;
+	.
+map:userpermission_UserId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:userpermission;
+	d2rq:property vocab:userpermission_UserId;
+	d2rq:refersToClassMap map:userlogin;
+	d2rq:join "userpermission.UserId => userlogin.UserId";
+	.

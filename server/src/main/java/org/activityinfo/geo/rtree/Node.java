@@ -25,4 +25,6 @@ public interface Node {
     void clearChildren();
 
     void addChildren(Collection<Node> nodes);
+
+
 }
