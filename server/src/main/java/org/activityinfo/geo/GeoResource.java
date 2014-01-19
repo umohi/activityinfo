@@ -13,8 +13,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import org.activityinfo.geo.migrate.AdminEntityInput;
 import org.activityinfo.geo.migrate.StoreGeometryMapper;
-import org.activityinfo.geo.rtree.DatastoreNodeStore;
-import org.activityinfo.geo.rtree.DatastoreRTreeFactory;
 import org.activityinfo.geo.rtree.RTree;
 
 import javax.ws.rs.*;
@@ -43,24 +41,25 @@ public class GeoResource {
         return Response.seeOther(new URI("/_ah/pipeline/status.html?root=" + jobId)).build();
     }
 
-    @GET
-    @Path("/rtree/{name}")
-    @Produces("text/html")
-    public String getRtree(@PathParam("name") String name) throws EntityNotFoundException {
-        DatastoreNodeStore store = DatastoreRTreeFactory.get(name);
-        RTree tree = new RTree(store);
-        return tree.visualize();
-    }
-
-
-    @GET
-    @Path("/query")
-    @Produces("text/plain")
-    public String query(@QueryParam("x") double x, @QueryParam("y") double y) throws EntityNotFoundException {
-
-        DatastoreNodeStore store = DatastoreRTreeFactory.get("admin");
-        RTree tree = new RTree(store);
-
-        return Joiner.on("\n").join(tree.search(new Envelope(new Coordinate(x, y))));
-    }
+//    @GET
+//    @Path("/rtree/{name}")
+//    @Produces("text/html")
+//    public String getRtree(@PathParam("name") String name) throws EntityNotFoundException {
+//        DatastoreNodeStore store = DatastoreRTreeFactory.get(name);
+//        RTree tree = new RTree(store);
+//        return tree.visualize();
+//    }
+//
+//
+//    @GET
+//    @Path("/query")
+//    @Produces("text/plain")
+//    public String query(@QueryParam("x") double x, @QueryParam("y") double y) throws EntityNotFoundException {
+//
+////        DatastoreNodeStore store = DatastoreRTreeFactory.get("admin");
+////        RTree tree = new RTree(store);
+////
+////        return Joiner.on("\n").join(tree.search(new Envelope(new Coordinate(x, y))));
+//        return ""
+//    }
 }

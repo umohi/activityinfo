@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class InMemoryRTreeTest  {
+public class RTreeTest {
 
 
     private final LocalServiceTestHelper helper =
@@ -38,7 +38,7 @@ public class InMemoryRTreeTest  {
     public void test() throws IOException {
 
 
-        RTree tree = new RTree(new InMemStore());
+        RTreeIndex tree = RTreeIndex.getOrCreate("test");
 
         load(tree);
         query(tree);
@@ -46,23 +46,7 @@ public class InMemoryRTreeTest  {
     }
 
 
-    @Test
-    public void testAppEngine() throws IOException, EntityNotFoundException {
-
-        DatastoreNodeStore store = DatastoreRTreeFactory.getOrCreate("test", 50);
-        RTree tree = new RTree(store);
-
-        load(tree);
-        store.flush();
-
-        // now query from the datastore
-        store = DatastoreRTreeFactory.get("test");
-        tree = new RTree(store);
-
-        query(tree);
-    }
-
-    private void query(RTree tree) {
+    private void query(RTreeIndex tree) {
         //
 //        141947: Territoire:Nyiragongo
 //        141801: Province:Nord Kivu
@@ -77,13 +61,16 @@ public class InMemoryRTreeTest  {
 
         Coordinate goma = new Coordinate(29.212646, -1.647722);
 
-
-        for(Data result : tree.search(new Envelope(goma))) {
-            System.out.println(result);
-        }
+        tree.search(new Envelope(goma), new ResultVisitor() {
+            @Override
+            public boolean visit(String dataUri) {
+                System.out.println(dataUri);
+                return true;
+            }
+        });
     }
 
-    private void load(RTree tree) throws IOException {
+    private void load(RTreeIndex tree) throws IOException {
         List<String> lines = Resources.readLines(getClass().getResource("rdc.csv"), Charsets.UTF_8);
         for(String line : lines) {
             String[] columns = line.split("\t");
@@ -96,7 +83,7 @@ public class InMemoryRTreeTest  {
             double y2 = Double.parseDouble(columns[6]);
             Envelope mbr = new Envelope(x1, x2, y1, y2);
 
-            tree.insert(mbr, new Data(level + ": " + name));
+            tree.insert(level + ": " + name, mbr);
         }
     }
 

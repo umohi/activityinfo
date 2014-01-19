@@ -12,16 +12,12 @@ import java.io.IOException;
 
 public class StoreGeometryMapper extends Mapper<AdminEntity, Void, Void> {
 
-    private transient DatastoreMutationPool mutationPool;
-    private transient RTree index;
-    private transient  DatastoreNodeStore store;
+    private transient RTreeIndex index;
 
     @Override
     public void beginSlice() {
         super.beginSlice();
-        mutationPool = DatastoreMutationPool.forManualFlushing();
-        store = DatastoreRTreeFactory.getOrCreate("admin", 50);
-        index = new RTree(store);
+        index = RTreeIndex.getOrCreate("admin2");
     }
 
     @Override
@@ -37,18 +33,6 @@ public class StoreGeometryMapper extends Mapper<AdminEntity, Void, Void> {
 //        mutationPool.put(entity);
 
         String uri = "adminEntity/" + value.getId();
-        index.insert(value.getGeometry().getEnvelopeInternal(), new Data(uri));
-        try {
-            store.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void endSlice() {
-        super.endSlice();
-        mutationPool.flush();
-
+        index.insert(uri, value.getGeometry().getEnvelopeInternal());
     }
 }
