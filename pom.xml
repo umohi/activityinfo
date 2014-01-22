@@ -22,8 +22,8 @@
   <description>Web-based database platform for program monitoring and reporting for the UN,
         NGOs, and others working in humanitarian, development, and post-conflict contexts.</description>
   <issueManagement>
-    <system>PivotalTracker</system>
-    <url>https://www.pivotaltracker.com/projects/303613</url>
+    <system>JIRA</system>
+    <url>https://bedatadriven.atlassian.net/browse/AI</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
@@ -39,18 +39,12 @@
 
   <properties>
     <netbeans.hint.license>gpl3</netbeans.hint.license>
-
-    <!-- convenience to define GWT version in one place -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
-    <!-- tell the compiler we can use 1.6 -->
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
 
-
     <!-- Allow the build to continue even if there are test failures -->
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
-
   </properties>
 
 

@@ -213,7 +213,6 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
      *         respective permissions. (Read, write, read all partners)
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "database")
-    @org.hibernate.annotations.Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
     public Set<UserPermission> getUserPermissions() {
         return this.userPermissions;
     }
