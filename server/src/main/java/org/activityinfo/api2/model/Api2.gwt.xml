@@ -15,5 +15,7 @@
   <inherits name="com.google.common.collect.Collect"/>
 
   <source path='client'/>
+  <source path='shared'/>
+
 
 </module>

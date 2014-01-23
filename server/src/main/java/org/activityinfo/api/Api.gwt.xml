@@ -14,9 +14,9 @@
   <inherits name='com.google.gwt.user.User'/>
   <inherits name='com.extjs.gxt.ui.GXT'/>
 
-  <source path='auth'/>
-  <source path='command'/>
-  <source path='exception'/>
-  <source path='model'/>
+  <inherits name='org.activityinfo.api2.model.Api2'/>
+
+  <source path='client'/>
+  <source path='shared'/>
 
 </module>

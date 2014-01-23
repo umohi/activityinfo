@@ -1,4 +1,4 @@
-package org.activityinfo.api2.model.shared.form.adapter;
+package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
