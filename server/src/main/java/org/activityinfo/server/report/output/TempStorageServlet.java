@@ -22,37 +22,33 @@ package org.activityinfo.server.report.output;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.InputSupplier;
+import com.google.inject.Inject;
+import org.activityinfo.server.util.blob.BlobNotFoundException;
+import org.activityinfo.server.util.blob.BlobService;
 
 import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.activityinfo.server.util.blob.BlobNotFoundException;
-import org.activityinfo.server.util.blob.BlobService;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.InputSupplier;
-import com.google.inject.Inject;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Serves up temporary files created during the rendering process. The actual
  * blob is identified by a secure hexadecimal id, but a friendly filename can be
  * appended to the uri, which is the best cross-browser way to indicate the file
  * name to be saved as. For example:
- * 
+ * <p/>
  * <blockquote>
  * http://www.activityinfo.org/generated/1b391a99c2b49a2c/Untitled%20
  * Report%2020130426_0446.rtf </blockquote>
- * 
+ * <p/>
  * In this URL, the text following the 1b391a99c2b49a2c/ is ignored, but used by
  * all browsers to suggest the file name to save.
- * 
- * 
  */
 @Singleton
 public class TempStorageServlet extends HttpServlet {
@@ -67,19 +63,19 @@ public class TempStorageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String keyName = parseBlobKey(req.getRequestURI());
-        
+
         InputSupplier<? extends InputStream> inputSupplier;
         try {
             inputSupplier = blobService.get("/temp/" + keyName);
-        } catch(BlobNotFoundException e) {
+        } catch (BlobNotFoundException e) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
         resp.setHeader("Content-Type", mimeTypeFromUri(req.getRequestURI().toLowerCase()));
-        resp.setHeader("Content-Disposition", "attachment");   
+        resp.setHeader("Content-Disposition", "attachment");
         ByteStreams.copy(inputSupplier, resp.getOutputStream());
     }
 

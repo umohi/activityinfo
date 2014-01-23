@@ -1,11 +1,11 @@
 package org.activityinfo.server.endpoint.rest;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.util.DefaultPrettyPrinter;
+
+import java.io.IOException;
+import java.io.StringWriter;
 
 public class Jackson {
 

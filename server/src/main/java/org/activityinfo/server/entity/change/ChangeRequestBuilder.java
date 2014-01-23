@@ -1,12 +1,11 @@
 package org.activityinfo.server.entity.change;
 
+import com.google.common.collect.Maps;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.server.database.hibernate.entity.User;
+
 import java.util.Map;
 import java.util.Set;
-
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.auth.AuthenticatedUser;
-
-import com.google.common.collect.Maps;
 
 
 /**
@@ -19,14 +18,14 @@ public class ChangeRequestBuilder implements ChangeRequest {
     private String entityType;
     private String entityId;
     private final Map<String, Object> properties = Maps.newHashMap();
-    
-    public ChangeRequestBuilder() {   
+
+    public ChangeRequestBuilder() {
     }
-    
+
     public static ChangeRequestBuilder delete() {
         return new ChangeRequestBuilder().setChangeType(ChangeType.DELETE);
     }
-    
+
     public AuthenticatedUser getUser() {
         return user;
     }
@@ -49,7 +48,7 @@ public class ChangeRequestBuilder implements ChangeRequest {
     public ChangeRequestBuilder setEntityId(int entityId) {
         return setEntityId(Integer.toString(entityId));
     }
-    
+
     public ChangeRequestBuilder setEntityId(String entityId) {
         this.entityId = entityId;
         return this;
@@ -72,16 +71,16 @@ public class ChangeRequestBuilder implements ChangeRequest {
 
     @Override
     public <T> T getPropertyValue(Class<T> propertyClass, String propertyName) {
-        if(!properties.containsKey(propertyName)) {
-            throw new ChangeException(ChangeFailureType.REQUIRED_PROPERTY_MISSING, propertyName);    
+        if (!properties.containsKey(propertyName)) {
+            throw new ChangeException(ChangeFailureType.REQUIRED_PROPERTY_MISSING, propertyName);
         }
         Object value = properties.get(propertyName);
-        if(value != null && !value.getClass().equals(propertyClass)) {
+        if (value != null && !value.getClass().equals(propertyClass)) {
             throw new ChangeException(ChangeFailureType.MALFORMED_PROPERTY, propertyName);
         }
-        return (T)value;
+        return (T) value;
     }
- 
+
     @Override
     public Set<String> getUpdatedProperties() {
         return properties.keySet();
@@ -94,7 +93,7 @@ public class ChangeRequestBuilder implements ChangeRequest {
 
     @Override
     public String getEntityId() {
-        return entityId; 
+        return entityId;
     }
 
     public ChangeRequestBuilder setUser(User user) {

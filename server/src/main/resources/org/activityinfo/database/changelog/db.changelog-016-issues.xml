@@ -22,12 +22,12 @@
   -->
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
   <changeSet author="jasper" id="016-01">
     <comment>
-      #47050153 - Adds 'mandatory' flag to the indicator table. 
+      #47050153 - Adds 'mandatory' flag to the indicator table.
     </comment>
     <addColumn tableName="indicator">
       <column name="mandatory" type="BIT">
@@ -38,7 +38,7 @@
 
   <changeSet author="jasper" id="016-02">
     <comment>
-      #47050153 - Adds 'mandatory' flag to the attributegroup table. 
+      #47050153 - Adds 'mandatory' flag to the attributegroup table.
     </comment>
     <addColumn tableName="attributegroup">
       <column name="mandatory" type="BIT">
@@ -46,5 +46,5 @@
       </column>
     </addColumn>
   </changeSet>
-  
+
 </databaseChangeLog>

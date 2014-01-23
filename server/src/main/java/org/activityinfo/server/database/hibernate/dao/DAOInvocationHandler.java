@@ -22,17 +22,16 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 /**
  * Invocation Handler for
  * {@link org.activityinfo.server.database.hibernate.dao.DAO} interfaces.
- * 
+ * <p/>
  * This InvocationHandler provides implementations for
  * {@link org.activityinfo.server.database.hibernate.dao.DAO#findById(Object)
  * findById} and
@@ -40,9 +39,9 @@ import javax.persistence.Query;
  * persist}. Any other methods defined in the interface are matched to named JPA
  * queries, and their parameters as provided to the query as <em>positional</em>
  * parameters.
- * 
+ * <p/>
  * For example, given the declaration:
- * 
+ * <p/>
  * <pre>
  * &#064;Entity
  * &#064;NamedQuery(name = &quot;queryAllCountriesAlphabetically&quot;,
@@ -50,21 +49,21 @@ import javax.persistence.Query;
  * public class Country implements Serializable, SchemaElement {
  * }
  * </pre>
- * 
+ * <p/>
  * and
- * 
+ * <p/>
  * <pre>
  * public interface CountryDAO extends DAO&lt;Country, Integer&gt; {
  *     List&lt;Country&gt; queryAllCountriesAlphabetically();
  * }
  * </pre>
- * 
+ * <p/>
  * a call to queryAllCountriesAlphabetically will invoke the named query.
- * 
+ * <p/>
  * Other notes: If the method returns a {@link java.util.List List},
  * {@link javax.persistence.Query#getResultList()} will be invoked, otherwise
  * {@link javax.persistence.Query#getSingleResult()}
- * 
+ *
  * @author Alex Bertram
  */
 public class DAOInvocationHandler implements InvocationHandler {
@@ -79,7 +78,7 @@ public class DAOInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args)
-        throws Throwable {
+            throws Throwable {
         if (method.getName().equals("persist")) {
             return invokePersist(args[0]);
         } else if (method.getName().equals("findById")) {
@@ -114,9 +113,9 @@ public class DAOInvocationHandler implements InvocationHandler {
             return em.createNamedQuery(name);
         } catch (IllegalArgumentException e) {
             throw new UnsupportedOperationException(
-                "The hibernate DAO proxy does not know how to handle the method "
-                    +
-                    method.getName());
+                    "The hibernate DAO proxy does not know how to handle the method "
+                            +
+                            method.getName());
         }
     }
 

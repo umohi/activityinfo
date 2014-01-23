@@ -22,19 +22,13 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.Date;
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.Delete;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.server.database.hibernate.entity.*;
 
 import javax.persistence.EntityManager;
-
-import org.activityinfo.server.database.hibernate.entity.Deleteable;
-import org.activityinfo.server.database.hibernate.entity.ReallyDeleteable;
-import org.activityinfo.server.database.hibernate.entity.Site;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.shared.command.Delete;
-import org.activityinfo.shared.command.result.CommandResult;
-
-import com.google.inject.Inject;
+import java.util.Date;
 
 public class DeleteHandler implements CommandHandler<Delete> {
     private EntityManager em;
@@ -72,13 +66,13 @@ public class DeleteHandler implements CommandHandler<Delete> {
     private Class<Deleteable> entityClassForEntityName(String entityName) {
         try {
             return (Class<Deleteable>) Class.forName(UserDatabase.class
-                .getPackage().getName() + "." + entityName);
+                    .getPackage().getName() + "." + entityName);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Invalid entity name '" + entityName
-                + "'", e);
+                    + "'", e);
         } catch (ClassCastException e) {
             throw new RuntimeException("Entity type '" + entityName
-                + "' not Deletable", e);
+                    + "' not Deletable", e);
         }
     }
 }

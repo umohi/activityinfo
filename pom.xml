@@ -42,7 +42,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
 
-    <!-- Allow the build to continue even if there are test failures -->
+    <!-- Allow the build to continue even if there are fixtures failures -->
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
   </properties>
 

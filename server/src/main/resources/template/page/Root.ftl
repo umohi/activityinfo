@@ -22,9 +22,9 @@
 <#include "Scaffolding.ftl">
 <@scaffolding title="${domain.title}">
 
-	
-	${domain.homePageBody!''}
 
-	<@scripts>
-	</@scripts>
+${domain.homePageBody!''}
+
+    <@scripts>
+    </@scripts>
 </@scaffolding>

@@ -22,21 +22,20 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.server.report.generator.MapIconPath;
-import org.activityinfo.server.report.output.LocalStorageProvider;
-import org.activityinfo.server.report.output.StorageProvider;
-import org.activityinfo.shared.auth.AuthenticatedUser;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import org.activityinfo.analysis.server.generator.MapIconPath;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.server.report.output.LocalStorageProvider;
+import org.activityinfo.server.report.output.StorageProvider;
 
 public class ReportStubModule extends AbstractModule {
 
     @Override
     protected void configure() {
         bind(String.class)
-            .annotatedWith(MapIconPath.class)
-            .toInstance("");
+                .annotatedWith(MapIconPath.class)
+                .toInstance("");
     }
 
     @Provides

@@ -22,11 +22,10 @@ package org.activityinfo.server.event;
  * #L%
  */
 
-import java.util.logging.Logger;
-
-import org.activityinfo.shared.command.Command;
-
 import com.google.common.eventbus.Subscribe;
+import org.activityinfo.api.shared.command.Command;
+
+import java.util.logging.Logger;
 
 @SuppressWarnings("rawtypes")
 public abstract class CommandEventListener {
@@ -35,7 +34,7 @@ public abstract class CommandEventListener {
     private Class<? extends Command>[] triggers;
 
     public CommandEventListener(ServerEventBus serverEventBus,
-        Class<? extends Command>... triggers) {
+                                Class<? extends Command>... triggers) {
         serverEventBus.register(this);
         this.triggers = triggers;
     }
@@ -47,14 +46,14 @@ public abstract class CommandEventListener {
         for (Class<?> trigger : triggers) {
             if (trigger.isAssignableFrom(commandClass)) {
                 LOGGER.fine("handler " + this.getClass().getSimpleName()
-                    + " triggered by command " + event.getCommand());
+                        + " triggered by command " + event.getCommand());
                 try {
                     onEvent(event);
                 } catch (Exception e) {
                     LOGGER.warning("couldn't handle command "
-                        + commandClass.getSimpleName() + ": " + e.getMessage());
+                            + commandClass.getSimpleName() + ": " + e.getMessage());
                     LOGGER.throwing(this.getClass().getSimpleName(),
-                        "handleEvent", e);
+                            "handleEvent", e);
                 }
             }
         }

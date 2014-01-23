@@ -22,9 +22,9 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import java.util.List;
-
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
+
+import java.util.List;
 
 /**
  * Data Access Object for {@link UserDatabase} domain classes. Implemented

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>activityinfo-server</artifactId>
   <packaging>war</packaging>
@@ -53,7 +53,7 @@
       <version>1.0</version>
       <scope>provided</scope>
     </dependency>
- 
+
     <dependency>
       <groupId>com.teklabs.gwt-i18n-server</groupId>
       <artifactId>gwt-i18n-server</artifactId>
@@ -74,12 +74,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.amazonaws</groupId>
-      <artifactId>aws-java-sdk</artifactId>
-      <version>1.2.2</version>
-    </dependency>
-  
     <dependency>
       <groupId>org.mindrot.bcrypt</groupId>
       <artifactId>bcrypt</artifactId>
@@ -130,19 +124,19 @@
       <version>4.2.8.Final</version>
     </dependency>
     <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-spatial</artifactId>
-        <version>4.0</version>
-        <exclusions>
-        	<exclusion>
-        		<groupId>postgresql</groupId>
-        		<artifactId>postgresql</artifactId>
-        	</exclusion>
-        	<exclusion>
-        		<groupId>org.postgis</groupId>
-        		<artifactId>postgis-jdbc</artifactId>
-        	</exclusion>
-        </exclusions>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-spatial</artifactId>
+      <version>4.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.postgis</groupId>
+          <artifactId>postgis-jdbc</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -198,7 +192,7 @@
       <groupId>org.discotools.gwt.leaflet</groupId>
       <artifactId>gwtl-core</artifactId>
       <version>0.3-SNAPSHOT</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>com.google.gwt.google-apis</groupId>
       <artifactId>gwt-gears</artifactId>
@@ -229,15 +223,15 @@
       <artifactId>rebar-time</artifactId>
       <version>${rebarVersion}</version>
     </dependency>
-    <dependency>	
+    <dependency>
       <groupId>com.bedatadriven.rebar</groupId>
       <artifactId>rebar-sql</artifactId>
       <version>${rebarVersion}</version>
       <exclusions>
-      	<exclusion>
-      		<groupId>javax.persistence</groupId>
-      		<artifactId>persistence-api</artifactId>
-      	</exclusion>
+        <exclusion>
+          <groupId>javax.persistence</groupId>
+          <artifactId>persistence-api</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -245,10 +239,10 @@
       <artifactId>rebar-sync</artifactId>
       <version>${rebarVersion}</version>
       <exclusions>
-      	<exclusion>
-      		<groupId>javax.persistence</groupId>
-      		<artifactId>persistence-api</artifactId>
-      	</exclusion>
+        <exclusion>
+          <groupId>javax.persistence</groupId>
+          <artifactId>persistence-api</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -305,7 +299,8 @@
       <version>2.4.8</version>
       <scope>test</scope>
     </dependency>
-        <!-- Apache Commons File Upload -->
+
+    <!-- Apache Commons File Upload -->
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
@@ -318,13 +313,6 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>1.3.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>4.1</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -356,36 +344,14 @@
       <version>${jersey.version}</version>
     </dependency>
     <dependency>
-       <groupId>org.ocpsoft.prettytime</groupId>
-       <artifactId>prettytime</artifactId>
-       <version>2.1.2.Final</version>
+      <groupId>org.ocpsoft.prettytime</groupId>
+      <artifactId>prettytime</artifactId>
+      <version>2.1.2.Final</version>
     </dependency>
     <dependency>
       <groupId>com.bedatadriven</groupId>
       <artifactId>jackson-geojson</artifactId>
       <version>0.7</version>
-    </dependency>
-    
-    <!--  NEW UI  -->
-    <dependency>
-      <groupId>org.fusesource.restygwt</groupId>
-      <artifactId>restygwt</artifactId>
-      <version>1.3</version>
-    </dependency>
-    <dependency>
-      <groupId>com.bedatadriven.rebar</groupId>
-      <artifactId>rebar-style</artifactId>
-      <version>${rebarVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.bedatadriven.rebar</groupId>
-      <artifactId>rebar-bootstrap</artifactId>
-      <version>${rebarVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.googlecode.mgwt</groupId>
-      <artifactId>mgwt</artifactId>
-      <version>1.1.2</version>
     </dependency>
   </dependencies>
 
@@ -418,7 +384,7 @@
         </includes>
       </resource>
     </resources>
-    
+
     <plugins>
       <!-- configure the Java Compiler Plugin -->
       <plugin>
@@ -431,7 +397,7 @@
           <target>1.7</target>
           <encoding>UTF-8</encoding>
           <excludes>
-	    <!-- Exclude emulation gwt sources -->
+            <!-- Exclude emulation gwt sources -->
             <exclude>**/emul/**/*.java</exclude>
           </excludes>
         </configuration>
@@ -485,24 +451,24 @@
           <useDefaultDelimiters>false</useDefaultDelimiters>
         </configuration>
       </plugin>
-      
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-checkstyle-plugin</artifactId>-->
-        <!--<version>2.9.1</version>-->
-        <!--<configuration>-->
-          <!--<configLocation>checkstyle.xml</configLocation>-->
-        <!--</configuration>-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<id>checkstyle</id>-->
-            <!--<goals>-->
-              <!--<goal>check</goal>-->
-            <!--</goals>-->
-            <!--<phase>verify</phase>-->
-          <!--</execution>-->
-        <!--</executions>-->
-      <!--</plugin>-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.9.1</version>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+        </configuration>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <!--<phase>compile</phase>-->
+          </execution>
+        </executions>
+      </plugin>
 
       <!-- configure the GWT-Maven plugin -->
       <plugin>
@@ -529,18 +495,16 @@
               <logLevel>INFO</logLevel>
               <compileReport>true</compileReport>
               <modules>
-                <module>org.activityinfo.ActivityInfoProduction</module>
-                <module>org.activityinfo.embed.Embed</module>
-                <module>org.activityinfo.ui.desktop.DesktopUI</module>
-              <!--      <module>org.activityinfo.ui.mobile.MobileUI</module>       -->          
+                <module>org.activityinfo.ui.full.ActivityInfoProduction</module>
+                <module>org.activityinfo.ui.embed.Embed</module>
               </modules>
             </configuration>
           </execution>
         </executions>
       </plugin>
 
-      <!-- Exclude GWT integration tests from the test phase -->
-      <!-- we want to run them during the integration-test phase with
+      <!-- Exclude GWT integration tests from the fixtures phase -->
+      <!-- we want to run them during the integration-fixtures phase with
           the gwt-maven plugin -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>

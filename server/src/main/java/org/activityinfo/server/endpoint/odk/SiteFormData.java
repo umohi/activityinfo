@@ -1,11 +1,11 @@
 package org.activityinfo.server.endpoint.odk;
 
+import org.activityinfo.api.shared.model.AttributeGroupDTO;
+import org.activityinfo.api.shared.model.IndicatorDTO;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.activityinfo.shared.dto.AttributeGroupDTO;
-import org.activityinfo.shared.dto.IndicatorDTO;
 
 public class SiteFormData {
     private String xml;
@@ -23,7 +23,7 @@ public class SiteFormData {
     private String comments;
     private List<FormIndicator> indicators = new ArrayList<FormIndicator>();
     private List<FormAttributeGroup> attributegroups = new ArrayList<FormAttributeGroup>();
-    
+
     public SiteFormData(String xml) {
         this.xml = xml;
     }
@@ -174,11 +174,11 @@ public class SiteFormData {
         public String getValue() {
             return value;
         }
-        
+
         public boolean hasValue() {
             return value != null && !value.isEmpty();
         }
-        
+
         // value as a double, or null if unparsable
         public Double getDoubleValue() {
             return doubleValue;
@@ -227,7 +227,7 @@ public class SiteFormData {
         public boolean hasValue() {
             return value != null && !value.isEmpty();
         }
-        
+
         // list of all parseable integers in the value (space separated)
         public List<Integer> getValueList() {
             return valueList;

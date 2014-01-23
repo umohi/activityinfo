@@ -22,31 +22,18 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.bedatadriven.rebar.time.calendar.LocalDate;
+import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
+import org.activityinfo.api.shared.model.LocationTypeDTO;
+import org.activityinfo.server.database.hibernate.entity.*;
+
+import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-
-import org.activityinfo.server.database.hibernate.entity.Activity;
-import org.activityinfo.server.database.hibernate.entity.AdminEntity;
-import org.activityinfo.server.database.hibernate.entity.Attribute;
-import org.activityinfo.server.database.hibernate.entity.AttributeGroup;
-import org.activityinfo.server.database.hibernate.entity.Indicator;
-import org.activityinfo.server.database.hibernate.entity.LocationType;
-import org.activityinfo.server.database.hibernate.entity.LockedPeriod;
-import org.activityinfo.server.database.hibernate.entity.Partner;
-import org.activityinfo.server.database.hibernate.entity.Project;
-import org.activityinfo.server.database.hibernate.entity.Target;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.shared.dto.LocationTypeDTO;
-import org.activityinfo.shared.exception.IllegalAccessCommandException;
-
-import com.bedatadriven.rebar.time.calendar.LocalDate;
-
 /**
  * Provides functionality common to CreateEntityHandler and UpdateEntityHandler
- * 
+ *
  * @author Alex Bertram (akbertram@gmail.com)
  */
 public class BaseEntityHandler {
@@ -58,7 +45,7 @@ public class BaseEntityHandler {
     }
 
     protected void updateIndicatorProperties(Indicator indicator,
-        Map<String, Object> changes) {
+                                             Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             indicator.setName(trim(changes.get("name")));
         }
@@ -95,7 +82,7 @@ public class BaseEntityHandler {
     }
 
     protected void updateAttributeProperties(Map<String, Object> changes,
-        Attribute attribute) {
+                                             Attribute attribute) {
         if (changes.containsKey("name")) {
             attribute.setName(trim(changes.get("name")));
         }
@@ -106,7 +93,7 @@ public class BaseEntityHandler {
     }
 
     protected void updateAttributeGroupProperties(AttributeGroup group,
-        Map<String, Object> changes) {
+                                                  Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             group.setName(trim(changes.get("name")));
         }
@@ -123,7 +110,7 @@ public class BaseEntityHandler {
     }
 
     protected void updateLockedPeriodProperties(LockedPeriod lockedPeriod,
-        Map<String, Object> changes) {
+                                                Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             lockedPeriod.setName(trim(changes.get("name")));
         }
@@ -142,15 +129,15 @@ public class BaseEntityHandler {
     }
 
     protected void updateActivityProperties(Activity activity,
-        Map<String, Object> changes) {
+                                            Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             activity.setName(trim(changes.get("name")));
         }
 
         if (changes.containsKey("locationType")) {
             activity.setLocationType(
-                entityManager().getReference(LocationType.class,
-                    ((LocationTypeDTO) changes.get("locationType")).getId()));
+                    entityManager().getReference(LocationType.class,
+                            ((LocationTypeDTO) changes.get("locationType")).getId()));
         }
 
         if (changes.containsKey("category")) {
@@ -163,7 +150,7 @@ public class BaseEntityHandler {
 
         if (changes.containsKey("reportingFrequency")) {
             activity.setReportingFrequency((Integer) changes
-                .get("reportingFrequency"));
+                    .get("reportingFrequency"));
         }
 
         if (changes.containsKey("sortOrder")) {
@@ -174,15 +161,15 @@ public class BaseEntityHandler {
     }
 
     private String trim(Object value) {
-        if(value instanceof String) {
-            return ((String)value).toString();
+        if (value instanceof String) {
+            return ((String) value).toString();
         } else {
             return null;
         }
     }
 
     protected void updateTargetProperties(Target target,
-        Map<String, Object> changes) {
+                                          Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             target.setName(trim(changes.get("name")));
         }
@@ -197,20 +184,20 @@ public class BaseEntityHandler {
 
         if (changes.containsKey("projectId")) {
             target.setProject(
-                entityManager().getReference(Project.class,
-                    changes.get("projectId")));
+                    entityManager().getReference(Project.class,
+                            changes.get("projectId")));
         }
 
         if (changes.containsKey("partnerId")) {
             target.setPartner(
-                entityManager().getReference(Partner.class,
-                    changes.get("partnerId")));
+                    entityManager().getReference(Partner.class,
+                            changes.get("partnerId")));
         }
 
         if (changes.containsKey("AdminEntityId")) {
             target.setAdminEntity(
-                entityManager().getReference(AdminEntity.class,
-                    changes.get("AdminEntityId")));
+                    entityManager().getReference(AdminEntity.class,
+                            changes.get("AdminEntityId")));
         }
 
     }
@@ -218,16 +205,13 @@ public class BaseEntityHandler {
     /**
      * Asserts that the user has permission to modify the structure of the given
      * database.
-     * 
-     * @param user
-     *            THe user for whom to check permissions
-     * @param database
-     *            The database the user is trying to modify
-     * @throws IllegalAccessCommandException
-     *             If the user does not have permission
+     *
+     * @param user     THe user for whom to check permissions
+     * @param database The database the user is trying to modify
+     * @throws IllegalAccessCommandException If the user does not have permission
      */
     protected void assertDesignPriviledges(User user, UserDatabase database)
-        throws IllegalAccessCommandException {
+            throws IllegalAccessCommandException {
 
         if (!database.isAllowedDesign(user)) {
             throw new IllegalAccessCommandException();

@@ -22,11 +22,11 @@ package org.activityinfo.server.database;
  * #L%
  */
 
-import java.sql.Connection;
-
 import com.bedatadriven.rebar.sql.client.query.MySqlDialect;
 import com.bedatadriven.rebar.sql.client.query.SqlDialect;
 import com.google.inject.AbstractModule;
+
+import java.sql.Connection;
 
 public class TestDatabaseModule extends AbstractModule {
 

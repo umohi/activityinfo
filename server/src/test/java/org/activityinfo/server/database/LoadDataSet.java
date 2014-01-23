@@ -22,14 +22,8 @@ package org.activityinfo.server.database;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.bedatadriven.rebar.sql.server.jdbc.JdbcScheduler;
+import com.google.inject.Provider;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
@@ -42,8 +36,13 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.internal.runners.model.MultipleFailureException;
 import org.junit.runners.model.Statement;
 
-import com.bedatadriven.rebar.sql.server.jdbc.JdbcScheduler;
-import com.google.inject.Provider;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoadDataSet extends Statement {
     private final Statement next;
@@ -52,7 +51,7 @@ public class LoadDataSet extends Statement {
     private final String name;
 
     public LoadDataSet(Provider<Connection> connectionProvider, Statement next,
-        String name, Object target) {
+                       String name, Object target) {
         this.next = next;
         this.target = target;
         this.connectionProvider = connectionProvider;
@@ -88,13 +87,13 @@ public class LoadDataSet extends Statement {
         }
 
         return new LowerCaseDataSet(new FlatXmlDataSetBuilder()
-            .setDtdMetadata(true)
-            .setColumnSensing(true)
-            .build(new InputStreamReader(in)));
+                .setDtdMetadata(true)
+                .setColumnSensing(true)
+                .build(new InputStreamReader(in)));
     }
 
     private void populate(final IDataSet dataSet) throws DatabaseUnitException,
-        SQLException {
+            SQLException {
         executeOperation(InsertIdentityOperation.INSERT, dataSet);
     }
 
@@ -104,11 +103,11 @@ public class LoadDataSet extends Statement {
     }
 
     private void executeOperation(final DatabaseOperation op,
-        final IDataSet dataSet) throws DatabaseUnitException, SQLException {
+                                  final IDataSet dataSet) throws DatabaseUnitException, SQLException {
         Connection connection = connectionProvider.get();
         try {
             IDatabaseConnection dbUnitConnection = new MySqlConnection(
-                connection, null);
+                    connection, null);
             op.execute(dbUnitConnection, dataSet);
         } finally {
             connection.close();

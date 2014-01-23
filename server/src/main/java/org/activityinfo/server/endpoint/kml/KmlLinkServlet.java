@@ -22,29 +22,27 @@ package org.activityinfo.server.endpoint.kml;
  * #L%
  */
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Serves a simple KML file containing a network link to
  * {@link org.activityinfo.server.endpoint.kml.KmlDataServlet}.
- * 
+ * <p/>
  * This file will be downloaded to the users computer and can be saved locally,
  * but will asssure that all actual data comes live from the server.
- * 
+ *
  * @author Alex Bertram (akbertram@gmail.com)
  */
 @Singleton
@@ -59,18 +57,18 @@ public class KmlLinkServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         Map<String, Object> link = new HashMap<String, Object>();
 
         link.put("href", "http://" + req.getServerName() + ":" +
-            req.getServerPort() + "/" + req.getRequestURI() + "/activities");
+                req.getServerPort() + "/" + req.getRequestURI() + "/activities");
 
         Template tpl = templateCfg.getTemplate("kml/NetworkLink.kml.ftl");
         resp.setContentType("application/vnd.google-earth.kml+xml;");
         resp.setCharacterEncoding("UTF-8");
         resp.setHeader("Content-Disposition",
-            "attachment; filename=ActivityInfo.kml");
+                "attachment; filename=ActivityInfo.kml");
 
         try {
             tpl.process(link, resp.getWriter());

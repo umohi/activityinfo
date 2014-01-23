@@ -31,12 +31,12 @@ import java.lang.annotation.Target;
  * Indicates that a method should be run within a single Transaction. See
  * {@link org.activityinfo.server.database.hibernate.dao.TransactionalInterceptor}
  * for implementation.
- * 
+ * <p/>
  * <strong>Important note:</strong> AOP can <strong>only</strong> applied to
  * methods with <code>protected</code> visiblity. If you apply this annotation
  * to a <code>private</code> method, Guice will fail silently to override the
  * method and your method will not be executed within a transaction.
- * 
+ *
  * @author Alex Bertram
  */
 @Retention(RetentionPolicy.RUNTIME)

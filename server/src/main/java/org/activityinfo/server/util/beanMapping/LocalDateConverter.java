@@ -22,18 +22,17 @@ package org.activityinfo.server.util.beanMapping;
  * #L%
  */
 
-import java.util.Date;
-
+import com.bedatadriven.rebar.time.calendar.LocalDate;
 import org.dozer.CustomConverter;
 import org.dozer.MappingException;
 
-import com.bedatadriven.rebar.time.calendar.LocalDate;
+import java.util.Date;
 
 public class LocalDateConverter implements CustomConverter {
 
     @Override
     public Object convert(Object dest, Object src, Class<?> destClass,
-        Class<?> srcClass) {
+                          Class<?> srcClass) {
         if (src == null) {
             return null;
         } else if (src instanceof LocalDate && destClass == Date.class) {
@@ -42,8 +41,8 @@ public class LocalDateConverter implements CustomConverter {
             return new LocalDate((Date) src);
         } else {
             throw new MappingException(
-                "Converter LocalDateConverter used incorrectly. Arguments passed in were:"
-                    + dest + " and " + src);
+                    "Converter LocalDateConverter used incorrectly. Arguments passed in were:"
+                            + dest + " and " + src);
         }
     }
 

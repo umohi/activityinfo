@@ -22,20 +22,17 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GetAdminEntities;
+import org.activityinfo.api.shared.command.result.AdminEntityResult;
+import org.activityinfo.api.shared.model.AdminEntityDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.GetAdminEntities;
-import org.activityinfo.shared.command.result.AdminEntityResult;
-import org.activityinfo.shared.dto.AdminEntityDTO;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")

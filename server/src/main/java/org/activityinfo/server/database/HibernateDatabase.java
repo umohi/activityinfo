@@ -22,20 +22,18 @@ package org.activityinfo.server.database;
  * #L%
  */
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import javax.inject.Singleton;
-
-import org.hibernate.ejb.HibernateEntityManager;
-import org.hibernate.jdbc.Work;
-
 import com.bedatadriven.rebar.sql.client.SqlDatabase;
 import com.bedatadriven.rebar.sql.client.SqlTransactionCallback;
 import com.bedatadriven.rebar.sql.client.query.MySqlDialect;
 import com.bedatadriven.rebar.sql.client.query.SqlDialect;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Provider;
+import org.hibernate.ejb.HibernateEntityManager;
+import org.hibernate.jdbc.Work;
+
+import javax.inject.Singleton;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @Singleton
 public class HibernateDatabase extends SqlDatabase {
@@ -65,7 +63,7 @@ public class HibernateDatabase extends SqlDatabase {
 
     @Override
     public void executeUpdates(String bulkOperationJsonArray,
-        AsyncCallback<Integer> callback) {
+                               AsyncCallback<Integer> callback) {
         callback.onFailure(new UnsupportedOperationException());
     }
 

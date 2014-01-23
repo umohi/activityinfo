@@ -22,23 +22,16 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.Date;
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.AddTarget;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.TargetDTO;
+import org.activityinfo.server.database.hibernate.entity.*;
 
 import javax.persistence.EntityManager;
-
-import org.activityinfo.server.database.hibernate.entity.AdminEntity;
-import org.activityinfo.server.database.hibernate.entity.Partner;
-import org.activityinfo.server.database.hibernate.entity.Project;
-import org.activityinfo.server.database.hibernate.entity.Target;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.shared.command.AddTarget;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.TargetDTO;
-import org.activityinfo.shared.exception.CommandException;
-
-import com.google.inject.Inject;
+import java.util.Date;
 
 public class AddTargetHandler implements CommandHandler<AddTarget> {
 
@@ -51,7 +44,7 @@ public class AddTargetHandler implements CommandHandler<AddTarget> {
 
     @Override
     public CommandResult execute(AddTarget cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         TargetDTO form = cmd.getTargetDTO();
         UserDatabase db = em.find(UserDatabase.class, cmd.getDatabaseId());

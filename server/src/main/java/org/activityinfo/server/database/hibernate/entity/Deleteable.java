@@ -1,7 +1,5 @@
 package org.activityinfo.server.database.hibernate.entity;
 
-import javax.persistence.Transient;
-
 /*
  * #%L
  * ActivityInfo Server
@@ -25,9 +23,7 @@ import javax.persistence.Transient;
  */
 
 /**
- * 
  * @author Alex Bertram
- * 
  */
 public interface Deleteable {
 

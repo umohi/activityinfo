@@ -22,26 +22,24 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.Date;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.RemovePartner;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.RemoveFailedResult;
+import org.activityinfo.api.shared.command.result.RemoveResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.server.database.hibernate.entity.Partner;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.database.hibernate.entity.UserPermission;
-import org.activityinfo.shared.command.RemovePartner;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.RemoveFailedResult;
-import org.activityinfo.shared.command.result.RemoveResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.exception.IllegalAccessCommandException;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.Date;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.shared.command.RemovePartner
+ * @see org.activityinfo.api.shared.command.RemovePartner
  */
 public class RemovePartnerHandler implements CommandHandler<RemovePartner> {
 
@@ -54,7 +52,7 @@ public class RemovePartnerHandler implements CommandHandler<RemovePartner> {
 
     @Override
     public CommandResult execute(RemovePartner cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         // verify the current user has access to this site
         UserDatabase db = em.find(UserDatabase.class, cmd.getDatabaseId());
@@ -67,14 +65,14 @@ public class RemovePartnerHandler implements CommandHandler<RemovePartner> {
 
         // check to see if there are already sites associated with this partner
         int siteCount = ((Number) em.createQuery(
-            "select count(s) " +
-                "from Site s " +
-                "where s.activity.id in (select a.id from Activity a where a.database.id = :dbId) " +
-                "and s.partner.id = :partnerId " +
-                "and s.dateDeleted is null")
-            .setParameter("dbId", cmd.getDatabaseId())
-            .setParameter("partnerId", cmd.getPartnerId())
-            .getSingleResult()).intValue();
+                "select count(s) " +
+                        "from Site s " +
+                        "where s.activity.id in (select a.id from Activity a where a.database.id = :dbId) " +
+                        "and s.partner.id = :partnerId " +
+                        "and s.dateDeleted is null")
+                .setParameter("dbId", cmd.getDatabaseId())
+                .setParameter("partnerId", cmd.getPartnerId())
+                .getSingleResult()).intValue();
 
         if (siteCount > 0) {
             return new RemoveFailedResult();

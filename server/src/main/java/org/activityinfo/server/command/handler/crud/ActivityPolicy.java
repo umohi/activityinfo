@@ -22,19 +22,17 @@ package org.activityinfo.server.command.handler.crud;
  * #L%
  */
 
-import java.util.Date;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.model.LocationTypeDTO;
 import org.activityinfo.server.database.hibernate.dao.ActivityDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
 import org.activityinfo.server.database.hibernate.entity.Activity;
 import org.activityinfo.server.database.hibernate.entity.LocationType;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.shared.dto.LocationTypeDTO;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.Date;
 
 public class ActivityPolicy implements EntityPolicy<Activity> {
 
@@ -44,7 +42,7 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
 
     @Inject
     public ActivityPolicy(EntityManager em, ActivityDAO activityDAO,
-        UserDatabaseDAO databaseDAO) {
+                          UserDatabaseDAO databaseDAO) {
         this.em = em;
         this.activityDAO = activityDAO;
         this.databaseDAO = databaseDAO;
@@ -107,8 +105,8 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
 
         if (changes.containsKey("locationType")) {
             activity.setLocationType(
-                em.getReference(LocationType.class,
-                    ((LocationTypeDTO) changes.get("locationType")).getId()));
+                    em.getReference(LocationType.class,
+                            ((LocationTypeDTO) changes.get("locationType")).getId()));
         }
 
         if (changes.containsKey("category")) {
@@ -121,7 +119,7 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
 
         if (changes.containsKey("reportingFrequency")) {
             activity.setReportingFrequency((Integer) changes
-                .get("reportingFrequency"));
+                    .get("reportingFrequency"));
         }
 
         if (changes.containsKey("published")) {

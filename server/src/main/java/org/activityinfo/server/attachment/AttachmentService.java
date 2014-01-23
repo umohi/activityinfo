@@ -21,18 +21,18 @@ package org.activityinfo.server.attachment;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+
 public interface AttachmentService {
 
     void serveAttachment(String blobId, HttpServletResponse response)
-        throws IOException;
+            throws IOException;
 
     void upload(String key, FileItem fileItem, InputStream uploadingStream);
 

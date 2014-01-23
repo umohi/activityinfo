@@ -22,19 +22,11 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import java.io.IOException;
-import java.net.URL;
+import com.google.inject.Provider;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.server.database.hibernate.entity.Authentication;
+import org.easymock.EasyMock;
+import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletConfig;
@@ -43,20 +35,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URL;
 
-import org.activityinfo.server.database.hibernate.entity.Authentication;
-import org.activityinfo.server.login.SelectionServlet;
-import org.activityinfo.shared.auth.AuthenticatedUser;
-import org.easymock.EasyMock;
-import org.junit.Test;
-
-import com.google.inject.Provider;
+import static org.easymock.EasyMock.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
 
 public class SelectionServletTest {
 
     @Test
     public void markManifestAsObsoleteIfAuthTokenIsBadOrExpired()
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         // this verifies correct behavior in a complicated scenario:
 
@@ -85,7 +76,7 @@ public class SelectionServletTest {
 
         EntityManager entityManager = createMock(EntityManager.class);
         expect(entityManager.find(eq(Authentication.class), eq("badtoken")))
-            .andReturn(null);
+                .andReturn(null);
         replay(entityManager);
 
         @SuppressWarnings("unchecked")
@@ -93,17 +84,17 @@ public class SelectionServletTest {
         expect(provider.get()).andReturn(entityManager);
         replay(provider);
 
-        Cookie[] cookies = new Cookie[] {
-            new Cookie(AuthenticatedUser.AUTH_TOKEN_COOKIE, "badtoken")
+        Cookie[] cookies = new Cookie[]{
+                new Cookie(AuthenticatedUser.AUTH_TOKEN_COOKIE, "badtoken")
         };
 
         URL permutationMap = getClass().getResource("permutations");
-        assertThat("permutationMap is present for test", permutationMap,
-            is(not(nullValue(URL.class))));
+        assertThat("permutationMap is present for fixtures", permutationMap,
+                is(not(nullValue(URL.class))));
 
         ServletContext context = createMock(ServletContext.class);
         expect(context.getRealPath(eq("/ActivityInfo/permutations")))
-            .andReturn(permutationMap.getFile());
+                .andReturn(permutationMap.getFile());
         replay(context);
 
         ServletConfig config = createMock(ServletConfig.class);
@@ -112,15 +103,15 @@ public class SelectionServletTest {
 
         HttpServletRequest request = createMock(HttpServletRequest.class);
         expect(request.getHeader(eq("User-Agent")))
-            .andReturn(
-                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1 Paros/3.2.13");
+                .andReturn(
+                        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1 Paros/3.2.13");
         expect(request.getRequestURI()).andReturn(
-            "/ActivityInfo/ActivityInfo.appcache");
+                "/ActivityInfo/ActivityInfo.appcache");
         expect(request.getCookies()).andReturn(cookies).anyTimes();
         replay(request);
 
         HttpServletResponse response = createMock(HttpServletResponse.class);
-        response.sendError(eq(404), EasyMock.<String> anyObject());
+        response.sendError(eq(404), EasyMock.<String>anyObject());
         expectLastCall();
         replay(response);
 

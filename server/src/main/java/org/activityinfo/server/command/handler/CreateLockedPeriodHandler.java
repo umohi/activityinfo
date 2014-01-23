@@ -22,25 +22,19 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.Date;
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.CreateLockedPeriod;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.LockedPeriodDTO;
+import org.activityinfo.server.database.hibernate.entity.*;
 
 import javax.persistence.EntityManager;
-
-import org.activityinfo.server.database.hibernate.entity.Activity;
-import org.activityinfo.server.database.hibernate.entity.LockedPeriod;
-import org.activityinfo.server.database.hibernate.entity.Project;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.shared.command.CreateLockedPeriod;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.LockedPeriodDTO;
-import org.activityinfo.shared.exception.CommandException;
-
-import com.google.inject.Inject;
+import java.util.Date;
 
 public class CreateLockedPeriodHandler implements
-    CommandHandler<CreateLockedPeriod> {
+        CommandHandler<CreateLockedPeriod> {
     private EntityManager em;
 
     @Inject
@@ -50,7 +44,7 @@ public class CreateLockedPeriodHandler implements
 
     @Override
     public CommandResult execute(CreateLockedPeriod cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         Activity activity = null;
         UserDatabase database = null;
@@ -59,9 +53,9 @@ public class CreateLockedPeriodHandler implements
         LockedPeriod lockedPeriod = new LockedPeriod();
         LockedPeriodDTO lockedPeriodDTO = cmd.getLockedPeriod();
         lockedPeriod.setFromDate(lockedPeriodDTO.getFromDate()
-            .atMidnightInMyTimezone());
+                .atMidnightInMyTimezone());
         lockedPeriod.setToDate(lockedPeriodDTO.getToDate()
-            .atMidnightInMyTimezone());
+                .atMidnightInMyTimezone());
         lockedPeriod.setName(lockedPeriodDTO.getName());
         lockedPeriod.setEnabled(lockedPeriodDTO.isEnabled());
 
@@ -80,7 +74,7 @@ public class CreateLockedPeriodHandler implements
             databaseId = activity.getDatabase().getId();
         } else {
             throw new CommandException(
-                "One of the following must be provdied: userDatabaseId, projectId, activityId");
+                    "One of the following must be provdied: userDatabaseId, projectId, activityId");
         }
 
         UserDatabase db = em.find(UserDatabase.class, databaseId);

@@ -22,35 +22,19 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Entity
 @org.hibernate.annotations.Filter(
-    name = "hideDeleted",
-    condition = "DateDeleted is null")
+        name = "hideDeleted",
+        condition = "DateDeleted is null")
 public class AttributeGroup implements Serializable, Deleteable, Orderable {
 
     private int id;
@@ -96,10 +80,10 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "AttributeGroupInActivity",
-        joinColumns = {
-            @JoinColumn(name = "AttributeGroupId", nullable = false, updatable = false) },
-        inverseJoinColumns = {
-            @JoinColumn(name = "ActivityId", nullable = false, updatable = false) })
+            joinColumns = {
+                    @JoinColumn(name = "AttributeGroupId", nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "ActivityId", nullable = false, updatable = false)})
     public Set<Activity> getActivities() {
         return this.activities;
     }
@@ -152,7 +136,7 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
 
     /**
      * Indicates if the attributegroup is mandatory in the new and edit site forms.
-     * 
+     *
      * @return True if attributegroup is mandatory, false otherwise
      */
     @Column(name = "mandatory", nullable = false)
@@ -162,9 +146,8 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
 
     /**
      * Sets the mandatory flag
-     * 
-     * @param mandatory
-     *            True if the attributegroup is mandatory in the new and edit site forms.
+     *
+     * @param mandatory True if the attributegroup is mandatory in the new and edit site forms.
      */
     public void setMandatory(boolean mandatory) {
         this.mandatory = mandatory;
@@ -174,7 +157,7 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
     public void delete() {
         this.setDateDeleted(new Date());
         getActivities().iterator().next().getDatabase()
-            .setLastSchemaUpdate(new Date());
+                .setLastSchemaUpdate(new Date());
     }
 
     @Column(name = "category", length = 50, nullable = true)

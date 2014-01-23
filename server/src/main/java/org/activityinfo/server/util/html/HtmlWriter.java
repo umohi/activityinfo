@@ -60,7 +60,7 @@ public class HtmlWriter {
     protected void writePendingTag() {
         if (pendingTag != null) {
             writeTag(pendingTag,
-                (pendingTag.getInnerText() == null && pendingTag.isClosed()));
+                    (pendingTag.getInnerText() == null && pendingTag.isClosed()));
 
             if (pendingTag.getInnerText() != null) {
                 sb.append(pendingTag.getInnerText());
@@ -143,9 +143,9 @@ public class HtmlWriter {
 
     public HtmlTag httpHeader(String header, String value) {
         return open(new HtmlTag("meta"))
-            .at("http-equiv", header)
-            .at("content", value)
-            .close();
+                .at("http-equiv", header)
+                .at("content", value)
+                .close();
     }
 
     public HtmlTag charsetDeclaration(String charset) {
@@ -154,10 +154,10 @@ public class HtmlWriter {
 
     public HtmlTag styleSheetLink(String cssPath) {
         return open(new HtmlTag("link"))
-            .at("rel", "stylesheet")
-            .at("type", "text/css")
-            .at("href", cssPath)
-            .close();
+                .at("rel", "stylesheet")
+                .at("type", "text/css")
+                .at("href", cssPath)
+                .close();
     }
 
     public HtmlTag startDiv() {
@@ -190,8 +190,8 @@ public class HtmlWriter {
 
     public HtmlTableCellTag tableCell(String innerText) {
         return (HtmlTableCellTag) open((new HtmlTableCellTag())
-            .text(innerText)
-            .close());
+                .text(innerText)
+                .close());
     }
 
     public HtmlWriter newLine() {
@@ -200,8 +200,8 @@ public class HtmlWriter {
 
     public HtmlTableCellTag emptyTableCell() {
         return (HtmlTableCellTag) open((new HtmlTableCellTag())
-            .nbsp()
-            .close());
+                .nbsp()
+                .close());
     }
 
     public HtmlTag startHeader(int level) {

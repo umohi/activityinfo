@@ -28,12 +28,11 @@ public class DateCalc {
     /**
      * Returns the amount of days before midnight (tomorrow morning) of the specified date. If the specified date to
      * compare with is after midnight, 0 is returned.
-     * 
+     *
      * @param date
      * @param compare
      * @return
-     * @throws IllegalArgumentException
-     *             if the specified date to compare with is after the first date
+     * @throws IllegalArgumentException if the specified date to compare with is after the first date
      */
     public static int daysBeforeMidnight(Date date, long compare) {
         long diff = nextMidnightMillis(date) - compare;
@@ -71,7 +70,7 @@ public class DateCalc {
 
     /**
      * Resets the time component of the specified calendar to zero: midnight at the <b>start</b> of the day.
-     * 
+     *
      * @param c
      */
     public static void setMidnight(Calendar c) {

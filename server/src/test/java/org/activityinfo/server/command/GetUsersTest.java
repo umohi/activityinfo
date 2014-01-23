@@ -22,11 +22,11 @@ package org.activityinfo.server.command;
  * #L%
  */
 
+import org.activityinfo.api.shared.command.GetUsers;
+import org.activityinfo.api.shared.command.result.UserResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.GetUsers;
-import org.activityinfo.shared.command.result.UserResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,7 +65,7 @@ public class GetUsersTest extends CommandTestCase {
 
         Assert.assertEquals("number of results", 1, result.getTotalLength());
         Assert.assertEquals("user name", "Marlene", result.getData().get(0)
-            .getName());
+                .getName());
     }
 
     @Test

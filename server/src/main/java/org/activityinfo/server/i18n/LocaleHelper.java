@@ -22,14 +22,14 @@ package org.activityinfo.server.i18n;
  * #L%
  */
 
-import java.util.Locale;
-
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.auth.AuthenticatedUser;
+
+import java.util.Locale;
 
 /**
  * Static Locale helper methods.
- * 
+ *
  * @author Alex Bertram
  */
 public final class LocaleHelper {

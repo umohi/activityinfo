@@ -22,13 +22,11 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
 import org.activityinfo.server.database.hibernate.entity.UserPermission;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.List;
 
 public class UserPermissionDAOImpl extends GenericDAO<UserPermission, Integer> implements UserPermissionDAO {
 
@@ -41,10 +39,10 @@ public class UserPermissionDAOImpl extends GenericDAO<UserPermission, Integer> i
     @SuppressWarnings("unchecked")
     public UserPermission findUserPermissionByUserIdAndDatabaseId(int userId, int databaseId) {
         List<UserPermission> result = getEntityManager()
-            .createNamedQuery("findUserPermissionByUserIdAndDatabaseId")
-            .setParameter("databaseId", databaseId)
-            .setParameter("userId", userId)
-            .getResultList();
+                .createNamedQuery("findUserPermissionByUserIdAndDatabaseId")
+                .setParameter("databaseId", databaseId)
+                .setParameter("userId", userId)
+                .getResultList();
         return (result != null && !result.isEmpty()) ? result.get(0) : null;
     }
 }

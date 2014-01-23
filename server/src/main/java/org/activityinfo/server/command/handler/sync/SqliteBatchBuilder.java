@@ -22,10 +22,10 @@ package org.activityinfo.server.command.handler.sync;
  * #L%
  */
 
+import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.io.StringWriter;
-
-import com.google.gson.stream.JsonWriter;
 
 public class SqliteBatchBuilder {
 

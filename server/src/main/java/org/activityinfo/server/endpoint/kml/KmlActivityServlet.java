@@ -22,30 +22,27 @@ package org.activityinfo.server.endpoint.kml;
  * #L%
  */
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.server.authentication.BasicAuthentication;
+import org.activityinfo.server.command.DispatcherSync;
+import org.activityinfo.server.database.hibernate.entity.DomainFilters;
+import org.activityinfo.server.database.hibernate.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.activityinfo.server.authentication.BasicAuthentication;
-import org.activityinfo.server.command.DispatcherSync;
-import org.activityinfo.server.database.hibernate.entity.DomainFilters;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.dto.SchemaDTO;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 public class KmlActivityServlet extends HttpServlet {
@@ -57,10 +54,10 @@ public class KmlActivityServlet extends HttpServlet {
 
     @Inject
     public KmlActivityServlet(
-        Provider<EntityManager> entityManager,
-        Configuration templateCfg,
-        BasicAuthentication authenticator,
-        DispatcherSync dispatcher) {
+            Provider<EntityManager> entityManager,
+            Configuration templateCfg,
+            BasicAuthentication authenticator,
+            DispatcherSync dispatcher) {
 
         this.templateCfg = templateCfg;
         this.entityManager = entityManager;
@@ -70,7 +67,7 @@ public class KmlActivityServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         // Get Authorization header
         String auth = req.getHeader("Authorization");
@@ -80,14 +77,14 @@ public class KmlActivityServlet extends HttpServlet {
         if (user == null) {
             // Not allowed, or no password provided so report unauthorized
             res.setHeader("WWW-Authenticate",
-                "BASIC realm=\"Utilisateurs authorises\"");
+                    "BASIC realm=\"Utilisateurs authorises\"");
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         String baseURL = "http://" + req.getServerName() + ":"
-            + req.getServerPort()
-            + "/earth/sites?activityId=";
+                + req.getServerPort()
+                + "/earth/sites?activityId=";
         SchemaDTO schemaDTO = loadSchema(user);
 
         Map<String, Object> map = new HashMap<String, Object>();
@@ -95,7 +92,7 @@ public class KmlActivityServlet extends HttpServlet {
         map.put("baseURL", baseURL);
 
         Template tpl = templateCfg
-            .getTemplate("kml/ActivitiesNetworkLink.kml.ftl");
+                .getTemplate("kml/ActivitiesNetworkLink.kml.ftl");
         res.setContentType("application/vnd.google-earth.kml+xml; filename=ActivityInfo.kml");
         res.setCharacterEncoding("UTF-8");
 

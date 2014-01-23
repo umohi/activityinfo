@@ -22,45 +22,43 @@ package org.activityinfo.server.endpoint.gwtrpc;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-import org.activityinfo.server.database.hibernate.entity.Authentication;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.util.logging.LogException;
-import org.activityinfo.shared.command.Command;
-import org.activityinfo.shared.command.RemoteCommandService;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.exception.InvalidAuthTokenException;
-import org.activityinfo.shared.exception.UnexpectedCommandException;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.RemoteCommandService;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.exception.InvalidAuthTokenException;
+import org.activityinfo.api.shared.exception.UnexpectedCommandException;
+import org.activityinfo.server.database.hibernate.entity.Authentication;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.util.logging.LogException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * New hibernate-free command servlet. Currently only used in test code, will
+ * New hibernate-free command servlet. Currently only used in fixtures code, will
  * eventually replace CommandServlet when all dependencies on hibernate are
  * removed.
- * 
  */
 @Singleton
 public class CommandServlet2 extends RemoteServiceServlet implements
-    RemoteCommandService {
+        RemoteCommandService {
 
     @Inject
     private Injector injector;
 
     private static final Logger LOGGER = Logger.getLogger(CommandServlet2.class
-        .getName());
+            .getName());
 
     @Override
     @LogException
     public List<CommandResult> execute(String authToken, List<Command> commands)
-        throws CommandException {
+            throws CommandException {
         Authentication auth = retrieveAuthentication(authToken);
         try {
             return handleCommands(auth.getUser(), commands);
@@ -72,13 +70,13 @@ public class CommandServlet2 extends RemoteServiceServlet implements
     }
 
     public CommandResult execute(String authToken, Command command)
-        throws CommandException {
+            throws CommandException {
         Authentication auth = retrieveAuthentication(authToken);
         return handleCommand(auth.getUser(), command);
     }
 
     private Authentication retrieveAuthentication(String authToken)
-        throws InvalidAuthTokenException {
+            throws InvalidAuthTokenException {
         // Authentication auth = userDAO.findAuthenticationByToken(authToken);
         // if (auth == null) {
         // throw new InvalidAuthTokenException();
@@ -112,7 +110,7 @@ public class CommandServlet2 extends RemoteServiceServlet implements
 
     @LogException(emailAlert = true)
     protected CommandResult handleCommand(User user, Command command)
-        throws CommandException {
+            throws CommandException {
         RemoteExecutionContext context = new RemoteExecutionContext(injector);
         return context.execute(command);
     }

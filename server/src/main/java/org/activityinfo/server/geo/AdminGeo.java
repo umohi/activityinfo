@@ -39,7 +39,6 @@ public class AdminGeo {
     }
 
     /**
-     * 
      * @return the id of the administrative entity ({@code AdminEntityId}
      */
     public int getId() {
@@ -51,9 +50,8 @@ public class AdminGeo {
     }
 
     /**
-     * 
      * @return the geometry of the administrative entity in the WGS84 geographic
-     *         coordinate system
+     * coordinate system
      */
     public Geometry getGeometry() {
         return geometry;

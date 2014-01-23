@@ -24,21 +24,21 @@
 
     <@content>
     <div class="row">
-		<div class="span12">
-			<h3>${label.signUpEmailSentHeader}</h3>
-		</div>
-	</div>
+        <div class="span12">
+            <h3>${label.signUpEmailSentHeader}</h3>
+        </div>
+    </div>
     <div class="row">
         <div class="span12">
-                        
-            <p class="lead">               
-                ${label.signUpEmailSent}
+
+            <p class="lead">
+            ${label.signUpEmailSent}
             </p>
         </div>
     </div>
-           
+
     </@content>
 
-    <@footer/> 
-   
+    <@footer/>
+
 </@scaffolding>

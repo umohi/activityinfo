@@ -22,6 +22,24 @@ package org.activityinfo.server.schedule;
  * #L%
  */
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.inject.Inject;
+import org.activityinfo.analysis.server.generator.ReportGenerator;
+import org.activityinfo.analysis.server.renderer.itext.RtfReportRenderer;
+import org.activityinfo.analysis.shared.model.DateRange;
+import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.server.authentication.ServerSideAuthProvider;
+import org.activityinfo.server.database.hibernate.entity.DomainFilters;
+import org.activityinfo.server.database.hibernate.entity.ReportSubscription;
+import org.activityinfo.server.mail.MailSender;
+import org.activityinfo.server.mail.Message;
+import org.activityinfo.server.report.ReportParserJaxb;
+import org.apache.commons.lang.LocaleUtils;
+import org.xml.sax.SAXException;
+
+import javax.mail.MessagingException;
+import javax.persistence.EntityManager;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -30,30 +48,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.mail.MessagingException;
-import javax.persistence.EntityManager;
-
-import org.activityinfo.server.authentication.ServerSideAuthProvider;
-import org.activityinfo.server.database.hibernate.entity.DomainFilters;
-import org.activityinfo.server.database.hibernate.entity.ReportSubscription;
-import org.activityinfo.server.mail.MailSender;
-import org.activityinfo.server.mail.Message;
-import org.activityinfo.server.report.ReportParserJaxb;
-import org.activityinfo.server.report.generator.ReportGenerator;
-import org.activityinfo.server.report.renderer.itext.RtfReportRenderer;
-import org.activityinfo.shared.report.model.DateRange;
-import org.activityinfo.shared.report.model.Report;
-import org.apache.commons.lang.LocaleUtils;
-import org.xml.sax.SAXException;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.inject.Inject;
-
 public class ReportMailer {
 
     private static final Logger LOGGER = Logger.getLogger(ReportMailer.class
-        .getName());
+            .getName());
 
     private final EntityManager em;
     private final ReportGenerator reportGenerator;
@@ -65,8 +63,8 @@ public class ReportMailer {
 
     @Inject
     public ReportMailer(EntityManager em, ReportGenerator reportGenerator,
-        RtfReportRenderer rtfReportRenderer, MailSender mailer,
-        ServerSideAuthProvider authProvider) {
+                        RtfReportRenderer rtfReportRenderer, MailSender mailer,
+                        ServerSideAuthProvider authProvider) {
         super();
         this.em = em;
         this.reportGenerator = reportGenerator;
@@ -84,29 +82,29 @@ public class ReportMailer {
         LOGGER.info("Starting nightly mailing job for " + today);
 
         List<ReportSubscription> subscriptions = em.createQuery(
-            "select t from ReportSubscription t")
-            .getResultList();
+                "select t from ReportSubscription t")
+                .getResultList();
 
         for (ReportSubscription subscription : subscriptions) {
             try {
                 if (ReportMailerHelper.mailToday(today, subscription) &&
-                    filter.apply(subscription)) {
-                    
+                        filter.apply(subscription)) {
+
                     Report report = ReportParserJaxb.parseXml(subscription
-                        .getTemplate().getXml());
+                            .getTemplate().getXml());
                     execute(today, subscription, report);
                 }
             } catch (Exception caught) {
                 LOGGER.log(
-                    Level.SEVERE,
-                    "Exception thrown while processing report "
-                        + subscription.getId(), caught);
+                        Level.SEVERE,
+                        "Exception thrown while processing report "
+                                + subscription.getId(), caught);
             }
         }
     }
 
     public void execute(Date today, ReportSubscription sub, Report report)
-        throws IOException {
+            throws IOException {
 
         // set up authentication for the subscriber of this report
 
@@ -125,30 +123,30 @@ public class ReportMailer {
             mailReport(sub, report, today, rtf.toByteArray());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Report mailing of "
-                + sub.getTemplate().getId() + " failed for user "
-                + sub.getUser().getEmail(), e);
+                    + sub.getTemplate().getId() + " failed for user "
+                    + sub.getUser().getEmail(), e);
         }
     }
 
     private void mailReport(ReportSubscription sub, Report report, Date today,
-        byte[] content)
-        throws IOException, SAXException, MessagingException {
+                            byte[] content)
+            throws IOException, SAXException, MessagingException {
 
         LOGGER.log(Level.INFO, "Sending email to " + sub.getUser().getEmail());
 
-        DateFormat reportDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, 
-            LocaleUtils.toLocale(sub.getUser().getLocale()));
+        DateFormat reportDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM,
+                LocaleUtils.toLocale(sub.getUser().getLocale()));
 
-        
+
         Message email = new Message();
         email.to(sub.getUser().getEmail(), sub.getUser().getName());
         email.subject("ActivityInfo: " + report.getTitle());
         email.body(ReportMailerHelper.composeTextEmail(sub, report));
 
         email.addAttachment()
-            .withContent(content, "text/enriched")
-            .withFileName(report.getContent().getFileName() + " " +
-                reportDateFormat.format(today) + ".rtf");
+                .withContent(content, "text/enriched")
+                .withFileName(report.getContent().getFileName() + " " +
+                        reportDateFormat.format(today) + ".rtf");
 
         mailer.send(email);
     }

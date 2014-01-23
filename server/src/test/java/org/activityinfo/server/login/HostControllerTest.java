@@ -22,26 +22,22 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
-
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.api.view.Viewable;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.authentication.ServerSideAuthProvider;
 import org.activityinfo.server.login.model.HostPageModel;
 import org.activityinfo.server.login.model.RootPageModel;
 import org.activityinfo.server.util.config.DeploymentConfiguration;
-import org.activityinfo.shared.auth.AuthenticatedUser;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.jersey.api.view.Viewable;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Response;
+import java.util.Properties;
+
+import static org.easymock.EasyMock.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
 
 public class HostControllerTest extends ControllerTestCase {
 
@@ -54,7 +50,7 @@ public class HostControllerTest extends ControllerTestCase {
     @Before
     public void setup() {
         DeploymentConfiguration deploymentConfig = new DeploymentConfiguration(
-            new Properties());
+                new Properties());
 
         authProvider = new ServerSideAuthProvider();
         resource = new HostController(deploymentConfig, authProvider);
@@ -62,7 +58,7 @@ public class HostControllerTest extends ControllerTestCase {
 
     @Test
     public void verifyThatRequestsWithoutAuthTokensAreShownLoginPage()
-        throws Exception {
+            throws Exception {
 
         HttpServletRequest req = createMock(HttpServletRequest.class);
         expect(req.getServerName()).andReturn("www.activityinfo.org");
@@ -70,21 +66,21 @@ public class HostControllerTest extends ControllerTestCase {
         replay(req);
 
         Response response = resource.getHostPage(
-            RestMockUtils.mockUriInfo("http://www.activityinfo.org"), req,
-            false);
+                RestMockUtils.mockUriInfo("http://www.activityinfo.org"), req,
+                false);
 
         assertThat(response.getEntity(), instanceOf(Viewable.class));
         assertThat(((Viewable) response.getEntity()).getModel(),
-            instanceOf(RootPageModel.class));
+                instanceOf(RootPageModel.class));
 
     }
 
     @Test
     public void verifyThatRequestWithValidAuthTokensReceiveTheView()
-        throws Exception {
+            throws Exception {
 
         authProvider.set(new AuthenticatedUser(VALID_TOKEN, 3,
-            "akbertram@gmail.com"));
+                "akbertram@gmail.com"));
 
         HttpServletRequest req = createMock(HttpServletRequest.class);
         expect(req.getServerName()).andReturn("www.activityinfo.org");
@@ -92,12 +88,12 @@ public class HostControllerTest extends ControllerTestCase {
         replay(req);
 
         Response response = resource.getHostPage(
-            RestMockUtils.mockUriInfo("http://www.activityinfo.org"), req,
-            false);
+                RestMockUtils.mockUriInfo("http://www.activityinfo.org"), req,
+                false);
 
         assertThat(response.getEntity(), instanceOf(Viewable.class));
         assertThat(((Viewable) response.getEntity()).getModel(),
-            instanceOf(HostPageModel.class));
+                instanceOf(HostPageModel.class));
     }
 
 }

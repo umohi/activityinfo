@@ -22,18 +22,8 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.inject.Provider;
-import javax.persistence.NoResultException;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
+import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.authentication.SecureTokenGenerator;
 import org.activityinfo.server.database.hibernate.dao.Transactional;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
@@ -43,13 +33,21 @@ import org.activityinfo.server.mail.MailSender;
 import org.activityinfo.server.mail.ResetPasswordMessage;
 import org.activityinfo.server.util.logging.LogException;
 
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+import javax.inject.Provider;
+import javax.persistence.NoResultException;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path(SignUpAddressExistsController.ENDPOINT)
 public class SignUpAddressExistsController {
     public static final String ENDPOINT = "/signUpAddressExists";
-    
+
     private static final Logger LOGGER = Logger.getLogger(SignUpAddressExistsController.class.getName());
 
     @Inject

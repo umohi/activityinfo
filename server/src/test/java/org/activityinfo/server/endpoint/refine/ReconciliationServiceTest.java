@@ -32,7 +32,7 @@ public class ReconciliationServiceTest {
 
         DoubleMetaphone encoder = new DoubleMetaphone();
         System.out.println(encoder.doubleMetaphone("Tin-E") + " "
-            + encoder.doubleMetaphone("Youwarou", true));
+                + encoder.doubleMetaphone("Youwarou", true));
         System.out.println(encoder.doubleMetaphone("Youvarou"));
 
     }

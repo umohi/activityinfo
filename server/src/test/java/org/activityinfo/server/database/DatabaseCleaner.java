@@ -22,17 +22,16 @@ package org.activityinfo.server.database;
  * #L%
  */
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 /**
- * Cleans the MySQL test database
- * 
+ * Cleans the MySQL fixtures database
  */
 public class DatabaseCleaner {
 
@@ -54,12 +53,12 @@ public class DatabaseCleaner {
             statement.execute("SET foreign_key_checks = 0");
 
             ResultSet tables = connection.getMetaData().getTables(null, null,
-                null, new String[] { "TABLE" });
+                    null, new String[]{"TABLE"});
             try {
                 while (tables.next()) {
                     String tableName = tables.getString(3);
                     if (!tableName.toLowerCase().startsWith(
-                        LIQUIBASE_TABLE_PREFIX)) {
+                            LIQUIBASE_TABLE_PREFIX)) {
                         statement.execute("DELETE FROM " + tableName);
                         System.err.println("Dropped all from " + tableName);
                     }

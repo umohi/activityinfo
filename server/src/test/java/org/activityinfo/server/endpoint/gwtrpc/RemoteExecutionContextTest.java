@@ -22,9 +22,9 @@ package org.activityinfo.server.endpoint.gwtrpc;
  * #L%
  */
 
-import java.sql.SQLException;
-
 import org.junit.Test;
+
+import java.sql.SQLException;
 
 public class RemoteExecutionContextTest {
 

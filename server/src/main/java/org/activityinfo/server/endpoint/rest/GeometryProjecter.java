@@ -1,16 +1,15 @@
 package org.activityinfo.server.endpoint.rest;
 
-import java.util.Arrays;
-
-import org.activityinfo.server.report.generator.map.TiledMap;
-import org.activityinfo.shared.report.content.AiLatLng;
-import org.activityinfo.shared.report.content.Point;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.geom.util.GeometryTransformer;
+import org.activityinfo.analysis.server.generator.map.TiledMap;
+import org.activityinfo.analysis.shared.content.AiLatLng;
+import org.activityinfo.analysis.shared.content.Point;
+
+import java.util.Arrays;
 
 public class GeometryProjecter extends GeometryTransformer {
 

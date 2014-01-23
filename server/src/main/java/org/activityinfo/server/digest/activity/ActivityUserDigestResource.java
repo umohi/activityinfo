@@ -1,14 +1,13 @@
 package org.activityinfo.server.digest.activity;
 
-import javax.persistence.EntityManager;
-import javax.ws.rs.Path;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.activityinfo.server.authentication.ServerSideAuthProvider;
 import org.activityinfo.server.digest.UserDigestResource;
 import org.activityinfo.server.mail.MailSender;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.ws.rs.Path;
 
 @Path(ActivityUserDigestResource.ENDPOINT)
 public class ActivityUserDigestResource extends UserDigestResource {
@@ -17,10 +16,10 @@ public class ActivityUserDigestResource extends UserDigestResource {
 
     @Inject
     public ActivityUserDigestResource(Provider<EntityManager> entityManager,
-        Provider<MailSender> mailSender,
-        ServerSideAuthProvider authProvider,
-        ActivityDigestModelBuilder activityDigestModelBuilder,
-        ActivityDigestRenderer activityDigestRenderer) {
+                                      Provider<MailSender> mailSender,
+                                      ServerSideAuthProvider authProvider,
+                                      ActivityDigestModelBuilder activityDigestModelBuilder,
+                                      ActivityDigestRenderer activityDigestRenderer) {
         super(entityManager, mailSender, authProvider, activityDigestModelBuilder, activityDigestRenderer);
     }
 

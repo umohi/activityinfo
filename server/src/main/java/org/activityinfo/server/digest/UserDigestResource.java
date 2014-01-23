@@ -1,8 +1,11 @@
 package org.activityinfo.server.digest;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Logger;
+import com.google.inject.Provider;
+import org.activityinfo.server.authentication.ServerSideAuthProvider;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.mail.MailSender;
+import org.activityinfo.server.mail.Message;
+import org.activityinfo.server.util.date.DateFormatter;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
@@ -11,14 +14,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
-import org.activityinfo.server.authentication.ServerSideAuthProvider;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.mail.MailSender;
-import org.activityinfo.server.mail.Message;
-import org.activityinfo.server.util.date.DateFormatter;
-
-import com.google.inject.Provider;
+import java.io.IOException;
+import java.util.Date;
+import java.util.logging.Logger;
 
 public abstract class UserDigestResource {
     public static final String PARAM_USER = "u";
@@ -28,7 +26,7 @@ public abstract class UserDigestResource {
     public static final String PARAM_SENDEMAIL_DEF = "true";
 
     private static final Logger LOGGER = Logger
-        .getLogger(UserDigestResource.class.getName());
+            .getLogger(UserDigestResource.class.getName());
 
     private final Provider<EntityManager> entityManager;
     private final Provider<MailSender> mailSender;
@@ -37,10 +35,10 @@ public abstract class UserDigestResource {
     private final DigestRenderer digestRenderer;
 
     public UserDigestResource(Provider<EntityManager> entityManager,
-        Provider<MailSender> mailSender,
-        ServerSideAuthProvider authProvider,
-        DigestModelBuilder digestModelBuilder,
-        DigestRenderer digestRenderer) {
+                              Provider<MailSender> mailSender,
+                              ServerSideAuthProvider authProvider,
+                              DigestModelBuilder digestModelBuilder,
+                              DigestRenderer digestRenderer) {
         this.entityManager = entityManager;
         this.mailSender = mailSender;
         this.authProvider = authProvider;
@@ -51,10 +49,10 @@ public abstract class UserDigestResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String createUserDigest(
-        @QueryParam(PARAM_USER) int userId,
-        @QueryParam(PARAM_NOW) Long now,
-        @QueryParam(PARAM_DAYS) int days,
-        @QueryParam(PARAM_SENDEMAIL) @DefaultValue(PARAM_SENDEMAIL_DEF) boolean sendEmail)
+            @QueryParam(PARAM_USER) int userId,
+            @QueryParam(PARAM_NOW) Long now,
+            @QueryParam(PARAM_DAYS) int days,
+            @QueryParam(PARAM_SENDEMAIL) @DefaultValue(PARAM_SENDEMAIL_DEF) boolean sendEmail)
             throws IOException, MessagingException {
 
         if (userId <= 0) {
@@ -71,10 +69,10 @@ public abstract class UserDigestResource {
         authProvider.set(user);
 
         LOGGER.info("creating digest for " + user.getEmail() + " on " + DateFormatter.formatDateTime(date)
-            + " for activity period: " + days + " day(s)." + " (sending email: " + sendEmail + ")");
+                + " for activity period: " + days + " day(s)." + " (sending email: " + sendEmail + ")");
 
         DigestMessageBuilder digest =
-            new DigestMessageBuilder(digestModelBuilder, digestRenderer);
+                new DigestMessageBuilder(digestModelBuilder, digestRenderer);
         digest.setUser(user);
         digest.setDate(date);
         digest.setDays(days);

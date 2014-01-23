@@ -22,22 +22,20 @@ package org.activityinfo.server.util.beanMapping;
  * #L%
  */
 
+import com.google.inject.Inject;
 import junit.framework.Assert;
-
+import org.activityinfo.api.shared.model.AdminEntityDTO;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 import org.activityinfo.server.database.hibernate.entity.Bounds;
-import org.activityinfo.shared.dto.AdminEntityDTO;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.Modules;
 import org.dozer.Mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.inject.Inject;
-
 @RunWith(InjectionSupport.class)
-@Modules({ BeanMappingModule.class })
+@Modules({BeanMappingModule.class})
 public class AdminEntityMappingTest {
 
     @Inject
@@ -66,7 +64,7 @@ public class AdminEntityMappingTest {
         AdminEntityDTO dto = mapper.map(entity, AdminEntityDTO.class);
 
         Assert.assertEquals("parentId", parent.getId(), dto.getParentId()
-            .intValue());
+                .intValue());
         Assert.assertEquals("levelId", level.getId(), dto.getLevelId());
 
         Assert.assertNotNull("bounds", dto.getBounds());

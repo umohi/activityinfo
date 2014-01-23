@@ -1,7 +1,7 @@
 package org.activityinfo.server.mail;
 
-import java.util.Properties;
-
+import com.google.inject.util.Providers;
+import freemarker.template.TemplateModelException;
 import org.activityinfo.server.database.hibernate.entity.Domain;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.util.TemplateModule;
@@ -9,12 +9,10 @@ import org.activityinfo.server.util.config.DeploymentConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.inject.util.Providers;
-
-import freemarker.template.TemplateModelException;
+import java.util.Properties;
 
 public class PostmarkMailSenderTest {
-    
+
     private PostmarkMailSender sender;
 
     @Before
@@ -22,12 +20,12 @@ public class PostmarkMailSenderTest {
         Properties properties = new Properties();
         properties.setProperty(PostmarkMailSender.POSTMARK_API_KEY, "POSTMARK_API_TEST");
         DeploymentConfiguration config = new DeploymentConfiguration(properties);
-        
+
         TemplateModule templateModule = new TemplateModule();
-        
+
         sender = new PostmarkMailSender(config, templateModule.provideConfiguration(Providers.of(Domain.DEFAULT)));
     }
-    
+
     @Test
     public void textEmail() {
         User user = new User();
@@ -38,7 +36,6 @@ public class PostmarkMailSenderTest {
         ResetPasswordMessage model = new ResetPasswordMessage(user);
         sender.send(model);
     }
-    
-    
-    
+
+
 }

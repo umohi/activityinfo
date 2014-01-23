@@ -22,23 +22,8 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.inject.Provider;
-import javax.persistence.NoResultException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-
+import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.authentication.SecureTokenGenerator;
 import org.activityinfo.server.database.hibernate.dao.Transactional;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
@@ -48,13 +33,22 @@ import org.activityinfo.server.mail.MailSender;
 import org.activityinfo.server.mail.ResetPasswordMessage;
 import org.activityinfo.server.util.logging.LogException;
 
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+import javax.inject.Provider;
+import javax.persistence.NoResultException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path(ResetPasswordController.ENDPOINT)
 public class ResetPasswordController {
     public static final String ENDPOINT = "/loginProblem";
-    
+
     private static final Logger LOGGER = Logger.getLogger(ResetPasswordController.class.getName());
 
     @Inject
@@ -62,12 +56,12 @@ public class ResetPasswordController {
 
     @Inject
     private Provider<UserDAO> userDAO;
-    
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     @LogException(emailAlert = true)
     public Viewable getPage(@Context HttpServletRequest req)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         return new ResetPasswordPageModel().asViewable();
     }
 
@@ -95,9 +89,9 @@ public class ResetPasswordController {
             return model.asViewable();
 
         } catch (Exception e) {
-            
+
             LOGGER.log(Level.SEVERE, "Failed to send password reset email", e);
-            
+
             ResetPasswordPageModel model = new ResetPasswordPageModel();
             model.setEmailError(true);
 

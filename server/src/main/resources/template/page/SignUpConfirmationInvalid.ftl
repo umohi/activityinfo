@@ -26,18 +26,18 @@
     <div class="row">
         <div class="span12">
             <h3>${label.signUpConfirmationInvalidTitle}</h3>
-            
-            ${label.signUpConfirmationInvalidDetail}
-            
+
+        ${label.signUpConfirmationInvalidDetail}
+
             <p><a href="login" class="btn btn-primary">${label.loginNow}</a></p>
-         </div>
+        </div>
     </div>
     </@content>
 
     <@footer/>
 
-    
+
     <@scripts>
     </@scripts>
-    
+
 </@scaffolding>

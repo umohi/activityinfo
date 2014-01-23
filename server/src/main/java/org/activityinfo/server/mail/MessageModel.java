@@ -40,9 +40,9 @@ public abstract class MessageModel {
     private String getMessageName() {
         if (!getClass().getSimpleName().endsWith("Message")) {
             throw new RuntimeException(
-                "MailMessage subclasses must end in 'Message'!");
+                    "MailMessage subclasses must end in 'Message'!");
         }
         return getClass().getSimpleName().substring(0,
-            getClass().getSimpleName().length() - "Message".length());
+                getClass().getSimpleName().length() - "Message".length());
     }
 }

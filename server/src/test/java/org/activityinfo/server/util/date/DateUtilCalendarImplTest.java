@@ -22,15 +22,16 @@ package org.activityinfo.server.util.date;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import org.activityinfo.analysis.server.util.DateUtilCalendarImpl;
+import org.activityinfo.analysis.shared.model.DateRange;
+import org.activityinfo.analysis.shared.model.DateUnit;
+import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import org.activityinfo.shared.report.model.DateRange;
-import org.activityinfo.shared.report.model.DateUnit;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class DateUtilCalendarImplTest {
 

@@ -1,21 +1,19 @@
 package org.activityinfo.server.endpoint.odk;
 
-import java.util.logging.Logger;
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.server.authentication.ServerSideAuthProvider;
+import org.activityinfo.server.command.DispatcherSync;
+import org.activityinfo.server.database.hibernate.dao.UserPermissionDAO;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.util.config.DeploymentConfiguration;
 
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.activityinfo.server.authentication.ServerSideAuthProvider;
-import org.activityinfo.server.command.DispatcherSync;
-import org.activityinfo.server.database.hibernate.dao.UserPermissionDAO;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.util.config.DeploymentConfiguration;
-import org.activityinfo.shared.auth.AuthenticatedUser;
-
-import com.google.inject.Inject;
+import java.util.logging.Logger;
 
 public abstract class ODKResource {
     protected final Logger LOGGER = Logger.getLogger(this.getClass().getName());

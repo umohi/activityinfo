@@ -22,12 +22,13 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.authentication.AuthenticationModuleStub;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.endpoint.gwtrpc.CommandServlet;
@@ -35,22 +36,19 @@ import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
 import org.activityinfo.server.i18n.LocaleModule;
 import org.activityinfo.server.util.TemplateModule;
 import org.activityinfo.server.util.beanMapping.BeanMappingModule;
-import org.activityinfo.shared.command.Command;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import javax.persistence.EntityManager;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 @Modules({
-    MockHibernateModule.class,
-    TemplateModule.class,
-    BeanMappingModule.class,
-    GwtRpcModule.class,
-    AuthenticationModuleStub.class,
-    LocaleModule.class
+        MockHibernateModule.class,
+        TemplateModule.class,
+        BeanMappingModule.class,
+        GwtRpcModule.class,
+        AuthenticationModuleStub.class,
+        LocaleModule.class
 })
 public abstract class CommandTestCase {
 
@@ -67,22 +65,22 @@ public abstract class CommandTestCase {
     }
 
     protected <T extends CommandResult> T execute(Command<T> command)
-        throws CommandException {
-        
-        
+            throws CommandException {
+
+
         User user = em.find(User.class, AuthenticationModuleStub
-            .getCurrentUser().getUserId());
+                .getCurrentUser().getUserId());
         assert user != null : "cannot find user id " +
-            AuthenticationModuleStub.getCurrentUser().getUserId()
-            + " in the database, have you " +
-            " called execute() without a @OnDataset annotation?";
+                AuthenticationModuleStub.getCurrentUser().getUserId()
+                + " in the database, have you " +
+                " called execute() without a @OnDataset annotation?";
         Locale.setDefault(Locale.ENGLISH);
 
         List<CommandResult> results = servlet.handleCommands(Collections
-            .<Command> singletonList(command));
+                .<Command>singletonList(command));
 
         // normally each request and so each handleCommand() gets its own
-        // EntityManager, but here successive requests in the same test
+        // EntityManager, but here successive requests in the same fixtures
         // will share an EntityManager, which can be bad if there are
         // collections
         // still living in the first-level cache

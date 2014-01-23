@@ -22,10 +22,11 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Locale;
-
+import com.google.inject.util.Providers;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModelException;
 import org.activityinfo.server.branding.ScaffoldingDirective;
 import org.activityinfo.server.database.hibernate.entity.Domain;
 import org.activityinfo.server.login.model.PageModel;
@@ -34,12 +35,9 @@ import org.activityinfo.server.util.jaxrs.FreemarkerViewProcessor;
 import org.bouncycastle.util.Strings;
 import org.junit.BeforeClass;
 
-import com.google.inject.util.Providers;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateModelException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Locale;
 
 /**
  * @author Alex Bertram
@@ -55,11 +53,11 @@ public abstract class ViewTestCase {
     }
 
     protected String process(PageModel model) throws IOException,
-        TemplateException {
+            TemplateException {
         FreemarkerViewProcessor processor = new FreemarkerViewProcessor(
-            templateCfg, Providers.of(Locale.ENGLISH), new ScaffoldingDirective(Providers.of(Domain.DEFAULT), templateCfg));
+                templateCfg, Providers.of(Locale.ENGLISH), new ScaffoldingDirective(Providers.of(Domain.DEFAULT), templateCfg));
         Template template = processor.resolve(model.asViewable()
-            .getTemplateName());
+                .getTemplateName());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         processor.writeTo(template, model.asViewable(), baos);
 

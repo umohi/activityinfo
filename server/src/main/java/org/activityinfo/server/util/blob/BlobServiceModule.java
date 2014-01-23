@@ -1,13 +1,12 @@
 package org.activityinfo.server.util.blob;
 
-import java.io.File;
-
-import org.activityinfo.server.DeploymentEnvironment;
-import org.activityinfo.server.util.config.DeploymentConfiguration;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.activityinfo.server.DeploymentEnvironment;
+import org.activityinfo.server.util.config.DeploymentConfiguration;
+
+import java.io.File;
 
 public class BlobServiceModule extends AbstractModule {
 
@@ -15,7 +14,7 @@ public class BlobServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Provides
@@ -25,7 +24,7 @@ public class BlobServiceModule extends AbstractModule {
             return new AppEngineBlobService();
         } else {
             String defaultRoot = System.getProperty("user.home") + File.separator + "activityinfo.blob";
-            
+
             File blobRoot = new File(config.getProperty(BLOB_ROOT_KEY, defaultRoot));
             if (blobRoot.exists() && !blobRoot.isDirectory()) {
                 throw new RuntimeException("blob.root must be a directory");

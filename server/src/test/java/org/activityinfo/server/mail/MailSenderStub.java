@@ -22,15 +22,12 @@ package org.activityinfo.server.mail;
  * #L%
  */
 
-import java.util.List;
+import com.google.common.collect.Lists;
+import freemarker.template.Configuration;
+import org.activityinfo.fixtures.TestScoped;
 
 import javax.inject.Inject;
-
-import org.activityinfo.test.TestScoped;
-
-import com.google.common.collect.Lists;
-
-import freemarker.template.Configuration;
+import java.util.List;
 
 @TestScoped
 public class MailSenderStub extends MailSender {

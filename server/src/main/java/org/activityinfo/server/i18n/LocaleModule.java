@@ -22,13 +22,12 @@ package org.activityinfo.server.i18n;
  * #L%
  */
 
-import java.util.Locale;
-
-import org.activityinfo.client.i18n.UIConstants;
-import org.activityinfo.client.i18n.UIMessages;
-
 import com.google.inject.AbstractModule;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
+import org.activityinfo.ui.full.client.i18n.UIConstants;
+import org.activityinfo.ui.full.client.i18n.UIMessages;
+
+import java.util.Locale;
 
 public class LocaleModule extends AbstractModule {
 
@@ -39,9 +38,9 @@ public class LocaleModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(UIConstants.class).toProvider(
-            new LocalizableResourceProvider<UIConstants>(UIConstants.class));
+                new LocalizableResourceProvider<UIConstants>(UIConstants.class));
         bind(UIMessages.class).toProvider(
-            new LocalizableResourceProvider<UIMessages>(UIMessages.class));
+                new LocalizableResourceProvider<UIMessages>(UIMessages.class));
         bind(Locale.class).toProvider(LocaleProvider.class);
     }
 

@@ -30,7 +30,7 @@ public class SignUpConfirmationPageModel extends PageModel {
 
     // messages
     private boolean genericError;
-    
+
 
     public SignUpConfirmationPageModel(String key) {
         this.key = key;

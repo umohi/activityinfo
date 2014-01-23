@@ -24,25 +24,12 @@ package org.activityinfo.server.database.hibernate.entity;
 
 // Generated Apr 9, 2009 7:58:20 AM by Hibernate Tools 3.2.2.GA
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Entity
 public class Attribute implements Serializable, Deleteable, Orderable {
@@ -112,7 +99,7 @@ public class Attribute implements Serializable, Deleteable, Orderable {
     public void delete() {
         setDateDeleted(new Date());
         getGroup().getActivities().iterator().next().getDatabase()
-            .setLastSchemaUpdate(new Date());
+                .setLastSchemaUpdate(new Date());
     }
 
     @Override

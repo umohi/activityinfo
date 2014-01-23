@@ -1,17 +1,12 @@
 package org.activityinfo.server.endpoint.rest;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import com.google.common.io.Files;
+import com.google.inject.Inject;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.hibernate.entity.AdminLevel;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
@@ -20,10 +15,14 @@ import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.inject.Inject;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 @RunWith(InjectionSupport.class)
-@Modules({ MockHibernateModule.class })
+@Modules({MockHibernateModule.class})
 @OnDataSet("/dbunit/jordan.db.xml")
 public class AdminTileRendererTest {
 
@@ -45,7 +44,7 @@ public class AdminTileRendererTest {
         Class.forName("com.mysql.jdbc.Driver");
 
         Connection jdbcConnection = DriverManager.getConnection("jdbc:mysql://localhost/activityinfo",
-            "root", "adminpwd");
+                "root", "adminpwd");
         IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
 
         QueryDataSet partialDataSet = new QueryDataSet(connection);
@@ -58,7 +57,7 @@ public class AdminTileRendererTest {
         partialDataSet.addTable("adminentity", "select * from adminentity where adminlevelid=1360");
 
         // XML file into which data needs to be extracted
-        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("src/test/resources/dbunit/jordan.db.xml"));
+        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("src/fixtures/resources/dbunit/jordan.db.xml"));
         System.out.println("Dataset written");
     }
 

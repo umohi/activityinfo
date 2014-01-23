@@ -1,6 +1,8 @@
 package org.activityinfo.server.endpoint.odk;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
+import com.sun.jersey.api.view.Viewable;
+import org.activityinfo.api.shared.command.GetSchema;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,11 +11,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
-import org.activityinfo.shared.command.GetSchema;
-
-import com.google.common.collect.Maps;
-import com.sun.jersey.api.view.Viewable;
+import java.util.Map;
 
 @Path("/formList")
 public class FormListResource extends ODKResource {

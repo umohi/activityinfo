@@ -22,28 +22,22 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.logging.Logger;
-
-import org.activityinfo.client.Log;
-import org.activityinfo.server.command.handler.sync.AdminUpdateBuilder;
-import org.activityinfo.server.command.handler.sync.LocationUpdateBuilder;
-import org.activityinfo.server.command.handler.sync.SchemaUpdateBuilder;
-import org.activityinfo.server.command.handler.sync.SiteTableUpdateBuilder;
-import org.activityinfo.server.command.handler.sync.SiteUpdateBuilder;
-import org.activityinfo.server.command.handler.sync.UpdateBuilder;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.GetSyncRegionUpdates;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
-
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.activityinfo.api.shared.command.GetSyncRegionUpdates;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.server.command.handler.sync.*;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.ui.full.client.Log;
+
+import java.util.logging.Logger;
 
 public class GetSyncRegionUpdatesHandler implements
-    CommandHandler<GetSyncRegionUpdates> {
+        CommandHandler<GetSyncRegionUpdates> {
 
     private static final Logger LOGGER = Logger
-        .getLogger(GetSyncRegionsHandler.class.getName());
+            .getLogger(GetSyncRegionsHandler.class.getName());
 
     private final Injector injector;
 
@@ -54,10 +48,10 @@ public class GetSyncRegionUpdatesHandler implements
 
     @Override
     public CommandResult execute(GetSyncRegionUpdates cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         Log.info("Fetching updates for " + cmd.getRegionId()
-            + ", localVersion = " + cmd.getLocalVersion());
+                + ", localVersion = " + cmd.getLocalVersion());
 
         UpdateBuilder builder;
 
@@ -78,7 +72,7 @@ public class GetSyncRegionUpdatesHandler implements
 
         } else {
             throw new CommandException("Unknown sync region: "
-                + cmd.getRegionId());
+                    + cmd.getRegionId());
         }
 
         try {

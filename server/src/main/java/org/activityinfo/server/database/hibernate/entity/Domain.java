@@ -22,13 +22,11 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * Defines a custom domain for ActivityInfo that has its own branding, titles,
@@ -49,7 +47,7 @@ public class Domain implements Serializable {
     private String scaffolding;
     private String homePageBody;
     private boolean signUpAllowed;
-    
+
     public Domain() {
     }
 
@@ -77,33 +75,33 @@ public class Domain implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     @Lob
-	public String getScaffolding() {
-		return scaffolding;
-	}
+    public String getScaffolding() {
+        return scaffolding;
+    }
 
-	public void setScaffolding(String scaffolding) {
-		this.scaffolding = scaffolding;
-	}
-	
-	public String getHomePageBody() {
-		return homePageBody;
-	}
+    public void setScaffolding(String scaffolding) {
+        this.scaffolding = scaffolding;
+    }
 
-	public void setHomePageBody(String homePageBody) {
-		this.homePageBody = homePageBody;
-	}
+    public String getHomePageBody() {
+        return homePageBody;
+    }
 
-	public boolean isSignUpAllowed() {
-		return signUpAllowed;
-	}
+    public void setHomePageBody(String homePageBody) {
+        this.homePageBody = homePageBody;
+    }
 
-	public void setSignUpAllowed(boolean signUpAllowed) {
-		this.signUpAllowed = signUpAllowed;
-	}
+    public boolean isSignUpAllowed() {
+        return signUpAllowed;
+    }
 
-	@Override
+    public void setSignUpAllowed(boolean signUpAllowed) {
+        this.signUpAllowed = signUpAllowed;
+    }
+
+    @Override
     public String toString() {
         return host;
     }

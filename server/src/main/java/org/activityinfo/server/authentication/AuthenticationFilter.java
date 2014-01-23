@@ -22,24 +22,6 @@ package org.activityinfo.server.authentication;
  * #L%
  */
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-
-import javax.persistence.EntityManager;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
-import org.activityinfo.server.database.hibernate.entity.Authentication;
-import org.activityinfo.server.i18n.LocaleHelper;
-import org.activityinfo.shared.auth.AuthenticatedUser;
-
 import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -48,12 +30,23 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.server.database.hibernate.entity.Authentication;
+import org.activityinfo.server.i18n.LocaleHelper;
+
+import javax.persistence.EntityManager;
+import javax.servlet.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * This filter tries to establish the identify of the connected user at the
  * start of each request.
- * 
- * <p>
+ * <p/>
+ * <p/>
  * If the request is successfully authenticated, it is stored in the
  * {@link ServerSideAuthProvider}.
  */
@@ -61,7 +54,7 @@ import com.teklabs.gwt.i18n.server.LocaleProxy;
 public class AuthenticationFilter implements Filter {
 
     private static final Logger LOGGER = Logger
-        .getLogger(AuthenticationFilter.class.getName());
+            .getLogger(AuthenticationFilter.class.getName());
 
     private final Provider<HttpServletRequest> request;
     private final Provider<EntityManager> entityManager;
@@ -69,22 +62,22 @@ public class AuthenticationFilter implements Filter {
     private final BasicAuthentication basicAuthenticator;
 
     private final LoadingCache<String, AuthenticatedUser> authTokenCache = CacheBuilder
-        .newBuilder()
-        .maximumSize(10000)
-        .expireAfterAccess(6, TimeUnit.HOURS)
-        .build(new CacheLoader<String, AuthenticatedUser>() {
+            .newBuilder()
+            .maximumSize(10000)
+            .expireAfterAccess(6, TimeUnit.HOURS)
+            .build(new CacheLoader<String, AuthenticatedUser>() {
 
-            @Override
-            public AuthenticatedUser load(String authToken) throws Exception {
-                return queryAuthToken(authToken);
-            }
-        });
+                @Override
+                public AuthenticatedUser load(String authToken) throws Exception {
+                    return queryAuthToken(authToken);
+                }
+            });
 
     @Inject
     public AuthenticationFilter(Provider<HttpServletRequest> request,
-        Provider<EntityManager> entityManager,
-        ServerSideAuthProvider authProvider,
-        BasicAuthentication basicAuthenticator) {
+                                Provider<EntityManager> entityManager,
+                                ServerSideAuthProvider authProvider,
+                                BasicAuthentication basicAuthenticator) {
         this.entityManager = entityManager;
         this.request = request;
         this.authProvider = authProvider;
@@ -93,12 +86,12 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-        FilterChain filterChain) throws IOException, ServletException {
+                         FilterChain filterChain) throws IOException, ServletException {
 
         authProvider.clear();
 
         String authToken = ((HttpServletRequest) request)
-            .getHeader("Authorization");
+                .getHeader("Authorization");
         if (Strings.isNullOrEmpty(authToken)) {
             authToken = authTokenFromCookie();
         }
@@ -107,7 +100,7 @@ public class AuthenticationFilter implements Filter {
                 AuthenticatedUser currentUser = authTokenCache.get(authToken);
                 authProvider.set(currentUser);
                 LocaleProxy
-                    .setLocale(LocaleHelper.getLocaleObject(currentUser));
+                        .setLocale(LocaleHelper.getLocaleObject(currentUser));
 
                 LOGGER.info("Setting locale to " + currentUser.getUserLocale());
 
@@ -128,7 +121,7 @@ public class AuthenticationFilter implements Filter {
 
     private AuthenticatedUser queryAuthToken(String authToken) {
         Authentication entity = entityManager.get().find(Authentication.class,
-            authToken);
+                authToken);
         if (entity == null) {
             // try as basic authentication
             entity = basicAuthenticator.tryAuthenticate(authToken);
@@ -137,7 +130,7 @@ public class AuthenticationFilter implements Filter {
             throw new IllegalArgumentException();
         }
         AuthenticatedUser authenticatedUser = new AuthenticatedUser(authToken,
-            entity.getUser().getId(), entity.getUser().getEmail());
+                entity.getUser().getId(), entity.getUser().getEmail());
         authenticatedUser.setUserLocale(entity.getUser().getLocale());
         return authenticatedUser;
     }
@@ -147,7 +140,7 @@ public class AuthenticationFilter implements Filter {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName()
-                    .equals(AuthenticatedUser.AUTH_TOKEN_COOKIE)) {
+                        .equals(AuthenticatedUser.AUTH_TOKEN_COOKIE)) {
                     return cookie.getValue();
                 }
             }

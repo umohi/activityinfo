@@ -30,7 +30,7 @@ import org.activityinfo.server.database.hibernate.entity.Partner;
  * object. Implemented automatically by
  * {@link org.activityinfo.server.database.hibernate.dao.DAOInvocationHandler
  * proxy}
- * 
+ *
  * @author Alex Bertram
  */
 public interface PartnerDAO extends DAO<Partner, Integer> {

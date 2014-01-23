@@ -22,52 +22,38 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import org.activityinfo.analysis.shared.model.EmailDelivery;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.activityinfo.shared.report.model.EmailDelivery;
-
 /**
  * Defines a Report and its subscriptions.
- * 
- * @see org.activityinfo.shared.report.model.Report
- * 
+ *
+ * @see org.activityinfo.analysis.shared.model.Report
  */
 @Entity
 @Table(name = "ReportTemplate")
 @org.hibernate.annotations.Filters(
-{
-    @org.hibernate.annotations.Filter(
-        name = "userVisible",
-        condition = "(:currentUserId = OwnerUserId or "
-            +
-            "(Visibility = 1 and (DatabaseId is null or "
-            +
-            ":currentUserId in (select p.UserId from userpermission p "
-            +
-            "where p.AllowView and p.UserId=:currentUserId and p.DatabaseId=DatabaseId))))"
-    ),
+        {
+                @org.hibernate.annotations.Filter(
+                        name = "userVisible",
+                        condition = "(:currentUserId = OwnerUserId or "
+                                +
+                                "(Visibility = 1 and (DatabaseId is null or "
+                                +
+                                ":currentUserId in (select p.UserId from userpermission p "
+                                +
+                                "where p.AllowView and p.UserId=:currentUserId and p.DatabaseId=DatabaseId))))"
+                ),
 
-    @org.hibernate.annotations.Filter(
-        name = "hideDeleted",
-        condition = "DateDeleted is null"
-    ) })
+                @org.hibernate.annotations.Filter(
+                        name = "hideDeleted",
+                        condition = "DateDeleted is null"
+                )})
 public class ReportDefinition implements Serializable {
 
     private int id;
@@ -81,7 +67,7 @@ public class ReportDefinition implements Serializable {
     private EmailDelivery frequency;
     private Integer day;
     private Set<ReportSubscription> subscriptions = new HashSet<ReportSubscription>(
-        0);
+            0);
     private String json;
 
     public ReportDefinition() {

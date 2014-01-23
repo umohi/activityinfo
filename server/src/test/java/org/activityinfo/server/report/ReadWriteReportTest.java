@@ -22,17 +22,16 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import java.io.FileOutputStream;
+import org.activityinfo.analysis.shared.model.MapReportElement;
+import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.analysis.shared.model.layers.BubbleMapLayer;
+import org.activityinfo.analysis.shared.model.layers.PiechartMapLayer;
+import org.activityinfo.analysis.shared.model.layers.PiechartMapLayer.Slice;
+import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-
-import org.activityinfo.shared.report.model.MapReportElement;
-import org.activityinfo.shared.report.model.Report;
-import org.activityinfo.shared.report.model.layers.BubbleMapLayer;
-import org.activityinfo.shared.report.model.layers.PiechartMapLayer;
-import org.activityinfo.shared.report.model.layers.PiechartMapLayer.Slice;
-import org.junit.Test;
+import java.io.FileOutputStream;
 
 public class ReadWriteReportTest {
 
@@ -58,10 +57,10 @@ public class ReadWriteReportTest {
         Report.class.getPackage();
 
         JAXBContext jc = JAXBContext.newInstance(Report.class.getPackage()
-            .getName());
+                .getName());
         Marshaller marshaller = jc.createMarshaller();
         marshaller
-            .setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
+                .setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         FileOutputStream fo = new FileOutputStream("SomeXmlTest.xml");
         marshaller.marshal(report, fo);

@@ -22,22 +22,11 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import com.bedatadriven.rebar.time.calendar.LocalDate;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import com.bedatadriven.rebar.time.calendar.LocalDate;
 
 @Entity
 public class LockedPeriod implements Serializable, ReallyDeleteable {

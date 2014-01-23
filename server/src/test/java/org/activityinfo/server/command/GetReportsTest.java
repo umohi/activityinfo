@@ -22,18 +22,15 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
+import org.activityinfo.api.shared.command.GetReports;
+import org.activityinfo.api.shared.command.result.ReportsResult;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.GetReports;
-import org.activityinfo.shared.command.result.ReportsResult;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.*;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/getreporttests.db.xml")

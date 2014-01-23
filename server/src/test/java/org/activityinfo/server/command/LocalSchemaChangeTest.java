@@ -22,41 +22,33 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import java.util.Map;
-
+import com.google.common.collect.Maps;
+import org.activityinfo.api.shared.command.*;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
 import org.activityinfo.server.util.beanMapping.BeanMappingModule;
 import org.activityinfo.server.util.logging.LoggingModule;
-import org.activityinfo.shared.command.CreateEntity;
-import org.activityinfo.shared.command.Delete;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.LocalHandlerTestCase;
-import org.activityinfo.shared.command.UpdateEntity;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.IndicatorDTO;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
 @Modules({
-    MockHibernateModule.class,
-    BeanMappingModule.class,
-    GwtRpcModule.class,
-    LoggingModule.class
+        MockHibernateModule.class,
+        BeanMappingModule.class,
+        GwtRpcModule.class,
+        LoggingModule.class
 })
 @OnDataSet("/dbunit/sites-simple1.db.xml")
 public class LocalSchemaChangeTest extends LocalHandlerTestCase {
@@ -93,14 +85,14 @@ public class LocalSchemaChangeTest extends LocalHandlerTestCase {
         activity.setLocationTypeId(1);
 
         CreateResult createResult = executeRemotely(CreateEntity.Activity(
-            schema.getDatabaseById(1), activity));
+                schema.getDatabaseById(1), activity));
 
         synchronize();
 
         schema = executeLocally(new GetSchema());
 
         ActivityDTO createdActivity = schema.getActivityById(createResult
-            .getNewId());
+                .getNewId());
 
         assertThat(createdActivity, is(not(nullValue())));
         assertThat(createdActivity.getName(), equalTo(activity.getName()));
@@ -119,14 +111,14 @@ public class LocalSchemaChangeTest extends LocalHandlerTestCase {
         indicator.put("activityId", 2);
 
         CreateResult createResult = executeRemotely(new CreateEntity(
-            "Indicator", indicator));
+                "Indicator", indicator));
 
         synchronize();
 
         schema = executeLocally(new GetSchema());
 
         IndicatorDTO createdIndicator = schema.getIndicatorById(createResult
-            .getNewId());
+                .getNewId());
 
         assertThat(createdIndicator, is(not(nullValue())));
         assertThat(createdIndicator.getName(), equalTo("New Indicator"));

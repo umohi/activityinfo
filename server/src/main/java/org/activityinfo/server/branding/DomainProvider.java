@@ -22,16 +22,15 @@ package org.activityinfo.server.branding;
  * #L%
  */
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.activityinfo.server.database.hibernate.entity.Domain;
+
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
-import org.activityinfo.server.database.hibernate.entity.Domain;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 /**
- * Provides information on the domain branding to use based 
+ * Provides information on the domain branding to use based
  * on this thread's current request.
  */
 public class DomainProvider implements Provider<Domain> {
@@ -43,7 +42,7 @@ public class DomainProvider implements Provider<Domain> {
         request = null;
         entityManager = null;
     }
-  
+
     @Inject
     public DomainProvider(Provider<HttpServletRequest> request, Provider<EntityManager> entityManager) {
         super();
@@ -55,9 +54,9 @@ public class DomainProvider implements Provider<Domain> {
     public Domain get() {
         Domain result = entityManager.get().find(Domain.class, request.get().getServerName());
         if (result == null) {
-        	result = new Domain();
-        	result.setTitle("ActivityInfo");
-        	result.setHost(request.get().getServerName());
+            result = new Domain();
+            result.setTitle("ActivityInfo");
+            result.setHost(request.get().getServerName());
         }
         return result;
     }

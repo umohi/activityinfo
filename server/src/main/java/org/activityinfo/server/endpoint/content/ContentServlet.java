@@ -22,14 +22,13 @@ package org.activityinfo.server.endpoint.content;
  * #L%
  */
 
-import java.io.IOException;
+import com.google.inject.Singleton;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.inject.Singleton;
+import java.io.IOException;
 
 @Singleton
 public class ContentServlet extends HttpServlet {
@@ -38,7 +37,7 @@ public class ContentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         // Previously we used a reverse proxy to serve wordpress content
         // from the same host
         // This directs old links to the new location

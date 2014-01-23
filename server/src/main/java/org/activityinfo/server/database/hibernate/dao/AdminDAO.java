@@ -22,51 +22,44 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
+import org.activityinfo.server.database.hibernate.entity.AdminEntity;
+
 import java.util.List;
 import java.util.Set;
-
-import org.activityinfo.server.database.hibernate.entity.AdminEntity;
-import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 
 /**
  * Data Access Object for
  * {@link org.activityinfo.server.database.hibernate.entity.AdminEntity}
  * classes.
- * 
+ *
  * @author Alex Bertram
  */
 public interface AdminDAO extends DAO<AdminEntity, Integer> {
 
     /**
-     * @param levelId
-     *            The id of the administrative level for which to return the
-     *            entities
+     * @param levelId The id of the administrative level for which to return the
+     *                entities
      * @return A list of administrative entities that constitute an
-     *         administrative level. (e.g. return all provinces, return all
-     *         districts, etc)
+     * administrative level. (e.g. return all provinces, return all
+     * districts, etc)
      */
     List<AdminEntity> findRootEntities(int levelId);
 
     /**
-     * @param levelId
-     *            id of the {@link AdminLevel} to search
-     * @param entityId
-     *            the entity
+     * @param levelId  id of the {@link org.activityinfo.server.database.hibernate.entity.AdminLevel} to search
+     * @param entityId the entity
      * @return A list of the children of a given admin entity for a given level.
      */
     List<AdminEntity> findChildEntities(int levelId, int entityId);
 
     /**
      * Returns
-     * 
-     * @param entityLevelId
-     *            id of the {@link AdminLevel} to search
-     * @param parentEntityId
-     *            the entity parent
-     * @param activityId
-     *            activity linked to a related site
+     *
+     * @param entityLevelId  id of the {@link org.activityinfo.server.database.hibernate.entity.AdminLevel} to search
+     * @param parentEntityId the entity parent
+     * @param activityId     activity linked to a related site
      * @return A list of the children of a given admin entity for at a given
-     *         level.
+     * level.
      */
     List<AdminEntity> find(int entityLevelId, int parentEntityId, int activityId);
 

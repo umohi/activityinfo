@@ -22,14 +22,14 @@ package org.activityinfo.server.command;
  * #L%
  */
 
+import org.activityinfo.api.shared.command.AddPartner;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.command.result.DuplicateCreateResult;
+import org.activityinfo.api.shared.model.PartnerDTO;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.AddPartner;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.command.result.DuplicateCreateResult;
-import org.activityinfo.shared.dto.PartnerDTO;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +51,7 @@ public class PartnerTest extends CommandTestCase {
 
         SchemaDTO schema = execute(new GetSchema());
         PartnerDTO partner = schema.getDatabaseById(PEAR_PLUS_DB_ID)
-            .getPartnerById(SOL_ID);
+                .getPartnerById(SOL_ID);
 
         Assert.assertNotNull(partner);
         Assert.assertEquals(newPartner.getName(), partner.getName());
@@ -67,7 +67,7 @@ public class PartnerTest extends CommandTestCase {
 
         SchemaDTO schema = execute(new GetSchema());
         PartnerDTO partner = schema.getDatabaseById(1).getPartnerById(
-            cr.getNewId());
+                cr.getNewId());
 
         Assert.assertNotNull(partner);
         Assert.assertEquals("VDE", partner.getName());
@@ -83,5 +83,5 @@ public class PartnerTest extends CommandTestCase {
         CreateResult cr = execute(new AddPartner(1, newPartner));
         Assert.assertTrue(cr instanceof DuplicateCreateResult);
     }
-    
+
 }

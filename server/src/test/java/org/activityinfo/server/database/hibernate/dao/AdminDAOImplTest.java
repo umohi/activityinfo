@@ -22,28 +22,26 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import static junit.framework.Assert.assertEquals;
+import com.google.inject.Inject;
+import junit.framework.Assert;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.fixtures.AssertUtils;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
+import org.activityinfo.server.database.OnDataSet;
+import org.activityinfo.server.database.hibernate.entity.AdminEntity;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Comparator;
 import java.util.List;
 
-import junit.framework.Assert;
-
-import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.server.database.hibernate.entity.AdminEntity;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.AssertUtils;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.google.inject.Inject;
+import static junit.framework.Assert.assertEquals;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/adminEntities.db.xml")
-@Modules({ MockHibernateModule.class })
+@Modules({MockHibernateModule.class})
 public class AdminDAOImplTest {
 
     @Inject
@@ -67,7 +65,7 @@ public class AdminDAOImplTest {
         assertSorted(result);
         assertEquals("level", "Territoire", result.get(0).getLevel().getName());
         assertEquals("parentId", "Sud Kivu", result.get(0).getParent()
-            .getName());
+                .getName());
     }
 
     @Test
@@ -75,9 +73,9 @@ public class AdminDAOImplTest {
     public void queryRootEntitiesWithSites() throws Exception {
 
         List<AdminEntity> result = adminDAO.query()
-            .level(1)
-            .withSitesOfActivityId(4)
-            .execute();
+                .level(1)
+                .withSitesOfActivityId(4)
+                .execute();
 
         assertEquals(1, result.size());
     }

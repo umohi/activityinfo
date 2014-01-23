@@ -22,13 +22,13 @@ package org.activityinfo.server.util.date;
  * #L%
  */
 
+import org.activityinfo.analysis.shared.model.DateRange;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import org.activityinfo.shared.report.model.DateRange;
 
 public final class DateFormatter {
     private final DateFormat medium;
@@ -81,7 +81,7 @@ public final class DateFormatter {
     private String format(Calendar min, Calendar max) {
 
         if (isMin(min, Calendar.MONTH) && isMin(min, Calendar.DATE) &&
-            isMax(max, Calendar.MONTH) && isMax(max, Calendar.DATE)) {
+                isMax(max, Calendar.MONTH) && isMax(max, Calendar.DATE)) {
 
             /* Case 1 - Range of years */
 
@@ -96,15 +96,15 @@ public final class DateFormatter {
                 /* Case 1b - Multiple Years */
 
                 return String.format(rangePattern,
-                    Integer.toString(min.get(Calendar.YEAR)),
-                    Integer.toString(max.get(Calendar.YEAR)));
+                        Integer.toString(min.get(Calendar.YEAR)),
+                        Integer.toString(max.get(Calendar.YEAR)));
             }
         } else if (isMin(min, Calendar.DATE) && isMax(max, Calendar.DATE)) {
 
             /* Case 2 - Range of months */
 
             if (min.get(Calendar.MONTH) == max.get(Calendar.MONTH) &&
-                min.get(Calendar.YEAR) == max.get(Calendar.YEAR)) {
+                    min.get(Calendar.YEAR) == max.get(Calendar.YEAR)) {
 
                 /* Case 2a Single month */
 
@@ -115,23 +115,23 @@ public final class DateFormatter {
                 /* Case 2b Multiple months in same year */
 
                 return String.format(rangePattern,
-                    month.format(min.getTime()),
-                    monthYear.format(max.getTime()));
+                        month.format(min.getTime()),
+                        monthYear.format(max.getTime()));
 
             } else {
 
                 /* Case 3b multiple months over multiple years */
 
                 return String.format(rangePattern,
-                    monthYear.format(min.getTime()),
-                    monthYear.format(max.getTime()));
+                        monthYear.format(min.getTime()),
+                        monthYear.format(max.getTime()));
             }
 
         } else {
 
             return String.format(rangePattern,
-                medium.format(min.getTime()),
-                medium.format(max.getTime()));
+                    medium.format(min.getTime()),
+                    medium.format(max.getTime()));
         }
 
     }
@@ -146,7 +146,7 @@ public final class DateFormatter {
 
     private DateFormat getMonthYearFormat(Locale locale) {
         SimpleDateFormat format = (SimpleDateFormat) DateFormat
-            .getDateInstance(DateFormat.SHORT, locale);
+                .getDateInstance(DateFormat.SHORT, locale);
         format.applyPattern("MMM yyyy");
 
         return format;
@@ -154,7 +154,7 @@ public final class DateFormatter {
 
     private DateFormat getMonthFormat(Locale locale) {
         SimpleDateFormat format = (SimpleDateFormat) DateFormat
-            .getDateInstance(DateFormat.SHORT, locale);
+                .getDateInstance(DateFormat.SHORT, locale);
         format.applyPattern("MMM");
 
         return format;

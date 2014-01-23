@@ -22,39 +22,41 @@
 <#include "Scaffolding.ftl">
 <@scaffolding title="${label.chooseNewPassword}">
 
-	<@content>
-	<div class="row">
-		<div class="span12">
-		
-			<h3>${label.chooseNewPassword}</h3>
-			
-			<form class="form" method="post" action="changePassword" method="post">
-		    		<input type="hidden" name="key" value="${user.changePasswordKey}"></input>
-		
-				<div class="control-group">
-				    <label class="control-label" for="newPasswordInput">${label.newPassword}</label>
-				    <div class="controls">
-				      <input type="password" name="password" id="newPasswordInput">
-				    </div>
-				  </div>
-				  <div class="control-group">
-				    <label class="control-label" for="newPasswordInput">${label.confirmNewPassword}</label>
-				    <div class="controls">
-				      <input type="password" id="newPasswordInput2">
-				    </div>
-				  </div>
-				
-					<div class="control-group">
-				       <div class="controls">
-	
-				      <button type="submit" class="btn btn-primary btn-large">${label.continue}  &raquo;</button>
-				    </div>
-			  </div>
-			</form>
-		</div>
-	</div>
-	</@content>
+    <@content>
+    <div class="row">
+        <div class="span12">
 
-  <@footer/>  
-  <@scripts/>
+            <h3>${label.chooseNewPassword}</h3>
+
+            <form class="form" method="post" action="changePassword" method="post">
+                <input type="hidden" name="key" value="${user.changePasswordKey}"></input>
+
+                <div class="control-group">
+                    <label class="control-label" for="newPasswordInput">${label.newPassword}</label>
+
+                    <div class="controls">
+                        <input type="password" name="password" id="newPasswordInput">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="newPasswordInput">${label.confirmNewPassword}</label>
+
+                    <div class="controls">
+                        <input type="password" id="newPasswordInput2">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+
+                        <button type="submit" class="btn btn-primary btn-large">${label.continue}  &raquo;</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </@content>
+
+    <@footer/>
+    <@scripts/>
 </@scaffolding>

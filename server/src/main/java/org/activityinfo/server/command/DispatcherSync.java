@@ -22,16 +22,15 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.shared.command.Command;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
-
 import com.google.inject.ImplementedBy;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
 
 @ImplementedBy(DispatcherSyncImpl.class)
 public interface DispatcherSync {
 
     <C extends Command<R>, R extends CommandResult> R execute(C command)
-        throws CommandException;
+            throws CommandException;
 
 }

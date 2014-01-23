@@ -22,30 +22,24 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import org.activityinfo.api.shared.command.UpdateTargetValue;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.VoidResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.server.command.handler.crud.PropertyMap;
+import org.activityinfo.server.database.hibernate.entity.*;
+
+import javax.persistence.EntityManager;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
-
-import org.activityinfo.server.command.handler.crud.PropertyMap;
-import org.activityinfo.server.database.hibernate.entity.Indicator;
-import org.activityinfo.server.database.hibernate.entity.Target;
-import org.activityinfo.server.database.hibernate.entity.TargetValue;
-import org.activityinfo.server.database.hibernate.entity.TargetValueId;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.UpdateTargetValue;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.VoidResult;
-import org.activityinfo.shared.exception.CommandException;
-
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-
 public class UpdateTargetValueHandler extends BaseEntityHandler implements
-    CommandHandler<UpdateTargetValue> {
+        CommandHandler<UpdateTargetValue> {
 
     private final static Logger LOG = Logger
-        .getLogger(UpdateTargetValueHandler.class.getName());
+            .getLogger(UpdateTargetValueHandler.class.getName());
 
     private final Injector injector;
 
@@ -57,7 +51,7 @@ public class UpdateTargetValueHandler extends BaseEntityHandler implements
 
     @Override
     public CommandResult execute(UpdateTargetValue cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         LOG.fine("[execute] Update command for entity: TargetValue");
 
@@ -66,10 +60,10 @@ public class UpdateTargetValueHandler extends BaseEntityHandler implements
 
         try {
             TargetValue targetValue = entityManager().find(TargetValue.class,
-                new TargetValueId(cmd.getTargetId(), cmd.getIndicatorId()));
+                    new TargetValueId(cmd.getTargetId(), cmd.getIndicatorId()));
             if (cmd.getChanges().get("value") != null) {
                 targetValue.setValue((Double.valueOf((String) cmd.getChanges()
-                    .get("value"))));
+                        .get("value"))));
                 entityManager().persist(targetValue);
 
                 return new VoidResult();
@@ -83,13 +77,13 @@ public class UpdateTargetValueHandler extends BaseEntityHandler implements
 
         Target target = entityManager().find(Target.class, cmd.getTargetId());
         Indicator indicator = entityManager().find(Indicator.class,
-            cmd.getIndicatorId());
+                cmd.getIndicatorId());
 
         TargetValue targetValue = new TargetValue();
         targetValue.setId(new TargetValueId(cmd.getTargetId(), cmd
-            .getIndicatorId()));
+                .getIndicatorId()));
         targetValue.setValue((Double.valueOf((String) cmd.getChanges().get(
-            "value"))));
+                "value"))));
         targetValue.setTarget(target);
         targetValue.setIndicator(indicator);
 

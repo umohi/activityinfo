@@ -22,17 +22,17 @@ package org.activityinfo.server.report;
  * #L%
  */
 
+import org.activityinfo.analysis.shared.content.EntityCategory;
+import org.activityinfo.analysis.shared.content.FilterDescription;
+import org.activityinfo.analysis.shared.content.PivotContent;
+import org.activityinfo.analysis.shared.content.PivotTableData;
+import org.activityinfo.analysis.shared.model.AdminDimension;
+import org.activityinfo.analysis.shared.model.Dimension;
+import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.analysis.shared.model.PivotTableReportElement;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.activityinfo.shared.report.content.EntityCategory;
-import org.activityinfo.shared.report.content.FilterDescription;
-import org.activityinfo.shared.report.content.PivotContent;
-import org.activityinfo.shared.report.content.PivotTableData;
-import org.activityinfo.shared.report.model.AdminDimension;
-import org.activityinfo.shared.report.model.Dimension;
-import org.activityinfo.shared.report.model.DimensionType;
-import org.activityinfo.shared.report.model.PivotTableReportElement;
 
 /**
  * @author Alex Bertram (akbertram@gmail.com)
@@ -47,9 +47,9 @@ public class DummyPivotTableData2 {
     public PivotTableData.Axis[] leafRows = new PivotTableData.Axis[4];
     public PivotTableData table = new PivotTableData();
     public PivotTableData.Axis row1 = table.getRootRow().addChild(partnerDim,
-        new EntityCategory(1, "AVSI"), "AVSI", null);
+            new EntityCategory(1, "AVSI"), "AVSI", null);
     public PivotTableData.Axis row2 = table.getRootRow().addChild(partnerDim,
-        new EntityCategory(1, "NRC"), "NRC", null);
+            new EntityCategory(1, "NRC"), "NRC", null);
 
     public DummyPivotTableData2() {
 
@@ -57,19 +57,19 @@ public class DummyPivotTableData2 {
         rowDims.add(provinceDim);
 
         leafRows[0] = row1.addChild(provinceDim, new EntityCategory(61,
-            "Nord Kivu"), "Nord", null);
+                "Nord Kivu"), "Nord", null);
         leafRows[1] = row1.addChild(provinceDim, new EntityCategory(62,
-            "Sud Kivu"), "Sud Kivu", null);
+                "Sud Kivu"), "Sud Kivu", null);
 
         leafRows[2] = row2.addChild(provinceDim, new EntityCategory(61,
-            "Nord Kivu"), "Nord", null);
+                "Nord Kivu"), "Nord", null);
         leafRows[3] = row2.addChild(provinceDim, new EntityCategory(62,
-            "Sud Kivu"), "Sud Kivu", null);
+                "Sud Kivu"), "Sud Kivu", null);
 
         for (int i = 0; i != leafRows.length; ++i) {
 
             leafRows[i].setValue(table.getRootColumn(),
-                (double) ((i + 1) * 100));
+                    (double) ((i + 1) * 100));
 
         }
 
@@ -81,7 +81,7 @@ public class DummyPivotTableData2 {
         element.setRowDimensions(rowDims);
         element.setColumnDimensions(colDims);
         element.setContent(new PivotContent(table,
-            new ArrayList<FilterDescription>()));
+                new ArrayList<FilterDescription>()));
 
         return element;
     }

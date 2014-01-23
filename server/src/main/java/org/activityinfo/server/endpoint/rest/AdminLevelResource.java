@@ -22,47 +22,6 @@ package org.activityinfo.server.endpoint.rest;
  * #L%
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.inject.Provider;
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.Response.Status;
-
-import org.activityinfo.server.database.hibernate.entity.AdminEntity;
-import org.activityinfo.server.database.hibernate.entity.AdminLevel;
-import org.activityinfo.server.database.hibernate.entity.AdminLevelVersion;
-import org.activityinfo.server.database.hibernate.entity.LocationType;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.endpoint.rest.model.NewAdminEntity;
-import org.activityinfo.server.endpoint.rest.model.NewAdminLevel;
-import org.activityinfo.server.endpoint.rest.model.UpdatedAdminEntity;
-import org.activityinfo.server.endpoint.rest.model.UpdatedAdminLevel;
-import org.activityinfo.server.endpoint.rest.model.VersionMetadata;
-import org.activityinfo.shared.auth.AuthenticatedUser;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.util.DefaultPrettyPrinter;
-import org.hibernate.Session;
-
 import com.bedatadriven.geojson.GeometrySerializer;
 import com.google.common.base.Charsets;
 import com.sun.jersey.api.core.InjectParam;
@@ -71,21 +30,42 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.server.database.hibernate.entity.*;
+import org.activityinfo.server.endpoint.rest.model.*;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.util.DefaultPrettyPrinter;
+import org.hibernate.Session;
+
+import javax.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class AdminLevelResource {
 
     private static final Logger LOGGER = Logger
-        .getLogger(AdminLevelResource.class.getName());
+            .getLogger(AdminLevelResource.class.getName());
 
     private Provider<EntityManager> entityManager;
     private AdminLevel level;
-    
+
 
     // TODO: create list of geoadmins per country
     private static final int SUPER_USER_ID = 3;
 
     public AdminLevelResource(Provider<EntityManager> entityManager,
-        AdminLevel level) {
+                              AdminLevel level) {
         super();
         this.entityManager = entityManager;
         this.level = level;
@@ -106,18 +86,18 @@ public class AdminLevelResource {
     @DELETE
     public Response deleteLevel(@InjectParam AuthenticatedUser user) {
         assertAuthorized(user);
-        
+
         EntityManager em = entityManager.get();
         em.getTransaction().begin();
-        
+
         AdminLevel level = entityManager.get().merge(this.level);
         level.setDeleted(true);
-        
+
         em.getTransaction().commit();
-      
+
         return Response.ok().build();
     }
-    
+
     private void assertAuthorized(AuthenticatedUser user) {
         if (user.getId() != SUPER_USER_ID) {
             throw new WebApplicationException(Status.FORBIDDEN);
@@ -129,36 +109,23 @@ public class AdminLevelResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<AdminEntity> getEntities(@InjectParam EntityManager em) {
         return em.createQuery("select e  from AdminEntity e where e.deleted = false and e.level = :level")
-            .setParameter("level", level)
-            .getResultList();
+                .setParameter("level", level)
+                .getResultList();
     }
-    
-    
-    @GET
-    @Path("/entities/polylines")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getEntityPolylines(@InjectParam EntityManager em) throws JsonGenerationException, IOException {
-        
-        List<AdminEntity> entities = em.createQuery("select e  from AdminEntity e where e.deleted = false and e.level = :level")
-            .setParameter("level", level)
-            .getResultList();
-        
-        GoogleMapsWriter writer = new GoogleMapsWriter();
-        return writer.write(entities);
-    }
-    
+
+
     @GET
     @Path("/entities/features")
     public Response getFeatures(@InjectParam EntityManager em) throws IOException {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(
-            baos, Charsets.UTF_8);
+                baos, Charsets.UTF_8);
 
         List<AdminEntity> entities = em
-            .createQuery("select e  from AdminEntity e where e.deleted = false and e.level = :level")
-            .setParameter("level", level)
-            .getResultList();
+                .createQuery("select e  from AdminEntity e where e.deleted = false and e.level = :level")
+                .setParameter("level", level)
+                .getResultList();
 
         JsonFactory jfactory = new JsonFactory();
         JsonGenerator json = jfactory.createJsonGenerator(writer);
@@ -171,21 +138,21 @@ public class AdminLevelResource {
         GeometrySerializer geometrySerializer = new GeometrySerializer();
 
         for (AdminEntity entity : entities) {
-        	if(entity.getGeometry() != null) {
-	            json.writeStartObject();
-	            json.writeStringField("type", "Feature");
-	            json.writeNumberField("id", entity.getId());
-	            json.writeObjectFieldStart("properties");
-	            json.writeStringField("name", entity.getName());
-	            if(entity.getParentId() != null) {
-	            	json.writeNumberField("parentId", entity.getParentId());
-	            }
-	            json.writeEndObject();
-	
-	            json.writeFieldName("geometry");
-	            geometrySerializer.writeGeometry(json, entity.getGeometry());
-	            json.writeEndObject();
-        	}
+            if (entity.getGeometry() != null) {
+                json.writeStartObject();
+                json.writeStringField("type", "Feature");
+                json.writeNumberField("id", entity.getId());
+                json.writeObjectFieldStart("properties");
+                json.writeStringField("name", entity.getName());
+                if (entity.getParentId() != null) {
+                    json.writeNumberField("parentId", entity.getParentId());
+                }
+                json.writeEndObject();
+
+                json.writeFieldName("geometry");
+                geometrySerializer.writeGeometry(json, entity.getGeometry());
+                json.writeEndObject();
+            }
         }
 
         json.writeEndArray();
@@ -193,15 +160,15 @@ public class AdminLevelResource {
         json.close();
 
         return Response.ok()
-            .entity(baos.toByteArray())
-            .type(MediaType.APPLICATION_JSON)
-            .build();
+                .entity(baos.toByteArray())
+                .type(MediaType.APPLICATION_JSON)
+                .build();
     }
 
     @GET
     @Path("/tiles/{z}/{x}/{y}.png")
     public Response tile(@InjectParam Session session,
-        @PathParam("z") int zoom, @PathParam("x") int x, @PathParam("y") int y) throws IOException {
+                         @PathParam("z") int zoom, @PathParam("x") int x, @PathParam("y") int y) throws IOException {
 
         AdminTileRenderer renderer = new AdminTileRenderer(session, level);
         byte[] image = renderer.render(zoom, x, y);
@@ -213,13 +180,13 @@ public class AdminLevelResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(@InjectParam AuthenticatedUser user,
-        UpdatedAdminLevel updatedLevel) throws ParseException {
+                           UpdatedAdminLevel updatedLevel) throws ParseException {
 
         assertAuthorized(user);
 
         EntityManager em = entityManager.get();
         em.getTransaction().begin();
-        
+
         AdminLevel level = entityManager.get().merge(this.level);
 
         level.setName(updatedLevel.getName());
@@ -234,20 +201,20 @@ public class AdminLevelResource {
                 // check geometry
                 if (updatedEntity.getGeometry() != null && !isValid(updatedEntity.getGeometry())) {
                     throw new WebApplicationException(
-                        Response
-                        .status(Status.BAD_REQUEST)         
-                            .entity("Geometry must be Polygon or MultiPolygon")
-                            .build());
+                            Response
+                                    .status(Status.BAD_REQUEST)
+                                    .entity("Geometry must be Polygon or MultiPolygon")
+                                    .build());
                 }
 
-                if(updatedEntity.isDeleted()) {
+                if (updatedEntity.isDeleted()) {
                     // mark the entity as deleted. we can't remove it from
                     // the database because we may have locations which refer to it
                     // on distant clients
                     em.find(AdminEntity.class, updatedEntity.getId())
-                        .setDeleted(true);
-   
-                } else if(updatedEntity.isNew()) {
+                            .setDeleted(true);
+
+                } else if (updatedEntity.isNew()) {
                     // create new entity
                     AdminEntity entity = new AdminEntity();
                     entity.setLevel(level);
@@ -259,7 +226,7 @@ public class AdminLevelResource {
                     entity.setBounds(updatedEntity.getBounds());
                     entity.setGeometry(updatedEntity.getGeometry());
                     em.persist(entity);
-                    
+
                 } else {
                     // update existing entity
                     // TODO: bound locations that share this name?
@@ -271,10 +238,10 @@ public class AdminLevelResource {
                 }
             }
         }
-        
+
         int newVersion = level.getVersion() + 1;
         level.setVersion(newVersion);
-        
+
         AdminLevelVersion version = new AdminLevelVersion();
         version.setLevel(level);
         version.setVersion(newVersion);
@@ -305,7 +272,7 @@ public class AdminLevelResource {
     @Path("/childLevels")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postNewLevel(@InjectParam AuthenticatedUser user,
-        NewAdminLevel newLevel) throws ParseException {
+                                 NewAdminLevel newLevel) throws ParseException {
 
         assertAuthorized(user);
 
@@ -326,7 +293,7 @@ public class AdminLevelResource {
             childEntity.setCode(entity.getCode());
             childEntity.setBounds(entity.getBounds());
             childEntity.setParent(em.getReference(AdminEntity.class,
-                entity.getParentId()));
+                    entity.getParentId()));
             childEntity.setGeometry(entity.getGeometry());
             child.getEntities().add(childEntity);
             em.persist(childEntity);

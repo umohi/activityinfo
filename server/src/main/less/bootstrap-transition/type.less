@@ -2,7 +2,6 @@
 // Typography
 // --------------------------------------------------
 
-
 // Headings
 // -------------------------
 
@@ -45,12 +44,24 @@
     }
   }
 
-  h1, .h1 { font-size: @font-size-h1; }
-  h2, .h2 { font-size: @font-size-h2; }
-  h3, .h3 { font-size: @font-size-h3; }
-  h4, .h4 { font-size: @font-size-h4; }
-  h5, .h5 { font-size: @font-size-h5; }
-  h6, .h6 { font-size: @font-size-h6; }
+  h1, .h1 {
+    font-size: @font-size-h1;
+  }
+  h2, .h2 {
+    font-size: @font-size-h2;
+  }
+  h3, .h3 {
+    font-size: @font-size-h3;
+  }
+  h4, .h4 {
+    font-size: @font-size-h4;
+  }
+  h5, .h5 {
+    font-size: @font-size-h5;
+  }
+  h6, .h6 {
+    font-size: @font-size-h6;
+  }
 }
 
 // Body text
@@ -71,47 +82,55 @@
   }
 }
 
-
 // Emphasis & misc
 // -------------------------
 
 // Ex: 14px base font * 85% = about 12px
 .bs
 small,
-.small  { font-size: 85%; }
+.small {
+  font-size: 85%;
+}
 
 // Undo browser default styling
 .bs
-cite    { font-style: normal; }
+cite {
+  font-style: normal;
+}
 
 // Contextual emphasis
 .text-muted {
   color: @text-muted;
 }
+
 .text-primary {
   color: @brand-primary;
   &:hover {
     color: darken(@brand-primary, 10%);
   }
 }
+
 .text-warning {
   color: @state-warning-text;
   &:hover {
     color: darken(@state-warning-text, 10%);
   }
 }
+
 .text-danger {
   color: @state-danger-text;
   &:hover {
     color: darken(@state-danger-text, 10%);
   }
 }
+
 .text-success {
   color: @state-success-text;
   &:hover {
     color: darken(@state-success-text, 10%);
   }
 }
+
 .text-info {
   color: @state-info-text;
   &:hover {
@@ -120,10 +139,17 @@ cite    { font-style: normal; }
 }
 
 // Alignment
-.text-left           { text-align: left; }
-.text-right          { text-align: right; }
-.text-center         { text-align: center; }
+.text-left {
+  text-align: left;
+}
 
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
 
 // Page header
 // -------------------------
@@ -134,22 +160,21 @@ cite    { font-style: normal; }
   border-bottom: 1px solid @page-header-border-color;
 }
 
-
 // Lists
 // --------------------------------------------------
 
 // Unordered and Ordered lists
 .bs {
 
-ul,
-ol {
-  margin-top: 0;
-  margin-bottom: (@line-height-computed / 2);
   ul,
   ol {
-    margin-bottom: 0;
+    margin-top: 0;
+    margin-bottom: (@line-height-computed / 2);
+    ul,
+    ol {
+      margin-bottom: 0;
+    }
   }
-}
 
 }
 
@@ -222,7 +247,7 @@ ol {
 // Abbreviations and acronyms
 .bs {
   abbr[title],
-  // Add data-* attribute to help out our tooltip plugin, per https://github.com/twbs/bootstrap/issues/5257
+    // Add data-* attribute to help out our tooltip plugin, per https://github.com/twbs/bootstrap/issues/5257
   abbr[data-original-title] {
     cursor: help;
     border-bottom: 1px dotted @abbr-border-color;

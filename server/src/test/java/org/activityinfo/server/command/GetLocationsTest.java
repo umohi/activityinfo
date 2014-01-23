@@ -22,17 +22,15 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
+import org.activityinfo.api.shared.command.GetLocations;
+import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.GetLocations;
-import org.activityinfo.shared.dto.LocationDTO;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")

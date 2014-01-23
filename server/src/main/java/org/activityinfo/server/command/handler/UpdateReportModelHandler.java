@@ -22,48 +22,47 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.UpdateReportModel;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
+import org.activityinfo.api.shared.exception.UnexpectedCommandException;
+import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.report.ReportParserJaxb;
+import org.activityinfo.ui.full.client.page.report.json.ReportJsonFactory;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.xml.bind.JAXBException;
 
-import org.activityinfo.client.page.report.json.ReportJsonFactory;
-import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.report.ReportParserJaxb;
-import org.activityinfo.shared.command.UpdateReportModel;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.exception.IllegalAccessCommandException;
-import org.activityinfo.shared.exception.UnexpectedCommandException;
-
-import com.google.inject.Inject;
-
 public class UpdateReportModelHandler implements
-    CommandHandler<UpdateReportModel> {
+        CommandHandler<UpdateReportModel> {
 
     private final EntityManager em;
     private final ReportJsonFactory reportJsonFactory;
 
     @Inject
     public UpdateReportModelHandler(final EntityManager em,
-        final ReportJsonFactory reportJsonFactory) {
+                                    final ReportJsonFactory reportJsonFactory) {
         this.em = em;
         this.reportJsonFactory = reportJsonFactory;
     }
 
     @Override
     public CommandResult execute(final UpdateReportModel cmd, final User user)
-        throws CommandException {
+            throws CommandException {
 
         Query query = em
-            .createQuery(
-                "select r from ReportDefinition r where r.id in (:id)")
-            .setParameter("id", cmd.getModel().getId());
+                .createQuery(
+                        "select r from ReportDefinition r where r.id in (:id)")
+                .setParameter("id", cmd.getModel().getId());
 
         ReportDefinition result = (ReportDefinition) query.getSingleResult();
         if (result.getOwner().getId() != user.getId()) {
             throw new IllegalAccessCommandException(
-                "Current user does not have the right to edit this report");
+                    "Current user does not have the right to edit this report");
         }
 
         result.setTitle(cmd.getModel().getTitle());

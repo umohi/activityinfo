@@ -22,24 +22,6 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.persistence.EntityManager;
-import javax.xml.bind.JAXBException;
-
-import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
-import org.activityinfo.server.report.ReportParserJaxb;
-import org.activityinfo.shared.command.GetReportModel;
-import org.activityinfo.shared.command.handler.CommandHandlerAsync;
-import org.activityinfo.shared.command.handler.ExecutionContext;
-import org.activityinfo.shared.db.Tables;
-import org.activityinfo.shared.dto.ReportDTO;
-import org.activityinfo.shared.dto.ReportMetadataDTO;
-import org.activityinfo.shared.exception.UnexpectedCommandException;
-import org.activityinfo.shared.report.model.EmailDelivery;
-import org.activityinfo.shared.report.model.Report;
-
 import com.bedatadriven.rebar.sql.client.SqlResultCallback;
 import com.bedatadriven.rebar.sql.client.SqlResultSet;
 import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
@@ -48,12 +30,28 @@ import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.analysis.shared.model.EmailDelivery;
+import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.api.shared.command.GetReportModel;
+import org.activityinfo.api.shared.exception.UnexpectedCommandException;
+import org.activityinfo.api.shared.impl.CommandHandlerAsync;
+import org.activityinfo.api.shared.impl.ExecutionContext;
+import org.activityinfo.api.shared.impl.Tables;
+import org.activityinfo.api.shared.model.ReportDTO;
+import org.activityinfo.api.shared.model.ReportMetadataDTO;
+import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
+import org.activityinfo.server.report.ReportParserJaxb;
+
+import javax.persistence.EntityManager;
+import javax.xml.bind.JAXBException;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class GetReportModelHandler implements
-    CommandHandlerAsync<GetReportModel, ReportDTO> {
+        CommandHandlerAsync<GetReportModel, ReportDTO> {
 
     private static final Logger LOGGER = Logger
-        .getLogger(GetReportModelHandler.class.getName());
+            .getLogger(GetReportModelHandler.class.getName());
 
     private final EntityManager em;
 
@@ -64,8 +62,8 @@ public class GetReportModelHandler implements
 
     @Override
     public void execute(final GetReportModel cmd,
-        final ExecutionContext context,
-        final AsyncCallback<ReportDTO> callback) {
+                        final ExecutionContext context,
+                        final AsyncCallback<ReportDTO> callback) {
 
         ReportDTO reportDTO = null;
         Integer reportId = cmd.getReportId();
@@ -80,7 +78,7 @@ public class GetReportModelHandler implements
 
             try {
                 LOGGER.finest("Starting to parse xml (size = "
-                    + entity.getXml().length() + ")");
+                        + entity.getXml().length() + ")");
 
                 report = ReportParserJaxb.parseXml(entity.getXml());
 
@@ -103,93 +101,93 @@ public class GetReportModelHandler implements
     }
 
     private void loadMetadata(final Integer reportId,
-        final ExecutionContext context,
-        final ReportDTO reportDTO, final AsyncCallback<ReportDTO> callback) {
+                              final ExecutionContext context,
+                              final ReportDTO reportDTO, final AsyncCallback<ReportDTO> callback) {
 
         final int userId = context.getUser().getId();
 
         SqlQuery mySubscriptions =
-            SqlQuery.selectAll()
-                .from("reportsubscription")
-                .where("userId").equalTo(userId);
+                SqlQuery.selectAll()
+                        .from("reportsubscription")
+                        .where("userId").equalTo(userId);
 
         SqlQuery myDatabases =
-            SqlQuery.selectSingle("d.databaseid")
-                .from("userdatabase", "d")
-                .leftJoin(
-                    SqlQuery.selectAll()
-                        .from(Tables.USER_PERMISSION, "UserPermission")
-                        .where("UserPermission.UserId").equalTo(userId), "p")
-                .on("p.DatabaseId = d.DatabaseId")
-                .where("d.ownerUserId").equalTo(userId)
-                .or("p.AllowView").equalTo(1);
+                SqlQuery.selectSingle("d.databaseid")
+                        .from("userdatabase", "d")
+                        .leftJoin(
+                                SqlQuery.selectAll()
+                                        .from(Tables.USER_PERMISSION, "UserPermission")
+                                        .where("UserPermission.UserId").equalTo(userId), "p")
+                        .on("p.DatabaseId = d.DatabaseId")
+                        .where("d.ownerUserId").equalTo(userId)
+                        .or("p.AllowView").equalTo(1);
 
         SqlQuery.select()
-            .appendColumn("r.reportTemplateId", "reportId")
-            .appendColumn("r.title", "title")
-            .appendColumn("r.ownerUserId", "ownerUserId")
-            .appendColumn("o.name", "ownerName")
-            .appendColumn("s.dashboard", "dashboard")
-            .appendColumn("s.emaildelivery", "emaildelivery")
-            .appendColumn("s.emailday", "emailday")
-            .appendColumn(
-                SqlQuery.selectSingle("max(defaultDashboard)")
-                    .from("reportvisibility", "v")
-                    .where("v.databaseId").in(myDatabases)
-                    .whereTrue("v.reportid = r.reportTemplateId"),
-                "defaultDashboard")
-            .from("reporttemplate", "r")
-            .leftJoin("userlogin o").on("o.userid = r.ownerUserId")
-            .leftJoin(mySubscriptions, "s")
-            .on("r.reportTemplateId = s.reportId")
-            .where("r.ownerUserId").equalTo(userId)
-            .where("r.reportTemplateId").equalTo(reportId)
-            .execute(context.getTransaction(), new SqlResultCallback() {
+                .appendColumn("r.reportTemplateId", "reportId")
+                .appendColumn("r.title", "title")
+                .appendColumn("r.ownerUserId", "ownerUserId")
+                .appendColumn("o.name", "ownerName")
+                .appendColumn("s.dashboard", "dashboard")
+                .appendColumn("s.emaildelivery", "emaildelivery")
+                .appendColumn("s.emailday", "emailday")
+                .appendColumn(
+                        SqlQuery.selectSingle("max(defaultDashboard)")
+                                .from("reportvisibility", "v")
+                                .where("v.databaseId").in(myDatabases)
+                                .whereTrue("v.reportid = r.reportTemplateId"),
+                        "defaultDashboard")
+                .from("reporttemplate", "r")
+                .leftJoin("userlogin o").on("o.userid = r.ownerUserId")
+                .leftJoin(mySubscriptions, "s")
+                .on("r.reportTemplateId = s.reportId")
+                .where("r.ownerUserId").equalTo(userId)
+                .where("r.reportTemplateId").equalTo(reportId)
+                .execute(context.getTransaction(), new SqlResultCallback() {
 
-                @Override
-                public void onSuccess(final SqlTransaction tx,
-                    final SqlResultSet results) {
-                    List<ReportMetadataDTO> dtos = Lists.newArrayList();
+                    @Override
+                    public void onSuccess(final SqlTransaction tx,
+                                          final SqlResultSet results) {
+                        List<ReportMetadataDTO> dtos = Lists.newArrayList();
 
-                    for (SqlResultSetRow row : results.getRows()) {
-                        ReportMetadataDTO dto = new ReportMetadataDTO();
-                        dto.setId(row.getInt("reportId"));
-                        dto.setAmOwner(row.getInt("ownerUserId") == userId);
-                        dto.setOwnerName(row.getString("ownerName"));
-                        dto.setTitle(row.getString("title"));
-                        dto.setEditAllowed(dto.getAmOwner());
-                        if (!row.isNull("emaildelivery")) {
-                            dto.setEmailDelivery(EmailDelivery.valueOf(row
-                                .getString("emaildelivery")));
+                        for (SqlResultSetRow row : results.getRows()) {
+                            ReportMetadataDTO dto = new ReportMetadataDTO();
+                            dto.setId(row.getInt("reportId"));
+                            dto.setAmOwner(row.getInt("ownerUserId") == userId);
+                            dto.setOwnerName(row.getString("ownerName"));
+                            dto.setTitle(row.getString("title"));
+                            dto.setEditAllowed(dto.getAmOwner());
+                            if (!row.isNull("emaildelivery")) {
+                                dto.setEmailDelivery(EmailDelivery.valueOf(row
+                                        .getString("emaildelivery")));
+                            }
+                            if (row.isNull("emailday")) {
+                                dto.setDay(1);
+                            } else {
+                                dto.setDay(row.getInt("emailday"));
+                            }
+                            if (row.isNull("dashboard")) {
+                                // inherited from database-wide visibility
+                                dto.setDashboard(!row.isNull("defaultDashboard") &&
+                                        row.getBoolean("defaultDashboard"));
+                            } else {
+                                dto.setDashboard(row.getBoolean("dashboard"));
+                            }
+                            dtos.add(dto);
                         }
-                        if (row.isNull("emailday")) {
-                            dto.setDay(1);
-                        } else {
-                            dto.setDay(row.getInt("emailday"));
+
+                        if (dtos.size() == 0) {
+                            ReportMetadataDTO dummy = new ReportMetadataDTO();
+                            dummy.setId(reportId);
+                            dtos.add(dummy);
                         }
-                        if (row.isNull("dashboard")) {
-                            // inherited from database-wide visibility
-                            dto.setDashboard(!row.isNull("defaultDashboard") &&
-                                row.getBoolean("defaultDashboard"));
-                        } else {
-                            dto.setDashboard(row.getBoolean("dashboard"));
-                        }
-                        dtos.add(dto);
+
+                        // there should be only one result
+                        reportDTO.setReportMetadataDTO(dtos.get(0));
+
+                        // exit handler with both the report and metadata objects
+                        // filled
+                        callback.onSuccess(reportDTO);
                     }
-
-                    if (dtos.size() == 0) {
-                        ReportMetadataDTO dummy = new ReportMetadataDTO();
-                        dummy.setId(reportId);
-                        dtos.add(dummy);
-                    }
-
-                    // there should be only one result
-                    reportDTO.setReportMetadataDTO(dtos.get(0));
-
-                    // exit handler with both the report and metadata objects
-                    // filled
-                    callback.onSuccess(reportDTO);
-                }
-            });
+                });
     }
 }

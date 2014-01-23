@@ -1,9 +1,9 @@
 package org.activityinfo.server.digest;
 
+import org.activityinfo.server.database.hibernate.entity.User;
+
 import java.io.IOException;
 import java.util.Date;
-
-import org.activityinfo.server.database.hibernate.entity.User;
 
 public interface DigestModelBuilder {
 

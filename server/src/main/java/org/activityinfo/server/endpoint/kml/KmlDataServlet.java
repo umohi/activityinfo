@@ -22,9 +22,24 @@ package org.activityinfo.server.endpoint.kml;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.server.authentication.BasicAuthentication;
+import org.activityinfo.server.command.DispatcherSync;
+import org.activityinfo.server.database.hibernate.entity.DomainFilters;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.endpoint.kml.xml.XmlBuilder;
+import org.activityinfo.ui.full.client.page.entry.form.SiteRenderer;
+import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -32,30 +47,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.stream.StreamResult;
-
-import org.activityinfo.client.page.entry.form.SiteRenderer;
-import org.activityinfo.server.authentication.BasicAuthentication;
-import org.activityinfo.server.command.DispatcherSync;
-import org.activityinfo.server.database.hibernate.entity.DomainFilters;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.event.sitechange.JreIndicatorValueFormatter;
-import org.activityinfo.server.util.html.HtmlWriter;
-import org.activityinfo.server.util.xml.XmlBuilder;
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.AttributeDTO;
-import org.activityinfo.shared.dto.IndicatorDTO;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.report.model.DimensionType;
-import org.xml.sax.SAXException;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Serves a KML (Google Earth) file containing the locations of all activities
@@ -64,7 +58,7 @@ import com.google.inject.Singleton;
  * Users are authenticated using Basic HTTP authentication, and will see a
  * prompt for their username (email) and password when they access from Google
  * Earth.
- * 
+ *
  * @author Alex Bertram
  */
 @Singleton
@@ -78,9 +72,9 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
 
     @Inject
     public KmlDataServlet(
-        Provider<EntityManager> entityManager,
-        BasicAuthentication authenticator,
-        DispatcherSync dispatcher) {
+            Provider<EntityManager> entityManager,
+            BasicAuthentication authenticator,
+            DispatcherSync dispatcher) {
 
         this.entityManager = entityManager;
         this.authenticator = authenticator;
@@ -90,7 +84,7 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         res.getWriter();
 
         int activityId = Integer.valueOf(req.getParameter("activityId"));
@@ -104,7 +98,7 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
         if (user == null) {
             // Not allowed, or no password provided so report unauthorized
             res.setHeader("WWW-Authenticate",
-                "BASIC realm=\"Utilisateurs authorises\"");
+                    "BASIC realm=\"Utilisateurs authorises\"");
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -125,8 +119,8 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void writeDocument(User user, PrintWriter out, int actvityId)
-        throws TransformerConfigurationException, SAXException,
-        CommandException {
+            throws TransformerConfigurationException, SAXException,
+            CommandException {
 
         // TODO: rewrite using FreeMarker
 
@@ -191,7 +185,7 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
 
     private String renderSnippet(ActivityDTO activity, SiteDTO pm) {
         return activity.getName() + " à " + pm.getLocationName() + " ("
-            + pm.getPartnerName() + ")";
+                + pm.getPartnerName() + ")";
     }
 
     private List<SiteDTO> querySites(User user, SchemaDTO schema, int activityId) {
@@ -203,9 +197,9 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
     }
 
     private String renderDescription(ActivityDTO activity, SiteDTO site) {
-        
+
         StringBuilder html = new StringBuilder();
-        html.append(siteRenderer.renderLocation(site,activity));
+        html.append(siteRenderer.renderLocation(site, activity));
         html.append(siteRenderer.renderSite(site, activity, false, true));
         return html.toString();
     }

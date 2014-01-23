@@ -22,11 +22,7 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -36,13 +32,15 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.ejb.HibernateEntityManager;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Alex Bertram
  */
 public class AdminHibernateDAO extends GenericDAO<AdminEntity, Integer>
-    implements AdminDAO {
+        implements AdminDAO {
 
     private final EntityManager em;
 
@@ -55,27 +53,27 @@ public class AdminHibernateDAO extends GenericDAO<AdminEntity, Integer>
     @Override
     public List<AdminEntity> findRootEntities(int levelId) {
         return em
-            .createQuery(
-                "select entity from AdminEntity entity where entity.level.id = :levelId order by entity.name")
-            .setParameter("levelId", levelId).getResultList();
+                .createQuery(
+                        "select entity from AdminEntity entity where entity.level.id = :levelId order by entity.name")
+                .setParameter("levelId", levelId).getResultList();
     }
 
     @Override
     public List<AdminEntity> findChildEntities(int levelId, int parentEntityId) {
 
         return em
-            .createQuery(
-                "select entity from AdminEntity entity where entity.level.id = :levelId "
-                    +
-                    "and entity.parent.id = :parentId order by entity.name")
-            .setParameter("levelId", levelId)
-            .setParameter("parentId", parentEntityId)
-            .getResultList();
+                .createQuery(
+                        "select entity from AdminEntity entity where entity.level.id = :levelId "
+                                +
+                                "and entity.parent.id = :parentId order by entity.name")
+                .setParameter("levelId", levelId)
+                .setParameter("parentId", parentEntityId)
+                .getResultList();
     }
 
     @Override
     public List<AdminEntity> find(int entityLevelId, int parentEntityId,
-        int activityId) {
+                                  int activityId) {
         Query q = query();
         if (activityId > -1) {
             q.withSitesOfActivityId(activityId);
@@ -99,29 +97,29 @@ public class AdminHibernateDAO extends GenericDAO<AdminEntity, Integer>
             @Override
             public Query level(int levelId) {
                 criteria.createAlias("entity.level", "level")
-                    .add(Restrictions.eq("level.id", levelId));
+                        .add(Restrictions.eq("level.id", levelId));
                 return this;
             }
 
             @Override
             public Query withParentEntityId(int id) {
                 criteria.createAlias("entity.parent", "parent")
-                    .add(Restrictions.eq("parent.id", id));
+                        .add(Restrictions.eq("parent.id", id));
                 return this;
             }
 
             @Override
             public Query withSitesOfActivityId(int id) {
                 DetachedCriteria havingActivities =
-                    DetachedCriteria.forClass(AdminEntity.class, "entity")
-                        .createAlias("locations", "location")
-                        .createAlias("location.sites", "site")
-                        .createAlias("site.activity", "activity")
-                        .add(Restrictions.eq("activity.id", id))
-                        .setProjection(Projections.property("entity.id"));
+                        DetachedCriteria.forClass(AdminEntity.class, "entity")
+                                .createAlias("locations", "location")
+                                .createAlias("location.sites", "site")
+                                .createAlias("site.activity", "activity")
+                                .add(Restrictions.eq("activity.id", id))
+                                .setProjection(Projections.property("entity.id"));
 
                 criteria.add(Subqueries.propertyIn("entity.id",
-                    havingActivities));
+                        havingActivities));
                 return this;
             }
 

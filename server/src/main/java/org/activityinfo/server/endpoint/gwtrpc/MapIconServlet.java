@@ -22,24 +22,22 @@ package org.activityinfo.server.endpoint.gwtrpc;
  * #L%
  */
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.activityinfo.server.report.renderer.image.ImageMapRenderer;
-import org.activityinfo.server.util.ColorUtil;
-import org.activityinfo.shared.report.content.PieMapMarker;
-import org.activityinfo.shared.report.content.PieMapMarker.SliceValue;
-
 import com.google.code.appengine.awt.Color;
 import com.google.code.appengine.awt.Graphics2D;
 import com.google.code.appengine.awt.image.BufferedImage;
 import com.google.code.appengine.imageio.ImageIO;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.activityinfo.analysis.server.renderer.image.ImageMapRenderer;
+import org.activityinfo.analysis.server.util.ColorUtil;
+import org.activityinfo.analysis.shared.content.PieMapMarker;
+import org.activityinfo.analysis.shared.content.PieMapMarker.SliceValue;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Servlet that generates map icons for use in a Google Maps
@@ -48,15 +46,13 @@ import com.google.inject.Singleton;
  * The query parameter "t" indicates the type of icon to be generated:
  * <p/>
  * <b>t=bubble</b>: Generates a semi-transparent circle
- * 
+ * <p/>
  * TODO: security checks. Manual parsing of arguments just screams for some sec
  * flaws.
- * 
+ *
+ * @param r Radius, in pixels, of the bubble
+ * @param c Color, as an RGB integer, of the bubble
  * @author Alex Bertram
- * @param r
- *            Radius, in pixels, of the bubble
- * @param c
- *            Color, as an RGB integer, of the bubble
  */
 @Singleton
 public class MapIconServlet extends HttpServlet {
@@ -70,7 +66,7 @@ public class MapIconServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         // Cache forever
         resp.setHeader("Cache-Control", "max-age=31556926, public");
@@ -81,7 +77,7 @@ public class MapIconServlet extends HttpServlet {
             Color color = ColorUtil.colorFromString(req.getParameter("c"));
 
             BufferedImage icon = new BufferedImage(radius * 2, radius * 2,
-                BufferedImage.TYPE_INT_ARGB);
+                    BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = icon.createGraphics();
 
             g2d.setPaint(new Color(255, 255, 255, 0));
@@ -97,7 +93,7 @@ public class MapIconServlet extends HttpServlet {
                 int radius = Integer.parseInt(req.getParameter("r"));
 
                 BufferedImage icon = new BufferedImage(radius * 2, radius * 2,
-                    BufferedImage.TYPE_INT_ARGB);
+                        BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g2d = icon.createGraphics();
 
                 PieMapMarker pmm = new PieMapMarker();

@@ -22,40 +22,28 @@ package org.activityinfo.server.mail;
  * #L%
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Logger;
+import com.google.inject.Inject;
+import freemarker.template.Configuration;
+import org.activityinfo.server.util.config.DeploymentConfiguration;
+import org.activityinfo.server.util.logging.LogException;
+import org.apache.commons.codec.Charsets;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.Address;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-
-import org.activityinfo.server.util.config.DeploymentConfiguration;
-import org.activityinfo.server.util.logging.LogException;
-import org.apache.commons.codec.Charsets;
-
-import com.google.inject.Inject;
-
-import freemarker.template.Configuration;
+import java.io.*;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * Sends mail messages by SMTP using the javax.mail API.
- *
  */
 public class SmtpMailSender extends MailSender {
     private static final Logger LOGGER = Logger.getLogger(SmtpMailSender.class.getName());
@@ -64,7 +52,7 @@ public class SmtpMailSender extends MailSender {
 
     @Inject
     public SmtpMailSender(DeploymentConfiguration configuration,
-        Configuration templateCfg) {
+                          Configuration templateCfg) {
         super(templateCfg);
         this.configuration = configuration;
     }
@@ -78,15 +66,15 @@ public class SmtpMailSender extends MailSender {
             MimeMessage mimeMessage = new MimeMessage(session);
             mimeMessage.setSubject(message.getSubject(), Charsets.UTF_8.name());
             mimeMessage.addRecipients(RecipientType.TO,
-                toArray(message.getTo()));
+                    toArray(message.getTo()));
             mimeMessage.addRecipients(RecipientType.BCC,
-                toArray(message.getBcc()));
+                    toArray(message.getBcc()));
             mimeMessage.setFrom(new InternetAddress(
-                configuration.getProperty("smtp.from", "activityinfo@configure-me.com"),
-                configuration.getProperty("smtp.from.name", "ActivityInfo")));
+                    configuration.getProperty("smtp.from", "activityinfo@configure-me.com"),
+                    configuration.getProperty("smtp.from.name", "ActivityInfo")));
 
             if (message.getReplyTo() != null) {
-                mimeMessage.setReplyTo(new Address[] { message.getReplyTo() });
+                mimeMessage.setReplyTo(new Address[]{message.getReplyTo()});
             }
 
             String body;
@@ -106,7 +94,7 @@ public class SmtpMailSender extends MailSender {
                     part.setFileName(attachment.getFilename());
 
                     DataSource src = new ByteArrayDataSource(
-                        attachment.getContent(), attachment.getContentType());
+                            attachment.getContent(), attachment.getContentType());
                     part.setDataHandler(new DataHandler(src));
                     multipart.addBodyPart(part);
                 }

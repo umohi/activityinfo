@@ -22,28 +22,26 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.AddPartner;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.command.result.DuplicateCreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.server.database.hibernate.entity.Partner;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.database.hibernate.entity.UserPermission;
-import org.activityinfo.shared.command.AddPartner;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.command.result.DuplicateCreateResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.exception.IllegalAccessCommandException;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.shared.command.AddPartner
+ * @see org.activityinfo.api.shared.command.AddPartner
  */
 public class AddPartnerHandler implements CommandHandler<AddPartner> {
 
@@ -57,14 +55,14 @@ public class AddPartnerHandler implements CommandHandler<AddPartner> {
     @Override
     @SuppressWarnings("unchecked")
     public CommandResult execute(AddPartner cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         UserDatabase db = em.find(UserDatabase.class, cmd.getDatabaseId());
         if (db.getOwner().getId() != user.getId()) {
             UserPermission perm = db.getPermissionByUser(user);
             if (perm == null || !perm.isAllowManageAllUsers()) {
                 throw new IllegalAccessCommandException(
-                    "The user does not have the manageAllUsers permission.");
+                        "The user does not have the manageAllUsers permission.");
             }
         }
 
@@ -79,9 +77,9 @@ public class AddPartnerHandler implements CommandHandler<AddPartner> {
 
         // now try to match this partner by name
         List<Partner> allPartners = em
-            .createQuery("select p from Partner p where p.name = ?1")
-            .setParameter(1, cmd.getPartner().getName())
-            .getResultList();
+                .createQuery("select p from Partner p where p.name = ?1")
+                .setParameter(1, cmd.getPartner().getName())
+                .getResultList();
 
         if (allPartners.size() != 0) {
             db.getPartners().add(allPartners.get(0));

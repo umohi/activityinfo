@@ -22,18 +22,18 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import java.util.ArrayList;
-
+import org.activityinfo.api.shared.command.GetMonthlyReports;
+import org.activityinfo.api.shared.command.Month;
+import org.activityinfo.api.shared.command.UpdateMonthlyReports;
+import org.activityinfo.api.shared.command.result.MonthlyReportResult;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.GetMonthlyReports;
-import org.activityinfo.shared.command.Month;
-import org.activityinfo.shared.command.UpdateMonthlyReports;
-import org.activityinfo.shared.command.result.MonthlyReportResult;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")
@@ -65,9 +65,9 @@ public class MonthlyReportsTest extends CommandTestCase {
 
         Assert.assertEquals(1, result.getData().size());
         Assert.assertEquals(35, result.getData().get(0).getValue(2009, 1)
-            .intValue());
+                .intValue());
         Assert.assertEquals(70, result.getData().get(0).getValue(2009, 2)
-            .intValue());
+                .intValue());
     }
 
     @Test
@@ -86,9 +86,9 @@ public class MonthlyReportsTest extends CommandTestCase {
     public void testUpdate() throws Exception {
         ArrayList<UpdateMonthlyReports.Change> changes = new ArrayList<UpdateMonthlyReports.Change>();
         changes
-            .add(new UpdateMonthlyReports.Change(6, new Month(2009, 1), 45.0));
+                .add(new UpdateMonthlyReports.Change(6, new Month(2009, 1), 45.0));
         changes
-            .add(new UpdateMonthlyReports.Change(6, new Month(2009, 3), 22.0));
+                .add(new UpdateMonthlyReports.Change(6, new Month(2009, 3), 22.0));
 
         execute(new UpdateMonthlyReports(6, changes));
 
@@ -101,11 +101,11 @@ public class MonthlyReportsTest extends CommandTestCase {
 
         Assert.assertEquals(1, result.getData().size());
         Assert.assertEquals(45, result.getData().get(0).getValue(2009, 1)
-            .intValue());
+                .intValue());
         Assert.assertEquals(70, result.getData().get(0).getValue(2009, 2)
-            .intValue());
+                .intValue());
         Assert.assertEquals(22, result.getData().get(0).getValue(2009, 3)
-            .intValue());
+                .intValue());
     }
 
 }

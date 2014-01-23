@@ -22,17 +22,15 @@ package org.activityinfo.server;
  * #L%
  */
 
-import java.util.logging.Logger;
-
-import javax.servlet.ServletContextEvent;
-
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.servlet.GuiceServletContextListener;
 import org.activityinfo.server.attachment.AttachmentModule;
 import org.activityinfo.server.authentication.AuthenticationModule;
 import org.activityinfo.server.branding.BrandingModule;
 import org.activityinfo.server.database.ServerDatabaseModule;
 import org.activityinfo.server.database.hibernate.HibernateModule;
 import org.activityinfo.server.digest.DigestModule;
-import org.activityinfo.server.endpoint.adminreport.AdminReportModule;
 import org.activityinfo.server.endpoint.content.ContentModule;
 import org.activityinfo.server.endpoint.export.ExportModule;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
@@ -55,19 +53,17 @@ import org.activityinfo.server.util.jaxrs.JaxRsModule;
 import org.activityinfo.server.util.logging.LoggingModule;
 import org.activityinfo.server.util.monitoring.MonitoringModule;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.servlet.GuiceServletContextListener;
+import javax.servlet.ServletContextEvent;
+import java.util.logging.Logger;
 
 /**
  * A Servlet context listener that initializes the Dependency Injection
  * Framework (Guice) upon startup.
- * 
  */
 public class StartupListener extends GuiceServletContextListener {
 
     private static Logger logger = Logger.getLogger(StartupListener.class
-        .getName());
+            .getName());
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -80,33 +76,32 @@ public class StartupListener extends GuiceServletContextListener {
     protected Injector getInjector() {
 
         return Guice.createInjector(
-            new HibernateModule(),
-            new ConfigModule(),
-            new LoggingModule(),
-            new TemplateModule(),
-            new BeanMappingModule(),
-            new MailModule(),
-            new ServerDatabaseModule(),
-            new ContentModule(),
-            new GeometryModule(),
-            new AuthenticationModule(),
-            new AttachmentModule(),
-            new ReportModule(),
-            new EventModule(),
-            new DigestModule(),
-            new LoginModule(),
-            new GwtRpcModule(), new JsonRpcModule(),
-            new HealthCheckModule(),
-            new ExportModule(),
-            new MonitoringModule(),
-            new KmlModule(),
-            new BrandingModule(),
-            new BlobServiceModule(),
-            new LocaleModule(),
-            new JaxRsModule(),
-            new RestApiModule(),
-            new ODKModule(),
-            new AdminReportModule());
+                new HibernateModule(),
+                new ConfigModule(),
+                new LoggingModule(),
+                new TemplateModule(),
+                new BeanMappingModule(),
+                new MailModule(),
+                new ServerDatabaseModule(),
+                new ContentModule(),
+                new GeometryModule(),
+                new AuthenticationModule(),
+                new AttachmentModule(),
+                new ReportModule(),
+                new EventModule(),
+                new DigestModule(),
+                new LoginModule(),
+                new GwtRpcModule(), new JsonRpcModule(),
+                new HealthCheckModule(),
+                new ExportModule(),
+                new MonitoringModule(),
+                new KmlModule(),
+                new BrandingModule(),
+                new BlobServiceModule(),
+                new LocaleModule(),
+                new JaxRsModule(),
+                new RestApiModule(),
+                new ODKModule());
     }
 
 }

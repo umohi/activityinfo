@@ -27,7 +27,7 @@ import org.activityinfo.server.database.hibernate.entity.User;
 /**
  * Data Access Object for the
  * {@link org.activityinfo.server.database.hibernate.entity.User} domain class.
- * 
+ *
  * @author Alex Bertram
  */
 public interface UserDAO extends DAO<User, Integer> {

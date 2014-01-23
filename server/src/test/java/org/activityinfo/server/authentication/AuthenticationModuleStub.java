@@ -22,9 +22,8 @@ package org.activityinfo.server.authentication;
  * #L%
  */
 
-import org.activityinfo.shared.auth.AuthenticatedUser;
-
 import com.google.inject.AbstractModule;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
 
 public class AuthenticationModuleStub extends AbstractModule {
 
@@ -32,12 +31,12 @@ public class AuthenticationModuleStub extends AbstractModule {
 
     public static void setUserId(int userId) {
         switch (userId) {
-        case 0:
-            authProvider.set(AuthenticatedUser.getAnonymous());
-            break;
-        default:
-            authProvider.set(new AuthenticatedUser("XYZ123", userId,
-                "test@test.com"));
+            case 0:
+                authProvider.set(AuthenticatedUser.getAnonymous());
+                break;
+            default:
+                authProvider.set(new AuthenticatedUser("XYZ123", userId,
+                        "fixtures@fixtures.com"));
         }
     }
 

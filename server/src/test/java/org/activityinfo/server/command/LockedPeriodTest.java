@@ -22,20 +22,19 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import java.util.Map;
-
+import com.bedatadriven.rebar.time.calendar.LocalDate;
+import com.google.common.collect.Maps;
+import org.activityinfo.api.shared.command.CreateLockedPeriod;
+import org.activityinfo.api.shared.command.UpdateEntity;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.LockedPeriodDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.CreateLockedPeriod;
-import org.activityinfo.shared.command.UpdateEntity;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.LockedPeriodDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.bedatadriven.rebar.time.calendar.LocalDate;
-import com.google.common.collect.Maps;
+import java.util.Map;
 
 @RunWith(InjectionSupport.class)
 public class LockedPeriodTest extends CommandTestCase {

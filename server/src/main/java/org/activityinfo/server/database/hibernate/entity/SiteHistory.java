@@ -22,16 +22,7 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class SiteHistory implements java.io.Serializable {
@@ -98,8 +89,8 @@ public class SiteHistory implements java.io.Serializable {
 
     /**
      * @return true if this sitehistory entry was created when the site itself
-     *         was created. False if the entry is an update, or baseline
-     *         'repair' record.
+     * was created. False if the entry is an update, or baseline
+     * 'repair' record.
      */
     @Basic
     public boolean isInitial() {

@@ -22,31 +22,17 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Entity
 @JsonAutoDetect(JsonMethod.NONE)
@@ -147,10 +133,10 @@ public class Location implements java.io.Serializable {
     @JsonProperty
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "LocationAdminLink",
-        joinColumns = {
-            @JoinColumn(name = "LocationId", nullable = false, updatable = false) },
-        inverseJoinColumns = {
-            @JoinColumn(name = "AdminEntityId", nullable = false, updatable = false) })
+            joinColumns = {
+                    @JoinColumn(name = "LocationId", nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "AdminEntityId", nullable = false, updatable = false)})
     public Set<AdminEntity> getAdminEntities() {
         return this.adminEntities;
     }

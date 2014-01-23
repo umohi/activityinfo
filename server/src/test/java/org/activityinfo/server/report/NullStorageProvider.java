@@ -22,17 +22,17 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import org.activityinfo.server.report.output.StorageProvider;
 import org.activityinfo.server.report.output.TempStorage;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class NullStorageProvider implements StorageProvider {
 
     @Override
     public TempStorage allocateTemporaryFile(String mimeType, String suffix)
-        throws IOException {
+            throws IOException {
 
         return new TempStorage("http://", new OutputStream() {
 

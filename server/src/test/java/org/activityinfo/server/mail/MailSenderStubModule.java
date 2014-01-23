@@ -22,9 +22,8 @@ package org.activityinfo.server.mail;
  * #L%
  */
 
-import org.activityinfo.server.database.hibernate.entity.Domain;
-
 import com.google.inject.AbstractModule;
+import org.activityinfo.server.database.hibernate.entity.Domain;
 
 public class MailSenderStubModule extends AbstractModule {
 

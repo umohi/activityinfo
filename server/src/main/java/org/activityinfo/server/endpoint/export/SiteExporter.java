@@ -22,39 +22,26 @@ package org.activityinfo.server.endpoint.export;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.activityinfo.client.i18n.I18N;
-import org.activityinfo.server.command.DispatcherSync;
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.AdminEntityDTO;
-import org.activityinfo.shared.dto.AdminLevelDTO;
-import org.activityinfo.shared.dto.AttributeDTO;
-import org.activityinfo.shared.dto.AttributeGroupDTO;
-import org.activityinfo.shared.dto.IndicatorDTO;
-import org.activityinfo.shared.dto.IndicatorGroup;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.report.model.DimensionType;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.WorkbookUtil;
-
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.SortInfo;
 import com.google.common.base.Strings;
+import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.model.*;
+import org.activityinfo.server.command.DispatcherSync;
+import org.activityinfo.ui.full.client.i18n.I18N;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.WorkbookUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Exports sites in Excel format
@@ -84,7 +71,7 @@ public class SiteExporter {
     private Map<String, Integer> sheetNames;
 
     private CellStyle titleStyle;
-    
+
     private CellStyle dateStyle;
     private CellStyle coordStyle;
     private CellStyle indicatorValueStyle;
@@ -116,15 +103,15 @@ public class SiteExporter {
     private void declareStyles() {
         dateStyle = book.createCellStyle();
         dateStyle.setDataFormat(creationHelper.createDataFormat().getFormat(
-            "m/d/yy"));
+                "m/d/yy"));
 
         coordStyle = book.createCellStyle();
         coordStyle.setDataFormat(creationHelper.createDataFormat().getFormat(
-            "0.000000"));
+                "0.000000"));
 
         indicatorValueStyle = book.createCellStyle();
         indicatorValueStyle.setDataFormat(creationHelper.createDataFormat()
-            .getFormat("#,##0"));
+                .getFormat("#,##0"));
 
         Font headerFont = book.createFont();
         headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -135,10 +122,10 @@ public class SiteExporter {
         Font titleFont = book.createFont();
         titleFont.setFontHeightInPoints(TITLE_FONT_SIZE);
         titleFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        
+
         titleStyle = book.createCellStyle();
         titleStyle.setFont(titleFont);
-        
+
         headerStyle = book.createCellStyle();
         headerStyle.setFont(headerFont);
 
@@ -178,14 +165,14 @@ public class SiteExporter {
 
     private String composeUniqueSheetName(ActivityDTO activity) {
         String sheetName = activity.getDatabase().getName() + " - " + activity.getName();
-        
+
         // to avoid conflict with our own disambiguation scheme, remove any trailing "(n)" 
         // from sheet names
         sheetName = sheetName.replaceFirst("\\((\\d+)\\)$", "$1");
-       
+
         // shorten and translate the name to meet excel requirements
         String safeName = WorkbookUtil.createSafeSheetName(sheetName);
-        
+
         // assure that the sheet name is unique
         if (!sheetNames.containsKey(safeName)) {
             sheetNames.put(safeName, 1);
@@ -193,16 +180,16 @@ public class SiteExporter {
         } else {
             int index = sheetNames.get(safeName) + 1;
             sheetNames.put(safeName, index);
-            
+
             String disambiguatedNamed = safeName + " (" + index + ")";
-            if(disambiguatedNamed.length() > MAX_WORKSHEET_LENGTH) {
+            if (disambiguatedNamed.length() > MAX_WORKSHEET_LENGTH) {
                 int toTrim = disambiguatedNamed.length() - MAX_WORKSHEET_LENGTH;
                 disambiguatedNamed = safeName.substring(0, safeName.length() - toTrim) + " (" + index + ")";
             }
             return disambiguatedNamed;
         }
     }
-    
+
     private void createHeaders(ActivityDTO activity, HSSFSheet sheet) {
 
         // / The HEADER rows
@@ -214,9 +201,9 @@ public class SiteExporter {
         // Create a title cell with the complete database + activity name
         Cell titleCell = headerRow1.createCell(0);
         titleCell.setCellValue(creationHelper.createRichTextString(
-            activity.getDatabase().getName() + " - " + activity.getName()));
+                activity.getDatabase().getName() + " - " + activity.getName()));
         titleCell.setCellStyle(titleStyle);
-        
+
         int column = 0;
         createHeaderCell(headerRow2, column++, "Date1", CellStyle.ALIGN_RIGHT);
         createHeaderCell(headerRow2, column++, "Date2", CellStyle.ALIGN_RIGHT);
@@ -226,7 +213,7 @@ public class SiteExporter {
         column++;
 
         createHeaderCell(headerRow2, column, activity.getLocationType()
-            .getName());
+                .getName());
         sheet.setColumnWidth(column, characters(LOCATION_COLUMN_WIDTH));
         column++;
 
@@ -240,14 +227,14 @@ public class SiteExporter {
                     // of the group
                     createHeaderCell(headerRow1, column, group.getName());
                     sheet.addMergedRegion(new CellRangeAddress(0, 0, column,
-                        column + group.getIndicators().size() - 1));
+                            column + group.getIndicators().size() - 1));
                 }
                 for (IndicatorDTO indicator : group.getIndicators()) {
                     indicators.add(indicator.getId());
                     createHeaderCell(headerRow2, column, indicator.getName(),
-                        indicatorHeaderStyle);
+                            indicatorHeaderStyle);
                     sheet.setColumnWidth(column,
-                        characters(INDICATOR_COLUMN_WIDTH));
+                            characters(INDICATOR_COLUMN_WIDTH));
                     column++;
                 }
             }
@@ -256,16 +243,16 @@ public class SiteExporter {
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
             if (group.getAttributes().size() != 0) {
                 createHeaderCell(headerRow1, column, group.getName(),
-                    CellStyle.ALIGN_CENTER);
+                        CellStyle.ALIGN_CENTER);
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, column, column
-                    + group.getAttributes().size() - 1));
+                        + group.getAttributes().size() - 1));
 
                 for (AttributeDTO attrib : group.getAttributes()) {
                     attributes.add(attrib.getId());
                     createHeaderCell(headerRow2, column, attrib.getName(),
-                        attribHeaderStyle);
+                            attribHeaderStyle);
                     sheet.setColumnWidth(column,
-                        characters(ATTRIBUTE_COLUMN_WIDTH));
+                            characters(ATTRIBUTE_COLUMN_WIDTH));
                     column++;
                 }
             }
@@ -279,12 +266,12 @@ public class SiteExporter {
         }
         int latColumn = column++;
         int lngColumn = column++;
-        
+
         createHeaderCell(headerRow2, latColumn, I18N.CONSTANTS.longitude(), CellStyle.ALIGN_RIGHT);
         createHeaderCell(headerRow2, lngColumn, I18N.CONSTANTS.latitude(), CellStyle.ALIGN_RIGHT);
         sheet.setColumnWidth(lngColumn, characters(COORD_COLUMN_WIDTH));
         sheet.setColumnWidth(latColumn, characters(COORD_COLUMN_WIDTH));
-        
+
         createHeaderCell(headerRow2, column++, I18N.CONSTANTS.comments());
 
     }
@@ -293,7 +280,7 @@ public class SiteExporter {
 
         Filter effectiveFilter = new Filter(filter);
         effectiveFilter
-            .addRestriction(DimensionType.Activity, activity.getId());
+                .addRestriction(DimensionType.Activity, activity.getId());
 
         GetSites query = new GetSites();
         query.setFilter(effectiveFilter);
@@ -315,12 +302,12 @@ public class SiteExporter {
             createCell(row, column++, site.getPartnerName());
 
             createCell(row, column++, site.getLocationName());
-            
+
             createCell(row, column++, site.getLocationAxe());
 
             for (Integer indicatorId : indicators) {
                 createIndicatorValueCell(row, column++,
-                    site.getIndicatorValue(indicatorId));
+                        site.getIndicatorValue(indicatorId));
             }
 
             for (Integer attribId : attributes) {
@@ -344,10 +331,10 @@ public class SiteExporter {
 
             if (site.hasLatLong()) {
                 createCoordCell(row, column, site.getLongitude());
-                createCoordCell(row, column+1, site.getLatitude());
+                createCoordCell(row, column + 1, site.getLatitude());
             }
-            column+= 2;
-            
+            column += 2;
+
             if (!Strings.isNullOrEmpty(site.getComments())) {
                 createCell(row, column, site.getComments());
             }
@@ -356,7 +343,7 @@ public class SiteExporter {
     }
 
     private Cell createHeaderCell(Row headerRow, int columnIndex, String text,
-        CellStyle style) {
+                                  CellStyle style) {
         Cell cell = headerRow.createCell(columnIndex);
         cell.setCellValue(creationHelper.createRichTextString(text));
         cell.setCellStyle(style);
@@ -366,24 +353,24 @@ public class SiteExporter {
 
     private Cell createHeaderCell(Row headerRow, int columnIndex, String text) {
         return createHeaderCell(headerRow, columnIndex, text,
-            CellStyle.ALIGN_LEFT);
+                CellStyle.ALIGN_LEFT);
     }
 
     private Cell createHeaderCell(Row headerRow, int columnIndex, String text,
-        int align) {
+                                  int align) {
         Cell cell = headerRow.createCell(columnIndex);
         cell.setCellValue(creationHelper.createRichTextString(text));
 
         switch (align) {
-        case CellStyle.ALIGN_LEFT:
-            cell.setCellStyle(headerStyle);
-            break;
-        case CellStyle.ALIGN_CENTER:
-            cell.setCellStyle(headerStyleCenter);
-            break;
-        case CellStyle.ALIGN_RIGHT:
-            cell.setCellStyle(headerStyleRight);
-            break;
+            case CellStyle.ALIGN_LEFT:
+                cell.setCellStyle(headerStyle);
+                break;
+            case CellStyle.ALIGN_CENTER:
+                cell.setCellStyle(headerStyleCenter);
+                break;
+            case CellStyle.ALIGN_RIGHT:
+                cell.setCellStyle(headerStyleRight);
+                break;
         }
 
         return cell;
@@ -432,13 +419,13 @@ public class SiteExporter {
     private int characters(int numberOfCharacters) {
         return numberOfCharacters * CHARACTERS_PER_WIDTH_UNIT;
     }
-    
+
     public void done() {
         // an Excel workbook can't have zero sheets, so we need to
         // add something here for it to be valid
-        if(book.getNumberOfSheets() == 0) {
+        if (book.getNumberOfSheets() == 0) {
             HSSFSheet sheet = book.createSheet("Sheet1");
             sheet.createRow(0).createCell(0).setCellValue("No matching sites.");
-        }   
+        }
     }
 }

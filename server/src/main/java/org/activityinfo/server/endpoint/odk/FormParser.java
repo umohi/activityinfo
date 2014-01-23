@@ -1,17 +1,16 @@
 package org.activityinfo.server.endpoint.odk;
 
-import java.io.ByteArrayInputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.activityinfo.shared.dto.AttributeGroupDTO;
-import org.activityinfo.shared.dto.IndicatorDTO;
+import org.activityinfo.api.shared.model.AttributeGroupDTO;
+import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FormParser {
 

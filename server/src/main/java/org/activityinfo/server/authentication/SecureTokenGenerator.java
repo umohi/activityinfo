@@ -36,7 +36,7 @@ public class SecureTokenGenerator {
     /**
      * Generates a 128-bit random token and returns it formatted as a 32-digit
      * hexadecimal string
-     * 
+     *
      * @return a 32-digit hexadecimal string
      */
     public static String generate() {

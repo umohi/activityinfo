@@ -22,9 +22,9 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import javax.persistence.Column;
-
 import com.google.common.base.Objects;
+
+import javax.persistence.Column;
 
 public class TargetValueId implements java.io.Serializable {
 
@@ -71,6 +71,6 @@ public class TargetValueId implements java.io.Serializable {
 
         TargetValueId i = (TargetValueId) obj;
         return Objects.equal(i.getTargetId(), this.getTargetId())
-            && Objects.equal(i.getIndicatorId(), this.getIndicatorId());
+                && Objects.equal(i.getIndicatorId(), this.getIndicatorId());
     }
 }

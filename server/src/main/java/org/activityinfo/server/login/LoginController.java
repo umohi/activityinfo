@@ -22,17 +22,8 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import javax.inject.Provider;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
+import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.authentication.Authenticator;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.entity.User;
@@ -40,8 +31,12 @@ import org.activityinfo.server.login.exception.LoginException;
 import org.activityinfo.server.login.model.LoginPageModel;
 import org.activityinfo.server.util.logging.LogException;
 
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+import javax.inject.Provider;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 @Path(LoginController.ENDPOINT)
 public class LoginController {
@@ -68,23 +63,23 @@ public class LoginController {
     @POST
     @Path("ajax")
     public Response ajaxLogin(
-        @FormParam("email") String email,
-        @FormParam("password") String password) throws Exception {
+            @FormParam("email") String email,
+            @FormParam("password") String password) throws Exception {
 
         User user = userDAO.get().findUserByEmail(email);
         checkPassword(password, user);
 
         return Response
-            .ok()
-            .cookie(authTokenProvider.get().createNewAuthCookies(user))
-            .build();
+                .ok()
+                .cookie(authTokenProvider.get().createNewAuthCookies(user))
+                .build();
     }
 
     @POST
     public Response login(
-        @Context UriInfo uri,
-        @FormParam("email") String email,
-        @FormParam("password") String password) throws Exception {
+            @Context UriInfo uri,
+            @FormParam("email") String email,
+            @FormParam("password") String password) throws Exception {
 
         User user;
         try {
@@ -94,18 +89,18 @@ public class LoginController {
             LoginPageModel model = LoginPageModel.unsuccessful();
 
             return Response.ok(model)
-                .type(MediaType.TEXT_HTML)
-                .build();
+                    .type(MediaType.TEXT_HTML)
+                    .build();
         }
 
         return Response
-            .seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
-            .cookie(authTokenProvider.get().createNewAuthCookies(user))
-            .build();
+                .seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
+                .cookie(authTokenProvider.get().createNewAuthCookies(user))
+                .build();
     }
 
     private void checkPassword(String password, User user)
-        throws LoginException {
+            throws LoginException {
 
         if (!authenticator.get().check(user, password)) {
             throw new LoginException();

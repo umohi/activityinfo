@@ -22,21 +22,18 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
+import javax.persistence.EntityManager;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 
-import javax.persistence.EntityManager;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 /**
  * Provider which dynamically implements an a subclass of DAO
- * 
- * @param <T>
- *            The type of the DAO to provide
- * 
+ *
+ * @param <T> The type of the DAO to provide
  * @author Alex Bertram
  */
 public class HibernateDAOProvider<T> implements Provider<T> {
@@ -66,8 +63,8 @@ public class HibernateDAOProvider<T> implements Provider<T> {
             }
         }
         throw new UnsupportedOperationException("Dao class "
-            + daoClass.getSimpleName()
-            + " MUST implement " + DAO.class.getName());
+                + daoClass.getSimpleName()
+                + " MUST implement " + DAO.class.getName());
     }
 
     @Override
@@ -76,13 +73,13 @@ public class HibernateDAOProvider<T> implements Provider<T> {
     }
 
     public static <T> T makeImplementation(Class<T> daoClass,
-        Class entityClass, EntityManager entityManager) {
+                                           Class entityClass, EntityManager entityManager) {
         ClassLoader cl = daoClass.getClassLoader();
         return (T) Proxy.newProxyInstance(cl,
-            new Class[] { daoClass },
-            new DAOInvocationHandler(
-                entityManager, entityClass
-            ));
+                new Class[]{daoClass},
+                new DAOInvocationHandler(
+                        entityManager, entityClass
+                ));
     }
 
 }

@@ -22,16 +22,16 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import java.util.Set;
-
 import org.activityinfo.server.database.hibernate.entity.Activity;
+
+import java.util.Set;
 
 /**
  * DAO for the
  * {@link org.activityinfo.server.database.hibernate.entity.Activity} domain
  * object. Implemented automatically by proxy, see the Activity class for query
  * definitions.
- * 
+ *
  * @author Alex Bertram
  */
 public interface ActivityDAO extends DAO<Activity, Integer> {

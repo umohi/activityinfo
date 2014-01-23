@@ -1,122 +1,117 @@
-	//
-	// Scaffolding
-	// --------------------------------------------------
+//
+// Scaffolding
+// --------------------------------------------------
 
+// Reset the box-sizing
 
-	// Reset the box-sizing
-  
-  .bs {
-	  *,
-	  *:before,
-	  *:after {
-	    .box-sizing(border-box);
-	  }
-	}
-
-
-	// Body reset
-
-	.bs {
-	  font-size: 62.5%;
-	  -webkit-tap-highlight-color: rgba(0,0,0,0);
-	}
-
-	.bs {
-	  font-family: @font-family-base;
-	  font-size: @font-size-base;
-	  line-height: @line-height-base;
-	  color: @text-color;
-	  background-color: @body-bg;
-	}
-
-	// Reset fonts for relevant elements
 .bs {
-	input,
-	button,
-	select,
-	textarea {
-	  font-family: inherit;
-	  font-size: inherit;
-	  line-height: inherit;
-	}
+  *,
+  *:before,
+  *:after {
+    .box-sizing(border-box);
+  }
 }
 
-	// Links
+// Body reset
 
-	.bs a {
-	  color: @link-color;
-	  text-decoration: none;
+.bs {
+  font-size: 62.5%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
-	  &:hover,
-	  &:focus {
-		color: @link-hover-color;
-		text-decoration: underline;
-	  }
+.bs {
+  font-family: @font-family-base;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  color: @text-color;
+  background-color: @body-bg;
+}
 
-	  &:focus {
-		.tab-focus();
-	  }
-	}
+// Reset fonts for relevant elements
+.bs {
+  input,
+  button,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+}
 
+// Links
 
-	// Images
+.bs a {
+  color: @link-color;
+  text-decoration: none;
 
-	.bs img {
-	  vertical-align: middle;
-	}
+  &:hover,
+  &:focus {
+    color: @link-hover-color;
+    text-decoration: underline;
+  }
 
-	// Responsive images (ensure images don't scale beyond their parents)
-	.img-responsive {
-	  .img-responsive();
-	}
+  &:focus {
+    .tab-focus();
+  }
+}
 
-	// Rounded corners
-	.img-rounded {
-	  border-radius: @border-radius-large;
-	}
+// Images
 
-	// Image thumbnails
-	//
-	// Heads up! This is mixin-ed into thumbnails.less for `.thumbnail`.
-	.img-thumbnail {
-	  padding: @thumbnail-padding;
-	  line-height: @line-height-base;
-	  background-color: @thumbnail-bg;
-	  border: 1px solid @thumbnail-border;
-	  border-radius: @thumbnail-border-radius;
-	  .transition(all .2s ease-in-out);
+.bs img {
+  vertical-align: middle;
+}
 
-	  // Keep them at most 100% wide
-	  .img-responsive(inline-block);
-	}
+// Responsive images (ensure images don't scale beyond their parents)
+.img-responsive {
+  .img-responsive();
+}
 
-	// Perfect circle
-	.img-circle {
-	  border-radius: 50%; // set radius in percents
-	}
+// Rounded corners
+.img-rounded {
+  border-radius: @border-radius-large;
+}
 
+// Image thumbnails
+//
+// Heads up! This is mixin-ed into thumbnails.less for `.thumbnail`.
+.img-thumbnail {
+  padding: @thumbnail-padding;
+  line-height: @line-height-base;
+  background-color: @thumbnail-bg;
+  border: 1px solid @thumbnail-border;
+  border-radius: @thumbnail-border-radius;
+  .transition(all .2s ease-in-out);
 
-	// Horizontal rules
+  // Keep them at most 100% wide
+  .img-responsive(inline-block);
+}
 
-	.bs hr {
-	  margin-top:    @line-height-computed;
-	  margin-bottom: @line-height-computed;
-	  border: 0;
-	  border-top: 1px solid @hr-border;
-	}
+// Perfect circle
+.img-circle {
+  border-radius: 50%; // set radius in percents
+}
 
+// Horizontal rules
 
-	// Only display content to screen readers
-	//
-	// See: http://a11yproject.com/posts/how-to-hide-content/
+.bs hr {
+  margin-top: @line-height-computed;
+  margin-bottom: @line-height-computed;
+  border: 0;
+  border-top: 1px solid @hr-border;
+}
 
-	.sr-only {
-	  position: absolute;
-	  width: 1px;
-	  height: 1px;
-	  margin: -1px;
-	  padding: 0;
-	  overflow: hidden;
-	  clip: rect(0,0,0,0);
-	  border: 0;
-	}
+// Only display content to screen readers
+//
+// See: http://a11yproject.com/posts/how-to-hide-content/
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

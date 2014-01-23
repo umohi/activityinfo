@@ -26,9 +26,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Embeddable
 public class AttributeValueId implements java.io.Serializable {
@@ -76,7 +74,7 @@ public class AttributeValueId implements java.io.Serializable {
         AttributeValueId castOther = (AttributeValueId) other;
 
         return (this.getSiteId() == castOther.getSiteId())
-            && (this.getAttributeId() == castOther.getAttributeId());
+                && (this.getAttributeId() == castOther.getAttributeId());
     }
 
     @Override

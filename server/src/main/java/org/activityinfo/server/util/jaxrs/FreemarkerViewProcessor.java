@@ -22,6 +22,23 @@ package org.activityinfo.server.util.jaxrs;
  * #L%
  */
 
+import com.google.common.base.Charsets;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.sun.jersey.api.core.HttpContext;
+import com.sun.jersey.api.view.Viewable;
+import com.sun.jersey.spi.template.ViewProcessor;
+import freemarker.core.Environment;
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.ext.beans.ResourceBundleModel;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.activityinfo.server.branding.ScaffoldingDirective;
+
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -30,47 +47,28 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.ext.Provider;
-
-import org.activityinfo.server.branding.ScaffoldingDirective;
-
-import com.google.common.base.Charsets;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.sun.jersey.api.core.HttpContext;
-import com.sun.jersey.api.view.Viewable;
-import com.sun.jersey.spi.template.ViewProcessor;
-
-import freemarker.core.Environment;
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.ext.beans.ResourceBundleModel;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
 /**
  * Match a Viewable-named view with a Freemarker template.
- * 
  */
 @Provider
 @Singleton
 public class FreemarkerViewProcessor implements ViewProcessor<Template> {
 
     private static final Logger LOGGER = Logger
-        .getLogger(FreemarkerViewProcessor.class.getName());
+            .getLogger(FreemarkerViewProcessor.class.getName());
 
     private final Configuration templateConfig;
     private final javax.inject.Provider<Locale> localeProvider;
 
-    private @Context HttpContext httpContext;
+    private
+    @Context
+    HttpContext httpContext;
     private ScaffoldingDirective scaffoldingDirective;
 
     @Inject
     public FreemarkerViewProcessor(Configuration templateConfig,
-        javax.inject.Provider<Locale> localeProvider,
-        ScaffoldingDirective scaffoldingDirective) {
+                                   javax.inject.Provider<Locale> localeProvider,
+                                   ScaffoldingDirective scaffoldingDirective) {
         super();
         this.templateConfig = templateConfig;
         this.localeProvider = localeProvider;
@@ -92,7 +90,7 @@ public class FreemarkerViewProcessor implements ViewProcessor<Template> {
 
     @Override
     public void writeTo(Template t, Viewable viewable, OutputStream out)
-        throws IOException {
+            throws IOException {
 
         // ensure that we set an content type and charset
         if (httpContext != null) {
@@ -109,7 +107,7 @@ public class FreemarkerViewProcessor implements ViewProcessor<Template> {
         Writer writer = new OutputStreamWriter(out, Charsets.UTF_8);
         try {
             Environment env = t.createProcessingEnvironment(
-                viewable.getModel(), writer);
+                    viewable.getModel(), writer);
             env.setLocale(localeProvider.get());
             env.setVariable("label", getResourceBundle(localeProvider.get()));
             env.setVariable("scaffolding", scaffoldingDirective);
@@ -122,7 +120,7 @@ public class FreemarkerViewProcessor implements ViewProcessor<Template> {
 
     private ResourceBundleModel getResourceBundle(Locale locale) {
         return new freemarker.ext.beans.ResourceBundleModel(
-            ResourceBundle.getBundle("template/page/Labels", locale),
-            new BeansWrapper());
+                ResourceBundle.getBundle("template/page/Labels", locale),
+                new BeansWrapper());
     }
 }

@@ -22,36 +22,32 @@ package org.activityinfo.server.command.handler.sync;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.containsString;
-
-import java.util.Date;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.activityinfo.api.shared.command.GetSyncRegionUpdates;
+import org.activityinfo.api.shared.command.result.SyncRegionUpdate;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.hibernate.entity.Site;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.util.logging.LoggingModule;
-import org.activityinfo.shared.command.GetSyncRegionUpdates;
-import org.activityinfo.shared.command.result.SyncRegionUpdate;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import java.util.Date;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.containsString;
 
 @RunWith(InjectionSupport.class)
 @Modules({
-    MockHibernateModule.class,
-    LoggingModule.class
+        MockHibernateModule.class,
+        LoggingModule.class
 })
 public class SiteUpdateBuilderTest {
 
@@ -78,7 +74,7 @@ public class SiteUpdateBuilderTest {
         em.close();
 
         SyncRegionUpdate initialUpdate = builder.get().build(user,
-            new GetSyncRegionUpdates("sites/1/1", null));
+                new GetSyncRegionUpdates("sites/1/1", null));
         assertThat(initialUpdate.isComplete(), equalTo(true));
         assertThat(initialUpdate.getSql(), not(nullValue()));
         assertThat(initialUpdate.getSql(), containsString("slightly new"));
@@ -87,11 +83,11 @@ public class SiteUpdateBuilderTest {
         // nothing has changed!
 
         SyncRegionUpdate subsequentUpdate = builder.get().build(user,
-            new GetSyncRegionUpdates("sites/1/1", initialUpdate.getVersion()));
+                new GetSyncRegionUpdates("sites/1/1", initialUpdate.getVersion()));
 
         assertThat(subsequentUpdate.isComplete(), equalTo(true));
         assertThat(subsequentUpdate.getSql(), nullValue());
         assertThat(subsequentUpdate.getVersion(),
-            equalTo(initialUpdate.getVersion()));
+                equalTo(initialUpdate.getVersion()));
     }
 }

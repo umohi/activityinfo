@@ -22,31 +22,30 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.List;
-
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.GenerateElement;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.Search;
-import org.activityinfo.shared.command.handler.CommandHandlerAsync;
-import org.activityinfo.shared.command.handler.ExecutionContext;
-import org.activityinfo.shared.command.handler.search.AllSearcher;
-import org.activityinfo.shared.command.handler.search.QueryParser;
-import org.activityinfo.shared.command.result.SearchResult;
-import org.activityinfo.shared.command.result.SiteResult;
-import org.activityinfo.shared.report.content.PivotContent;
-import org.activityinfo.shared.report.model.Dimension;
-import org.activityinfo.shared.report.model.DimensionType;
-import org.activityinfo.shared.report.model.PivotTableReportElement;
-
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.SortInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.analysis.shared.content.PivotContent;
+import org.activityinfo.analysis.shared.model.Dimension;
+import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.analysis.shared.model.PivotTableReportElement;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GenerateElement;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.Search;
+import org.activityinfo.api.shared.command.result.SearchResult;
+import org.activityinfo.api.shared.command.result.SiteResult;
+import org.activityinfo.api.shared.impl.CommandHandlerAsync;
+import org.activityinfo.api.shared.impl.ExecutionContext;
+import org.activityinfo.api.shared.impl.search.AllSearcher;
+import org.activityinfo.api.shared.impl.search.QueryParser;
+
+import java.util.List;
 
 /**
  * Handles a search locally or remotely. Searchers being used utilize SQL LIKE
  * queries, beware of any OR left joins.
- * 
+ * <p/>
  * 1. Get a filter from the query 2. Get list of DB/Activities/Indicators based
  * on filter 3. Get list of recent sites 4. Return result
  */
@@ -67,7 +66,7 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
 
     @Override
     public void execute(final Search command, final ExecutionContext context,
-        final AsyncCallback<SearchResult> callback) {
+                        final AsyncCallback<SearchResult> callback) {
         QueryParser parser = new QueryParser();
         parser.parse(command.getSearchQuery().trim());
         if (parser.hasFailed()) {
@@ -87,8 +86,8 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
      * matched dimensions
      */
     private void searchAll(final List<String> q,
-        final ExecutionContext context,
-        final AsyncCallback<SearchResult> callback) {
+                           final ExecutionContext context,
+                           final AsyncCallback<SearchResult> callback) {
 
         AllSearcher allSearcher = new AllSearcher(context.getTransaction());
         allSearcher.searchAll(q, new AsyncCallback<Filter>() {
@@ -106,21 +105,21 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
     }
 
     private void searchDimensions(QueryParser parser,
-        final ExecutionContext context,
-        final AsyncCallback<SearchResult> callback) {
+                                  final ExecutionContext context,
+                                  final AsyncCallback<SearchResult> callback) {
         AllSearcher allSearcher = new AllSearcher(context.getTransaction());
         allSearcher.searchDimensions(parser.getUniqueDimensions(),
-            new AsyncCallback<Filter>() {
-                @Override
-                public void onSuccess(Filter result) {
-                    processFilter(context, callback, result);
-                }
+                new AsyncCallback<Filter>() {
+                    @Override
+                    public void onSuccess(Filter result) {
+                        processFilter(context, callback, result);
+                    }
 
-                @Override
-                public void onFailure(Throwable caught) {
-                    callback.onFailure(caught);
-                }
-            });
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        callback.onFailure(caught);
+                    }
+                });
     }
 
     private PivotTableReportElement createSearchPivotTableElement() {
@@ -134,8 +133,8 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
     }
 
     private void processFilter(final ExecutionContext context,
-        final AsyncCallback<SearchResult> callback,
-        final Filter resultFilter) {
+                               final AsyncCallback<SearchResult> callback,
+                               final Filter resultFilter) {
 
         final SearchResult searchResult = new SearchResult();
 
@@ -145,7 +144,7 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
             final PivotTableReportElement pivotTable = createSearchPivotTableElement();
             pivotTable.setFilter(resultFilter);
             GenerateElement<PivotContent> zmd = new GenerateElement<PivotContent>(
-                pivotTable);
+                    pivotTable);
             context.execute(zmd, new AsyncCallback<PivotContent>() {
                 @Override
                 public void onFailure(Throwable caught) {
@@ -168,7 +167,7 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
                         @Override
                         public void onSuccess(SiteResult resultSites) {
                             searchResult.setRecentAdditions(resultSites
-                                .getData());
+                                    .getData());
                             callback.onSuccess(searchResult);
                         }
                     });

@@ -22,18 +22,17 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.GetReportDef;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.XmlResult;
+import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.dao.ReportDefinitionDAO;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.GetReportDef;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.XmlResult;
-import org.activityinfo.shared.exception.CommandException;
-
-import com.google.inject.Inject;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.shared.command.GetReportDef
+ * @see org.activityinfo.api.shared.command.GetReportDef
  */
 public class GetReportDefHandler implements CommandHandler<GetReportDef> {
 
@@ -46,7 +45,7 @@ public class GetReportDefHandler implements CommandHandler<GetReportDef> {
 
     @Override
     public CommandResult execute(GetReportDef cmd, User user)
-        throws CommandException {
+            throws CommandException {
         return new XmlResult(reportDAO.findById(cmd.getId()).getXml());
     }
 

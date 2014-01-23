@@ -22,26 +22,25 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.data.SortInfo;
 import junit.framework.Assert;
-
+import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.result.SiteResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.result.SiteResult;
-import org.activityinfo.shared.dto.IndicatorDTO;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.report.model.DimensionType;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.extjs.gxt.ui.client.Style.SortDir;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.extjs.gxt.ui.client.data.SortInfo;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")
@@ -74,7 +73,7 @@ public class GetSitesTest extends CommandTestCase2 {
         SiteDTO s = result.getData().get(2);
 
         Assert.assertEquals("entityName", "Ituri", s.getAdminEntity(1)
-            .getName());
+                .getName());
         Assert.assertNotNull("admin bounds", s.getAdminEntity(1).getBounds());
         Assert.assertEquals("indicator", 10000.0, s.getIndicatorValue(1));
         Assert.assertNull("site x", s.getX());
@@ -94,20 +93,20 @@ public class GetSitesTest extends CommandTestCase2 {
         GetSites cmd = new GetSites();
         cmd.filter().onActivity(1);
         cmd.setSortInfo(new SortInfo(IndicatorDTO.getPropertyName(1),
-            SortDir.DESC));
+                SortDir.DESC));
 
         PagingLoadResult<SiteDTO> result = execute(cmd);
 
         // assure sorted
         Assert.assertEquals("sorted", 10000.0, result.getData().get(0)
-            .getIndicatorValue(1));
+                .getIndicatorValue(1));
         Assert.assertEquals("sorted", 3600.0, result.getData().get(1)
-            .getIndicatorValue(1));
+                .getIndicatorValue(1));
         Assert.assertEquals("sorted", 1500.0, result.getData().get(2)
-            .getIndicatorValue(1));
+                .getIndicatorValue(1));
 
         Assert.assertNotNull("activityId", result.getData().get(0)
-            .getActivityId());
+                .getActivityId());
     }
 
     @Test
@@ -118,7 +117,7 @@ public class GetSitesTest extends CommandTestCase2 {
         GetSites cmd = new GetSites();
         cmd.filter().onActivity(1);
         cmd.setSortInfo(new SortInfo(IndicatorDTO.getPropertyName(1),
-            SortDir.DESC));
+                SortDir.DESC));
         cmd.setLimit(2);
         cmd.setOffset(0);
 
@@ -158,7 +157,7 @@ public class GetSitesTest extends CommandTestCase2 {
 
         Assert.assertEquals("rows", 3, result.getData().size());
         Assert.assertNotNull("activityId", result.getData().get(0)
-            .getActivityId());
+                .getActivityId());
 
     }
 
@@ -201,7 +200,7 @@ public class GetSitesTest extends CommandTestCase2 {
 
         Assert.assertEquals("rows", 8, result.getData().size());
         Assert.assertNotNull("activityId", result.getData().get(0)
-            .getActivityId());
+                .getActivityId());
     }
 
     @Test
@@ -236,7 +235,7 @@ public class GetSitesTest extends CommandTestCase2 {
         GetSites cmd = new GetSites();
         cmd.filter().onActivity(1);
         cmd.setSortInfo(new SortInfo(IndicatorDTO.getPropertyName(1),
-            SortDir.DESC));
+                SortDir.DESC));
         cmd.setLimit(2);
         cmd.setSeekToSiteId(1);
 
@@ -245,7 +244,7 @@ public class GetSitesTest extends CommandTestCase2 {
         Assert.assertEquals("second page returned", 2, result.getOffset());
         Assert.assertEquals("rows on this page", 1, result.getData().size());
         Assert.assertEquals("correct site returned", 1, result.getData().get(0)
-            .getId());
+                .getId());
     }
 
     @Test
@@ -275,7 +274,7 @@ public class GetSitesTest extends CommandTestCase2 {
         SiteDTO s = result.getData().get(2);
 
         Assert.assertEquals("entityName", "Ituri", s.getAdminEntity(1)
-            .getName());
+                .getName());
         Assert.assertNotNull("admin bounds", s.getAdminEntity(1).getBounds());
         Assert.assertEquals("indicator", 10000.0, s.getIndicatorValue(1));
         Assert.assertNull("site x", s.getX());

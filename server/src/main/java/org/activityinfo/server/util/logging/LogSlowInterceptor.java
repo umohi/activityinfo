@@ -22,19 +22,19 @@ package org.activityinfo.server.util.logging;
  * #L%
  */
 
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
 
 public class LogSlowInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         LogSlow annotation = invocation.getMethod()
-            .getAnnotation(LogSlow.class);
+                .getAnnotation(LogSlow.class);
         long start = System.currentTimeMillis();
         try {
             Object result = invocation.proceed();
@@ -52,7 +52,7 @@ public class LogSlowInterceptor implements MethodInterceptor {
     private void emitLog(MethodInvocation invocation, String message) {
         LogRecord record = new LogRecord(Level.WARNING, message);
         String declaringClassName = invocation.getMethod().getDeclaringClass()
-            .getName();
+                .getName();
         record.setSourceClassName(declaringClassName);
         record.setSourceMethodName(invocation.getMethod().getName());
         Logger.getLogger(declaringClassName).log(record);

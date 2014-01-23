@@ -22,31 +22,29 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.GetMonthlyReports;
+import org.activityinfo.api.shared.command.Month;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.MonthlyReportResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.IndicatorRowDTO;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 import org.activityinfo.server.database.hibernate.entity.IndicatorValue;
 import org.activityinfo.server.database.hibernate.entity.ReportingPeriod;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.GetMonthlyReports;
-import org.activityinfo.shared.command.Month;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.MonthlyReportResult;
-import org.activityinfo.shared.dto.IndicatorRowDTO;
-import org.activityinfo.shared.exception.CommandException;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * See GetMonthlyReports
- * 
+ *
  * @author Alex Bertram
  */
 public class GetMonthlyReportsHandler implements
-    CommandHandler<GetMonthlyReports> {
+        CommandHandler<GetMonthlyReports> {
 
     private final EntityManager em;
 
@@ -57,18 +55,18 @@ public class GetMonthlyReportsHandler implements
 
     @Override
     public CommandResult execute(GetMonthlyReports cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         List<ReportingPeriod> periods = em
-            .createQuery("select p from ReportingPeriod p where p.site.id = ?1")
-            .setParameter(1, cmd.getSiteId())
-            .getResultList();
+                .createQuery("select p from ReportingPeriod p where p.site.id = ?1")
+                .setParameter(1, cmd.getSiteId())
+                .getResultList();
 
         List<Indicator> indicators = em
-            .createQuery("select i from Indicator i where i.activity.id =" +
-                "(select s.activity.id from Site s where s.id = ?1)")
-            .setParameter(1, cmd.getSiteId())
-            .getResultList();
+                .createQuery("select i from Indicator i where i.activity.id =" +
+                        "(select s.activity.id from Site s where s.id = ?1)")
+                .setParameter(1, cmd.getSiteId())
+                .getResultList();
 
         List<IndicatorRowDTO> list = new ArrayList<IndicatorRowDTO>();
 
@@ -82,10 +80,10 @@ public class GetMonthlyReportsHandler implements
             for (ReportingPeriod period : periods) {
 
                 Month month = HandlerUtil.monthFromRange(period.getDate1(),
-                    period.getDate2());
+                        period.getDate2());
                 if (month != null &&
-                    month.compareTo(cmd.getStartMonth()) >= 0 &&
-                    month.compareTo(cmd.getEndMonth()) <= 0) {
+                        month.compareTo(cmd.getStartMonth()) >= 0 &&
+                        month.compareTo(cmd.getEndMonth()) <= 0) {
 
                     for (IndicatorValue value : period.getIndicatorValues()) {
                         if (value.getIndicator().getId() == indicator.getId()) {

@@ -22,22 +22,19 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import com.google.inject.Inject;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.inject.Inject;
+import static org.junit.Assert.*;
 
 @RunWith(InjectionSupport.class)
-@Modules({ MockHibernateModule.class })
+@Modules({MockHibernateModule.class})
 @OnDataSet("/dbunit/schema1.db.xml")
 public class UserDAOImplTest {
 

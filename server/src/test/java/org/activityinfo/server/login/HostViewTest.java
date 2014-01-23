@@ -23,7 +23,6 @@ package org.activityinfo.server.login;
  */
 
 import org.activityinfo.server.database.hibernate.entity.Authentication;
-import org.activityinfo.server.database.hibernate.entity.Domain;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.login.model.HostPageModel;
 import org.junit.Test;
@@ -43,7 +42,7 @@ public class HostViewTest extends ViewTestCase {
         auth.setUser(user);
 
         HostPageModel pageModel = new HostPageModel(
-            "http://www.activityinfo.org");
+                "http://www.activityinfo.org");
         assertProcessable(pageModel);
     }
 }

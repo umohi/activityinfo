@@ -22,22 +22,9 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.inject.Provider;
-import javax.persistence.NoResultException;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.database.hibernate.dao.PartnerDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
@@ -51,9 +38,16 @@ import org.activityinfo.server.login.model.SignUpConfirmationPageModel;
 import org.activityinfo.server.util.MailingListClient;
 import org.activityinfo.server.util.logging.LogException;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+import javax.inject.Provider;
+import javax.persistence.NoResultException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path(SignUpConfirmationController.ENDPOINT)
 public class SignUpConfirmationController {
@@ -67,7 +61,7 @@ public class SignUpConfirmationController {
     private static final int DEFAULT_PARTNER_ID = 274; // bedatadriven
 
     private final MailingListClient mailingList;
-    
+
     private final Provider<UserDAO> userDAO;
     private final Provider<UserDatabaseDAO> databaseDAO;
     private final Provider<PartnerDAO> partnerDAO;
@@ -76,9 +70,9 @@ public class SignUpConfirmationController {
 
     @Inject
     public SignUpConfirmationController(Provider<UserDAO> userDAO, Provider<UserDatabaseDAO> databaseDAO,
-        Provider<PartnerDAO> partnerDAO, Provider<UserPermissionDAO> permissionDAO,
-        MailingListClient mailChimp,
-        AuthTokenProvider authTokenProvider) {
+                                        Provider<PartnerDAO> partnerDAO, Provider<UserPermissionDAO> permissionDAO,
+                                        MailingListClient mailChimp,
+                                        AuthTokenProvider authTokenProvider) {
         super();
         this.userDAO = userDAO;
         this.databaseDAO = databaseDAO;
@@ -103,10 +97,10 @@ public class SignUpConfirmationController {
     @POST
     @LogException(emailAlert = true)
     public Response confirm(
-        @Context UriInfo uri,
-        @FormParam("key") String key,
-        @FormParam("password") String password,
-        @FormParam("newsletter") boolean newsletter) {
+            @Context UriInfo uri,
+            @FormParam("key") String key,
+            @FormParam("password") String password,
+            @FormParam("newsletter") boolean newsletter) {
 
         try {
             // check params
@@ -122,22 +116,22 @@ public class SignUpConfirmationController {
             // add user to default database
             addUserToDefaultDatabase(user);
 
-            if(newsletter) {
+            if (newsletter) {
                 mailingList.subscribe(user);
             }
-            
+
             // go to the home page
             return Response.seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
-                .cookie(authTokenProvider.createNewAuthCookies(user)).build();
+                    .cookie(authTokenProvider.createNewAuthCookies(user)).build();
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception during signup process", e);
             return Response.ok(SignUpConfirmationPageModel.genericErrorModel(key).asViewable())
-                .type(MediaType.TEXT_HTML).build();
+                    .type(MediaType.TEXT_HTML).build();
         }
     }
 
-    @LogException(emailAlert=true)
+    @LogException(emailAlert = true)
     protected void addUserToDefaultDatabase(User user) {
         UserDatabase database = databaseDAO.get().findById(DEFAULT_DATABASE_ID);
         Partner partner = partnerDAO.get().findById(DEFAULT_PARTNER_ID);

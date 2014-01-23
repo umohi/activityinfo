@@ -22,19 +22,17 @@ package org.activityinfo.server.mail;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ResourceBundle;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-
-import org.activityinfo.server.i18n.LocaleHelper;
-import org.activityinfo.server.util.logging.LogException;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.activityinfo.server.i18n.LocaleHelper;
+import org.activityinfo.server.util.logging.LogException;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ResourceBundle;
 
 public abstract class MailSender {
 
@@ -63,11 +61,11 @@ public abstract class MailSender {
     }
 
     public Message createMessage(MessageModel model)
-        throws MessagingException, AddressException, IOException,
-        TemplateException {
+            throws MessagingException, AddressException, IOException,
+            TemplateException {
         Message message = new Message();
         message.to(model.getRecipient().getEmail(), model.getRecipient()
-            .getName());
+                .getName());
         message.bcc("akbertram@gmail.com");
         message.subject(getSubject(model));
         message.body(composeMessage(model));
@@ -75,28 +73,28 @@ public abstract class MailSender {
     }
 
     private String composeMessage(MessageModel model)
-        throws IOException, TemplateException {
+            throws IOException, TemplateException {
 
         StringWriter writer = new StringWriter();
         Template template = templateCfg.getTemplate(model.getTemplateName(),
-            LocaleHelper.getLocaleObject(model.getRecipient()));
+                LocaleHelper.getLocaleObject(model.getRecipient()));
         template.process(model, writer);
         return writer.toString();
     }
 
     private String getSubject(MessageModel message) {
         String subject = getResourceBundle(message).getString(
-            message.getSubjectKey());
+                message.getSubjectKey());
         if (subject == null) {
             throw new RuntimeException("Missing subject key '"
-                + message.getSubjectKey() + "' in MailMessages");
+                    + message.getSubjectKey() + "' in MailMessages");
         }
         return subject;
     }
 
     private ResourceBundle getResourceBundle(MessageModel message) {
         return ResourceBundle.getBundle(
-            "org.activityinfo.server.mail.MailMessages",
-            LocaleHelper.getLocaleObject(message.getRecipient()));
+                "org.activityinfo.server.mail.MailMessages",
+                LocaleHelper.getLocaleObject(message.getRecipient()));
     }
 }

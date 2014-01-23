@@ -22,38 +22,37 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.common.collect.Lists;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.shared.command.BatchCommand;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.result.BatchResult;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.impl.CommandHandlerAsync;
+import org.activityinfo.api.shared.impl.ExecutionContext;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.activityinfo.shared.command.BatchCommand;
-import org.activityinfo.shared.command.Command;
-import org.activityinfo.shared.command.handler.CommandHandlerAsync;
-import org.activityinfo.shared.command.handler.ExecutionContext;
-import org.activityinfo.shared.command.result.BatchResult;
-import org.activityinfo.shared.command.result.CommandResult;
-
-import com.google.common.collect.Lists;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
 /**
  * @author Alex Bertram
- * @see org.activityinfo.shared.command.BatchCommand
+ * @see org.activityinfo.api.shared.command.BatchCommand
  */
 public class BatchCommandHandler implements
-    CommandHandlerAsync<BatchCommand, BatchResult> {
+        CommandHandlerAsync<BatchCommand, BatchResult> {
 
     private static final Logger LOGGER = Logger
-        .getLogger(BatchCommandHandler.class.getName());
+            .getLogger(BatchCommandHandler.class.getName());
 
     @Override
     public void execute(BatchCommand batch, ExecutionContext context,
-        final AsyncCallback<BatchResult> callback) {
+                        final AsyncCallback<BatchResult> callback) {
 
         if (batch.getCommands().isEmpty()) {
             LOGGER.warning("Received empty batch command");
             callback.onSuccess(new BatchResult(Lists
-                .<CommandResult>newArrayList()));
+                    .<CommandResult>newArrayList()));
         } else {
             final ArrayList<CommandResult> results = new ArrayList<CommandResult>();
             for (Command command : batch.getCommands()) {
@@ -65,26 +64,26 @@ public class BatchCommandHandler implements
             for (int i = 0; i != batch.getCommands().size(); ++i) {
                 final int commandIndex = i;
                 context.execute(batch.getCommands().get(i),
-                    new AsyncCallback<CommandResult>() {
+                        new AsyncCallback<CommandResult>() {
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            if (exceptions.isEmpty()) {
-                                exceptions.add(caught);
-                                callback.onFailure(caught);
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                if (exceptions.isEmpty()) {
+                                    exceptions.add(caught);
+                                    callback.onFailure(caught);
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onSuccess(CommandResult result) {
-                            results.set(commandIndex, result);
-                            finished[commandIndex] = true;
-                            if (all(finished)) {
-                                callback.onSuccess(new BatchResult(results));
+                            @Override
+                            public void onSuccess(CommandResult result) {
+                                results.set(commandIndex, result);
+                                finished[commandIndex] = true;
+                                if (all(finished)) {
+                                    callback.onSuccess(new BatchResult(results));
+                                }
                             }
-                        }
 
-                    });
+                        });
 
             }
         }

@@ -28,7 +28,7 @@ import com.teklabs.gwt.i18n.client.LocaleFactory;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
 
 public class LocalizableResourceProvider<T extends LocalizableResource>
-    implements Provider<T> {
+        implements Provider<T> {
 
     private Class<T> clazz;
 

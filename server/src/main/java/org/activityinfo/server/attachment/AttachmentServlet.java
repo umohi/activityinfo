@@ -22,29 +22,27 @@ package org.activityinfo.server.attachment;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import org.activityinfo.api.shared.command.CreateSiteAttachment;
+import org.activityinfo.server.command.DispatcherSync;
+import org.activityinfo.server.database.hibernate.entity.SiteAttachment;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.activityinfo.server.command.DispatcherSync;
-import org.activityinfo.server.database.hibernate.entity.SiteAttachment;
-import org.activityinfo.shared.command.CreateSiteAttachment;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Singleton
 public class AttachmentServlet extends HttpServlet {
@@ -54,12 +52,12 @@ public class AttachmentServlet extends HttpServlet {
     private Provider<EntityManager> entityManager;
 
     private static final Logger LOGGER = Logger
-        .getLogger(AttachmentServlet.class.getName());
+            .getLogger(AttachmentServlet.class.getName());
 
     @Inject
     public AttachmentServlet(AttachmentService service,
-        Provider<EntityManager> entityManager,
-        DispatcherSync dispatcher) {
+                             Provider<EntityManager> entityManager,
+                             DispatcherSync dispatcher) {
         this.service = service;
         this.entityManager = entityManager;
         this.dispatcher = dispatcher;
@@ -67,14 +65,14 @@ public class AttachmentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String key = req.getParameter("blobId");
         SiteAttachment attachment = entityManager.get().find(
-            SiteAttachment.class, key);
+                SiteAttachment.class, key);
 
         resp.setHeader("Content-Disposition", "attachment; filename=\""
-            + attachment.getFileName() + "\"");
+                + attachment.getFileName() + "\"");
         resp.setContentType(attachment.getContentType());
 
         service.serveAttachment(key, resp);
@@ -82,7 +80,7 @@ public class AttachmentServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         try {
             String key = request.getParameter("blobId");
@@ -110,7 +108,7 @@ public class AttachmentServlet extends HttpServlet {
     }
 
     private FileItem getFirstUploadFile(HttpServletRequest request)
-        throws FileUploadException {
+            throws FileUploadException {
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         if (isMultipart) {
 

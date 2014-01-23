@@ -1,17 +1,17 @@
 package org.activityinfo.server.digest.geo;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
-
+import org.activityinfo.analysis.shared.content.MapContent;
+import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.digest.DigestModel;
 import org.activityinfo.server.util.date.DateCalc;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.report.content.MapContent;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class GeoDigestModel implements DigestModel {
     private final User user;

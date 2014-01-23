@@ -33,8 +33,8 @@ public class TransactionModule extends AbstractModule {
         requestInjection(interceptor);
 
         bindInterceptor(Matchers.any(),
-            Matchers.annotatedWith(Transactional.class),
-            interceptor);
+                Matchers.annotatedWith(Transactional.class),
+                interceptor);
     }
 
 }

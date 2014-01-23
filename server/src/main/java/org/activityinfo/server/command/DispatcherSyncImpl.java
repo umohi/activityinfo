@@ -22,16 +22,15 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.endpoint.gwtrpc.RemoteExecutionContext;
-import org.activityinfo.shared.auth.AuthenticatedUser;
-import org.activityinfo.shared.command.Command;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
-
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.endpoint.gwtrpc.RemoteExecutionContext;
 
 public class DispatcherSyncImpl implements DispatcherSync {
 
@@ -40,14 +39,14 @@ public class DispatcherSyncImpl implements DispatcherSync {
 
     @Inject
     public DispatcherSyncImpl(Injector injector,
-        Provider<AuthenticatedUser> userProvider) {
+                              Provider<AuthenticatedUser> userProvider) {
         this.injector = injector;
         this.userProvider = userProvider;
     }
 
     @Override
     public <C extends Command<R>, R extends CommandResult> R execute(C command)
-        throws CommandException {
+            throws CommandException {
         if (RemoteExecutionContext.inProgress()) {
             return RemoteExecutionContext.current().execute(command);
         } else {
@@ -57,7 +56,7 @@ public class DispatcherSyncImpl implements DispatcherSync {
             user.setLocale(userProvider.get().getUserLocale());
 
             RemoteExecutionContext context = new RemoteExecutionContext(
-                injector);
+                    injector);
             return context.startExecute(command);
         }
     }

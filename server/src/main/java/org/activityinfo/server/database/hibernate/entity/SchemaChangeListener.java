@@ -1,10 +1,9 @@
 package org.activityinfo.server.database.hibernate.entity;
 
-import java.util.Date;
-
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
+import java.util.Date;
 
 public class SchemaChangeListener {
 

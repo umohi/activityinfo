@@ -35,7 +35,6 @@ public class TempStorage {
     }
 
     /**
-     * 
      * @return the publicly-accessible URL for this temporary resource
      */
     public String getUrl() {
@@ -43,9 +42,8 @@ public class TempStorage {
     }
 
     /**
-     * 
      * @return the output stream to which the contents of the file should be
-     *         written. The stream MUST be closed by the caller.
+     * written. The stream MUST be closed by the caller.
      */
     public OutputStream getOutputStream() {
         return outputStream;

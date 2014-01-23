@@ -22,59 +22,52 @@ package org.activityinfo.server.endpoint.gwtrpc;
  * #L%
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.servlet.ServletContext;
-
-import org.activityinfo.server.util.blob.BlobService;
-
-import com.google.appengine.api.files.AppEngineFile;
-import com.google.appengine.api.files.FileReadChannel;
-import com.google.appengine.api.files.FileService;
-import com.google.appengine.api.files.FileServiceFactory;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 import com.google.common.io.InputSupplier;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
 import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
 import com.google.inject.Inject;
+import org.activityinfo.server.util.blob.BlobService;
+
+import javax.servlet.ServletContext;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Provides SerializationPolicy from archives in Google Cloud Storage.
- * 
- * <p>
+ * <p/>
+ * <p/>
  * GWT uses a file called STRONGNAME.gwt.rpc to determine which types are
  * allowed to be deserialized on the server. This is to stop bad actors from
  * being able to instantiate whatever java objects they want via GWT-RPC.
- * 
- * <p>
+ * <p/>
+ * <p/>
  * STRONGNAME is the MD5 hash of the compiled javascript, unique to a specific
  * version and browser/language combination.
- * 
- * <p>
+ * <p/>
+ * <p/>
  * Because we use the AppCache to aggressively cache the client on the user's
  * browser, it is very common that when the user opens the client after a few
  * days away, the server has a new version (we are pushing out updates several
  * times a week).
- * 
- * <p>
+ * <p/>
+ * <p/>
  * Unfortunately, this means that the server will not be able to find the
  * permutation's corresponding .gwt.rpc file, and the RPC command will fail with
  * a IncompatibleRemoteException. This forces the user to download the new
  * version of the app before continuing.
- * 
- * <p>
+ * <p/>
+ * <p/>
  * Ideally what we want is the user to be able to use the application while the
  * AppCache fetches the new version in the background.
- * 
- * <p>
+ * <p/>
+ * <p/>
  * To accomplish this, we archive any gwt.rpc file that ever gets requested in
  * Google Cloud Storage, and then check this archive each time a gwt.rpc file is
  * requested. This way, even
@@ -82,7 +75,7 @@ import com.google.inject.Inject;
 public class PersistentPolicyProvider {
 
     private static final Logger LOGGER = Logger
-        .getLogger(PersistentPolicyProvider.class.getName());
+            .getLogger(PersistentPolicyProvider.class.getName());
 
     private ServletContext servletContext;
     private BlobService blobService;
@@ -94,20 +87,20 @@ public class PersistentPolicyProvider {
     }
 
     public SerializationPolicy getSerializationPolicy(String moduleBaseURL,
-        String strongName) {
+                                                      String strongName) {
 
         LOGGER.info("Loading serialization policy " + strongName);
-        
+
         SerializationPolicy policy = readFromDeployment(moduleBaseURL, strongName);
 
         if (policy == null) {
             policy = tryFetchFromBlobService(keyName(strongName));
         }
-        
+
         if (policy == null) {
             policy = tryFetchFromBlobService(legacyKeyName(strongName));
         }
-        
+
         return policy;
     }
 
@@ -122,9 +115,9 @@ public class PersistentPolicyProvider {
             InputStream in = inputSupplier.getInput();
             try {
                 SerializationPolicy policy = SerializationPolicyLoader.loadFromStream(in, null);
-                
+
                 LOGGER.info("Read serialization policy from blob service at " + key);
-                
+
                 return policy;
             } finally {
                 Closeables.closeQuietly(in);
@@ -141,7 +134,7 @@ public class PersistentPolicyProvider {
     }
 
     private SerializationPolicy readFromDeployment(String moduleBaseURL,
-        String strongName) {
+                                                   String strongName) {
 
         // Read the serialization policy from the
         // deployed application files
@@ -149,19 +142,19 @@ public class PersistentPolicyProvider {
         SerializationPolicy policy;
 
         try {
-            
+
             String file = deploymentPath(moduleBaseURL, strongName);
             InputStream in = servletContext.getResourceAsStream(file);
             bytes = ByteStreams.toByteArray(in);
             in.close();
             policy = SerializationPolicyLoader.loadFromStream(
-                new ByteArrayInputStream(bytes), null);
-            
+                    new ByteArrayInputStream(bytes), null);
+
             LOGGER.info("Read serialization policy " + strongName + " from deployment");
-            
+
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE,
-                "Failed to read serialization policy from deployment", e);
+                    "Failed to read serialization policy from deployment", e);
             return null;
         }
 
@@ -179,7 +172,7 @@ public class PersistentPolicyProvider {
 
 
     private String deploymentPath(String moduleBaseURL, String strongName)
-        throws MalformedURLException {
+            throws MalformedURLException {
         String modulePath = new URL(moduleBaseURL).getPath();
         return modulePath + strongName + ".gwt.rpc";
     }

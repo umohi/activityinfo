@@ -22,29 +22,27 @@ package org.activityinfo.server.database.hibernate;
  * #L%
  */
 
+import com.bedatadriven.rebar.sql.client.SqlResultSet;
+import com.bedatadriven.rebar.sql.server.jdbc.JdbcExecutor;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import org.hibernate.ejb.HibernateEntityManager;
+import org.hibernate.engine.jdbc.internal.FormatStyle;
+import org.hibernate.jdbc.Work;
+
+import javax.persistence.EntityManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
-
-import org.hibernate.ejb.HibernateEntityManager;
-import org.hibernate.engine.jdbc.internal.FormatStyle;
-import org.hibernate.jdbc.Work;
-
-import com.bedatadriven.rebar.sql.client.SqlResultSet;
-import com.bedatadriven.rebar.sql.server.jdbc.JdbcExecutor;
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-
 public class HibernateExecutor extends JdbcExecutor {
 
     private final HibernateEntityManager entityManager;
 
     private final static Logger LOGGER = Logger
-        .getLogger(HibernateExecutor.class.getName());
+            .getLogger(HibernateExecutor.class.getName());
 
     @Inject
     public HibernateExecutor(EntityManager em) {
@@ -58,7 +56,7 @@ public class HibernateExecutor extends JdbcExecutor {
 
     @Override
     public SqlResultSet execute(final String statement, final Object[] params)
-        throws Exception {
+            throws Exception {
         final List<SqlResultSet> result = Lists.newArrayList();
         entityManager.getSession().doWork(new Work() {
 
@@ -78,13 +76,13 @@ public class HibernateExecutor extends JdbcExecutor {
                     if (elapsed > 100) {
                         String formatted = format(statement);
                         LOGGER.warning("Slow query completed in " + elapsed
-                            + "ms:\n" + formatted);
+                                + "ms:\n" + formatted);
                     }
                 } catch (Throwable e) {
                     LOGGER
-                        .log(Level.SEVERE,
-                            "Exception occured while executing query: "
-                                + statement, e);
+                            .log(Level.SEVERE,
+                                    "Exception occured while executing query: "
+                                            + statement, e);
                     throw new SQLException(e);
                 }
             }

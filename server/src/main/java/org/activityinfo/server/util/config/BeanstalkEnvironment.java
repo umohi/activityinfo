@@ -26,7 +26,6 @@ import com.google.common.base.Strings;
 
 /**
  * These properties are provided by the Amazon Beanstalk container
- * 
  */
 final class BeanstalkEnvironment {
 
@@ -42,7 +41,6 @@ final class BeanstalkEnvironment {
     }
 
     /**
-     * 
      * Returns the {@code AWS_SECRET_KEY} property set by the Beanstalk
      * container.
      */
@@ -52,11 +50,10 @@ final class BeanstalkEnvironment {
 
     public static boolean credentialsArePresent() {
         return !Strings.isNullOrEmpty(getAccessKeyId()) &&
-            !Strings.isNullOrEmpty(getSecretKey());
+                !Strings.isNullOrEmpty(getSecretKey());
     }
 
     /**
-     * 
      * Returns the name of the S3 Bucket where the configuration file for this
      * deployment is stored. (Expected in Beanstalk variable {@code PARAM1})
      */

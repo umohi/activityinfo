@@ -22,9 +22,8 @@ package org.activityinfo.server.endpoint.gwtrpc;
  * #L%
  */
 
-import org.activityinfo.server.attachment.AttachmentServlet;
-
 import com.google.inject.servlet.ServletModule;
+import org.activityinfo.server.attachment.AttachmentServlet;
 
 public class GwtRpcModule extends ServletModule {
 

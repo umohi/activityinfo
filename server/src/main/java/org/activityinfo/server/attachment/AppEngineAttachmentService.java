@@ -22,23 +22,6 @@ package org.activityinfo.server.attachment;
  * #L%
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.channels.Channels;
-import java.nio.charset.Charset;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.activityinfo.server.util.blob.BlobService;
-import org.activityinfo.server.util.config.DeploymentConfiguration;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -49,12 +32,21 @@ import com.google.appengine.api.files.FileWriteChannel;
 import com.google.appengine.api.files.GSFileOptions.GSFileOptionsBuilder;
 import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
+import org.activityinfo.server.util.blob.BlobService;
+import org.activityinfo.server.util.config.DeploymentConfiguration;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.channels.Channels;
+import java.nio.charset.Charset;
 
 public class AppEngineAttachmentService implements AttachmentService {
 
     private BlobstoreService blobstoreService = BlobstoreServiceFactory
-        .getBlobstoreService();
-    
+            .getBlobstoreService();
+
     private final BlobService blobService;
     private final String attachmentRoot;
 
@@ -63,39 +55,39 @@ public class AppEngineAttachmentService implements AttachmentService {
         this.blobService = blobService;
         this.attachmentRoot = config.getProperty("attachment.blob.root", "/gs/activityinfo-attachments");
     }
-    
-    
+
+
     @Override
     public void serveAttachment(String blobId, HttpServletResponse response)
-        throws IOException {
+            throws IOException {
         BlobKey blobKey = blobKey(blobId);
         blobstoreService.serve(blobKey, response);
     }
 
     private BlobKey blobKey(String blobId) {
         BlobKey blobKey = blobstoreService
-            .createGsBlobKey("/gs/activityinfo-attachments/" + blobId);
+                .createGsBlobKey("/gs/activityinfo-attachments/" + blobId);
         return blobKey;
     }
 
     @Override
     public void upload(String key, FileItem fileItem,
-        InputStream uploadingStream) {
+                       InputStream uploadingStream) {
         try {
 
             GSFileOptionsBuilder builder = new GSFileOptionsBuilder()
-                .setBucket("activityinfo-attachments")
-                .setKey(key)
-                .setContentDisposition(
-                    "attachment; filename=\"" + fileItem.getName() + "\"")
-                .setMimeType(fileItem.getContentType());
+                    .setBucket("activityinfo-attachments")
+                    .setKey(key)
+                    .setContentDisposition(
+                            "attachment; filename=\"" + fileItem.getName() + "\"")
+                    .setMimeType(fileItem.getContentType());
 
             FileService fileService = FileServiceFactory.getFileService();
             AppEngineFile writableFile = fileService.createNewGSFile(builder
-                .build());
+                    .build());
             boolean lock = true;
             FileWriteChannel writeChannel = fileService.openWriteChannel(
-                writableFile, lock);
+                    writableFile, lock);
             OutputStream os = Channels.newOutputStream(writeChannel);
             ByteStreams.copy(fileItem.getInputStream(), os);
             os.flush();
@@ -117,9 +109,9 @@ public class AppEngineAttachmentService implements AttachmentService {
 
             @Override
             public FileItem createItem(String fieldName, String contentType,
-                boolean isFormField, String fileName) {
+                                       boolean isFormField, String fileName) {
                 return new InMemoryFileItem(fieldName, contentType,
-                    isFormField, fileName);
+                        isFormField, fileName);
             }
         };
     }
@@ -133,7 +125,7 @@ public class AppEngineAttachmentService implements AttachmentService {
         private String fileName;
 
         public InMemoryFileItem(String fieldName, String contentType,
-            boolean isFormField, String fileName) {
+                                boolean isFormField, String fileName) {
             this.fieldName = fieldName;
             this.contentType = contentType;
             this.formField = isFormField;
@@ -172,7 +164,7 @@ public class AppEngineAttachmentService implements AttachmentService {
 
         @Override
         public String getString(String encoding)
-            throws UnsupportedEncodingException {
+                throws UnsupportedEncodingException {
             return new String(baos.toByteArray(), Charset.forName(encoding));
         }
 

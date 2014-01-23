@@ -22,11 +22,11 @@ package org.activityinfo.server.database.hibernate;
  * #L%
  */
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 public class EntityManagerProvider implements Provider<EntityManager> {
     private EntityManagerFactory emf;

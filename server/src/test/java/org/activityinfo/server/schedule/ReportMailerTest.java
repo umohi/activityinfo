@@ -22,15 +22,15 @@ package org.activityinfo.server.schedule;
  * #L%
  */
 
-import java.util.Calendar;
-
+import org.activityinfo.analysis.shared.model.EmailDelivery;
+import org.activityinfo.analysis.shared.model.Report;
 import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
 import org.activityinfo.server.database.hibernate.entity.ReportSubscription;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.report.model.EmailDelivery;
-import org.activityinfo.shared.report.model.Report;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Calendar;
 
 /**
  * @author Alex Bertram
@@ -50,17 +50,17 @@ public class ReportMailerTest {
         cal.set(Calendar.DATE, 11);
 
         Assert.assertTrue("Saturday report goes out on Saturday",
-            ReportMailerHelper.mailToday(cal.getTime(), report));
+                ReportMailerHelper.mailToday(cal.getTime(), report));
 
         cal.set(Calendar.DATE, 5);
 
         Assert.assertFalse("Sunday report does not out on Monday",
-            ReportMailerHelper.mailToday(cal.getTime(), report));
+                ReportMailerHelper.mailToday(cal.getTime(), report));
 
         report.setEmailDay(1);
 
         Assert.assertTrue("Monday report goes out on Monday",
-            ReportMailerHelper.mailToday(cal.getTime(), report));
+                ReportMailerHelper.mailToday(cal.getTime(), report));
     }
 
     @Test
@@ -76,8 +76,8 @@ public class ReportMailerTest {
         cal.set(Calendar.DATE, 11);
 
         Assert.assertTrue(
-            "Monthly report scheduled for each the 11th goes out on the 11th",
-            ReportMailerHelper.mailToday(cal.getTime(), report));
+                "Monthly report scheduled for each the 11th goes out on the 11th",
+                ReportMailerHelper.mailToday(cal.getTime(), report));
 
         cal.set(Calendar.DATE, 30);
     }
@@ -95,13 +95,13 @@ public class ReportMailerTest {
         cal.set(Calendar.DATE, 30);
 
         Assert.assertTrue("Report goes out on 4-April",
-            ReportMailerHelper.mailToday(cal.getTime(), report));
+                ReportMailerHelper.mailToday(cal.getTime(), report));
 
         cal.set(Calendar.MONTH, Calendar.JANUARY);
         cal.set(Calendar.DATE, 31);
 
         Assert.assertTrue("Report goes out on 31-Jan",
-            ReportMailerHelper.mailToday(cal.getTime(), report));
+                ReportMailerHelper.mailToday(cal.getTime(), report));
 
     }
 
@@ -136,9 +136,9 @@ public class ReportMailerTest {
         System.out.println(text);
 
         Assert
-            .assertTrue("user name is present", text.contains(user.getName()));
+                .assertTrue("user name is present", text.contains(user.getName()));
         Assert.assertTrue("link is correct without comma",
-            text.contains("#report/5040"));
+                text.contains("#report/5040"));
     }
 
 }

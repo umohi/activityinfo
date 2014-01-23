@@ -22,19 +22,17 @@ package org.activityinfo.server.authentication;
  * #L%
  */
 
-import java.io.IOException;
-
-import javax.persistence.NoResultException;
-
-import org.activityinfo.server.database.hibernate.dao.UserDAO;
-import org.activityinfo.server.database.hibernate.entity.Authentication;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.auth.AuthenticatedUser;
-import org.apache.commons.codec.binary.Base64;
-
 import com.google.common.base.Charsets;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.server.database.hibernate.dao.UserDAO;
+import org.activityinfo.server.database.hibernate.entity.Authentication;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.apache.commons.codec.binary.Base64;
+
+import javax.persistence.NoResultException;
+import java.io.IOException;
 
 public class BasicAuthentication {
 
@@ -44,9 +42,9 @@ public class BasicAuthentication {
 
     @Inject
     public BasicAuthentication(
-        ServerSideAuthProvider authProvider,
-        Provider<UserDAO> userDAO,
-        Provider<Authenticator> authenticator) {
+            ServerSideAuthProvider authProvider,
+            Provider<UserDAO> userDAO,
+            Provider<Authenticator> authenticator) {
         this.authProvider = authProvider;
         this.userDAO = userDAO;
         this.authenticator = authenticator;
@@ -73,7 +71,7 @@ public class BasicAuthentication {
         }
 
         authProvider.set(new AuthenticatedUser("", user.getId(), user
-            .getEmail()));
+                .getEmail()));
 
         return user;
     }
@@ -96,9 +94,9 @@ public class BasicAuthentication {
         // Decode it, using any base 64 decoder
 
         byte[] emailpassDecodedBytes = Base64.decodeBase64(emailpassEncoded
-            .getBytes());
+                .getBytes());
         String emailpassDecoded = new String(emailpassDecodedBytes,
-            Charsets.UTF_8);
+                Charsets.UTF_8);
         String[] emailPass = emailpassDecoded.split(":");
 
         if (emailPass.length != 2) {

@@ -22,16 +22,16 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.Command;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
 
 /**
  * Command executors are the server half of {@link Command}s defined in the
  * client package. Each {@link Command} has its corresponding executor which is
  * responsible for carrying out the command on the server.
- * 
+ *
  * @author Alex Bertram
  */
 public interface CommandHandler<CommandT extends Command> {
@@ -44,17 +44,14 @@ public interface CommandHandler<CommandT extends Command> {
 
     /**
      * Execute a command received from the client
-     * 
-     * @param <T>
-     *            Result type
-     * @param cmd
-     *            Command received from the server
+     *
+     * @param <T> Result type
+     * @param cmd Command received from the server
      * @return The result of command if successful. If the command is not
-     *         successful, an exception should be thrown.
-     * @throws org.activityinfo.shared.exception.CommandException
-     * 
+     * successful, an exception should be thrown.
+     * @throws org.activityinfo.api.shared.exception.CommandException
      */
     public CommandResult execute(CommandT cmd, User user)
-        throws CommandException;
+            throws CommandException;
 
 }

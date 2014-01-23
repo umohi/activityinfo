@@ -1,16 +1,15 @@
 package org.activityinfo.server.database.hibernate.entity;
 
-import java.io.Serializable;
+import com.google.common.base.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
-import com.google.common.base.Objects;
+import java.io.Serializable;
 
 @Embeddable
 public class IndicatorLinkEntityId implements Serializable {
     private static final long serialVersionUID = 6224197691532121470L;
-    
+
     private Integer sourceIndicatorId;
     private Integer destinationIndicatorId;
 
@@ -53,6 +52,6 @@ public class IndicatorLinkEntityId implements Serializable {
 
         IndicatorLinkEntityId i = (IndicatorLinkEntityId) obj;
         return Objects.equal(i.getSourceIndicatorId(), this.getSourceIndicatorId())
-            && Objects.equal(i.getDestinationIndicatorId(), this.getDestinationIndicatorId());
+                && Objects.equal(i.getDestinationIndicatorId(), this.getDestinationIndicatorId());
     }
 }

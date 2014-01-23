@@ -22,16 +22,15 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.logging.Logger;
-
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.report.generator.ReportGenerator;
-import org.activityinfo.shared.command.GenerateElement;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.report.model.DateRange;
-
 import com.google.inject.Inject;
+import org.activityinfo.analysis.server.generator.ReportGenerator;
+import org.activityinfo.analysis.shared.model.DateRange;
+import org.activityinfo.api.shared.command.GenerateElement;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.server.database.hibernate.entity.User;
+
+import java.util.logging.Logger;
 
 /**
  * @author Alex Bertram
@@ -39,7 +38,7 @@ import com.google.inject.Inject;
 public class GenerateElementHandler implements CommandHandler<GenerateElement> {
 
     private static final Logger LOGGER = Logger
-        .getLogger(GenerateElementHandler.class.getName());
+            .getLogger(GenerateElementHandler.class.getName());
 
     private final ReportGenerator generator;
 
@@ -50,12 +49,12 @@ public class GenerateElementHandler implements CommandHandler<GenerateElement> {
 
     @Override
     public CommandResult execute(GenerateElement cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         LOGGER.info("GenerateElement.element = " + cmd.getElement());
 
         return generator.generateElement(user, cmd.getElement(), null,
-            new DateRange());
+                new DateRange());
 
     }
 }

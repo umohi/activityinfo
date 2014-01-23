@@ -33,7 +33,7 @@
       <!--Pear+-->
       <category>15</category>
     </restriction>
-    <dateRange min="2010-01-01" />
+    <dateRange min="2010-01-01"/>
   </filter>
   <title>ACTIVITY INFO - Education - Rapport consolide des activites</title>
   <description>Rapport d'activites extrait de Activity Info</description>
@@ -102,7 +102,8 @@
         </restriction>
       </filter>
       <title>Synthese des interventions en Education par
-        Province/territoire</title>
+        Province/territoire
+      </title>
       <sheetTitle>Activites Cluster Education</sheetTitle>
       <rows>
         <dimension type="database"></dimension>
@@ -130,10 +131,10 @@
       </filter>
       <columns>
         <!--frozen="4"-->
-        <column label="Carte" source="map" />
+        <column label="Carte" source="map"/>
         <column label="Periode">
-          <column label="Debut" source="site.date1" />
-          <column label="Fin" source="site.date2" />
+          <column label="Debut" source="site.date1"/>
+          <column label="Fin" source="site.date2"/>
         </column>
         <column label="Partenaire" source="partner.name"></column>
         <column label="Territoire" source="admin" sourceId="3"></column>
@@ -160,7 +161,7 @@
           <column label="" source="indicator" sourceId="56"></column>
         </column>
         <column label="Latrines Rehab." source="indicator"
-          sourceId="344"></column>
+                sourceId="344"></column>
         <column label="Points Eau">
           <column label="" source="indicator" sourceId="326"></column>
           <column label="" source="indicator" sourceId="45"></column>
@@ -170,13 +171,13 @@
           <column label="" source="indicator" sourceId="47"></column>
           <column label="" source="indicator" sourceId="59"></column>
         </column>
-        <column label="Commentaire" source="site.comments" />
+        <column label="Commentaire" source="site.comments"/>
       </columns>
       <map>
         <tileBaseMap>zs.gray.cd</tileBaseMap>
         <layers>
           <bubbles>
-            <arabicNumberSequence />
+            <arabicNumberSequence/>
             <minRadius>8</minRadius>
             <maxRadius>14</maxRadius>
             <scaling>Graduated</scaling>
@@ -186,7 +187,8 @@
     </table>
     <table>
       <title>Education: Distribution de materiel et equipements
-        scolaires</title>
+        scolaires
+      </title>
       <filter>
         <restriction dimension="activity">
           <category>27</category>
@@ -200,13 +202,13 @@
       </filter>
       <columns>
         <!--frozen="4"-->
-        <column label="Carte" source="map" />
+        <column label="Carte" source="map"/>
         <column label="Periode">
-          <column label="Debut" source="site.date1" />
-          <column label="Fin" source="site.date2" />
+          <column label="Debut" source="site.date1"/>
+          <column label="Fin" source="site.date2"/>
         </column>
         <column label="Partenaire" source="partner.name"></column>
-        <column label="Territoire" source="admin" sourceId="3" />
+        <column label="Territoire" source="admin" sourceId="3"/>
         <column label="Site" source="location.name"></column>
         <column label="Kits Scolaires">
           <column label="" source="indicator" sourceId="341"></column>
@@ -245,7 +247,7 @@
         <tileBaseMap>zs.gray.cd</tileBaseMap>
         <layers>
           <bubbles>
-            <arabicNumberSequence />
+            <arabicNumberSequence/>
             <minRadius>8</minRadius>
             <maxRadius>14</maxRadius>
             <scaling>Graduated</scaling>
@@ -262,41 +264,41 @@
       </filter>
       <columns>
         <!--frozen="4"-->
-        <column label="Carte" source="map" />
+        <column label="Carte" source="map"/>
         <column label="Periode">
-          <column label="Debut" source="site.date1" />
-          <column label="Fin" source="site.date2" />
+          <column label="Debut" source="site.date1"/>
+          <column label="Fin" source="site.date2"/>
         </column>
         <column label="Partenaire" source="partner.name"></column>
-        <column label="Territoire" source="admin" sourceId="3" />
+        <column label="Territoire" source="admin" sourceId="3"/>
         <column label="Site" source="location.name"></column>
         <column label="Formation du personnel Education et des Parents Eleves">
           <column label="Enseignants" source="indicator"
-            sourceId="296"></column>
+                  sourceId="296"></column>
           <column label="Directeurs" source="indicator" sourceId="303"></column>
           <column label="Inspecteurs" source="indicator"
-            sourceId="327"></column>
+                  sourceId="327"></column>
           <column label="Membres COPA" source="indicator"
-            sourceId="309"></column>
+                  sourceId="309"></column>
           <column label="Membres CAPE" source="indicator"
-            sourceId="446"></column>
+                  sourceId="446"></column>
         </column>
         <column label="Formation des Enfants et Adolescents">
           <column label="EP" source="indicator" sourceId="306"></column>
           <column label="ECE" source="indicator" sourceId="449"></column>
           <column label="CRS" source="indicator" sourceId="452"></column>
           <column label="Membres COPA" source="indicator"
-            sourceId="1040"></column>
+                  sourceId="1040"></column>
           <column label="Membres CAPE" source="indicator"
-            sourceId="446"></column>
+                  sourceId="446"></column>
         </column>
-        <column label="Commentaire" source="site.comments" />
+        <column label="Commentaire" source="site.comments"/>
       </columns>
       <map>
         <tileBaseMap>zs.gray.cd</tileBaseMap>
         <layers>
           <bubbles>
-            <arabicNumberSequence />
+            <arabicNumberSequence/>
             <minRadius>8</minRadius>
             <maxRadius>14</maxRadius>
             <scaling>Graduated</scaling>

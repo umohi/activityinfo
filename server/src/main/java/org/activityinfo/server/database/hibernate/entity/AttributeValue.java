@@ -24,19 +24,10 @@ package org.activityinfo.server.database.hibernate.entity;
 
 // Generated Apr 9, 2009 7:58:20 AM by Hibernate Tools 3.2.2.GA
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Entity
 public class AttributeValue implements java.io.Serializable {
@@ -58,8 +49,8 @@ public class AttributeValue implements java.io.Serializable {
 
     @EmbeddedId
     @AttributeOverrides({
-        @AttributeOverride(name = "siteId", column = @Column(name = "SiteId", nullable = false)),
-        @AttributeOverride(name = "attributeId", column = @Column(name = "AttributeId", nullable = false)) })
+            @AttributeOverride(name = "siteId", column = @Column(name = "SiteId", nullable = false)),
+            @AttributeOverride(name = "attributeId", column = @Column(name = "AttributeId", nullable = false))})
     public AttributeValueId getId() {
         return this.id;
     }

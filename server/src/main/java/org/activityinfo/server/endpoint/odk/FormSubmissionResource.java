@@ -1,38 +1,27 @@
 package org.activityinfo.server.endpoint.odk;
 
-import java.util.List;
-
-import javax.inject.Provider;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.activityinfo.client.local.command.handler.KeyGenerator;
+import com.extjs.gxt.ui.client.data.RpcMap;
+import com.google.inject.Inject;
+import com.sun.jersey.multipart.FormDataParam;
+import org.activityinfo.api.shared.command.CreateLocation;
+import org.activityinfo.api.shared.command.CreateSite;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.model.*;
 import org.activityinfo.server.database.hibernate.dao.Geocoder;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 import org.activityinfo.server.endpoint.odk.SiteFormData.FormAttributeGroup;
 import org.activityinfo.server.endpoint.odk.SiteFormData.FormIndicator;
 import org.activityinfo.server.event.sitehistory.SiteHistoryProcessor;
-import org.activityinfo.shared.command.CreateLocation;
-import org.activityinfo.shared.command.CreateSite;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.AdminLevelDTO;
-import org.activityinfo.shared.dto.AttributeGroupDTO;
-import org.activityinfo.shared.dto.LocationDTO;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.SiteDTO;
+import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 
-import com.extjs.gxt.ui.client.data.RpcMap;
-import com.google.inject.Inject;
-import com.sun.jersey.multipart.FormDataParam;
+import javax.inject.Provider;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.List;
 
 @Path("/submission")
 public class FormSubmissionResource extends ODKResource {
@@ -42,7 +31,7 @@ public class FormSubmissionResource extends ODKResource {
 
     @Inject
     public FormSubmissionResource(Provider<FormParser> formParser, Geocoder geocoder,
-        SiteHistoryProcessor siteHistoryProcessor) {
+                                  SiteHistoryProcessor siteHistoryProcessor) {
         this.formParser = formParser;
         this.geocoder = geocoder;
         this.siteHistoryProcessor = siteHistoryProcessor;
@@ -65,8 +54,8 @@ public class FormSubmissionResource extends ODKResource {
 
         // basic validation
         if (data.getActivity() == 0 || data.getPartner() == 0 ||
-            data.getLatitude() == 999 || data.getLongitude() == 999 ||
-            data.getDate1() == null || data.getDate2() == null || data.getDate2().before(data.getDate1())) {
+                data.getLatitude() == 999 || data.getLongitude() == 999 ||
+                data.getDate1() == null || data.getDate2() == null || data.getDate2().before(data.getDate1())) {
             return badRequest("Problem validating submission XML");
         }
 
@@ -145,7 +134,7 @@ public class FormSubmissionResource extends ODKResource {
 
         // get adminentities that contain the specified coordinates
         List<AdminEntity> adminentities =
-            geocoder.geocode(data.getLatitude(), data.getLongitude());
+                geocoder.geocode(data.getLatitude(), data.getLongitude());
         if (adminentities.isEmpty()) {
             AdminEntity adminEntity = createDebugAdminEntity();
             if (adminEntity != null) {

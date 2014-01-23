@@ -22,21 +22,17 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.activityinfo.api.shared.command.GetSiteHistory;
+import org.activityinfo.api.shared.command.GetSiteHistory.GetSiteHistoryResult;
+import org.activityinfo.api.shared.model.SiteHistoryDTO;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.server.database.OnDataSet;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Map;
 
-import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.GetSiteHistory;
-import org.activityinfo.shared.command.GetSiteHistory.GetSiteHistoryResult;
-import org.activityinfo.shared.dto.SiteHistoryDTO;
-import org.activityinfo.test.InjectionSupport;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")

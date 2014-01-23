@@ -22,24 +22,15 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Entity
 @org.hibernate.annotations.Filter(
-    name = "hideDeleted",
-    condition = "(IndicatorId not in (select i.IndicatorId from indicator i where i.dateDeleted is not null))")
+        name = "hideDeleted",
+        condition = "(IndicatorId not in (select i.IndicatorId from indicator i where i.dateDeleted is not null))")
 public class IndicatorValue implements java.io.Serializable {
 
     private IndicatorValueId id;
@@ -51,14 +42,14 @@ public class IndicatorValue implements java.io.Serializable {
     }
 
     public IndicatorValue(IndicatorValueId id, Indicator indicator,
-        ReportingPeriod reportingPeriod) {
+                          ReportingPeriod reportingPeriod) {
         this.id = id;
         this.indicator = indicator;
         this.reportingPeriod = reportingPeriod;
     }
 
     public IndicatorValue(IndicatorValueId id, Indicator indicator,
-        ReportingPeriod reportingPeriod, Double value) {
+                          ReportingPeriod reportingPeriod, Double value) {
         this.id = id;
         this.indicator = indicator;
         this.reportingPeriod = reportingPeriod;
@@ -66,7 +57,7 @@ public class IndicatorValue implements java.io.Serializable {
     }
 
     public IndicatorValue(ReportingPeriod period, Indicator indicator,
-        double value) {
+                          double value) {
 
         this.id = new IndicatorValueId(period.getId(), indicator.getId());
         this.indicator = indicator;
@@ -76,8 +67,8 @@ public class IndicatorValue implements java.io.Serializable {
 
     @EmbeddedId
     @AttributeOverrides({
-        @AttributeOverride(name = "reportingPeriodId", column = @Column(name = "ReportingPeriodId", nullable = false)),
-        @AttributeOverride(name = "indicatorId", column = @Column(name = "IndicatorId", nullable = false)) })
+            @AttributeOverride(name = "reportingPeriodId", column = @Column(name = "ReportingPeriodId", nullable = false)),
+            @AttributeOverride(name = "indicatorId", column = @Column(name = "IndicatorId", nullable = false))})
     public IndicatorValueId getId() {
         return this.id;
     }

@@ -22,15 +22,14 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.common.collect.Sets;
+import org.activityinfo.api.shared.command.GetAdminLevels;
+import org.activityinfo.api.shared.command.result.AdminLevelResult;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.GetAdminLevels;
-import org.activityinfo.shared.command.result.AdminLevelResult;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import com.google.common.collect.Sets;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")

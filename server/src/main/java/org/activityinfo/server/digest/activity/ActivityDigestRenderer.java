@@ -1,14 +1,6 @@
 package org.activityinfo.server.digest.activity;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.activityinfo.client.i18n.I18N;
+import com.teklabs.gwt.i18n.server.LocaleProxy;
 import org.activityinfo.server.database.hibernate.entity.SiteHistory;
 import org.activityinfo.server.digest.DigestModel;
 import org.activityinfo.server.digest.DigestRenderer;
@@ -16,9 +8,11 @@ import org.activityinfo.server.digest.activity.ActivityDigestModel.ActivityMap;
 import org.activityinfo.server.digest.activity.ActivityDigestModel.DatabaseModel;
 import org.activityinfo.server.digest.activity.ActivityDigestModel.PartnerActivityModel;
 import org.activityinfo.server.util.date.DateCalc;
+import org.activityinfo.ui.full.client.i18n.I18N;
 import org.ocpsoft.prettytime.PrettyTime;
 
-import com.teklabs.gwt.i18n.server.LocaleProxy;
+import java.io.IOException;
+import java.util.*;
 
 public class ActivityDigestRenderer implements DigestRenderer {
     private static final int HEADERCELL_WIDTH = 230;
@@ -84,9 +78,9 @@ public class ActivityDigestRenderer implements DigestRenderer {
     }
 
     private void renderActiveDatabase(StringBuilder html, DatabaseModel activeDatabase) {
-        
+
         renderDatabaseRow(html, 2 + activeDatabase.getModel().getDays(), activeDatabase.getName());
-        
+
         renderUserRow(html, activeDatabase.getOwnerActivityMap());
 
         for (PartnerActivityModel partnerModel : activeDatabase.getPartnerActivityModels()) {
@@ -115,17 +109,17 @@ public class ActivityDigestRenderer implements DigestRenderer {
             html.append(2 + partnerModel.getDatabaseModel().getModel().getDays());
             html.append("' style='height:8px'>");
             html.append("</td></tr>");
-    
+
             // partner row
             html.append("<tr>");
             html.append("<td class='act-partner-header' style='padding-left: 12px; color: black; font-weight:bold;'>");
             html.append(partnerModel.getPartner().getName());
             html.append("</td>");
-    
+
             html.append("<td>&nbsp;</td>");
-    
+
             renderGraph(html, partnerModel.getDatabaseModel(), partnerModel.getTotalActivityMap());
-    
+
             html.append("</tr>");
         }
     }
@@ -193,7 +187,7 @@ public class ActivityDigestRenderer implements DigestRenderer {
         Date date = DateCalc.daysAgo(today, (totalDays - dayIndex - 1));
         return I18N.MESSAGES.activityDigestGraphTooltip(updates, date);
     }
-    
+
     private void renderInactiveDatabases(StringBuilder html, ActivityDigestModel model) {
         Collection<DatabaseModel> inactiveDatabases = model.getInactiveDatabases();
         if (!inactiveDatabases.isEmpty()) {
@@ -204,7 +198,7 @@ public class ActivityDigestRenderer implements DigestRenderer {
             html.append("<table class='act-data' border='0' cellpadding='0' cellspacing='0' ");
             html.append("style='width:").append(IA_DBS_HEADERCELL_WIDTH + IA_DBS_CONTENTCELL_WIDTH).append("px; ");
             html.append("border-collapse:collapse;'>");
-            
+
             html.append("<tr>");
             html.append("<th style='width:").append(IA_DBS_HEADERCELL_WIDTH).append("px;'>&nbsp;</th>");
             html.append("<th style='width:").append(IA_DBS_CONTENTCELL_WIDTH).append("px;'>&nbsp;</th>");
@@ -232,7 +226,7 @@ public class ActivityDigestRenderer implements DigestRenderer {
             return I18N.CONSTANTS.lastEditUnknown();
         } else {
             return I18N.CONSTANTS.lastEdit() + " " +
-                new PrettyTime(LocaleProxy.getLocale()).format(new Date(lastEdit.getTimeCreated()));
+                    new PrettyTime(LocaleProxy.getLocale()).format(new Date(lastEdit.getTimeCreated()));
             // return DateCalc.daysBeforeMidnight(new Date(), lastEdit.getTimeCreated()) + " day(s) ago";
         }
     }

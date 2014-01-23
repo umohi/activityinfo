@@ -22,16 +22,15 @@ package org.activityinfo.server.util.jaxrs;
  * #L%
  */
 
-import java.lang.reflect.Method;
-import java.util.logging.Logger;
-
-import javax.ws.rs.Path;
-
 import com.google.inject.servlet.ServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
+import javax.ws.rs.Path;
+import java.lang.reflect.Method;
+import java.util.logging.Logger;
+
 /**
- * Base class for Guice Modules that provide REST endpoints. 
+ * Base class for Guice Modules that provide REST endpoints.
  * Use the bindResource() shortcut to tell the GuiceContainer
  * about your resource and add it's @Path to the list of uris
  * that are sent to GuiceContainer.
@@ -69,7 +68,7 @@ public abstract class AbstractRestModule extends ServletModule {
     }
 
     protected final void bindResource(Class clazz, String pattern,
-        String... morePatterns) {
+                                      String... morePatterns) {
         bind(clazz);
         filter(pattern, morePatterns).through(GuiceContainer.class);
     }

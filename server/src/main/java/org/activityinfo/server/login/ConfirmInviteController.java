@@ -22,19 +22,9 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import javax.inject.Provider;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.NoResultException;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.login.model.ConfirmInvitePageModel;
@@ -42,9 +32,14 @@ import org.activityinfo.server.login.model.InvalidInvitePageModel;
 import org.activityinfo.server.util.MailingListClient;
 import org.activityinfo.server.util.logging.LogException;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+import javax.inject.Provider;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 @Path(ConfirmInviteController.ENDPOINT)
 public class ConfirmInviteController {
@@ -56,8 +51,8 @@ public class ConfirmInviteController {
 
     @Inject
     public ConfirmInviteController(Provider<UserDAO> userDAO,
-        AuthTokenProvider authTokenProvider,
-        MailingListClient mailingList) {
+                                   AuthTokenProvider authTokenProvider,
+                                   MailingListClient mailingList) {
         super();
         this.userDAO = userDAO;
         this.mailingList = mailingList;
@@ -70,7 +65,7 @@ public class ConfirmInviteController {
     public Viewable getPage(@Context UriInfo uri) throws Exception {
         try {
             User user = userDAO.get().findUserByChangePasswordKey(
-                uri.getRequestUri().getQuery());
+                    uri.getRequestUri().getQuery());
             return new ConfirmInvitePageModel(user).asViewable();
 
         } catch (NoResultException e) {
@@ -81,12 +76,12 @@ public class ConfirmInviteController {
     @POST
     @LogException(emailAlert = true)
     public Response confirm(
-        @Context UriInfo uri,
-        @FormParam("key") String key,
-        @FormParam("locale") String locale,
-        @FormParam("password") String password,
-        @FormParam("name") String name,
-        @FormParam("newsletter") boolean newsletter) throws Exception {
+            @Context UriInfo uri,
+            @FormParam("key") String key,
+            @FormParam("locale") String locale,
+            @FormParam("password") String password,
+            @FormParam("name") String name,
+            @FormParam("newsletter") boolean newsletter) throws Exception {
 
         User user = null;
         try {
@@ -96,25 +91,25 @@ public class ConfirmInviteController {
             user.changePassword(checkNonEmpty(password));
             user.clearChangePasswordKey();
             user.setEmailNotification(true);
-            
-            if(newsletter) {
+
+            if (newsletter) {
                 mailingList.subscribe(user);
             }
-            
+
             return Response
-                .seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
-                .cookie(authTokenProvider.createNewAuthCookies(user))
-                .build();
+                    .seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
+                    .cookie(authTokenProvider.createNewAuthCookies(user))
+                    .build();
 
         } catch (EntityNotFoundException e) {
             return Response.ok(new InvalidInvitePageModel().asViewable())
-                .type(MediaType.TEXT_HTML)
-                .build();
+                    .type(MediaType.TEXT_HTML)
+                    .build();
         } catch (IllegalArgumentException e) {
             return Response.ok(
-                ConfirmInvitePageModel.incompleteForm(user).asViewable())
-                .type(MediaType.TEXT_HTML)
-                .build();
+                    ConfirmInvitePageModel.incompleteForm(user).asViewable())
+                    .type(MediaType.TEXT_HTML)
+                    .build();
         }
     }
 

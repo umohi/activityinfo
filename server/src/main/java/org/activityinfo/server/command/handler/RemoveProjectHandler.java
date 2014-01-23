@@ -22,15 +22,14 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.RemoveProject;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.VoidResult;
+import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.entity.change.ChangeHandler;
 import org.activityinfo.server.entity.change.ChangeRequestBuilder;
-import org.activityinfo.shared.command.RemoveProject;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.VoidResult;
-import org.activityinfo.shared.exception.CommandException;
-
-import com.google.inject.Inject;
 
 public class RemoveProjectHandler implements CommandHandler<RemoveProject> {
 
@@ -43,15 +42,15 @@ public class RemoveProjectHandler implements CommandHandler<RemoveProject> {
 
     @Override
     public CommandResult execute(RemoveProject cmd, User user)
-        throws CommandException {
-        
+            throws CommandException {
+
 
         changeHandler.execute(ChangeRequestBuilder.delete()
-            .setEntityType("Project")
-            .setEntityId(cmd.getId())
-            .setUser(user));
-        
-        
+                .setEntityType("Project")
+                .setEntityId(cmd.getId())
+                .setUser(user));
+
+
         return new VoidResult();
     }
 

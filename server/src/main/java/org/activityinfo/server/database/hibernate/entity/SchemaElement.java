@@ -1,7 +1,5 @@
 package org.activityinfo.server.database.hibernate.entity;
 
-import javax.persistence.EntityListeners;
-
 import org.activityinfo.server.entity.auth.Authorization;
 import org.activityinfo.server.entity.auth.DesignAuthorizationHandler;
 
@@ -29,7 +27,7 @@ import org.activityinfo.server.entity.auth.DesignAuthorizationHandler;
 
 @Authorization(handler = DesignAuthorizationHandler.class)
 public interface SchemaElement {
-    
+
     UserDatabase findOwningDatabase();
 
 }

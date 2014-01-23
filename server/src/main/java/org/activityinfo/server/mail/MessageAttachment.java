@@ -4,26 +4,29 @@ public class MessageAttachment {
     private String contentType;
     private String filename;
     private byte[] content;
-    
+
     public String getContentType() {
         return contentType;
     }
-    
+
     public MessageAttachment setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
+
     public String getFilename() {
         return filename;
     }
+
     public MessageAttachment withFileName(String filename) {
         this.filename = filename;
         return this;
     }
+
     public byte[] getContent() {
         return content;
     }
-    
+
     public MessageAttachment setContent(byte[] content) {
         this.content = content;
         return this;
@@ -34,6 +37,6 @@ public class MessageAttachment {
         this.contentType = contentType;
         return this;
     }
-    
-    
+
+
 }

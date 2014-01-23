@@ -22,10 +22,10 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import javax.servlet.ServletContext;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import javax.servlet.ServletContext;
 
 public class MapIconPathProvider implements Provider<String> {
 

@@ -22,25 +22,23 @@ package org.activityinfo.server.digest;
  * #L%
  */
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Logger;
-
-import javax.mail.MessagingException;
-
-import org.activityinfo.client.i18n.I18N;
+import com.teklabs.gwt.i18n.server.LocaleProxy;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.mail.Message;
 import org.activityinfo.server.util.html.HtmlTag;
 import org.activityinfo.server.util.html.HtmlWriter;
+import org.activityinfo.ui.full.client.i18n.I18N;
 
-import com.teklabs.gwt.i18n.server.LocaleProxy;
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.Date;
+import java.util.logging.Logger;
 
 public class DigestMessageBuilder {
 
     private static final Logger LOGGER =
-        Logger.getLogger(DigestMessageBuilder.class.getName());
+            Logger.getLogger(DigestMessageBuilder.class.getName());
 
     private final DigestModelBuilder digestModelBuilder;
     private final DigestRenderer digestRenderer;
@@ -50,7 +48,7 @@ public class DigestMessageBuilder {
     private int days;
 
     public DigestMessageBuilder(DigestModelBuilder digestModelBuilder,
-        DigestRenderer digestRenderer) {
+                                DigestRenderer digestRenderer) {
         this.digestModelBuilder = digestModelBuilder;
         this.digestRenderer = digestRenderer;
     }
@@ -92,7 +90,7 @@ public class DigestMessageBuilder {
         htmlWriter.startDocumentHeader();
         htmlWriter.documentTitle(subject);
         htmlWriter.open(new HtmlTag("style")).at("type", "text/css")
-            .text("body { font-family:Helvetica; } a {color: black; text-decoration:none;} ").close();
+                .text("body { font-family:Helvetica; } a {color: black; text-decoration:none;} ").close();
         htmlWriter.endDocumentHeader();
 
         htmlWriter.startDocumentBody();

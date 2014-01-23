@@ -22,40 +22,39 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.inject.Inject;
+import org.activityinfo.analysis.server.generator.ReportGenerator;
+import org.activityinfo.analysis.server.renderer.itext.HtmlReportRenderer;
+import org.activityinfo.analysis.shared.model.DateRange;
+import org.activityinfo.analysis.shared.model.ReportElement;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.RenderReportHtml;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.HtmlResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.util.logging.LogException;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.logging.Logger;
 
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.report.generator.ReportGenerator;
-import org.activityinfo.server.report.renderer.itext.HtmlReportRenderer;
-import org.activityinfo.server.util.logging.LogException;
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.RenderReportHtml;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.HtmlResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.report.model.DateRange;
-import org.activityinfo.shared.report.model.ReportElement;
-
-import com.google.inject.Inject;
-
 /**
  * @author Alex Bertram
- * @see org.activityinfo.shared.command.RenderReportHtml
+ * @see org.activityinfo.api.shared.command.RenderReportHtml
  */
 public class RenderReportHtmlHandler implements
-    CommandHandler<RenderReportHtml> {
+        CommandHandler<RenderReportHtml> {
 
     private final ReportGenerator generator;
     private final HtmlReportRenderer renderer;
 
     private static final Logger LOGGER = Logger
-        .getLogger(RenderReportHtmlHandler.class.getName());
+            .getLogger(RenderReportHtmlHandler.class.getName());
 
     @Inject
     public RenderReportHtmlHandler(ReportGenerator generator,
-        HtmlReportRenderer renderer) {
+                                   HtmlReportRenderer renderer) {
         this.generator = generator;
         this.renderer = renderer;
     }
@@ -63,7 +62,7 @@ public class RenderReportHtmlHandler implements
     @Override
     @LogException
     public CommandResult execute(RenderReportHtml cmd, User user)
-        throws CommandException {
+            throws CommandException {
         ReportElement model = cmd.getModel();
 
         LOGGER.fine("Model: " + model);

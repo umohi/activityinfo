@@ -1,41 +1,34 @@
 package org.activityinfo.server.digest.geo;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import org.activityinfo.client.i18n.I18N;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.activityinfo.analysis.shared.content.BubbleMapMarker;
+import org.activityinfo.analysis.shared.content.MapMarker;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.result.SiteResult;
+import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.SiteHistory;
 import org.activityinfo.server.digest.DigestModel;
 import org.activityinfo.server.digest.DigestRenderer;
 import org.activityinfo.server.digest.geo.GeoDigestModel.DatabaseModel;
 import org.activityinfo.server.util.date.DateCalc;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.result.SiteResult;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.report.content.BubbleMapMarker;
-import org.activityinfo.shared.report.content.MapMarker;
+import org.activityinfo.ui.full.client.i18n.I18N;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class GeoDigestRenderer implements DigestRenderer {
     private static final String BUBBLE_COLOR = "67a639";
-    
+
     private static final Logger LOGGER =
-        Logger.getLogger(GeoDigestRenderer.class.getName());
-    
+            Logger.getLogger(GeoDigestRenderer.class.getName());
+
     private final Provider<EntityManager> entityManager;
     private final DispatcherSync dispatcher;
 
@@ -70,7 +63,7 @@ public class GeoDigestRenderer implements DigestRenderer {
 
     private void renderDatabases(StringBuilder html, GeoDigestModel model) throws IOException {
         html.append("<div class='geo-data' style='margin-top:20px'>");
-        
+
         Collection<DatabaseModel> databases = model.getDatabases();
         for (DatabaseModel database : databases) {
             if (database.isRenderable()) {
@@ -80,7 +73,7 @@ public class GeoDigestRenderer implements DigestRenderer {
 
         html.append("</div>");
     }
-    
+
     private void renderDatabase(StringBuilder html, DatabaseModel databaseModel) throws IOException {
         html.append("<div class='geo-database' style='margin-top:20px'>");
         html.append("<span class='geo-header' style='font-weight:bold; color: #" + BUBBLE_COLOR + ";'>");
@@ -111,21 +104,21 @@ public class GeoDigestRenderer implements DigestRenderer {
         }
         html.append("</div>");
     }
-    
+
     private void renderSites(StringBuilder html, DatabaseModel databaseModel, Collection<Integer> siteIds) {
         if (!siteIds.isEmpty()) {
             for (Integer siteId : siteIds) {
                 SiteResult siteResult = dispatcher.execute(GetSites.byId(siteId));
                 SiteDTO siteDTO = siteResult.getData().get(0);
                 ActivityDTO activityDTO = databaseModel.getModel().getSchemaDTO()
-                    .getActivityById(siteDTO.getActivityId());
+                        .getActivityById(siteDTO.getActivityId());
 
                 List<SiteHistory> histories = findSiteHistory(siteId, databaseModel.getModel().getFrom());
                 for (SiteHistory history : histories) {
                     html.append("<span class='geo-site' style='margin-left:10px;'>&bull; ");
                     html.append(I18N.MESSAGES.geoDigestSiteMsg(
-                        history.getUser().getEmail(), history.getUser().getName(),
-                        activityDTO.getName(), siteDTO.getLocationName()));
+                            history.getUser().getEmail(), history.getUser().getName(),
+                            activityDTO.getName(), siteDTO.getLocationName()));
 
                     Date targetDate = databaseModel.getModel().getDate();
                     Date creationDate = new Date(history.getTimeCreated());
@@ -148,17 +141,17 @@ public class GeoDigestRenderer implements DigestRenderer {
      * @param user
      * @param from
      * @return the sitehistory edited since the specified timestamp (milliseconds) and linked to the specified database
-     *         and user. The resulting list is grouped by user, keeping the last created sitehistory entry per user.
+     * and user. The resulting list is grouped by user, keeping the last created sitehistory entry per user.
      */
     @VisibleForTesting
     @SuppressWarnings("unchecked")
     List<SiteHistory> findSiteHistory(Integer siteId, long from) {
 
         Query query = entityManager.get().createQuery(
-            "select distinct h from SiteHistory h " +
-                "where h.site.id = :siteId and h.timeCreated >= :from " +
-                "order by h.timeCreated"
-            );
+                "select distinct h from SiteHistory h " +
+                        "where h.site.id = :siteId and h.timeCreated >= :from " +
+                        "order by h.timeCreated"
+        );
         query.setParameter("siteId", siteId);
         query.setParameter("from", from);
 

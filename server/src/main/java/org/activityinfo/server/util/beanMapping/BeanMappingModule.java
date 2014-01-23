@@ -22,15 +22,14 @@ package org.activityinfo.server.util.beanMapping;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeanMappingModule extends AbstractModule {
 

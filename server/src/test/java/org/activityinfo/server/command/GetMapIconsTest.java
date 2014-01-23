@@ -22,11 +22,11 @@ package org.activityinfo.server.command;
  * #L%
  */
 
+import org.activityinfo.api.shared.command.GetMapIcons;
+import org.activityinfo.api.shared.command.result.MapIconResult;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.handler.GetMapIconsHandler;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.GetMapIcons;
-import org.activityinfo.shared.command.result.MapIconResult;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ public class GetMapIconsTest extends CommandTestCase2 {
 
         GetMapIconsHandler handler = new GetMapIconsHandler("src/main/webapp/mapicons");
         MapIconResult result = (MapIconResult) handler.execute(
-            new GetMapIcons(), new User());
+                new GetMapIcons(), new User());
 
         Assert.assertTrue(result.getData().size() > 0);
 

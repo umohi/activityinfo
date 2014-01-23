@@ -23,50 +23,50 @@
 <@scaffolding title="${title}">
 
     <@content>
-        <h5>&#171; <a href="/admin/reports">Administrative Reports</a></h5>
-      
-        <h3>${title}</h3>
+    <h5>&#171; <a href="/admin/reports">Administrative Reports</a></h5>
+
+    <h3>${title}</h3>
 
         <#if hint??>
         <em>${hint}</em>
         </#if>
-                
-        <table id="report" class="display">
-            <thead>
-                <tr>
-                    <#list headers as header>
-                    <th>${header}</th>
-                    </#list>
-                </tr>
-            </thead>
-            <tbody>
-                <#list rows as row>
-                <tr>
-                    <#list row as field> 
+
+    <table id="report" class="display">
+        <thead>
+        <tr>
+            <#list headers as header>
+                <th>${header}</th>
+            </#list>
+        </tr>
+        </thead>
+        <tbody>
+            <#list rows as row>
+            <tr>
+                <#list row as field>
                     <td>${field!'unknown'}</td>
-                    </#list>
-                </tr>
                 </#list>
-            </tbody>
-        </table>
-            
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+
     </@content>
 
     <@footer/>
-    
+
     <@scripts>
-        <script type="text/javascript" src="/js/datatables-1.9.4/jquery.dataTables.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready( function () {
-                $('#report').dataTable({
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": true,
-                    "bSort": false,
-                    "bInfo": false,
-                    "bAutoWidth": false 
-                });
-            } );
-        </script>
+    <script type="text/javascript" src="/js/datatables-1.9.4/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#report').dataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bSort": false,
+                "bInfo": false,
+                "bAutoWidth": false
+            });
+        });
+    </script>
     </@scripts>
 </@scaffolding>

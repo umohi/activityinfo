@@ -29,7 +29,7 @@ public class Jaro {
 
         //get the number of transpositions
         int transpositions = 0;
-        int n=common1.length();
+        int n = common1.length();
         for (int i = 0; i < n; i++) {
             if (common1.charAt(i) != common2.charAt(i))
                 transpositions++;
@@ -50,7 +50,7 @@ public class Jaro {
      * @param string2
      * @param distanceSep
      * @return a string buffer of characters from string1 within string2 if they are of a given
-     *         distance seperation from the position in string1
+     * distance seperation from the position in string1
      */
     private static StringBuilder getCommonCharacters(final String string1, final String string2, final int distanceSep) {
         //create a return buffer of characters
@@ -58,8 +58,8 @@ public class Jaro {
         //create a copy of string2 for processing
         final StringBuilder copy = new StringBuilder(string2);
         //iterate over string1
-        int n=string1.length();
-        int m=string2.length();
+        int n = string1.length();
+        int m = string2.length();
         for (int i = 0; i < n; i++) {
             final char ch = string1.charAt(i);
             //set boolean for quick loop exit if found
@@ -73,7 +73,7 @@ public class Jaro {
                     //append character found
                     returnCommons.append(ch);
                     //alter copied string2 for processing
-                    copy.setCharAt(j, (char)0);
+                    copy.setCharAt(j, (char) 0);
                 }
             }
         }

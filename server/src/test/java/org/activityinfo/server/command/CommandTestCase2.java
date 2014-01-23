@@ -22,10 +22,15 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import javax.persistence.EntityManager;
-
-import org.activityinfo.client.dispatch.AsyncMonitor;
-import org.activityinfo.client.dispatch.Dispatcher;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.teklabs.gwt.i18n.server.LocaleProxy;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.authentication.AuthenticationModuleStub;
 import org.activityinfo.server.database.TestDatabaseModule;
 import org.activityinfo.server.database.hibernate.entity.User;
@@ -36,31 +41,24 @@ import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.util.TemplateModule;
 import org.activityinfo.server.util.blob.BlobServiceModuleStub;
 import org.activityinfo.server.util.config.ConfigModuleStub;
-import org.activityinfo.shared.command.Command;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
+import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.ui.full.client.dispatch.Dispatcher;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.teklabs.gwt.i18n.server.LocaleProxy;
+import javax.persistence.EntityManager;
 
 /**
  * Test fixture for running hibernate-free commands.
- * 
+ * <p/>
  * The future.
- * 
  */
 @Modules({
-    TestDatabaseModule.class,
-    MockHibernateModule.class,
-    TemplateModule.class,
-    GwtRpcModule.class,
-    AuthenticationModuleStub.class,
-    BlobServiceModuleStub.class,
-    ConfigModuleStub.class
+        TestDatabaseModule.class,
+        MockHibernateModule.class,
+        TemplateModule.class,
+        GwtRpcModule.class,
+        AuthenticationModuleStub.class,
+        BlobServiceModuleStub.class,
+        ConfigModuleStub.class
 })
 public class CommandTestCase2 {
 
@@ -75,7 +73,7 @@ public class CommandTestCase2 {
     }
 
     protected <T extends CommandResult> T execute(Command<T> command)
-        throws CommandException {
+            throws CommandException {
 
         User user = null;
         if (AuthenticationModuleStub.getCurrentUser().getUserId() == 0) {
@@ -97,7 +95,7 @@ public class CommandTestCase2 {
         T result = context.startExecute(command);
 
         // normally each request and so each handleCommand() gets its own
-        // EntityManager, but here successive requests in the same test
+        // EntityManager, but here successive requests in the same fixtures
         // will share an EntityManager, which can be bad if there are
         // collections
         // still living in the first-level cache
@@ -116,7 +114,7 @@ public class CommandTestCase2 {
 
             @Override
             public <C extends Command<R>, R extends CommandResult> R execute(
-                C command) {
+                    C command) {
                 try {
                     return CommandTestCase2.this.execute(command);
                 } catch (CommandException e) {
@@ -127,20 +125,20 @@ public class CommandTestCase2 {
     }
 
     public Dispatcher getDispatcher() {
-    	return new Dispatcher() {
-			
-			@Override
-			public <T extends CommandResult> void execute(Command<T> command,
-					AsyncCallback<T> callback) {
-				T result = CommandTestCase2.this.execute(command);
-				callback.onSuccess(result);
-			}
-			
-			@Override
-			public <T extends CommandResult> void execute(Command<T> command,
-					AsyncMonitor monitor, AsyncCallback<T> callback) {
-				execute(command, callback);
-			}
-		};
+        return new Dispatcher() {
+
+            @Override
+            public <T extends CommandResult> void execute(Command<T> command,
+                                                          AsyncCallback<T> callback) {
+                T result = CommandTestCase2.this.execute(command);
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public <T extends CommandResult> void execute(Command<T> command,
+                                                          AsyncMonitor monitor, AsyncCallback<T> callback) {
+                execute(command, callback);
+            }
+        };
     }
 }

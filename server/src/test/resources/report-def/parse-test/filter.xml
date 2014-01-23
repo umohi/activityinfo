@@ -22,14 +22,13 @@
   -->
 
 
-
 <report frequency="adhoc">
 
   <filter>
     <restriction dimension="indicator">
       <category>21</category>
     </restriction>
-    <dateRange min="2008-12-01" max="2009-05-01" />
+    <dateRange min="2008-12-01" max="2009-05-01"/>
   </filter>
 </report>
 

@@ -1,11 +1,11 @@
 package org.activityinfo.server.digest;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import org.activityinfo.server.util.date.DateCalc;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class DigestDateUtilTest {
 
@@ -32,7 +32,7 @@ public class DigestDateUtilTest {
         Assert.assertFalse(DateCalc.isOnToday(d, c));
     }
 
-    @Test (expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testIsOnTodayTomorrow() {
         // evening
         Date d = createDate();
@@ -49,7 +49,7 @@ public class DigestDateUtilTest {
         // should throw
         Assert.assertFalse(DateCalc.isOnToday(d, c));
     }
-    
+
     @Test
     public void testIsOnYesterday() {
         Date d = createDate();

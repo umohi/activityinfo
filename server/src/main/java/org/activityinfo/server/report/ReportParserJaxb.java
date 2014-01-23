@@ -22,17 +22,16 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.logging.Logger;
+import org.activityinfo.analysis.shared.model.Report;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-
-import org.activityinfo.shared.report.model.Report;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.logging.Logger;
 
 /**
  * @author Alex Bertram
@@ -40,7 +39,7 @@ import org.activityinfo.shared.report.model.Report;
 public class ReportParserJaxb {
 
     private static final Logger LOGGER = Logger
-        .getLogger(ReportParserJaxb.class.getName());
+            .getLogger(ReportParserJaxb.class.getName());
 
 
     private static class ContextHolder {
@@ -50,7 +49,7 @@ public class ReportParserJaxb {
             try {
                 LOGGER.info("Initializing JAXB context...");
                 context = JAXBContext.newInstance(Report.class.getPackage()
-                    .getName());
+                        .getName());
                 LOGGER.info("JAXB Initialization complete");
             } catch (JAXBException e) {
                 throw new RuntimeException(e);

@@ -22,27 +22,25 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import java.util.logging.Logger;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import java.util.logging.Logger;
 
 /**
  * MethodInterceptor that implements declarative transaction management. See
  * {@link org.activityinfo.server.database.hibernate.dao.Transactional}
- * 
+ *
  * @author Alex Bertram
  */
 public class TransactionalInterceptor implements MethodInterceptor {
 
     private static final Logger LOGGER = Logger
-        .getLogger(TransactionalInterceptor.class.getName());
+            .getLogger(TransactionalInterceptor.class.getName());
 
     private Injector injector;
 
@@ -77,7 +75,7 @@ public class TransactionalInterceptor implements MethodInterceptor {
     }
 
     private Object attemptInvocation(MethodInvocation methodInvocation,
-        EntityTransaction tx) throws Throwable {
+                                     EntityTransaction tx) throws Throwable {
         try {
             return methodInvocation.proceed();
         } catch (Exception e) {

@@ -22,21 +22,20 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import javax.persistence.EntityManager;
-import javax.xml.bind.JAXBException;
-
-import org.activityinfo.client.page.report.json.ReportJsonFactory;
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.CreateReport;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.exception.ParseException;
 import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.report.ReportParserJaxb;
-import org.activityinfo.shared.command.CreateReport;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.exception.ParseException;
+import org.activityinfo.ui.full.client.page.report.json.ReportJsonFactory;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.xml.bind.JAXBException;
 
 public class CreateReportHandler implements CommandHandler<CreateReport> {
     private EntityManager em;
@@ -46,14 +45,14 @@ public class CreateReportHandler implements CommandHandler<CreateReport> {
 
     @Inject
     public CreateReportHandler(EntityManager em,
-        ReportJsonFactory reportJsonFactory) {
+                               ReportJsonFactory reportJsonFactory) {
         this.em = em;
         this.reportJsonFactory = reportJsonFactory;
     }
 
     @Override
     public CommandResult execute(CreateReport cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         // verify that the XML is valid
         try {
@@ -65,7 +64,7 @@ public class CreateReportHandler implements CommandHandler<CreateReport> {
 
             if (cmd.getDatabaseId() != null) {
                 reportDef.setDatabase(em.getReference(UserDatabase.class,
-                    cmd.getDatabaseId()));
+                        cmd.getDatabaseId()));
             }
 
             reportDef.setTitle(cmd.getReport().getTitle());

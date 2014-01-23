@@ -22,26 +22,25 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.GetCountries;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.CountryResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.CountryDTO;
+import org.activityinfo.server.database.hibernate.dao.CountryDAO;
+import org.activityinfo.server.database.hibernate.entity.Country;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.dozer.Mapper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.activityinfo.server.database.hibernate.dao.CountryDAO;
-import org.activityinfo.server.database.hibernate.entity.Country;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.GetCountries;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.CountryResult;
-import org.activityinfo.shared.dto.CountryDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.dozer.Mapper;
-
-import com.google.inject.Inject;
-
 public class GetCountriesHandler implements CommandHandler<GetCountries> {
 
     private final static Logger LOG = Logger
-        .getLogger(GetCountriesHandler.class.getName());
+            .getLogger(GetCountriesHandler.class.getName());
 
     private final CountryDAO countryDAO;
     private final Mapper mapper;
@@ -55,9 +54,9 @@ public class GetCountriesHandler implements CommandHandler<GetCountries> {
     @SuppressWarnings("unchecked")
     @Override
     public CommandResult execute(GetCountries cmd, User user)
-        throws CommandException {
+            throws CommandException {
         return new CountryResult(
-            mapToDtos(countryDAO.queryAllCountriesAlphabetically()));
+                mapToDtos(countryDAO.queryAllCountriesAlphabetically()));
     }
 
     private ArrayList<CountryDTO> mapToDtos(List<Country> countries) {

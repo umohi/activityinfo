@@ -22,23 +22,22 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
+import com.google.inject.Inject;
+import org.activityinfo.analysis.server.generator.MapIconPath;
+import org.activityinfo.api.shared.command.GetMapIcons;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.MapIconResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.MapIconDTO;
+import org.activityinfo.server.database.hibernate.entity.User;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.report.generator.MapIconPath;
-import org.activityinfo.shared.command.GetMapIcons;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.MapIconResult;
-import org.activityinfo.shared.dto.MapIconDTO;
-import org.activityinfo.shared.exception.CommandException;
-
-import com.google.inject.Inject;
-
 /**
  * @author Alex Bertram
- * @see org.activityinfo.shared.command.GetMapIcons
+ * @see org.activityinfo.api.shared.command.GetMapIcons
  */
 public class GetMapIconsHandler implements CommandHandler<GetMapIcons> {
 
@@ -51,7 +50,7 @@ public class GetMapIconsHandler implements CommandHandler<GetMapIcons> {
 
     @Override
     public CommandResult execute(GetMapIcons cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         File iconFolder = new File(mapIconPath);
 

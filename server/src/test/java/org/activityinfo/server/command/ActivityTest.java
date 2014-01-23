@@ -22,27 +22,22 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import junit.framework.Assert;
-
+import org.activityinfo.api.shared.command.BatchCommand;
+import org.activityinfo.api.shared.command.CreateEntity;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.UpdateEntity;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.*;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.BatchCommand;
-import org.activityinfo.shared.command.CreateEntity;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.UpdateEntity;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.LocationTypeDTO;
-import org.activityinfo.shared.dto.Published;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.UserDatabaseDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/schema1.db.xml")
@@ -69,7 +64,7 @@ public class ActivityTest extends CommandTestCase {
          */
 
         LocationTypeDTO locType = schema.getCountryById(1).getLocationTypes()
-            .get(0);
+                .get(0);
 
         ActivityDTO act = new ActivityDTO();
         act.setName("Warshing the dishes");
@@ -90,11 +85,11 @@ public class ActivityTest extends CommandTestCase {
 
         Assert.assertEquals("name", "Warshing the dishes", act.getName());
         Assert.assertEquals("locationType", locType.getName(), act
-            .getLocationType().getName());
+                .getLocationType().getName());
         Assert.assertEquals("reportingFrequency", ActivityDTO.REPORT_MONTHLY,
-            act.getReportingFrequency());
+                act.getReportingFrequency());
         Assert.assertEquals("public", Published.NOT_PUBLISHED.getIndex(),
-            act.getPublished());
+                act.getPublished());
 
     }
 
@@ -108,16 +103,16 @@ public class ActivityTest extends CommandTestCase {
         changes2.put("sortOrder", 1);
 
         execute(new BatchCommand(
-            new UpdateEntity("Activity", 1, changes1),
-            new UpdateEntity("Activity", 2, changes2)));
+                new UpdateEntity("Activity", 1, changes1),
+                new UpdateEntity("Activity", 2, changes2)));
 
         /* Confirm the order is changed */
 
         SchemaDTO schema = execute(new GetSchema());
         Assert.assertEquals(2, schema.getDatabaseById(1).getActivities().get(0)
-            .getId());
+                .getId());
         Assert.assertEquals(1, schema.getDatabaseById(1).getActivities().get(1)
-            .getId());
+                .getId());
     }
 
     @Test
@@ -133,6 +128,6 @@ public class ActivityTest extends CommandTestCase {
 
         SchemaDTO schema = execute(new GetSchema());
         Assert.assertEquals(Published.ALL_ARE_PUBLISHED.getIndex(), schema
-            .getActivityById(1).getPublished());
+                .getActivityById(1).getPublished());
     }
 }

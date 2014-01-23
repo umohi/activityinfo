@@ -22,19 +22,17 @@ package org.activityinfo.server.util;
  * #L%
  */
 
-import org.activityinfo.server.database.hibernate.entity.Domain;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import org.activityinfo.server.database.hibernate.entity.Domain;
 
 /**
  * Provides Dependency Injection of the FreeMarker Template Configuration
@@ -56,24 +54,24 @@ public class TemplateModule extends AbstractModule {
         config.setSharedVariable("domain", new InjectedTemplateModel<Domain>(domainProvider));
         return config;
     }
-    
+
     private static class InjectedTemplateModel<T> implements TemplateHashModel {
-    	private Provider<T> provider;
-    
-    	public InjectedTemplateModel(Provider<T> provider) {
-			super();
-			this.provider = provider;
-		}
+        private Provider<T> provider;
 
-		@Override
-		public TemplateModel get(String key) throws TemplateModelException {
-			BeanModel model = new BeanModel(provider.get(), new BeansWrapper());
-			return model.get(key);
-		}
+        public InjectedTemplateModel(Provider<T> provider) {
+            super();
+            this.provider = provider;
+        }
 
-		@Override
-		public boolean isEmpty() throws TemplateModelException {
-			return false;
-		}
+        @Override
+        public TemplateModel get(String key) throws TemplateModelException {
+            BeanModel model = new BeanModel(provider.get(), new BeansWrapper());
+            return model.get(key);
+        }
+
+        @Override
+        public boolean isEmpty() throws TemplateModelException {
+            return false;
+        }
     }
 }

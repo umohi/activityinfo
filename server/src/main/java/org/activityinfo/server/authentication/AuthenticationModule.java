@@ -22,14 +22,13 @@ package org.activityinfo.server.authentication;
  * #L%
  */
 
-import org.activityinfo.shared.auth.AuthenticatedUser;
-
 import com.google.inject.servlet.ServletModule;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
 
 /**
  * Guice Module defining bindings for Authentication interfaces. (The default is
  * checks the password against the database)
- * 
+ * <p/>
  * See
  * http://code.google.com/p/google-web-toolkit-incubator/wiki/LoginSecurityFAQ
  * for background

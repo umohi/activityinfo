@@ -22,21 +22,8 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import java.io.IOException;
-
-import javax.inject.Provider;
-import javax.persistence.NoResultException;
-import javax.servlet.ServletException;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
+import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.database.hibernate.dao.Transactional;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.entity.User;
@@ -45,8 +32,15 @@ import org.activityinfo.server.login.model.ChangePasswordPageModel;
 import org.activityinfo.server.login.model.InvalidInvitePageModel;
 import org.activityinfo.server.util.logging.LogException;
 
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+import javax.inject.Provider;
+import javax.persistence.NoResultException;
+import javax.servlet.ServletException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.io.IOException;
 
 @Path(ChangePasswordController.ENDPOINT)
 public class ChangePasswordController {
@@ -67,7 +61,7 @@ public class ChangePasswordController {
     public Viewable getPage(@Context UriInfo uri) throws Exception {
         try {
             User user = userDAO.get().findUserByChangePasswordKey(
-                uri.getRequestUri().getQuery());
+                    uri.getRequestUri().getQuery());
             return new ChangePasswordPageModel(user).asViewable();
         } catch (NoResultException e) {
             return new InvalidInvitePageModel().asViewable();
@@ -77,27 +71,27 @@ public class ChangePasswordController {
     @POST
     @LogException(emailAlert = true)
     public Response changePassword(@Context UriInfo uri,
-        @FormParam("key") String key, @FormParam("password") String password)
-        throws IOException, ServletException {
+                                   @FormParam("key") String key, @FormParam("password") String password)
+            throws IOException, ServletException {
         User user = null;
         try {
             user = userDAO.get().findUserByChangePasswordKey(key);
         } catch (NoResultException e) {
             return Response.ok()
-                .entity(new InvalidInvitePageModel().asViewable())
-                .type(MediaType.TEXT_HTML)
-                .build();
+                    .entity(new InvalidInvitePageModel().asViewable())
+                    .type(MediaType.TEXT_HTML)
+                    .build();
         }
 
         changePassword(user, password);
 
         return Response.seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
-            .cookie(authTokenProvider.createNewAuthCookies(user)).build();
+                .cookie(authTokenProvider.createNewAuthCookies(user)).build();
     }
 
     @Transactional
     protected void changePassword(User user, String newPassword)
-        throws IncompleteFormException {
+            throws IncompleteFormException {
         user.changePassword(newPassword);
         user.clearChangePasswordKey();
     }

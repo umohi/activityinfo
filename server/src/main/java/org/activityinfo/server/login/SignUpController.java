@@ -22,25 +22,10 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.inject.Provider;
-import javax.persistence.EntityManager;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
+import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.database.hibernate.dao.Transactional;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDAOImpl;
@@ -52,15 +37,24 @@ import org.activityinfo.server.mail.MailSender;
 import org.activityinfo.server.mail.SignUpConfirmationMessage;
 import org.activityinfo.server.util.logging.LogException;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+import javax.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.io.IOException;
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path("/signUp")
 public class SignUpController {
     public static final String ENDPOINT = "/signUp*";
-    
+
     private static final Logger LOGGER = Logger.getLogger(SignUpController.class.getName());
 
     private static final int MAX_PARAM_LENGTH = 200;
@@ -76,15 +70,15 @@ public class SignUpController {
 
     @Inject
     private Provider<Domain> domainProvider;
-    
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     @LogException(emailAlert = true)
     public Viewable getPage(@Context HttpServletRequest req)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         return new SignUpPageModel().asViewable();
     }
-    
+
     @GET
     @Path("/sent")
     @Produces(MediaType.TEXT_HTML)
@@ -97,20 +91,20 @@ public class SignUpController {
     @LogException(emailAlert = true)
     @Transactional
     public Response signUp(
-        @FormParam("name") String name,
-        @FormParam("organization") String organization,
-        @FormParam("jobtitle") String jobtitle,
-        @FormParam("email") String email,
-        @FormParam("locale") String locale) {
-    	
-        LOGGER.info("New user signing up! [name: " + name + ", email: " + email
-            + ", locale: " + locale + ", organization: " + organization + ", job title: " + jobtitle + "]");
+            @FormParam("name") String name,
+            @FormParam("organization") String organization,
+            @FormParam("jobtitle") String jobtitle,
+            @FormParam("email") String email,
+            @FormParam("locale") String locale) {
 
-        if(!domainProvider.get().isSignUpAllowed()) {
-        	LOGGER.severe("Blocked attempt to signup via " + domainProvider.get().getHost());
-        	return Response.status(Status.FORBIDDEN).build();
+        LOGGER.info("New user signing up! [name: " + name + ", email: " + email
+                + ", locale: " + locale + ", organization: " + organization + ", job title: " + jobtitle + "]");
+
+        if (!domainProvider.get().isSignUpAllowed()) {
+            LOGGER.severe("Blocked attempt to signup via " + domainProvider.get().getHost());
+            return Response.status(Status.FORBIDDEN).build();
         }
-        
+
         // checking parameter values
         try {
             checkParam(name, true);
@@ -121,17 +115,17 @@ public class SignUpController {
         } catch (IllegalArgumentException e) {
             LOGGER.log(Level.INFO, "User " + name + " (" + email + ") failed to sign up", e);
             return Response.ok(SignUpPageModel.formErrorModel()
-                .set(email, name, organization, jobtitle, locale)
-                .asViewable()).build();
+                    .set(email, name, organization, jobtitle, locale)
+                    .asViewable()).build();
         }
 
         try {
             // check duplicate email
             if (userDAO.get().doesUserExist(email)) {
                 return Response.ok(new SignUpAddressExistsPageModel(email).asViewable())
-                    .type(MediaType.TEXT_HTML).build();
+                        .type(MediaType.TEXT_HTML).build();
             }
-            
+
             // persist new user
             User user = UserDAOImpl.createNewUser(email, name, organization, jobtitle, locale);
             userDAO.get().persist(user);
@@ -146,10 +140,10 @@ public class SignUpController {
             LOGGER.log(Level.SEVERE, "User " + name + " (" + email + ") failed to sign up", e);
             entityManager.getTransaction().rollback();
             return Response
-                .ok(SignUpPageModel.genericErrorModel()
-                .set(email, name, organization, jobtitle, locale)
-                .asViewable())
-                .build();
+                    .ok(SignUpPageModel.genericErrorModel()
+                            .set(email, name, organization, jobtitle, locale)
+                            .asViewable())
+                    .build();
         }
     }
 

@@ -22,12 +22,11 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
 import org.activityinfo.server.authentication.SecureTokenGenerator;
 import org.activityinfo.server.database.hibernate.entity.User;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
 
 /**
  * @author Alex Bertram
@@ -42,24 +41,24 @@ public class UserDAOImpl extends GenericDAO<User, Integer> implements UserDAO {
     @Override
     public boolean doesUserExist(String email) {
         return getEntityManager().createNamedQuery("findUserByEmail")
-            .setParameter("email", email)
-            .getResultList().size() == 1;
+                .setParameter("email", email)
+                .getResultList().size() == 1;
     }
 
     @Override
     public User findUserByEmail(String email) {
 
         return (User) getEntityManager().createNamedQuery("findUserByEmail")
-            .setParameter("email", email)
-            .getSingleResult();
+                .setParameter("email", email)
+                .getSingleResult();
     }
 
     @Override
     public User findUserByChangePasswordKey(String key) {
         return (User) getEntityManager()
-            .createNamedQuery("findUserByChangePasswordKey")
-            .setParameter("key", key)
-            .getSingleResult();
+                .createNamedQuery("findUserByChangePasswordKey")
+                .setParameter("key", key)
+                .getSingleResult();
     }
 
     /**

@@ -22,20 +22,18 @@ package org.activityinfo.server.mail;
  * #L%
  */
 
-import java.io.UnsupportedEncodingException;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-
-import com.google.common.collect.Lists;
-
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 
 public class Message {
 
-    
+
     private List<InternetAddress> to = Lists.newArrayList();
     private List<InternetAddress> bcc = Lists.newArrayList();
     private InternetAddress replyTo = null;
@@ -43,13 +41,13 @@ public class Message {
     private String subject;
     private String textBody;
     private String htmlBody;
-   
+
 
     public Message to(String email, String name)
-        throws MessagingException {
+            throws MessagingException {
         try {
             to.add(new InternetAddress(
-                email, name));
+                    email, name));
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
@@ -57,7 +55,7 @@ public class Message {
     }
 
     public Message replyTo(String email, String name)
-        throws MessagingException {
+            throws MessagingException {
         InternetAddress address;
         try {
             address = new InternetAddress(email, name);
@@ -68,7 +66,7 @@ public class Message {
         return this;
     }
 
-    public Message to(String email) throws AddressException  {
+    public Message to(String email) throws AddressException {
         to.add(new InternetAddress(email));
         return this;
     }
@@ -77,26 +75,25 @@ public class Message {
         bcc.add(new InternetAddress(email));
     }
 
-    public Message subject(String subject)  {
+    public Message subject(String subject) {
         this.subject = subject;
         return this;
     }
 
-    public void body(String text)  {
+    public void body(String text) {
         textBody = text;
     }
 
-    public void htmlBody(String html)  {
+    public void htmlBody(String html) {
         htmlBody = html;
     }
 
-    public MessageAttachment addAttachment()  {
+    public MessageAttachment addAttachment() {
         MessageAttachment attachment = new MessageAttachment();
         attachments.add(attachment);
         return attachment;
     }
-    
-    
+
 
     public List<InternetAddress> getTo() {
         return to;
@@ -125,7 +122,7 @@ public class Message {
     public String getHtmlBody() {
         return htmlBody;
     }
-    
+
     public String getSafeHtmlBody() {
         StringBuilder encoded = new StringBuilder();
         for (int i = 0; i != htmlBody.length(); ++i) {
@@ -142,7 +139,7 @@ public class Message {
     public boolean hasTextBody() {
         return textBody != null;
     }
-    
+
     public boolean hasHtmlBody() {
         return htmlBody != null;
     }

@@ -22,23 +22,15 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.persistence.EntityManager;
-
-import org.activityinfo.client.local.command.handler.KeyGenerator;
+import com.google.common.collect.Maps;
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.*;
+import org.activityinfo.api.shared.command.result.SiteResult;
+import org.activityinfo.api.shared.model.AttributeDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.command.handler.sync.TimestampHelper;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
@@ -47,31 +39,27 @@ import org.activityinfo.server.database.hibernate.entity.LocationType;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
 import org.activityinfo.server.util.beanMapping.BeanMappingModule;
 import org.activityinfo.server.util.logging.LoggingModule;
-import org.activityinfo.shared.command.Delete;
-import org.activityinfo.shared.command.GetAdminEntities;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.LocalHandlerTestCase;
-import org.activityinfo.shared.command.UpdateSite;
-import org.activityinfo.shared.command.result.SiteResult;
-import org.activityinfo.shared.dto.AttributeDTO;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.util.Collector;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
+import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.collect.Maps;
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 @RunWith(InjectionSupport.class)
 @Modules({
-    MockHibernateModule.class,
-    BeanMappingModule.class,
-    GwtRpcModule.class,
-    LoggingModule.class
+        MockHibernateModule.class,
+        BeanMappingModule.class,
+        GwtRpcModule.class,
+        LoggingModule.class
 })
 public class SyncIntegrationTest extends LocalHandlerTestCase {
     @Inject
@@ -95,38 +83,38 @@ public class SyncIntegrationTest extends LocalHandlerTestCase {
         assertThat(lastUpdate.getResult(), is(not(nullValue())));
 
         assertThat(
-            queryString("select Name from Indicator where IndicatorId=103"),
-            equalTo("Nb. of distributions"));
+                queryString("select Name from Indicator where IndicatorId=103"),
+                equalTo("Nb. of distributions"));
         assertThat(
-            queryString("select Name from AdminLevel where AdminLevelId=1"),
-            equalTo("Province"));
+                queryString("select Name from AdminLevel where AdminLevelId=1"),
+                equalTo("Province"));
         assertThat(
-            queryString("select Name from AdminEntity where AdminEntityId=21"),
-            equalTo("Irumu"));
+                queryString("select Name from AdminEntity where AdminEntityId=21"),
+                equalTo("Irumu"));
         assertThat(queryString("select Name from Location where LocationId=7"),
-            equalTo("Shabunda"));
+                equalTo("Shabunda"));
         assertThat(
-            queryInt("select value from IndicatorValue where ReportingPeriodId=601 and IndicatorId=6"),
-            equalTo(35));
+                queryInt("select value from IndicatorValue where ReportingPeriodId=601 and IndicatorId=6"),
+                equalTo(35));
 
         assertThat(
-            queryInt("select PartnerId from partnerInDatabase where databaseid=2"),
-            equalTo(1));
+                queryInt("select PartnerId from partnerInDatabase where databaseid=2"),
+                equalTo(1));
 
         assertThat(
-            queryInt("select AttributeGroupId  from AttributeGroupInActivity where ActivityId=2"),
-            equalTo(1));
+                queryInt("select AttributeGroupId  from AttributeGroupInActivity where ActivityId=2"),
+                equalTo(1));
 
         assertThat(queryInt("select count(*) from LockedPeriod"), equalTo(4));
         assertThat(
-            queryInt("select count(*) from LockedPeriod where ProjectId is not null"),
-            equalTo(1));
+                queryInt("select count(*) from LockedPeriod where ProjectId is not null"),
+                equalTo(1));
         assertThat(
-            queryInt("select count(*) from LockedPeriod where ActivityId is not null"),
-            equalTo(1));
+                queryInt("select count(*) from LockedPeriod where ActivityId is not null"),
+                equalTo(1));
         assertThat(
-            queryInt("select count(*) from LockedPeriod where UserDatabaseId is not null"),
-            equalTo(2));
+                queryInt("select count(*) from LockedPeriod where UserDatabaseId is not null"),
+                equalTo(2));
 
         // / now try updating a site remotely (from another client)
         // and veryify that we get the update after we synchronized
@@ -176,14 +164,14 @@ public class SyncIntegrationTest extends LocalHandlerTestCase {
         synchronizeFirstTime();
 
         assertThat(
-            Integer.valueOf(queryString("select count(*) from Location")),
-            equalTo(220));
+                Integer.valueOf(queryString("select count(*) from Location")),
+                equalTo(220));
 
         // update a location on the server
         serverEm.getTransaction().begin();
         Location location = (Location) serverEm.createQuery(
-            "select l from Location l where l.name = 'Penekusu 26'")
-            .getSingleResult();
+                "select l from Location l where l.name = 'Penekusu 26'")
+                .getSingleResult();
         location.setAxe("Motown");
         location.setTimeEdited(new Date().getTime());
         serverEm.getTransaction().commit();
@@ -196,11 +184,11 @@ public class SyncIntegrationTest extends LocalHandlerTestCase {
         Thread.sleep(1000);
 
         assertThat(
-            queryInt("select count(*) from Location where Name='Penekusu 26'"),
-            equalTo(1));
+                queryInt("select count(*) from Location where Name='Penekusu 26'"),
+                equalTo(1));
         assertThat(
-            queryString("select axe from Location where Name='Penekusu 26'"),
-            equalTo("Motown"));
+                queryString("select axe from Location where Name='Penekusu 26'"),
+                equalTo("Motown"));
 
         // now create a new location
         Location newLocation = new Location();
@@ -219,8 +207,8 @@ public class SyncIntegrationTest extends LocalHandlerTestCase {
         synchronize();
 
         assertThat(queryString("select name from Location where LocationId = "
-            + locationId),
-            equalTo("Bukavu"));
+                + locationId),
+                equalTo("Bukavu"));
     }
 
     @Test
@@ -234,7 +222,7 @@ public class SyncIntegrationTest extends LocalHandlerTestCase {
     @OnDataSet("/dbunit/locations.db.xml")
     public void timeStampSurvivesRoundTrip() {
         EntityManager entityManager = serverEntityManagerFactory
-            .createEntityManager();
+                .createEntityManager();
         entityManager.getTransaction().begin();
         Location loc = new Location();
         loc.setTimeEdited(nowIsh += 1500);
@@ -270,7 +258,7 @@ public class SyncIntegrationTest extends LocalHandlerTestCase {
         nowIsh = new Date().getTime();
 
         EntityManager entityManager = serverEntityManagerFactory
-            .createEntityManager();
+                .createEntityManager();
         entityManager.getTransaction().begin();
         for (int i = 1; i <= count; ++i) {
             Location loc = new Location();
@@ -278,9 +266,9 @@ public class SyncIntegrationTest extends LocalHandlerTestCase {
             loc.setTimeEdited(nowIsh += 15000);
             loc.setName("Penekusu " + i);
             loc.getAdminEntities().add(
-                entityManager.getReference(AdminEntity.class, 2));
+                    entityManager.getReference(AdminEntity.class, 2));
             loc.getAdminEntities().add(
-                entityManager.getReference(AdminEntity.class, 12));
+                    entityManager.getReference(AdminEntity.class, 12));
             loc.setLocationType(entityManager.find(LocationType.class, 1));
             entityManager.persist(loc);
             entityManager.flush();

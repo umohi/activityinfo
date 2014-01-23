@@ -22,29 +22,23 @@ package org.activityinfo.server.command;
  * #L%
  */
 
+import junit.framework.Assert;
+import org.activityinfo.api.shared.command.*;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.TargetDTO;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.server.database.OnDataSet;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.Assert;
-
-import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.AddTarget;
-import org.activityinfo.shared.command.BatchCommand;
-import org.activityinfo.shared.command.Delete;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.GetTargets;
-import org.activityinfo.shared.command.UpdateEntity;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.TargetDTO;
-import org.activityinfo.shared.dto.UserDatabaseDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/schema1.db.xml")

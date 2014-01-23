@@ -30,7 +30,7 @@ import org.activityinfo.server.database.hibernate.entity.Indicator;
  * objects. Implemented by
  * {@link org.activityinfo.server.database.hibernate.dao.DAOInvocationHandler
  * proxy}.
- * 
+ *
  * @author Alex Bertram
  */
 public interface IndicatorDAO extends DAO<Indicator, Integer> {

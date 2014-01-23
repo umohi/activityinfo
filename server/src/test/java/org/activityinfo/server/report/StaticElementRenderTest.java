@@ -22,26 +22,25 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import org.activityinfo.analysis.server.renderer.itext.HtmlReportRenderer;
+import org.activityinfo.analysis.server.renderer.itext.PdfReportRenderer;
+import org.activityinfo.analysis.server.renderer.itext.RtfReportRenderer;
+import org.activityinfo.analysis.shared.content.FilterDescription;
+import org.activityinfo.analysis.shared.content.ReportContent;
+import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.server.geo.TestGeometry;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-
-import org.activityinfo.server.report.renderer.itext.HtmlReportRenderer;
-import org.activityinfo.server.report.renderer.itext.PdfReportRenderer;
-import org.activityinfo.server.report.renderer.itext.RtfReportRenderer;
-import org.activityinfo.server.report.renderer.itext.TestGeometry;
-import org.activityinfo.shared.report.content.FilterDescription;
-import org.activityinfo.shared.report.content.ReportContent;
-import org.activityinfo.shared.report.model.Report;
-import org.junit.Before;
-import org.junit.Test;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class StaticElementRenderTest {
 
@@ -53,25 +52,25 @@ public class StaticElementRenderTest {
 
     public Report parseXml(String filename) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Report.class.getPackage()
-            .getName());
+                .getName());
         Unmarshaller um = jc.createUnmarshaller();
         um.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
         return (Report) um.unmarshal(new InputStreamReader(
-            getClass()
-                .getResourceAsStream("/report-def/parse-test/" + filename)));
+                getClass()
+                        .getResourceAsStream("/report-def/parse-test/" + filename)));
     }
 
     public Report getStatic() throws JAXBException {
         Report r = parseXml("static.xml");
         r.setContent(new ReportContent());
         r.getContent()
-            .setFilterDescriptions(new ArrayList<FilterDescription>());
+                .setFilterDescriptions(new ArrayList<FilterDescription>());
         return r;
     }
 
     public static void dumpXml(Report report) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Report.class.getPackage()
-            .getName());
+                .getName());
         Marshaller m = jc.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         m.marshal(report, System.out);
@@ -81,10 +80,10 @@ public class StaticElementRenderTest {
     public void testPdfRender() throws JAXBException, IOException {
         Report r = getStatic();
         PdfReportRenderer renderer = new PdfReportRenderer(TestGeometry.get(),
-            "");
+                "");
 
         FileOutputStream fos = new FileOutputStream(
-            "target/report-tests/render-static" + renderer.getFileSuffix());
+                "target/report-tests/render-static" + renderer.getFileSuffix());
         renderer.render(r, fos);
         fos.close();
     }
@@ -93,10 +92,10 @@ public class StaticElementRenderTest {
     public void testRtfRender() throws JAXBException, IOException {
         Report r = getStatic();
         RtfReportRenderer renderer = new RtfReportRenderer(TestGeometry.get(),
-            "");
+                "");
 
         FileOutputStream fos = new FileOutputStream(
-            "target/report-tests/render-static" + renderer.getFileSuffix());
+                "target/report-tests/render-static" + renderer.getFileSuffix());
         renderer.render(r, fos);
         fos.close();
     }
@@ -105,9 +104,9 @@ public class StaticElementRenderTest {
     public void testHtmlRender() throws JAXBException, IOException {
         Report r = getStatic();
         HtmlReportRenderer renderer = new HtmlReportRenderer(
-            TestGeometry.get(), "", new NullStorageProvider());
+                TestGeometry.get(), "", new NullStorageProvider());
         FileOutputStream fos = new FileOutputStream(
-            "target/report-tests/render-static" + renderer.getFileSuffix());
+                "target/report-tests/render-static" + renderer.getFileSuffix());
         renderer.render(r, fos);
         fos.close();
     }

@@ -1,14 +1,12 @@
 package org.activityinfo.server.util.jaxrs;
 
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-
 import com.google.inject.servlet.ServletModule;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 /**
  * Provides the basic configuration for the Jersey Container,
- * including the FreeMarker ViewProcessor and the 
- * Jackson Json Provider. 
- *
+ * including the FreeMarker ViewProcessor and the
+ * Jackson Json Provider.
  */
 public class JaxRsModule extends ServletModule {
 

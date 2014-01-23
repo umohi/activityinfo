@@ -1,9 +1,16 @@
 package org.activityinfo.server.endpoint.rest;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.Set;
+import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
+import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.model.AttributeDTO;
+import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.server.command.DispatcherSync;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -11,19 +18,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.activityinfo.server.command.DispatcherSync;
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.dto.AttributeDTO;
-import org.activityinfo.shared.dto.IndicatorDTO;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.report.model.DimensionType;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.Sets;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Set;
 
 public class SitesResources {
 
@@ -32,59 +30,59 @@ public class SitesResources {
     public SitesResources(DispatcherSync dispatcher) {
         this.dispatcher = dispatcher;
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String query(
-        @QueryParam("activity") List<Integer> activityIds, 
-        @QueryParam("database") List<Integer> databaseIds,
-        @QueryParam("format") String format) 
-        throws IOException {
+            @QueryParam("activity") List<Integer> activityIds,
+            @QueryParam("database") List<Integer> databaseIds,
+            @QueryParam("format") String format)
+            throws IOException {
 
         Filter filter = new Filter();
         filter.addRestriction(DimensionType.Activity, activityIds);
         filter.addRestriction(DimensionType.Database, databaseIds);
-        
+
         List<SiteDTO> sites = dispatcher.execute(new GetSites(filter)).getData();
 
         StringWriter writer = new StringWriter();
         JsonGenerator json = Jackson.createJsonFactory(writer);
-        
+
         writeJson(sites, json);
-       
+
         return writer.toString();
     }
 
     @GET
     @Path("/points")
     public Response queryPoints(
-        @QueryParam("activity") List<Integer> activityIds,
-        @QueryParam("database") List<Integer> databaseIds,
-        @QueryParam("callback") String callback) throws JsonGenerationException, IOException {
+            @QueryParam("activity") List<Integer> activityIds,
+            @QueryParam("database") List<Integer> databaseIds,
+            @QueryParam("callback") String callback) throws JsonGenerationException, IOException {
 
         Filter filter = new Filter();
         filter.addRestriction(DimensionType.Activity, activityIds);
         filter.addRestriction(DimensionType.Database, databaseIds);
-        
+
         List<SiteDTO> sites = dispatcher.execute(new GetSites(filter)).getData();
-        
+
         StringWriter writer = new StringWriter();
         JsonGenerator json = Jackson.createJsonFactory(writer);
         writeGeoJson(sites, json);
-       
-        if(Strings.isNullOrEmpty(callback)) {
+
+        if (Strings.isNullOrEmpty(callback)) {
             return Response.ok(writer.toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
         } else {
             return Response
-                .ok(callback + "(" + writer.toString() + ");")
-                .type("application/javascript; charset=UTF-8")
-                .build();
+                    .ok(callback + "(" + writer.toString() + ");")
+                    .type("application/javascript; charset=UTF-8")
+                    .build();
         }
     }
 
-    
+
     private void writeJson(List<SiteDTO> sites, JsonGenerator json)
-        throws IOException, JsonGenerationException {
+            throws IOException, JsonGenerationException {
         json.writeStartArray();
 
         for (SiteDTO site : sites) {
@@ -93,11 +91,11 @@ public class SitesResources {
             json.writeNumberField("activity", site.getActivityId());
 
             // write start / end date if applicable
-            if(site.getDate1() != null && site.getDate2() != null) {
+            if (site.getDate1() != null && site.getDate2() != null) {
                 json.writeStringField("startDate", site.getDate1().toString());
                 json.writeStringField("endDate", site.getDate2().toString());
             }
-            
+
             // write the location as a separate object
             json.writeObjectFieldStart("location");
             json.writeNumberField("id", site.getLocationId());
@@ -111,31 +109,31 @@ public class SitesResources {
             }
             json.writeEndObject();
 
-            json.writeObjectFieldStart("partner");            
+            json.writeObjectFieldStart("partner");
             json.writeNumberField("id", site.getPartnerId());
             json.writeStringField("name", site.getPartnerName());
             json.writeEndObject();
-            
-            if(site.getProject() != null) {
+
+            if (site.getProject() != null) {
                 json.writeNumberField("projectId", site.getProject().getId());
             }
 
             // write attributes as a series of ids
             Set<Integer> attributes = getAttributeIds(site);
-            if(!attributes.isEmpty()) {
+            if (!attributes.isEmpty()) {
                 json.writeFieldName("attributes");
                 json.writeStartArray();
-                for(Integer attributeId : attributes) {
+                for (Integer attributeId : attributes) {
                     json.writeNumber(attributeId);
                 }
                 json.writeEndArray();
             }
-            
+
             // write indicators
             Set<Integer> indicatorIds = getIndicatorIds(site);
-            if(!indicatorIds.isEmpty()) {
+            if (!indicatorIds.isEmpty()) {
                 json.writeObjectFieldStart("indicatorValues");
-                for(Integer indicatorId : indicatorIds) {
+                for (Integer indicatorId : indicatorIds) {
                     json.writeNumberField(Integer.toString(indicatorId), site.getIndicatorValue(indicatorId));
                 }
                 json.writeEndObject();
@@ -152,26 +150,26 @@ public class SitesResources {
         json.writeEndArray();
         json.close();
     }
-    
+
     private void writeGeoJson(List<SiteDTO> sites, JsonGenerator json) throws JsonGenerationException, IOException {
         json.writeStartArray();
 
         for (SiteDTO site : sites) {
-            if(site.hasLatLong()) {
+            if (site.hasLatLong()) {
                 json.writeStartObject();
                 json.writeStringField("type", "Feature");
                 json.writeNumberField("id", site.getId());
-                
+
                 // write out the properties object
                 json.writeObjectFieldStart("properties");
                 json.writeStringField("locationName", site.getLocationName());
-                json.writeStringField("partnerName", site.getPartnerName());         
-                if(!Strings.isNullOrEmpty(site.getComments())) {
+                json.writeStringField("partnerName", site.getPartnerName());
+                if (!Strings.isNullOrEmpty(site.getComments())) {
                     json.writeStringField("comments", site.getComments());
                 }
-               
+
                 json.writeEndObject();
-    
+
                 // write out the geometry object
                 json.writeObjectFieldStart("geometry");
                 json.writeStringField("type", "Point");
@@ -185,26 +183,26 @@ public class SitesResources {
             }
         }
         json.writeEndArray();
-        json.close();   
+        json.close();
     }
 
     private Set<Integer> getIndicatorIds(SiteDTO site) {
         Set<Integer> ids = Sets.newHashSet();
-        for(String propertyName : site.getPropertyNames()) {
-            if(propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX) && 
-                site.get(propertyName) != null) {
+        for (String propertyName : site.getPropertyNames()) {
+            if (propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX) &&
+                    site.get(propertyName) != null) {
                 ids.add(IndicatorDTO.indicatorIdForPropertyName(propertyName));
             }
         }
         return ids;
     }
-    
+
     private Set<Integer> getAttributeIds(SiteDTO site) {
         Set<Integer> ids = Sets.newHashSet();
         for (String propertyName : site.getPropertyNames()) {
             if (propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
                 int attributeId = AttributeDTO
-                    .idForPropertyName(propertyName);
+                        .idForPropertyName(propertyName);
                 boolean value = (Boolean) site.get(propertyName, false);
                 if (value) {
                     ids.add(attributeId);

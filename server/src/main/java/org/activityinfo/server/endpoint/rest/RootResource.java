@@ -22,33 +22,26 @@ package org.activityinfo.server.endpoint.rest;
  * #L%
  */
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.activityinfo.api.shared.command.GetCountries;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.model.CountryDTO;
+import org.activityinfo.api.shared.model.DTOViews;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 import org.activityinfo.server.database.hibernate.entity.Country;
 import org.activityinfo.server.util.config.DeploymentConfiguration;
-import org.activityinfo.shared.command.GetCountries;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.dto.CountryDTO;
-import org.activityinfo.shared.dto.DTOViews;
-import org.activityinfo.shared.dto.SchemaCsvWriter;
-import org.activityinfo.shared.dto.UserDatabaseDTO;
 import org.codehaus.jackson.map.annotate.JsonView;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.List;
 
 @Path("/resources")
 public class RootResource {
@@ -59,7 +52,7 @@ public class RootResource {
 
     @Inject
     public RootResource(Provider<EntityManager> entityManager, DispatcherSync dispatcher,
-        DeploymentConfiguration config) {
+                        DeploymentConfiguration config) {
         super();
         this.entityManager = entityManager;
         this.dispatcher = dispatcher;
@@ -69,7 +62,7 @@ public class RootResource {
     @Path("/adminEntity/{id}")
     public AdminEntityResource getAdminEntity(@PathParam("id") int id) {
         return new AdminEntityResource(entityManager.get().find(
-            AdminEntity.class, id));
+                AdminEntity.class, id));
     }
 
     @GET
@@ -79,12 +72,12 @@ public class RootResource {
     public List<CountryDTO> getCountries() {
         return dispatcher.execute(new GetCountries()).getData();
     }
-    
+
 
     @Path("/country/{id: [0-9]+}")
     public CountryResource getCountryById(@PathParam("id") int id) {
-        Country result = (Country)entityManager.get().find(Country.class, id);
-        if(result == null) {
+        Country result = (Country) entityManager.get().find(Country.class, id);
+        if (result == null) {
             throw new WebApplicationException(Status.NOT_FOUND);
         }
         return new CountryResource(result);
@@ -94,14 +87,14 @@ public class RootResource {
     public CountryResource getCountryByCode(@PathParam("code") String code) {
 
         List<Country> results = entityManager.get()
-            .createQuery("select c from Country c where c.codeISO = :iso")
-            .setParameter("iso", code)
-            .getResultList();
-        
-        if(results.isEmpty()) {
+                .createQuery("select c from Country c where c.codeISO = :iso")
+                .setParameter("iso", code)
+                .getResultList();
+
+        if (results.isEmpty()) {
             throw new WebApplicationException(Status.NOT_FOUND);
         }
-        
+
         return new CountryResource(results.get(0));
     }
 
@@ -119,48 +112,48 @@ public class RootResource {
     @Produces(MediaType.APPLICATION_JSON)
     public UserDatabaseDTO getDatabaseSchema(@PathParam("id") int id) {
         UserDatabaseDTO db = dispatcher.execute(new GetSchema())
-            .getDatabaseById(id);
-        if(db == null) {
-        	throw new WebApplicationException(Status.NOT_FOUND);
+                .getDatabaseById(id);
+        if (db == null) {
+            throw new WebApplicationException(Status.NOT_FOUND);
         }
         return db;
     }
-    
+
     @GET
     @Path("/database/{id}/schema.csv")
     public Response getDatabaseSchemaCsv(@PathParam("id") int id) {
-    	UserDatabaseDTO db = getDatabaseSchema(id);
-    	SchemaCsvWriter writer = new SchemaCsvWriter();
-    	writer.write(db);
-    	
-    	return Response.ok()
-    		.type("text/css")
-    		.header("Content-Disposition", "attachment; filename=schema_" + id + ".csv")
-    		.entity(writer.toString())
-    		.build();
-    }    
+        UserDatabaseDTO db = getDatabaseSchema(id);
+        SchemaCsvWriter writer = new SchemaCsvWriter();
+        writer.write(db);
+
+        return Response.ok()
+                .type("text/css")
+                .header("Content-Disposition", "attachment; filename=schema_" + id + ".csv")
+                .entity(writer.toString())
+                .build();
+    }
 
     @Path("/adminLevel/{id}")
     public AdminLevelResource getAdminLevel(@PathParam("id") int id) {
         return new AdminLevelResource(entityManager, entityManager.get().find(
-            AdminLevel.class, id));
+                AdminLevel.class, id));
     }
-    
+
     @Path("/sites")
     public SitesResources getSites() {
         return new SitesResources(dispatcher);
-    }  
-    
+    }
+
     @Path("/tile")
     public TileResource getTile() {
         return new TileResource(config);
     }
-    
+
     @Path("/geocode")
     public GeocodingResource getGeocoder() {
         return new GeocodingResource();
     }
-    
+
     @Path("/locations")
     public LocationsResource getLocations() {
         return new LocationsResource();

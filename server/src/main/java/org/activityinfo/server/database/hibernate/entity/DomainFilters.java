@@ -22,10 +22,10 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import javax.persistence.EntityManager;
-
 import org.hibernate.Filter;
 import org.hibernate.ejb.HibernateEntityManager;
+
+import javax.persistence.EntityManager;
 
 
 public final class DomainFilters {
@@ -44,7 +44,7 @@ public final class DomainFilters {
 
     public static void applyDeletedFilter(EntityManager em) {
         org.hibernate.Session session = ((HibernateEntityManager) em)
-            .getSession();
+                .getSession();
 
         /* Hide entities deleted by users */
         session.enableFilter("hideDeleted");
@@ -57,7 +57,7 @@ public final class DomainFilters {
     public static void applyVisibleFilter(int userId, EntityManager em) {
         /* Hide entities that this user does not have permission to view */
         org.hibernate.Session session = ((HibernateEntityManager) em)
-            .getSession();
+                .getSession();
 
         Filter filter = session.enableFilter("userVisible");
         filter.setParameter("currentUserId", userId);

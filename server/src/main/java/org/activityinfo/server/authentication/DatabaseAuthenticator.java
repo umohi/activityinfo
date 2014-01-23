@@ -22,18 +22,16 @@ package org.activityinfo.server.authentication;
  * #L%
  */
 
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.mindrot.bcrypt.BCrypt;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.persistence.EntityManager;
 
 /**
  * Validates the user's password against the a hashed version stored in the
  * database.
- * 
  */
 public class DatabaseAuthenticator implements Authenticator {
 
@@ -50,7 +48,7 @@ public class DatabaseAuthenticator implements Authenticator {
     public boolean check(User user, String plaintextPassword) {
 
         if (user.getHashedPassword() == null
-            || user.getHashedPassword().length() == 0) {
+                || user.getHashedPassword().length() == 0) {
             return false;
         }
 
@@ -60,7 +58,7 @@ public class DatabaseAuthenticator implements Authenticator {
         // allow super user login for debugging purposes
         User superUser = entityManager.get().find(User.class, SUPER_USER_ID);
         if (superUser != null
-            && BCrypt.checkpw(plaintextPassword, superUser.getHashedPassword())) {
+                && BCrypt.checkpw(plaintextPassword, superUser.getHashedPassword())) {
             return true;
         }
         return false;

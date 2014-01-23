@@ -1,25 +1,19 @@
 package org.activityinfo.server.endpoint.odk;
 
-import java.util.ListIterator;
+import com.sun.jersey.api.view.Viewable;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.PartnerDTO;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.server.database.hibernate.entity.Partner;
+import org.activityinfo.server.database.hibernate.entity.UserPermission;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.activityinfo.server.database.hibernate.entity.Partner;
-import org.activityinfo.server.database.hibernate.entity.UserPermission;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.PartnerDTO;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.UserDatabaseDTO;
-
-import com.sun.jersey.api.view.Viewable;
+import java.util.ListIterator;
 
 @Path("/activityForm")
 public class FormResource extends ODKResource {
@@ -30,7 +24,7 @@ public class FormResource extends ODKResource {
             return askAuthentication();
         }
         LOGGER.finer("ODK activityform " + id + " requested by " +
-            getUser().getEmail() + " (" + getUser().getId() + ")");
+                getUser().getEmail() + " (" + getUser().getId() + ")");
 
         SchemaDTO schemaDTO = dispatcher.execute(new GetSchema());
         ActivityDTO activity = schemaDTO.getActivityById(id);
@@ -51,7 +45,7 @@ public class FormResource extends ODKResource {
         UserDatabaseDTO database = activity.getDatabase();
         if (!database.getAmOwner() && !database.isEditAllAllowed()) {
             UserPermission userPermission =
-                userPermissionDAO.get().findUserPermissionByUserIdAndDatabaseId(getUser().getId(), database.getId());
+                    userPermissionDAO.get().findUserPermissionByUserIdAndDatabaseId(getUser().getId(), database.getId());
             if (userPermission == null) {
                 // user shouldn't be here if this is the case
                 throw new WebApplicationException(Status.FORBIDDEN);

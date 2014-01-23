@@ -22,43 +22,41 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-
-import javax.persistence.EntityManager;
-import javax.xml.bind.JAXBException;
-
+import com.google.inject.Inject;
+import org.activityinfo.analysis.server.generator.ReportGenerator;
+import org.activityinfo.analysis.server.renderer.Renderer;
+import org.activityinfo.analysis.server.renderer.RendererFactory;
+import org.activityinfo.analysis.shared.content.PivotContent;
+import org.activityinfo.analysis.shared.model.MapReportElement;
+import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.analysis.shared.model.ReportElement;
+import org.activityinfo.analysis.shared.model.TableElement;
+import org.activityinfo.analysis.shared.model.labeling.ArabicNumberSequence;
+import org.activityinfo.analysis.shared.model.layers.BubbleMapLayer;
+import org.activityinfo.analysis.shared.model.layers.ScalingType;
+import org.activityinfo.api.shared.command.RenderElement;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
+import org.activityinfo.fixtures.ServletStubModule;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.report.generator.ReportGenerator;
-import org.activityinfo.server.report.renderer.Renderer;
-import org.activityinfo.server.report.renderer.RendererFactory;
-import org.activityinfo.shared.command.RenderElement;
-import org.activityinfo.shared.report.content.PivotContent;
-import org.activityinfo.shared.report.model.MapReportElement;
-import org.activityinfo.shared.report.model.Report;
-import org.activityinfo.shared.report.model.ReportElement;
-import org.activityinfo.shared.report.model.TableElement;
-import org.activityinfo.shared.report.model.labeling.ArabicNumberSequence;
-import org.activityinfo.shared.report.model.layers.BubbleMapLayer;
-import org.activityinfo.shared.report.model.layers.ScalingType;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
-import org.activityinfo.test.ServletStubModule;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(InjectionSupport.class)
-@Modules({ ReportStubModule.class, ServletStubModule.class,
-    MockHibernateModule.class })
+@Modules({ReportStubModule.class, ServletStubModule.class,
+        MockHibernateModule.class})
 public class ReportsTest {
 
     @Inject
@@ -82,15 +80,15 @@ public class ReportsTest {
     @Test
     @Ignore("need dbunit xml with matching data")
     public void testFullReport() throws Throwable {
-        Report report = getReport("full-test.xml");
+        Report report = getReport("full-fixtures.xml");
 
         reportGenerator.generate(user, report, null, null);
         for (RenderElement.Format format : RenderElement.Format.values()) {
             if (format != RenderElement.Format.Excel
-                && format != RenderElement.Format.Excel_Data) {
+                    && format != RenderElement.Format.Excel_Data) {
                 Renderer renderer = factory.get(format);
                 FileOutputStream fos = new FileOutputStream(
-                    "target/report-tests/full-test" + renderer.getFileSuffix());
+                        "target/report-tests/full-fixtures" + renderer.getFileSuffix());
                 renderer.render(report, fos);
                 fos.close();
             }
@@ -112,28 +110,28 @@ public class ReportsTest {
         element.getContent();
 
         assertEquals("Expected different report title", report.getTitle(),
-            "Phase one apple report");
+                "Phase one apple report");
 
         assertEquals("Expected different report description",
-            report.getDescription(),
-            "Apples come in different shapes, colors and taste");
+                report.getDescription(),
+                "Apples come in different shapes, colors and taste");
 
         assertEquals("Expected only one filter",
-            report.getFilter().getRestrictedDimensions().size(), 1);
+                report.getFilter().getRestrictedDimensions().size(), 1);
 
         assertEquals("Expected one element", report.getElements().size(), 1);
 
         assertTrue("Expected pivottable element",
-            element.getContent() instanceof PivotContent);
+                element.getContent() instanceof PivotContent);
 
         assertEquals("Expected title: 'Apples, bananas and oranges'",
-            element.getTitle(), "Apples, bananas and oranges");
+                element.getTitle(), "Apples, bananas and oranges");
     }
 
     @Test
     public void testConsolideDesActivitesReport() throws Throwable {
 
-        // Setup test
+        // Setup fixtures
         Report report = getReport("realworld/ConsolideDesActivites.xml");
 
         reportGenerator.generate(user, report, null, null);
@@ -143,16 +141,16 @@ public class ReportsTest {
         BubbleMapLayer bubbleMap = (BubbleMapLayer) map1.getLayers().get(0);
 
         assertTrue("Arabic numbering expected",
-            bubbleMap.getLabelSequence() instanceof ArabicNumberSequence);
+                bubbleMap.getLabelSequence() instanceof ArabicNumberSequence);
 
         assertEquals("MinRadius of 8 expected", bubbleMap.getMinRadius(), 8);
         assertEquals("MaxRadius of 14 expected", bubbleMap.getMaxRadius(), 14);
         assertEquals("Graduated scaling expected", bubbleMap.getScaling(),
-            ScalingType.Graduated);
+                ScalingType.Graduated);
     }
 
     private void createDirectoriesIfNecessary() {
-        File file = new File("target/report-test");
+        File file = new File("target/report-fixtures");
         file.mkdirs();
     }
 
@@ -167,9 +165,9 @@ public class ReportsTest {
 
     public Report getReport(String reportNameWithPath) throws JAXBException {
         return ReportParserJaxb
-            .parseXML(new InputStreamReader(
-                getClass().getResourceAsStream(
-                    "/report-def/" + reportNameWithPath)));
+                .parseXML(new InputStreamReader(
+                        getClass().getResourceAsStream(
+                                "/report-def/" + reportNameWithPath)));
     }
 
     public Report getReport(int id) {

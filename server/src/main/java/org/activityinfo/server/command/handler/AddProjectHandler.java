@@ -22,20 +22,18 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.Date;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.AddProject;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.ProjectDTO;
 import org.activityinfo.server.database.hibernate.entity.Project;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.shared.command.AddProject;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.ProjectDTO;
-import org.activityinfo.shared.exception.CommandException;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.Date;
 
 /*
  * Adds given Project to the database
@@ -51,7 +49,7 @@ public class AddProjectHandler implements CommandHandler<AddProject> {
 
     @Override
     public CommandResult execute(AddProject cmd, User user)
-        throws CommandException {
+            throws CommandException {
 
         UserDatabase db = em.find(UserDatabase.class, cmd.getDatabaseId());
 

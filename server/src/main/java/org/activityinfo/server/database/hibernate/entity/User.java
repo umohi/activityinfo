@@ -22,27 +22,13 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.mindrot.bcrypt.BCrypt;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Describes a user
- * 
  */
 @Entity
 @Table(name = "UserLogin")
@@ -50,8 +36,8 @@ import org.mindrot.bcrypt.BCrypt;
 // dialects
 // of SQL
 @NamedQueries({
-    @NamedQuery(name = "findUserByEmail", query = "select u from User u where u.email = :email"),
-    @NamedQuery(name = "findUserByChangePasswordKey", query = "select u from User u where u.changePasswordKey = :key") })
+        @NamedQuery(name = "findUserByEmail", query = "select u from User u where u.email = :email"),
+        @NamedQuery(name = "findUserByChangePasswordKey", query = "select u from User u where u.changePasswordKey = :key")})
 public class User implements java.io.Serializable {
 
     private static final long serialVersionUID = 6486007767204653799L;
@@ -68,8 +54,8 @@ public class User implements java.io.Serializable {
     private boolean emailNotification;
     private User invitedBy;
     private Date dateCreated;
-  
-    
+
+
     public User() {
         dateCreated = new Date();
     }
@@ -135,7 +121,7 @@ public class User implements java.io.Serializable {
     public User getInvitedBy() {
         return invitedBy;
     }
-    
+
     public void setInvitedBy(User invitedBy) {
         this.invitedBy = invitedBy;
     }
@@ -151,7 +137,7 @@ public class User implements java.io.Serializable {
 
     /**
      * Gets the user's password, hashed with the BCrypt algorithm.
-     * 
+     *
      * @return The hashed password
      */
     @Column(name = "Password", length = 150)
@@ -161,9 +147,8 @@ public class User implements java.io.Serializable {
 
     /**
      * Sets the user's password, should be hashed with the BCrypt algorithm
-     * 
-     * @param hashed
-     *            The hashed password
+     *
+     * @param hashed The hashed password
      */
     public void setHashedPassword(String hashed) {
         this.hashedPassword = hashed;
@@ -201,7 +186,7 @@ public class User implements java.io.Serializable {
 
     public void changePassword(String newPlaintextPassword) {
         this.hashedPassword = BCrypt.hashpw(newPlaintextPassword,
-            BCrypt.gensalt());
+                BCrypt.gensalt());
     }
 
     @Override
@@ -215,7 +200,7 @@ public class User implements java.io.Serializable {
         final User that = (User) other;
         return this.getEmail().equals(that.getEmail());
     }
-    
+
     @Temporal(TemporalType.DATE)
     public Date getDateCreated() {
         return dateCreated;

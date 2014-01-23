@@ -22,13 +22,13 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import java.util.GregorianCalendar;
-
-import org.activityinfo.client.local.command.handler.KeyGenerator;
-import org.activityinfo.shared.dto.PartnerDTO;
-import org.activityinfo.shared.dto.ProjectDTO;
-import org.activityinfo.shared.dto.SiteDTO;
+import org.activityinfo.api.shared.model.PartnerDTO;
+import org.activityinfo.api.shared.model.ProjectDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 import org.junit.Assert;
+
+import java.util.GregorianCalendar;
 
 public class SiteDTOs {
 
@@ -54,18 +54,18 @@ public class SiteDTOs {
     public static void validateNewSite(SiteDTO secondRead) {
         SiteDTO newSite = newSite();
         Assert.assertEquals("site.location.name", LocationDTOs.newLocation()
-            .getName(), secondRead.getLocationName());
+                .getName(), secondRead.getLocationName());
         Assert.assertEquals("site.location.axe", LocationDTOs.newLocation()
-            .getAxe(), secondRead.getLocationAxe());
+                .getAxe(), secondRead.getLocationAxe());
 
         Assert.assertEquals("site.attribute[1]", true,
-            secondRead.getAttributeValue(1));
+                secondRead.getAttributeValue(1));
         Assert.assertEquals("site.reportingPeriod[0].indicatorValue[0]", 996.0,
-            secondRead.getIndicatorValue(1), 0.1);
+                secondRead.getIndicatorValue(1), 0.1);
         Assert.assertEquals("site.comments", newSite.getComments(),
-            secondRead.getComments());
+                secondRead.getComments());
         Assert.assertEquals("site.partner", newSite.getPartner().getId(),
-            secondRead.getPartner().getId());
+                secondRead.getPartner().getId());
     }
 
 }

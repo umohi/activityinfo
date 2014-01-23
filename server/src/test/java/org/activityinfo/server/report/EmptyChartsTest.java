@@ -22,46 +22,42 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-
-import java.util.Collections;
-
+import org.activityinfo.analysis.server.generator.PivotChartGenerator;
+import org.activityinfo.analysis.shared.model.DateRange;
+import org.activityinfo.analysis.shared.model.Dimension;
+import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.analysis.shared.model.PivotChartReportElement;
+import org.activityinfo.analysis.shared.model.PivotChartReportElement.Type;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GetDimensionLabels;
+import org.activityinfo.api.shared.command.PivotSites;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.dao.IndicatorDAO;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.report.generator.PivotChartGenerator;
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.GetDimensionLabels;
-import org.activityinfo.shared.command.PivotSites;
-import org.activityinfo.shared.report.model.DateRange;
-import org.activityinfo.shared.report.model.Dimension;
-import org.activityinfo.shared.report.model.DimensionType;
-import org.activityinfo.shared.report.model.PivotChartReportElement;
-import org.activityinfo.shared.report.model.PivotChartReportElement.Type;
 import org.junit.Test;
+
+import java.util.Collections;
+
+import static org.easymock.EasyMock.*;
 
 public class EmptyChartsTest {
 
     @Test
     public void generate() {
         PivotChartReportElement element = new PivotChartReportElement(
-            Type.StackedBar);
+                Type.StackedBar);
         element.setIndicator(1);
         element.addCategoryDimension(new Dimension(DimensionType.Partner));
         element.addSeriesDimension(new Dimension(DimensionType.Database));
 
         DispatcherSync dispatcher = createMock(DispatcherSync.class);
         expect(dispatcher.execute(isA(PivotSites.class)))
-            .andReturn(new PivotSites.PivotResult(Collections.EMPTY_LIST));
+                .andReturn(new PivotSites.PivotResult(Collections.EMPTY_LIST));
 
         expect(dispatcher.execute(isA(GetDimensionLabels.class)))
-            .andReturn(
-                new GetDimensionLabels.DimensionLabels(Collections.EMPTY_MAP));
+                .andReturn(
+                        new GetDimensionLabels.DimensionLabels(Collections.EMPTY_MAP));
 
         replay(dispatcher);
 
@@ -70,7 +66,7 @@ public class EmptyChartsTest {
         replay(indicatorDAO);
 
         PivotChartGenerator generator = new PivotChartGenerator(dispatcher,
-            indicatorDAO);
+                indicatorDAO);
         generator.generate(new User(), element, new Filter(), new DateRange());
     }
 

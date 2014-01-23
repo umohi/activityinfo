@@ -22,11 +22,10 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import java.io.Serializable;
+import com.google.common.base.Objects;
 
 import javax.persistence.Embeddable;
-
-import com.google.common.base.Objects;
+import java.io.Serializable;
 
 @Embeddable
 public class ReportSubscriptionId implements Serializable {
@@ -71,6 +70,6 @@ public class ReportSubscriptionId implements Serializable {
 
         ReportSubscriptionId i = (ReportSubscriptionId) obj;
         return Objects.equal(i.getReportId(), this.getReportId())
-            && Objects.equal(i.getUserId(), this.getUserId());
+                && Objects.equal(i.getUserId(), this.getUserId());
     }
 }

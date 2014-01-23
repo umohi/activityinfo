@@ -22,14 +22,13 @@ package org.activityinfo.server.command.handler.sync;
  * #L%
  */
 
+import com.bedatadriven.rebar.sync.server.JpaUpdateBuilder;
+import org.activityinfo.api.shared.command.GetSyncRegionUpdates;
+import org.activityinfo.api.shared.command.result.SyncRegionUpdate;
 import org.activityinfo.server.database.hibernate.entity.ReportingPeriod;
 import org.activityinfo.server.database.hibernate.entity.Site;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.GetSyncRegionUpdates;
-import org.activityinfo.shared.command.result.SyncRegionUpdate;
 import org.json.JSONException;
-
-import com.bedatadriven.rebar.sync.server.JpaUpdateBuilder;
 
 public class SiteTableUpdateBuilder implements UpdateBuilder {
 
@@ -38,7 +37,7 @@ public class SiteTableUpdateBuilder implements UpdateBuilder {
 
     @Override
     public SyncRegionUpdate build(User user, GetSyncRegionUpdates request)
-        throws JSONException {
+            throws JSONException {
         SyncRegionUpdate update = new SyncRegionUpdate();
         update.setComplete(true);
         update.setVersion(CURRENT_VERSION);
@@ -48,15 +47,15 @@ public class SiteTableUpdateBuilder implements UpdateBuilder {
             builder.createTableIfNotExists(Site.class);
             builder.createTableIfNotExists(ReportingPeriod.class);
             builder
-                .executeStatement("create index if not exists site_activity on site (ActivityId)");
+                    .executeStatement("create index if not exists site_activity on site (ActivityId)");
 
             // TODO: fix rebar to handle these types of classes correctly
             builder
-                .executeStatement("create table if not exists AttributeValue (SiteId integer, AttributeId integer, Value integer)");
+                    .executeStatement("create table if not exists AttributeValue (SiteId integer, AttributeId integer, Value integer)");
             builder
-                .executeStatement("create table if not exists IndicatorValue (ReportingPeriodId integer, IndicatorId integer, Value real)");
+                    .executeStatement("create table if not exists IndicatorValue (ReportingPeriodId integer, IndicatorId integer, Value real)");
             builder
-                .executeStatement("create table if not exists sitehistory (id integer, siteid integer, userid integer, timecreated real, initial integer, json text)");
+                    .executeStatement("create table if not exists sitehistory (id integer, siteid integer, userid integer, timecreated real, initial integer, json text)");
             update.setSql(builder.asJson());
         }
 

@@ -22,16 +22,15 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import javax.inject.Provider;
-import javax.ws.rs.core.NewCookie;
-
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.database.hibernate.dao.AuthenticationDAO;
 import org.activityinfo.server.database.hibernate.dao.Transactional;
 import org.activityinfo.server.database.hibernate.entity.Authentication;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.auth.AuthenticatedUser;
 
-import com.google.inject.Inject;
+import javax.inject.Provider;
+import javax.ws.rs.core.NewCookie;
 
 public class AuthTokenProvider {
 
@@ -58,15 +57,15 @@ public class AuthTokenProvider {
         Authentication token = createNewAuthToken(user);
 
         NewCookie cookie = newAuthCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE,
-            token.getId());
+                token.getId());
         NewCookie userCookie = newAuthCookie(AuthenticatedUser.USER_ID_COOKIE,
-            Integer.toString(token.getUser().getId()));
+                Integer.toString(token.getUser().getId()));
         NewCookie emailCookie = newAuthCookie(AuthenticatedUser.EMAIL_COOKIE,
-            user.getEmail());
+                user.getEmail());
         NewCookie localeCookie = newLocaleCookie(
-            AuthenticatedUser.USER_LOCAL_COOKIE, user.getLocale());
+                AuthenticatedUser.USER_LOCAL_COOKIE, user.getLocale());
 
-        return new NewCookie[] { cookie, userCookie, emailCookie, localeCookie };
+        return new NewCookie[]{cookie, userCookie, emailCookie, localeCookie};
     }
 
     private NewCookie newAuthCookie(String name, String value) {
@@ -76,7 +75,7 @@ public class AuthTokenProvider {
         int maxAge = THIS_SESSION;
         boolean onlySecure = false;
         return new NewCookie(name, value, path, domain, comment, maxAge,
-            onlySecure);
+                onlySecure);
     }
 
     private NewCookie newLocaleCookie(String name, String value) {
@@ -86,6 +85,6 @@ public class AuthTokenProvider {
         int maxAge = ONE_YEAR;
         boolean onlySecure = false;
         return new NewCookie(name, value, path, domain, comment, maxAge,
-            onlySecure);
+                onlySecure);
     }
 }

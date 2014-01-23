@@ -22,13 +22,13 @@ package org.activityinfo.server.command.handler.sync;
  * #L%
  */
 
+import org.activityinfo.api.shared.command.GetSyncRegionUpdates;
+import org.activityinfo.api.shared.command.result.SyncRegionUpdate;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.shared.command.GetSyncRegionUpdates;
-import org.activityinfo.shared.command.result.SyncRegionUpdate;
 
 public interface UpdateBuilder {
 
     SyncRegionUpdate build(User user, GetSyncRegionUpdates request)
-        throws Exception;
+            throws Exception;
 
 }

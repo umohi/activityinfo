@@ -22,45 +22,38 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-
-import org.activityinfo.MockDb;
+import com.google.inject.util.Providers;
+import freemarker.template.TemplateModelException;
+import org.activityinfo.api.shared.command.GetUsers;
+import org.activityinfo.api.shared.command.UpdateUserPermissions;
+import org.activityinfo.api.shared.command.result.UserResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
+import org.activityinfo.api.shared.model.PartnerDTO;
+import org.activityinfo.api.shared.model.UserPermissionDTO;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockDb;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.command.handler.UpdateUserPermissionsHandler;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.hibernate.dao.PartnerDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
 import org.activityinfo.server.database.hibernate.dao.UserPermissionDAO;
-import org.activityinfo.server.database.hibernate.entity.Domain;
-import org.activityinfo.server.database.hibernate.entity.Partner;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.server.database.hibernate.entity.UserPermission;
-import org.activityinfo.server.login.MockLoginModule;
+import org.activityinfo.server.database.hibernate.entity.*;
 import org.activityinfo.server.mail.MailSenderStub;
 import org.activityinfo.server.mail.MailSenderStubModule;
 import org.activityinfo.server.util.TemplateModule;
-import org.activityinfo.shared.command.GetUsers;
-import org.activityinfo.shared.command.UpdateUserPermissions;
-import org.activityinfo.shared.command.result.UserResult;
-import org.activityinfo.shared.dto.PartnerDTO;
-import org.activityinfo.shared.dto.UserPermissionDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.shared.exception.IllegalAccessCommandException;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.Modules;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.inject.util.Providers;
-
-import freemarker.template.TemplateModelException;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
-@Modules({ MailSenderStubModule.class })
+@Modules({MailSenderStubModule.class})
 public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
 
     private Partner NRC;
@@ -92,9 +85,9 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
         mailer = new MailSenderStub(templateModule.provideConfiguration(Providers.of(Domain.DEFAULT)));
 
         handler = new UpdateUserPermissionsHandler(
-            db.getDAO(UserDatabaseDAO.class), db.getDAO(PartnerDAO.class),
-            db.getDAO(UserDAO.class),
-            db.getDAO(UserPermissionDAO.class), mailer);
+                db.getDAO(UserDatabaseDAO.class), db.getDAO(PartnerDAO.class),
+                db.getDAO(UserDAO.class),
+                db.getDAO(UserPermissionDAO.class), mailer);
 
         owner = new User();
         owner.setId(99);
@@ -129,7 +122,7 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
      */
     @Test
     public void testVerifyAuthorityForViewPermissions()
-        throws IllegalAccessCommandException {
+            throws IllegalAccessCommandException {
 
         UserPermission executingUserPermissions = new UserPermission();
         executingUserPermissions.setPartner(NRC);
@@ -142,7 +135,7 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
         UpdateUserPermissions cmd = new UpdateUserPermissions(1, dto);
 
         UpdateUserPermissionsHandler.verifyAuthority(cmd,
-            executingUserPermissions);
+                executingUserPermissions);
     }
 
     /**
@@ -151,7 +144,7 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
      */
     @Test
     public void testVerifyAuthorityForEditPermissions()
-        throws IllegalAccessCommandException {
+            throws IllegalAccessCommandException {
 
         UserPermission executingUserPermissions = new UserPermission();
         executingUserPermissions.setPartner(NRC);
@@ -165,12 +158,12 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
         UpdateUserPermissions cmd = new UpdateUserPermissions(1, dto);
 
         UpdateUserPermissionsHandler.verifyAuthority(cmd,
-            executingUserPermissions);
+                executingUserPermissions);
     }
 
     @Test(expected = IllegalAccessCommandException.class)
     public void testFailingVerifyAuthorityForView()
-        throws IllegalAccessCommandException {
+            throws IllegalAccessCommandException {
 
         UserPermission executingUserPermissions = new UserPermission();
         executingUserPermissions.setPartner(IRC);
@@ -184,12 +177,12 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
         UpdateUserPermissions cmd = new UpdateUserPermissions(1, dto);
 
         UpdateUserPermissionsHandler.verifyAuthority(cmd,
-            executingUserPermissions);
+                executingUserPermissions);
     }
 
     @Test
     public void testVerifyAuthorityForViewByOtherPartner()
-        throws IllegalAccessCommandException {
+            throws IllegalAccessCommandException {
 
         UserPermission executingUserPermissions = new UserPermission();
         executingUserPermissions.setPartner(IRC);
@@ -204,12 +197,12 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
         UpdateUserPermissions cmd = new UpdateUserPermissions(1, dto);
 
         UpdateUserPermissionsHandler.verifyAuthority(cmd,
-            executingUserPermissions);
+                executingUserPermissions);
     }
 
     /**
      * Verifies that a user with the manageUsers permission can add another user to the UserDatabase
-     * 
+     *
      * @throws CommandException
      */
     @Test
@@ -231,14 +224,14 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
         UserResult result = execute(new GetUsers(1));
         Assert.assertEquals(1, result.getTotalLength());
         Assert.assertEquals("ralph@lauren.com", result.getData().get(0)
-            .getEmail());
+                .getEmail());
         Assert.assertTrue("edit permissions", result.getData().get(0)
-            .getAllowEdit());
+                .getAllowEdit());
     }
 
     /**
      * Verifies that the owner of a database can update an existing users permission
-     * 
+     *
      * @throws CommandException
      */
     @Test

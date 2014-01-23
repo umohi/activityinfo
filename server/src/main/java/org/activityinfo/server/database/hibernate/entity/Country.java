@@ -22,31 +22,19 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @JsonAutoDetect(JsonMethod.NONE)
 @NamedQuery(name = "queryAllCountriesAlphabetically",
-    query = "select c from Country c order by c.name")
+        query = "select c from Country c order by c.name")
 public class Country implements Serializable {
 
     private int id;
@@ -63,7 +51,7 @@ public class Country implements Serializable {
 
     /**
      * Gets the country's id
-     * 
+     *
      * @return the country's id
      */
     @Id
@@ -76,9 +64,8 @@ public class Country implements Serializable {
 
     /**
      * Sets the country's id
-     * 
-     * @param id
-     *            the country's id
+     *
+     * @param id the country's id
      */
     public void setId(int id) {
         this.id = id;
@@ -92,9 +79,8 @@ public class Country implements Serializable {
 
     /**
      * A short, human-readable name of the Country
-     * 
-     * @param name
-     *            A short, human-readable name of the Country
+     *
+     * @param name A short, human-readable name of the Country
      */
     public void setName(String name) {
         this.name = name;
@@ -113,16 +99,16 @@ public class Country implements Serializable {
     /**
      * The geographic bounds of this Country. Bounds for the Country cannot be
      * null.
-     * 
+     *
      * @return tbe geogaphics bounds of this Country
      */
     @Embedded
     @JsonProperty
     @AttributeOverrides({
-        @AttributeOverride(name = "x1", column = @Column(nullable = false)),
-        @AttributeOverride(name = "y1", column = @Column(nullable = false)),
-        @AttributeOverride(name = "x2", column = @Column(nullable = false)),
-        @AttributeOverride(name = "y2", column = @Column(nullable = false))
+            @AttributeOverride(name = "x1", column = @Column(nullable = false)),
+            @AttributeOverride(name = "y1", column = @Column(nullable = false)),
+            @AttributeOverride(name = "x2", column = @Column(nullable = false)),
+            @AttributeOverride(name = "y2", column = @Column(nullable = false))
     })
     public Bounds getBounds() {
         return this.bounds;
@@ -130,7 +116,7 @@ public class Country implements Serializable {
 
     /**
      * Sets the country's geographic bounds. Bounds for the Country c
-     * 
+     *
      * @param bounds
      */
     public void setBounds(Bounds bounds) {
@@ -139,7 +125,7 @@ public class Country implements Serializable {
 
     /**
      * Gets all the administrative levels for this Country
-     * 
+     *
      * @return a list of all the administrative levels in this Country
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "country")
@@ -150,7 +136,7 @@ public class Country implements Serializable {
 
     /**
      * Sets the administrative levels for this Country
-     * 
+     *
      * @param adminLevels
      */
     public void setAdminLevels(Set<AdminLevel> adminLevels) {

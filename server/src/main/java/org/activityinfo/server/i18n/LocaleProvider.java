@@ -22,17 +22,15 @@ package org.activityinfo.server.i18n;
  * #L%
  */
 
-import java.util.Locale;
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
 
 import javax.inject.Provider;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
-import org.activityinfo.shared.auth.AuthenticatedUser;
-
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import java.util.Locale;
 
 @Singleton
 public class LocaleProvider implements Provider<Locale> {
@@ -75,7 +73,7 @@ public class LocaleProvider implements Provider<Locale> {
 
     private String languageFromHeader() {
         String[] acceptLanguages = Strings.nullToEmpty(
-            req.get().getHeader("Accept-Language")).split(",");
+                req.get().getHeader("Accept-Language")).split(",");
 
         for (String lang : acceptLanguages) {
             if (lang.startsWith("en")) {

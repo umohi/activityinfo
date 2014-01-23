@@ -22,32 +22,27 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-
-import java.util.GregorianCalendar;
-
-import org.activityinfo.client.local.command.handler.KeyGenerator;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import org.activityinfo.api.shared.command.CreateLocation;
+import org.activityinfo.api.shared.command.CreateSite;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.exception.NotAuthorizedException;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.*;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.CreateLocation;
-import org.activityinfo.shared.command.CreateSite;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.exception.NotAuthorizedException;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.AdminEntityDTO;
-import org.activityinfo.shared.dto.LocationDTO;
-import org.activityinfo.shared.dto.PartnerDTO;
-import org.activityinfo.shared.dto.ProjectDTO;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
+import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import java.util.GregorianCalendar;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")
@@ -68,7 +63,7 @@ public class CreateSiteTest extends CommandTestCase2 {
         newSite.setId(result.getNewId());
         assertThat(result.getNewId(), not(equalTo(0)));
         PagingLoadResult<SiteDTO> loadResult = execute(GetSites.byId(newSite
-            .getId()));
+                .getId()));
         Assert.assertEquals(1, loadResult.getData().size());
         SiteDTO secondRead = loadResult.getData().get(0);
         SiteDTOs.validateNewSite(secondRead);
@@ -121,7 +116,7 @@ public class CreateSiteTest extends CommandTestCase2 {
         // try to retrieve what we've created
 
         PagingLoadResult<SiteDTO> loadResult = execute(GetSites.byId(newSite
-            .getId()));
+                .getId()));
 
         Assert.assertEquals(1, loadResult.getData().size());
 
@@ -129,7 +124,7 @@ public class CreateSiteTest extends CommandTestCase2 {
 
         // confirm that the changes are there
         Assert.assertEquals("site.location.name", "Walungu",
-            secondRead.getLocationName());
+                secondRead.getLocationName());
     }
 
     @Test
@@ -165,7 +160,7 @@ public class CreateSiteTest extends CommandTestCase2 {
         // try to retrieve what we've created
 
         PagingLoadResult<SiteDTO> loadResult = execute(GetSites.byId(newSite
-            .getId()));
+                .getId()));
 
         Assert.assertEquals(1, loadResult.getData().size());
 
@@ -173,9 +168,9 @@ public class CreateSiteTest extends CommandTestCase2 {
 
         // confirm that the changes are there
         Assert.assertEquals("site.attribute[2]", false,
-            secondRead.getAttributeValue(1));
+                secondRead.getAttributeValue(1));
         Assert.assertEquals("site.attribute[2]", false,
-            secondRead.getAttributeValue(2));
+                secondRead.getAttributeValue(2));
     }
 
 }

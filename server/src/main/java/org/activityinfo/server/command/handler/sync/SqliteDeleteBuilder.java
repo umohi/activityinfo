@@ -22,17 +22,15 @@ package org.activityinfo.server.command.handler.sync;
  * #L%
  */
 
+import com.bedatadriven.rebar.sql.client.query.SqlQuery;
+import org.hibernate.ejb.HibernateEntityManager;
+import org.hibernate.jdbc.Work;
+
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.persistence.EntityManager;
-
-import org.hibernate.ejb.HibernateEntityManager;
-import org.hibernate.jdbc.Work;
-
-import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 
 public class SqliteDeleteBuilder {
 
@@ -64,34 +62,34 @@ public class SqliteDeleteBuilder {
 
     public void execute(EntityManager entityManager) {
         ((HibernateEntityManager) entityManager).getSession().doWork(
-            new Work() {
+                new Work() {
 
-                @Override
-                public void execute(Connection connection) throws SQLException {
-                    rs = SqlQueryUtil.query(connection, query);
-                    StringBuilder sql = new StringBuilder();
-                    sql.append("DELETE FROM ")
-                        .append(tableName)
-                        .append(" WHERE ")
-                        .append(idName)
-                        .append(" IN (");
+                    @Override
+                    public void execute(Connection connection) throws SQLException {
+                        rs = SqlQueryUtil.query(connection, query);
+                        StringBuilder sql = new StringBuilder();
+                        sql.append("DELETE FROM ")
+                                .append(tableName)
+                                .append(" WHERE ")
+                                .append(idName)
+                                .append(" IN (");
 
-                    boolean needsComma = false;
-                    while (rs.next()) {
-                        if (needsComma) {
-                            sql.append(',');
+                        boolean needsComma = false;
+                        while (rs.next()) {
+                            if (needsComma) {
+                                sql.append(',');
+                            }
+                            sql.append(rs.getInt(1));
+                            needsComma = true;
                         }
-                        sql.append(rs.getInt(1));
-                        needsComma = true;
+                        sql.append(")");
+                        try {
+                            batch.addStatement(sql.toString());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                    sql.append(")");
-                    try {
-                        batch.addStatement(sql.toString());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
+                });
     }
 
 }

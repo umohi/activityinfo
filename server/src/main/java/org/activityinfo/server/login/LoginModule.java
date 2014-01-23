@@ -22,11 +22,11 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import java.util.Map;
-
 import com.google.common.collect.Maps;
 import com.google.inject.servlet.ServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
+
+import java.util.Map;
 
 /**
  * The Bootstrap module is responsible for the minimal static html necessary to
@@ -38,31 +38,31 @@ public class LoginModule extends ServletModule {
     protected void configureServlets() {
 
         serve("/ActivityInfo/ActivityInfo.nocache.js")
-            .with(SelectionServlet.class);
+                .with(SelectionServlet.class);
         serve("/ActivityInfo/ActivityInfo.appcache")
-            .with(SelectionServlet.class);
+                .with(SelectionServlet.class);
         serve("/ActivityInfo/ActivityInfo.gears.manifest")
-            .with(SelectionServlet.class);
+                .with(SelectionServlet.class);
 
         Map<String, String> initParams = Maps.newHashMap();
         filter("/login*").through(GuiceContainer.class);
         filter("/unsupportedBrowser").through(GuiceContainer.class);
-        
+
         filterContainer(initParams,
-            HostController.class,
-            LoginController.class,
-            LogoutController.class,
-            ConfirmInviteController.class,
-            ResetPasswordController.class,
-            ChangePasswordController.class,
-            SignUpController.class,
-            SignUpConfirmationController.class,
-            SignUpAddressExistsController.class);
+                HostController.class,
+                LoginController.class,
+                LogoutController.class,
+                ConfirmInviteController.class,
+                ResetPasswordController.class,
+                ChangePasswordController.class,
+                SignUpController.class,
+                SignUpConfirmationController.class,
+                SignUpAddressExistsController.class);
 
     }
 
     private void filterContainer(Map<String, String> params,
-        Class<?>... endpointClasses) {
+                                 Class<?>... endpointClasses) {
         for (Class<?> c : endpointClasses) {
             bind(c);
 

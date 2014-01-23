@@ -22,23 +22,21 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import java.util.Collection;
-
+import com.extjs.gxt.ui.client.data.ModelData;
 import junit.framework.Assert;
-
+import org.activityinfo.api.shared.command.Delete;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.result.PagingResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.Delete;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.result.PagingResult;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.extjs.gxt.ui.client.data.ModelData;
+import java.util.Collection;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")
@@ -98,7 +96,7 @@ public class DeleteTest extends CommandTestCase {
 
         schema = execute(new GetSchema());
         Assert.assertNull("delete by entity reference",
-            schema.getActivityById(1));
+                schema.getActivityById(1));
         Assert.assertNull("delete by id", schema.getActivityById(4));
     }
 }

@@ -22,32 +22,30 @@ package org.activityinfo.server.endpoint.export;
  * #L%
  */
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.FilterUrlSerializer;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.server.command.DispatcherSync;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.activityinfo.server.command.DispatcherSync;
-import org.activityinfo.shared.command.Filter;
-import org.activityinfo.shared.command.FilterUrlSerializer;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.UserDatabaseDTO;
-import org.activityinfo.shared.report.model.DimensionType;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
 /**
  * Exports complete data to an Excel file
- * 
+ *
  * @author Alex Bertram
  */
 @Singleton
@@ -61,7 +59,7 @@ public class ExportSitesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         Set<Integer> activities = new HashSet<Integer>();
         if (req.getParameterValues("a") != null) {
@@ -71,7 +69,7 @@ public class ExportSitesServlet extends HttpServlet {
         }
 
         Filter filter = FilterUrlSerializer.fromQueryParameter(req
-            .getParameter("filter"));
+                .getParameter("filter"));
 
         SchemaDTO schema = dispatcher.execute(new GetSchema());
 
@@ -79,11 +77,11 @@ public class ExportSitesServlet extends HttpServlet {
         for (UserDatabaseDTO db : schema.getDatabases()) {
             for (ActivityDTO activity : db.getActivities()) {
                 if (!filter.isRestricted(DimensionType.Activity)
-                    ||
-                    filter.getRestrictions(DimensionType.Activity).contains(
-                        activity.getId())) {
+                        ||
+                        filter.getRestrictions(DimensionType.Activity).contains(
+                                activity.getId())) {
                     export.export(activity, filter);
-                
+
                 }
             }
         }
@@ -92,14 +90,14 @@ public class ExportSitesServlet extends HttpServlet {
         resp.setContentType("application/vnd.ms-excel");
         if (req.getHeader("User-Agent").indexOf("MSIE") != -1) {
             resp.addHeader("Content-Disposition",
-                "attachment; filename=ActivityInfo.xls");
+                    "attachment; filename=ActivityInfo.xls");
         } else {
             resp.addHeader(
-                "Content-Disposition",
-                "attachment; filename="
-                    +
-                    ("ActivityInfo Export " + new Date().toString() + ".xls")
-                        .replace(" ", "_"));
+                    "Content-Disposition",
+                    "attachment; filename="
+                            +
+                            ("ActivityInfo Export " + new Date().toString() + ".xls")
+                                    .replace(" ", "_"));
         }
 
         OutputStream os = resp.getOutputStream();

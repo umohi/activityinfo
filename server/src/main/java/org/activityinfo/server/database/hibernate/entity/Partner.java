@@ -22,26 +22,12 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Entity
 @Table(name = "Partner")
@@ -93,7 +79,7 @@ public class Partner implements java.io.Serializable {
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "PartnerInDatabase", joinColumns = { @JoinColumn(name = "PartnerId", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "DatabaseId", nullable = false, updatable = false) })
+    @JoinTable(name = "PartnerInDatabase", joinColumns = {@JoinColumn(name = "PartnerId", nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "DatabaseId", nullable = false, updatable = false)})
     public Set<UserDatabase> getDatabases() {
         return this.databases;
     }

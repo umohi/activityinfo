@@ -22,30 +22,27 @@ package org.activityinfo.server.event.sitehistory;
  * #L%
  */
 
-import java.util.Date;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.SiteCommand;
+import org.activityinfo.api.shared.command.result.SiteResult;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.api.shared.util.JsonUtil;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.Site;
 import org.activityinfo.server.database.hibernate.entity.SiteHistory;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.event.sitechange.ChangeType;
-import org.activityinfo.shared.command.Command;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.SiteCommand;
-import org.activityinfo.shared.command.result.SiteResult;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.util.JsonUtil;
 import org.apache.commons.lang.StringUtils;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
+import java.util.Date;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SiteHistoryProcessor {
     private static final Logger LOGGER = Logger.getLogger(SiteHistoryProcessor.class.getName());
@@ -62,14 +59,14 @@ public class SiteHistoryProcessor {
     }
 
     public void process(Command<?> cmd, final int userId, final int siteId) {
-        assert(cmd instanceof SiteCommand);
-        
+        assert (cmd instanceof SiteCommand);
+
 
         LOGGER.fine("persisting site history (site: " + siteId + ", user: "
-            + userId + ")");
+                + userId + ")");
         EntityManager em = entityManager.get();
-        
-        
+
+
         // It's important to use getReference() here rather
         // than find() becuase the site might not actually have
         // been sent to the database at this point
@@ -79,19 +76,19 @@ public class SiteHistoryProcessor {
 
         if (!type.isNew()) {
             Query q = em
-                .createQuery("select count(*) from SiteHistory where site = :site");
+                    .createQuery("select count(*) from SiteHistory where site = :site");
             q.setParameter("site", site);
             Long count = (Long) q.getSingleResult();
             if (count == 0) {
                 // update, but first entry -> repair history by adding baseline
                 // record with complete site json
                 LOGGER
-                    .fine("site is not new, but history was empty. Adding baseline record..");
+                        .fine("site is not new, but history was empty. Adding baseline record..");
                 SiteResult siteResult = dispatcher.execute(GetSites
-                    .byId(siteId));
+                        .byId(siteId));
                 SiteDTO siteDTO = siteResult.getData().get(0);
                 String fulljson = JsonUtil.encodeMap(siteDTO.getProperties())
-                    .toString();
+                        .toString();
 
                 SiteHistory baseline = new SiteHistory();
                 baseline.setSite(site);
@@ -104,9 +101,9 @@ public class SiteHistoryProcessor {
             }
         }
 
-        
+
         String json = null;
-        
+
         if (type.isNewOrUpdate()) {
             Map<String, Object> changeMap = ((SiteCommand) cmd).getProperties().getTransientMap();
             if (!changeMap.isEmpty()) {
@@ -115,7 +112,7 @@ public class SiteHistoryProcessor {
         } else if (type.isDelete()) {
             json = JSON_DELETE;
         }
-        
+
         if (StringUtils.isNotBlank(json)) {
             persistHistory(site, user, type, json);
         }

@@ -22,25 +22,23 @@ package org.activityinfo.server.endpoint.export;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Date;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.activityinfo.api.shared.command.GetUsers;
+import org.activityinfo.api.shared.command.result.UserResult;
+import org.activityinfo.server.command.DispatcherSync;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.activityinfo.server.command.DispatcherSync;
-import org.activityinfo.shared.command.GetUsers;
-import org.activityinfo.shared.command.result.UserResult;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Date;
 
 /**
  * Exports complete Users List to an Excel file
- * 
+ *
  * @author Muhammad Abid
  */
 @Singleton
@@ -55,7 +53,7 @@ public class ExportUsersServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         int dbId = Integer.valueOf(req.getParameter("dbUsers"));
 
@@ -69,13 +67,13 @@ public class ExportUsersServlet extends HttpServlet {
             resp.setContentType("application/vnd.ms-excel");
             if (req.getHeader("User-Agent").indexOf("MSIE") != -1) {
                 resp.addHeader("Content-Disposition",
-                    "attachment; filename=ActivityInfo.xls");
+                        "attachment; filename=ActivityInfo.xls");
             } else {
                 resp.addHeader(
-                    "Content-Disposition",
-                    "attachment; filename="
-                        + ("ActivityInfo Export " + new Date().toString() + ".xls")
-                            .replace(" ", "_"));
+                        "Content-Disposition",
+                        "attachment; filename="
+                                + ("ActivityInfo Export " + new Date().toString() + ".xls")
+                                .replace(" ", "_"));
             }
 
             OutputStream os = resp.getOutputStream();

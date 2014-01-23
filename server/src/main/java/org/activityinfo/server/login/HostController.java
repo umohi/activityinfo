@@ -21,29 +21,23 @@ package org.activityinfo.server.login;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-    
-import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.CacheControl;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
+import com.bedatadriven.rebar.appcache.server.UserAgentProvider;
+import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.authentication.ServerSideAuthProvider;
 import org.activityinfo.server.login.model.HostPageModel;
 import org.activityinfo.server.login.model.RootPageModel;
 import org.activityinfo.server.util.config.DeploymentConfiguration;
 import org.activityinfo.server.util.logging.LogException;
 
-import com.bedatadriven.rebar.appcache.server.UserAgentProvider;
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.*;
+import java.util.HashMap;
 
 @Path(HostController.ENDPOINT)
 public class HostController {
@@ -54,7 +48,7 @@ public class HostController {
 
     @Inject
     public HostController(DeploymentConfiguration deployConfig,
-        ServerSideAuthProvider authProvider) {
+                          ServerSideAuthProvider authProvider) {
         super();
         this.deployConfig = deployConfig;
         this.authProvider = authProvider;
@@ -64,22 +58,22 @@ public class HostController {
     @Produces(MediaType.TEXT_HTML)
     @LogException(emailAlert = true)
     public Response getHostPage(@Context UriInfo uri,
-        @Context HttpServletRequest req,
-        @QueryParam("redirect") boolean redirect) throws Exception {
+                                @Context HttpServletRequest req,
+                                @QueryParam("redirect") boolean redirect) throws Exception {
 
         if (!authProvider.isAuthenticated()) {
             // Otherwise, go to the default ActivityInfo root page
             return Response
-                .ok(new RootPageModel().asViewable())
-                .type(MediaType.TEXT_HTML)
-                .cacheControl(CacheControl.valueOf("no-cache"))
-                .build();
+                    .ok(new RootPageModel().asViewable())
+                    .type(MediaType.TEXT_HTML)
+                    .cacheControl(CacheControl.valueOf("no-cache"))
+                    .build();
         }
 
         if (redirect) {
             return Response.seeOther(
-                uri.getAbsolutePathBuilder().replacePath(ENDPOINT).build())
-                .build();
+                    uri.getAbsolutePathBuilder().replacePath(ENDPOINT).build())
+                    .build();
         }
 
         String appUri = uri.getAbsolutePathBuilder().replaceQuery("").build().toString();
@@ -88,17 +82,16 @@ public class HostController {
         model.setAppCacheEnabled(checkAppCacheEnabled(req));
 
         return Response.ok(model.asViewable())
-            .type(MediaType.TEXT_HTML)
-            .cacheControl(CacheControl.valueOf("no-cache"))
-            .build();
+                .type(MediaType.TEXT_HTML)
+                .cacheControl(CacheControl.valueOf("no-cache"))
+                .build();
     }
 
     /**
-     * 
      * @return a simple error page indicating that the GWT app does not support
-     *  the user's browser. This is necessary because user-agent based selection
-     *  is done server-side when the javascript is requested, so all we can do 
-     *  is redirect the user to this page.
+     * the user's browser. This is necessary because user-agent based selection
+     * is done server-side when the javascript is requested, so all we can do
+     * is redirect the user to this page.
      */
     @GET
     @Path("/unsupportedBrowser")

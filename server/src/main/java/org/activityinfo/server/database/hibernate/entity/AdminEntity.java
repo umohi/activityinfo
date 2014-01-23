@@ -22,33 +22,16 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import com.vividsolutions.jts.geom.Geometry;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonView;
 import org.hibernate.annotations.Type;
 
-import com.vividsolutions.jts.geom.Geometry;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Alex Bertram
@@ -70,7 +53,7 @@ public class AdminEntity implements java.io.Serializable {
     private Set<Location> locations = new HashSet<Location>(0);
     private Set<AdminEntity> children = new HashSet<AdminEntity>(0);
     private Set<Target> targets = new HashSet<Target>(0);
-    
+
     private Geometry geometry;
 
     public AdminEntity() {
@@ -100,7 +83,7 @@ public class AdminEntity implements java.io.Serializable {
     public AdminLevel getLevel() {
         return this.level;
     }
-    
+
     @Transient
     @JsonView(AdminEntityViews.GeocodeView.class)
     public int getLevelId() {
@@ -113,12 +96,12 @@ public class AdminEntity implements java.io.Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "LocationAdminLink",
-        joinColumns = {
-            @JoinColumn(name = "AdminEntityId", nullable = false, updatable = false) },
-        inverseJoinColumns = {
-            @JoinColumn(name = "LocationId", nullable = false, updatable = false) }
-        )
-        public Set<Location> getLocations() {
+            joinColumns = {
+                    @JoinColumn(name = "AdminEntityId", nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "LocationId", nullable = false, updatable = false)}
+    )
+    public Set<Location> getLocations() {
         return this.locations;
     }
 
@@ -206,14 +189,14 @@ public class AdminEntity implements java.io.Serializable {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
-    
-  
-    @Basic(fetch=FetchType.LAZY)
-    @Type(type="org.hibernate.spatial.GeometryType")
+
+
+    @Basic(fetch = FetchType.LAZY)
+    @Type(type = "org.hibernate.spatial.GeometryType")
     public Geometry getGeometry() {
         return geometry;
     }
-    
+
     public void setGeometry(Geometry geometry) {
         this.geometry = geometry;
     }

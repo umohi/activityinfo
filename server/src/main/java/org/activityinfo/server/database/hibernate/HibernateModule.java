@@ -22,14 +22,15 @@ package org.activityinfo.server.database.hibernate;
  * #L%
  */
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
+import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
+import com.google.common.io.Resources;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.servlet.ServletModule;
+import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import org.activityinfo.server.DeploymentEnvironment;
 import org.activityinfo.server.database.hibernate.dao.FixGeometryTask;
 import org.activityinfo.server.database.hibernate.dao.HibernateDAOModule;
@@ -43,20 +44,17 @@ import org.hibernate.ejb.HibernateEntityManager;
 import org.hibernate.ejb.HibernateEntityManagerFactory;
 import org.hibernate.validator.HibernateValidator;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
-import com.google.common.io.Resources;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.servlet.ServletModule;
-import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.List;
 
 /**
  * Guice module that provides Hibernate-based implementations for the DAO-layer
  * interfaces.
- * 
+ *
  * @author Alex Bertram
  */
 public class HibernateModule extends ServletModule {
@@ -71,12 +69,12 @@ public class HibernateModule extends ServletModule {
 
         filter("/*").through(HibernateSessionFilter.class);
         serve(SchemaServlet.ENDPOINT).with(SchemaServlet.class);
-        
+
         configureEmf();
         configureEm();
         install(new HibernateDAOModule());
         install(new TransactionModule());
-        
+
         // temporary fix for geometry types
         bind(FixGeometryTask.class);
         filter("/tasks/fixGeometry").through(GuiceContainer.class);
@@ -96,12 +94,13 @@ public class HibernateModule extends ServletModule {
         HibernateEntityManager hem = (HibernateEntityManager) em;
         return hem.getSession();
     }
-    
-    @Provides @Singleton
+
+    @Provides
+    @Singleton
     public Validator provideValidator() {
-        ValidatorFactory validatorFactory = Validation.byProvider( HibernateValidator.class )
-            .configure()
-            .buildValidatorFactory();
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
+                .configure()
+                .buildValidatorFactory();
         return validatorFactory.getValidator();
     }
 
@@ -145,7 +144,7 @@ public class HibernateModule extends ServletModule {
         try {
             List<Class> list = Lists.newArrayList();
             List<String> lines =
-                Resources.readLines(HibernateModule.class.getResource("/persistent.classes"), Charsets.UTF_8);
+                    Resources.readLines(HibernateModule.class.getResource("/persistent.classes"), Charsets.UTF_8);
             for (String line : lines) {
                 list.add(Class.forName(line));
             }

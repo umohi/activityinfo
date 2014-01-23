@@ -22,17 +22,17 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.client.local.command.handler.KeyGenerator;
-import org.activityinfo.shared.dto.LocationDTO;
+import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 
 public class LocationDTOs {
     public static LocationDTO newLocation() {
         return new LocationDTO()
-            .setId(new KeyGenerator().generateInt())
-            .setName("Virunga")
-            .setAxe("Goma - Rutshuru")
-            .setLongitude(27.432)
-            .setLatitude(1.23)
-            .setLocationTypeId(1);
+                .setId(new KeyGenerator().generateInt())
+                .setName("Virunga")
+                .setAxe("Goma - Rutshuru")
+                .setLongitude(27.432)
+                .setLatitude(1.23)
+                .setLocationTypeId(1);
     }
 }

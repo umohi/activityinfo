@@ -22,17 +22,16 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.client.page.report.json.ReportJsonFactory;
-import org.activityinfo.client.page.report.json.ReportSerializer;
+import com.google.inject.Singleton;
+import com.google.inject.servlet.ServletModule;
+import org.activityinfo.analysis.server.generator.MapIconPath;
 import org.activityinfo.server.endpoint.gwtrpc.MapIconServlet;
-import org.activityinfo.server.report.generator.MapIconPath;
 import org.activityinfo.server.report.output.BlobServiceStorageProvider;
 import org.activityinfo.server.report.output.StorageProvider;
 import org.activityinfo.server.report.output.TempStorageServlet;
 import org.activityinfo.server.schedule.ReportMailerServlet;
-
-import com.google.inject.Singleton;
-import com.google.inject.servlet.ServletModule;
+import org.activityinfo.ui.full.client.page.report.json.ReportJsonFactory;
+import org.activityinfo.ui.full.client.page.report.json.ReportSerializer;
 
 public class ReportModule extends ServletModule {
 
@@ -45,11 +44,11 @@ public class ReportModule extends ServletModule {
 
         bind(ReportSerializer.class).to(ReportJsonFactory.class);
         bind(StorageProvider.class).to(BlobServiceStorageProvider.class);
-        
+
         bind(String.class)
-            .annotatedWith(MapIconPath.class)
-            .toProvider(MapIconPathProvider.class)
-            .in(Singleton.class);
+                .annotatedWith(MapIconPath.class)
+                .toProvider(MapIconPathProvider.class)
+                .in(Singleton.class);
 
         serve("/icon*").with(MapIconServlet.class);
         serve("/generated/*").with(TempStorageServlet.class);

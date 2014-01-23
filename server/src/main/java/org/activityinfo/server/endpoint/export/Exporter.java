@@ -22,15 +22,11 @@ package org.activityinfo.server.endpoint.export;
  * #L%
  */
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+
 import java.util.Date;
 import java.util.HashMap;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
 
 public abstract class Exporter {
 
@@ -59,15 +55,15 @@ public abstract class Exporter {
     protected void declareStyles() {
         dateStyle = book.createCellStyle();
         dateStyle.setDataFormat(creationHelper.createDataFormat().getFormat(
-            "m/d/yy"));
+                "m/d/yy"));
 
         coordStyle = book.createCellStyle();
         coordStyle.setDataFormat(creationHelper.createDataFormat().getFormat(
-            "0.000000"));
+                "0.000000"));
 
         indicatorValueStyle = book.createCellStyle();
         indicatorValueStyle.setDataFormat(creationHelper.createDataFormat()
-            .getFormat("#,##0"));
+                .getFormat("#,##0"));
 
         Font headerFont = book.createFont();
         headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -89,7 +85,7 @@ public abstract class Exporter {
     }
 
     protected Cell createHeaderCell(Row headerRow, int columnIndex,
-        String text, CellStyle style) {
+                                    String text, CellStyle style) {
         Cell cell = headerRow.createCell(columnIndex);
         cell.setCellValue(creationHelper.createRichTextString(text));
         cell.setCellStyle(style);
@@ -99,24 +95,24 @@ public abstract class Exporter {
 
     protected Cell createHeaderCell(Row headerRow, int columnIndex, String text) {
         return createHeaderCell(headerRow, columnIndex, text,
-            CellStyle.ALIGN_LEFT);
+                CellStyle.ALIGN_LEFT);
     }
 
     protected Cell createHeaderCell(Row headerRow, int columnIndex,
-        String text, int align) {
+                                    String text, int align) {
         Cell cell = headerRow.createCell(columnIndex);
         cell.setCellValue(creationHelper.createRichTextString(text));
 
         switch (align) {
-        case CellStyle.ALIGN_LEFT:
-            cell.setCellStyle(headerStyle);
-            break;
-        case CellStyle.ALIGN_CENTER:
-            cell.setCellStyle(headerStyleCenter);
-            break;
-        case CellStyle.ALIGN_RIGHT:
-            cell.setCellStyle(headerStyleRight);
-            break;
+            case CellStyle.ALIGN_LEFT:
+                cell.setCellStyle(headerStyle);
+                break;
+            case CellStyle.ALIGN_CENTER:
+                cell.setCellStyle(headerStyleCenter);
+                break;
+            case CellStyle.ALIGN_RIGHT:
+                cell.setCellStyle(headerStyleRight);
+                break;
         }
 
         return cell;
@@ -129,7 +125,7 @@ public abstract class Exporter {
     }
 
     protected Cell createCell(Row row, int columnIndex, String text,
-        CellStyle style) {
+                              CellStyle style) {
         Cell cell = createCell(row, columnIndex, text);
         cell.setCellStyle(style);
         return cell;

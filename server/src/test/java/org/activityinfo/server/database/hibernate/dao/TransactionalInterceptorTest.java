@@ -22,21 +22,16 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertNotNull;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import org.junit.Test;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertNotNull;
 
 public class TransactionalInterceptorTest {
 
@@ -119,7 +114,7 @@ public class TransactionalInterceptorTest {
 
     private MockClass getMockInstance(EntityTransaction tx) {
         Injector injector = Guice
-            .createInjector(new MockEntityManagerModule(tx));
+                .createInjector(new MockEntityManagerModule(tx));
         MockClass mock = injector.getInstance(MockClass.class);
         return mock;
     }

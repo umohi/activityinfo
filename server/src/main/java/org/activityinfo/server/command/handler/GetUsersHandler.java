@@ -22,27 +22,25 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
+import com.extjs.gxt.ui.client.Style;
+import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.GetUsers;
+import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api.shared.command.result.UserResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.UserPermissionDTO;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.database.hibernate.entity.UserPermission;
+import org.dozer.Mapper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.database.hibernate.entity.UserPermission;
-import org.activityinfo.shared.command.GetUsers;
-import org.activityinfo.shared.command.result.CommandResult;
-import org.activityinfo.shared.command.result.UserResult;
-import org.activityinfo.shared.dto.UserPermissionDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.dozer.Mapper;
-
-import com.extjs.gxt.ui.client.Style;
-import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.shared.command.GetUsers
+ * @see org.activityinfo.api.shared.command.GetUsers
  */
 public class GetUsersHandler implements CommandHandler<GetUsers> {
 
@@ -57,13 +55,13 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
 
     @Override
     public CommandResult execute(GetUsers cmd, User currentUser)
-        throws CommandException {
+            throws CommandException {
 
         String orderByClause = "";
 
         if (cmd.getSortInfo().getSortDir() != Style.SortDir.NONE) {
             String dir = cmd.getSortInfo().getSortDir() == Style.SortDir.ASC ? "asc"
-                : "desc";
+                    : "desc";
             String property = null;
             String field = cmd.getSortInfo().getSortField();
 
@@ -83,10 +81,10 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
         }
 
         Query query = em.createQuery("select up from UserPermission up where " +
-            "up.database.id = :dbId and " +
-            "up.user.id <> :currentUserId " + orderByClause)
-            .setParameter("dbId", cmd.getDatabaseId())
-            .setParameter("currentUserId", currentUser.getId());
+                "up.database.id = :dbId and " +
+                "up.user.id <> :currentUserId " + orderByClause)
+                .setParameter("dbId", cmd.getDatabaseId())
+                .setParameter("currentUserId", currentUser.getId());
 
         if (cmd.getOffset() > 0) {
             query.setFirstResult(cmd.getOffset());
@@ -103,13 +101,13 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
         }
 
         int totalCount = ((Number) em
-            .createQuery("select count(up) from UserPermission up where " +
-                "up.database.id = :dbId and " +
-                "up.user.id <> :currentUserId ")
-            .setParameter("dbId", cmd.getDatabaseId())
-            .setParameter("currentUserId", currentUser.getId())
-            .getSingleResult())
-            .intValue();
+                .createQuery("select count(up) from UserPermission up where " +
+                        "up.database.id = :dbId and " +
+                        "up.user.id <> :currentUserId ")
+                .setParameter("dbId", cmd.getDatabaseId())
+                .setParameter("currentUserId", currentUser.getId())
+                .getSingleResult())
+                .intValue();
 
         return new UserResult(models, cmd.getOffset(), totalCount);
     }

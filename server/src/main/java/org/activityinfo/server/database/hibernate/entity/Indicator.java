@@ -22,31 +22,18 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 /**
  * Defines an Indicator, a numeric value that can change over time.
- * 
+ *
  * @author Alex Bertram
- * 
  */
 @Entity
 @org.hibernate.annotations.Filter(
-    name = "hideDeleted",
-    condition = "DateDeleted is null")
+        name = "hideDeleted",
+        condition = "DateDeleted is null")
 public class Indicator implements java.io.Serializable, Orderable, Deleteable {
 
     private int id;
@@ -70,7 +57,6 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     }
 
     /**
-     * 
      * @return the id of this Indicator
      */
     @Id
@@ -106,9 +92,9 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
      * Gets a description of the units in which this Indicator is expressed.
      * Note that this is for descriptive purpose only for the user, it does not
      * carry any semantics for our system.
-     * 
+     *
      * @return description of the units in which this indicator is expressed.
-     *         Examples: "households", "%" "cm"
+     * Examples: "households", "%" "cm"
      */
     @Column(name = "Units", nullable = false, length = 15)
     public String getUnits() {
@@ -117,9 +103,8 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
 
     /**
      * Sets the description of the units in which this indicator is expressed.
-     * 
-     * @param units
-     *            a description of the units
+     *
+     * @param units a description of the units
      */
     public void setUnits(String units) {
         this.units = units;
@@ -127,7 +112,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
 
     /**
      * @return a full description of this indicator, containing perhaps detailed
-     *         instructions on how it is to be collected or calculated.
+     * instructions on how it is to be collected or calculated.
      */
     @Lob
     public String getDescription() {
@@ -143,7 +128,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
 
     /**
      * Checks if the indicator is mandatory in the new and edit site forms.
-     * 
+     *
      * @return True if indicator is mandatory, false otherwise
      */
     @Column(name = "mandatory", nullable = false)
@@ -153,9 +138,8 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
 
     /**
      * Sets the mandatory flag
-     * 
-     * @param mandatory
-     *            True if the indicator mandatory in the new and edit site forms.
+     *
+     * @param mandatory True if the indicator mandatory in the new and edit site forms.
      */
     public void setMandatory(boolean mandatory) {
         this.mandatory = mandatory;
@@ -211,7 +195,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
 
     /**
      * @return a short list header that is used when this Indicator's values are
-     *         displayed in a grid
+     * displayed in a grid
      */
     @Column(name = "ListHeader", length = 30)
     public String getListHeader() {
@@ -221,7 +205,6 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     /**
      * Sets the short list header that is used when this Indicator's values are
      * displayed within a grid
-     * 
      */
     public void setListHeader(String listHeader) {
         this.listHeader = listHeader;
@@ -230,7 +213,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     /**
      * Gets this Indicator's category. Categories are just strings that are used
      * for organizing the display of Indicators in the user interface.
-     * 
+     *
      * @return the name of the category
      */
     @Column(name = "Category", length = 50)
@@ -271,7 +254,6 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     }
 
     /**
-     * 
      * @return true if this Indicator has been deleted.
      */
     @Override

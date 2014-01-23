@@ -22,23 +22,19 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
+import org.activityinfo.api.shared.command.CreateEntity;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.CreateEntity;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.UserDatabaseDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 @RunWith(InjectionSupport.class)
 public class CreateDatabaseTest extends CommandTestCase {

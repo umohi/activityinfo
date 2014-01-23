@@ -1,14 +1,13 @@
 package org.activityinfo.server.digest.geo;
 
-import javax.persistence.EntityManager;
-import javax.ws.rs.Path;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.activityinfo.server.authentication.ServerSideAuthProvider;
 import org.activityinfo.server.digest.UserDigestResource;
 import org.activityinfo.server.mail.MailSender;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.ws.rs.Path;
 
 @Path(GeoUserDigestResource.ENDPOINT)
 public class GeoUserDigestResource extends UserDigestResource {
@@ -17,10 +16,10 @@ public class GeoUserDigestResource extends UserDigestResource {
 
     @Inject
     public GeoUserDigestResource(Provider<EntityManager> entityManager,
-        Provider<MailSender> mailSender,
-        ServerSideAuthProvider authProvider,
-        GeoDigestModelBuilder geoDigestModelBuilder,
-        GeoDigestRenderer geoDigestRenderer) {
+                                 Provider<MailSender> mailSender,
+                                 ServerSideAuthProvider authProvider,
+                                 GeoDigestModelBuilder geoDigestModelBuilder,
+                                 GeoDigestRenderer geoDigestRenderer) {
         super(entityManager, mailSender, authProvider, geoDigestModelBuilder, geoDigestRenderer);
     }
 

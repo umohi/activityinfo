@@ -27,9 +27,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Embeddable
 public class Bounds {

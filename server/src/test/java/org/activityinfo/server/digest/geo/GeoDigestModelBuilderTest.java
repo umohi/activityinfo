@@ -22,35 +22,33 @@ package org.activityinfo.server.digest.geo;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
+import com.bedatadriven.rebar.time.calendar.LocalDate;
+import com.google.inject.Inject;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.TestDatabaseModule;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.digest.TestDigestModule;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.bedatadriven.rebar.time.calendar.LocalDate;
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/digests.db.xml")
 @Modules({
-    TestDatabaseModule.class,
-    MockHibernateModule.class,
-    TestDigestModule.class
+        TestDatabaseModule.class,
+        MockHibernateModule.class,
+        TestDigestModule.class
 })
 public class GeoDigestModelBuilderTest {
     @Inject
@@ -110,28 +108,28 @@ public class GeoDigestModelBuilderTest {
         User user = em.find(User.class, 1);
         LocalDate today = new LocalDate(2041, 1, 1);
         GeoDigestModel model = geoDigestModelBuilder.createModel(user,
-            today.atMidnightInMyTimezone(), 1);
+                today.atMidnightInMyTimezone(), 1);
         assertThat(model.hasData(), equalTo(false));
     }
 
     @Test
     public void testFindSitesNoSiteDatabase() {
         List<Integer> sites = geoDigestModelBuilder.findSiteIds(
-            em.find(UserDatabase.class, 2), 1300000000000L);
+                em.find(UserDatabase.class, 2), 1300000000000L);
         assertThat(sites.size(), is(equalTo(0)));
     }
 
     @Test
     public void testFindSitesBeforeFrom() {
         List<Integer> sites = geoDigestModelBuilder.findSiteIds(
-            em.find(UserDatabase.class, 1), 1370000000000L);
+                em.find(UserDatabase.class, 1), 1370000000000L);
         assertThat(sites.size(), is(equalTo(0)));
     }
 
     @Test
     public void testFindSitesBetween() {
         List<Integer> sites = geoDigestModelBuilder.findSiteIds(
-            em.find(UserDatabase.class, 1), 1360000000000L);
+                em.find(UserDatabase.class, 1), 1360000000000L);
         assertThat(sites.size(), is(equalTo(1)));
         assertTrue(sites.contains(1));
     }
@@ -139,7 +137,7 @@ public class GeoDigestModelBuilderTest {
     @Test
     public void testFindSitesAfterFrom() {
         List<Integer> sites = geoDigestModelBuilder.findSiteIds(
-            em.find(UserDatabase.class, 1), 1350000000000L);
+                em.find(UserDatabase.class, 1), 1350000000000L);
         assertThat(sites.size(), is(equalTo(2)));
         assertTrue(sites.contains(1));
         assertTrue(sites.contains(2));

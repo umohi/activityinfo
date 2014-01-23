@@ -22,46 +22,28 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 /**
- * 
  * The UserDatabase is the broadest unit of organization within ActivityInfo.
  * Individual databases each has an owner who controls completely the
  * activities, indicators, partner organizations and the rights of other users
  * to view, edit, and design the database.
- * 
+ *
  * @author Alex Bertram
- * 
  */
 @Entity
 @org.hibernate.annotations.FilterDefs({
-    @org.hibernate.annotations.FilterDef(name = "userVisible", parameters = { @org.hibernate.annotations.ParamDef(name = "currentUserId", type = "int") }),
-    @org.hibernate.annotations.FilterDef(name = "hideDeleted") })
+        @org.hibernate.annotations.FilterDef(name = "userVisible", parameters = {@org.hibernate.annotations.ParamDef(name = "currentUserId", type = "int")}),
+        @org.hibernate.annotations.FilterDef(name = "hideDeleted")})
 @org.hibernate.annotations.Filters({
-    @org.hibernate.annotations.Filter(name = "userVisible", condition = "(:currentUserId = OwnerUserId  "
-        + "or :currentUserId in (select p.UserId from userpermission p "
-        + "where p.AllowView and p.UserId=:currentUserId and p.DatabaseId=DatabaseId))"),
-        @org.hibernate.annotations.Filter(name = "hideDeleted", condition = "DateDeleted is null") })
+        @org.hibernate.annotations.Filter(name = "userVisible", condition = "(:currentUserId = OwnerUserId  "
+                + "or :currentUserId in (select p.UserId from userpermission p "
+                + "where p.AllowView and p.UserId=:currentUserId and p.DatabaseId=DatabaseId))"),
+        @org.hibernate.annotations.Filter(name = "hideDeleted", condition = "DateDeleted is null")})
 @NamedQuery(name = "queryAllUserDatabasesAlphabetically", query = "select db from UserDatabase db order by db.name")
 public class UserDatabase implements java.io.Serializable, Deleteable {
 
@@ -104,9 +86,9 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     /**
      * At present, each database can contain data on activities that take place
      * in one and only one country.
-     * 
+     * <p/>
      * TODO: nullable? many-to-many?
-     * 
+     *
      * @return The country assocatited with this database.
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -120,10 +102,9 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return The date on which the activities defined by this database
-     *         started. I.e. provides a minimum bound for the dates of
-     *         activities.
+     * started. I.e. provides a minimum bound for the dates of
+     * activities.
      */
     @Temporal(TemporalType.DATE)
     @Column(name = "StartDate", length = 23)
@@ -136,7 +117,6 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return The full name of the database
      */
     @Column(name = "FullName", length = 50)
@@ -149,7 +129,6 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return The short name of the database (generally an acronym)
      */
     @Column(name = "Name", length = 16, nullable = false)
@@ -162,7 +141,6 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return The user who owns this database
      */
     @ManyToOne(fetch = FetchType.EAGER)
@@ -176,14 +154,13 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * // TODO transform to link to Office entity
-     * 
+     *
      * @return The list of partner organizations involved in this database.
-     *         (Partner organizations can own activity sites)
+     * (Partner organizations can own activity sites)
      */
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "PartnerInDatabase", joinColumns = { @JoinColumn(name = "DatabaseId", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "PartnerId", nullable = false, updatable = false) })
+    @JoinTable(name = "PartnerInDatabase", joinColumns = {@JoinColumn(name = "DatabaseId", nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "PartnerId", nullable = false, updatable = false)})
     public Set<Partner> getPartners() {
         return this.partners;
     }
@@ -193,7 +170,6 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return The list of activities followed by this database
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "database")
@@ -208,9 +184,8 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return The list of users who have access to this database and their
-     *         respective permissions. (Read, write, read all partners)
+     * respective permissions. (Read, write, read all partners)
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "database")
     public Set<UserPermission> getUserPermissions() {
@@ -222,10 +197,9 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @param user
      * @return True if the given user has the right to view this database at
-     *         all.
+     * all.
      */
     public boolean isAllowedView(User user) {
         if (getOwner().getId() == user.getId() || getOwner().equals(user)) {
@@ -237,11 +211,10 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @param user
      * @return True if the given user has the right to view data from all
-     *         partners in this database. False if they have only the right to
-     *         view the data from their partner organization
+     * partners in this database. False if they have only the right to
+     * view the data from their partner organization
      */
     public boolean isAllowedViewAll(User user) {
         if (getOwner().getId() == user.getId() || getOwner().equals(user)) {
@@ -254,10 +227,9 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @param user
      * @return True if the given user has the right to create or modify sites on
-     *         behalf of their (partner) organization
+     * behalf of their (partner) organization
      */
     public boolean isAllowedEdit(User user) {
         if (getOwner().getId() == user.getId()) {
@@ -270,11 +242,10 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @param user
      * @return True if the given user has the right to modify the definition of
-     *         the database, such as adding or removing activities, indicators,
-     *         etc
+     * the database, such as adding or removing activities, indicators,
+     * etc
      */
     public boolean isAllowedDesign(User user) {
         if (getOwner().getId() == user.getId()) {
@@ -299,7 +270,7 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
             return false;
         }
         if (!permission.isAllowManageAllUsers()
-            && permission.getPartner().getId() != partner.getId()) {
+                && permission.getPartner().getId() != partner.getId()) {
             return false;
         }
 
@@ -307,15 +278,14 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @param user
      * @return The permission descriptor for the given user, or null if this
-     *         user has no rights to this database.
+     * user has no rights to this database.
      */
     public UserPermission getPermissionByUser(User user) {
         for (UserPermission perm : this.getUserPermissions()) {
             if (perm.getUser().getId() == user.getId()
-                || perm.getUser().equals(user)) {
+                    || perm.getUser().equals(user)) {
                 return perm;
             }
         }
@@ -323,10 +293,9 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @param user
      * @return True if the given user has the right to create and modify sites
-     *         on behalf of all partner organizations.
+     * on behalf of all partner organizations.
      */
     public boolean isAllowedEditAll(User user) {
         if (getOwner().getId() == user.getId()) {
@@ -339,9 +308,8 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return The date on which this database was deleted by the user, or null
-     *         if this database is not deleted.
+     * if this database is not deleted.
      */
     @Column
     @Temporal(value = TemporalType.TIMESTAMP)
@@ -365,7 +333,6 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return True if this database was deleted by its owner.
      */
     @Override
@@ -377,9 +344,9 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     /**
      * Gets the timestamp on which structure of the database (activities,
      * indicators, etc) was last modified.
-     * 
+     *
      * @return The timestamp on which the structure of the database was last
-     *         modified.
+     * modified.
      */
     @Transient
     public Date getLastSchemaUpdate() {
@@ -397,7 +364,7 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     /**
      * Sets the timestamp on which the structure of the database (activities,
      * indicateurs, etc was last modified.
-     * 
+     *
      * @param lastSchemaUpdate
      */
     public void setLastSchemaUpdate(Date lastSchemaUpdate) {

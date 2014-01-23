@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class DelegatingOutputStream extends OutputStream {
-    
+
     private final OutputStream out;
 
     public DelegatingOutputStream(OutputStream out) {
@@ -37,8 +37,8 @@ public abstract class DelegatingOutputStream extends OutputStream {
         out.close();
         afterClosed();
     }
-    
- 
+
+
     protected abstract void afterClosed() throws IOException;
 
 }

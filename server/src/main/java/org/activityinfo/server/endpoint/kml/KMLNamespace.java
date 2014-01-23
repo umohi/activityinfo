@@ -22,13 +22,13 @@ package org.activityinfo.server.endpoint.kml;
  * #L%
  */
 
+import org.activityinfo.server.endpoint.kml.xml.SimpleXmlElement;
+import org.activityinfo.server.endpoint.kml.xml.XmlBuilder;
+import org.activityinfo.server.endpoint.kml.xml.XmlElement;
+import org.xml.sax.SAXException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.activityinfo.server.util.xml.SimpleXmlElement;
-import org.activityinfo.server.util.xml.XmlBuilder;
-import org.activityinfo.server.util.xml.XmlElement;
-import org.xml.sax.SAXException;
 
 public class KMLNamespace {
 
@@ -108,7 +108,7 @@ public class KMLNamespace {
 
     public KMLNamespace coordinates(double lng, double lat) throws SAXException {
         return s("coordinates",
-            Double.toString(lng) + "," + Double.toString(lat));
+                Double.toString(lng) + "," + Double.toString(lat));
     }
 
     public XmlElement startNetworkLink() throws SAXException {

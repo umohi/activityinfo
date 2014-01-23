@@ -22,16 +22,15 @@ package org.activityinfo.server.mail;
  * #L%
  */
 
-import org.activityinfo.server.util.config.DeploymentConfiguration;
-import org.activityinfo.server.util.jaxrs.AbstractRestModule;
-
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.activityinfo.server.util.config.DeploymentConfiguration;
+import org.activityinfo.server.util.jaxrs.AbstractRestModule;
 
 public class MailModule extends AbstractRestModule {
 
-    
+
     @Override
     protected void configureResources() {
         bindResource(BounceHook.class, "/bounceHook/*");
@@ -40,7 +39,7 @@ public class MailModule extends AbstractRestModule {
     @Provides
     @Singleton
     public MailSender provideMailSender(DeploymentConfiguration config,
-        Injector injector) {
+                                        Injector injector) {
         if (config.hasProperty("postmark.key")) {
             return injector.getInstance(PostmarkMailSender.class);
         } else {

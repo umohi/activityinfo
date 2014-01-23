@@ -22,14 +22,14 @@ package org.activityinfo.server.database.hibernate;
  * #L%
  */
 
+import com.google.inject.ScopeAnnotation;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.google.inject.ScopeAnnotation;
-
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @ScopeAnnotation
 public @interface HibernateSessionScoped {

@@ -22,9 +22,9 @@ package org.activityinfo.server.database.hibernate.dao;
  * #L%
  */
 
-import java.util.List;
-
 import org.activityinfo.server.database.hibernate.entity.Country;
+
+import java.util.List;
 
 /**
  * Data Access Object for
@@ -32,7 +32,7 @@ import org.activityinfo.server.database.hibernate.entity.Country;
  * Implemented by
  * {@link org.activityinfo.server.database.hibernate.dao.DAOInvocationHandler
  * proxy}, see the Country class for query definitions.
- * 
+ *
  * @author Alex Bertram
  */
 public interface CountryDAO extends DAO<Country, Integer> {
@@ -41,7 +41,7 @@ public interface CountryDAO extends DAO<Country, Integer> {
      * Returns a list of Countries in alphabetical order. See
      * {@link org.activityinfo.server.database.hibernate.entity.Country} for
      * query definition
-     * 
+     *
      * @return a list of Countries in alphabetical order
      */
     List<Country> queryAllCountriesAlphabetically();

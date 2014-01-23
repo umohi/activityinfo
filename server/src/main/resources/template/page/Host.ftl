@@ -32,7 +32,7 @@
     <meta name="description" content="ActivityInfo"/>
     <meta name="application-url" content="${appUrl}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9">
- 
+
     <link rel="icon" href="ActivityInfo/desktopicons/16x16.png" sizes="16x16"/>
     <link rel="icon" href="ActivityInfo/desktopicons/32x32.png" sizes="32x32"/>
     <link rel="icon" href="ActivityInfo/desktopicons/48x48.png" sizes="48x48"/>
@@ -80,31 +80,34 @@
         <#include "Application.css">
     </style>
     <script type="text/javascript">
-        if(document.cookie.indexOf('authToken=') == -1 || 
-            document.cookie.indexOf('userId') == -1 ||
-            document.cookie.indexOf('email') == -1) {
+        if (document.cookie.indexOf('authToken=') == -1 ||
+                document.cookie.indexOf('userId') == -1 ||
+                document.cookie.indexOf('email') == -1) {
             window.location = "/login" + window.location.hash;
         }
         var VersionInfo = {
             display: '$[display.version]',
             commitId: '$[git.commit.id]'
         };
-    </script>    
+    </script>
 
     <script type="text/javascript" language="javascript" src="ActivityInfo/ActivityInfo.nocache.js"></script>
     <script type="text/javascript">
-    
 
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-11567120-1']);
-      _gaq.push(['_setDomainName', '${domain.host}']);
-      _gaq.push(['_setCustomVar', 2, 'Existing User', 'Yes', 1]);
-               
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-11567120-1']);
+        _gaq.push(['_setDomainName', '${domain.host}']);
+        _gaq.push(['_setCustomVar', 2, 'Existing User', 'Yes', 1]);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
     </script>
 </head>
 <body>
@@ -113,7 +116,7 @@
     <div id="loading-box">
         <div class="loading-indicator">
             <img src="ActivityInfo/gxt231/images/default/shared/large-loading.gif" alt=""/>
-            ${label.activityInfo} $[display.version]<br/>
+        ${label.activityInfo} $[display.version]<br/>
             <span id="loading-msg">${label.loading}</span>
 
         </div>

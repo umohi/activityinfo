@@ -27,7 +27,7 @@
     <restriction dimension="database">
       <category>15</category>
     </restriction>
-    <dateRange min="2009-01-01" />
+    <dateRange min="2009-01-01"/>
   </filter>
 
   <elements>
@@ -36,16 +36,16 @@
       <title>Apples, bananas and oranges</title>
 
       <filter>
-        <dateRange min="2009-01-01" />
+        <dateRange min="2009-01-01"/>
       </filter>
 
       <rows>
-        <dimension type="activitycategory" />
-        <dimension type="activity" />
-        <dimension type="indicator" />
+        <dimension type="activitycategory"/>
+        <dimension type="activity"/>
+        <dimension type="indicator"/>
       </rows>
       <columns>
-        <dimension type="date" dateUnit="Month" />
+        <dimension type="date" dateUnit="Month"/>
       </columns>
     </pivotTable>
 

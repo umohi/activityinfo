@@ -22,33 +22,20 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import org.activityinfo.server.entity.change.AllowUserUpdate;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.activityinfo.server.entity.change.AllowUserUpdate;
-
 @Entity
 @EntityListeners(SchemaChangeListener.class)
 public class Project implements SchemaElement, Serializable, Deleteable {
-    
+
     private int id;
     private String name;
     private String description;
@@ -93,7 +80,7 @@ public class Project implements SchemaElement, Serializable, Deleteable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     @Lob
     @AllowUserUpdate
     public String getDescription() {
@@ -151,5 +138,5 @@ public class Project implements SchemaElement, Serializable, Deleteable {
     @Override
     public boolean isDeleted() {
         return dateDeleted != null;
-    }   
+    }
 }

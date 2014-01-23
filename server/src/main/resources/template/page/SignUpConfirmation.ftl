@@ -25,40 +25,42 @@
     <@content>
     <div class="row">
         <div class="span12">
-            
+
             <#if genericError == true>
                 <div class="alert alert-error">
-                    ${label.signUpGenericError}
+                ${label.signUpGenericError}
                 </div>
             </#if>
-        
+
             <h3>${label.signUpConfirmationTitle}</h3>
-            
+
             <p class="well">${label.signUpConfirmationDetail}</p>
-            
+
             <form action="" method="post" id="confirmForm">
                 <input type="hidden" name="key" value="${key}"/>
-            
+
                 <div class="control-group" id="passwordGroup">
                     <label class="control-label" for="passwordInput">${label.choosePassword}:</label>
+
                     <div class="controls">
-                      <input type="password" name="password" id="passwordInput">
-                      <span class="help-inline hide" id="passwordHelp">${label.passwordHelp}.</span>
+                        <input type="password" name="password" id="passwordInput">
+                        <span class="help-inline hide" id="passwordHelp">${label.passwordHelp}.</span>
                     </div>
                 </div>
                 <div class="control-group" id="confirmPasswordGroup">
                     <label class="control-label" for="confirmPasswordInput">${label.confirmYourPassword}:</label>
+
                     <div class="controls">
-                      <input type="password" name="password2" id="confirmPasswordInput">
-                      <span class="help-inline hide" id="confirmPasswordHelp">${label.passwordDoNotMatch}</span>                      
+                        <input type="password" name="password2" id="confirmPasswordInput">
+                        <span class="help-inline hide" id="confirmPasswordHelp">${label.passwordDoNotMatch}</span>
                     </div>
                 </div>
-                
+
                 <div class="control-group">
-	                <label class="checkbox">
-					  <input type="checkbox" checked="true" name="newsletter" value="true">
-					  ${label.newsletter}
-					</label>
+                    <label class="checkbox">
+                        <input type="checkbox" checked="true" name="newsletter" value="true">
+                    ${label.newsletter}
+                    </label>
                 </div>
 
                 <div class="control-group">
@@ -75,29 +77,29 @@
 
     <@scripts>
     <script type="text/javascript">
-    
-        var validatePass = function() {
+
+        var validatePass = function () {
             var pass1 = $('#passwordInput').val();
             var pass2 = $('#confirmPasswordInput').val();
-            
+
             var valid = pass1 && pass1.length >= 6;
             $('#passwordGroup').toggleClass('error', !valid);
             $('#passwordHelp').toggleClass('hide', valid);
-            
+
             var confirmed = pass2 && (pass1 == pass2);
             $('#confirmPasswordGroup').toggleClass('error', !confirmed);
             $('#confirmPasswordHelp').toggleClass('hide', confirmed);
-            
+
             return valid && confirmed;
         };
-    
+
         $("#passwordInput").change(validatePass);
         $("#confirmPasswordInput").change(validatePass);
-        $("#confirmForm").submit(function() {
-          var valid = validatePass();
-          return !!valid;
+        $("#confirmForm").submit(function () {
+            var valid = validatePass();
+            return !!valid;
         });
-        
+
         $(document).ready(function () {
             $("#passwordInput").focus();
         });

@@ -22,53 +22,39 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 /**
  * Concrete realization of
- * 
- * 
+ *
  * @author Alex Bertram
- * 
  */
 @Entity
 @org.hibernate.annotations.Filters(
-{
-    @org.hibernate.annotations.Filter(
-        name = "userVisible",
-        condition = "(ActivityId in (select a.ActivityId from activity a where a.DatabaseId in "
-            +
-            "(select d.DatabaseId from userdatabase d where "
-            +
-            "d.OwnerUserId = :currentUserId or "
-            +
-            "d.DatabaseId in "
-            +
-            "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p.AllowViewAll) or "
-            +
-            "d.DatabaseId in "
-            +
-            "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p.AllowView and p.PartnerId = PartnerId))))"
-    ),
-    @org.hibernate.annotations.Filter(
-        name = "hideDeleted",
-        condition = "DateDeleted is null"
-    ) })
+        {
+                @org.hibernate.annotations.Filter(
+                        name = "userVisible",
+                        condition = "(ActivityId in (select a.ActivityId from activity a where a.DatabaseId in "
+                                +
+                                "(select d.DatabaseId from userdatabase d where "
+                                +
+                                "d.OwnerUserId = :currentUserId or "
+                                +
+                                "d.DatabaseId in "
+                                +
+                                "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p.AllowViewAll) or "
+                                +
+                                "d.DatabaseId in "
+                                +
+                                "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p.AllowView and p.PartnerId = PartnerId))))"
+                ),
+                @org.hibernate.annotations.Filter(
+                        name = "hideDeleted",
+                        condition = "DateDeleted is null"
+                )})
 public class Site implements java.io.Serializable, Deleteable {
 
     private int id;
@@ -102,7 +88,6 @@ public class Site implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return the id of this Site
      */
     @Id
@@ -128,16 +113,13 @@ public class Site implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
-     * @param activity
-     *            the Activity to which this Site belongs
+     * @param activity the Activity to which this Site belongs
      */
     public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
     /**
-     * 
      * @return the geographic Location of this Site
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -155,7 +137,7 @@ public class Site implements java.io.Serializable, Deleteable {
 
     /**
      * @return the Globally-Unique Identifier (GUID) for this Site, used to link
-     *         this Site to external systems
+     * this Site to external systems
      */
     @Column(name = "SiteGuid", length = 36)
     public String getSiteGuid() {
@@ -165,7 +147,6 @@ public class Site implements java.io.Serializable, Deleteable {
     /**
      * Sets the Globally-Unique Identifier (GUID) of this Site. This GUID is
      * optional but can be used to link Site objects to external systems.
-     * 
      */
     public void setSiteGuid(String siteGuid) {
         this.siteGuid = siteGuid;
@@ -176,10 +157,10 @@ public class Site implements java.io.Serializable, Deleteable {
      * been the actually implementer who produced the results (e.g. actually
      * delivered the kits) but not necessarily: the meaning of partner is
      * potentially more general.
-     * 
+     * <p/>
      * The only semantic meaning we enforce is that this is the OrgUnit that
      * owns the data and thus has control over its modification and visibility.
-     * 
+     *
      * @return the Partner who owns this Site
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -212,7 +193,6 @@ public class Site implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return the date on which work at this Site ended
      */
     @Temporal(TemporalType.DATE)
@@ -229,7 +209,6 @@ public class Site implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return the time at which this Site created. Used for synchronization.
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -247,7 +226,7 @@ public class Site implements java.io.Serializable, Deleteable {
 
     /**
      * @return the time at which this Site was last edited. Initially equal to
-     *         dateCreated.
+     * dateCreated.
      */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DateEdited", nullable = false, length = 23)
@@ -272,7 +251,6 @@ public class Site implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return the plain-text comments associatedsetDateEdited with this Site
      */
     @Lob
@@ -288,9 +266,8 @@ public class Site implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return the time at which this Site was last synchronized with an
-     *         external system
+     * external system
      */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DateSynchronized", length = 23)
@@ -344,7 +321,7 @@ public class Site implements java.io.Serializable, Deleteable {
      * ReportingPeriod, while those with MONTHLY reporting will have zero or
      * more ReportingPeriods, one for each calendar month in which data is
      * available.
-     * 
+     *
      * @return the ReportingPeriods associated with this Site
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "site")
@@ -355,7 +332,7 @@ public class Site implements java.io.Serializable, Deleteable {
 
     /**
      * Sets the ReportingPeriods for this Site
-     * 
+     *
      * @param reportingPeriods
      */
     public void setReportingPeriods(Set<ReportingPeriod> reportingPeriods) {
@@ -363,9 +340,8 @@ public class Site implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return the time at which this Site was deleted. Used for synchronization
-     *         with clients.
+     * with clients.
      */
     @Column
     @Temporal(value = TemporalType.TIMESTAMP)
@@ -382,7 +358,7 @@ public class Site implements java.io.Serializable, Deleteable {
 
     /**
      * Marks this Site as deleted.
-     * 
+     * <p/>
      * Note that deleted Sites are not physically removed from the database,
      * they are retained to allow for the possibility of undoing of catastrophic
      * error as well as to retain a record for synchronization with clients.
@@ -396,7 +372,6 @@ public class Site implements java.io.Serializable, Deleteable {
     }
 
     /**
-     * 
      * @return true if this Site has been deleted
      */
     @Override

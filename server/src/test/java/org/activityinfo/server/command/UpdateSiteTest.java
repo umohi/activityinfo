@@ -22,28 +22,27 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.common.collect.Maps;
+import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.UpdateEntity;
+import org.activityinfo.api.shared.command.UpdateSite;
+import org.activityinfo.api.shared.command.result.ListResult;
+import org.activityinfo.api.shared.command.result.SiteResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.hibernate.entity.LockedPeriod;
 import org.activityinfo.server.database.hibernate.entity.Site;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.UpdateEntity;
-import org.activityinfo.shared.command.UpdateSite;
-import org.activityinfo.shared.command.result.ListResult;
-import org.activityinfo.shared.command.result.SiteResult;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.collect.Maps;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")
@@ -70,7 +69,7 @@ public class UpdateSiteTest extends CommandTestCase {
 
         UpdateSite cmd = new UpdateSite(original, modified);
         assertThat((String) cmd.getChanges().get("comments"),
-            equalTo(modified.getComments()));
+                equalTo(modified.getComments()));
 
         execute(cmd);
 
@@ -81,16 +80,16 @@ public class UpdateSiteTest extends CommandTestCase {
 
         // confirm that the changes are there
         Assert.assertEquals("site.comments", modified.getComments(),
-            secondRead.getComments());
+                secondRead.getComments());
         Assert.assertEquals("site.reportingPeriod[0].indicatorValue[0]", 995,
-            secondRead.getIndicatorValue(2).intValue());
+                secondRead.getIndicatorValue(2).intValue());
 
         Assert.assertEquals("site.attribute[1]", true,
-            modified.getAttributeValue(1));
+                modified.getAttributeValue(1));
         Assert.assertEquals("site.attribute[3]", true,
-            modified.getAttributeValue(3));
+                modified.getAttributeValue(3));
         Assert.assertEquals("site.attribute[4]", false,
-            modified.getAttributeValue(4));
+                modified.getAttributeValue(4));
     }
 
     @Test
@@ -121,12 +120,12 @@ public class UpdateSiteTest extends CommandTestCase {
         System.out.println(modified.getComments());
 
         assertThat(
-            modified.getComments().codePointCount(0,
-                modified.getComments().length()), equalTo(1));
+                modified.getComments().codePointCount(0,
+                        modified.getComments().length()), equalTo(1));
 
         UpdateSite cmd = new UpdateSite(original, modified);
         assertThat((String) cmd.getChanges().get("comments"),
-            equalTo(modified.getComments()));
+                equalTo(modified.getComments()));
 
         execute(cmd);
 

@@ -19,7 +19,6 @@ public class VersionMetadata {
     }
 
     /**
-     * 
      * @return The filename of the source file
      */
     public String getSourceFilename() {
@@ -42,7 +41,6 @@ public class VersionMetadata {
     }
 
     /**
-     * 
      * @return the MD5 hash of the source file
      */
     public String getSourceMD5() {

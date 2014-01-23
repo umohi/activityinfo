@@ -26,9 +26,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
- * 
  * @author Alex Bertram
- * 
  */
 @Embeddable
 public class IndicatorValueId implements java.io.Serializable {
@@ -76,7 +74,7 @@ public class IndicatorValueId implements java.io.Serializable {
         IndicatorValueId castOther = (IndicatorValueId) other;
 
         return (this.getReportingPeriodId() == castOther.getReportingPeriodId())
-            && (this.getIndicatorId() == castOther.getIndicatorId());
+                && (this.getIndicatorId() == castOther.getIndicatorId());
     }
 
     @Override

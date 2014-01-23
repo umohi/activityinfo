@@ -22,13 +22,12 @@ package org.activityinfo.server.digest;
  * #L%
  */
 
-import org.activityinfo.server.report.output.LocalStorageProvider;
-import org.activityinfo.server.report.output.StorageProvider;
-import org.activityinfo.server.report.renderer.image.ImageMapRenderer;
-import org.activityinfo.server.report.renderer.itext.TestGeometry;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import org.activityinfo.analysis.server.renderer.image.ImageMapRenderer;
+import org.activityinfo.server.geo.TestGeometry;
+import org.activityinfo.server.report.output.LocalStorageProvider;
+import org.activityinfo.server.report.output.StorageProvider;
 
 public class TestDigestModule extends AbstractModule {
 

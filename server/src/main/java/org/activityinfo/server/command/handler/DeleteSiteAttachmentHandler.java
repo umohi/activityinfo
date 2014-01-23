@@ -22,19 +22,18 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import org.activityinfo.server.attachment.AttachmentService;
-import org.activityinfo.shared.command.DeleteSiteAttachment;
-import org.activityinfo.shared.command.handler.CommandHandlerAsync;
-import org.activityinfo.shared.command.handler.ExecutionContext;
-import org.activityinfo.shared.command.result.VoidResult;
-import org.activityinfo.shared.db.Tables;
-
 import com.bedatadriven.rebar.sql.client.query.SqlUpdate;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.DeleteSiteAttachment;
+import org.activityinfo.api.shared.command.result.VoidResult;
+import org.activityinfo.api.shared.impl.CommandHandlerAsync;
+import org.activityinfo.api.shared.impl.ExecutionContext;
+import org.activityinfo.api.shared.impl.Tables;
+import org.activityinfo.server.attachment.AttachmentService;
 
 public class DeleteSiteAttachmentHandler implements
-    CommandHandlerAsync<DeleteSiteAttachment, VoidResult> {
+        CommandHandlerAsync<DeleteSiteAttachment, VoidResult> {
 
     private AttachmentService attachmentService;
 
@@ -46,13 +45,13 @@ public class DeleteSiteAttachmentHandler implements
 
     @Override
     public void execute(DeleteSiteAttachment command, ExecutionContext context,
-        AsyncCallback<VoidResult> callback) {
+                        AsyncCallback<VoidResult> callback) {
 
         attachmentService.delete(command.getBlobId());
 
         SqlUpdate.delete(Tables.SITE_ATTACHMENT)
-            .where("blobid", command.getBlobId())
-            .execute(context.getTransaction());
+                .where("blobid", command.getBlobId())
+                .execute(context.getTransaction());
 
         callback.onSuccess(new VoidResult());
     }

@@ -1,12 +1,11 @@
 package org.activityinfo.server.util.jaxrs;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class JaxRsIO {
     public static Response stream(final InputStream is) {

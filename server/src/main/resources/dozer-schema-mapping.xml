@@ -22,13 +22,12 @@
   -->
 
 
-
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://dozer.sourceforge.net beanmapping.xsd ">
+          xsi:schemaLocation="http://dozer.sourceforge.net beanmapping.xsd ">
 
   <mapping wildcard="true">
     <class-a>org.activityinfo.server.database.hibernate.entity.UserDatabase</class-a>
-    <class-b>org.activityinfo.shared.dto.UserDatabaseDTO</class-b>
+    <class-b>org.activityinfo.api.shared.model.UserDatabaseDTO</class-b>
 
     <field>
       <a>owner.name</a>
@@ -45,7 +44,7 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.Activity</class-a>
-    <class-b>org.activityinfo.shared.dto.ActivityDTO</class-b>
+    <class-b>org.activityinfo.api.shared.model.ActivityDTO</class-b>
 
     <field-exclude>
       <a>database</a>
@@ -63,21 +62,21 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.AttributeGroup</class-a>
-    <class-b>org.activityinfo.shared.dto.AttributeGroupDTO</class-b>
+    <class-b>org.activityinfo.api.shared.model.AttributeGroupDTO</class-b>
 
   </mapping>
 
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.Attribute</class-a>
-    <class-b>org.activityinfo.shared.dto.AttributeDTO</class-b>
+    <class-b>org.activityinfo.api.shared.model.AttributeDTO</class-b>
 
   </mapping>
 
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.AdminLevel</class-a>
-    <class-b>org.activityinfo.shared.dto.AdminLevelDTO</class-b>
+    <class-b>org.activityinfo.api.shared.model.AdminLevelDTO</class-b>
 
     <field>
       <a>country.id</a>
@@ -90,7 +89,7 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.UserPermission</class-a>
-    <class-b>org.activityinfo.shared.dto.UserPermissionDTO</class-b>
+    <class-b>org.activityinfo.api.shared.model.UserPermissionDTO</class-b>
 
     <field>
       <a>user.name</a>
@@ -116,7 +115,7 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.Indicator</class-a>
-    <class-b>org.activityinfo.shared.dto.IndicatorDTO</class-b>
+    <class-b>org.activityinfo.api.shared.model.IndicatorDTO</class-b>
 
     <field type="one-way">
       <a>id</a>

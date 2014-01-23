@@ -22,17 +22,12 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "siteattachment")
 @NamedQueries({
-    @NamedQuery(name = "findSiteAttachments", query = "select s from SiteAttachment s where s.blobId = :blobId") })
+        @NamedQuery(name = "findSiteAttachments", query = "select s from SiteAttachment s where s.blobId = :blobId")})
 public class SiteAttachment implements java.io.Serializable {
 
     private static final long serialVersionUID = -619220161104158193L;

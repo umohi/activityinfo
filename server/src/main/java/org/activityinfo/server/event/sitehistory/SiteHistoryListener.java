@@ -22,23 +22,38 @@ package org.activityinfo.server.event.sitehistory;
  * #L%
  */
 
-import org.activityinfo.server.event.CommandEvent;
-import org.activityinfo.server.event.ServerEventBus;
-import org.activityinfo.server.event.sitechange.SiteChangeListener;
-
 import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.CreateSite;
+import org.activityinfo.api.shared.command.DeleteSite;
+import org.activityinfo.api.shared.command.UpdateSite;
+import org.activityinfo.server.event.CommandEvent;
+import org.activityinfo.server.event.CommandEventListener;
+import org.activityinfo.server.event.ServerEventBus;
 
-public class SiteHistoryListener extends SiteChangeListener {
+public class SiteHistoryListener extends CommandEventListener {
     private final SiteHistoryProcessor siteHistoryProcessor;
 
+
     @Inject
+    @SuppressWarnings("unchecked")
     public SiteHistoryListener(ServerEventBus serverEventBus, SiteHistoryProcessor siteHistoryProcessor) {
-        super(serverEventBus);
+        super(serverEventBus, CreateSite.class, UpdateSite.class, DeleteSite.class);
         this.siteHistoryProcessor = siteHistoryProcessor;
     }
 
     @Override
-    protected void onEvent(CommandEvent event, final int userId, final int siteId) {
+    public void onEvent(CommandEvent event) {
+        Integer userId = event.getUserId();
+        Integer siteId = event.getSiteId();
+
+        if (siteId != null && userId != null) {
+            onEvent(event, userId, siteId);
+        } else {
+            LOGGER.warning("event fired without site and/or user!");
+        }
+    }
+
+    private void onEvent(CommandEvent event, final int userId, final int siteId) {
         siteHistoryProcessor.process(event.getCommand(), userId, siteId);
     }
 }

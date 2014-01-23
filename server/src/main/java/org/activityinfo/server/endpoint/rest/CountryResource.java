@@ -22,30 +22,24 @@ package org.activityinfo.server.endpoint.rest;
  * #L%
  */
 
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.google.common.collect.Lists;
+import com.sun.jersey.api.core.InjectParam;
+import com.sun.jersey.api.view.Viewable;
+import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 import org.activityinfo.server.database.hibernate.entity.Country;
 import org.activityinfo.server.database.hibernate.entity.LocationType;
 import org.activityinfo.server.endpoint.rest.model.NewAdminEntity;
 import org.activityinfo.server.endpoint.rest.model.NewAdminLevel;
-import org.activityinfo.shared.auth.AuthenticatedUser;
 
-import com.google.common.collect.Lists;
-import com.sun.jersey.api.core.InjectParam;
-import com.sun.jersey.api.view.Viewable;
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Set;
 
 @Path("/country")
 @Produces(MediaType.APPLICATION_JSON)
@@ -68,21 +62,21 @@ public class CountryResource {
     public Country getJson() {
         return country;
     }
-    
+
     @GET
     @Path("locationTypes")
     @Produces(MediaType.APPLICATION_JSON)
     public List<LocationType> getLocationTypes() {
         List<LocationType> types = Lists.newArrayList();
-        for(LocationType type : country.getLocationTypes()) {
-            if(type.getBoundAdminLevel() == null) {
+        for (LocationType type : country.getLocationTypes()) {
+            if (type.getBoundAdminLevel() == null) {
                 types.add(type);
             }
         }
         return types;
     }
 
-    
+
     @GET
     @Path("adminLevels")
     @Produces(MediaType.APPLICATION_JSON)
@@ -94,9 +88,9 @@ public class CountryResource {
     @Path("adminLevels")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postNewLevel(
-        @InjectParam AuthenticatedUser user,
-        @InjectParam EntityManager em,
-        NewAdminLevel newLevel) {
+            @InjectParam AuthenticatedUser user,
+            @InjectParam EntityManager em,
+            NewAdminLevel newLevel) {
 
         // assertAuthorized(user);
 

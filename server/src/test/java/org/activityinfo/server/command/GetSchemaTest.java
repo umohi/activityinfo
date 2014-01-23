@@ -22,40 +22,6 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-
-import org.activityinfo.client.importer.data.PastedImportSource;
-import org.activityinfo.client.page.config.design.importer.SchemaImporter;
-import org.activityinfo.client.page.config.design.importer.SchemaImporter.ProgressListener;
-import org.activityinfo.client.page.config.design.importer.SchemaImporter.Warning;
-import org.activityinfo.client.page.entry.LockedPeriodSet;
-import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.CreateEntity;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.AdminLevelDTO;
-import org.activityinfo.shared.dto.AttributeDTO;
-import org.activityinfo.shared.dto.IndicatorDTO;
-import org.activityinfo.shared.dto.SchemaCsvWriter;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.shared.dto.UserDatabaseDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.bedatadriven.rebar.sql.server.jdbc.JdbcScheduler;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.base.Charsets;
@@ -63,6 +29,28 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.shared.command.CreateEntity;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.*;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.server.database.OnDataSet;
+import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
+import org.activityinfo.ui.full.client.importer.data.PastedImportSource;
+import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter;
+import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.ProgressListener;
+import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.Warning;
+import org.activityinfo.ui.full.client.page.entry.LockedPeriodSet;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")
@@ -84,29 +72,29 @@ public class GetSchemaTest extends CommandTestCase2 {
 
         assertThat("database count", schema.getDatabases().size(), equalTo(3));
         assertThat("database list is sorted", schema.getDatabases().get(0)
-            .getName(), equalTo("Alpha"));
+                .getName(), equalTo("Alpha"));
 
         assertTrue("ALEX(owner) in PEAR", schema.getDatabaseById(1) != null); // PEAR
         assertTrue("ALEX can design", schema.getDatabaseById(1)
-            .isDesignAllowed());
+                .isDesignAllowed());
         assertTrue("Alex can edit all", schema.getDatabaseById(1)
-            .isEditAllowed());
+                .isEditAllowed());
         assertTrue("object graph is preserved", schema.getDatabaseById(1)
-            .getCountry() == schema.getDatabaseById(2).getCountry());
+                .getCountry() == schema.getDatabaseById(2).getCountry());
         assertTrue("object graph is preserved (database-activity)",
-            schema.getDatabaseById(1) ==
-            schema.getDatabaseById(1).getActivities().get(0).getDatabase());
+                schema.getDatabaseById(1) ==
+                        schema.getDatabaseById(1).getActivities().get(0).getDatabase());
         AdminLevelDTO adminLevel = schema.getCountries().get(0)
-            .getAdminLevels().get(0);
+                .getAdminLevels().get(0);
         assertThat("CountryId is not null", adminLevel.getCountryId(),
-            not(equalTo(0)));
+                not(equalTo(0)));
         assertThat("CountryId is not null", adminLevel.getId(), not(equalTo(0)));
 
         assertTrue("CountryId is not null", schema.getCountries().get(0)
-            .getAdminLevels().get(0).getCountryId() != 0);
+                .getAdminLevels().get(0).getCountryId() != 0);
 
         assertThat("deleted attribute is not present", schema
-            .getActivityById(1).getAttributeGroups().size(), equalTo(3));
+                .getActivityById(1).getAttributeGroups().size(), equalTo(3));
     }
 
     @Test
@@ -128,7 +116,7 @@ public class GetSchemaTest extends CommandTestCase2 {
         SchemaDTO schema = execute(new GetSchema());
 
         assertThat(schema.getProjectById(1).getLockedPeriods().size(),
-            equalTo(1));
+                equalTo(1));
 
         LockedPeriodSet locks = new LockedPeriodSet(schema);
         assertTrue(locks.isProjectLocked(1, new LocalDate(2009, 1, 1)));
@@ -148,7 +136,7 @@ public class GetSchemaTest extends CommandTestCase2 {
 
         assertThat(schema.getDatabases().size(), equalTo(1));
         assertThat("BAVON in PEAR", schema.getDatabaseById(1),
-            is(not(nullValue())));
+                is(not(nullValue())));
         assertThat(schema.getDatabaseById(1).getMyPartnerId(), equalTo(1));
         assertThat(schema.getDatabaseById(1).isEditAllowed(), equalTo(true));
         assertThat(schema.getDatabaseById(1).isEditAllAllowed(), equalTo(false));
@@ -161,7 +149,7 @@ public class GetSchemaTest extends CommandTestCase2 {
         SchemaDTO schema = execute(new GetSchema());
 
         assertTrue("STEFAN does not have access to RRM",
-            schema.getDatabaseById(2) == null);
+                schema.getDatabaseById(2) == null);
     }
 
     @Test
@@ -172,23 +160,23 @@ public class GetSchemaTest extends CommandTestCase2 {
         SchemaDTO schema = execute(new GetSchema());
 
         assertTrue("no indicators case",
-            schema.getActivityById(2).getIndicators().size() == 0);
+                schema.getActivityById(2).getIndicators().size() == 0);
 
         ActivityDTO nfi = schema.getActivityById(1);
 
         assertThat("indicators are present", nfi.getIndicators().size(),
-            equalTo(4));
+                equalTo(4));
 
         IndicatorDTO test = nfi.getIndicatorById(2);
         assertThat("property:name", test.getName(), equalTo("baches"));
         assertThat("property:units", test.getUnits(), equalTo("menages"));
         assertThat("property:aggregation", test.getAggregation(),
-            equalTo(IndicatorDTO.AGGREGATE_SUM));
+                equalTo(IndicatorDTO.AGGREGATE_SUM));
         assertThat("property:category", test.getCategory(), equalTo("outputs"));
         assertThat("property:listHeader", test.getListHeader(),
-            equalTo("header"));
+                equalTo("header"));
         assertThat("property:description", test.getDescription(),
-            equalTo("desc"));
+                equalTo("desc"));
     }
 
     @Test
@@ -199,11 +187,11 @@ public class GetSchemaTest extends CommandTestCase2 {
         SchemaDTO schema = execute(new GetSchema());
 
         assertTrue("no attributes case", schema.getActivityById(3)
-            .getAttributeGroups().size() == 0);
+                .getAttributeGroups().size() == 0);
 
         ActivityDTO nfi = schema.getActivityById(1);
         AttributeDTO[] attributes = nfi.getAttributeGroupById(1)
-            .getAttributes().toArray(new AttributeDTO[0]);
+                .getAttributes().toArray(new AttributeDTO[0]);
 
         assertTrue("attributes are present", attributes.length == 2);
 
@@ -211,83 +199,83 @@ public class GetSchemaTest extends CommandTestCase2 {
 
         assertEquals("property:name", "Catastrophe Naturelle", test.getName());
     }
-    
+
     @Test
     public void toCSV() {
         SchemaDTO schema = execute(new GetSchema());
 
-    	SchemaCsvWriter writer = new SchemaCsvWriter();
-    	writer.write(schema.getDatabaseById(1));
-    	
-    	System.out.println(writer.toString());
+        SchemaCsvWriter writer = new SchemaCsvWriter();
+        writer.write(schema.getDatabaseById(1));
+
+        System.out.println(writer.toString());
     }
-    
+
     @Test
     public void importCsv() throws IOException {
-    	
-		String csv = Resources.toString(Resources.getResource("schema_1064.csv"), Charsets.UTF_8);
-		PastedImportSource source = new PastedImportSource(csv);
-		
-		Map<String, Object> dbProps = Maps.newHashMap();
-		dbProps.put("name", "Syria");
-		dbProps.put("countryId", 1);
-		
-		execute(new CreateEntity("UserDatabase", dbProps));
-		
-		SchemaDTO schema = execute(new GetSchema());
-		UserDatabaseDTO syria = null;
-		for(UserDatabaseDTO db : schema.getDatabases()) {
-			if(db.getName().equals("Syria")) {
-				syria = db;
-				break;
-			}
-		}
-		if(syria == null) {
-			throw new AssertionError("database not created");
-		}
-		
-		SchemaImporter importer = new SchemaImporter(getDispatcher(), syria);
-		importer.setProgressListener(new ProgressListener() {
-			
-			@Override
-			public void submittingBatch(int batchNumber, int batchCount) {
-				System.out.println("Submitting batch " + batchNumber + " of " + batchCount);
-			}
-		});
-		boolean success = importer.parseColumns(source);
-		if(success) {
-			importer.processRows();
-		}
-		
-		for(Warning warning : importer.getWarnings()) {
-			System.err.println(warning);
-		}
-		
-		if(!success) {
-			throw new AssertionError("there were fatal errors");
-		}
-		
-		importer.persist(new AsyncCallback<Void>() {
-			
-			@Override
-			public void onSuccess(Void result) {
-				System.out.println("Success");
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				throw new AssertionError(caught);
-			}
-		});
-		
-		syria = execute(new GetSchema()).getDatabaseById(syria.getId());
-		
-		assertThat(syria.getActivities().get(0).getAttributeGroups().size(), equalTo(3));
-		
-		SchemaCsvWriter writer = new SchemaCsvWriter();
-		writer.write(syria);
-		
-		Files.write(writer.toString(), new File("target/syria.csv"), Charsets.UTF_8);
+
+        String csv = Resources.toString(Resources.getResource("schema_1064.csv"), Charsets.UTF_8);
+        PastedImportSource source = new PastedImportSource(csv);
+
+        Map<String, Object> dbProps = Maps.newHashMap();
+        dbProps.put("name", "Syria");
+        dbProps.put("countryId", 1);
+
+        execute(new CreateEntity("UserDatabase", dbProps));
+
+        SchemaDTO schema = execute(new GetSchema());
+        UserDatabaseDTO syria = null;
+        for (UserDatabaseDTO db : schema.getDatabases()) {
+            if (db.getName().equals("Syria")) {
+                syria = db;
+                break;
+            }
+        }
+        if (syria == null) {
+            throw new AssertionError("database not created");
+        }
+
+        SchemaImporter importer = new SchemaImporter(getDispatcher(), syria);
+        importer.setProgressListener(new ProgressListener() {
+
+            @Override
+            public void submittingBatch(int batchNumber, int batchCount) {
+                System.out.println("Submitting batch " + batchNumber + " of " + batchCount);
+            }
+        });
+        boolean success = importer.parseColumns(source);
+        if (success) {
+            importer.processRows();
+        }
+
+        for (Warning warning : importer.getWarnings()) {
+            System.err.println(warning);
+        }
+
+        if (!success) {
+            throw new AssertionError("there were fatal errors");
+        }
+
+        importer.persist(new AsyncCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void result) {
+                System.out.println("Success");
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new AssertionError(caught);
+            }
+        });
+
+        syria = execute(new GetSchema()).getDatabaseById(syria.getId());
+
+        assertThat(syria.getActivities().get(0).getAttributeGroups().size(), equalTo(3));
+
+        SchemaCsvWriter writer = new SchemaCsvWriter();
+        writer.write(syria);
+
+        Files.write(writer.toString(), new File("target/syria.csv"), Charsets.UTF_8);
     }
-    
+
 }

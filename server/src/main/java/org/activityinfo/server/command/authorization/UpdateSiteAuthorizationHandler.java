@@ -22,18 +22,17 @@ package org.activityinfo.server.command.authorization;
  * #L%
  */
 
-import org.activityinfo.shared.command.UpdateSite;
-import org.activityinfo.shared.command.handler.AuthorizationHandler;
-import org.activityinfo.shared.command.handler.ExecutionContext;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.shared.command.UpdateSite;
+import org.activityinfo.api.shared.impl.AuthorizationHandler;
+import org.activityinfo.api.shared.impl.ExecutionContext;
 
 public class UpdateSiteAuthorizationHandler implements
-    AuthorizationHandler<UpdateSite> {
+        AuthorizationHandler<UpdateSite> {
 
     @Override
     public void authorize(UpdateSite command, ExecutionContext context,
-        AsyncCallback<Void> callback) {
+                          AsyncCallback<Void> callback) {
 
         callback.onSuccess(null);
 

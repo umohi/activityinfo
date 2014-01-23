@@ -1,22 +1,5 @@
 package org.activityinfo.server.endpoint.rest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.activityinfo.server.database.hibernate.entity.AdminEntity;
-import org.activityinfo.server.database.hibernate.entity.AdminLevel;
-import org.activityinfo.server.report.generator.map.TiledMap;
-import org.activityinfo.shared.util.mapping.Extents;
-import org.activityinfo.shared.util.mapping.Tile;
-import org.activityinfo.shared.util.mapping.TileMath;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.spatial.criterion.SpatialRestrictions;
-
 import com.google.code.appengine.awt.BasicStroke;
 import com.google.code.appengine.awt.Color;
 import com.google.code.appengine.awt.Font;
@@ -28,14 +11,24 @@ import com.google.code.appengine.awt.image.BufferedImage;
 import com.google.code.appengine.imageio.ImageIO;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
+import org.activityinfo.analysis.server.generator.map.TiledMap;
+import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.analysis.shared.util.mapping.Tile;
+import org.activityinfo.analysis.shared.util.mapping.TileMath;
+import org.activityinfo.server.database.hibernate.entity.AdminEntity;
+import org.activityinfo.server.database.hibernate.entity.AdminLevel;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.spatial.criterion.SpatialRestrictions;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class AdminTileRenderer {
 
@@ -61,14 +54,14 @@ public class AdminTileRenderer {
         mapPixelBounds = new Envelope(0, TileMath.TILE_SIZE, 0, TileMath.TILE_SIZE);
 
         Envelope envelope = new Envelope(
-            extents.getMinLon(), extents.getMaxLon(),
-            extents.getMinLat(), extents.getMaxLat());
+                extents.getMinLon(), extents.getMaxLon(),
+                extents.getMinLat(), extents.getMaxLat());
         Geometry filter = gf.toGeometry(envelope);
 
         LOGGER.info("Creating Buffered Image...");
 
         BufferedImage image = new BufferedImage(TileMath.TILE_SIZE, TileMath.TILE_SIZE,
-            ColorSpace.TYPE_RGB);
+                ColorSpace.TYPE_RGB);
         Graphics2D g2d = image.createGraphics();
         g2d.setPaint(Color.WHITE);
         g2d.fillRect(0, 0, TileMath.TILE_SIZE, TileMath.TILE_SIZE);
@@ -80,7 +73,7 @@ public class AdminTileRenderer {
         criteria.add(Restrictions.eq("level", level));
 
         TiledMap map = new TiledMap(zoom, new Tile(x, y));
-        
+
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(1));
 
@@ -133,18 +126,18 @@ public class AdminTileRenderer {
     private void labelPolygon(Graphics2D g2d, Polygon polygon, String name) {
         Rectangle2D labelBounds = g2d.getFont().getStringBounds(name, g2d.getFontRenderContext());
         Point centroid = polygon.getCentroid();
-        
+
         Envelope labelEnv = labelGeometry(labelBounds, centroid);
         if (!labelEnv.intersects(mapPixelBounds)) {
             return;
         }
-        
+
         if (!polygon.contains(gf.toGeometry(labelEnv))) {
             return;
         }
 
         g2d.drawString(name, (float) labelEnv.getMinX(), (float) labelEnv.getMaxY());
-        
+
     }
 
     private Envelope labelGeometry(Rectangle2D labelBounds, Point centroid) {
@@ -188,10 +181,10 @@ public class AdminTileRenderer {
 
     private static void addCollectionToPath(Geometry geometry, GeneralPath path) {
         for (int i = 0; i != geometry.getNumGeometries(); ++i) {
-            if(geometry.getGeometryN(i) instanceof Polygon) {
+            if (geometry.getGeometryN(i) instanceof Polygon) {
                 Polygon polygon = (Polygon) geometry.getGeometryN(i);
                 addPolygonToPath(path, polygon);
-            } else if(geometry.getGeometryN(i) instanceof GeometryCollection) {
+            } else if (geometry.getGeometryN(i) instanceof GeometryCollection) {
                 addCollectionToPath(geometry.getGeometryN(i), path);
             }
         }
@@ -202,12 +195,12 @@ public class AdminTileRenderer {
         addRingToPath(path, polygon.getExteriorRing().getCoordinateSequence());
         for (int j = 0; j != polygon.getNumInteriorRing(); ++j) {
             addRingToPath(path, polygon.getInteriorRingN(j)
-                .getCoordinateSequence());
+                    .getCoordinateSequence());
         }
     }
 
     private static void addRingToPath(GeneralPath path,
-        CoordinateSequence coordinates) {
+                                      CoordinateSequence coordinates) {
 
         for (int j = 0; j != coordinates.size(); ++j) {
             float x = (float) coordinates.getX(j);

@@ -22,24 +22,8 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createNiceMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import javax.persistence.NoResultException;
-import javax.ws.rs.core.Response;
-
+import com.google.inject.util.Providers;
+import com.sun.jersey.api.view.Viewable;
 import org.activityinfo.server.database.hibernate.dao.AuthenticationDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.entity.Authentication;
@@ -51,8 +35,14 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.inject.util.Providers;
-import com.sun.jersey.api.view.Viewable;
+import javax.persistence.NoResultException;
+import javax.ws.rs.core.Response;
+
+import static org.easymock.EasyMock.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class ConfirmInviteControllerTest {
 
@@ -68,9 +58,9 @@ public class ConfirmInviteControllerTest {
 
         userDAO = createMock(UserDAO.class);
         expect(userDAO.findUserByChangePasswordKey(eq(VALID_KEY))).andReturn(
-            user);
+                user);
         expect(userDAO.findUserByChangePasswordKey(EasyMock.not(eq(VALID_KEY))))
-            .andThrow(new NoResultException());
+                .andThrow(new NoResultException());
         replay(userDAO);
 
         AuthenticationDAO authDAO = createMock(AuthenticationDAO.class);
@@ -79,22 +69,22 @@ public class ConfirmInviteControllerTest {
 
         MailingListClient mailingListClient = createNiceMock(MailingListClient.class);
         replay(mailingListClient);
-        
+
         AuthTokenProvider authTokenProvider = new AuthTokenProvider(
-            Providers.of(authDAO));
+                Providers.of(authDAO));
 
         resource = new ConfirmInviteController(
-            Providers.of(userDAO), authTokenProvider, mailingListClient);
+                Providers.of(userDAO), authTokenProvider, mailingListClient);
     }
 
     @Test
     public void requestWithValidKeyShouldGetView() throws Exception {
 
         Viewable response = resource.getPage(RestMockUtils
-            .mockUriInfo("http://www.activityinfo.org/confirm?xyz123"));
+                .mockUriInfo("http://www.activityinfo.org/confirm?xyz123"));
 
         assertThat(response.getModel(),
-            instanceOf(ConfirmInvitePageModel.class));
+                instanceOf(ConfirmInvitePageModel.class));
 
     }
 
@@ -102,18 +92,18 @@ public class ConfirmInviteControllerTest {
     public void badKeyShouldGetProblemPage() throws Exception {
 
         Viewable response = resource.getPage(RestMockUtils
-            .mockUriInfo("http://www.activityinfo.org/confirm?badkey"));
+                .mockUriInfo("http://www.activityinfo.org/confirm?badkey"));
 
         assertThat(response.getModel(),
-            instanceOf(InvalidInvitePageModel.class));
+                instanceOf(InvalidInvitePageModel.class));
     }
 
     @Test
     public void passwordShouldBeSetAfterNewUserCompletion() throws Exception {
 
         resource.confirm(
-            RestMockUtils.mockUriInfo("http://www.activityinfo.org/confirm"),
-            VALID_KEY, "fr", "foobar", "Alex Bertram", false);
+                RestMockUtils.mockUriInfo("http://www.activityinfo.org/confirm"),
+                VALID_KEY, "fr", "foobar", "Alex Bertram", false);
 
         assertThat(user.getHashedPassword(), is(not(nullValue())));
         assertThat(user.getLocale(), equalTo("fr"));
@@ -124,15 +114,15 @@ public class ConfirmInviteControllerTest {
     @Test
     public void emptyPasswordShouldNotBeAccepted() throws Exception {
         Response response = resource.confirm(
-            RestMockUtils.mockUriInfo("http://www.activityinfo.org/confirm"),
-            VALID_KEY, "fr", null, "Alex Bertram", false);
+                RestMockUtils.mockUriInfo("http://www.activityinfo.org/confirm"),
+                VALID_KEY, "fr", null, "Alex Bertram", false);
 
         Viewable viewable = (Viewable) response.getEntity();
         assertThat(viewable.getModel(),
-            instanceOf(ConfirmInvitePageModel.class));
+                instanceOf(ConfirmInvitePageModel.class));
 
         ConfirmInvitePageModel model = (ConfirmInvitePageModel) viewable
-            .getModel();
+                .getModel();
         assertTrue("error message set", model.isFormIncomplete());
     }
 }

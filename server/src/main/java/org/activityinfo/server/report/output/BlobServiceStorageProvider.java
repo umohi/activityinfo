@@ -22,20 +22,18 @@ package org.activityinfo.server.report.output;
  * #L%
  */
 
+import com.google.common.io.ByteStreams;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.activityinfo.server.database.hibernate.entity.Domain;
+import org.activityinfo.server.util.blob.BlobService;
+
+import javax.ws.rs.core.UriBuilder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.security.SecureRandom;
-
-import javax.ws.rs.core.UriBuilder;
-
-import org.activityinfo.server.database.hibernate.entity.Domain;
-import org.activityinfo.server.util.blob.BlobService;
-
-import com.google.common.io.ByteStreams;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BlobServiceStorageProvider implements StorageProvider {
 
@@ -45,32 +43,32 @@ public class BlobServiceStorageProvider implements StorageProvider {
 
     @Inject
     public BlobServiceStorageProvider(BlobService blobService,
-    		Provider<Domain> domainProvider) {
+                                      Provider<Domain> domainProvider) {
         this.blobService = blobService;
         this.domainProvider = domainProvider;
     }
 
     @Override
     public TempStorage allocateTemporaryFile(String mimeType, String filename)
-        throws IOException {
+            throws IOException {
 
         String id = Long.toString(Math.abs(random.nextLong()), 16);
-        
+
         URI uri = UriBuilder.fromUri("https://" + domainProvider.get().getHost())
-        .path("generated")
-        .path(id)
-        .path(filename)
-        .build();
+                .path("generated")
+                .path(id)
+                .path(filename)
+                .build();
 
         return new TempStorage(uri.toString(),
-            new TempOutputStream(id));
+                new TempOutputStream(id));
     }
 
     private class TempOutputStream extends OutputStream {
 
         private ByteArrayOutputStream out = new ByteArrayOutputStream();
         private String id;
-        
+
         public TempOutputStream(String id) throws IOException {
             this.id = id;
         }

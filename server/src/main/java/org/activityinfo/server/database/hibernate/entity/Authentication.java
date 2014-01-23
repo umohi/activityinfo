@@ -24,19 +24,8 @@ package org.activityinfo.server.database.hibernate.entity;
 
 // Generated Apr 9, 2009 7:58:20 AM by Hibernate Tools 3.2.2.GA
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 /**
  * @author Alex Bertram
@@ -56,7 +45,7 @@ public class Authentication implements java.io.Serializable {
     /**
      * Creates a new session object for the given user, with a secure session id
      * and starting at the current time
-     * 
+     *
      * @param user
      */
     public Authentication(User user) {
@@ -69,14 +58,14 @@ public class Authentication implements java.io.Serializable {
     /**
      * Gets the secure id of this Authentication, which is a 128-bit random
      * number represented as a 32-character hexadecimal string.
-     * 
+     *
      * @return the id of this authentication
      */
     @Id
     @Column(name = "AuthToken", unique = true, nullable = false, length = 32)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SecureSequenceGenerator")
     @org.hibernate.annotations.GenericGenerator(name = "SecureSequenceGenerator",
-        strategy = "org.activityinfo.server.authentication.SecureSequenceGenerator")
+            strategy = "org.activityinfo.server.authentication.SecureSequenceGenerator")
     public String getId() {
         return this.id;
     }

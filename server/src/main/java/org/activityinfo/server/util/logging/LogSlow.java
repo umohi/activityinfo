@@ -31,7 +31,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface LogSlow {
     /**
-     * 
      * @return threshold to log warning, in milliseconds.
      */
     long threshold();

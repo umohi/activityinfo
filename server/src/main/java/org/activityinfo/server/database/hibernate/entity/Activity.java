@@ -22,39 +22,23 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import org.activityinfo.api.shared.model.Published;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import org.activityinfo.shared.dto.Published;
 
 /**
  * After the
  * {@link org.activityinfo.server.database.hibernate.entity.UserDatabase}, the
  * activity is the second level of organization in ActivityInfo. Each activity
  * has its set of indicators and attributes.
- * 
+ * <p/>
  * Realized activities takes place at
  * {@link org.activityinfo.server.database.hibernate.entity.Site} sites.
- * 
+ *
  * @author Alex Bertram
  */
 @Entity
@@ -166,7 +150,7 @@ public class Activity implements Serializable, Deleteable, Orderable {
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "AttributeGroupInActivity", joinColumns = { @JoinColumn(name = "ActivityId", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "AttributeGroupId", nullable = false, updatable = false) })
+    @JoinTable(name = "AttributeGroupInActivity", joinColumns = {@JoinColumn(name = "ActivityId", nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "AttributeGroupId", nullable = false, updatable = false)})
     @org.hibernate.annotations.Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
     @org.hibernate.annotations.Filter(name = "hideDeleted", condition = "DateDeleted is null")
     public Set<AttributeGroup> getAttributeGroups() {

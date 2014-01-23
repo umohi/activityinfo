@@ -22,22 +22,22 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.activityinfo.api.shared.command.CreateEntity;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.UpdateEntity;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.AttributeGroupDTO;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.shared.command.CreateEntity;
-import org.activityinfo.shared.command.GetSchema;
-import org.activityinfo.shared.command.UpdateEntity;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.dto.ActivityDTO;
-import org.activityinfo.shared.dto.AttributeGroupDTO;
-import org.activityinfo.shared.dto.SchemaDTO;
-import org.activityinfo.test.InjectionSupport;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/schema1.db.xml")
@@ -68,13 +68,13 @@ public class AttributeGroupTest extends CommandTestCase {
 
         ActivityDTO activity = schema.getActivityById(1);
         AttributeGroupDTO group = activity.getAttributeGroupById(result
-            .getNewId());
+                .getNewId());
 
         Assert.assertNotNull("attribute group is created", group);
         Assert.assertEquals("name is correct", group.getName(),
-            "Type de Conflit");
+                "Type de Conflit");
         Assert.assertTrue("multiple allowed is set to true",
-            group.isMultipleAllowed());
+                group.isMultipleAllowed());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class AttributeGroupTest extends CommandTestCase {
 
         // verify the property has been duly changed
         Assert.assertEquals(group.getName(), schema.getActivityById(1)
-            .getAttributeGroups().get(0).getName());
+                .getAttributeGroups().get(0).getName());
 
     }
 }

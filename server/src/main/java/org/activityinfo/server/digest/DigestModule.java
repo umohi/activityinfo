@@ -22,10 +22,10 @@ package org.activityinfo.server.digest;
  * #L%
  */
 
-import org.activityinfo.server.digest.activity.ActivityDigestResource;
-import org.activityinfo.server.digest.activity.ActivityUserDigestResource;
 import org.activityinfo.server.digest.activity.ActivityDigestModelBuilder;
 import org.activityinfo.server.digest.activity.ActivityDigestRenderer;
+import org.activityinfo.server.digest.activity.ActivityDigestResource;
+import org.activityinfo.server.digest.activity.ActivityUserDigestResource;
 import org.activityinfo.server.digest.geo.GeoDigestRenderer;
 import org.activityinfo.server.digest.geo.GeoDigestResource;
 import org.activityinfo.server.digest.geo.GeoUserDigestResource;

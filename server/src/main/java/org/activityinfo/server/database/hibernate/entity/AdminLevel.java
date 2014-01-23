@@ -22,24 +22,13 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @JsonAutoDetect(JsonMethod.NONE)
@@ -94,7 +83,7 @@ public class AdminLevel implements java.io.Serializable {
     public AdminLevel getParent() {
         return this.parent;
     }
-    
+
     @Transient
     @JsonProperty
     public Integer getParentId() {
@@ -132,7 +121,7 @@ public class AdminLevel implements java.io.Serializable {
     public Set<AdminEntity> getEntities() {
         return this.entities;
     }
-    
+
 
     public void setEntities(Set<AdminEntity> entities) {
         this.entities = entities;
@@ -151,11 +140,11 @@ public class AdminLevel implements java.io.Serializable {
     public Set<LocationType> getBoundLocationTypes() {
         return this.boundLocationTypes;
     }
-    
+
     public void setBoundLocationTypes(Set<LocationType> locationTypes) {
         this.boundLocationTypes = locationTypes;
     }
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
     public Set<AdminLevel> getChildLevels() {
         return this.childLevels;

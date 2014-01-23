@@ -22,41 +22,35 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-
-import java.util.Date;
-
+import org.activityinfo.api.shared.command.*;
+import org.activityinfo.api.shared.command.result.CreateResult;
+import org.activityinfo.api.shared.command.result.SiteResult;
+import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.api.shared.model.PartnerDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fixtures.MockHibernateModule;
+import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
 import org.activityinfo.server.util.beanMapping.BeanMappingModule;
 import org.activityinfo.server.util.logging.LoggingModule;
-import org.activityinfo.shared.command.AddPartner;
-import org.activityinfo.shared.command.CreateLocation;
-import org.activityinfo.shared.command.CreateSite;
-import org.activityinfo.shared.command.DeleteSite;
-import org.activityinfo.shared.command.GetSites;
-import org.activityinfo.shared.command.LocalHandlerTestCase;
-import org.activityinfo.shared.command.RemovePartner;
-import org.activityinfo.shared.command.result.CreateResult;
-import org.activityinfo.shared.command.result.SiteResult;
-import org.activityinfo.shared.dto.LocationDTO;
-import org.activityinfo.shared.dto.PartnerDTO;
-import org.activityinfo.shared.dto.SiteDTO;
-import org.activityinfo.shared.exception.CommandException;
-import org.activityinfo.test.InjectionSupport;
-import org.activityinfo.test.MockHibernateModule;
-import org.activityinfo.test.Modules;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Date;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 @RunWith(InjectionSupport.class)
 @Modules({
-    MockHibernateModule.class,
-    BeanMappingModule.class,
-    GwtRpcModule.class,
-    LoggingModule.class
+        MockHibernateModule.class,
+        BeanMappingModule.class,
+        GwtRpcModule.class,
+        LoggingModule.class
 })
 public class LocalSiteCreateTest extends LocalHandlerTestCase {
 
@@ -117,14 +111,14 @@ public class LocalSiteCreateTest extends LocalHandlerTestCase {
         executeLocally(new DeleteSite(1));
 
         assertThat(executeLocally(GetSites.byId(1)).getTotalLength(),
-            equalTo(0));
+                equalTo(0));
 
         synchronize();
 
         assertThat(executeRemotely(GetSites.byId(1)).getTotalLength(),
-            equalTo(0));
+                equalTo(0));
         assertThat(executeLocally(GetSites.byId(1)).getTotalLength(),
-            equalTo(0));
+                equalTo(0));
 
     }
 
