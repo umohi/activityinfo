@@ -511,6 +511,11 @@
         <version>2.16</version>
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          <systemPropertyVariables>
+            <testDatabaseUrl>${testDatabaseUrl}</testDatabaseUrl>
+            <testDatabaseUsername>${testDatabaseUsername}</testDatabaseUsername>
+            <testDatabasePassword>${testDatabasePassword}</testDatabasePassword>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>
