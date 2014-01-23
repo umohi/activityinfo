@@ -28,6 +28,7 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
+@Deprecated
 public interface CanFilter<M extends DTO> {
     public interface FilterHandler extends EventHandler {
         void onFilter(FilterEvent filterEvent);

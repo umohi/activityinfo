@@ -36,9 +36,9 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.activityinfo.client.importer.data.PastedImportSource;
-import org.activityinfo.client.importer.schema.SchemaImporter;
-import org.activityinfo.client.importer.schema.SchemaImporter.ProgressListener;
-import org.activityinfo.client.importer.schema.SchemaImporter.Warning;
+import org.activityinfo.client.page.config.design.importer.SchemaImporter;
+import org.activityinfo.client.page.config.design.importer.SchemaImporter.ProgressListener;
+import org.activityinfo.client.page.config.design.importer.SchemaImporter.Warning;
 import org.activityinfo.client.page.entry.LockedPeriodSet;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.shared.command.CreateEntity;

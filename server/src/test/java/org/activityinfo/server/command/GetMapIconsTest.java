@@ -37,7 +37,7 @@ public class GetMapIconsTest extends CommandTestCase2 {
     @Test
     public void testGetMapIcons() throws Exception {
 
-        GetMapIconsHandler handler = new GetMapIconsHandler("war/mapicons");
+        GetMapIconsHandler handler = new GetMapIconsHandler("src/main/webapp/mapicons");
         MapIconResult result = (MapIconResult) handler.execute(
             new GetMapIcons(), new User());
 

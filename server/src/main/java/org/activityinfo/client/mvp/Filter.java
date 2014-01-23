@@ -24,6 +24,7 @@ package org.activityinfo.client.mvp;
 
 import org.activityinfo.shared.dto.DTO;
 
+@Deprecated
 public interface Filter<M extends DTO> {
 
 }

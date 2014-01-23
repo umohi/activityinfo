@@ -27,6 +27,7 @@ import org.activityinfo.shared.dto.DTO;
 /*
  * A presenter for a Model M and View V. 
  */
+@Deprecated
 public interface Presenter<V extends View<M>, M extends DTO> {
 
 }

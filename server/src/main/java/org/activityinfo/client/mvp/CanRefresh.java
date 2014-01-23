@@ -26,6 +26,7 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
+@Deprecated
 public interface CanRefresh<M> {
     interface RefreshHandler extends EventHandler {
         void onRefresh(RefreshEvent refreshEvent);

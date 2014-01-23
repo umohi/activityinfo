@@ -38,7 +38,7 @@ public class TestDigestModule extends AbstractModule {
 
     @Provides
     public ImageMapRenderer provideImageMapRenderer() {
-        return new ImageMapRenderer(TestGeometry.get(), "war/mapicons");
+        return new ImageMapRenderer(TestGeometry.get(), "src/main/webapp/mapicons");
     }
 
     @Provides

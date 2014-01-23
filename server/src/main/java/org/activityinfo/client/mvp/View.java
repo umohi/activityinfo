@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.IsWidget;
  * the Presenter. The View only has 'dumb' methods: the Presenter acts as a proxy 
  * between the model and the view.
  */
+@Deprecated
 public interface View<M> extends TakesValue<M>, IsWidget {
     /*
      * Presenters have an async process of fetching data. Only after the data

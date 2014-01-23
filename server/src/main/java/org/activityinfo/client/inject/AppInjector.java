@@ -32,7 +32,6 @@ import org.activityinfo.client.dispatch.remote.cache.AdminEntityCache;
 import org.activityinfo.client.dispatch.remote.cache.SchemaCache;
 import org.activityinfo.client.local.LocalController;
 import org.activityinfo.client.local.LocalModule;
-import org.activityinfo.client.local.ui.PromptOfflineDialog;
 import org.activityinfo.client.page.app.AppLoader;
 import org.activityinfo.client.page.config.ConfigLoader;
 import org.activityinfo.client.page.config.ConfigModule;
@@ -76,8 +75,6 @@ public interface AppInjector extends Ginjector {
 
     LocalController createOfflineController();
 
-    PromptOfflineDialog createPromptOfflineDialog();
-
     UsageTracker getUsageTracker();
 
     SearchLoader createSearchLoader();
@@ -87,7 +84,6 @@ public interface AppInjector extends Ginjector {
     SchemaCache createSchemaCache();
 
     AdminEntityCache createAdminCache();
-
 
     AppLoader createAppLoader();
 }

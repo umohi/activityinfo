@@ -1,5 +1,6 @@
 package org.activityinfo.client.importer.data;
 
+
 public class PastedImportRow implements ImportRow {
 
 	private String[] columns;

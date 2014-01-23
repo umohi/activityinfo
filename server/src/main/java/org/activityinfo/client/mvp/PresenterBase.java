@@ -29,6 +29,7 @@ import org.activityinfo.shared.dto.DTO;
 /*
  * Base class to reduce code in presenter classes and to provide a template
  */
+@Deprecated
 public class PresenterBase<V extends View<M>, M extends DTO>
     implements Presenter<V, M> {
 

@@ -29,6 +29,7 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
+@Deprecated
 public interface CanDelete<M extends DTO> {
     interface ConfirmDeleteHandler extends EventHandler {
         void onConfirmDelete(ConfirmDeleteEvent deleteEvent);

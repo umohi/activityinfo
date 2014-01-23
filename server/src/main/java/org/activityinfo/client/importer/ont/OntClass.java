@@ -2,10 +2,16 @@ package org.activityinfo.client.importer.ont;
 
 import java.util.List;
 
+/**
+ * Describes an "ontological" class. We are borrowing the concepts of class and
+ * instances from the RDFS and OWL standards.
+ */
 public abstract class OntClass {
 
-	private String id;
-	
+    /**
+     * 
+     * @return 
+     */
 	public abstract List<Property> getProperties();
 	
 }

@@ -2,6 +2,7 @@ package org.activityinfo.client.page.app;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.activityinfo.client.Log;
 import org.activityinfo.client.authentication.ClientSideAuthProvider;
@@ -17,7 +18,6 @@ import org.activityinfo.shared.command.GetUserProfile;
 import org.activityinfo.shared.command.UpdateUserProfile;
 import org.activityinfo.shared.command.result.VoidResult;
 import org.activityinfo.shared.dto.UserProfileDTO;
-import org.activityinfo.shared.util.ObjectUtil;
 
 import com.extjs.gxt.ui.client.binding.FieldBinding;
 import com.extjs.gxt.ui.client.binding.FormBinding;
@@ -159,7 +159,7 @@ public class UserProfilePage extends FormPanel implements Page {
             // check if we need to save (change-event is also called on init)
             Object modelValue = userProfile.get(fieldname);
             Object fieldValue = fe.getField().getValue();
-            if (ObjectUtil.notEquals(modelValue, fieldValue)) {
+            if (!Objects.equals(modelValue, fieldValue)) {
                 // this eventtype fires before the form->model binding occurs, so we need to
                 // set the model-value manually before save..
                 userProfile.set(fieldname, fieldValue);

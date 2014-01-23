@@ -42,7 +42,7 @@ import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 
 /**
- * Form for editing ActivityDTO
+ * UserForm for editing ActivityDTO
  */
 class ActivityForm extends AbstractDesignForm {
 

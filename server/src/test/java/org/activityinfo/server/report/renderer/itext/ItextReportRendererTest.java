@@ -512,7 +512,7 @@ public class ItextReportRendererTest {
     }
 
     private String mapIconPath() {
-        return "war/mapicons";
+        return "src/main/webapp/mapicons";
     }
 
     private void renderTo(Report report, Renderer reportRenderer, String name)

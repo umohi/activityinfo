@@ -50,6 +50,7 @@ import org.activityinfo.client.mvp.CanUpdate.UpdateEvent;
 import org.activityinfo.client.mvp.CanUpdate.UpdateHandler;
 import org.activityinfo.shared.dto.DTO;
 
+@Deprecated
 public class ListPresenterBase<M extends DTO, L extends List<M>, P extends DTO, V extends CrudView<M, P>>
     extends
     PresenterBase<V, M>

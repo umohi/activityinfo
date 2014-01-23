@@ -28,6 +28,7 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
+@Deprecated
 public interface CanUpdate<M> {
     interface CancelUpdateHandler extends EventHandler {
         void onCancelUpdate(CancelUpdateEvent updateEvent);

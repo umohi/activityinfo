@@ -34,7 +34,7 @@ import org.activityinfo.client.inject.Root;
 
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;

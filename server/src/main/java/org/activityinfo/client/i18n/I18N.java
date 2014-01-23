@@ -22,7 +22,7 @@ package org.activityinfo.client.i18n;
  * #L%
  */
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.shared.GWT;
 import com.teklabs.gwt.i18n.client.LocaleFactory;
 
 /**

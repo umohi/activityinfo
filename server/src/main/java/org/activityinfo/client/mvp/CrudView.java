@@ -43,6 +43,7 @@ import org.activityinfo.shared.dto.DTO;
  * M: the model, a DTO object 
  * P: parent, holding a collection of DTO's
  */
+@Deprecated
 public interface CrudView<M extends DTO, P extends DTO> extends
     ListView<M, P>,
     CanCreate<M>,

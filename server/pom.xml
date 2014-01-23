@@ -513,24 +513,11 @@
           <runTarget>/</runTarget>
           <logLevel>TRACE</logLevel>
           <inplace>false</inplace>
-          <gwtVersion>${gwtVersion}</gwtVersion>
           <port>9090</port>
           <extraJvmArgs>-Xmx2048M -Xss1M</extraJvmArgs>
         </configuration>
 
         <executions>
-          <execution>
-            <id>i18n</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>i18n</goal>
-            </goals>
-            <configuration>
-              <logLevel>ALL</logLevel>
-              <i18nConstantsBundle>org.activityinfo.client.i18n.UIConstants</i18nConstantsBundle>
-            </configuration>
-          </execution>
-
           <execution>
             <id>activityinfo-compile</id>
             <phase>prepare-package</phase>
@@ -549,34 +536,17 @@
               </modules>
             </configuration>
           </execution>
-
-          <execution>
-            <id>gwt-clean</id>
-            <phase>clean</phase>
-            <goals>
-              <goal>clean</goal>
-            </goals>
-          </execution>
         </executions>
       </plugin>
 
       <!-- Exclude GWT integration tests from the test phase -->
-      <!-- we want to run them during the integration-test phase with 
+      <!-- we want to run them during the integration-test phase with
           the gwt-maven plugin -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.9</version>
+        <version>2.16</version>
         <configuration>
-          <excludes>
-            <exclude>**/*GwtTest.java</exclude>
-          </excludes>
-          <failIfNoTests>false</failIfNoTests>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <systemPropertyVariables>
-            <testDatabaseUrl>${testDatabaseUrl}</testDatabaseUrl>
-            <testDatabaseUsername>${testDatabaseUsername}</testDatabaseUsername>
-            <testDatabasePassword>${testDatabasePassword}</testDatabasePassword>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>

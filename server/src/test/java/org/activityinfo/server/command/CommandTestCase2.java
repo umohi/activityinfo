@@ -45,7 +45,6 @@ import org.activityinfo.test.Modules;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
 
 /**

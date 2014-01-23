@@ -29,7 +29,7 @@ public class ImportModelTest {
 		database.getActivities().add(new ActivityDTO(1, "NFI Distribution"));
 		database.getActivities().add(new ActivityDTO(2, "School Reconstruction"));
 	
-		IndicatorImporter importer = new IndicatorImporter(database);
+		IndicatorImporter importer = new IndicatorImporter(null, database);
 		ImportModel<IndicatorDTO> importModel = new ImportModel<IndicatorDTO>(importer);
 		importModel.setSource(new PastedImportSource(tableData));
 		

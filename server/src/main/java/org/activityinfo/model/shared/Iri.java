@@ -1,16 +1,26 @@
 package org.activityinfo.model.shared;
 
 /**
- * Collision-resistent universal ID. Used to generate ids for objects
- * in a distributed manner
+ * Internationalized Resource Identifier
  *
  */
-public interface Iri {
-	
-	/**
-	 * 
-	 * @return an encoded string representation of the CUID
-	 */
-	String asString();
+public class Iri {
 
+    private final String string;
+
+    public Iri(String string) {
+        this.string = string;
+    }
+
+    /**
+     * @return an encoded string representation of the IRI
+     */
+    public String asString() {
+        return string;
+    }
+
+    @Override
+    public String toString() {
+        return "<" + string + ">";
+    }
 }
