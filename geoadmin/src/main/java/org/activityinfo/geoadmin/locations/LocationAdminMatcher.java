@@ -118,8 +118,8 @@ public class LocationAdminMatcher {
         // importSource.featureToString(featureIndex),
         // propContained, nameSimilarity, codeScore));
 
-        //return propContained + (nameSimilarity * 3d);
-        return nameSimilarity;
+        return propContained + (nameSimilarity * 3d);
+        //return nameSimilarity;
     }
 
     /**
