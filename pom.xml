@@ -99,7 +99,6 @@
   <modules>
     <module>geoadmin</module>
     <module>server</module>
-    <module>i18n-validator</module>
   </modules>
 
   <dependencies>
