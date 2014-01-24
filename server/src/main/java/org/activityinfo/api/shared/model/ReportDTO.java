@@ -22,7 +22,7 @@ package org.activityinfo.api.shared.model;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.reports.shared.model.Report;
 
 public class ReportDTO implements DTO {
 

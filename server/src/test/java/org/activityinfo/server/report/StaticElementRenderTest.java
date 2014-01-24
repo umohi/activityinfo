@@ -22,12 +22,12 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.analysis.server.renderer.itext.HtmlReportRenderer;
-import org.activityinfo.analysis.server.renderer.itext.PdfReportRenderer;
-import org.activityinfo.analysis.server.renderer.itext.RtfReportRenderer;
-import org.activityinfo.analysis.shared.content.FilterDescription;
-import org.activityinfo.analysis.shared.content.ReportContent;
-import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.reports.server.renderer.itext.HtmlReportRenderer;
+import org.activityinfo.reports.server.renderer.itext.PdfReportRenderer;
+import org.activityinfo.reports.server.renderer.itext.RtfReportRenderer;
+import org.activityinfo.reports.shared.content.FilterDescription;
+import org.activityinfo.reports.shared.content.ReportContent;
+import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.server.geo.TestGeometry;
 import org.junit.Before;
 import org.junit.Test;

@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.entry.admin;
 
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.command.GetAdminEntities;
 import org.activityinfo.api.shared.command.result.AdminEntityResult;
 import org.activityinfo.api.shared.model.ActivityDTO;

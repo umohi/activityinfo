@@ -28,10 +28,10 @@ import com.google.code.appengine.awt.image.BufferedImage;
 import com.google.code.appengine.imageio.ImageIO;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.activityinfo.analysis.server.renderer.image.ImageMapRenderer;
-import org.activityinfo.analysis.server.util.ColorUtil;
-import org.activityinfo.analysis.shared.content.PieMapMarker;
-import org.activityinfo.analysis.shared.content.PieMapMarker.SliceValue;
+import org.activityinfo.reports.server.renderer.image.ImageMapRenderer;
+import org.activityinfo.reports.server.util.ColorUtil;
+import org.activityinfo.reports.shared.content.PieMapMarker;
+import org.activityinfo.reports.shared.content.PieMapMarker.SliceValue;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

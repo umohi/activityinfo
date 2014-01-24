@@ -22,7 +22,7 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.GetDimensionLabels.DimensionLabels;
 import org.activityinfo.api.shared.command.result.CommandResult;
 

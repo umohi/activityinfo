@@ -26,7 +26,7 @@ import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.SortInfo;
 import com.google.common.base.Strings;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetSites;
 import org.activityinfo.api.shared.model.*;

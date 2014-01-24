@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.icon;
 
 import com.google.common.collect.Maps;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 
 import java.util.Map;
 

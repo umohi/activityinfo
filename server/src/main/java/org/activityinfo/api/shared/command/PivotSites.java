@@ -23,8 +23,8 @@ package org.activityinfo.api.shared.command;
  */
 
 import com.google.common.collect.Sets;
-import org.activityinfo.analysis.shared.model.Dimension;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.Dimension;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.PivotSites.PivotResult;
 import org.activityinfo.api.shared.command.result.Bucket;
 import org.activityinfo.api.shared.command.result.CommandResult;

@@ -24,7 +24,7 @@ package org.activityinfo.server.endpoint.export;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.FilterUrlSerializer;
 import org.activityinfo.api.shared.command.GetSchema;

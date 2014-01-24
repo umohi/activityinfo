@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import org.activityinfo.analysis.shared.model.PivotReportElement;
+import org.activityinfo.reports.shared.model.PivotReportElement;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.Dispatcher;

@@ -23,9 +23,9 @@ package org.activityinfo.api.shared.command;
  */
 
 import com.google.common.collect.Sets;
-import org.activityinfo.analysis.shared.model.DateRange;
-import org.activityinfo.analysis.shared.model.DimensionType;
-import org.activityinfo.analysis.shared.model.typeadapter.FilterAdapter;
+import org.activityinfo.reports.shared.model.DateRange;
+import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.typeadapter.FilterAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;

@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.report.editor.map;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import org.activityinfo.analysis.shared.model.layers.MapLayer;
+import org.activityinfo.reports.shared.model.layers.MapLayer;
 
 public class LayerModel extends BaseModelData {
     private transient MapLayer mapLayer;

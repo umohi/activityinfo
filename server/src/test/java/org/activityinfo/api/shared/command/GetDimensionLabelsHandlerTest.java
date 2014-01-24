@@ -22,7 +22,7 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.Modules;

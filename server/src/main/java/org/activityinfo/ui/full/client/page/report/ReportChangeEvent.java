@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.report;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.EventType;
-import org.activityinfo.analysis.shared.model.ReportElement;
+import org.activityinfo.reports.shared.model.ReportElement;
 
 public class ReportChangeEvent extends BaseEvent {
 

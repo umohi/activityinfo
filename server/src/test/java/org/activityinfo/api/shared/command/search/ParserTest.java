@@ -23,7 +23,7 @@ package org.activityinfo.api.shared.command.search;
  */
 
 import com.teklabs.gwt.i18n.server.LocaleProxy;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.impl.search.QueryParser;
 import org.activityinfo.api.shared.impl.search.QueryParser.Dimension;
 import org.junit.BeforeClass;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.activityinfo.analysis.shared.model.DimensionType.*;
+import static org.activityinfo.reports.shared.model.DimensionType.*;
 import static org.junit.Assert.*;
 
 public class ParserTest {

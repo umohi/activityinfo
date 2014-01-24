@@ -33,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.api.shared.command.*;
 import org.activityinfo.api.shared.command.result.BatchResult;
 import org.activityinfo.api.shared.command.result.ReportVisibilityResult;

@@ -35,7 +35,7 @@ import com.google.common.base.Strings;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
-import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.api.shared.command.CreateReport;
 import org.activityinfo.api.shared.command.GetReportModel;
 import org.activityinfo.api.shared.command.RenderElement.Format;

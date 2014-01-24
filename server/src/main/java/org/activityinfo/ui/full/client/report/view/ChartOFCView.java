@@ -44,10 +44,10 @@ import com.extjs.gxt.ui.client.widget.layout.MarginData;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
-import org.activityinfo.analysis.shared.Theme;
-import org.activityinfo.analysis.shared.content.PivotChartContent;
-import org.activityinfo.analysis.shared.content.PivotTableData;
-import org.activityinfo.analysis.shared.model.PivotChartReportElement;
+import org.activityinfo.reports.shared.Theme;
+import org.activityinfo.reports.shared.content.PivotChartContent;
+import org.activityinfo.reports.shared.content.PivotTableData;
+import org.activityinfo.reports.shared.model.PivotChartReportElement;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 import java.util.Collections;

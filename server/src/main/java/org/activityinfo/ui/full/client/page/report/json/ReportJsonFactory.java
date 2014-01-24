@@ -24,12 +24,12 @@ package org.activityinfo.ui.full.client.page.report.json;
 
 import com.google.gson.*;
 import com.google.inject.Inject;
-import org.activityinfo.analysis.shared.content.DimensionCategory;
-import org.activityinfo.analysis.shared.model.*;
-import org.activityinfo.analysis.shared.model.clustering.AutomaticClustering;
-import org.activityinfo.analysis.shared.model.clustering.NoClustering;
-import org.activityinfo.analysis.shared.model.layers.*;
-import org.activityinfo.analysis.shared.model.layers.PiechartMapLayer.Slice;
+import org.activityinfo.reports.shared.content.DimensionCategory;
+import org.activityinfo.reports.shared.model.*;
+import org.activityinfo.reports.shared.model.clustering.AutomaticClustering;
+import org.activityinfo.reports.shared.model.clustering.NoClustering;
+import org.activityinfo.reports.shared.model.layers.*;
+import org.activityinfo.reports.shared.model.layers.PiechartMapLayer.Slice;
 import org.activityinfo.api.shared.command.Filter;
 
 import java.util.*;

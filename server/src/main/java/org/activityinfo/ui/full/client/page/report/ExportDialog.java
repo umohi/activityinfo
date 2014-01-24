@@ -39,7 +39,7 @@ import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayoutData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
-import org.activityinfo.analysis.shared.model.ReportElement;
+import org.activityinfo.reports.shared.model.ReportElement;
 import org.activityinfo.api.shared.command.RenderElement;
 import org.activityinfo.api.shared.command.RenderElement.Format;
 import org.activityinfo.api.shared.command.result.UrlResult;

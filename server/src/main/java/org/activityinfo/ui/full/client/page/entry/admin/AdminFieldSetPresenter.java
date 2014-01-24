@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.event.BaseObservable;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.model.AdminEntityDTO;
 import org.activityinfo.api.shared.model.AdminLevelDTO;
 import org.activityinfo.api.shared.model.CountryDTO;

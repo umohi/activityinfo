@@ -23,7 +23,7 @@ package org.activityinfo.api.shared.command;
  */
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 
 import java.util.Set;
 

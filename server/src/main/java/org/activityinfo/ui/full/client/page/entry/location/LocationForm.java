@@ -32,7 +32,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayout;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
 import com.google.gwt.user.client.Timer;
-import org.activityinfo.analysis.shared.content.AiLatLng;
+import org.activityinfo.reports.shared.content.AiLatLng;
 import org.activityinfo.api.shared.model.AdminLevelDTO;
 import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;

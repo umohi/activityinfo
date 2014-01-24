@@ -22,8 +22,8 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.content.*;
-import org.activityinfo.analysis.shared.model.*;
+import org.activityinfo.reports.shared.content.*;
+import org.activityinfo.reports.shared.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

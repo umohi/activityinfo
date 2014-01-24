@@ -23,9 +23,9 @@ package org.activityinfo.api.shared.impl;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.content.EntityCategory;
-import org.activityinfo.analysis.shared.model.Dimension;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.content.EntityCategory;
+import org.activityinfo.reports.shared.model.Dimension;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.GetAttributeGroupsDimension;
 import org.activityinfo.api.shared.command.PivotSites;
 import org.activityinfo.api.shared.command.PivotSites.ValueType;

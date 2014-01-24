@@ -27,7 +27,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import org.activityinfo.analysis.shared.model.MapReportElement;
+import org.activityinfo.reports.shared.model.MapReportElement;
 import org.activityinfo.ui.full.client.map.LeafletReportOverlays;
 import org.activityinfo.ui.full.client.report.editor.map.LeafletMap;
 import org.activityinfo.ui.full.client.util.LeafletUtil;

@@ -29,7 +29,7 @@ import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.EmailDelivery;
+import org.activityinfo.reports.shared.model.EmailDelivery;
 import org.activityinfo.api.shared.command.GetReports;
 import org.activityinfo.api.shared.command.result.ReportsResult;
 import org.activityinfo.api.shared.impl.CommandHandlerAsync;

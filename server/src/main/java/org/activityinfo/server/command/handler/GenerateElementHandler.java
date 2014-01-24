@@ -23,8 +23,8 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.analysis.server.generator.ReportGenerator;
-import org.activityinfo.analysis.shared.model.DateRange;
+import org.activityinfo.reports.server.generator.ReportGenerator;
+import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.api.shared.command.GenerateElement;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.exception.CommandException;

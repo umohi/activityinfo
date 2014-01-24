@@ -22,11 +22,11 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.ReportElement;
+import org.activityinfo.reports.shared.model.ReportElement;
 import org.activityinfo.api.shared.command.result.UrlResult;
 
 /**
- * Renders a {@link org.activityinfo.analysis.shared.model.ReportElement} in the
+ * Renders a {@link org.activityinfo.reports.shared.model.ReportElement} in the
  * specified format, saves the file to the server, and returns the name of the
  * temporary file that can be used to initiate a download.
  *

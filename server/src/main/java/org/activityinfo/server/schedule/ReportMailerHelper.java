@@ -22,8 +22,8 @@ package org.activityinfo.server.schedule;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.EmailDelivery;
-import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.reports.shared.model.EmailDelivery;
+import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.server.database.hibernate.entity.ReportSubscription;
 import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.util.html.HtmlWriter;

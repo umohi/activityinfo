@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.page.report;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import org.activityinfo.analysis.shared.model.ReportElement;
+import org.activityinfo.reports.shared.model.ReportElement;
 
 public class ReportElementModel extends BaseModelData {
 

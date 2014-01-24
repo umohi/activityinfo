@@ -6,7 +6,7 @@ import com.google.inject.Provider;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import org.activityinfo.analysis.shared.content.AiLatLng;
+import org.activityinfo.reports.shared.content.AiLatLng;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.util.mapping.JtsUtil;
 import org.hibernate.Criteria;

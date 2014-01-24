@@ -1,7 +1,7 @@
 package org.activityinfo.server.command;
 
-import org.activityinfo.analysis.shared.model.Dimension;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.Dimension;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.*;
 import org.activityinfo.api.shared.command.PivotSites.PivotResult;
 import org.activityinfo.api.shared.command.result.SiteResult;

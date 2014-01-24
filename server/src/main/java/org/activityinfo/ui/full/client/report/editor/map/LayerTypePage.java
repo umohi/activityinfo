@@ -32,7 +32,7 @@ import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.FlowData;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
-import org.activityinfo.analysis.shared.model.layers.*;
+import org.activityinfo.reports.shared.model.layers.*;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.widget.wizard.WizardPage;
 

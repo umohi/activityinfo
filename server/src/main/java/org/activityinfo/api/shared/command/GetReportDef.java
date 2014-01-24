@@ -26,7 +26,7 @@ import org.activityinfo.api.shared.command.result.XmlResult;
 
 /**
  * Returns the XML definition of the
- * {@link org.activityinfo.analysis.shared.model.Report ReportModel} for a given
+ * {@link org.activityinfo.reports.shared.model.Report ReportModel} for a given
  * {@link org.activityinfo.server.database.hibernate.entity.ReportDefinition}
  * database entity.
  *

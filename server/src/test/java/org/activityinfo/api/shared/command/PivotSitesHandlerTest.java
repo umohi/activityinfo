@@ -24,12 +24,12 @@ package org.activityinfo.api.shared.command;
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.collect.Lists;
-import org.activityinfo.analysis.server.util.DateUtilCalendarImpl;
-import org.activityinfo.analysis.shared.content.DimensionCategory;
-import org.activityinfo.analysis.shared.content.EntityCategory;
-import org.activityinfo.analysis.shared.content.QuarterCategory;
-import org.activityinfo.analysis.shared.content.WeekCategory;
-import org.activityinfo.analysis.shared.model.*;
+import org.activityinfo.reports.server.util.DateUtilCalendarImpl;
+import org.activityinfo.reports.shared.content.DimensionCategory;
+import org.activityinfo.reports.shared.content.EntityCategory;
+import org.activityinfo.reports.shared.content.QuarterCategory;
+import org.activityinfo.reports.shared.content.WeekCategory;
+import org.activityinfo.reports.shared.model.*;
 import org.activityinfo.api.shared.command.PivotSites.ValueType;
 import org.activityinfo.api.shared.command.result.Bucket;
 import org.activityinfo.api.shared.exception.CommandException;

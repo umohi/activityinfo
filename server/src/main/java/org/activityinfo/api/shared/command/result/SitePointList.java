@@ -22,7 +22,7 @@ package org.activityinfo.api.shared.command.result;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api.shared.model.SitePointDTO;
 

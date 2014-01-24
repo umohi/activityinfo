@@ -36,9 +36,9 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Image;
-import org.activityinfo.analysis.shared.model.MapIcon;
-import org.activityinfo.analysis.shared.model.MapIcon.Icon;
-import org.activityinfo.analysis.shared.model.layers.IconMapLayer;
+import org.activityinfo.reports.shared.model.MapIcon;
+import org.activityinfo.reports.shared.model.MapIcon.Icon;
+import org.activityinfo.reports.shared.model.layers.IconMapLayer;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -32,7 +32,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.*;
+import org.activityinfo.reports.shared.model.*;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.model.AttributeGroupDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;

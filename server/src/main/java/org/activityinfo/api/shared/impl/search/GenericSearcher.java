@@ -25,7 +25,7 @@ package org.activityinfo.api.shared.impl.search;
 import com.bedatadriven.rebar.sql.client.*;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -23,8 +23,8 @@ package org.activityinfo.api.shared.impl;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.DimensionType;
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetSitePoints;
 import org.activityinfo.api.shared.command.GetSites;

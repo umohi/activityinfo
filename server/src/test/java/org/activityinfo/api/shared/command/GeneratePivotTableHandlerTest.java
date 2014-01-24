@@ -22,10 +22,10 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.AttributeGroupDimension;
-import org.activityinfo.analysis.shared.model.Dimension;
-import org.activityinfo.analysis.shared.model.DimensionType;
-import org.activityinfo.analysis.shared.model.PivotTableReportElement;
+import org.activityinfo.reports.shared.model.AttributeGroupDimension;
+import org.activityinfo.reports.shared.model.Dimension;
+import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.PivotTableReportElement;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.Modules;

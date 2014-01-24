@@ -1,7 +1,7 @@
 package org.activityinfo.ui.full.client.report.editor.map;
 
 import com.extjs.gxt.ui.client.widget.Html;
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.ui.full.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.LeafletResourceInjector;
 import org.discotools.gwt.leaflet.client.map.Map;

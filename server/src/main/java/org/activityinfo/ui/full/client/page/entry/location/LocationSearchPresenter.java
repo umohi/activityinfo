@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.data.*;
 import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.command.GetLocations;
 import org.activityinfo.api.shared.command.GetLocations.GetLocationsResult;
 import org.activityinfo.api.shared.command.SearchLocations;

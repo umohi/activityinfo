@@ -22,8 +22,8 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.content.PivotContent;
-import org.activityinfo.analysis.shared.model.PivotTableReportElement;
+import org.activityinfo.reports.shared.content.PivotContent;
+import org.activityinfo.reports.shared.model.PivotTableReportElement;
 
 public class GeneratePivotTable implements Command<PivotContent> {
     private PivotTableReportElement model;

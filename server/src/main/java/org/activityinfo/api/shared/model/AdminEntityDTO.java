@@ -23,7 +23,7 @@ package org.activityinfo.api.shared.model;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 
 /**
  * One-to-one DTO for the

@@ -85,7 +85,7 @@
 
   <mapping wildcard="false">
     <class-a>org.activityinfo.server.database.hibernate.entity.Bounds</class-a>
-    <class-b>org.activityinfo.analysis.shared.util.mapping.Extents</class-b>
+    <class-b>org.activityinfo.reports.shared.util.mapping.Extents</class-b>
 
     <field>
       <a>x1</a>

@@ -24,7 +24,7 @@ package org.activityinfo.server.report;
 
 import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
-import org.activityinfo.analysis.server.generator.MapIconPath;
+import org.activityinfo.reports.server.generator.MapIconPath;
 import org.activityinfo.server.endpoint.gwtrpc.MapIconServlet;
 import org.activityinfo.server.report.output.BlobServiceStorageProvider;
 import org.activityinfo.server.report.output.StorageProvider;

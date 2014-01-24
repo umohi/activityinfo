@@ -23,7 +23,7 @@ package org.activityinfo.api.shared.model;
  */
 
 import com.google.common.collect.Lists;
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.command.result.*;
 
 import java.util.*;

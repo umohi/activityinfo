@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.page.report;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.ReportElement;
+import org.activityinfo.reports.shared.model.ReportElement;
 
 public interface HasReportElement<M extends ReportElement> {
 

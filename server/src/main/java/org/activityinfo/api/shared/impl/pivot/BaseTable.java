@@ -23,8 +23,8 @@ package org.activityinfo.api.shared.impl.pivot;
  */
 
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
-import org.activityinfo.analysis.shared.content.TargetCategory;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.content.TargetCategory;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.PivotSites;
 
 /**

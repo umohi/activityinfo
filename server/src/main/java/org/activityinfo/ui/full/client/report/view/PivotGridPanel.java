@@ -33,10 +33,10 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import org.activityinfo.analysis.shared.content.EntityCategory;
-import org.activityinfo.analysis.shared.content.PivotTableData;
-import org.activityinfo.analysis.shared.model.DimensionType;
-import org.activityinfo.analysis.shared.model.PivotReportElement;
+import org.activityinfo.reports.shared.content.EntityCategory;
+import org.activityinfo.reports.shared.content.PivotTableData;
+import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.PivotReportElement;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.util.IndicatorNumberFormat;
 

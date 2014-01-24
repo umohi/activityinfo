@@ -25,7 +25,7 @@ package org.activityinfo.api.shared.model;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 
 /**
- * One-to-One DTO for the {@link org.activityinfo.analysis.shared.model.MapIcon}
+ * One-to-One DTO for the {@link org.activityinfo.reports.shared.model.MapIcon}
  * report class
  *
  * @author Alex Bertram

@@ -26,7 +26,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.activityinfo.analysis.shared.model.*;
+import org.activityinfo.reports.shared.model.*;
 import org.activityinfo.api.shared.command.Filter;
 import org.junit.Before;
 import org.junit.Ignore;

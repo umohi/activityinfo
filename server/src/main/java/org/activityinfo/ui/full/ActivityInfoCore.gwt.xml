@@ -46,7 +46,7 @@
   <inherits name="com.teklabs.gwt.i18n.GwtI18nServer"/>
 
   <inherits name="org.activityinfo.api.Api"/>
-  <inherits name="org.activityinfo.analysis.Analysis"/>
+  <inherits name="org.activityinfo.reports.Reports"/>
 
 
   <set-property name="gwt.logging.popupHandler" value="DISABLED"/>

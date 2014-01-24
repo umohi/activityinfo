@@ -23,17 +23,17 @@ package org.activityinfo.server.report;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.analysis.server.generator.ReportGenerator;
-import org.activityinfo.analysis.server.renderer.Renderer;
-import org.activityinfo.analysis.server.renderer.RendererFactory;
-import org.activityinfo.analysis.shared.content.PivotContent;
-import org.activityinfo.analysis.shared.model.MapReportElement;
-import org.activityinfo.analysis.shared.model.Report;
-import org.activityinfo.analysis.shared.model.ReportElement;
-import org.activityinfo.analysis.shared.model.TableElement;
-import org.activityinfo.analysis.shared.model.labeling.ArabicNumberSequence;
-import org.activityinfo.analysis.shared.model.layers.BubbleMapLayer;
-import org.activityinfo.analysis.shared.model.layers.ScalingType;
+import org.activityinfo.reports.server.generator.ReportGenerator;
+import org.activityinfo.reports.server.renderer.Renderer;
+import org.activityinfo.reports.server.renderer.RendererFactory;
+import org.activityinfo.reports.shared.content.PivotContent;
+import org.activityinfo.reports.shared.model.MapReportElement;
+import org.activityinfo.reports.shared.model.Report;
+import org.activityinfo.reports.shared.model.ReportElement;
+import org.activityinfo.reports.shared.model.TableElement;
+import org.activityinfo.reports.shared.model.labeling.ArabicNumberSequence;
+import org.activityinfo.reports.shared.model.layers.BubbleMapLayer;
+import org.activityinfo.reports.shared.model.layers.ScalingType;
 import org.activityinfo.api.shared.command.RenderElement;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.MockHibernateModule;

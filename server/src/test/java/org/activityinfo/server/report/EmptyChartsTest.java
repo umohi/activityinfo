@@ -22,12 +22,12 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.analysis.server.generator.PivotChartGenerator;
-import org.activityinfo.analysis.shared.model.DateRange;
-import org.activityinfo.analysis.shared.model.Dimension;
-import org.activityinfo.analysis.shared.model.DimensionType;
-import org.activityinfo.analysis.shared.model.PivotChartReportElement;
-import org.activityinfo.analysis.shared.model.PivotChartReportElement.Type;
+import org.activityinfo.reports.server.generator.PivotChartGenerator;
+import org.activityinfo.reports.shared.model.DateRange;
+import org.activityinfo.reports.shared.model.Dimension;
+import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.PivotChartReportElement;
+import org.activityinfo.reports.shared.model.PivotChartReportElement.Type;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetDimensionLabels;
 import org.activityinfo.api.shared.command.PivotSites;

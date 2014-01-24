@@ -31,7 +31,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.*;
+import org.activityinfo.reports.shared.model.*;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.model.AdminLevelDTO;
 import org.activityinfo.api.shared.model.CountryDTO;

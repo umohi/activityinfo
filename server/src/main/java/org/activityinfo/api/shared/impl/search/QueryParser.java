@@ -23,7 +23,7 @@ package org.activityinfo.api.shared.impl.search;
  */
 
 import com.google.common.collect.Maps;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.ui.full.client.i18n.I18N;
 

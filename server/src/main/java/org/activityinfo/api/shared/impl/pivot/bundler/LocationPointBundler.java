@@ -1,7 +1,7 @@
 package org.activityinfo.api.shared.impl.pivot.bundler;
 
 import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
-import org.activityinfo.analysis.shared.content.AiLatLng;
+import org.activityinfo.reports.shared.content.AiLatLng;
 import org.activityinfo.api.shared.command.result.Bucket;
 
 /**

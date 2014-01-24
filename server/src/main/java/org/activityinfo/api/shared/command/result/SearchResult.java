@@ -22,7 +22,7 @@ package org.activityinfo.api.shared.command.result;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.content.PivotContent;
+import org.activityinfo.reports.shared.content.PivotContent;
 import org.activityinfo.api.shared.impl.search.Searcher;
 import org.activityinfo.api.shared.model.DTO;
 import org.activityinfo.api.shared.model.SearchHitDTO;

@@ -34,7 +34,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
-import org.activityinfo.analysis.shared.model.layers.BubbleMapLayer;
+import org.activityinfo.reports.shared.model.layers.BubbleMapLayer;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 /*

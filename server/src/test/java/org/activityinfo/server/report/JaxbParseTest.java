@@ -22,7 +22,7 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.*;
+import org.activityinfo.reports.shared.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 

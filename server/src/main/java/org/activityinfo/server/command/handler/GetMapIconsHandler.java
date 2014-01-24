@@ -23,7 +23,7 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.analysis.server.generator.MapIconPath;
+import org.activityinfo.reports.server.generator.MapIconPath;
 import org.activityinfo.api.shared.command.GetMapIcons;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.command.result.MapIconResult;

@@ -22,7 +22,7 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.reports.shared.model.Report;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

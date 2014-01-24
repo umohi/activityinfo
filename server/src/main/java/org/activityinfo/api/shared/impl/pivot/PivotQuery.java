@@ -30,7 +30,7 @@ import com.bedatadriven.rebar.sql.client.query.SqlDialect;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.*;
+import org.activityinfo.reports.shared.model.*;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.PivotSites;
 import org.activityinfo.api.shared.command.result.Bucket;

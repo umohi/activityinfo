@@ -27,7 +27,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import org.activityinfo.analysis.shared.model.DateRange;
+import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.ui.full.client.filter.SelectionCallback;
 import org.activityinfo.ui.full.client.i18n.I18N;
 

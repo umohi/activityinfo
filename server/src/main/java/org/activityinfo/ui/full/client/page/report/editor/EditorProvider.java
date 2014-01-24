@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.report.editor;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.activityinfo.analysis.shared.model.*;
+import org.activityinfo.reports.shared.model.*;
 import org.activityinfo.ui.full.client.report.editor.chart.ChartEditor;
 import org.activityinfo.ui.full.client.report.editor.map.MapEditor;
 import org.activityinfo.ui.full.client.report.editor.pivotTable.PivotTableEditor;

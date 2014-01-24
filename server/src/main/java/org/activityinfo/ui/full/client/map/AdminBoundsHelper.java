@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.map;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.model.*;
 
 import java.util.Collection;

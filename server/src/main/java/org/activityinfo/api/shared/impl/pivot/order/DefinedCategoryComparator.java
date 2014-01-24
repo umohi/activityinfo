@@ -22,8 +22,8 @@ package org.activityinfo.api.shared.impl.pivot.order;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.content.DimensionCategory;
-import org.activityinfo.analysis.shared.content.PivotTableData;
+import org.activityinfo.reports.shared.content.DimensionCategory;
+import org.activityinfo.reports.shared.content.PivotTableData;
 
 import java.util.Comparator;
 import java.util.HashMap;

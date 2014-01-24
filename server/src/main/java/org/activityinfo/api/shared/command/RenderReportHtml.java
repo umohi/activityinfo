@@ -22,7 +22,7 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.ReportElement;
+import org.activityinfo.reports.shared.model.ReportElement;
 import org.activityinfo.api.shared.command.result.HtmlResult;
 
 public class RenderReportHtml implements Command<HtmlResult> {

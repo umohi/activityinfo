@@ -25,7 +25,7 @@ package org.activityinfo.server.endpoint.kml;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.command.GetSites;

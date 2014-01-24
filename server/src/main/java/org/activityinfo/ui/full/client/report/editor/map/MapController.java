@@ -3,8 +3,8 @@ package org.activityinfo.ui.full.client.report.editor.map;
 
 import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.MapElement;
-import org.activityinfo.analysis.shared.model.MapReportElement;
-import org.activityinfo.analysis.shared.model.layers.MapLayer;
+import org.activityinfo.reports.shared.model.MapReportElement;
+import org.activityinfo.reports.shared.model.layers.MapLayer;
 import org.activityinfo.ui.full.client.report.editor.map.layer.LayerController;
 import org.discotools.gwt.leaflet.client.layers.raster.TileLayer;
 import org.discotools.gwt.leaflet.client.map.Map;

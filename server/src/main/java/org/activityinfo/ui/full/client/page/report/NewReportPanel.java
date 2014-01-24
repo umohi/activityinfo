@@ -33,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.api.shared.command.CreateReport;
 import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.ui.full.client.EventBus;

@@ -23,10 +23,10 @@ package org.activityinfo.ui.full.client.report.view;
  */
 
 import com.extjs.gxt.ui.client.event.Listener;
-import org.activityinfo.analysis.shared.content.EntityCategory;
-import org.activityinfo.analysis.shared.content.PivotTableData;
-import org.activityinfo.analysis.shared.model.DimensionType;
-import org.activityinfo.analysis.shared.util.DateUtil;
+import org.activityinfo.reports.shared.content.EntityCategory;
+import org.activityinfo.reports.shared.content.PivotTableData;
+import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.reports.shared.util.DateUtil;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.ui.full.client.AppEvents;
 import org.activityinfo.ui.full.client.EventBus;

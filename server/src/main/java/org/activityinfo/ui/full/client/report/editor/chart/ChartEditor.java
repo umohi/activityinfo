@@ -31,7 +31,7 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.google.inject.Inject;
-import org.activityinfo.analysis.shared.model.PivotChartReportElement;
+import org.activityinfo.reports.shared.model.PivotChartReportElement;
 import org.activityinfo.api.shared.command.RenderElement.Format;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.Dispatcher;

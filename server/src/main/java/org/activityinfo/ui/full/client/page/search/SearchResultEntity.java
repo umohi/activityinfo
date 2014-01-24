@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.page.search;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 
 /**
  * Simple tuple for a filter hit

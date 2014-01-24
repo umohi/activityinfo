@@ -34,7 +34,7 @@ import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.model.EmailDelivery;
+import org.activityinfo.reports.shared.model.EmailDelivery;
 import org.activityinfo.api.shared.command.UpdateReportSubscription;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.ReportMetadataDTO;

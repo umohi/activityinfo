@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.report.editor.chart;
 
 import com.extjs.gxt.ui.client.widget.toolbar.FillToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import org.activityinfo.analysis.shared.model.PivotChartReportElement;
+import org.activityinfo.reports.shared.model.PivotChartReportElement;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.Dispatcher;
 import org.activityinfo.ui.full.client.page.report.HasReportElement;

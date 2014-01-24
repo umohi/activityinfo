@@ -23,9 +23,9 @@ package org.activityinfo.api.shared.impl;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.content.PivotContent;
-import org.activityinfo.analysis.shared.content.PivotTableData;
-import org.activityinfo.analysis.shared.model.PivotTableReportElement;
+import org.activityinfo.reports.shared.content.PivotContent;
+import org.activityinfo.reports.shared.content.PivotTableData;
+import org.activityinfo.reports.shared.model.PivotTableReportElement;
 import org.activityinfo.api.shared.command.GeneratePivotTable;
 import org.activityinfo.api.shared.command.PivotSites;
 import org.activityinfo.api.shared.command.PivotSites.PivotResult;

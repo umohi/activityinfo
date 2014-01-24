@@ -2,12 +2,12 @@ package org.activityinfo.ui.full.client.map;
 
 import com.google.common.base.Objects;
 import com.google.gwt.http.client.*;
-import org.activityinfo.analysis.shared.content.AdminOverlay;
-import org.activityinfo.analysis.shared.content.MapContent;
-import org.activityinfo.analysis.shared.content.MapMarker;
-import org.activityinfo.analysis.shared.content.MapboxLayers;
-import org.activityinfo.analysis.shared.model.MapReportElement;
-import org.activityinfo.analysis.shared.util.mapping.Extents;
+import org.activityinfo.reports.shared.content.AdminOverlay;
+import org.activityinfo.reports.shared.content.MapContent;
+import org.activityinfo.reports.shared.content.MapMarker;
+import org.activityinfo.reports.shared.content.MapboxLayers;
+import org.activityinfo.reports.shared.model.MapReportElement;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.model.BaseMap;
 import org.activityinfo.api.shared.model.TileBaseMap;
 import org.activityinfo.ui.full.client.Log;

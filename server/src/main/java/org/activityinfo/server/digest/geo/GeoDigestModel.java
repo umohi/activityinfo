@@ -1,6 +1,6 @@
 package org.activityinfo.server.digest.geo;
 
-import org.activityinfo.analysis.shared.content.MapContent;
+import org.activityinfo.reports.shared.content.MapContent;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;

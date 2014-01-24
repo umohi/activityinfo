@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.report.view;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.PivotChartReportElement;
+import org.activityinfo.reports.shared.model.PivotChartReportElement;
 
 /**
  * Interface to a view of a PivotChartElement

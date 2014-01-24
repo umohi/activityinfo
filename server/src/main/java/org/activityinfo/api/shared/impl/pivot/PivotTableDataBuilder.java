@@ -22,10 +22,10 @@ package org.activityinfo.api.shared.impl.pivot;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.content.DimensionCategory;
-import org.activityinfo.analysis.shared.content.PivotTableData;
-import org.activityinfo.analysis.shared.model.Dimension;
-import org.activityinfo.analysis.shared.model.PivotReportElement;
+import org.activityinfo.reports.shared.content.DimensionCategory;
+import org.activityinfo.reports.shared.content.PivotTableData;
+import org.activityinfo.reports.shared.model.Dimension;
+import org.activityinfo.reports.shared.model.PivotReportElement;
 import org.activityinfo.api.shared.command.result.Bucket;
 import org.activityinfo.api.shared.impl.pivot.order.CategoryComparator;
 import org.activityinfo.api.shared.impl.pivot.order.DefinedCategoryComparator;

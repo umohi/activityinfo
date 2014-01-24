@@ -1,7 +1,7 @@
 package org.activityinfo.server.endpoint.rest;
 
 import com.sun.jersey.api.core.InjectParam;
-import org.activityinfo.analysis.shared.content.AiLatLng;
+import org.activityinfo.reports.shared.content.AiLatLng;
 import org.activityinfo.server.database.hibernate.dao.Geocoder;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.AdminEntityViews;

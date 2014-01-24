@@ -28,7 +28,7 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayout;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayoutData;
-import org.activityinfo.analysis.shared.model.PivotTableReportElement;
+import org.activityinfo.reports.shared.model.PivotTableReportElement;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;

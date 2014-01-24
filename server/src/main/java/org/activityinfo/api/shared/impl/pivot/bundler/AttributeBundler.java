@@ -1,8 +1,8 @@
 package org.activityinfo.api.shared.impl.pivot.bundler;
 
 import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
-import org.activityinfo.analysis.shared.content.AttributeCategory;
-import org.activityinfo.analysis.shared.model.Dimension;
+import org.activityinfo.reports.shared.content.AttributeCategory;
+import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.api.shared.command.result.Bucket;
 
 public class AttributeBundler implements Bundler {

@@ -1,11 +1,11 @@
 package org.activityinfo.ui.full.client.map;
 
-import org.activityinfo.analysis.shared.content.BubbleMapMarker;
-import org.activityinfo.analysis.shared.content.IconMapMarker;
-import org.activityinfo.analysis.shared.content.MapMarker;
-import org.activityinfo.analysis.shared.content.PieMapMarker;
-import org.activityinfo.analysis.shared.content.PieMapMarker.SliceValue;
-import org.activityinfo.analysis.shared.model.MapIcon;
+import org.activityinfo.reports.shared.content.BubbleMapMarker;
+import org.activityinfo.reports.shared.content.IconMapMarker;
+import org.activityinfo.reports.shared.content.MapMarker;
+import org.activityinfo.reports.shared.content.PieMapMarker;
+import org.activityinfo.reports.shared.content.PieMapMarker.SliceValue;
+import org.activityinfo.reports.shared.model.MapIcon;
 import org.activityinfo.ui.full.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.Options;
 import org.discotools.gwt.leaflet.client.marker.CircleMarker;

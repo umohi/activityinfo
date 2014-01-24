@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.i18n;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.DimensionType;
+import org.activityinfo.reports.shared.model.DimensionType;
 
 public class FromEntities {
 

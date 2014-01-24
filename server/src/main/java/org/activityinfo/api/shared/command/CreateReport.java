@@ -22,7 +22,7 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
-import org.activityinfo.analysis.shared.model.Report;
+import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.api.shared.command.result.CreateResult;
 
 /**

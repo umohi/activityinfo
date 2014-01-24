@@ -33,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.analysis.shared.content.GoogleBaseMap;
+import org.activityinfo.reports.shared.content.GoogleBaseMap;
 import org.activityinfo.api.shared.command.GetBaseMaps;
 import org.activityinfo.api.shared.command.result.BaseMapResult;
 import org.activityinfo.api.shared.model.BaseMap;

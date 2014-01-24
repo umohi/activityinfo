@@ -23,8 +23,8 @@ package org.activityinfo.ui.full.client.page.entry;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import org.activityinfo.analysis.shared.content.MonthCategory;
-import org.activityinfo.analysis.shared.model.DateRange;
+import org.activityinfo.reports.shared.content.MonthCategory;
+import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.ui.full.client.util.date.DateUtilGWTImpl;
 
 final class MonthModel extends BaseModelData {
