@@ -6,9 +6,9 @@ import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.AttributeGroupDTO;
 import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.IndicatorGroup;
-import org.activityinfo.api2.model.shared.LocalizedString;
-import org.activityinfo.api2.model.shared.Namespace;
-import org.activityinfo.api2.model.shared.form.*;
+import org.activityinfo.api2.shared.LocalizedString;
+import org.activityinfo.api2.shared.Namespace;
+import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 import java.util.List;
@@ -31,14 +31,14 @@ public class ActivityAdapter {
         FormField partnerField = new FormField(Namespace.IMPLEMENTED_BY);
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
         partnerField.setRange(Namespace.PARTNER);
-        partnerField.setType(FormFieldType.SINGLE_OBJECT);
+        partnerField.setType(FormFieldType.REFERENCE);
         siteForm.addElement(partnerField);
 
 
         FormField locationField = new FormField(Namespace.LOCATED_AT);
         locationField.setLabel(new LocalizedString(activity.getLocationType().getName()));
         locationField.setRange(Namespace.locationType(activity.getLocationTypeId()));
-        locationField.setType(FormFieldType.SINGLE_OBJECT);
+        locationField.setType(FormFieldType.REFERENCE);
 
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
             FormField attributeField = new FormField(Namespace.attributeGroup(group.getId()));
@@ -46,9 +46,9 @@ public class ActivityAdapter {
             attributeField.setRange(Namespace.attributeGroup(group.getId()));
 
             if (group.isMultipleAllowed()) {
-                attributeField.setType(FormFieldType.MULTIPLE_OBJECT);
+                attributeField.setType(FormFieldType.REFERENCE);
             } else {
-                attributeField.setType(FormFieldType.SINGLE_OBJECT);
+                attributeField.setType(FormFieldType.REFERENCE);
             }
             siteForm.addElement(attributeField);
         }
