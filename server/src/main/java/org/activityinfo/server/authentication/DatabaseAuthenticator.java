@@ -24,7 +24,6 @@ package org.activityinfo.server.authentication;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.sun.deploy.resources.Deployment;
 import org.activityinfo.server.DeploymentEnvironment;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.mindrot.bcrypt.BCrypt;
