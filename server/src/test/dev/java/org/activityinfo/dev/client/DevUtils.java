@@ -21,33 +21,19 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.Random;
+import org.activityinfo.api2.shared.Iri;
+
+import java.util.Date;
 
 /**
- * Dev only entry point.
- *
  * @author yuriyz on 1/24/14.
  */
-public class DevelopmentEntryPoint implements EntryPoint {
-    @Override
-    public void onModuleLoad() {
-        RootLayoutPanel.get().add(UserFormPanelTest.test());
-//        RootLayoutPanel.get().add(createTestWidget());
+public class DevUtils {
+    private DevUtils() {
     }
 
-//    public Widget createTestWidget() {
-//        // Create a Vertical Panel
-//        VerticalPanel vPanel = new VerticalPanel();
-//        vPanel.setSpacing(5);
-//
-//        // Add some content to the panel
-//        for (int i = 1; i < 10; i++) {
-//            vPanel.add(new Button(" " + i));
-//        }
-//
-//        // Return the content
-//        vPanel.ensureDebugId("cwVerticalPanel");
-//        return vPanel;
-//    }
+    public static Iri randomIri() {
+        return new Iri(Random.nextInt() + "_" + new Date().getTime());
+    }
 }

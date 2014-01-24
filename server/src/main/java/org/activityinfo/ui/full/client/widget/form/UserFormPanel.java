@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.UserForm;
 
@@ -31,12 +31,17 @@ import org.activityinfo.api2.shared.form.UserForm;
  *
  * @author YuriyZ
  */
-public class UserFormPanel extends ResizeComposite {
+public class UserFormPanel extends LayoutPanel {
 
     private final UserForm userForm;
 
     public UserFormPanel(UserForm p_userForm) {
         this.userForm = p_userForm;
+    }
+
+    @Override
+    public void onResize() {
+        super.onResize();
     }
 
     public UserForm getUserForm() {

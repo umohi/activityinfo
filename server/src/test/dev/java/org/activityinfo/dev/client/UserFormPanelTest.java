@@ -21,33 +21,35 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api2.shared.form.FormElement;
+import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.UserForm;
+import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
 /**
- * Dev only entry point.
- *
  * @author yuriyz on 1/24/14.
  */
-public class DevelopmentEntryPoint implements EntryPoint {
-    @Override
-    public void onModuleLoad() {
-        RootLayoutPanel.get().add(UserFormPanelTest.test());
-//        RootLayoutPanel.get().add(createTestWidget());
+public class UserFormPanelTest {
+
+    /**
+     * Avoid instance creation
+     */
+    private UserFormPanelTest() {
     }
 
-//    public Widget createTestWidget() {
-//        // Create a Vertical Panel
-//        VerticalPanel vPanel = new VerticalPanel();
-//        vPanel.setSpacing(5);
-//
-//        // Add some content to the panel
-//        for (int i = 1; i < 10; i++) {
-//            vPanel.add(new Button(" " + i));
-//        }
-//
-//        // Return the content
-//        vPanel.ensureDebugId("cwVerticalPanel");
-//        return vPanel;
-//    }
+    public static Widget test() {
+        final UserForm userForm = createTestUserForm();
+        final UserFormPanel p = new UserFormPanel(userForm);
+        p.setDesignEnabled(true);
+        return p;
+    }
+
+    private static UserForm createTestUserForm() {
+        final FormElement e1 = new FormField(DevUtils.randomIri());
+
+        final UserForm form = new UserForm(DevUtils.randomIri());
+        form.addElement(e1);
+        return form;
+    }
 }
