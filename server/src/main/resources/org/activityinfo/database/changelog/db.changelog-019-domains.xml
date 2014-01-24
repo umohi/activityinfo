@@ -22,68 +22,68 @@
   -->
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	
+	<changeSet author="jasper" id="019-01">
+		<comment>
+			Creates the domain table
+		</comment>
+		<createTable tableName="domain">
+			<column name="host" type="VARCHAR(100)">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+            <column name="title" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="bucket" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+		</createTable>
+	</changeSet>
+  
+    <changeSet author="jasper" id="019-02">
+        <!-- cleanup bad data -->
+        <sql>
+            DELETE FROM userpermission
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM userlogin
+                WHERE userid = userpermission.userid
+            )
+        </sql>
+        <!-- add constraint -->
+        <addForeignKeyConstraint 
+            constraintName="fk_userpermission_userlogin" 
+            baseTableName="userpermission" 
+            baseColumnNames="userid" 
+            referencedTableName="userlogin" 
+            referencedColumnNames="userid"/>
+    </changeSet>
 
-  <changeSet author="jasper" id="019-01">
-    <comment>
-      Creates the domain table
-    </comment>
-    <createTable tableName="domain">
-      <column name="host" type="VARCHAR(100)">
-        <constraints nullable="false" primaryKey="true"/>
-      </column>
-      <column name="title" type="VARCHAR(100)">
+    <changeSet id="019-04" author="alex">
+      <addColumn tableName="domain">
+        <column name="scaffolding" type="longtext"/>
+      </addColumn>
+    </changeSet>
+    
+    <changeSet id="019-05" author="alex">
+      <addColumn tableName="domain">
+        <column name="homePageBody" type="longtext"/>
+      </addColumn>
+    </changeSet>
+    
+    <changeSet id="019-06" author="alex">
+      <comment>Precursor to dropping the column</comment>
+      <dropNotNullConstraint tableName="domain" columnName="bucket" columnDataType="VARCHAR(100)"/>
+    </changeSet>
+    
+    <changeSet id="019-07" author="alex">
+      <addColumn tableName="domain">
+        <column name="signUpAllowed" type="bit" defaultValueBoolean="false">
         <constraints nullable="false"/>
-      </column>
-      <column name="bucket" type="VARCHAR(100)">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-
-  <changeSet author="jasper" id="019-02">
-    <!-- cleanup bad data -->
-    <sql>
-      DELETE FROM userpermission
-      WHERE NOT EXISTS (
-      SELECT 1
-      FROM userlogin
-      WHERE userid = userpermission.userid
-      )
-    </sql>
-    <!-- add constraint -->
-    <addForeignKeyConstraint
-        constraintName="fk_userpermission_userlogin"
-        baseTableName="userpermission"
-        baseColumnNames="userid"
-        referencedTableName="userlogin"
-        referencedColumnNames="userid"/>
-  </changeSet>
-
-  <changeSet id="019-04" author="alex">
-    <addColumn tableName="domain">
-      <column name="scaffolding" type="longtext"/>
-    </addColumn>
-  </changeSet>
-
-  <changeSet id="019-05" author="alex">
-    <addColumn tableName="domain">
-      <column name="homePageBody" type="longtext"/>
-    </addColumn>
-  </changeSet>
-
-  <changeSet id="019-06" author="alex">
-    <comment>Precursor to dropping the column</comment>
-    <dropNotNullConstraint tableName="domain" columnName="bucket" columnDataType="VARCHAR(100)"/>
-  </changeSet>
-
-  <changeSet id="019-07" author="alex">
-    <addColumn tableName="domain">
-      <column name="signUpAllowed" type="bit" defaultValueBoolean="false">
-        <constraints nullable="false"/>
-      </column>
-    </addColumn>
-  </changeSet>
-
+        </column>
+      </addColumn>
+    </changeSet>
+    
 </databaseChangeLog>
