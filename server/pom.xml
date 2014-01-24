@@ -457,7 +457,9 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>2.9.1</version>
         <configuration>
-          <configLocation>checkstyle.xml</configLocation>
+          <configLocation>${basedir}/checkstyle.xml</configLocation>
+          <failOnViolation>false</failOnViolation>
+          <logViolationsToConsole>true</logViolationsToConsole>
         </configuration>
         <executions>
           <execution>
@@ -465,7 +467,6 @@
             <goals>
               <goal>check</goal>
             </goals>
-            <!--<phase>compile</phase>-->
           </execution>
         </executions>
       </plugin>
