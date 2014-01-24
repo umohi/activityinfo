@@ -4,3 +4,10 @@ RemoteSystemsTempFiles/
 .settings
 .project
 geoadmin/.classpath
+.idea
+*.iml
+libpeerconnection.log
+*~
+*.swp
+velocity.log
+
