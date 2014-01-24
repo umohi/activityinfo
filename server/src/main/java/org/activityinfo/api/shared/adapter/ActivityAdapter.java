@@ -14,7 +14,7 @@ import org.activityinfo.ui.full.client.i18n.I18N;
 import java.util.List;
 
 /**
- * Adapts a Legacy "Activity" object to a UserForm
+ * Adapts a Legacy "Activity" model to a UserForm
  */
 public class ActivityAdapter {
 

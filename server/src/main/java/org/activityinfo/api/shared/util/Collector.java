@@ -1,4 +1,4 @@
-package org.activityinfo.server.command;
+package org.activityinfo.api.shared.util;
 
 /*
  * #%L

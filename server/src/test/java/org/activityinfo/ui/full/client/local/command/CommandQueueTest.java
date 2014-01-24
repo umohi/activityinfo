@@ -32,7 +32,7 @@ import com.bedatadriven.rebar.sql.server.jdbc.SqliteStubDatabase;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import org.activityinfo.api.shared.command.CreateSite;
 import org.activityinfo.api.shared.command.UpdateSite;
-import org.activityinfo.server.command.Collector;
+import org.activityinfo.api.shared.util.Collector;
 import org.activityinfo.ui.full.client.MockEventBus;
 import org.junit.Before;
 import org.junit.Test;

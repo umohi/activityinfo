@@ -28,6 +28,7 @@ import org.activityinfo.api.shared.command.*;
 import org.activityinfo.api.shared.command.result.SiteResult;
 import org.activityinfo.api.shared.model.AttributeDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.api.shared.util.Collector;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.MockHibernateModule;
 import org.activityinfo.fixtures.Modules;

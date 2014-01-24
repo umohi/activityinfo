@@ -33,7 +33,7 @@ import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.MutatingCommand;
 import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.server.command.Collector;
+import org.activityinfo.api.shared.util.Collector;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.dispatch.Dispatcher;
