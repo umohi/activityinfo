@@ -24,6 +24,8 @@ package org.activityinfo.server.authentication;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.sun.deploy.resources.Deployment;
+import org.activityinfo.server.DeploymentEnvironment;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.mindrot.bcrypt.BCrypt;
 
@@ -46,6 +48,10 @@ public class DatabaseAuthenticator implements Authenticator {
 
     @Override
     public boolean check(User user, String plaintextPassword) {
+
+        if (DeploymentEnvironment.isAppEngineDevelopment()) {
+            return true;
+        }
 
         if (user.getHashedPassword() == null
                 || user.getHashedPassword().length() == 0) {
