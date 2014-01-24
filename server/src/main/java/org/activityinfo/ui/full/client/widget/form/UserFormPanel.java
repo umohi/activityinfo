@@ -22,6 +22,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.gwt.user.client.ui.ResizeComposite;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.UserForm;
 
@@ -30,7 +31,7 @@ import org.activityinfo.api2.shared.form.UserForm;
  *
  * @author YuriyZ
  */
-public class UserFormPanel {
+public class UserFormPanel extends ResizeComposite {
 
     private final UserForm userForm;
 
@@ -44,5 +45,17 @@ public class UserFormPanel {
 
     public FormInstance getFormInstance() {
         return null; // todo
+    }
+
+    public void setDesignEnabled(boolean p_designEnabled) {
+
+    }
+
+    public void setValue(FormInstance p_instance) {
+
+    }
+
+    public void setReadOnly(boolean p_readOnly) {
+
     }
 }
