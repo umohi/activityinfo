@@ -471,6 +471,14 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warSourceExcludes>ActivityInfo/compile-report,*.log,**/*.symbolMap</warSourceExcludes>
+        </configuration>
+      </plugin>
+
       <!-- configure the GWT-Maven plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
