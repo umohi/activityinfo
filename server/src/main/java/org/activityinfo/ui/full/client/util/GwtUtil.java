@@ -31,14 +31,4 @@ public class GwtUtil {
      */
     private GwtUtil() {
     }
-
-    /**
-     * Returns whether string is empty or not.
-     *
-     * @param str string to check
-     * @return whether string is empty or not
-     */
-    public static boolean isEmpty(String str) {
-        return str == null || str.equals("");
-    }
 }
