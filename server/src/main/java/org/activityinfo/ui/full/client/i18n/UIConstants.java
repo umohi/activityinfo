@@ -3156,4 +3156,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Reset")
     @Key("reset")
     String reset();
+
+    /**
+     *
+     * @return translation
+     */
+    @DefaultStringValue("Complete the form below according to the instructions. When you're finished, click the Save button to save your changes. You can also complete this form with a mobile phone, print a blank paper form.")
+    @Key("userFormPanelInvitation")
+    String userFormPanelInvitation();
 }

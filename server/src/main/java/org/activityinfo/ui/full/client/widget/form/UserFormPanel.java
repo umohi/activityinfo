@@ -25,11 +25,16 @@ package org.activityinfo.ui.full.client.widget.form;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.form.FormElement;
+import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.ui.full.client.i18n.I18N;
+
+import java.util.List;
 
 /**
  * Panel to render UserForm definition.
@@ -37,6 +42,8 @@ import org.activityinfo.ui.full.client.i18n.I18N;
  * @author YuriyZ
  */
 public class UserFormPanel extends DockLayoutPanel {
+
+    public static final int HORIZONTAL_SPACING = 3;
 
     private final UserForm userForm;
     private final ResourceLocator resourceLocator;
@@ -51,6 +58,7 @@ public class UserFormPanel extends DockLayoutPanel {
     private final Button resetButton = new Button(I18N.CONSTANTS.reset());
 
     // content
+    private final FlexTable flexTable = new FlexTable();
 
     public UserFormPanel(UserForm userForm, ResourceLocator resourceLocator) {
         super(Style.Unit.EM);
@@ -62,14 +70,13 @@ public class UserFormPanel extends DockLayoutPanel {
     private void init() {
         addNorth(createToolbar(), 2);
         addSouth(createFooter(), 2);
-        addWest(new HTML("navigation"), 10);
         add(createContent());
     }
 
     private Widget createFooter() {
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setSpacing(3);
-        horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        horizontalPanel.setSpacing(HORIZONTAL_SPACING);
+//        horizontalPanel.setBorderWidth(2);
 
         saveButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
@@ -83,12 +90,17 @@ public class UserFormPanel extends DockLayoutPanel {
         });
         horizontalPanel.add(saveButton);
         horizontalPanel.add(resetButton);
-        return horizontalPanel;
+
+        final HorizontalPanel container = new HorizontalPanel();
+        container.setWidth("100%");
+        container.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        container.add(horizontalPanel);
+        return container;
     }
 
     private Widget createToolbar() {
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setSpacing(3);
+        horizontalPanel.setSpacing(HORIZONTAL_SPACING);
         horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
 
         addFieldButton.addClickHandler(new ClickHandler() {
@@ -107,9 +119,30 @@ public class UserFormPanel extends DockLayoutPanel {
     }
 
     private Widget createContent() {
-        return new HTML("content");
-    }
+        flexTable.setWidth("100%");
+        flexTable.setCellSpacing(3);
+        flexTable.setCellPadding(3);
 
+        final FlexTable.FlexCellFormatter cellFormatter = flexTable.getFlexCellFormatter();
+        cellFormatter.setHorizontalAlignment(0, 4, HasHorizontalAlignment.ALIGN_LEFT);
+        cellFormatter.setColSpan(0, 0, 5);
+        flexTable.setHTML(0, 0, I18N.CONSTANTS.userFormPanelInvitation());
+
+        int row = 1;
+        for (FormElement element : userForm.getElements()) {
+            if (element instanceof FormField) {
+                final FormField field = (FormField) element;
+                flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
+                flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(field.getDescription().getValue())));
+                row++;
+            }
+        }
+//        flexTable.setWidget(numRows, 0, new Image(Showcase.images.gwtLogo()));
+//        flexTable.setWidget(numRows, 1, new Image(Showcase.images.gwtLogo()));
+//        flexTable.getFlexCellFormatter().setRowSpan(0, 1, numRows + 1);
+
+        return flexTable;
+    }
 
     public UserForm getUserForm() {
         return userForm;
