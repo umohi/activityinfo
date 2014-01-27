@@ -21,8 +21,17 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Viewport;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.MarginData;
+import com.extjs.gxt.ui.client.widget.layout.RowData;
+import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.*;
+import org.activityinfo.api2.shared.form.UserForm;
+import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
 /**
  * Dev only entry point.
@@ -30,11 +39,41 @@ import com.google.gwt.user.client.ui.*;
  * @author yuriyz on 1/24/14.
  */
 public class DevelopmentEntryPoint implements EntryPoint {
+
     @Override
     public void onModuleLoad() {
-        RootLayoutPanel.get().add(UserFormPanelTest.test());
-//        RootLayoutPanel.get().add(createTestWidget());
+        gxt();
+//        pureGwt();
     }
+
+    public void gxt() {
+        final UserForm userForm = DevUtils.createTestUserForm();
+
+        final UserFormPanel panel = new UserFormPanel(userForm, null);
+        panel.setDesignEnabled(true);
+
+
+        final ContentPanel container = new ContentPanel();
+        container.setLayout(new RowLayout());
+        container.setLayoutOnChange(true);
+        container.add(panel, new RowData(1, 1, new Margins(0)));
+
+        final Viewport viewport = new Viewport();
+        viewport.setLayout(new FitLayout());
+        viewport.add(container, new MarginData(0));
+        RootLayoutPanel.get().add(viewport);
+
+    }
+
+//    public void pureGwt() {
+//        final UserForm userForm = DevUtils.createTestUserForm();
+//
+//        final UserFormPanel panel = new UserFormPanel(userForm, null);
+//        panel.setDesignEnabled(true);
+//
+//        RootLayoutPanel.get().add(panel);
+//    }
+
 
 //    public Widget createTestWidget() {
 //        // Create a Vertical Panel

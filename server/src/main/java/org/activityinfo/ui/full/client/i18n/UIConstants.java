@@ -3129,4 +3129,31 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Year/Month")
     @Key("yearMonthGrouping")
     String yearMonthGrouping();
+
+    /**
+     * Translated "New field".
+     *
+     * @return translated "New field"
+     */
+    @DefaultStringValue("New field")
+    @Key("newField")
+    String newField();
+
+    /**
+     * Translated "Remove field".
+     *
+     * @return translated "Remove field"
+     */
+    @DefaultStringValue("Remove field")
+    @Key("removeField")
+    String removeField();
+
+    /**
+     * Translated "Reset".
+     *
+     * @return translated "Reset"
+     */
+    @DefaultStringValue("Reset")
+    @Key("reset")
+    String reset();
 }

@@ -23,6 +23,10 @@ package org.activityinfo.dev.client;
 
 import com.google.gwt.user.client.Random;
 import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.LocalizedString;
+import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.api2.shared.form.UserForm;
 
 import java.util.Date;
 
@@ -35,5 +39,17 @@ public class DevUtils {
 
     public static Iri randomIri() {
         return new Iri(Random.nextInt() + "_" + new Date().getTime());
+    }
+
+    static UserForm createTestUserForm() {
+        final FormField e1 = new FormField(randomIri());
+        e1.setType(FormFieldType.QUANTITY);
+        e1.setDescription(new LocalizedString("Quantity description"));
+        e1.setLabel(new LocalizedString("Quantity label"));
+
+
+        final UserForm form = new UserForm(randomIri());
+        form.addElement(e1);
+        return form;
     }
 }

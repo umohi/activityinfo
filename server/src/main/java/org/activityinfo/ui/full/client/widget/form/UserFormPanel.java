@@ -22,45 +22,112 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.*;
+import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.UserForm;
+import org.activityinfo.ui.full.client.i18n.I18N;
 
 /**
  * Panel to render UserForm definition.
  *
  * @author YuriyZ
  */
-public class UserFormPanel extends LayoutPanel {
+public class UserFormPanel extends DockLayoutPanel {
 
     private final UserForm userForm;
+    private final ResourceLocator resourceLocator;
+    private FormInstance formInstance;
 
-    public UserFormPanel(UserForm p_userForm) {
-        this.userForm = p_userForm;
+    // toolbar widgets
+    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
+    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
+
+    // footer widgets
+    private final Button saveButton = new Button(I18N.CONSTANTS.save());
+    private final Button resetButton = new Button(I18N.CONSTANTS.reset());
+
+    // content
+
+    public UserFormPanel(UserForm userForm, ResourceLocator resourceLocator) {
+        super(Style.Unit.EM);
+        this.userForm = userForm;
+        this.resourceLocator = resourceLocator;
+        init();
     }
 
-    @Override
-    public void onResize() {
-        super.onResize();
+    private void init() {
+        addNorth(createToolbar(), 2);
+        addSouth(createFooter(), 2);
+        addWest(new HTML("navigation"), 10);
+        add(createContent());
     }
+
+    private Widget createFooter() {
+        final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setSpacing(3);
+        horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+
+        saveButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                //
+            }
+        });
+        resetButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                //
+            }
+        });
+        horizontalPanel.add(saveButton);
+        horizontalPanel.add(resetButton);
+        return horizontalPanel;
+    }
+
+    private Widget createToolbar() {
+        final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setSpacing(3);
+        horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+
+        addFieldButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                //
+            }
+        });
+        removeFieldButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                //
+            }
+        });
+        horizontalPanel.add(addFieldButton);
+        horizontalPanel.add(removeFieldButton);
+        return horizontalPanel;
+    }
+
+    private Widget createContent() {
+        return new HTML("content");
+    }
+
 
     public UserForm getUserForm() {
         return userForm;
     }
 
     public FormInstance getFormInstance() {
-        return null; // todo
+        return null;
     }
 
-    public void setDesignEnabled(boolean p_designEnabled) {
-
-    }
-
-    public void setValue(FormInstance p_instance) {
+    public void setDesignEnabled(boolean designEnabled) {
 
     }
 
-    public void setReadOnly(boolean p_readOnly) {
+    public void setValue(FormInstance formInstance) {
+        this.formInstance = formInstance;
+    }
+
+    public void setReadOnly(boolean readOnly) {
 
     }
 }
