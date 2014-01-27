@@ -1,5 +1,4 @@
 package org.activityinfo.ui.full.client.widget.coord;
-
 /*
  * #%L
  * ActivityInfo Server
@@ -22,43 +21,26 @@ package org.activityinfo.ui.full.client.widget.coord;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.user.client.ui.TextBox;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 /**
- * GXT Field for Geographical coordinates. The type of the field is double, but
- * users can enter coordinates in practically any format, which are converted on
- * the fly.
+ * @author yuriyz on 1/27/14.
  */
-public class CoordinateField extends TextField<Double> {
-
-    public static enum Axis {
-        LATITUDE,
-        LONGITUDE
-    }
-
-    /**
-     * Because of the conversion between DMS and degrees decimal, we may loose
-     * some precision. This becomes a problem when the coordinate is clamped to
-     * the administrative bounds, and the resulting value is *exactly* on the
-     * boundary. When rounded, the coordinate can fall on the wrong side of the
-     * boundary, resulting in a validation error.
-     * <p/>
-     * The delta value below should be sufficient to allow for such imprecision.
-     */
-    public static final double DELTA = 0.00001;
+public class GwtCoordinateField extends TextBox {
 
     private CoordinateEditor editor;
 
     /**
-     * @param axis
+     * @param axis axis
      */
-    public CoordinateField(Axis axis) {
+    public GwtCoordinateField(CoordinateField.Axis axis) {
         super();
         editor = new CoordinateEditor(axis);
-        this.setPropertyEditor(editor);
-        this.setValidator(editor);
-        this.setValidateOnBlur(true);
+        // todo
+//        this.setPropertyEditor(editor);
+//        this.setValidator(editor);
+//        this.setValidateOnBlur(true);
     }
 
     /**
@@ -70,8 +52,8 @@ public class CoordinateField extends TextField<Double> {
      * @param maxValue maximum allowed value for this field
      */
     public void setBounds(String name, double minValue, double maxValue) {
-        editor.setMinValue(minValue - DELTA);
-        editor.setMaxValue(maxValue + DELTA);
+        editor.setMinValue(minValue - CoordinateField.DELTA);
+        editor.setMaxValue(maxValue + CoordinateField.DELTA);
         editor.setOutOfBoundsMessage(I18N.MESSAGES.coordOutsideBounds(name));
     }
 }

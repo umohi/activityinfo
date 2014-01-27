@@ -27,14 +27,13 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.datepicker.client.DatePicker;
 import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.form.FormElement;
-import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.UserForm;
+import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.i18n.I18N;
-
-import java.util.List;
+import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.coord.CoordinateField;
+import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
 
 /**
  * Panel to render UserForm definition.
@@ -62,6 +61,7 @@ public class UserFormPanel extends DockLayoutPanel {
 
     public UserFormPanel(UserForm userForm, ResourceLocator resourceLocator) {
         super(Style.Unit.EM);
+        TransitionUtil.ensureBootstrapInjected();
         this.userForm = userForm;
         this.resourceLocator = resourceLocator;
         init();
@@ -133,6 +133,7 @@ public class UserFormPanel extends DockLayoutPanel {
             if (element instanceof FormField) {
                 final FormField field = (FormField) element;
                 flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
+                flexTable.setWidget(row, 1, createWidget(field));
                 flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(field.getDescription().getValue())));
                 row++;
             }
@@ -142,6 +143,30 @@ public class UserFormPanel extends DockLayoutPanel {
 //        flexTable.getFlexCellFormatter().setRowSpan(0, 1, numRows + 1);
 
         return flexTable;
+    }
+
+    private Widget createWidget(FormField field) {
+        final FormFieldType fieldType = field.getType();
+        if (fieldType != null) {
+            switch (fieldType) {
+                case QUANTITY:
+                    return new DoubleBox();
+                case FREE_TEXT:
+                    return new TextBox();
+                case LOCAL_DATE:
+                    return new DatePicker();
+                case GEOGRAPHIC_POINT:
+                    final GwtCoordinateField latitude = new GwtCoordinateField(CoordinateField.Axis.LATITUDE);
+                    final GwtCoordinateField longitude = new GwtCoordinateField(CoordinateField.Axis.LONGITUDE);
+                    final HorizontalPanel geoPointContainer = new HorizontalPanel();
+                    geoPointContainer.add(latitude);
+                    geoPointContainer.add(longitude);
+                    return geoPointContainer;
+                case REFERENCE:
+                    return new TextBox();
+            }
+        }
+        return null;
     }
 
     public UserForm getUserForm() {
