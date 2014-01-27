@@ -74,6 +74,10 @@ public class ActivityAdapter {
 
     }
 
+    public UserForm getSiteForm() {
+        return siteForm;
+    }
+
     private void addIndicators(FormElementContainer container, IndicatorGroup group) {
         for (IndicatorDTO indicator : group.getIndicators()) {
             FormField field = new FormField(Namespace.indicatorProperty(indicator.getId()));
