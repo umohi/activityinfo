@@ -21,16 +21,11 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Viewport;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.MarginData;
-import com.extjs.gxt.ui.client.widget.layout.RowData;
-import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import org.activityinfo.api2.shared.form.UserForm;
+import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.form.SiteDialog;
 import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
 /**
@@ -42,37 +37,43 @@ public class DevelopmentEntryPoint implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
-        gxt();
-//        pureGwt();
+        TransitionUtil.ensureBootstrapInjected();
+//        gxt();
+        pureGwt();
     }
 
-    public void gxt() {
-        final UserForm userForm = DevUtils.createTestUserForm();
-
-        final UserFormPanel panel = new UserFormPanel(userForm, null);
-        panel.setDesignEnabled(true);
-
-
-        final ContentPanel container = new ContentPanel();
-        container.setLayout(new RowLayout());
-        container.setLayoutOnChange(true);
-        container.add(panel, new RowData(1, 1, new Margins(0)));
-
-        final Viewport viewport = new Viewport();
-        viewport.setLayout(new FitLayout());
-        viewport.add(container, new MarginData(0));
-        RootLayoutPanel.get().add(viewport);
-
-    }
-
-//    public void pureGwt() {
+//    public void gxt() {
 //        final UserForm userForm = DevUtils.createTestUserForm();
 //
 //        final UserFormPanel panel = new UserFormPanel(userForm, null);
 //        panel.setDesignEnabled(true);
 //
-//        RootLayoutPanel.get().add(panel);
+//        final ContentPanel container = new ContentPanel();
+//        container.setLayout(new RowLayout());
+//        container.setLayoutOnChange(true);
+//        container.add(panel, new RowData(1, 1, new Margins(0)));
+//
+//        final Viewport viewport = new Viewport();
+//        viewport.setLayout(new FitLayout());
+//        viewport.add(container, new MarginData(0));
+//        RootLayoutPanel.get().add(viewport);
 //    }
+
+//    public interface MyTemplates extends SafeHtmlTemplates {
+//        @Template("<input type=\"email\" class=\"form-control\" id=\"exampleInputEmail1\" placeholder=\"Enter email\">")
+//        SafeHtml messageWithLink();
+//    }
+//
+//    private static final MyTemplates TEMPLATES = GWT.create(MyTemplates.class);
+
+    public void pureGwt() {
+        final UserForm userForm = DevUtils.createTestUserForm();
+        final UserFormPanel panel = new UserFormPanel(userForm, null);
+        RootLayoutPanel.get().add(panel);
+
+        final SiteDialog d = new SiteDialog(userForm);
+        d.show();
+    }
 
 
 //    public Widget createTestWidget() {

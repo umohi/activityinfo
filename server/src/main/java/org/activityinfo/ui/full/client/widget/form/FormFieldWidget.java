@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.util;
+package org.activityinfo.ui.full.client.widget.form;
 /*
  * #%L
  * ActivityInfo Server
@@ -22,23 +22,7 @@ package org.activityinfo.ui.full.client.util;
  */
 
 /**
- * @author yuriyz on 1/27/14.
+ * @author yuriyz on 1/28/14.
  */
-public class GwtUtil {
-
-    /**
-     * Avoid instance creation.
-     */
-    private GwtUtil() {
-    }
-
-    /**
-     * Convenient method to avoid showing 'null' value.
-     *
-     * @param str string
-     * @return string or empty string if it's null
-     */
-    public static String stringOrEmpty(String str) {
-        return str != null ? str : "";
-    }
+public class FormFieldWidget {
 }

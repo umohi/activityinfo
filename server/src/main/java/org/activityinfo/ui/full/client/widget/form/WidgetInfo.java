@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.util;
+package org.activityinfo.ui.full.client.widget.form;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,24 +21,32 @@ package org.activityinfo.ui.full.client.util;
  * #L%
  */
 
+import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api2.shared.form.FormField;
+
 /**
  * @author yuriyz on 1/27/14.
  */
-public class GwtUtil {
+public interface WidgetInfo<T extends Widget> {
 
     /**
-     * Avoid instance creation.
-     */
-    private GwtUtil() {
-    }
-
-    /**
-     * Convenient method to avoid showing 'null' value.
+     * Gets control (e.g. TextBox).
      *
-     * @param str string
-     * @return string or empty string if it's null
+     * @return control
      */
-    public static String stringOrEmpty(String str) {
-        return str != null ? str : "";
-    }
+    public T getControl();
+
+    /**
+     * Gets widget (e.g. textbox can be wrapped in decoration panel).
+     *
+     * @return widget
+     */
+    public Widget getWidget();
+
+    /**
+     * Gets form field.
+     *
+     * @return form field
+     */
+    public FormField getFormField();
 }

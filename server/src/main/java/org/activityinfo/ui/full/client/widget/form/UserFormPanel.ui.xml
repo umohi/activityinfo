@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+  <g:HTMLPanel addStyleNames="bs">
+    <g:VerticalPanel ui:field="contentPanel" width="100%">
+    </g:VerticalPanel>
+    <g:HorizontalPanel ui:field="buttonsPanel" width="100%" horizontalAlignment="right">
+      <g:HorizontalPanel>
+        <g:Button addStyleNames="btn btn-default" ui:field="saveButton" text="Save"/>
+        <!--&nbsp;-->
+        <g:Button addStyleNames="btn btn-primary" ui:field="resetButton" text="Reset"/>
+      </g:HorizontalPanel>
+    </g:HorizontalPanel>
+  </g:HTMLPanel>
+</ui:UiBinder>

@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.util;
+package org.activityinfo.ui.full.client.widget.form;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,24 +21,31 @@ package org.activityinfo.ui.full.client.util;
  * #L%
  */
 
-/**
- * @author yuriyz on 1/27/14.
- */
-public class GwtUtil {
+import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api2.shared.form.FormField;
 
-    /**
-     * Avoid instance creation.
-     */
-    private GwtUtil() {
+/**
+ * @author yuriyz on 1/28/14.
+ */
+public class SimpleWidgetInfo implements WidgetInfo<Widget> {
+
+    private final Widget widget;
+    private final FormField formField;
+
+    public SimpleWidgetInfo(Widget widget, FormField formField) {
+        this.widget = widget;
+        this.formField = formField;
     }
 
-    /**
-     * Convenient method to avoid showing 'null' value.
-     *
-     * @param str string
-     * @return string or empty string if it's null
-     */
-    public static String stringOrEmpty(String str) {
-        return str != null ? str : "";
+    public Widget getControl() {
+        return widget;
+    }
+
+    public Widget getWidget() {
+        return widget;
+    }
+
+    public FormField getFormField() {
+        return formField;
     }
 }

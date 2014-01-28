@@ -22,55 +22,91 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.gwt.dom.client.Style;
+import com.google.common.collect.Maps;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.datepicker.client.DatePicker;
 import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.form.*;
+import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.form.FormElement;
+import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.coord.CoordinateField;
-import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
+import org.activityinfo.ui.full.client.util.GwtUtil;
+
+import java.util.Map;
 
 /**
  * Panel to render UserForm definition.
  *
  * @author YuriyZ
  */
-public class UserFormPanel extends DockLayoutPanel {
+public class UserFormPanel extends Composite {
+
+    private static UserFormPanelUiBinder uiBinder = GWT
+            .create(UserFormPanelUiBinder.class);
+
+    interface UserFormPanelUiBinder extends UiBinder<Widget, UserFormPanel> {
+    }
 
     public static final int HORIZONTAL_SPACING = 3;
 
-    private final UserForm userForm;
-    private final ResourceLocator resourceLocator;
+    private UserForm userForm;
     private FormInstance formInstance;
 
     // toolbar widgets
     private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
     private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
 
-    // footer widgets
-    private final Button saveButton = new Button(I18N.CONSTANTS.save());
-    private final Button resetButton = new Button(I18N.CONSTANTS.reset());
+    @UiField
+    Button saveButton;
+    @UiField
+    Button resetButton;
+    @UiField
+    VerticalPanel contentPanel;
+    @UiField
+    HorizontalPanel buttonsPanel;
 
     // content
     private final FlexTable flexTable = new FlexTable();
+    private final Map<Iri, WidgetInfo> controlMap = Maps.newHashMap();
+
+    //    Button saveButton = new Button(I18N.CONSTANTS.save());
+    //    private final Button resetButton = new Button(I18N.CONSTANTS.reset());
+
+    public UserFormPanel() {
+        TransitionUtil.ensureBootstrapInjected();
+        initWidget(uiBinder.createAndBindUi(this));
+        buttonsPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+    }
 
     public UserFormPanel(UserForm userForm, ResourceLocator resourceLocator) {
-        super(Style.Unit.EM);
-        TransitionUtil.ensureBootstrapInjected();
+        this();
         this.userForm = userForm;
-        this.resourceLocator = resourceLocator;
         init();
     }
 
     private void init() {
-        addNorth(createToolbar(), 2);
-        addSouth(createFooter(), 2);
-        add(createContent());
+//        addNorth(createToolbar(), 2);
+//        addSouth(createFooter(), 2);
+//        add(createContent());
+    }
+
+    @UiHandler("saveButton")
+    public void onSave(ClickEvent event) {
+        // todo
+    }
+
+    @UiHandler("resetButton")
+    public void onReset(ClickEvent event) {
+        // todo
     }
 
     private Widget createFooter() {
@@ -134,7 +170,11 @@ public class UserFormPanel extends DockLayoutPanel {
                 final FormField field = (FormField) element;
                 flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
                 flexTable.setWidget(row, 1, createWidget(field));
-                flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(field.getDescription().getValue())));
+                flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(""))); // unit here
+                final String descriptionHtml = field.getDescription() != null ?
+                        GwtUtil.stringOrEmpty(field.getDescription().getValue()) : "";
+                flexTable.setWidget(row, 3, new HTML(SafeHtmlUtils.fromString(descriptionHtml)));
+                flexTable.setWidget(row, 4, new HTML("")); // buttons here
                 row++;
             }
         }
@@ -146,25 +186,10 @@ public class UserFormPanel extends DockLayoutPanel {
     }
 
     private Widget createWidget(FormField field) {
-        final FormFieldType fieldType = field.getType();
-        if (fieldType != null) {
-            switch (fieldType) {
-                case QUANTITY:
-                    return new DoubleBox();
-                case FREE_TEXT:
-                    return new TextBox();
-                case LOCAL_DATE:
-                    return new DatePicker();
-                case GEOGRAPHIC_POINT:
-                    final GwtCoordinateField latitude = new GwtCoordinateField(CoordinateField.Axis.LATITUDE);
-                    final GwtCoordinateField longitude = new GwtCoordinateField(CoordinateField.Axis.LONGITUDE);
-                    final HorizontalPanel geoPointContainer = new HorizontalPanel();
-                    geoPointContainer.add(latitude);
-                    geoPointContainer.add(longitude);
-                    return geoPointContainer;
-                case REFERENCE:
-                    return new TextBox();
-            }
+        final WidgetInfo widgetInfo = WidgetInfoUtil.create(field);
+        if (widgetInfo != null) {
+            controlMap.put(field.getId(), widgetInfo);
+            return widgetInfo.getWidget();
         }
         return null;
     }
