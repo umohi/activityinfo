@@ -26,6 +26,7 @@ import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.api2.shared.form.UserForm;
 
 import java.util.Date;
@@ -42,19 +43,61 @@ public class DevUtils {
     }
 
     static UserForm createTestUserForm() {
-        final FormField e1 = new FormField(randomIri());
-        e1.setType(FormFieldType.QUANTITY);
-        e1.setDescription(new LocalizedString("Quantity description"));
-        e1.setLabel(new LocalizedString("Quantity label"));
+        final FormField item1 = new FormField(randomIri());
+        item1.setType(FormFieldType.FREE_TEXT);
+        item1.setDescription(new LocalizedString("The State Coordinator and different sections are involved in many meetings with the GRSS. When the specific objective of the meeting is to discuss PoC issues, these should be counted for the indicator. CAD, PoC Advisors and SOC should be responsible for providing information for this."));
+        item1.setLabel(new LocalizedString("Advocacy meetings with GRSS to promote responsibility for PoC, tackle impunity and strenghten accountability"));
+        item1.setUnit(new LocalizedString("Meetings"));
 
-        final FormField e2 = new FormField(randomIri());
-        e2.setType(FormFieldType.FREE_TEXT);
-        e2.setDescription(new LocalizedString("Free text description"));
-        e2.setLabel(new LocalizedString("Free text"));
+        final FormField item2 = new FormField(randomIri());
+        item2.setType(FormFieldType.FREE_TEXT);
+        item2.setDescription(new LocalizedString("Advocacy meetings with SPLA to improve compliance with human rights obigations in PoC high risk locations "));
+        item2.setLabel(new LocalizedString("Advocacy meetings can be informal or formal and can seek to address internal conduct and discipline, but also focus on a proactive implementation of those obligations.  As above the objective of the meeting should be explicitly related to PoC. MLOs should provide this information."));
+        item2.setUnit(new LocalizedString("Meetings"));
+
+        final FormField quantityField = new FormField(randomIri());
+        quantityField.setType(FormFieldType.QUANTITY);
+        quantityField.setDescription(new LocalizedString("Quantity description"));
+        quantityField.setLabel(new LocalizedString("Quantity label"));
+
+        final FormField freeTextField = new FormField(randomIri());
+        freeTextField.setType(FormFieldType.FREE_TEXT);
+        freeTextField.setDescription(new LocalizedString("Free text description"));
+        freeTextField.setLabel(new LocalizedString("Free text"));
+
+        final FormField localDateField = new FormField(randomIri());
+        localDateField.setType(FormFieldType.LOCAL_DATE);
+        localDateField.setDescription(new LocalizedString("Local date description"));
+        localDateField.setLabel(new LocalizedString("Local date"));
+
+        final FormField geographicPointField = new FormField(randomIri());
+        geographicPointField.setType(FormFieldType.GEOGRAPHIC_POINT);
+        geographicPointField.setDescription(new LocalizedString("Geographic point description"));
+        geographicPointField.setLabel(new LocalizedString("Geographic point"));
+
+        final FormField referenceField = new FormField(randomIri());
+        referenceField.setType(FormFieldType.REFERENCE);
+        referenceField.setDescription(new LocalizedString("Reference description"));
+        referenceField.setLabel(new LocalizedString("Reference point"));
+
+        final FormSection section1 = new FormSection(randomIri());
+        section1.setLabel(new LocalizedString("Tier 1 - Reduced physical threats to civilians"));
+        section1.addElement(quantityField);
+        section1.addElement(freeTextField);
+        section1.addElement(localDateField);
+        section1.addElement(geographicPointField);
+        section1.addElement(referenceField);
+
+        final FormSection section2 = new FormSection(randomIri());
+        section2.setLabel(new LocalizedString("Tier 2 - GRSS fulfill PoC responsibility"));
+        section2.addElement(item1);
+        section2.addElement(item2);
 
         final UserForm form = new UserForm(randomIri());
-        form.addElement(e1);
-        form.addElement(e2);
+        form.addElement(section2);
+        form.addElement(section1);
+//        form.addElement(quantityField);
+//        form.addElement(freeTextField);
         return form;
     }
 }

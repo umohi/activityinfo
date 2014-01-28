@@ -16,6 +16,7 @@ public class FormField implements FormElement {
     private final Iri id;
     private LocalizedString label;
     private LocalizedString description;
+    private LocalizedString unit;
     private FormFieldType type;
     private Set<Iri> range;
     private String calculation;
@@ -50,6 +51,14 @@ public class FormField implements FormElement {
 
     public void setDescription(LocalizedString description) {
         this.description = description;
+    }
+
+    public LocalizedString getUnit() {
+        return unit;
+    }
+
+    public void setUnit(LocalizedString unit) {
+        this.unit = unit;
     }
 
     /**
