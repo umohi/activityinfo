@@ -21,8 +21,56 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.ui.full.client.style.TransitionUtil;
+
 /**
  * @author yuriyz on 1/28/14.
  */
-public class FormFieldWidget {
+public class FormFieldWidget extends Composite {
+
+    private static FormFieldWidgetUiBinder uiBinder = GWT
+            .create(FormFieldWidgetUiBinder.class);
+
+    interface FormFieldWidgetUiBinder extends UiBinder<Widget, FormFieldWidget> {
+    }
+
+    private FormField formField;
+
+    public FormFieldWidget() {
+        TransitionUtil.ensureBootstrapInjected();
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public FormFieldWidget(FormField formField) {
+        this();
+        this.formField = formField;
+        render();
+    }
+
+    private void render() {
+        // todo form field rendering
+
+//        final FormField field = (FormField) element;
+//        flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
+//        flexTable.setWidget(row, 1, createWidget(field));
+//        flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(""))); // unit here
+//        final String descriptionHtml = field.getDescription() != null ?
+//                GwtUtil.stringOrEmpty(field.getDescription().getValue()) : "";
+//        flexTable.setWidget(row, 3, new HTML(SafeHtmlUtils.fromString(descriptionHtml)));
+//        flexTable.setWidget(row, 4, new HTML("")); // buttons here
+
+    }
+
+    public FormField getFormField() {
+        return formField;
+    }
+
+    public void setFormField(FormField formField) {
+        this.formField = formField;
+    }
 }

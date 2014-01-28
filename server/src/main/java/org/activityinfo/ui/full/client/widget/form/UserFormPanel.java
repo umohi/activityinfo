@@ -26,7 +26,6 @@ import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -39,7 +38,6 @@ import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.util.GwtUtil;
 
 import java.util.Map;
 
@@ -61,42 +59,38 @@ public class UserFormPanel extends Composite {
     private UserForm userForm;
     private FormInstance formInstance;
 
-    // toolbar widgets
     private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
     private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
+    private final Map<Iri, FormFieldWidget> controlMap = Maps.newHashMap();
 
     @UiField
     Button saveButton;
     @UiField
     Button resetButton;
     @UiField
-    VerticalPanel contentPanel;
+    FlowPanel contentPanel;
     @UiField
     HorizontalPanel buttonsPanel;
-
-    // content
-    private final FlexTable flexTable = new FlexTable();
-    private final Map<Iri, WidgetInfo> controlMap = Maps.newHashMap();
-
-    //    Button saveButton = new Button(I18N.CONSTANTS.save());
-    //    private final Button resetButton = new Button(I18N.CONSTANTS.reset());
 
     public UserFormPanel() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
-        buttonsPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
     }
 
     public UserFormPanel(UserForm userForm, ResourceLocator resourceLocator) {
         this();
         this.userForm = userForm;
-        init();
+        renderForm();
     }
 
-    private void init() {
-//        addNorth(createToolbar(), 2);
-//        addSouth(createFooter(), 2);
-//        add(createContent());
+    public void renderForm() {
+        for (FormElement element : this.userForm.getElements()) {
+            if (element instanceof FormField) {
+                final FormFieldWidget w = new FormFieldWidget((FormField) element);
+                contentPanel.add(w);
+                controlMap.put(element.getId(), w);
+            }
+        }
     }
 
     @UiHandler("saveButton")
@@ -107,31 +101,6 @@ public class UserFormPanel extends Composite {
     @UiHandler("resetButton")
     public void onReset(ClickEvent event) {
         // todo
-    }
-
-    private Widget createFooter() {
-        final HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setSpacing(HORIZONTAL_SPACING);
-//        horizontalPanel.setBorderWidth(2);
-
-        saveButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                //
-            }
-        });
-        resetButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                //
-            }
-        });
-        horizontalPanel.add(saveButton);
-        horizontalPanel.add(resetButton);
-
-        final HorizontalPanel container = new HorizontalPanel();
-        container.setWidth("100%");
-        container.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        container.add(horizontalPanel);
-        return container;
     }
 
     private Widget createToolbar() {
@@ -154,45 +123,33 @@ public class UserFormPanel extends Composite {
         return horizontalPanel;
     }
 
-    private Widget createContent() {
-        flexTable.setWidth("100%");
-        flexTable.setCellSpacing(3);
-        flexTable.setCellPadding(3);
-
-        final FlexTable.FlexCellFormatter cellFormatter = flexTable.getFlexCellFormatter();
-        cellFormatter.setHorizontalAlignment(0, 4, HasHorizontalAlignment.ALIGN_LEFT);
-        cellFormatter.setColSpan(0, 0, 5);
-        flexTable.setHTML(0, 0, I18N.CONSTANTS.userFormPanelInvitation());
-
-        int row = 1;
-        for (FormElement element : userForm.getElements()) {
-            if (element instanceof FormField) {
-                final FormField field = (FormField) element;
-                flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
-                flexTable.setWidget(row, 1, createWidget(field));
-                flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(""))); // unit here
-                final String descriptionHtml = field.getDescription() != null ?
-                        GwtUtil.stringOrEmpty(field.getDescription().getValue()) : "";
-                flexTable.setWidget(row, 3, new HTML(SafeHtmlUtils.fromString(descriptionHtml)));
-                flexTable.setWidget(row, 4, new HTML("")); // buttons here
-                row++;
-            }
-        }
-//        flexTable.setWidget(numRows, 0, new Image(Showcase.images.gwtLogo()));
-//        flexTable.setWidget(numRows, 1, new Image(Showcase.images.gwtLogo()));
-//        flexTable.getFlexCellFormatter().setRowSpan(0, 1, numRows + 1);
-
-        return flexTable;
-    }
-
-    private Widget createWidget(FormField field) {
-        final WidgetInfo widgetInfo = WidgetInfoUtil.create(field);
-        if (widgetInfo != null) {
-            controlMap.put(field.getId(), widgetInfo);
-            return widgetInfo.getWidget();
-        }
-        return null;
-    }
+//    private Widget createContent() {
+//        flexTable.setWidth("100%");
+//        flexTable.setCellSpacing(3);
+//        flexTable.setCellPadding(3);
+//
+//        final FlexTable.FlexCellFormatter cellFormatter = flexTable.getFlexCellFormatter();
+//        cellFormatter.setHorizontalAlignment(0, 4, HasHorizontalAlignment.ALIGN_LEFT);
+//        cellFormatter.setColSpan(0, 0, 5);
+//        flexTable.setHTML(0, 0, I18N.CONSTANTS.userFormPanelInvitation());
+//
+//        int row = 1;
+//        for (FormElement element : userForm.getElements()) {
+//            if (element instanceof FormField) {
+//                final FormField field = (FormField) element;
+//                flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
+//                flexTable.setWidget(row, 1, createWidget(field));
+//                flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(""))); // unit here
+//                final String descriptionHtml = field.getDescription() != null ?
+//                        GwtUtil.stringOrEmpty(field.getDescription().getValue()) : "";
+//                flexTable.setWidget(row, 3, new HTML(SafeHtmlUtils.fromString(descriptionHtml)));
+//                flexTable.setWidget(row, 4, new HTML("")); // buttons here
+//                row++;
+//            }
+//        }
+//
+//        return flexTable;
+//    }
 
     public UserForm getUserForm() {
         return userForm;

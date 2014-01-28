@@ -2,10 +2,46 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-  <ui:style>
-  </ui:style>
+  <!--<ui:style>-->
+  <!--</ui:style>-->
 
   <g:HTMLPanel addStyleNames="bs">
-    <input type="text" class="form-control" placeholder="Enter text">
+    <div class="row userform-field" draggable="true">
+      <div class="col-sm-4">
+        <p class="edit">Advocacy meetings with GRSS to promote responsibility for PoC, tackle impunity and strenghten
+          accountability
+          <button type="button" class="btn btn-default btn-xs design-edit">
+            <i class="fa fa-pencil"></i>
+          </button>
+        </p>
+
+      </div>
+      <div class="col-sm-3">
+        <input type="number" class="form-control" placeholder=""/>
+      </div>
+      <div class="col-sm-1">
+        Meetings
+      </div>
+
+      <div class="col-sm-3">
+        <p class="text-muted edit">The State Coordinator and different sections are involved in many meetings with the
+          GRSS. When the specific objective of the meeting is to discuss PoC issues, these should be counted for the
+          indicator. CAD, PoC Advisors and SOC should be responsible for providing information for this.
+          <button type="button" class="btn btn-default btn-xs design-edit">Edit</button>
+        </p>
+      </div>
+      <div class="col-sm-1">
+        <div>
+          <i title="Map this indicator" class="fa fa-map-marker"></i>
+          <i title="Create a table" class="fa fa-table"></i>
+          <i title="Create a chart of this indicator" class="glyphicon glyphicon-stats"></i>
+        </div>
+        <div>
+          <i title="Edit this field" class="fa fa-pencil"></i>
+          <i title="Delete this field" class="fa fa-trash-o"></i>
+        </div>
+      </div>
+      <hr/>
+    </div>
   </g:HTMLPanel>
 </ui:UiBinder>

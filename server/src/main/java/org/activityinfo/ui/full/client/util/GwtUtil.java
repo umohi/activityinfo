@@ -31,14 +31,4 @@ public class GwtUtil {
      */
     private GwtUtil() {
     }
-
-    /**
-     * Convenient method to avoid showing 'null' value.
-     *
-     * @param str string
-     * @return string or empty string if it's null
-     */
-    public static String stringOrEmpty(String str) {
-        return str != null ? str : "";
-    }
 }

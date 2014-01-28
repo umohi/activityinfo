@@ -25,7 +25,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.form.SiteDialog;
 import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
 /**
@@ -71,8 +70,8 @@ public class DevelopmentEntryPoint implements EntryPoint {
         final UserFormPanel panel = new UserFormPanel(userForm, null);
         RootLayoutPanel.get().add(panel);
 
-        final SiteDialog d = new SiteDialog(userForm);
-        d.show();
+//        final SiteDialog d = new SiteDialog(userForm);
+//        d.show();
     }
 
 
