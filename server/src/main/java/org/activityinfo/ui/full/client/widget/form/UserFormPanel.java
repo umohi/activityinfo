@@ -69,8 +69,6 @@ public class UserFormPanel extends Composite {
     Button resetButton;
     @UiField
     FlowPanel contentPanel;
-    @UiField
-    HorizontalPanel buttonsPanel;
 
     public UserFormPanel() {
         TransitionUtil.ensureBootstrapInjected();

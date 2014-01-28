@@ -6,13 +6,11 @@
     <div class="container">
       <g:FlowPanel ui:field="contentPanel" width="100%">
       </g:FlowPanel>
-      <g:HorizontalPanel ui:field="buttonsPanel" width="100%" horizontalAlignment="right">
-        <g:HorizontalPanel spacing="3">
-          <g:Button addStyleNames="btn btn-default" ui:field="saveButton" text="Save"/>
-          <!--&nbsp;-->
-          <g:Button addStyleNames="btn btn-primary" ui:field="resetButton" text="Reset"/>
-        </g:HorizontalPanel>
-      </g:HorizontalPanel>
+      <div class="pull-right">
+        <g:Button addStyleNames="btn btn-primary" ui:field="saveButton" text="Save"/>
+        <!--&nbsp;-->
+        <g:Button addStyleNames="btn btn-default" ui:field="resetButton" text="Reset"/>
+      </div>
     </div>
   </g:HTMLPanel>
 </ui:UiBinder>

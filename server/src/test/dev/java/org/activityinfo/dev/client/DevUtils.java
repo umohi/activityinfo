@@ -47,9 +47,14 @@ public class DevUtils {
         e1.setDescription(new LocalizedString("Quantity description"));
         e1.setLabel(new LocalizedString("Quantity label"));
 
+        final FormField e2 = new FormField(randomIri());
+        e2.setType(FormFieldType.FREE_TEXT);
+        e2.setDescription(new LocalizedString("Free text description"));
+        e2.setLabel(new LocalizedString("Free text"));
 
         final UserForm form = new UserForm(randomIri());
         form.addElement(e1);
+        form.addElement(e2);
         return form;
     }
 }
