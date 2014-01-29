@@ -21,32 +21,39 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormField;
 
 /**
- * @author yuriyz on 1/27/14.
+ * @author yuriyz on 1/28/14.
  */
-public interface WidgetInfo<T extends Widget> {
+public class SimpleFormFieldWidget implements FormFieldWidget<Widget> {
 
-    /**
-     * Gets control (e.g. TextBox).
-     *
-     * @return control
-     */
-    public T getControl();
+    private final Widget widget;
+    private final FormField formField;
 
-    /**
-     * Gets widget (e.g. textbox can be wrapped in decoration panel).
-     *
-     * @return widget
-     */
-    public Widget getWidget();
+    public SimpleFormFieldWidget(FormField formField) {
+        this(new Label(), formField);
+    }
 
-    /**
-     * Gets form field.
-     *
-     * @return form field
-     */
-    public FormField getFormField();
+    public SimpleFormFieldWidget(Widget widget, FormField formField) {
+        Preconditions.checkNotNull(widget);
+        Preconditions.checkNotNull(formField);
+        this.widget = widget;
+        this.formField = formField;
+    }
+
+    public Widget getControl() {
+        return widget;
+    }
+
+    public Widget getWidget() {
+        return widget;
+    }
+
+    public FormField getFormField() {
+        return formField;
+    }
 }

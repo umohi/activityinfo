@@ -29,13 +29,13 @@ import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
 /**
  * @author yuriyz on 1/27/14.
  */
-public class GeographicWidgetInfo implements WidgetInfo<GwtCoordinateField> {
+public class GeographicFormFieldWidget implements FormFieldWidget<GwtCoordinateField> {
 
     private GwtCoordinateField latitude;
     private GwtCoordinateField longitude;
     private FormField formField;
 
-    public GeographicWidgetInfo(GwtCoordinateField latitude, GwtCoordinateField longitude, FormField formField) {
+    public GeographicFormFieldWidget(GwtCoordinateField latitude, GwtCoordinateField longitude, FormField formField) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.formField = formField;

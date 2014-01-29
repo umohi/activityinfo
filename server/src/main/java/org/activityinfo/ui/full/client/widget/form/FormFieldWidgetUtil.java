@@ -21,10 +21,8 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.datepicker.client.DateBox;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.widget.coord.CoordinateField;
@@ -33,27 +31,27 @@ import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
 /**
  * @author yuriyz on 1/28/14.
  */
-public class WidgetInfoUtil {
+public class FormFieldWidgetUtil {
 
-    private WidgetInfoUtil() {
+    private FormFieldWidgetUtil() {
     }
 
-    public static WidgetInfo create(FormField field) {
+    public static FormFieldWidget create(FormField field) {
         final FormFieldType fieldType = field.getType();
         if (fieldType != null) {
             switch (fieldType) {
                 case QUANTITY:
-                    return new SimpleWidgetInfo(createDoubleBox(), field);
+                    return new SimpleFormFieldWidget(createDoubleBox(), field);
                 case FREE_TEXT:
-                    return new SimpleWidgetInfo(createTextBox(), field);
+                    return new SimpleFormFieldWidget(createTextBox(), field);
                 case LOCAL_DATE:
-                    return new SimpleWidgetInfo(createDateBox(), field);
+                    return new SimpleFormFieldWidget(createDateBox(), field);
                 case GEOGRAPHIC_POINT:
                     final GwtCoordinateField latitude = new GwtCoordinateField(CoordinateField.Axis.LATITUDE);
                     final GwtCoordinateField longitude = new GwtCoordinateField(CoordinateField.Axis.LONGITUDE);
-                    return new GeographicWidgetInfo(latitude, longitude, field);
+                    return new GeographicFormFieldWidget(latitude, longitude, field);
                 case REFERENCE:
-                    return new SimpleWidgetInfo(field);
+                    return new SimpleFormFieldWidget(field);
             }
         }
         return null;

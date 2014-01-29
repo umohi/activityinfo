@@ -52,7 +52,7 @@ public class FormFieldRow extends Composite {
     DivElement control;
 
     private FormField formField;
-    private WidgetInfo widgetInfo;
+    private FormFieldWidget formFieldWidget;
 
     public FormFieldRow() {
         TransitionUtil.ensureBootstrapInjected();
@@ -62,7 +62,7 @@ public class FormFieldRow extends Composite {
     public FormFieldRow(FormField formField) {
         this();
         this.formField = formField;
-        this.widgetInfo = WidgetInfoUtil.create(formField);
+        this.formFieldWidget = FormFieldWidgetUtil.create(formField);
         render();
     }
 
@@ -70,7 +70,7 @@ public class FormFieldRow extends Composite {
         label.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getLabel().getValue()));
         description.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getDescription().getValue()));
         unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
-        control.appendChild(widgetInfo.getWidget().getElement());
+        control.appendChild(formFieldWidget.getWidget().getElement());
     }
 
     public FormField getFormField() {
