@@ -52,7 +52,7 @@ public class FormFieldRow extends Composite {
     DivElement control;
 
     private FormField formField;
-    private FormFieldWidget formFieldWidget;
+    private FormFieldBinding formFieldWidget;
 
     public FormFieldRow() {
         TransitionUtil.ensureBootstrapInjected();
