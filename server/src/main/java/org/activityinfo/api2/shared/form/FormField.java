@@ -1,8 +1,10 @@
 package org.activityinfo.api2.shared.form;
 
+import com.google.common.base.Preconditions;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +28,7 @@ public class FormField implements FormElement {
     private boolean required;
 
     public FormField(Iri id) {
+        Preconditions.checkNotNull(id);
         this.id = id;
     }
 
@@ -33,8 +36,9 @@ public class FormField implements FormElement {
         return id;
     }
 
+    @NotNull
     public LocalizedString getLabel() {
-        return label;
+        return LocalizedString.nullToEmpty(label);
     }
 
     public void setLabel(LocalizedString label) {
@@ -45,16 +49,18 @@ public class FormField implements FormElement {
      * @return an extended description of this field, presented to be
      * presented to the user during data entry
      */
+    @NotNull
     public LocalizedString getDescription() {
-        return description;
+        return LocalizedString.nullToEmpty(description);
     }
 
     public void setDescription(LocalizedString description) {
         this.description = description;
     }
 
+    @NotNull
     public LocalizedString getUnit() {
-        return unit;
+        return LocalizedString.nullToEmpty(unit);
     }
 
     public void setUnit(LocalizedString unit) {
@@ -112,7 +118,6 @@ public class FormField implements FormElement {
         this.calculation = calculation;
     }
 
-
     /**
      * @return true if this field is read-only.
      */
@@ -123,8 +128,6 @@ public class FormField implements FormElement {
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
     }
-
-
 
     /**
      * @return true if this field is visible to the user

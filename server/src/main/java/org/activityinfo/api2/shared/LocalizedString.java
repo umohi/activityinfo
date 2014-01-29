@@ -30,6 +30,10 @@ public class LocalizedString {
         return locale;
     }
 
+    public static LocalizedString nullToEmpty(LocalizedString str) {
+        return str != null ? str : EMPTY;
+    }
+
     @Override
     public String toString() {
         return value + "@" + locale;

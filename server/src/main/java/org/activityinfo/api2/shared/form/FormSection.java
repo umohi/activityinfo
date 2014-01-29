@@ -1,5 +1,6 @@
 package org.activityinfo.api2.shared.form;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
@@ -18,6 +19,7 @@ public class FormSection implements FormElement, FormElementContainer {
     private final List<FormElement> elements = Lists.newArrayList();
 
     public FormSection(Iri id) {
+        Preconditions.checkNotNull(id);
         this.id = id;
     }
 
@@ -27,7 +29,7 @@ public class FormSection implements FormElement, FormElementContainer {
 
     @NotNull
     public LocalizedString getLabel() {
-        return label != null ? label : LocalizedString.EMPTY;
+        return LocalizedString.nullToEmpty(label);
     }
 
     public void setLabel(LocalizedString label) {
