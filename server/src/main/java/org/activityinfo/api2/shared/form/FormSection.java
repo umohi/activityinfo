@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -24,8 +25,9 @@ public class FormSection implements FormElement, FormElementContainer {
         return id;
     }
 
+    @NotNull
     public LocalizedString getLabel() {
-        return label;
+        return label != null ? label : LocalizedString.EMPTY;
     }
 
     public void setLabel(LocalizedString label) {

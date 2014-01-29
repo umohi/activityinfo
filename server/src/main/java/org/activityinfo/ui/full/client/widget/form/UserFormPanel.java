@@ -22,7 +22,6 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -106,9 +105,7 @@ public class UserFormPanel extends Composite {
                     controlMap.put(element.getId(), w);
                 } else if (element instanceof FormSection) {
                     final FormSection section = (FormSection) element;
-                    final String sectionLabel = section.getLabel() != null ? Strings.nullToEmpty(section.getLabel().getValue()) : "";
-                    contentPanel.add(new HTML(SECTION_TEMPLATE.title(sectionLabel)));
-                    section.getLabel();
+                    contentPanel.add(new HTML(SECTION_TEMPLATE.title(section.getLabel().getValue())));
                     renderElements(section.getElements());
                 }
             }
