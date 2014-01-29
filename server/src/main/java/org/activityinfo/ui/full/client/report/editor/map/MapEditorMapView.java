@@ -31,7 +31,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.reports.shared.content.AdminOverlay;
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.MapContent;
 import org.activityinfo.reports.shared.model.MapReportElement;
 import org.activityinfo.api.shared.command.GenerateElement;

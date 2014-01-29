@@ -22,7 +22,7 @@ package org.activityinfo.reports.shared.model;
  * #L%
  */
 
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.PieMapMarker;
 import org.activityinfo.reports.shared.content.Point;
 import org.activityinfo.api.shared.model.SiteDTO;

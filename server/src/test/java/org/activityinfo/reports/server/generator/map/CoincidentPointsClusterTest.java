@@ -27,7 +27,7 @@ import org.activityinfo.reports.server.generator.map.cluster.genetic.BubbleFitne
 import org.activityinfo.reports.server.generator.map.cluster.genetic.GeneticSolver;
 import org.activityinfo.reports.server.generator.map.cluster.genetic.MarkerGraph;
 import org.activityinfo.reports.server.generator.map.cluster.genetic.UpperBoundsCalculator;
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.Point;
 import org.activityinfo.reports.shared.model.MapSymbol;
 import org.activityinfo.reports.shared.model.PointValue;

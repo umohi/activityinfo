@@ -6,7 +6,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.geom.util.GeometryTransformer;
 import org.activityinfo.reports.server.generator.map.TiledMap;
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.Point;
 
 import java.util.Arrays;

@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.widget.coord;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.widget.coord.CoordinateField.Axis;

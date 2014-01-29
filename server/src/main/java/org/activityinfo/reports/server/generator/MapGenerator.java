@@ -26,7 +26,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.activityinfo.reports.server.generator.map.*;
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.GoogleBaseMap;
 import org.activityinfo.reports.shared.content.MapContent;
 import org.activityinfo.reports.shared.content.PredefinedBaseMaps;

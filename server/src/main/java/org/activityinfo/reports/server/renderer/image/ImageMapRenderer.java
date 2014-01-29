@@ -31,6 +31,7 @@ import com.google.code.appengine.awt.geom.Rectangle2D;
 import com.google.code.appengine.awt.image.BufferedImage;
 import com.google.code.appengine.imageio.ImageIO;
 import com.google.inject.Inject;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.server.generator.MapIconPath;
 import org.activityinfo.reports.server.generator.map.TileProvider;
 import org.activityinfo.reports.server.generator.map.TiledMap;

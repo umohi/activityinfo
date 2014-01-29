@@ -1,4 +1,4 @@
-package org.activityinfo.reports.shared.content;
+package org.activityinfo.api2.shared.model;
 
 /*
  * #%L

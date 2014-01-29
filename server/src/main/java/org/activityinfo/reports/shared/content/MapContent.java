@@ -23,6 +23,7 @@ package org.activityinfo.reports.shared.content;
  */
 
 import com.google.common.collect.Lists;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.model.BaseMap;
 import org.activityinfo.api.shared.model.IndicatorDTO;

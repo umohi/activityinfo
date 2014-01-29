@@ -23,7 +23,7 @@ package org.activityinfo.reports.server.generator.map;
  */
 
 import org.activityinfo.reports.server.renderer.image.TileHandler;
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.Point;
 import org.activityinfo.reports.shared.util.mapping.Tile;
 import org.activityinfo.reports.shared.util.mapping.TileMath;

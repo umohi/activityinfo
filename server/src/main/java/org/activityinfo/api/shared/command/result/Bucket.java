@@ -22,7 +22,7 @@ package org.activityinfo.api.shared.command.result;
  * #L%
  */
 
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.DimensionCategory;
 import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.api.shared.model.IndicatorDTO;

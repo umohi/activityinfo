@@ -22,6 +22,7 @@ package org.activityinfo.reports.server.generator.map;
  * #L%
  */
 
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.server.generator.map.cluster.Cluster;
 import org.activityinfo.reports.server.generator.map.cluster.Clusterer;
 import org.activityinfo.reports.server.generator.map.cluster.ClustererFactory;

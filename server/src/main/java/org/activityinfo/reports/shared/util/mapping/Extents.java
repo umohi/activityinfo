@@ -22,7 +22,7 @@ package org.activityinfo.reports.shared.util.mapping;
  * #L%
  */
 
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 
 import java.io.Serializable;
 

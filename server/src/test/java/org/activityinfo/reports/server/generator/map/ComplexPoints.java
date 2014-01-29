@@ -23,7 +23,7 @@ package org.activityinfo.reports.server.generator.map;
  */
 
 import org.activityinfo.reports.server.generator.map.cluster.genetic.MarkerGraph;
-import org.activityinfo.reports.shared.content.AiLatLng;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.model.PointValue;
 import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.reports.shared.util.mapping.TileMath;
