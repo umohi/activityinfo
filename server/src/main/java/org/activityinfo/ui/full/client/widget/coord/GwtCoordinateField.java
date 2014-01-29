@@ -37,6 +37,7 @@ public class GwtCoordinateField extends TextBox {
     public GwtCoordinateField(CoordinateField.Axis axis) {
         super();
         editor = new CoordinateEditor(axis);
+        addStyleName("form-control");
         // todo
 //        this.setPropertyEditor(editor);
 //        this.setValidator(editor);

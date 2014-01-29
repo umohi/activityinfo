@@ -21,9 +21,10 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.user.datepicker.client.DateBox;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.widget.coord.CoordinateField;
@@ -42,19 +43,39 @@ public class WidgetInfoUtil {
         if (fieldType != null) {
             switch (fieldType) {
                 case QUANTITY:
-                    return new SimpleWidgetInfo(new DoubleBox(), field);
+                    return new SimpleWidgetInfo(createDoubleBox(), field);
                 case FREE_TEXT:
-                    return new SimpleWidgetInfo(new TextBox(), field);
+                    return new SimpleWidgetInfo(createTextBox(), field);
                 case LOCAL_DATE:
-                    return new SimpleWidgetInfo(new DatePicker(), field);
+                    return new SimpleWidgetInfo(createDateBox(), field);
                 case GEOGRAPHIC_POINT:
                     final GwtCoordinateField latitude = new GwtCoordinateField(CoordinateField.Axis.LATITUDE);
                     final GwtCoordinateField longitude = new GwtCoordinateField(CoordinateField.Axis.LONGITUDE);
                     return new GeographicWidgetInfo(latitude, longitude, field);
                 case REFERENCE:
-                    return new SimpleWidgetInfo(null, field);
+                    return new SimpleWidgetInfo(field);
             }
         }
         return null;
+    }
+
+    public static TextBox createTextBox() {
+        final TextBox textBox = new TextBox();
+        textBox.addStyleName("form-control");
+        return textBox;
+    }
+
+    public static DoubleBox createDoubleBox() {
+        final DoubleBox doubleBox = new DoubleBox();
+        doubleBox.addStyleName("form-control");
+        doubleBox.getElement().setPropertyString("type", "number");
+        return doubleBox;
+    }
+
+    public static TextBox createDateBox() {
+        final TextBox dateBox = new TextBox();
+        dateBox.addStyleName("form-control");
+        dateBox.getElement().setPropertyString("type", "date");
+        return dateBox;
     }
 }

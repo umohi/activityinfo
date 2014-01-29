@@ -42,14 +42,17 @@ public class FormFieldWidget extends Composite {
     interface FormFieldWidgetUiBinder extends UiBinder<Widget, FormFieldWidget> {
     }
 
-    private FormField formField;
-
     @UiField
     DivElement label;
     @UiField
     DivElement description;
     @UiField
     DivElement unit;
+    @UiField
+    DivElement control;
+
+    private FormField formField;
+    private WidgetInfo widgetInfo;
 
     public FormFieldWidget() {
         TransitionUtil.ensureBootstrapInjected();
@@ -59,6 +62,7 @@ public class FormFieldWidget extends Composite {
     public FormFieldWidget(FormField formField) {
         this();
         this.formField = formField;
+        this.widgetInfo = WidgetInfoUtil.create(formField);
         render();
     }
 
@@ -66,15 +70,7 @@ public class FormFieldWidget extends Composite {
         label.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getLabel().getValue()));
         description.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getDescription().getValue()));
         unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
-//        final FormField field = (FormField) element;
-//        flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
-//        flexTable.setWidget(row, 1, createWidget(field));
-//        flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(""))); // unit here
-//        final String descriptionHtml = field.getDescription() != null ?
-//                GwtUtil.stringOrEmpty(field.getDescription().getValue()) : "";
-//        flexTable.setWidget(row, 3, new HTML(SafeHtmlUtils.fromString(descriptionHtml)));
-//        flexTable.setWidget(row, 4, new HTML("")); // buttons here
-
+        control.appendChild(widgetInfo.getWidget().getElement());
     }
 
     public FormField getFormField() {

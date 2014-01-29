@@ -21,6 +21,8 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormField;
 
@@ -32,7 +34,13 @@ public class SimpleWidgetInfo implements WidgetInfo<Widget> {
     private final Widget widget;
     private final FormField formField;
 
+    public SimpleWidgetInfo(FormField formField) {
+        this(new Label(), formField);
+    }
+
     public SimpleWidgetInfo(Widget widget, FormField formField) {
+        Preconditions.checkNotNull(widget);
+        Preconditions.checkNotNull(formField);
         this.widget = widget;
         this.formField = formField;
     }
