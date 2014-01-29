@@ -29,16 +29,16 @@ import org.activityinfo.api2.shared.form.FormField;
 /**
  * @author yuriyz on 1/28/14.
  */
-public class SimpleFormFieldWidget implements FormFieldWidget<Widget> {
+public class FormFieldBinding {
 
     private final Widget widget;
     private final FormField formField;
 
-    public SimpleFormFieldWidget(FormField formField) {
+    public FormFieldBinding(FormField formField) {
         this(new Label(), formField);
     }
 
-    public SimpleFormFieldWidget(Widget widget, FormField formField) {
+    public FormFieldBinding(Widget widget, FormField formField) {
         Preconditions.checkNotNull(widget);
         Preconditions.checkNotNull(formField);
         this.widget = widget;

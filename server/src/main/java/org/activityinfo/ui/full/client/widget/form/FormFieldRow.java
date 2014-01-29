@@ -62,7 +62,7 @@ public class FormFieldRow extends Composite {
     public FormFieldRow(FormField formField) {
         this();
         this.formField = formField;
-        this.formFieldWidget = FormFieldWidgetUtil.create(formField);
+        this.formFieldWidget = FormFieldBindingUtil.create(formField);
         render();
     }
 

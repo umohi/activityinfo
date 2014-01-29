@@ -31,27 +31,27 @@ import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
 /**
  * @author yuriyz on 1/28/14.
  */
-public class FormFieldWidgetUtil {
+public class FormFieldBindingUtil {
 
-    private FormFieldWidgetUtil() {
+    private FormFieldBindingUtil() {
     }
 
-    public static FormFieldWidget create(FormField field) {
+    public static FormFieldBinding create(FormField field) {
         final FormFieldType fieldType = field.getType();
         if (fieldType != null) {
             switch (fieldType) {
                 case QUANTITY:
-                    return new SimpleFormFieldWidget(createDoubleBox(), field);
+                    return new FormFieldBinding(createDoubleBox(), field);
                 case FREE_TEXT:
-                    return new SimpleFormFieldWidget(createTextBox(), field);
+                    return new FormFieldBinding(createTextBox(), field);
                 case LOCAL_DATE:
-                    return new SimpleFormFieldWidget(createDateBox(), field);
+                    return new FormFieldBinding(createDateBox(), field);
                 case GEOGRAPHIC_POINT:
                     final GwtCoordinateField latitude = new GwtCoordinateField(CoordinateField.Axis.LATITUDE);
                     final GwtCoordinateField longitude = new GwtCoordinateField(CoordinateField.Axis.LONGITUDE);
-                    return new GeographicFormFieldWidget(latitude, longitude, field);
+                    return new GeographicFormFieldBinding(latitude, longitude, field);
                 case REFERENCE:
-                    return new SimpleFormFieldWidget(field);
+                    return new FormFieldBinding(field);
             }
         }
         return null;
