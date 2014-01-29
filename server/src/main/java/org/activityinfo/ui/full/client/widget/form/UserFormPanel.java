@@ -22,23 +22,22 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.form.FormElement;
-import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.UserForm;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,19 +47,24 @@ import java.util.Map;
  */
 public class UserFormPanel extends Composite {
 
+    public static interface SectionTemplate extends SafeHtmlTemplates {
+        @Template("<h3>{0}</h3><hr/>")
+        SafeHtml title(String label);
+    }
+
+    private static final SectionTemplate SECTION_TEMPLATE = GWT.create(SectionTemplate.class);
+
     private static UserFormPanelUiBinder uiBinder = GWT
             .create(UserFormPanelUiBinder.class);
 
-    interface UserFormPanelUiBinder extends UiBinder<Widget, UserFormPanel> {
+    public static interface UserFormPanelUiBinder extends UiBinder<Widget, UserFormPanel> {
     }
-
-    public static final int HORIZONTAL_SPACING = 3;
 
     private UserForm userForm;
     private FormInstance formInstance;
-
-    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
-    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
+//
+//    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
+//    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
     private final Map<Iri, FormFieldWidget> controlMap = Maps.newHashMap();
 
     @UiField
@@ -81,12 +85,32 @@ public class UserFormPanel extends Composite {
         renderForm();
     }
 
+    /**
+     * Renders user form.
+     */
     public void renderForm() {
-        for (FormElement element : this.userForm.getElements()) {
-            if (element instanceof FormField) {
-                final FormFieldWidget w = new FormFieldWidget((FormField) element);
-                contentPanel.add(w);
-                controlMap.put(element.getId(), w);
+        renderElements(this.userForm.getElements());
+    }
+
+    /**
+     * Renders form element recursively.
+     *
+     * @param elements elements to render
+     */
+    private void renderElements(List<FormElement> elements) {
+        if (elements != null && !elements.isEmpty()) {
+            for (FormElement element : elements) {
+                if (element instanceof FormField) {
+                    final FormFieldWidget w = new FormFieldWidget((FormField) element);
+                    contentPanel.add(w);
+                    controlMap.put(element.getId(), w);
+                } else if (element instanceof FormSection) {
+                    final FormSection section = (FormSection) element;
+                    final String sectionLabel = section.getLabel() != null ? Strings.nullToEmpty(section.getLabel().getValue()) : "";
+                    contentPanel.add(new HTML(SECTION_TEMPLATE.title(sectionLabel)));
+                    section.getLabel();
+                    renderElements(section.getElements());
+                }
             }
         }
     }
@@ -100,54 +124,6 @@ public class UserFormPanel extends Composite {
     public void onReset(ClickEvent event) {
         // todo
     }
-
-    private Widget createToolbar() {
-        final HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setSpacing(HORIZONTAL_SPACING);
-        horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-
-        addFieldButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                //
-            }
-        });
-        removeFieldButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                //
-            }
-        });
-        horizontalPanel.add(addFieldButton);
-        horizontalPanel.add(removeFieldButton);
-        return horizontalPanel;
-    }
-
-//    private Widget createContent() {
-//        flexTable.setWidth("100%");
-//        flexTable.setCellSpacing(3);
-//        flexTable.setCellPadding(3);
-//
-//        final FlexTable.FlexCellFormatter cellFormatter = flexTable.getFlexCellFormatter();
-//        cellFormatter.setHorizontalAlignment(0, 4, HasHorizontalAlignment.ALIGN_LEFT);
-//        cellFormatter.setColSpan(0, 0, 5);
-//        flexTable.setHTML(0, 0, I18N.CONSTANTS.userFormPanelInvitation());
-//
-//        int row = 1;
-//        for (FormElement element : userForm.getElements()) {
-//            if (element instanceof FormField) {
-//                final FormField field = (FormField) element;
-//                flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
-//                flexTable.setWidget(row, 1, createWidget(field));
-//                flexTable.setWidget(row, 2, new HTML(SafeHtmlUtils.fromString(""))); // unit here
-//                final String descriptionHtml = field.getDescription() != null ?
-//                        GwtUtil.stringOrEmpty(field.getDescription().getValue()) : "";
-//                flexTable.setWidget(row, 3, new HTML(SafeHtmlUtils.fromString(descriptionHtml)));
-//                flexTable.setWidget(row, 4, new HTML("")); // buttons here
-//                row++;
-//            }
-//        }
-//
-//        return flexTable;
-//    }
 
     public UserForm getUserForm() {
         return userForm;
