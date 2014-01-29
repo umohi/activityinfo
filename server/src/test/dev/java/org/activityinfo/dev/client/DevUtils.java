@@ -94,10 +94,10 @@ public class DevUtils {
         section2.addElement(item2);
 
         final UserForm form = new UserForm(randomIri());
-        form.addElement(section2);
         form.addElement(section1);
-//        form.addElement(quantityField);
-//        form.addElement(freeTextField);
+        form.addElement(section2);
+        form.addElement(quantityField);
+        form.addElement(freeTextField);
         return form;
     }
 }

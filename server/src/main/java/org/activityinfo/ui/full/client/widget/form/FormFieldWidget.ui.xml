@@ -8,37 +8,34 @@
   <g:HTMLPanel addStyleNames="bs">
     <div class="row userform-field" draggable="true">
       <div class="col-sm-4">
-        <p class="edit">Advocacy meetings with GRSS to promote responsibility for PoC, tackle impunity and strenghten
-          accountability
+        <p class="edit">
+          <div ui:field="label"/>
           <button type="button" class="btn btn-default btn-xs design-edit">
-            <i class="fa fa-pencil"></i>
+            <i class="fa fa-pencil"/>
           </button>
         </p>
-
       </div>
       <div class="col-sm-3">
         <input type="number" class="form-control" placeholder=""/>
       </div>
       <div class="col-sm-1">
-        Meetings
+        <div ui:field="unit"/>
       </div>
-
       <div class="col-sm-3">
-        <p class="text-muted edit">The State Coordinator and different sections are involved in many meetings with the
-          GRSS. When the specific objective of the meeting is to discuss PoC issues, these should be counted for the
-          indicator. CAD, PoC Advisors and SOC should be responsible for providing information for this.
+        <p class="text-muted edit">
+          <div ui:field="description"/>
           <button type="button" class="btn btn-default btn-xs design-edit">Edit</button>
         </p>
       </div>
       <div class="col-sm-1">
         <div>
-          <i title="Map this indicator" class="fa fa-map-marker"></i>
-          <i title="Create a table" class="fa fa-table"></i>
-          <i title="Create a chart of this indicator" class="glyphicon glyphicon-stats"></i>
+          <i title="Map this indicator" class="fa fa-map-marker"/>
+          <i title="Create a table" class="fa fa-table"/>
+          <i title="Create a chart of this indicator" class="glyphicon glyphicon-stats"/>
         </div>
         <div>
-          <i title="Edit this field" class="fa fa-pencil"></i>
-          <i title="Delete this field" class="fa fa-trash-o"></i>
+          <i title="Edit this field" class="fa fa-pencil"/>
+          <i title="Delete this field" class="fa fa-trash-o"/>
         </div>
       </div>
       <hr/>

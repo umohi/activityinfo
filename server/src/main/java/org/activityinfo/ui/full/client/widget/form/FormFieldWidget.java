@@ -22,7 +22,10 @@ package org.activityinfo.ui.full.client.widget.form;
  */
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormField;
@@ -41,6 +44,13 @@ public class FormFieldWidget extends Composite {
 
     private FormField formField;
 
+    @UiField
+    DivElement label;
+    @UiField
+    DivElement description;
+    @UiField
+    DivElement unit;
+
     public FormFieldWidget() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
@@ -53,8 +63,9 @@ public class FormFieldWidget extends Composite {
     }
 
     private void render() {
-        // todo form field rendering
-
+        label.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getLabel().getValue()));
+        description.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getDescription().getValue()));
+        unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
 //        final FormField field = (FormField) element;
 //        flexTable.setWidget(row, 0, new HTML(SafeHtmlUtils.fromString(field.getLabel().getValue())));
 //        flexTable.setWidget(row, 1, createWidget(field));
