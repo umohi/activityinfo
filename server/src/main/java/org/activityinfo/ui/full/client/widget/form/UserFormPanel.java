@@ -64,7 +64,7 @@ public class UserFormPanel extends Composite {
 //
 //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
 //    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
-    private final Map<Iri, FormFieldWidget> controlMap = Maps.newHashMap();
+    private final Map<Iri, FormFieldRow> controlMap = Maps.newHashMap();
 
     @UiField
     Button saveButton;
@@ -100,7 +100,7 @@ public class UserFormPanel extends Composite {
         if (elements != null && !elements.isEmpty()) {
             for (FormElement element : elements) {
                 if (element instanceof FormField) {
-                    final FormFieldWidget w = new FormFieldWidget((FormField) element);
+                    final FormFieldRow w = new FormFieldRow((FormField) element);
                     contentPanel.add(w);
                     controlMap.put(element.getId(), w);
                 } else if (element instanceof FormSection) {

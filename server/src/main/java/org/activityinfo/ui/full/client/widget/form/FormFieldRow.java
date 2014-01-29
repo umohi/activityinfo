@@ -34,12 +34,12 @@ import org.activityinfo.ui.full.client.style.TransitionUtil;
 /**
  * @author yuriyz on 1/28/14.
  */
-public class FormFieldWidget extends Composite {
+public class FormFieldRow extends Composite {
 
     private static FormFieldWidgetUiBinder uiBinder = GWT
             .create(FormFieldWidgetUiBinder.class);
 
-    interface FormFieldWidgetUiBinder extends UiBinder<Widget, FormFieldWidget> {
+    interface FormFieldWidgetUiBinder extends UiBinder<Widget, FormFieldRow> {
     }
 
     @UiField
@@ -54,12 +54,12 @@ public class FormFieldWidget extends Composite {
     private FormField formField;
     private WidgetInfo widgetInfo;
 
-    public FormFieldWidget() {
+    public FormFieldRow() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public FormFieldWidget(FormField formField) {
+    public FormFieldRow(FormField formField) {
         this();
         this.formField = formField;
         this.widgetInfo = WidgetInfoUtil.create(formField);
