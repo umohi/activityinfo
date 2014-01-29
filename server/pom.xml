@@ -475,7 +475,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warSourceExcludes>ActivityInfo/compile-report,*.log,**/*.symbolMap</warSourceExcludes>
+          <packagingExcludes>ActivityInfo/compile-report,*.log,**/*.symbolMap</packagingExcludes>
         </configuration>
       </plugin>
 
