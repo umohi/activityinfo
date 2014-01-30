@@ -88,6 +88,23 @@ public class UserForm implements Resource, FormElementContainer {
         return elements;
     }
 
+    public List<FormField> getFields() {
+        final List<FormField> fields = Lists.newArrayList();
+        collectFields(fields, getElements());
+        return fields;
+    }
+
+    private static void collectFields(List<FormField> fields, List<FormElement> elements) {
+        for (FormElement element : elements) {
+            if (element instanceof FormField) {
+                fields.add((FormField) element);
+            } else if (element instanceof FormSection) {
+                final FormSection formSection = (FormSection) element;
+                collectFields(fields, formSection.getElements());
+            }
+        }
+    }
+
     public void setElements(List<FormElement> elements) {
         this.elements = elements;
     }

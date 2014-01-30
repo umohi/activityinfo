@@ -31,6 +31,8 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
+import java.io.Serializable;
+
 /**
  * @author yuriyz on 1/28/14.
  */
@@ -70,7 +72,15 @@ public class FormFieldRow extends Composite {
         label.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getLabel().getValue()));
         description.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getDescription().getValue()));
         unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
-        control.appendChild(formFieldWidget.getWidget().getElement());
+        control.appendChild(formFieldWidget.buildUI().getElement());
+    }
+
+    public void applyValue(Serializable value) {
+        formFieldWidget.setValue(value);
+    }
+
+    public void clear() {
+        formFieldWidget.clear();
     }
 
     public FormField getFormField() {

@@ -26,17 +26,18 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
 
+import java.io.Serializable;
+
 /**
  * @author yuriyz on 1/27/14.
  */
-public class GeographicFormFieldBinding extends FormFieldBinding {
+public class FormFieldGeographicBinding implements FormFieldBinding {
 
     private GwtCoordinateField latitude;
     private GwtCoordinateField longitude;
     private FormField formField;
 
-    public GeographicFormFieldBinding(GwtCoordinateField latitude, GwtCoordinateField longitude, FormField formField) {
-        super(formField);
+    public FormFieldGeographicBinding(GwtCoordinateField latitude, GwtCoordinateField longitude, FormField formField) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.formField = formField;
@@ -59,21 +60,32 @@ public class GeographicFormFieldBinding extends FormFieldBinding {
     }
 
     @Override
-    public GwtCoordinateField getControl() {
-        return latitude;
-    }
-
-    @Override
     public FormField getFormField() {
         return formField;
     }
 
     @Override
-    public Widget getWidget() {
+    public void setValue(Serializable value) {
+        // todo
+    }
+
+    @Override
+    public Serializable getValue() {
+        return null; // todo
+    }
+
+    @Override
+    public Widget buildUI() {
         final HorizontalPanel panel = new HorizontalPanel();
         panel.setSpacing(3);
         panel.add(latitude);
         panel.add(longitude);
         return panel;
+    }
+
+    @Override
+    public void clear() {
+        latitude.setValue("");
+        longitude.setValue("");
     }
 }

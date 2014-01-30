@@ -21,25 +21,32 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.TextBox;
 import org.activityinfo.api2.shared.form.FormField;
 
 import java.io.Serializable;
 
 /**
- * Binds together: 1. FormField 2. Control(s) 3. Control(s) representation
- *
- * @author yuriyz on 1/29/14.
+ * @author yuriyz on 1/28/14.
  */
-public interface FormFieldBinding {
+public class FormFieldTextBinding extends BaseFormFieldBinding<TextBox> {
 
-    public FormField getFormField();
+    public FormFieldTextBinding(TextBox widget, FormField formField) {
+        super(widget, formField);
+    }
 
-    public void setValue(Serializable value);
+    public void setValue(Serializable value) {
+        if (value instanceof String) {
+            getWidget().setValue((String) value);
+        }
+    }
 
-    public Serializable getValue();
+    public String getValue() {
+        return getWidget().getValue();
+    }
 
-    public Widget buildUI();
-
-    void clear();
+    @Override
+    public void clear() {
+        setValue("");
+    }
 }

@@ -72,6 +72,8 @@ public class DevelopmentEntryPoint implements EntryPoint {
         final UserFormInstance userFormInstance = DevUtils.createTestUserFormInstance(userForm);
         final UserFormPanel panel = new UserFormPanel(userForm, null);
         RootPanel.get().add(new SimplePanel(panel));
+//        DateBox dateBox = new DateBox();
+//        RootPanel.get().add(dateBox);
 
         panel.setValue(userFormInstance);
 //        final SiteDialog d = new SiteDialog(userForm);

@@ -21,25 +21,34 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormField;
 
-import java.io.Serializable;
-
 /**
- * Binds together: 1. FormField 2. Control(s) 3. Control(s) representation
- *
  * @author yuriyz on 1/29/14.
  */
-public interface FormFieldBinding {
+public abstract class BaseFormFieldBinding<T extends Widget> implements FormFieldBinding {
 
-    public FormField getFormField();
+    private final T widget;
+    private final FormField formField;
 
-    public void setValue(Serializable value);
+    public BaseFormFieldBinding(T widget, FormField formField) {
+        Preconditions.checkNotNull(widget);
+        Preconditions.checkNotNull(formField);
+        this.widget = widget;
+        this.formField = formField;
+    }
 
-    public Serializable getValue();
+    public Widget buildUI() {
+        return widget;
+    }
 
-    public Widget buildUI();
+    public T getWidget() {
+        return widget;
+    }
 
-    void clear();
+    public FormField getFormField() {
+        return formField;
+    }
 }

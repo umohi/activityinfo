@@ -23,6 +23,7 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.datepicker.client.DateBox;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.widget.coord.CoordinateField;
@@ -41,17 +42,17 @@ public class FormFieldBindingUtil {
         if (fieldType != null) {
             switch (fieldType) {
                 case QUANTITY:
-                    return new FormFieldBinding(createDoubleBox(), field);
+                    return new FormFieldQuantityBinding(createDoubleBox(), field);
                 case FREE_TEXT:
-                    return new FormFieldBinding(createTextBox(), field);
+                    return new FormFieldTextBinding(createTextBox(), field);
                 case LOCAL_DATE:
-                    return new FormFieldBinding(createDateBox(), field);
+                    return new FormFieldDateBinding(createDateTextBox(), field);
                 case GEOGRAPHIC_POINT:
                     final GwtCoordinateField latitude = new GwtCoordinateField(CoordinateField.Axis.LATITUDE);
                     final GwtCoordinateField longitude = new GwtCoordinateField(CoordinateField.Axis.LONGITUDE);
-                    return new GeographicFormFieldBinding(latitude, longitude, field);
+                    return new FormFieldGeographicBinding(latitude, longitude, field);
                 case REFERENCE:
-                    return new FormFieldBinding(field);
+                    return new FormFieldTextBinding(createTextBox(), field);
             }
         }
         return null;
@@ -60,6 +61,19 @@ public class FormFieldBindingUtil {
     public static TextBox createTextBox() {
         final TextBox textBox = new TextBox();
         textBox.addStyleName("form-control");
+        // TEST CODE MUST BE REMOVED LATER!!!
+//        textBox.addClickHandler(new ClickHandler() {
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                textBox.getTabIndex();
+//            }
+//        });
+//        textBox.addValueChangeHandler(new ValueChangeHandler<String>() {
+//            @Override
+//            public void onValueChange(ValueChangeEvent<String> event) {
+//                textBox.getTabIndex();
+//            }
+//        });
         return textBox;
     }
 
@@ -70,10 +84,40 @@ public class FormFieldBindingUtil {
         return doubleBox;
     }
 
-    public static TextBox createDateBox() {
-        final TextBox dateBox = new TextBox();
-        dateBox.addStyleName("form-control");
-        dateBox.getElement().setPropertyString("type", "date");
+    public static DateBox createDateTextBox() {
+        final DateBox dateBox = new DateBox();
+        dateBox.getTextBox().addStyleName("form-control");
+
+        // TEST CODE MUST BE REMOVED LATER!!!
+//        DateTimeFormat df = DateTimeFormat.getFormat("dd/MM/yyyy");
+//        dateBox.getTextBox().addKeyUpHandler(new KeyUpHandler() {
+//            public void onKeyUp(KeyUpEvent event) {
+//                updateSelectionLabel(dateBox);
+//            }
+//        });
+//        dateBox.setFormat(new DateBox.DefaultFormat(df));
+//        // Add a ClickHandler
+//        dateBox.getTextBox().addClickHandler(new ClickHandler() {
+//            public void onClick(ClickEvent event) {
+//                updateSelectionLabel(dateBox);
+//            }
+//        });
+//        dateBox.getTextBox().addValueChangeHandler(new ValueChangeHandler<String>() {
+//            @Override
+//            public void onValueChange(ValueChangeEvent<String> event) {
+//                updateSelectionLabel(dateBox);
+//            }
+//        });
+//        dateBox.setValue("It's date value");
+//        dateBox.addStyleName("form-control");
+//        dateBox.addStyleName("gwt-DateBox");
+//        dateBox.getElement().setPropertyString("type", "date");
         return dateBox;
     }
+
+//    private static void updateSelectionLabel(DateBox dateBox) {
+//        final Date value = dateBox.getDateValue();
+//        final String valueAsString = dateBox.getText();
+//        final DateBox.Format format = dateBox.getFormat();
+//    }
 }
