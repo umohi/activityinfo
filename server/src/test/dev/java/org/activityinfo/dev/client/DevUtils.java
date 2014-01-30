@@ -24,10 +24,7 @@ package org.activityinfo.dev.client;
 import com.google.gwt.user.client.Random;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
-import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.FormFieldType;
-import org.activityinfo.api2.shared.form.FormSection;
-import org.activityinfo.api2.shared.form.UserForm;
+import org.activityinfo.api2.shared.form.*;
 
 import java.util.Date;
 
@@ -40,6 +37,31 @@ public class DevUtils {
 
     public static Iri randomIri() {
         return new Iri(Random.nextInt() + "_" + new Date().getTime());
+    }
+
+    static UserFormInstance createTestUserFormInstance(UserForm userForm) {
+        final UserFormInstance instance = new UserFormInstance(randomIri(), userForm.getId());
+        for (FormElement element : userForm.getElements()) {
+            if (element instanceof FormField) {
+                final FormField formField = (FormField) element;
+                switch(formField.getType()) {
+                    case FREE_TEXT:
+                        instance.set(formField.getId(), formField.getId().asString());
+                        break;
+                    case GEOGRAPHIC_POINT:
+                        break;
+                    case LOCAL_DATE:
+                        instance.set(formField.getId(), new Date(0));
+                        break;
+                    case QUANTITY:
+                        instance.set(formField.getId(), 5.5);
+                        break;
+                    case REFERENCE:
+                        break;
+                }
+            }
+        }
+        return instance;
     }
 
     static UserForm createTestUserForm() {

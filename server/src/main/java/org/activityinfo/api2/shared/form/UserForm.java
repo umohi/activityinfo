@@ -34,6 +34,16 @@ public class UserForm implements Resource, FormElementContainer {
         this.id = id;
     }
 
+    public UserForm copy() {
+        final UserForm copy = new UserForm(this.getId());
+        copy.getElements().addAll(this.getElements());
+        copy.getSubClasses().addAll(this.getSubClasses());
+        copy.getSuperClasses().addAll(this.getSuperClasses());
+        copy.setParentForm(this.getParentForm());
+        copy.setLabel(this.getLabel());
+        return copy;
+    }
+
     public Iri getId() {
         return id;
     }

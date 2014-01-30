@@ -39,6 +39,7 @@ public class UserFormInstance implements Resource, FormInstance {
 
     @NotNull
     private final Iri id;
+    @NotNull
     private final Iri definitionId;
     private final Map<Iri, Serializable> valueMap = Maps.newHashMap();
 
