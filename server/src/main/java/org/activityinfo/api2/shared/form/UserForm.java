@@ -1,11 +1,13 @@
 package org.activityinfo.api2.shared.form;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Resource;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ import java.util.Set;
  */
 public class UserForm implements Resource, FormElementContainer {
 
+    @NotNull
     private Iri id;
     private LocalizedString label;
     private Iri parentForm;
@@ -27,6 +30,7 @@ public class UserForm implements Resource, FormElementContainer {
     private List<FormElement> elements = Lists.newArrayList();
 
     public UserForm(Iri id) {
+        Preconditions.checkNotNull(id);
         this.id = id;
     }
 
