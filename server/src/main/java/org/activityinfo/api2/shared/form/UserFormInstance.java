@@ -25,6 +25,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.Resource;
+import org.activityinfo.api2.shared.model.AiLatLng;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -38,16 +39,23 @@ public class UserFormInstance implements Resource, FormInstance {
 
     @NotNull
     private final Iri id;
+    private final Iri definitionId;
     private final Map<Iri, Serializable> valueMap = Maps.newHashMap();
 
-    public UserFormInstance(Iri id) {
+    public UserFormInstance(Iri id, Iri definitionId) {
         Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(definitionId);
         this.id = id;
+        this.definitionId = definitionId;
     }
 
     @Override
     public Iri getId() {
         return id;
+    }
+
+    public Iri getDefinitionId() {
+        return definitionId;
     }
 
     public Map<Iri, Serializable> getValueMap() {
@@ -88,16 +96,16 @@ public class UserFormInstance implements Resource, FormInstance {
     }
 
     public UserFormInstance copy() {
-        final UserFormInstance copy = new UserFormInstance(getId());
-        copy.valueMap.putAll(this.valueMap);
+        final UserFormInstance copy = new UserFormInstance(getId(), getDefinitionId());
+        copy.getValueMap().putAll(this.getValueMap());
         return copy;
     }
 
-//    public AiLatLng getAiLatLng (Iri fieldId) {
-//        final Serializable value = get(fieldId);
-//        if (value instanceof AiLatLng ) {
-//            return (AiLatLng ) value;
-//        }
-//        return null;
-//    }
+    public AiLatLng getAiLatLng(Iri fieldId) {
+        final Serializable value = get(fieldId);
+        if (value instanceof AiLatLng) {
+            return (AiLatLng) value;
+        }
+        return null;
+    }
 }
