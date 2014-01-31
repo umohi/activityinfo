@@ -23,6 +23,8 @@ package org.activityinfo.ui.full.client.widget.form;
  */
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -130,16 +132,16 @@ public class UserFormPanel extends Composite {
         final List<FormField> userFormFields = userForm.getFields();
         if (initialFormInstance != null) {
             applyValue(initialFormInstance);
-            final List<FormField> fields = new ArrayList<FormField>(userFormFields);
-            final List<FormField> toBeRemoved = new ArrayList<FormField>();
+
+            final List<FormField> fieldsCopy = new ArrayList<FormField>(userFormFields);
             final Set<Iri> fieldsWithValues = initialFormInstance.getValueMap().keySet();
-            for (FormField field : fields) {
-                if (!fieldsWithValues.contains(field.getId())) {
-                    toBeRemoved.add(field);
+            Iterables.removeIf(fieldsCopy, new Predicate<FormField>() {
+                @Override
+                public boolean apply(FormField input) {
+                    return fieldsWithValues.contains(input.getId());
                 }
-            }
-            fields.removeAll(toBeRemoved);
-            clearFields(fields);
+            });
+            clearFields(fieldsCopy);
         } else {
             clearFields(userFormFields);
         }
