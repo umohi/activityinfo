@@ -41,24 +41,21 @@ public class DevUtils {
 
     static UserFormInstance createTestUserFormInstance(UserForm userForm) {
         final UserFormInstance instance = new UserFormInstance(randomIri(), userForm.getId());
-        for (FormElement element : userForm.getElements()) {
-            if (element instanceof FormField) {
-                final FormField formField = (FormField) element;
-                switch(formField.getType()) {
-                    case FREE_TEXT:
-                        instance.set(formField.getId(), formField.getId().asString());
-                        break;
-                    case GEOGRAPHIC_POINT:
-                        break;
-                    case LOCAL_DATE:
-                        instance.set(formField.getId(), new Date(0));
-                        break;
-                    case QUANTITY:
-                        instance.set(formField.getId(), 5.5);
-                        break;
-                    case REFERENCE:
-                        break;
-                }
+        for (FormField field : userForm.getFields()) {
+            switch (field.getType()) {
+                case FREE_TEXT:
+                    instance.set(field.getId(), field.getId().asString());
+                    break;
+                case GEOGRAPHIC_POINT:
+                    break;
+                case LOCAL_DATE:
+                    instance.set(field.getId(), new Date(0));
+                    break;
+                case QUANTITY:
+                    instance.set(field.getId(), 5.5);
+                    break;
+                case REFERENCE:
+                    break;
             }
         }
         return instance;
@@ -118,9 +115,6 @@ public class DevUtils {
         final UserForm form = new UserForm(randomIri());
         form.addElement(section1);
         form.addElement(section2);
-        form.addElement(quantityField);
-        form.addElement(freeTextField);
-        form.addElement(localDateField);
         return form;
     }
 }
