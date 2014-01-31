@@ -67,6 +67,7 @@ import org.activityinfo.ui.full.client.page.entry.form.SiteDialogLauncher;
 import org.activityinfo.ui.full.client.page.entry.grouping.GroupingComboBox;
 import org.activityinfo.ui.full.client.page.entry.place.DataEntryPlace;
 import org.activityinfo.ui.full.client.page.entry.sitehistory.SiteHistoryTab;
+import org.activityinfo.ui.full.client.util.GwtUtil;
 
 import java.util.Set;
 
@@ -368,26 +369,33 @@ public class DataEntryPage extends LayoutContainer implements Page,
     @Override
     public void onUIAction(String actionId) {
         if (UIActions.ADD.equals(actionId)) {
-            SiteDialogLauncher formHelper = new SiteDialogLauncher(dispatcher);
-            formHelper.addSite(currentPlace.getFilter(),
-                    new SiteDialogCallback() {
+            if (GwtUtil.isNewUI()) {
+                // todo
+            } else {
+                SiteDialogLauncher formHelper = new SiteDialogLauncher(dispatcher);
+                formHelper.addSite(currentPlace.getFilter(),
+                        new SiteDialogCallback() {
 
-                        @Override
-                        public void onSaved(SiteDTO site) {
-                            gridPanel.refresh();
-                        }
-                    });
+                            @Override
+                            public void onSaved(SiteDTO site) {
+                                gridPanel.refresh();
+                            }
+                        });
+            }
         } else if (UIActions.EDIT.equals(actionId)) {
-            SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
-            launcher.editSite(gridPanel.getSelection(),
-                    new SiteDialogCallback() {
+            if (GwtUtil.isNewUI()) {
+                // todo
+            } else {
+                SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
+                launcher.editSite(gridPanel.getSelection(),
+                        new SiteDialogCallback() {
 
-                        @Override
-                        public void onSaved(SiteDTO site) {
-                            gridPanel.refresh();
-                        }
-                    });
-
+                            @Override
+                            public void onSaved(SiteDTO site) {
+                                gridPanel.refresh();
+                            }
+                        });
+            }
         } else if (UIActions.DELETE.equals(actionId)) {
             delete();
 

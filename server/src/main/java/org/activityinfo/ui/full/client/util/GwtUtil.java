@@ -21,6 +21,8 @@ package org.activityinfo.ui.full.client.util;
  * #L%
  */
 
+import com.google.gwt.user.client.Window;
+
 /**
  * @author yuriyz on 1/27/14.
  */
@@ -30,5 +32,9 @@ public class GwtUtil {
      * Avoid instance creation.
      */
     private GwtUtil() {
+    }
+
+    public static boolean isNewUI() {
+        return Boolean.valueOf(Window.Location.getParameter("enableNewUI"));
     }
 }
