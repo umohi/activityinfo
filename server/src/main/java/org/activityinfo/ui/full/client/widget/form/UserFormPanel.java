@@ -22,6 +22,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -36,8 +37,12 @@ import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Panel to render UserForm definition.
@@ -60,8 +65,11 @@ public class UserFormPanel extends Composite {
     }
 
     private UserForm userForm;
-    private FormInstance formInstance;
-//
+    private UserFormInstance initialFormInstance;
+    private UserFormInstance formInstance;
+    private boolean readOnly = false;
+    private boolean designEnabled = false;
+    //
 //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
 //    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
     private final Map<Iri, FormFieldRow> controlMap = Maps.newHashMap();
@@ -119,26 +127,76 @@ public class UserFormPanel extends Composite {
 
     @UiHandler("resetButton")
     public void onReset(ClickEvent event) {
-        // todo
+        final List<FormField> userFormFields = userForm.getFields();
+        if (initialFormInstance != null) {
+            applyValue(initialFormInstance);
+            final List<FormField> fields = new ArrayList<FormField>(userFormFields);
+            final List<FormField> toBeRemoved = new ArrayList<FormField>();
+            final Set<Iri> fieldsWithValues = initialFormInstance.getValueMap().keySet();
+            for (FormField field : fields) {
+                if (!fieldsWithValues.contains(field.getId())) {
+                    toBeRemoved.add(field);
+                }
+            }
+            fields.removeAll(toBeRemoved);
+            clearFields(fields);
+        } else {
+            clearFields(userFormFields);
+        }
+    }
+
+    protected void clearFields(@NotNull List<FormField> fields) {
+        for (FormField field : fields) {
+            final FormFieldRow formFieldRow = controlMap.get(field.getId());
+            formFieldRow.clear();
+        }
     }
 
     public UserForm getUserForm() {
         return userForm;
     }
 
-    public FormInstance getFormInstance() {
-        return null;
-    }
-
     public void setDesignEnabled(boolean designEnabled) {
-
+        this.designEnabled = designEnabled;
     }
 
-    public void setValue(FormInstance formInstance) {
-        this.formInstance = formInstance;
+    public boolean isDesignEnabled() {
+        return designEnabled;
+    }
+
+
+    public FormInstance getValue() {
+        return formInstance;
+    }
+
+    public void setValue(@NotNull UserFormInstance formInstance) {
+        Preconditions.checkNotNull(formInstance);
+        this.initialFormInstance = formInstance;
+        this.formInstance = formInstance.copy();
+        applyValue(formInstance);
+    }
+
+    private void applyValue(@NotNull UserFormInstance formIntance) {
+        Preconditions.checkNotNull(formInstance);
+        for (Map.Entry<Iri, Serializable> entry : formIntance.getValueMap().entrySet()) {
+            final FormFieldRow fieldRow = controlMap.get(entry.getKey());
+            fieldRow.applyValue(entry.getValue());
+        }
     }
 
     public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
 
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public UserFormInstance getInitialFormInstance() {
+        return initialFormInstance;
+    }
+
+    public void setInitialFormInstance(UserFormInstance initialFormInstance) {
+        this.initialFormInstance = initialFormInstance;
     }
 }
