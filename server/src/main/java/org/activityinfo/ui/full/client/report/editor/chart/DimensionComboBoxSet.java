@@ -36,7 +36,7 @@ import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.reports.shared.model.PivotChartReportElement;
 import org.activityinfo.reports.shared.model.PivotChartReportElement.Type;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.report.HasReportElement;
 import org.activityinfo.ui.full.client.page.report.ReportChangeHandler;

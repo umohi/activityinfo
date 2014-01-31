@@ -44,7 +44,7 @@ import org.activityinfo.api.shared.command.result.Bucket;
 import org.activityinfo.api.shared.command.result.SiteResult;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.ui.full.client.data.proxy.SafeRpcProxy;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 
 import java.util.List;
 

@@ -35,7 +35,7 @@ import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;
 import org.activityinfo.api.shared.model.Published;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.widget.MappingComboBox;
 import org.activityinfo.ui.full.client.widget.MappingComboBoxBinding;

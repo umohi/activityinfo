@@ -37,7 +37,7 @@ import org.activityinfo.api.shared.model.PartnerDTO;
 import org.activityinfo.api.shared.model.ProjectDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 

@@ -43,7 +43,7 @@ import org.activityinfo.reports.shared.model.ReportElement;
 import org.activityinfo.api.shared.command.RenderElement;
 import org.activityinfo.api.shared.command.RenderElement.Format;
 import org.activityinfo.api.shared.command.result.UrlResult;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 public class ExportDialog extends Dialog {

@@ -39,7 +39,7 @@ import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.authentication.ClientSideAuthProvider;
 import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.Remote;
 import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.local.LocalStateChangeEvent.State;

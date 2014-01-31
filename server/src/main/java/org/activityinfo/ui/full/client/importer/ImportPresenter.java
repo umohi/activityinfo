@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.BatchCommand;
 import org.activityinfo.api.shared.command.result.BatchResult;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.importer.binding.DraftModel;
 import org.activityinfo.ui.full.client.importer.binding.ImportModel;
 import org.activityinfo.ui.full.client.importer.binding.InstanceImporter;

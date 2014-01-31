@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.config;
 
 import com.google.inject.Inject;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.PageId;

@@ -28,7 +28,7 @@ import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.filter.FilterResources;
 import org.activityinfo.ui.full.client.filter.FilterWidget;
 import org.activityinfo.ui.full.client.filter.SelectionCallback;

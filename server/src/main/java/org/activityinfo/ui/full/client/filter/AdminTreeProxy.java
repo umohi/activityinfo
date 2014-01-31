@@ -36,7 +36,7 @@ import org.activityinfo.api.shared.model.AdminLevelDTO;
 import org.activityinfo.api.shared.model.CountryDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.util.CollectionUtil;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 
 import java.util.*;
 

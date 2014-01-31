@@ -26,7 +26,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.monitor.MonitoringCallback;
 
 public abstract class AbstractDispatcher implements Dispatcher {

@@ -29,7 +29,7 @@ import org.activityinfo.api.shared.command.GetReports;
 import org.activityinfo.api.shared.command.result.ReportsResult;
 import org.activityinfo.api.shared.model.ReportMetadataDTO;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;

@@ -44,7 +44,7 @@ import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.clustering.Clustering;
 import org.activityinfo.reports.shared.model.layers.*;
 import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.report.editor.map.MapResources;
 

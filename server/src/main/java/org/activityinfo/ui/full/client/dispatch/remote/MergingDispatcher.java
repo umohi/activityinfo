@@ -29,13 +29,13 @@ import com.google.inject.Inject;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implementation of {@link org.activityinfo.ui.full.client.dispatch.Dispatcher} that
+ * An implementation of {@link org.activityinfo.api.client.Dispatcher} that
  * merges equivalent commands independently executed during the same event loop.
  * <p/>
  * <p/>

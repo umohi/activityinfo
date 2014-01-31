@@ -30,7 +30,7 @@ import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.api.shared.command.RemoteCommandServiceAsync;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.LoggingEventBus;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.RemoteServiceProvider;
 import org.activityinfo.ui.full.client.dispatch.remote.IncompatibleRemoteHandler;
 import org.activityinfo.ui.full.client.dispatch.remote.RemoteDispatcher;

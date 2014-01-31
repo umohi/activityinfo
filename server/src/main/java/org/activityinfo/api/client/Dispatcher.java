@@ -2,7 +2,7 @@
  * Supports the execution of {@link org.activityinfo.api.shared.command.Command},
  * either remotely or through local proxies/caches.
  */
-package org.activityinfo.ui.full.client.dispatch;
+package org.activityinfo.api.client;
 
 /*
  * #%L
@@ -29,6 +29,7 @@ package org.activityinfo.ui.full.client.dispatch;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
 
 /**
  * Executes {@link org.activityinfo.api.shared.command.Command}s on behalf of client

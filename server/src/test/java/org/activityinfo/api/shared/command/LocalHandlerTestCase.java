@@ -36,7 +36,7 @@ import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.authentication.AuthenticationModuleStub;
 import org.activityinfo.api.shared.util.Collector;
 import org.activityinfo.server.endpoint.gwtrpc.CommandServlet;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
 import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.i18n.UIMessages;

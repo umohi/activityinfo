@@ -34,7 +34,7 @@ import org.activityinfo.api.shared.command.result.LocationResult;
 import org.activityinfo.api.shared.model.CountryDTO;
 import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 
 import java.util.Collection;
 import java.util.List;

@@ -40,7 +40,7 @@ import org.activityinfo.api.shared.command.result.SiteAttachmentResult;
 import org.activityinfo.api.shared.model.SiteAttachmentDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;

@@ -37,7 +37,7 @@ import org.activityinfo.api.shared.model.CountryDTO;
 import org.activityinfo.api.shared.model.HasAdminEntityValues;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.data.proxy.AdminEntityProxy;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.map.AdminBoundsHelper;
 
 import java.util.Collection;
