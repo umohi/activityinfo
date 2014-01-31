@@ -288,4 +288,7 @@ public interface UIMessages extends com.google.gwt.i18n.client.Messages {
 
     @DefaultMessage("Set all rows to ''{0}''")
     String updateAllRowsTo(String value);
+    
+    @DefaultMessage("Are you sure want to delete?")
+    String confirmDeleteSite();
 }
