@@ -29,7 +29,6 @@ package org.activityinfo.api.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
 
 /**
  * Executes {@link org.activityinfo.api.shared.command.Command}s on behalf of client

@@ -41,7 +41,7 @@ import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.util.TemplateModule;
 import org.activityinfo.server.util.blob.BlobServiceModuleStub;
 import org.activityinfo.server.util.config.ConfigModuleStub;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
 
 import javax.persistence.EntityManager;

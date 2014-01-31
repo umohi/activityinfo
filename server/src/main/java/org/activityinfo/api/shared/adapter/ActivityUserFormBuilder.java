@@ -16,19 +16,21 @@ import java.util.List;
 /**
  * Adapts a Legacy "Activity" model to a UserForm
  */
-public class ActivityAdapter {
+public class ActivityUserFormBuilder {
 
     private final ActivityDTO activity;
     private List<FormElement> siteElements = Lists.newArrayList();
 
     private UserForm siteForm;
 
-    public ActivityAdapter(ActivityDTO activity) {
+    public ActivityUserFormBuilder(ActivityDTO activity) {
         this.activity = activity;
+    }
 
+    public UserForm build() {
         siteForm = new UserForm(Namespace.siteForm(activity.getId()));
 
-        FormField partnerField = new FormField(Namespace.IMPLEMENTED_BY);
+        FormField partnerField = new FormField(Namespace.REPORTED_BY);
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
         partnerField.setRange(Namespace.PARTNER);
         partnerField.setType(FormFieldType.REFERENCE);
@@ -72,9 +74,6 @@ public class ActivityAdapter {
         commentsField.setLabel(new LocalizedString(I18N.CONSTANTS.comments()));
         siteForm.addElement(commentsField);
 
-    }
-
-    public UserForm getSiteForm() {
         return siteForm;
     }
 

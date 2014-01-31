@@ -41,7 +41,7 @@ public class UserFormInstance implements Resource, FormInstance {
     private final Iri id;
     @NotNull
     private final Iri definitionId;
-    private final Map<Iri, Serializable> valueMap = Maps.newHashMap();
+    private final Map<Iri, Object> valueMap = Maps.newHashMap();
 
     public UserFormInstance(Iri id, Iri definitionId) {
         Preconditions.checkNotNull(id);
@@ -59,21 +59,21 @@ public class UserFormInstance implements Resource, FormInstance {
         return definitionId;
     }
 
-    public Map<Iri, Serializable> getValueMap() {
+    public Map<Iri, Object> getValueMap() {
         return valueMap;
     }
 
-    public void set(@NotNull Iri fieldId, Serializable fieldValue) {
+    public void set(@NotNull Iri fieldId, Object fieldValue) {
         Preconditions.checkNotNull(fieldId);
         valueMap.put(fieldId, fieldValue);
     }
 
-    public Serializable get(Iri fieldId) {
+    public Object get(Iri fieldId) {
         return valueMap.get(fieldId);
     }
 
     public String getString(Iri fieldId) {
-        final Serializable value = get(fieldId);
+        final Object value = get(fieldId);
         if (value instanceof String) {
             return (String) value;
         }
@@ -81,7 +81,7 @@ public class UserFormInstance implements Resource, FormInstance {
     }
 
     public Date getDate(Iri fieldId) {
-        final Serializable value = get(fieldId);
+        final Object value = get(fieldId);
         if (value instanceof Date) {
             return (Date) value;
         }
@@ -89,7 +89,7 @@ public class UserFormInstance implements Resource, FormInstance {
     }
 
     public Double getDouble(Iri fieldId) {
-        final Serializable value = get(fieldId);
+        final Object value = get(fieldId);
         if (value instanceof Double) {
             return (Double) value;
         }
@@ -103,7 +103,7 @@ public class UserFormInstance implements Resource, FormInstance {
     }
 
     public AiLatLng getAiLatLng(Iri fieldId) {
-        final Serializable value = get(fieldId);
+        final Object value = get(fieldId);
         if (value instanceof AiLatLng) {
             return (AiLatLng) value;
         }

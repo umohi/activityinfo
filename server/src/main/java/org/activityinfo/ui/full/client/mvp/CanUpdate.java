@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.mvp;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 
 @Deprecated
 public interface CanUpdate<M> {

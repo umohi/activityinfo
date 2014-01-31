@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.common.grid;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.ui.full.client.page.common.grid.GridPresenter.SiteGridPresenter;
 
 public interface GridView<P extends GridPresenter, M extends ModelData> {

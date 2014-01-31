@@ -32,7 +32,7 @@ import org.activityinfo.api.shared.model.CountryDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.full.client.MockEventBus;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.page.common.dialog.FormDialogTether;
 import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;

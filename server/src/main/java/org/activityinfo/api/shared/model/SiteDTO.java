@@ -25,6 +25,9 @@ package org.activityinfo.api.shared.model;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.google.common.collect.Maps;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api2.shared.Cuids;
+import org.activityinfo.api2.shared.Iri;
 
 import java.util.*;
 
@@ -42,6 +45,8 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
         HasAdminEntityValues {
 
     public static final String ENTITY_NAME = "Site";
+
+    public static final char CUID_DOMAIN = 's';
 
     // ensure that serializer/deserializer is generated for LocalDate
     private LocalDate date;
@@ -88,11 +93,22 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
         return (Integer) get("id");
     }
 
+    public Iri getIri() {
+        return Cuids.toIri(CUID_DOMAIN, getId());
+    }
+
+
+
     /**
      * @return the id of the Activity to which this Site belongs
      */
     public int getActivityId() {
         return (Integer) get("activityId");
+    }
+
+
+    public Iri getActivityIri() {
+        return Cuids.toIri(CuidAdapter.ACTIVITY_DOMAIN, getActivityId());
     }
 
     /**
@@ -543,4 +559,5 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
     public boolean hasAttributeDisplayMap() {
         return attributeDisplayMap != null && !attributeDisplayMap.isEmpty();
     }
+
 }

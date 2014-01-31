@@ -18,6 +18,7 @@ import java.util.List;
  */
 public final class Promise<T> {
 
+
     public enum State {
 
         /**
@@ -132,4 +133,23 @@ public final class Promise<T> {
         return promise;
     }
 
+
+    public static <X> Promise<X> rejected(Throwable exception) {
+        Promise<X> promise = new Promise<X>();
+        promise.reject(exception);
+        return promise;
+    }
+
+    @Override
+    public String toString() {
+        switch(state) {
+            case FULFILLED:
+                return "<fulfilled: " + value + ">";
+            case REJECTED:
+                return "<rejected: " + exception.getClass().getSimpleName() + ">";
+            default:
+            case PENDING:
+                return "<pending>";
+        }
+    }
 }

@@ -76,7 +76,7 @@ public class FormFieldRow extends Composite {
         control.add(formFieldWidget);
     }
 
-    public void setValue(Serializable value) {
+    public void setValue(Object value) {
         if (formFieldWidget instanceof HasValue) {
             ((HasValue) formFieldWidget).setValue(value);
         }

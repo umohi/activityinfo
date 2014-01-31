@@ -180,7 +180,7 @@ public class UserFormPanel extends Composite {
 
     private void applyValue(@NotNull UserFormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
-        for (Map.Entry<Iri, Serializable> entry : formInstance.getValueMap().entrySet()) {
+        for (Map.Entry<Iri, Object> entry : formInstance.getValueMap().entrySet()) {
             final FormFieldRow fieldRow = controlMap.get(entry.getKey());
             fieldRow.setValue(entry.getValue());
         }
