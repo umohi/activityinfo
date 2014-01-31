@@ -21,6 +21,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -33,6 +34,8 @@ import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
  * @author yuriyz on 1/28/14.
  */
 public class FormFieldBindingUtil {
+
+    public static final DateTimeFormat DATE_TIME_FORMAT = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL);
 
     private FormFieldBindingUtil() {
     }
@@ -61,19 +64,6 @@ public class FormFieldBindingUtil {
     public static TextBox createTextBox() {
         final TextBox textBox = new TextBox();
         textBox.addStyleName("form-control");
-        // TEST CODE MUST BE REMOVED LATER!!!
-//        textBox.addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                textBox.getTabIndex();
-//            }
-//        });
-//        textBox.addValueChangeHandler(new ValueChangeHandler<String>() {
-//            @Override
-//            public void onValueChange(ValueChangeEvent<String> event) {
-//                textBox.getTabIndex();
-//            }
-//        });
         return textBox;
     }
 
@@ -87,37 +77,7 @@ public class FormFieldBindingUtil {
     public static DateBox createDateTextBox() {
         final DateBox dateBox = new DateBox();
         dateBox.getTextBox().addStyleName("form-control");
-
-        // TEST CODE MUST BE REMOVED LATER!!!
-//        DateTimeFormat df = DateTimeFormat.getFormat("dd/MM/yyyy");
-//        dateBox.getTextBox().addKeyUpHandler(new KeyUpHandler() {
-//            public void onKeyUp(KeyUpEvent event) {
-//                updateSelectionLabel(dateBox);
-//            }
-//        });
-//        dateBox.setFormat(new DateBox.DefaultFormat(df));
-//        // Add a ClickHandler
-//        dateBox.getTextBox().addClickHandler(new ClickHandler() {
-//            public void onClick(ClickEvent event) {
-//                updateSelectionLabel(dateBox);
-//            }
-//        });
-//        dateBox.getTextBox().addValueChangeHandler(new ValueChangeHandler<String>() {
-//            @Override
-//            public void onValueChange(ValueChangeEvent<String> event) {
-//                updateSelectionLabel(dateBox);
-//            }
-//        });
-//        dateBox.setValue("It's date value");
-//        dateBox.addStyleName("form-control");
-//        dateBox.addStyleName("gwt-DateBox");
-//        dateBox.getElement().setPropertyString("type", "date");
+        dateBox.setFormat(new DateBox.DefaultFormat(DATE_TIME_FORMAT));
         return dateBox;
     }
-
-//    private static void updateSelectionLabel(DateBox dateBox) {
-//        final Date value = dateBox.getDateValue();
-//        final String valueAsString = dateBox.getText();
-//        final DateBox.Format format = dateBox.getFormat();
-//    }
 }
