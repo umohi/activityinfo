@@ -27,6 +27,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -51,7 +52,7 @@ public class FormFieldRow extends Composite {
     @UiField
     DivElement unit;
     @UiField
-    DivElement control;
+    FlowPanel control;
 
     private FormField formField;
     private FormFieldBinding formFieldWidget;
@@ -72,7 +73,7 @@ public class FormFieldRow extends Composite {
         label.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getLabel().getValue()));
         description.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getDescription().getValue()));
         unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
-        control.appendChild(formFieldWidget.buildUI().getElement());
+        control.add(formFieldWidget.buildUI());
     }
 
     public void applyValue(Serializable value) {

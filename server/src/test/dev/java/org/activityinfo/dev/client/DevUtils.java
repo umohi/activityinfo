@@ -120,6 +120,7 @@ public class DevUtils {
         form.addElement(section2);
         form.addElement(quantityField);
         form.addElement(freeTextField);
+        form.addElement(localDateField);
         return form;
     }
 }
