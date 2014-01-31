@@ -41,7 +41,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
-import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.DeleteSite;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.FilterUrlSerializer;
@@ -51,6 +50,7 @@ import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
@@ -66,6 +66,7 @@ import org.activityinfo.ui.full.client.page.entry.form.SiteDialogCallback;
 import org.activityinfo.ui.full.client.page.entry.form.SiteDialogLauncher;
 import org.activityinfo.ui.full.client.page.entry.grouping.GroupingComboBox;
 import org.activityinfo.ui.full.client.page.entry.place.DataEntryPlace;
+import org.activityinfo.ui.full.client.page.entry.place.SiteFormPlace;
 import org.activityinfo.ui.full.client.page.entry.sitehistory.SiteHistoryTab;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 
@@ -370,7 +371,8 @@ public class DataEntryPage extends LayoutContainer implements Page,
     public void onUIAction(String actionId) {
         if (UIActions.ADD.equals(actionId)) {
             if (GwtUtil.isNewUI()) {
-                // todo
+                eventBus.fireEvent(new NavigationEvent(
+                        NavigationHandler.NAVIGATION_REQUESTED, new SiteFormPlace()));
             } else {
                 SiteDialogLauncher formHelper = new SiteDialogLauncher(dispatcher);
                 formHelper.addSite(currentPlace.getFilter(),
@@ -384,7 +386,8 @@ public class DataEntryPage extends LayoutContainer implements Page,
             }
         } else if (UIActions.EDIT.equals(actionId)) {
             if (GwtUtil.isNewUI()) {
-                // todo
+                eventBus.fireEvent(new NavigationEvent(
+                        NavigationHandler.NAVIGATION_REQUESTED, new SiteFormPlace()));
             } else {
                 SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
                 launcher.editSite(gridPanel.getSelection(),
