@@ -178,16 +178,19 @@ public class UserFormPanel extends Composite {
         applyValue(formInstance);
     }
 
-    private void applyValue(@NotNull UserFormInstance formIntance) {
+    private void applyValue(@NotNull UserFormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
-        for (Map.Entry<Iri, Serializable> entry : formIntance.getValueMap().entrySet()) {
+        for (Map.Entry<Iri, Serializable> entry : formInstance.getValueMap().entrySet()) {
             final FormFieldRow fieldRow = controlMap.get(entry.getKey());
-            fieldRow.applyValue(entry.getValue());
+            fieldRow.setValue(entry.getValue());
         }
     }
 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+        for (FormFieldRow row : controlMap.values()) {
+            row.setReadOnly(readOnly);
+        }
     }
 
     public boolean isReadOnly() {

@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.widget.form;
+package org.activityinfo.ui.full.client.widget;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,32 +21,12 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.TextBox;
-import org.activityinfo.api2.shared.form.FormField;
-
-import java.io.Serializable;
-
 /**
- * @author yuriyz on 1/28/14.
+ * @author yuriyz on 1/31/14.
  */
-public class FormFieldTextBinding extends BaseFormFieldBinding<TextBox> {
+public interface HasReadOnly {
 
-    public FormFieldTextBinding(TextBox widget, FormField formField) {
-        super(widget, formField);
-    }
+    public void setReadOnly(boolean readOnly);
 
-    public void setValue(Serializable value) {
-        if (value instanceof String) {
-            getWidget().setValue((String) value);
-        }
-    }
-
-    public String getValue() {
-        return getWidget().getValue();
-    }
-
-    @Override
-    public void clear() {
-        setValue("");
-    }
+    public boolean isReadOnly();
 }

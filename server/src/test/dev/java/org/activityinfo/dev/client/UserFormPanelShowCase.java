@@ -21,9 +21,11 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.api2.shared.form.UserFormInstance;
 import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
@@ -34,7 +36,7 @@ import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 public class UserFormPanelShowCase extends FlowPanel {
 
     private final CheckBox readOnly = new CheckBox("Read-only");
-    private final CheckBox setTestData = new CheckBox("Set test data");
+    private final Button setTestData = new Button("setValue(<test data>)");
     private final CheckBox design = new CheckBox("Design Mode");
 
     private final UserForm userForm = DevUtils.createTestUserForm();
@@ -50,18 +52,23 @@ public class UserFormPanelShowCase extends FlowPanel {
     }
 
     private void init() {
-        readOnly.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+        readOnly.addClickHandler(new ClickHandler() {
             @Override
-            public void onValueChange(ValueChangeEvent<Boolean> event) {
+            public void onClick(ClickEvent event) {
                 panel.setReadOnly(readOnly.getValue());
             }
         });
-        setTestData.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+        setTestData.addClickHandler(new ClickHandler() {
             @Override
-            public void onValueChange(ValueChangeEvent<Boolean> event) {
+            public void onClick(ClickEvent event) {
                 panel.setValue(userFormInstance);
             }
         });
+        design.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                panel.setDesignEnabled(design.getValue());
+            }
+        });
     }
-
 }

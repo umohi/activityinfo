@@ -23,39 +23,37 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.DoubleBox;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
-import org.activityinfo.ui.full.client.widget.coord.CoordinateField;
-import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
+import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
 
 /**
  * @author yuriyz on 1/28/14.
  */
-public class FormFieldBindingUtil {
+public class FormFieldWidgetFactory {
 
     public static final DateTimeFormat DATE_TIME_FORMAT = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL);
 
-    private FormFieldBindingUtil() {
+    private FormFieldWidgetFactory() {
     }
 
-    public static FormFieldBinding create(FormField field) {
+    public static IsWidget create(FormField field) {
         final FormFieldType fieldType = field.getType();
         if (fieldType != null) {
             switch (fieldType) {
                 case QUANTITY:
-                    return new FormFieldQuantityBinding(createDoubleBox(), field);
+                    return createDoubleBox();
                 case FREE_TEXT:
-                    return new FormFieldTextBinding(createTextBox(), field);
+                    return createTextBox();
                 case LOCAL_DATE:
-                    return new FormFieldDateBinding(createDateTextBox(), field);
+                    return createDateTextBox();
                 case GEOGRAPHIC_POINT:
-                    final GwtCoordinateField latitude = new GwtCoordinateField(CoordinateField.Axis.LATITUDE);
-                    final GwtCoordinateField longitude = new GwtCoordinateField(CoordinateField.Axis.LONGITUDE);
-                    return new FormFieldGeographicBinding(latitude, longitude, field);
+                    return new GeographicTextBox();
                 case REFERENCE:
-                    return new FormFieldTextBinding(createTextBox(), field);
+                    return createTextBox();
             }
         }
         return null;
@@ -74,10 +72,10 @@ public class FormFieldBindingUtil {
         return doubleBox;
     }
 
-    public static DateBox createDateTextBox() {
-        final DateBox dateBox = new DateBox();
+    public static DateBoxWithReadOnly createDateTextBox() {
+        final DateBoxWithReadOnly dateBox = new DateBoxWithReadOnly();
         dateBox.getTextBox().addStyleName("form-control");
-        dateBox.setFormat(new DateBox.DefaultFormat(DATE_TIME_FORMAT));
+        dateBox.setFormat(new DateBoxWithReadOnly.DefaultFormat(DATE_TIME_FORMAT));
         return dateBox;
     }
 }
