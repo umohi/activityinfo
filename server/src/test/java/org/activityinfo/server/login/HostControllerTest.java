@@ -53,6 +53,7 @@ public class HostControllerTest extends ControllerTestCase {
                 new Properties());
 
         authProvider = new ServerSideAuthProvider();
+        authProvider.clear();
         resource = new HostController(deploymentConfig, authProvider);
     }
 
@@ -60,6 +61,7 @@ public class HostControllerTest extends ControllerTestCase {
     public void verifyThatRequestsWithoutAuthTokensAreShownLoginPage()
             throws Exception {
 
+        // Request for main page
         HttpServletRequest req = createMock(HttpServletRequest.class);
         expect(req.getServerName()).andReturn("www.activityinfo.org");
         expect(req.getHeader("User-Agent")).andReturn(CHROME_USER_AGENT);
@@ -72,15 +74,13 @@ public class HostControllerTest extends ControllerTestCase {
         assertThat(response.getEntity(), instanceOf(Viewable.class));
         assertThat(((Viewable) response.getEntity()).getModel(),
                 instanceOf(RootPageModel.class));
-
     }
 
     @Test
     public void verifyThatRequestWithValidAuthTokensReceiveTheView()
             throws Exception {
 
-        authProvider.set(new AuthenticatedUser(VALID_TOKEN, 3,
-                "akbertram@gmail.com"));
+        authProvider.set(new AuthenticatedUser(VALID_TOKEN, 3, "akbertram@gmail.com"));
 
         HttpServletRequest req = createMock(HttpServletRequest.class);
         expect(req.getServerName()).andReturn("www.activityinfo.org");
