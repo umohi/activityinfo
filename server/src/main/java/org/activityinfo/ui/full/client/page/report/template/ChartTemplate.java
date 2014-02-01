@@ -27,7 +27,7 @@ import org.activityinfo.reports.shared.model.DateDimension;
 import org.activityinfo.reports.shared.model.DateUnit;
 import org.activityinfo.reports.shared.model.PivotChartReportElement;
 import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 public class ChartTemplate extends ReportElementTemplate {

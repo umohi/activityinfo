@@ -32,7 +32,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.ui.full.client.inject.Root;
 
 import java.util.HashMap;

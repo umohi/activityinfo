@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import org.activityinfo.api.shared.model.EntityDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.ui.full.client.page.common.dialog.FormDialogCallback;
 import org.activityinfo.ui.full.client.page.common.dialog.FormDialogTether;
 import org.activityinfo.ui.full.client.page.common.grid.ConfirmCallback;

@@ -29,7 +29,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasValue;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 import org.activityinfo.ui.full.client.filter.AttributeGroupFilterWidget;
 import org.activityinfo.ui.full.client.filter.AttributeGroupFilterWidgets;

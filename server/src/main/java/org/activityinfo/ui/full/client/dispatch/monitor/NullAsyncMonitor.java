@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.dispatch.monitor;
  * #L%
  */
 
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 
 /**
  * An <code>AsyncMonitor</code> that does nothing, and does not allow retries.

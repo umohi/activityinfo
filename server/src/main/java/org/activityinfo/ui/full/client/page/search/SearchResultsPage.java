@@ -46,7 +46,7 @@ import org.activityinfo.api.shared.command.result.SitePointList;
 import org.activityinfo.api.shared.impl.search.QueryChecker;
 import org.activityinfo.api.shared.impl.search.QueryFail;
 import org.activityinfo.api.shared.model.SearchHitDTO;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.search.SearchPresenter.RecentSiteModel;

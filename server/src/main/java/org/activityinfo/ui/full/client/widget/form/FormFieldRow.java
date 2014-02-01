@@ -26,10 +26,13 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.HasReadOnly;
+
+import java.io.Serializable;
 
 /**
  * @author yuriyz on 1/28/14.
@@ -49,10 +52,10 @@ public class FormFieldRow extends Composite {
     @UiField
     DivElement unit;
     @UiField
-    DivElement control;
+    FlowPanel control;
 
     private FormField formField;
-    private FormFieldBinding formFieldWidget;
+    private IsWidget formFieldWidget;
 
     public FormFieldRow() {
         TransitionUtil.ensureBootstrapInjected();
@@ -62,7 +65,7 @@ public class FormFieldRow extends Composite {
     public FormFieldRow(FormField formField) {
         this();
         this.formField = formField;
-        this.formFieldWidget = FormFieldBindingUtil.create(formField);
+        this.formFieldWidget = FormFieldWidgetFactory.create(formField);
         render();
     }
 
@@ -70,7 +73,47 @@ public class FormFieldRow extends Composite {
         label.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getLabel().getValue()));
         description.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getDescription().getValue()));
         unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
-        control.appendChild(formFieldWidget.getWidget().getElement());
+        control.add(formFieldWidget);
+    }
+
+    public void setValue(Object value) {
+        if (formFieldWidget instanceof HasValue) {
+            ((HasValue) formFieldWidget).setValue(value);
+        }
+    }
+
+    public Serializable setValue() {
+        if (formFieldWidget instanceof HasValue) {
+            return ((HasValue<Serializable>) formFieldWidget).getValue();
+        }
+        return null;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        if (formFieldWidget instanceof ValueBoxBase) {
+            ((ValueBoxBase) formFieldWidget).setReadOnly(readOnly);
+        } else if (formFieldWidget instanceof HasReadOnly) {
+            ((HasReadOnly) formFieldWidget).setReadOnly(readOnly);
+        } else {
+            Log.error("Widget doesn't support read-only flag");
+            assert true;
+        }
+    }
+
+    public boolean isReadOnly() {
+        if (formFieldWidget instanceof ValueBoxBase) {
+            return ((ValueBoxBase) formFieldWidget).isReadOnly();
+        } else if (formFieldWidget instanceof HasReadOnly) {
+            return ((HasReadOnly) formFieldWidget).isReadOnly();
+        } else {
+            Log.error("Widget doesn't support read-only flag");
+            assert true;
+            return false;
+        }
+    }
+
+    public void clear() {
+        setValue(null);
     }
 
     public FormField getFormField() {

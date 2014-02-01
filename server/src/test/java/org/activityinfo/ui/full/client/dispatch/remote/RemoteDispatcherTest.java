@@ -34,7 +34,7 @@ import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.ui.full.client.MockEventBus;
 import org.activityinfo.ui.full.client.dispatch.CommandCache;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.cache.CacheManager;
 import org.activityinfo.ui.full.client.dispatch.remote.cache.CacheResult;
 import org.activityinfo.ui.full.client.dispatch.remote.cache.CachingDispatcher;

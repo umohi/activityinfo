@@ -21,15 +21,20 @@ package org.activityinfo.ui.full.client.widget.coord;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.uibinder.client.UiConstructor;
+import com.google.gwt.user.client.ui.DoubleBox;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 /**
  * @author yuriyz on 1/27/14.
  */
-public class GwtCoordinateField extends TextBox {
+public class GwtCoordinateField extends DoubleBox {
 
     private CoordinateEditor editor;
+
+    public @UiConstructor GwtCoordinateField(String axis) {
+        this(CoordinateField.Axis.valueOf(axis));
+    }
 
     /**
      * @param axis axis

@@ -17,7 +17,7 @@ import org.activityinfo.api.shared.model.AttributeGroupDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.util.CollectionUtil;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 
 import java.util.ArrayList;

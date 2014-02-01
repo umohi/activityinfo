@@ -29,10 +29,17 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api.shared.command.CreateEntity;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
+import org.activityinfo.api2.client.Promise;
+import org.activityinfo.api2.client.PromiseMatchers;
+import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.Cuids;
+import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
@@ -41,6 +48,7 @@ import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporte
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.ProgressListener;
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.Warning;
 import org.activityinfo.ui.full.client.page.entry.LockedPeriodSet;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,6 +57,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import static org.activityinfo.api2.client.PromiseMatchers.resolution;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -278,4 +287,15 @@ public class GetSchemaTest extends CommandTestCase2 {
         Files.write(writer.toString(), new File("target/syria.csv"), Charsets.UTF_8);
     }
 
+    @Test
+    public void newApiTest() {
+
+        ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
+
+        Promise<UserForm> userForm = locator.getUserForm(Cuids.toIri(CuidAdapter.ACTIVITY_DOMAIN, 1)).fetch();
+
+        assertThat(userForm, resolution(CoreMatchers.<UserForm>notNullValue()));
+
+
+    }
 }

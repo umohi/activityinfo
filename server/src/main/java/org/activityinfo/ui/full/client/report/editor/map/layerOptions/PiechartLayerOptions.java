@@ -47,7 +47,7 @@ import org.activityinfo.reports.shared.model.layers.PiechartMapLayer;
 import org.activityinfo.reports.shared.model.layers.PiechartMapLayer.Slice;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.common.columns.EditColorColumn;
 import org.activityinfo.ui.full.client.page.common.columns.ReadTextColumn;

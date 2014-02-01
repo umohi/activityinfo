@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.dispatch.monitor;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.InvocationException;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 
 public class MonitoringCallback<T> implements AsyncCallback<T> {
 

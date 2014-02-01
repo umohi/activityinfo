@@ -35,7 +35,7 @@ import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.page.report.HasReportElement;
 import org.activityinfo.ui.full.client.page.report.ReportChangeHandler;
 import org.activityinfo.ui.full.client.page.report.ReportEventBus;

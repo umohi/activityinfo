@@ -37,7 +37,7 @@ import com.google.inject.Inject;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterEvent;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterHandler;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterEvent;

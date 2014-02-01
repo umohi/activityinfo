@@ -33,7 +33,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.GetUsers;
 import org.activityinfo.api.shared.command.result.UserResult;
 import org.activityinfo.api.shared.model.UserPermissionDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 import java.util.List;

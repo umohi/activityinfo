@@ -31,7 +31,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.inject.Inject;
 import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterEvent;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterHandler;

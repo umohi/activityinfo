@@ -50,7 +50,7 @@ public class Namespace {
 
     public static final String ACTIVITY = NS + "Activity";
 
-    public static final Iri IMPLEMENTED_BY = new Iri(NS + "implementedBy");
+    public static final Iri REPORTED_BY = new Iri(NS + "reportedBy");
 
     public static final String REPORTS_ON = NS + "reportsOn";
 

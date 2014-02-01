@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.dispatch;
+package org.activityinfo.api.client;
 
 /*
  * #%L

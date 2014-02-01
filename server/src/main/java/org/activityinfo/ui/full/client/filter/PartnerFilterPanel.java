@@ -40,7 +40,7 @@ import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetPartnersDimension;
 import org.activityinfo.api.shared.command.result.PartnerResult;
 import org.activityinfo.api.shared.model.PartnerDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterEvent;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterHandler;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterEvent;

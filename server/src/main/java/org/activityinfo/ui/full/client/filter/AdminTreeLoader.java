@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.filter;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 
 class AdminTreeLoader extends BaseTreeLoader<AdminEntityDTO> {
 

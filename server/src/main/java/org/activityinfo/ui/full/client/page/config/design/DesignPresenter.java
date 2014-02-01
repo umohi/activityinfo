@@ -37,7 +37,7 @@ import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.ui.full.client.AppEvents;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;

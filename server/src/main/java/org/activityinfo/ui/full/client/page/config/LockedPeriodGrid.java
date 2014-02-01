@@ -42,7 +42,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.LockedPeriodDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.ui.full.client.dispatch.monitor.NullAsyncMonitor;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.mvp.CanCreate;

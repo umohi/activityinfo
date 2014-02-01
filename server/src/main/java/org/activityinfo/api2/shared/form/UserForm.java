@@ -1,11 +1,13 @@
 package org.activityinfo.api2.shared.form;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Resource;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ import java.util.Set;
  */
 public class UserForm implements Resource, FormElementContainer {
 
+    @NotNull
     private Iri id;
     private LocalizedString label;
     private Iri parentForm;
@@ -27,7 +30,18 @@ public class UserForm implements Resource, FormElementContainer {
     private List<FormElement> elements = Lists.newArrayList();
 
     public UserForm(Iri id) {
+        Preconditions.checkNotNull(id);
         this.id = id;
+    }
+
+    public UserForm copy() {
+        final UserForm copy = new UserForm(this.getId());
+        copy.getElements().addAll(this.getElements());
+        copy.getSubClasses().addAll(this.getSubClasses());
+        copy.getSuperClasses().addAll(this.getSuperClasses());
+        copy.setParentForm(this.getParentForm());
+        copy.setLabel(this.getLabel());
+        return copy;
     }
 
     public Iri getId() {
@@ -72,6 +86,23 @@ public class UserForm implements Resource, FormElementContainer {
 
     public List<FormElement> getElements() {
         return elements;
+    }
+
+    public List<FormField> getFields() {
+        final List<FormField> fields = Lists.newArrayList();
+        collectFields(fields, getElements());
+        return fields;
+    }
+
+    private static void collectFields(List<FormField> fields, List<FormElement> elements) {
+        for (FormElement element : elements) {
+            if (element instanceof FormField) {
+                fields.add((FormField) element);
+            } else if (element instanceof FormSection) {
+                final FormSection formSection = (FormSection) element;
+                collectFields(fields, formSection.getElements());
+            }
+        }
     }
 
     public void setElements(List<FormElement> elements) {

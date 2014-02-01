@@ -32,7 +32,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.BatchResult;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.loader.CommandLoadEvent;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.NavigationCallback;

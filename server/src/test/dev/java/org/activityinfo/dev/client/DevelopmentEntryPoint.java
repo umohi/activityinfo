@@ -23,10 +23,7 @@ package org.activityinfo.dev.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
 /**
  * Dev only entry point.
@@ -38,8 +35,7 @@ public class DevelopmentEntryPoint implements EntryPoint {
     @Override
     public void onModuleLoad() {
         TransitionUtil.ensureBootstrapInjected();
-//        gxt();
-        pureGwt();
+        RootPanel.get().add(new UserFormPanelShowCase());
     }
 
 //    public void gxt() {
@@ -65,16 +61,6 @@ public class DevelopmentEntryPoint implements EntryPoint {
 //    }
 //
 //    private static final MyTemplates TEMPLATES = GWT.create(MyTemplates.class);
-
-    public void pureGwt() {
-        final UserForm userForm = DevUtils.createTestUserForm();
-        final UserFormPanel panel = new UserFormPanel(userForm, null);
-        RootPanel.get().add(new SimplePanel(panel));
-
-//        final SiteDialog d = new SiteDialog(userForm);
-//        d.show();
-    }
-
 
 //    public Widget createTestWidget() {
 //        // Create a Vertical Panel

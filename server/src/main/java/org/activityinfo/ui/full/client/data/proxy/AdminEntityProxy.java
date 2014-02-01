@@ -28,7 +28,7 @@ import org.activityinfo.api.shared.command.GetAdminEntities;
 import org.activityinfo.api.shared.command.result.AdminEntityResult;
 import org.activityinfo.api.shared.command.result.ListResult;
 import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.activityinfo.api.client.Dispatcher;
 
 public class AdminEntityProxy extends RpcProxy<ListResult<AdminEntityDTO>> {
 

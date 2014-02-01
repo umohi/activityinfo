@@ -2,7 +2,7 @@
  * Supports the execution of {@link org.activityinfo.api.shared.command.Command},
  * either remotely or through local proxies/caches.
  */
-package org.activityinfo.ui.full.client.dispatch;
+package org.activityinfo.api.client;
 
 /*
  * #%L
