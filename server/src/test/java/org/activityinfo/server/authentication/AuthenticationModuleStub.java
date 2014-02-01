@@ -30,13 +30,13 @@ public class AuthenticationModuleStub extends AbstractModule {
     public static ServerSideAuthProvider authProvider = new ServerSideAuthProvider();
 
     public static void setUserId(int userId) {
+        System.out.println("Setting user to id=" + userId);
         switch (userId) {
             case 0:
                 authProvider.set(AuthenticatedUser.getAnonymous());
                 break;
             default:
-                authProvider.set(new AuthenticatedUser("XYZ123", userId,
-                        "fixtures@fixtures.com"));
+                authProvider.set(new AuthenticatedUser("XYZ123", userId, "test@test.com"));
         }
     }
 

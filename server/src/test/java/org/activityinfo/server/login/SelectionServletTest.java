@@ -89,7 +89,7 @@ public class SelectionServletTest {
         };
 
         URL permutationMap = getClass().getResource("permutations");
-        assertThat("permutationMap is present for fixtures", permutationMap,
+        assertThat("permutationMap is present for test", permutationMap,
                 is(not(nullValue(URL.class))));
 
         ServletContext context = createMock(ServletContext.class);

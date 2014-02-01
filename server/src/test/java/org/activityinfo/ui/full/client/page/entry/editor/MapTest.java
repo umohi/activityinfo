@@ -35,7 +35,7 @@ public class MapTest {
     // // Collaborator: view
     // MockMapView map = new MockMapView();
     //
-    // // Class under fixtures
+    // // Class under test
     // MapPresenter presenter = new MapPresenter(map);
     //
     // // VERIFY that the initial view is set to the admin bounds,
@@ -57,7 +57,7 @@ public class MapTest {
     // // Collaborator: view
     // MockMapView map = new MockMapView();
     //
-    // // Class under fixtures
+    // // Class under test
     // MapPresenter presenter = new MapPresenter(map);
     //
     // // VERIFY that marker movement updates the coordinates

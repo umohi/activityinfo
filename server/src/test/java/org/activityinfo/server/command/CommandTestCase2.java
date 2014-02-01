@@ -43,6 +43,7 @@ import org.activityinfo.server.util.blob.BlobServiceModuleStub;
 import org.activityinfo.server.util.config.ConfigModuleStub;
 import org.activityinfo.ui.full.client.dispatch.AsyncMonitor;
 import org.activityinfo.ui.full.client.dispatch.Dispatcher;
+import org.junit.Before;
 
 import javax.persistence.EntityManager;
 
@@ -95,7 +96,7 @@ public class CommandTestCase2 {
         T result = context.startExecute(command);
 
         // normally each request and so each handleCommand() gets its own
-        // EntityManager, but here successive requests in the same fixtures
+        // EntityManager, but here successive requests in the same test
         // will share an EntityManager, which can be bad if there are
         // collections
         // still living in the first-level cache

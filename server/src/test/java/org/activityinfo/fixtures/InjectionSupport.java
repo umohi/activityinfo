@@ -77,7 +77,7 @@ public class InjectionSupport extends BlockJUnit4ClassRunner {
                         .add((Module) moduleClass.getConstructor().newInstance());
             } catch (Exception e) {
                 throw new RuntimeException(
-                        "Exception thrown while creating modules for fixtures " +
+                        "Exception thrown while creating modules for test " +
                                 klass.getName()
                                 + ":\n   could not instantiate module class " +
                                 moduleClass.getName(), e);
@@ -185,7 +185,7 @@ public class InjectionSupport extends BlockJUnit4ClassRunner {
 
             // make our scope instance injectable
             bind(SimpleScope.class)
-                    .annotatedWith(Names.named("fixtures"))
+                    .annotatedWith(Names.named("tests"))
                     .toInstance(testScope);
         }
 

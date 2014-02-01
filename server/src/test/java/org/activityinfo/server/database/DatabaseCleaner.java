@@ -31,7 +31,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Cleans the MySQL fixtures database
+ * Cleans the MySQL test database
  */
 public class DatabaseCleaner {
 

@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * New hibernate-free command servlet. Currently only used in fixtures code, will
+ * New hibernate-free command servlet. Currently only used in test code, will
  * eventually replace CommandServlet when all dependencies on hibernate are
  * removed.
  */

@@ -59,7 +59,7 @@ public class GeneratePivotTableHandlerTest extends CommandTestCase2 {
 
         execute(new GeneratePivotTable(element));
 
-        // TODO real fixtures
+        // TODO real test
         // System.out.println(content.getData());
 
     }

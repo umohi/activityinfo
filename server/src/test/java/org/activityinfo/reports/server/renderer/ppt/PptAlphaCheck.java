@@ -36,7 +36,7 @@ import java.io.InputStream;
 public class PptAlphaCheck {
 
     @Test
-    @Ignore("learning fixtures only")
+    @Ignore("learning test only")
     public void testAlphaValues() throws IOException {
 
         InputStream in = PptAlphaCheck.class.getResourceAsStream("/alpha.ppt");

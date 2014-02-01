@@ -57,7 +57,7 @@ public class AdminTileRendererTest {
         partialDataSet.addTable("adminentity", "select * from adminentity where adminlevelid=1360");
 
         // XML file into which data needs to be extracted
-        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("src/fixtures/resources/dbunit/jordan.db.xml"));
+        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("src/test/resources/dbunit/jordan.db.xml"));
         System.out.println("Dataset written");
     }
 

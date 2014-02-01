@@ -82,7 +82,7 @@ public class MockHibernateModule extends AbstractModule {
                     public EntityManagerFactory get() {
                         // we are assuming that the tests do not affect the database
                         // schema, so there is no
-                        // need to restart hibernate for each fixtures class, and we
+                        // need to restart hibernate for each test class, and we
                         // save quite a bit of time
                         if (emf == null) {
                             Ejb3Configuration config = new Ejb3Configuration();

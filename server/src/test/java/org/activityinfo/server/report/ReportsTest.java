@@ -80,7 +80,7 @@ public class ReportsTest {
     @Test
     @Ignore("need dbunit xml with matching data")
     public void testFullReport() throws Throwable {
-        Report report = getReport("full-fixtures.xml");
+        Report report = getReport("full-test.xml");
 
         reportGenerator.generate(user, report, null, null);
         for (RenderElement.Format format : RenderElement.Format.values()) {
@@ -88,7 +88,7 @@ public class ReportsTest {
                     && format != RenderElement.Format.Excel_Data) {
                 Renderer renderer = factory.get(format);
                 FileOutputStream fos = new FileOutputStream(
-                        "target/report-tests/full-fixtures" + renderer.getFileSuffix());
+                        "target/report-tests/full-test" + renderer.getFileSuffix());
                 renderer.render(report, fos);
                 fos.close();
             }
@@ -131,7 +131,7 @@ public class ReportsTest {
     @Test
     public void testConsolideDesActivitesReport() throws Throwable {
 
-        // Setup fixtures
+        // Setup test
         Report report = getReport("realworld/ConsolideDesActivites.xml");
 
         reportGenerator.generate(user, report, null, null);
@@ -150,7 +150,7 @@ public class ReportsTest {
     }
 
     private void createDirectoriesIfNecessary() {
-        File file = new File("target/report-fixtures");
+        File file = new File("target/report-test");
         file.mkdirs();
     }
 

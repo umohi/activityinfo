@@ -49,12 +49,12 @@ public class PivotTableGeneratorTest {
     @Test
     public void test2x2() {
 
-        // fixtures input data: user
+        // test input data: user
 
         User user = new User();
         user.setLocale("fr");
 
-        // fixtures input data: PivotTableElement
+        // test input data: PivotTableElement
 
         PivotTableReportElement element = new PivotTableReportElement();
         AdminDimension provinceDim = new AdminDimension(1);
@@ -62,7 +62,7 @@ public class PivotTableGeneratorTest {
         Dimension partnerDim = new Dimension(DimensionType.Partner);
         element.addColDimension(partnerDim);
 
-        // fixtures input data: aggregated results
+        // test input data: aggregated results
         List<Bucket> buckets = new ArrayList<Bucket>();
 
         buckets.add(newBucket(433, category(provinceDim, 2, "Sud Kivu"),
@@ -99,16 +99,16 @@ public class PivotTableGeneratorTest {
     @Test
     public void testIndicatorSortOrder() {
 
-        // fixtures input data: user
+        // test input data: user
         User user = new User();
         user.setLocale("fr");
 
-        // fixtures input data: PivotTableElement
+        // test input data: PivotTableElement
         PivotTableReportElement element = new PivotTableReportElement();
         Dimension indicatorDim = new Dimension(DimensionType.Indicator);
         element.addRowDimension(indicatorDim);
 
-        // fixtures input data: aggregated results
+        // test input data: aggregated results
         List<Bucket> buckets = new ArrayList<Bucket>();
 
         buckets

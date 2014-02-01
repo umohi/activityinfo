@@ -53,7 +53,7 @@ public class LinkIndicatorTest extends CommandTestCase {
     @Test
     public void testLinkIndicators() throws CommandException {
 
-        // TODO fixtures this action
+        // TODO test this action
         // UpdateIndicatorLink
     }
 

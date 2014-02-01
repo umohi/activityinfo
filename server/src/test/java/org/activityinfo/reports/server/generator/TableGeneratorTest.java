@@ -149,7 +149,7 @@ public class TableGeneratorTest {
         baseMap1.setMaxZoom(12);
         baseMap1.setCopyright("(C)");
         baseMap1.setName("Grand Canyon");
-        baseMap1.setTileUrlPattern("http://s/fixtures.png");
+        baseMap1.setTileUrlPattern("http://s/test.png");
 
         expect(dispatcher.execute(isA(GetBaseMaps.class)))
                 .andReturn(new BaseMapResult(Collections.singletonList(baseMap1)));

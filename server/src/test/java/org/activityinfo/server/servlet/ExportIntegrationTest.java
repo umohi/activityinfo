@@ -60,11 +60,11 @@ public class ExportIntegrationTest extends CommandTestCase2 {
             }
         }
 
-        File outputDir = new File("target/report-fixtures/");
+        File outputDir = new File("target/report-test/");
         outputDir.mkdirs();
 
         FileOutputStream fos = new FileOutputStream(
-                "target/report-fixtures/ExportTest.xls");
+                "target/report-test/ExportTest.xls");
         export.getBook().write(fos);
         fos.close();
     }
@@ -75,11 +75,11 @@ public class ExportIntegrationTest extends CommandTestCase2 {
         DbUserExport export = new DbUserExport(DTOs.rrmUsers().getData());
         export.createSheet();
 
-        File outputDir = new File("target/report-fixtures/");
+        File outputDir = new File("target/report-test/");
         outputDir.mkdirs();
 
         FileOutputStream fos = new FileOutputStream(
-                "target/report-fixtures/DbUserExportTest.xls");
+                "target/report-test/DbUserExportTest.xls");
         export.getBook().write(fos);
         fos.close();
     }

@@ -24,7 +24,7 @@
 
 <dataset>
 
-  <!--  This is fixtures data used for the SchemaBuilderTest cases -->
+  <!--  This is test data used for the SchemaBuilderTest cases -->
 
   <country countryId="1" name="Rdc" x1="0" y1="0" x2="0" y2="0"/>
 

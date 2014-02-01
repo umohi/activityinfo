@@ -512,8 +512,8 @@
         </executions>
       </plugin>
 
-      <!-- Exclude GWT integration tests from the fixtures phase -->
-      <!-- we want to run them during the integration-fixtures phase with
+      <!-- Exclude GWT integration tests from the test phase -->
+      <!-- we want to run them during the integration-test phase with
           the gwt-maven plugin -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>

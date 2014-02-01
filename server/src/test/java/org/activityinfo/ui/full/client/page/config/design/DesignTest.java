@@ -263,7 +263,7 @@ public class DesignTest {
         UIConstants constants = createNiceMock(UIConstants.class);
         replay(constants);
 
-        // Class under fixtures
+        // Class under test
         DesignPresenter designer = new DesignPresenter(eventBus, service,
                 new StateManagerStub(), view, constants);
 

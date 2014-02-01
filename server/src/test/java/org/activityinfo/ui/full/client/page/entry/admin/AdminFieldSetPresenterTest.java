@@ -169,7 +169,7 @@ public class AdminFieldSetPresenterTest {
     }
 
     /**
-     * Regression fixtures for bug
+     * Regression test for bug
      */
     @Test
     public void testChange3rdLevelAdmin() {

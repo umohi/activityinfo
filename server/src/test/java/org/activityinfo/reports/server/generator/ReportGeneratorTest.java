@@ -51,15 +51,15 @@ public class ReportGeneratorTest {
         User user = new User();
         user.setLocale("en");
 
-        // Input fixtures data: report model + parameter
+        // Input test data: report model + parameter
         Report report = new Report();
         report.setFileName("Report ${DATE_RANGE} of Activities");
 
-        // Input fixtures data: parameter values
+        // Input test data: parameter values
         DateUtil dateUtil = new DateUtilCalendarImpl();
         DateRange dateRange = dateUtil.monthRange(2009, 1);
 
-        // class under fixtures
+        // class under test
         ReportGenerator generator = new ReportGenerator(null, null, null, null,
                 null);
 

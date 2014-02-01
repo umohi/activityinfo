@@ -47,14 +47,14 @@ public class PivotTableRendererTest {
     @Test
     public void test() {
 
-        // input fixtures data : element + content
+        // input test data : element + content
         DummyPivotTableData testData = new DummyPivotTableData();
         PivotTableReportElement element = testData.Foobar1612Element();
 
         // Destination book
         HSSFWorkbook book = new HSSFWorkbook();
 
-        // CLASS under fixtures
+        // CLASS under test
 
         ExcelPivotTableRenderer renderer = new ExcelPivotTableRenderer();
         renderer.render(book, element);
@@ -87,14 +87,14 @@ public class PivotTableRendererTest {
     @Test
     public void testNoColumnDimensions() {
 
-        // input fixtures data : element + content
+        // input test data : element + content
         DummyPivotTableData2 testData = new DummyPivotTableData2();
         PivotTableReportElement element = testData.testElement();
 
         // Destination book
         HSSFWorkbook book = new HSSFWorkbook();
 
-        // CLASS under fixtures
+        // CLASS under test
 
         ExcelPivotTableRenderer renderer = new ExcelPivotTableRenderer();
         renderer.render(book, element);
@@ -125,7 +125,7 @@ public class PivotTableRendererTest {
     public void veryLongFilter() {
 
 
-        // input fixtures data : element + content
+        // input test data : element + content
         DummyPivotTableData2 testData = new DummyPivotTableData2();
         PivotTableReportElement element = testData.testElement();
 
@@ -143,7 +143,7 @@ public class PivotTableRendererTest {
         // Destination book
         HSSFWorkbook book = new HSSFWorkbook();
 
-        // CLASS under fixtures
+        // CLASS under test
 
         ExcelPivotTableRenderer renderer = new ExcelPivotTableRenderer();
         renderer.render(book, element);

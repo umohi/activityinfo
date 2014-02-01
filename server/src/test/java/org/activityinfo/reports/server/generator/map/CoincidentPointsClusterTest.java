@@ -93,7 +93,7 @@ public class CoincidentPointsClusterTest extends GraphTest {
     @Test
     public void testRealData() throws Exception {
 
-        // Define projection for the fixtures case
+        // Define projection for the test case
         TiledMap map = new TiledMap(492, 690, new AiLatLng(2.293492496,
                 30.538372993), 9);
 

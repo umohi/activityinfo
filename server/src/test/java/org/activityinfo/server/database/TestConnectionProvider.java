@@ -31,7 +31,7 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 /**
- * Provides a connection to the fixtures database.
+ * Provides a connection to the test database.
  * <p/>
  * By default, we connect to the local 'activityinfo-test' database, with
  * username 'root' and password 'adminpwd'.
@@ -85,7 +85,7 @@ public class TestConnectionProvider implements Provider<Connection> {
     @Override
     public Connection get() {
         try {
-            System.err.println("Opening fixtures database at " + URL);
+            System.err.println("Opening test database at " + URL);
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (Exception e) {

@@ -36,6 +36,7 @@ import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
 import org.activityinfo.server.i18n.LocaleModule;
 import org.activityinfo.server.util.TemplateModule;
 import org.activityinfo.server.util.beanMapping.BeanMappingModule;
+import org.junit.Before;
 
 import javax.persistence.EntityManager;
 import java.util.Collections;
@@ -80,7 +81,7 @@ public abstract class CommandTestCase {
                 .<Command>singletonList(command));
 
         // normally each request and so each handleCommand() gets its own
-        // EntityManager, but here successive requests in the same fixtures
+        // EntityManager, but here successive requests in the same test
         // will share an EntityManager, which can be bad if there are
         // collections
         // still living in the first-level cache

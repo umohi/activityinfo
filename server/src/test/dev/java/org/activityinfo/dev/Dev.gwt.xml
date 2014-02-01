@@ -22,7 +22,7 @@
 
 
 <!-- This is a drop-in replacement for the ApplicationModule that
-     can be used to quickly fixtures a compilation on FireFox
+     can be used to quickly test a compilation on FireFox
 
      e.g.:  mvn gwt:compile -P fftest
 

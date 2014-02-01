@@ -35,7 +35,7 @@ public interface PageLoader {
      * @param pageId    The ID of the page for which to load the presenter
      * @param pageState A PageState object describing the requested state of the Page
      *                  at load
-     * @param callback  Note: PageLoaders are difficult to fixtures so minimize the logic
+     * @param callback  Note: PageLoaders are difficult to test so minimize the logic
      *                  within this class.
      */
     public void load(PageId pageId, PageState pageState,

@@ -34,7 +34,7 @@ import java.util.Map;
 
 /**
  * Transforms a search query string into a Filter instance/ workable data
- * structure See related fixtures class for OK/non OK queries
+ * structure See related test class for OK/non OK queries
  */
 public class QueryParser {
     private static final String COLON = ":";
