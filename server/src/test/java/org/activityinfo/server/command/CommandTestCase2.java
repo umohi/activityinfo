@@ -73,6 +73,11 @@ public class CommandTestCase2 {
         AuthenticationModuleStub.setUserId(userId);
     }
 
+    @Before
+    public final void setDefaultUser() {
+        setUser(1);
+    }
+
     protected <T extends CommandResult> T execute(Command<T> command)
             throws CommandException {
 
