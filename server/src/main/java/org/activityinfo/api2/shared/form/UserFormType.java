@@ -21,7 +21,7 @@ package org.activityinfo.api2.shared.form;
  * #L%
  */
 
-import com.google.appengine.repackaged.com.google.common.base.Strings;
+import com.google.common.base.Strings;
 
 /**
  * @author yuriyz on 2/3/14.
