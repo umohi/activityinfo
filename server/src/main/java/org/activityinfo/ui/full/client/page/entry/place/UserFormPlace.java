@@ -44,12 +44,16 @@ public class UserFormPlace implements PageState {
     public UserFormPlace() {
     }
 
+    /**
+     * Used when new form should be created.
+     *
+     * @param userFormType user form type to create.
+     */
     public UserFormPlace(@Nonnull UserFormType userFormType) {
-        this(userFormType, null, null);
+        this.userFormType = userFormType;
     }
 
-    public UserFormPlace(@Nonnull UserFormType userFormType, Iri userFormId, Iri userFormInstanceId) {
-        this.userFormType = userFormType;
+    public UserFormPlace(Iri userFormId, Iri userFormInstanceId) {
         this.userFormId = userFormId;
         this.userFormInstanceId = userFormInstanceId;
     }

@@ -25,7 +25,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.datepicker.client.DateBox;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;

@@ -1,7 +1,5 @@
 package org.activityinfo.api2.shared;
 
-import java.io.Serializable;
-
 /**
  * Internationalized Resource Identifier
  */

@@ -39,8 +39,7 @@ import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +146,7 @@ public class UserFormPanel extends Composite {
         }
     }
 
-    protected void clearFields(@NotNull List<FormField> fields) {
+    protected void clearFields(@Nonnull List<FormField> fields) {
         for (FormField field : fields) {
             final FormFieldRow formFieldRow = controlMap.get(field.getId());
             formFieldRow.clear();
@@ -171,14 +170,14 @@ public class UserFormPanel extends Composite {
         return formInstance;
     }
 
-    public void setValue(@NotNull UserFormInstance formInstance) {
+    public void setValue(@Nonnull UserFormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
         this.initialFormInstance = formInstance;
         this.formInstance = formInstance.copy();
         applyValue(formInstance);
     }
 
-    private void applyValue(@NotNull UserFormInstance formInstance) {
+    private void applyValue(@Nonnull UserFormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
         for (Map.Entry<Iri, Object> entry : formInstance.getValueMap().entrySet()) {
             final FormFieldRow fieldRow = controlMap.get(entry.getKey());

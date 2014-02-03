@@ -28,11 +28,15 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
+import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
 /**
  * @author yuriyz on 1/31/14.
@@ -47,13 +51,19 @@ public class UserFormPage extends Composite implements Page {
 
     public static final PageId PAGE_ID = new PageId("site-form");
 
+    private final ResourceLocator resourceLocator;
+
     @UiField
     FlowPanel panel;
 
     @Inject
-    public UserFormPage() {
+    public UserFormPage(Dispatcher dispatcher) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+        this.resourceLocator = new ResourceLocatorAdaptor(dispatcher);
+
+        final UserFormPanel userFormPanel = new UserFormPanel();
+        panel.add(userFormPanel);
     }
 
     @Override
