@@ -75,7 +75,7 @@ public class UserFormPlaceParser implements PageStateParser {
                             place.setUserFormInstanceId(new Iri(value));
                         }
                         if (TYPE_PARAMETER_NAME.equals(key)) {
-                            place.setUserFormType(UserFormType.valueOf(value));
+                            place.setUserFormType(UserFormType.fromTokenValue(value));
                         }
                     }
                 }

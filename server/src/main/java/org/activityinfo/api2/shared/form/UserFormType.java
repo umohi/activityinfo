@@ -48,7 +48,7 @@ public enum UserFormType {
         return instanceType;
     }
 
-    public UserFormType fromTokenValue(String tokenValue) {
+    public static UserFormType fromTokenValue(String tokenValue) {
         if (!Strings.isNullOrEmpty(tokenValue)) {
             for (UserFormType type : values()) {
                 if (type.getTokenValue().equals(tokenValue)) {
