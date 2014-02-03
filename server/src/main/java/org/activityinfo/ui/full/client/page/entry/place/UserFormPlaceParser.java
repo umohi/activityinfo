@@ -53,6 +53,7 @@ public class UserFormPlaceParser implements PageStateParser {
     }
 
     public static UserFormPlace parseToken(String token) {
+        final UserFormPlace place = new UserFormPlace();
         if (!Strings.isNullOrEmpty(token)) {
             final String searchString = UserFormPlace.PAGE_ID.getId() + "/";
             final int indexOf = token.indexOf(searchString);
@@ -61,7 +62,6 @@ public class UserFormPlaceParser implements PageStateParser {
             }
 
             final String[] parts = token.split("\\+");
-            final UserFormPlace place = new UserFormPlace();
             for (String part : parts) {
                 final String[] subParts = part.split("\\=");
                 if (subParts.length == 2) {
@@ -80,9 +80,8 @@ public class UserFormPlaceParser implements PageStateParser {
                     }
                 }
             }
-            return place;
         }
-        return null;
+        return place;
     }
 
     @Override
