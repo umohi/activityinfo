@@ -37,12 +37,12 @@ import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 /**
  * @author yuriyz on 1/31/14.
  */
-public class SiteFormPage extends Composite implements Page {
+public class UserFormPage extends Composite implements Page {
 
     private static SiteFormPageUiBinder uiBinder = GWT
             .create(SiteFormPageUiBinder.class);
 
-    public static interface SiteFormPageUiBinder extends UiBinder<Widget, SiteFormPage> {
+    public static interface SiteFormPageUiBinder extends UiBinder<Widget, UserFormPage> {
     }
 
     public static final PageId PAGE_ID = new PageId("site-form");
@@ -51,7 +51,7 @@ public class SiteFormPage extends Composite implements Page {
     UserFormPanel userFormPanel;
 
     @Inject
-    public SiteFormPage() {
+    public UserFormPage() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }

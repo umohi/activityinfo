@@ -22,54 +22,10 @@ package org.activityinfo.ui.full.client.page.entry;
  * #L%
  */
 
-import java.util.Set;
-
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.DeleteSite;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.FilterUrlSerializer;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.command.result.VoidResult;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.icon.IconImageBundle;
-import org.activityinfo.ui.full.client.page.NavigationCallback;
-import org.activityinfo.ui.full.client.page.NavigationEvent;
-import org.activityinfo.ui.full.client.page.NavigationHandler;
-import org.activityinfo.ui.full.client.page.Page;
-import org.activityinfo.ui.full.client.page.PageId;
-import org.activityinfo.ui.full.client.page.PageState;
-import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
-import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
-import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
-import org.activityinfo.ui.full.client.page.entry.column.DefaultColumnModelProvider;
-import org.activityinfo.ui.full.client.page.entry.form.PrintDataEntryForm;
-import org.activityinfo.ui.full.client.page.entry.form.SiteDialogCallback;
-import org.activityinfo.ui.full.client.page.entry.form.SiteDialogLauncher;
-import org.activityinfo.ui.full.client.page.entry.grouping.GroupingComboBox;
-import org.activityinfo.ui.full.client.page.entry.place.DataEntryPlace;
-import org.activityinfo.ui.full.client.page.entry.place.SiteFormPlace;
-import org.activityinfo.ui.full.client.page.entry.sitehistory.SiteHistoryTab;
-import org.activityinfo.ui.full.client.util.GwtUtil;
-
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
-import com.extjs.gxt.ui.client.event.FieldEvent;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MessageBoxEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.Dialog;
-import com.extjs.gxt.ui.client.widget.Label;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.extjs.gxt.ui.client.widget.TabItem;
+import com.extjs.gxt.ui.client.widget.*;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -80,6 +36,37 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.command.DeleteSite;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.FilterUrlSerializer;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.result.VoidResult;
+import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.api2.shared.form.UserFormType;
+import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.ui.full.client.EventBus;
+import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
+import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.ui.full.client.icon.IconImageBundle;
+import org.activityinfo.ui.full.client.page.*;
+import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
+import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
+import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
+import org.activityinfo.ui.full.client.page.entry.column.DefaultColumnModelProvider;
+import org.activityinfo.ui.full.client.page.entry.form.PrintDataEntryForm;
+import org.activityinfo.ui.full.client.page.entry.form.SiteDialogCallback;
+import org.activityinfo.ui.full.client.page.entry.form.SiteDialogLauncher;
+import org.activityinfo.ui.full.client.page.entry.grouping.GroupingComboBox;
+import org.activityinfo.ui.full.client.page.entry.place.DataEntryPlace;
+import org.activityinfo.ui.full.client.page.entry.place.UserFormPlace;
+import org.activityinfo.ui.full.client.page.entry.sitehistory.SiteHistoryTab;
+import org.activityinfo.ui.full.client.util.GwtUtil;
+
+import java.util.Set;
 
 /**
  * This is the container for the DataEntry page.
@@ -381,7 +368,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
         if (UIActions.ADD.equals(actionId)) {
             if (GwtUtil.isNewUI()) {
                 eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new SiteFormPlace()));
+                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(UserFormType.ACTIVITY)));
             } else {
                 SiteDialogLauncher formHelper = new SiteDialogLauncher(dispatcher);
                 formHelper.addSite(currentPlace.getFilter(),
@@ -394,12 +381,13 @@ public class DataEntryPage extends LayoutContainer implements Page,
                         });
             }
         } else if (UIActions.EDIT.equals(actionId)) {
+            final SiteDTO selection = gridPanel.getSelection();
             if (GwtUtil.isNewUI()) {
                 eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new SiteFormPlace()));
+                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(UserFormType.ACTIVITY, selection.getActivityIri(), selection.getIri())));
             } else {
                 SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
-                launcher.editSite(gridPanel.getSelection(),
+                launcher.editSite(selection,
                         new SiteDialogCallback() {
 
                             @Override

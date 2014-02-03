@@ -27,25 +27,25 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.activityinfo.ui.full.client.page.*;
-import org.activityinfo.ui.full.client.page.entry.place.SiteFormPlace;
+import org.activityinfo.ui.full.client.page.entry.place.UserFormPlaceParser;
 
 /**
  * @author yuriyz on 1/31/14.
  */
-public class SiteFormLoader implements PageLoader {
+public class UserFormLoader implements PageLoader {
 
-    private final Provider<SiteFormPage> dataEntryPageProvider;
+    private final Provider<UserFormPage> dataEntryPageProvider;
 
     @Inject
-    public SiteFormLoader(
+    public UserFormLoader(
             NavigationHandler pageManager,
             PageStateSerializer placeSerializer,
-            Provider<SiteFormPage> dataEntryPageProvider) {
+            Provider<UserFormPage> dataEntryPageProvider) {
 
         this.dataEntryPageProvider = dataEntryPageProvider;
 
-        pageManager.registerPageLoader(SiteFormPage.PAGE_ID, this);
-        placeSerializer.registerStatelessPlace(SiteFormPage.PAGE_ID, new SiteFormPlace());
+        pageManager.registerPageLoader(UserFormPage.PAGE_ID, this);
+        placeSerializer.registerParser(UserFormPage.PAGE_ID, new UserFormPlaceParser());
     }
 
     @Override
@@ -54,9 +54,9 @@ public class SiteFormLoader implements PageLoader {
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onSuccess() {
-                final SiteFormPage siteFormPage = dataEntryPageProvider.get();
-                siteFormPage.navigate(pageState);
-                callback.onSuccess(siteFormPage);
+                final UserFormPage userFormPage = dataEntryPageProvider.get();
+                userFormPage.navigate(pageState);
+                callback.onSuccess(userFormPage);
             }
 
             @Override

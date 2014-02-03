@@ -85,7 +85,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         };
     }
 
-    private class ActivityAdapter implements Function<SchemaDTO, UserForm> {
+    private static class ActivityAdapter implements Function<SchemaDTO, UserForm> {
 
         private int activityId;
 
@@ -102,7 +102,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         }
     }
 
-    private class SiteAdapter implements Function<SiteResult, UserFormInstance>  {
+    private static class SiteAdapter implements Function<SiteResult, UserFormInstance>  {
 
         @Nullable
         @Override

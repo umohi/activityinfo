@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.page.entry.place;
+package org.activityinfo.api2.shared.form;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,36 +21,35 @@ package org.activityinfo.ui.full.client.page.entry.place;
  * #L%
  */
 
-import org.activityinfo.ui.full.client.page.PageId;
-import org.activityinfo.ui.full.client.page.PageState;
-import org.activityinfo.ui.full.client.page.app.Section;
-import org.activityinfo.ui.full.client.page.entry.SiteFormPage;
-
-import java.util.Arrays;
-import java.util.List;
+import com.google.appengine.repackaged.com.google.common.base.Strings;
 
 /**
- * @author yuriyz on 1/31/14.
+ * @author yuriyz on 2/3/14.
  */
-public class SiteFormPlace implements PageState {
+public enum UserFormType {
+    ACTIVITY("activity"),
+    LOCATION_TYPE("location"),
+    ATTRIBUTE_GROUP("attribute"),
+    ADMIN_LEVEL("admin");
 
-    @Override
-    public PageId getPageId() {
-        return SiteFormPage.PAGE_ID;
+    private String tokenValue;
+
+    UserFormType(String tokenValue) {
+        this.tokenValue = tokenValue;
     }
 
-    @Override
-    public String serializeAsHistoryToken() {
+    public String getTokenValue() {
+        return tokenValue;
+    }
+
+    public UserFormType fromTokenValue(String tokenValue) {
+        if (!Strings.isNullOrEmpty(tokenValue)) {
+            for (UserFormType type : values()) {
+                if (type.getTokenValue().equals(tokenValue)) {
+                    return type;
+                }
+            }
+        }
         return null;
-    }
-
-    @Override
-    public List<PageId> getEnclosingFrames() {
-        return Arrays.asList(SiteFormPage.PAGE_ID);
-    }
-
-    @Override
-    public Section getSection() {
-        return Section.DATA_ENTRY;
     }
 }
