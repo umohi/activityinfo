@@ -26,7 +26,6 @@ import org.activityinfo.api2.shared.form.UserFormType;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.app.Section;
-import org.activityinfo.ui.full.client.page.entry.UserFormPage;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -36,6 +35,8 @@ import java.util.List;
  * @author yuriyz on 1/31/14.
  */
 public class UserFormPlace implements PageState {
+
+    public static final PageId PAGE_ID = new PageId("site-form");
 
     private UserFormType userFormType;
     private Iri userFormId;
@@ -64,7 +65,7 @@ public class UserFormPlace implements PageState {
 
     @Override
     public PageId getPageId() {
-        return UserFormPage.PAGE_ID;
+        return PAGE_ID;
     }
 
     @Override
@@ -74,7 +75,7 @@ public class UserFormPlace implements PageState {
 
     @Override
     public List<PageId> getEnclosingFrames() {
-        return Arrays.asList(UserFormPage.PAGE_ID);
+        return Arrays.asList(PAGE_ID);
     }
 
     @Override
@@ -100,5 +101,28 @@ public class UserFormPlace implements PageState {
 
     public void setUserFormInstanceId(Iri userFormInstanceId) {
         this.userFormInstanceId = userFormInstanceId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserFormPlace that = (UserFormPlace) o;
+
+        if (userFormId != null ? !userFormId.equals(that.userFormId) : that.userFormId != null) return false;
+        if (userFormInstanceId != null ? !userFormInstanceId.equals(that.userFormInstanceId) : that.userFormInstanceId != null)
+            return false;
+        if (userFormType != that.userFormType) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userFormType != null ? userFormType.hashCode() : 0;
+        result = 31 * result + (userFormId != null ? userFormId.hashCode() : 0);
+        result = 31 * result + (userFormInstanceId != null ? userFormInstanceId.hashCode() : 0);
+        return result;
     }
 }

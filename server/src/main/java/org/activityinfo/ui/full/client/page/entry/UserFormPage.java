@@ -24,17 +24,22 @@ package org.activityinfo.ui.full.client.page.entry;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.form.UserForm;
+import org.activityinfo.api2.shared.form.UserFormInstance;
+import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
+import org.activityinfo.ui.full.client.page.entry.place.UserFormPlace;
+import org.activityinfo.ui.full.client.page.entry.place.UserFormPlaceParser;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
@@ -49,21 +54,50 @@ public class UserFormPage extends Composite implements Page {
     public static interface SiteFormPageUiBinder extends UiBinder<Widget, UserFormPage> {
     }
 
-    public static final PageId PAGE_ID = new PageId("site-form");
-
     private final ResourceLocator resourceLocator;
+    private final UserFormPanel userFormPanel;
 
     @UiField
     FlowPanel panel;
 
     @Inject
-    public UserFormPage(Dispatcher dispatcher) {
+    public UserFormPage(ResourceLocator resourceLocator) {
+        this.resourceLocator = resourceLocator;
+
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
-        this.resourceLocator = new ResourceLocatorAdaptor(dispatcher);
 
-        final UserFormPanel userFormPanel = new UserFormPanel();
+        userFormPanel = new UserFormPanel();
         panel.add(userFormPanel);
+        fetchRemote();
+    }
+
+    private UserFormPlace fetchRemote() {
+        final UserFormPlace userFormPlace = UserFormPlaceParser.parseToken(History.getToken());
+        resourceLocator.getUserForm(userFormPlace.getUserFormId()).fetch().then(new AsyncCallback<UserForm>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Log.error("Unable to fetch UserForm, iri=" + userFormPlace.getUserFormId(), caught);
+                // todo show error to user
+            }
+
+            @Override
+            public void onSuccess(UserForm result) {
+                userFormPanel.renderForm(result);
+                resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).fetch().then(new AsyncCallback<UserFormInstance>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Log.error("Unable to fetch UserFormInstance, iri=" + userFormPlace.getUserFormInstanceId(), caught);
+                    }
+
+                    @Override
+                    public void onSuccess(UserFormInstance result) {
+                        userFormPanel.setValue(result);
+                    }
+                });
+            }
+        });
+        return userFormPlace;
     }
 
     @Override
@@ -73,7 +107,7 @@ public class UserFormPage extends Composite implements Page {
 
     @Override
     public PageId getPageId() {
-        return PAGE_ID;
+        return UserFormPlace.PAGE_ID;
     }
 
     @Override

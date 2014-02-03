@@ -21,6 +21,9 @@ package org.activityinfo.ui.full.client.page.entry.place;
  * #L%
  */
 
+import com.google.common.base.Strings;
+import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.form.UserFormType;
 import org.activityinfo.ui.full.client.page.PageStateParser;
 
 /**
@@ -28,12 +31,62 @@ import org.activityinfo.ui.full.client.page.PageStateParser;
  */
 public class UserFormPlaceParser implements PageStateParser {
 
+    private static final String FORM_PARAMETER_NAME = "form";
+    private static final String FORM_INSTANCE_PARAMETER_NAME = "instance";
+    private static final String TYPE_PARAMETER_NAME = "type";
+
     public static String serialize(UserFormPlace place) {
-        return "";
+        final StringBuilder fragment = new StringBuilder();
+        if (place.getUserFormId() != null) {
+            fragment.append(FORM_PARAMETER_NAME).append("=").append(place.getUserFormId().asString());
+            fragment.append("+");
+        }
+        if (place.getUserFormInstanceId() != null) {
+            fragment.append(FORM_INSTANCE_PARAMETER_NAME).append("=").append(place.getUserFormInstanceId().asString());
+            fragment.append("+");
+        }
+        // type is not null only for new form -> therefore used only for new form creation
+        if (place.getUserFormType() != null) {
+            fragment.append(TYPE_PARAMETER_NAME).append("=").append(place.getUserFormType().getTokenValue());
+        }
+        return fragment.toString();
+    }
+
+    public static UserFormPlace parseToken(String token) {
+        if (!Strings.isNullOrEmpty(token)) {
+            final String searchString = UserFormPlace.PAGE_ID.getId() + "/";
+            final int indexOf = token.indexOf(searchString);
+            if (indexOf != -1) {
+                token = token.substring(indexOf + searchString.length());
+            }
+
+            final String[] parts = token.split("\\+");
+            final UserFormPlace place = new UserFormPlace();
+            for (String part : parts) {
+                final String[] subParts = part.split("\\=");
+                if (subParts.length == 2) {
+                    final String key = subParts[0];
+                    final String value = subParts[1];
+                    if (!Strings.isNullOrEmpty(value)) {
+                        if (FORM_PARAMETER_NAME.equals(key)) {
+                            place.setUserFormId(new Iri(value));
+                        }
+                        if (FORM_INSTANCE_PARAMETER_NAME.equals(key)) {
+                            place.setUserFormInstanceId(new Iri(value));
+                        }
+                        if (TYPE_PARAMETER_NAME.equals(key)) {
+                            place.setUserFormType(UserFormType.valueOf(value));
+                        }
+                    }
+                }
+            }
+            return place;
+        }
+        return null;
     }
 
     @Override
     public UserFormPlace parse(String token) {
-        return null;
+        return parseToken(token);
     }
 }

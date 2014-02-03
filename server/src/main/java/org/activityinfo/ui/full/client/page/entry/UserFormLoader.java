@@ -27,6 +27,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.activityinfo.ui.full.client.page.*;
+import org.activityinfo.ui.full.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.full.client.page.entry.place.UserFormPlaceParser;
 
 /**
@@ -44,8 +45,8 @@ public class UserFormLoader implements PageLoader {
 
         this.dataEntryPageProvider = dataEntryPageProvider;
 
-        pageManager.registerPageLoader(UserFormPage.PAGE_ID, this);
-        placeSerializer.registerParser(UserFormPage.PAGE_ID, new UserFormPlaceParser());
+        pageManager.registerPageLoader(UserFormPlace.PAGE_ID, this);
+        placeSerializer.registerParser(UserFormPlace.PAGE_ID, new UserFormPlaceParser());
     }
 
     @Override

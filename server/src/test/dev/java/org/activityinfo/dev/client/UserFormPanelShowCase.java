@@ -40,7 +40,7 @@ public class UserFormPanelShowCase extends FlowPanel {
     private final CheckBox design = new CheckBox("Design Mode");
 
     private final UserForm userForm = DevUtils.createTestUserForm();
-    private final UserFormPanel panel = new UserFormPanel(userForm, null);
+    private final UserFormPanel panel = new UserFormPanel(userForm);
     private final UserFormInstance userFormInstance = DevUtils.createTestUserFormInstance(userForm);
 
     public UserFormPanelShowCase() {
