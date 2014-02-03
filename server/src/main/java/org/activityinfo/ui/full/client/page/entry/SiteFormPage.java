@@ -21,14 +21,68 @@ package org.activityinfo.ui.full.client.page.entry;
  * #L%
  */
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import org.activityinfo.ui.full.client.page.NavigationCallback;
+import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
+import org.activityinfo.ui.full.client.page.PageState;
+import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
 /**
  * @author yuriyz on 1/31/14.
  */
-public class SiteFormPage {
+public class SiteFormPage extends Composite implements Page {
+
+    private static SiteFormPageUiBinder uiBinder = GWT
+            .create(SiteFormPageUiBinder.class);
+
+    public static interface SiteFormPageUiBinder extends UiBinder<Widget, SiteFormPage> {
+    }
 
     public static final PageId PAGE_ID = new PageId("site-form");
 
+    @UiField
+    UserFormPanel userFormPanel;
 
+    @Inject
+    public SiteFormPage() {
+        TransitionUtil.ensureBootstrapInjected();
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    @Override
+    public Widget getWidget() {
+        return this;
+    }
+
+    @Override
+    public PageId getPageId() {
+        return PAGE_ID;
+    }
+
+    @Override
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
+
+    }
+
+    @Override
+    public String beforeWindowCloses() {
+        return null;
+    }
+
+    @Override
+    public boolean navigate(PageState place) {
+        return true;
+    }
+
+    @Override
+    public void shutdown() {
+
+    }
 }
