@@ -25,6 +25,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
@@ -32,7 +33,6 @@ import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
 
 /**
  * @author yuriyz on 1/31/14.
@@ -48,7 +48,7 @@ public class UserFormPage extends Composite implements Page {
     public static final PageId PAGE_ID = new PageId("site-form");
 
     @UiField
-    UserFormPanel userFormPanel;
+    FlowPanel panel;
 
     @Inject
     public UserFormPage() {

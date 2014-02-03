@@ -27,19 +27,25 @@ import com.google.appengine.repackaged.com.google.common.base.Strings;
  * @author yuriyz on 2/3/14.
  */
 public enum UserFormType {
-    ACTIVITY("activity"),
-    LOCATION_TYPE("location"),
-    ATTRIBUTE_GROUP("attribute"),
-    ADMIN_LEVEL("admin");
+    ACTIVITY("activity", UserFormInstanceType.SITE),
+    LOCATION_TYPE("location", UserFormInstanceType.LOCATION),
+    ATTRIBUTE_GROUP("attribute", UserFormInstanceType.ATTRIBUTE),
+    ADMIN_LEVEL("admin_level", UserFormInstanceType.ADMIN_ENTITY);
 
-    private String tokenValue;
+    private final String tokenValue;
+    private final UserFormInstanceType instanceType;
 
-    UserFormType(String tokenValue) {
+    UserFormType(String tokenValue, UserFormInstanceType instanceType) {
         this.tokenValue = tokenValue;
+        this.instanceType = instanceType;
     }
 
     public String getTokenValue() {
         return tokenValue;
+    }
+
+    public UserFormInstanceType getInstanceType() {
+        return instanceType;
     }
 
     public UserFormType fromTokenValue(String tokenValue) {
