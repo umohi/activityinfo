@@ -32,6 +32,11 @@ import org.junit.Test;
 public class UserFormPlaceParserTest {
 
     @Test
+    public void empty() {
+        assertCorrect(new UserFormPlace());
+    }
+
+    @Test
     public void formWithTypePresent() {
         assertCorrect(new UserFormPlace(UserFormType.ACTIVITY));
     }
