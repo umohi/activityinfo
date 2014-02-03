@@ -95,6 +95,7 @@ public class ChartOFCView extends ContentPanel implements ChartView {
                 public void handleEvent(BaseEvent be) {
                     chart.removeListener(Events.Ready, this);
                     ChartOFCView.this.el().unmask();
+                    ChartOFCView.this.chart.repaint();
                 }
             });
         }
