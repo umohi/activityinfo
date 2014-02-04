@@ -182,8 +182,8 @@ public class UserFormPanel extends Composite {
 
     public void setValue(@Nonnull UserFormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
-        this.initialFormInstance = formInstance;
-        this.formInstance = formInstance.copy();
+        this.initialFormInstance = formInstance.copy();
+        this.formInstance = formInstance;
         applyValue(formInstance);
         addValueChangeHandler(formInstance);
     }
