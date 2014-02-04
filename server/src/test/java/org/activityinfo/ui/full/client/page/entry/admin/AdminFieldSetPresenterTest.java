@@ -22,26 +22,47 @@ package org.activityinfo.ui.full.client.page.entry.admin;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.store.ListStore;
-import org.activityinfo.reports.shared.util.mapping.Extents;
+import static org.activityinfo.api.shared.model.DTOs.BENI;
+import static org.activityinfo.api.shared.model.DTOs.MASISI;
+import static org.activityinfo.api.shared.model.DTOs.NORD_KIVU;
+import static org.activityinfo.api.shared.model.DTOs.NORD_KIVU_TERRITOIRES;
+import static org.activityinfo.api.shared.model.DTOs.PROVINCE;
+import static org.activityinfo.api.shared.model.DTOs.PROVINCES;
+import static org.activityinfo.api.shared.model.DTOs.RUIZI;
+import static org.activityinfo.api.shared.model.DTOs.SECTEUR;
+import static org.activityinfo.api.shared.model.DTOs.SUD_KIVU;
+import static org.activityinfo.api.shared.model.DTOs.SUD_KIVU_TERRITOIRES;
+import static org.activityinfo.api.shared.model.DTOs.TERRITOIRE;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.resetToDefault;
+import static org.easymock.EasyMock.verify;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.activityinfo.api.shared.command.GetAdminEntities;
 import org.activityinfo.api.shared.command.result.AdminEntityResult;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.AdminEntityDTO;
 import org.activityinfo.api.shared.model.AdminLevelDTO;
 import org.activityinfo.api.shared.model.CountryDTO;
-import org.activityinfo.api.shared.model.DTOs.*;
+import org.activityinfo.api.shared.model.DTOs.PEAR;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.ui.full.client.dispatch.DispatcherStub;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collection;
-
-import static org.activityinfo.api.shared.model.DTOs.*;
-import static org.easymock.EasyMock.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.store.ListStore;
 
 public class AdminFieldSetPresenterTest {
 
@@ -184,6 +205,61 @@ public class AdminFieldSetPresenterTest {
         assertThat(presenter.getAdminEntity(TERRITOIRE), equalTo(BENI));
         assertThat(presenter.getAdminEntity(SECTEUR), equalTo(RUIZI));
     }
+    
+    @Test
+    public void testSortingAdminLevel() {
+        List<AdminLevelDTO> levels = new ArrayList<AdminLevelDTO>(); 
+        
+        AdminLevelDTO country = new AdminLevelDTO();
+        country.setId(0);
+        country.setName("Country");
+        levels.add(country);
+        
+        AdminLevelDTO state = new AdminLevelDTO(); 
+        state.setId(1);
+        state.setName("state");
+        state.setParentLevelId(0);
+        levels.add(state);
+        
+        AdminLevelDTO district = new AdminLevelDTO();
+        district.setId(2);
+        district.setParentLevelId(1);
+        district.setName("District");
+        levels.add(district);
+        
+        AdminLevelDTO city = new AdminLevelDTO();
+        city.setId(3);
+        city.setParentLevelId(2);
+        city.setName("City");
+        levels.add(city);
+        
+        AdminLevelDTO region = new AdminLevelDTO();
+        region.setId(4);
+        region.setParentLevelId(0);
+        region.setName("Region");
+        levels.add(region);
+        
+        AdminLevelDTO northRegion = new AdminLevelDTO();
+        northRegion.setId(5);
+        northRegion.setParentLevelId(4);
+        northRegion.setName("North region");
+        levels.add(northRegion);
+        
+        AdminLevelDTO southRegion = new AdminLevelDTO();
+        southRegion.setId(6);
+        southRegion.setParentLevelId(4);
+        southRegion.setName("south region");
+        levels.add(southRegion);
+        
+        AdminLevelDTO southEastArea = new AdminLevelDTO();
+        southEastArea.setId(7);
+        southEastArea.setParentLevelId(6);
+        southEastArea.setName("South east area");
+        levels.add(southEastArea);
+
+        System.out.println("Before sort = " + levels);
+        System.out.println("After sort = " + sort(levels));
+    }
 
     private void expectSelections(Collection<AdminEntityDTO> values) {
         resetToDefault(selectionListener);
@@ -246,5 +322,33 @@ public class AdminFieldSetPresenterTest {
         presenter.addListener(LevelStateChangeEvent.TYPE,
                 levelStateChangeListener);
         presenter.addListener(BoundsChangedEvent.TYPE, boundsListener);
+    }
+    
+    private ArrayList<AdminLevelDTO> sort(List<AdminLevelDTO> levels2) {
+        ArrayList<AdminLevelDTO> sortedList = new ArrayList<>();
+        ArrayList<AdminLevelDTO> sorterList = new ArrayList<>();
+       
+        for (AdminLevelDTO level : levels2) {
+            if (level.getParentLevelId()== null) {
+               sorterList.add(level);
+               sortedList.add(level);
+            }
+        }
+        while(levels2.size() != sortedList.size()) {
+            ArrayList<AdminLevelDTO> tempList = new ArrayList<>();
+            for(AdminLevelDTO dto : sorterList) {
+                for(AdminLevelDTO e: levels2) {
+                    if(e.getParentLevelId() != null) {
+                        if(e.getParentLevelId().equals(dto.getId())) {
+                            tempList.add(e);
+                        }
+                    }
+                }
+            }
+            sortedList.addAll(tempList);
+            sorterList.clear();
+            sorterList.addAll(tempList);
+        }
+        return sortedList;
     }
 }

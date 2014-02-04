@@ -1,7 +1,5 @@
 package org.activityinfo.api2.shared;
 
-import java.io.Serializable;
-
 /**
  * Internationalized Resource Identifier
  */
@@ -42,4 +40,18 @@ public class Iri {
         return string.substring(string.indexOf(':')+1);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Iri iri = (Iri) o;
+
+        return !(string != null ? !string.equals(iri.string) : iri.string != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return string != null ? string.hashCode() : 0;
+    }
 }

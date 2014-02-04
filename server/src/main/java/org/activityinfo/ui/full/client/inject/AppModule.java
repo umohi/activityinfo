@@ -26,13 +26,15 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.api.shared.command.RemoteCommandServiceAsync;
+import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.LoggingEventBus;
 import org.activityinfo.ui.full.client.authentication.ClientSideAuthProvider;
 import org.activityinfo.ui.full.client.dispatch.DispatchEventSource;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.RemoteServiceProvider;
 import org.activityinfo.ui.full.client.dispatch.remote.*;
 import org.activityinfo.ui.full.client.dispatch.remote.cache.CacheManager;
@@ -71,5 +73,10 @@ public class AppModule extends AbstractGinModule {
                                         LocalController controller) {
         return new CachingDispatcher(proxyManager,
                 new MergingDispatcher(controller, Scheduler.get()));
+    }
+
+    @Provides @Singleton
+    public ResourceLocator provideResourceLocator(Dispatcher dispatcher) {
+        return new ResourceLocatorAdaptor(dispatcher);
     }
 }

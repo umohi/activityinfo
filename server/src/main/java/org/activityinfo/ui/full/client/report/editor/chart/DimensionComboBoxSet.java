@@ -73,6 +73,7 @@ public class DimensionComboBoxSet implements
                         model.setCategoryDimension(se.getSelectedItem().getDimension());
                         if (fireEvents) {
                             DimensionComboBoxSet.this.reportEventBus.fireChange();
+                            DimensionComboBoxSet.this.categoryCombo.setValue(se.getSelectedItem().getDimension());
                         }
                     }
                 });
@@ -85,6 +86,7 @@ public class DimensionComboBoxSet implements
                         model.setSeriesDimension(se.getSelectedItem().getDimension());
                         if (fireEvents) {
                             DimensionComboBoxSet.this.reportEventBus.fireChange();
+                            DimensionComboBoxSet.this.seriesCombo.setValue(se.getSelectedItem().getDimension());
                         }
                     }
                 });

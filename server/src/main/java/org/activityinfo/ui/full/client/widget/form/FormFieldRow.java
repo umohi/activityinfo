@@ -112,6 +112,10 @@ public class FormFieldRow extends Composite {
         }
     }
 
+    public IsWidget getFormFieldWidget() {
+        return formFieldWidget;
+    }
+
     public void clear() {
         setValue(null);
     }

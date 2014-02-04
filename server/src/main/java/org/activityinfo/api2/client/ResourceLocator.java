@@ -2,14 +2,13 @@ package org.activityinfo.api2.client;
 
 
 import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.api2.shared.form.UserFormInstance;
 
 public interface ResourceLocator {
 
     /**
-     * Fetches the
+     * Fetches the user form.
      *
      * @param formId
      * @return
@@ -17,5 +16,13 @@ public interface ResourceLocator {
     Remote<UserForm> getUserForm(Iri formId);
 
     Remote<UserFormInstance> getFormInstance(Iri formId);
+
+    Promise<Iri> createFormInstance(UserFormInstance formInstance);
+
+    Promise<Boolean> saveFormInstance(UserFormInstance formInstance);
+
+    Promise<Iri> createUserForm(UserForm userForm);
+
+    Promise<Boolean> saveUserForm(UserForm userForm);
 
 }

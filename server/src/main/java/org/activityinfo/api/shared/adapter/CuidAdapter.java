@@ -3,6 +3,8 @@ package org.activityinfo.api.shared.adapter;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 
+import javax.annotation.Nonnull;
+
 /**
  * Provides an adapter between legacy ids, which are either random or sequential 32-bit integers but only
  * guaranteed to be unique within a table, and Collision Resistant Universal Ids (CUIDs) which
@@ -19,6 +21,16 @@ public class CuidAdapter {
     public static final char PARTNER_DOMAIN = 'p';
 
     public static final char INDICATOR_DOMAIN = 'i';
+
+    /**
+     * Avoid instance creation.
+     */
+    private CuidAdapter() {
+    }
+
+    public static int getLegacyIdFromCuidIri(@Nonnull Iri iri) {
+        return Integer.parseInt(iri.asString().substring(1), Cuids.RADIX);
+    }
 
     public static final int getLegacyIdFromCuid(String cuid) {
         return Integer.parseInt(cuid.substring(1), Cuids.RADIX);

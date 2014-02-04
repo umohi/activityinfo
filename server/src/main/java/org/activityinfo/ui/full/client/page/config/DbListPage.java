@@ -23,12 +23,16 @@ package org.activityinfo.ui.full.client.page.config;
  */
 
 import com.extjs.gxt.ui.client.event.*;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.inject.Inject;
+
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.api.client.AsyncMonitor;
@@ -106,11 +110,20 @@ public class DbListPage extends ContentPanel implements DbListPresenter.View,
     private ColumnModel createColumnModel() {
         List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
         columns.add(new ColumnConfig("name", I18N.CONSTANTS.name(), 100));
-        columns
-                .add(new ColumnConfig("fullName", I18N.CONSTANTS.fullName(), 150));
-        columns.add(new ColumnConfig("ownerName", I18N.CONSTANTS.ownerName(),
-                150));
-
+        columns.add(new ColumnConfig("fullName", I18N.CONSTANTS.fullName(), 150));
+        columns.add(new ColumnConfig("ownerName", I18N.CONSTANTS.ownerName(), 150));
+        ColumnConfig countryColumn =  new ColumnConfig();
+        countryColumn.setHeaderText(I18N.CONSTANTS.country());
+        countryColumn.setWidth(150);
+        countryColumn.setRenderer(new GridCellRenderer<UserDatabaseDTO>() {
+            @Override
+            public String render(UserDatabaseDTO model, String property,
+                    ColumnData config, int rowIndex, int colIndex,
+                    ListStore<UserDatabaseDTO> store, Grid<UserDatabaseDTO> grid) {
+                return model.getCountry().getName();
+            }
+        });
+        columns.add(countryColumn);
         return new ColumnModel(columns);
     }
 

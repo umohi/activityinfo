@@ -24,8 +24,8 @@ package org.activityinfo.ui.full.client.widget.form;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.datepicker.client.DateBox;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
@@ -46,6 +46,8 @@ public class FormFieldWidgetFactory {
             switch (fieldType) {
                 case QUANTITY:
                     return createDoubleBox();
+                case NARRATIVE:
+                    return createTextArea();
                 case FREE_TEXT:
                     return createTextBox();
                 case LOCAL_DATE:
@@ -57,6 +59,12 @@ public class FormFieldWidgetFactory {
             }
         }
         return null;
+    }
+
+    private static TextArea createTextArea() {
+        final TextArea textBox = new TextArea();
+        textBox.addStyleName("form-control");
+        return textBox;
     }
 
     public static TextBox createTextBox() {

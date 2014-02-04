@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.page.entry;
+package org.activityinfo.api2.shared.form;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,14 +21,22 @@ package org.activityinfo.ui.full.client.page.entry;
  * #L%
  */
 
-import org.activityinfo.ui.full.client.page.PageId;
-
 /**
- * @author yuriyz on 1/31/14.
+ * @author yuriyz on 2/3/14.
  */
-public class SiteFormPage {
+public enum UserFormInstanceType {
+    SITE("site"),
+    LOCATION("location"),
+    ATTRIBUTE("attribute"),
+    ADMIN_ENTITY("admin_entity");
 
-    public static final PageId PAGE_ID = new PageId("site-form");
+    private String tokenValue;
 
+    UserFormInstanceType(String tokenValue) {
+        this.tokenValue = tokenValue;
+    }
 
+    public String getTokenValue() {
+        return tokenValue;
+    }
 }
