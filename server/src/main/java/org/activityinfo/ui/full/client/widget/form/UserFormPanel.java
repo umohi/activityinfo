@@ -29,6 +29,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -173,7 +176,6 @@ public class UserFormPanel extends Composite {
         return designEnabled;
     }
 
-
     public FormInstance getValue() {
         return formInstance;
     }
@@ -183,6 +185,23 @@ public class UserFormPanel extends Composite {
         this.initialFormInstance = formInstance;
         this.formInstance = formInstance.copy();
         applyValue(formInstance);
+        addValueChangeHandler(formInstance);
+    }
+
+    private void addValueChangeHandler(@Nonnull final UserFormInstance formInstance) {
+        Preconditions.checkNotNull(formInstance);
+        for (final Map.Entry<Iri, FormFieldRow> entry : controlMap.entrySet()) {
+            final IsWidget widget = entry.getValue().getFormFieldWidget();
+            if (widget instanceof HasValueChangeHandlers) {
+                final HasValueChangeHandlers hasValueChangeHandlers = (HasValueChangeHandlers) widget;
+                hasValueChangeHandlers.addValueChangeHandler(new ValueChangeHandler() {
+                    @Override
+                    public void onValueChange(ValueChangeEvent event) {
+                        formInstance.set(entry.getKey(), event.getValue());
+                    }
+                });
+            }
+        }
     }
 
     private void applyValue(@Nonnull UserFormInstance formInstance) {
