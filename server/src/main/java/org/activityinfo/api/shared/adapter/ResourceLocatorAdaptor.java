@@ -1,8 +1,8 @@
 package org.activityinfo.api.shared.adapter;
 
-import com.google.appengine.repackaged.com.google.common.collect.Maps;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.*;
