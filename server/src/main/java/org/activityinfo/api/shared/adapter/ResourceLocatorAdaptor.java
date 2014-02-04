@@ -5,13 +5,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.CreateSite;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.*;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.api.shared.command.result.SiteResult;
+import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api2.client.*;
@@ -60,14 +58,42 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<Iri> saveFormInstance(@Nonnull UserFormInstance formInstance) {
+    public Promise<Iri> createFormInstance(@Nonnull UserFormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
         final Map<String, Object> siteMap = Maps.newHashMap();
         for (Map.Entry<Iri, Object> entry : formInstance.getValueMap().entrySet()) {
             siteMap.put(entry.getKey().asString(), entry.getValue());
         }
         final CreateSite command = new CreateSite(siteMap);
-        return Remotes.transform(execute(command), new CreateResultAdaptor()).fetch();
+        return Remotes.transform(execute(command), new CreateSiteResultAdaptor()).fetch();
+    }
+
+    @Override
+    public Promise<Boolean> saveFormInstance(@Nonnull UserFormInstance formInstance) {
+        Preconditions.checkNotNull(formInstance);
+        final Map<String, Object> siteMap = Maps.newHashMap();
+        for (Map.Entry<Iri, Object> entry : formInstance.getValueMap().entrySet()) {
+            siteMap.put(entry.getKey().asString(), entry.getValue());
+        }
+        final int siteId = CuidAdapter.getLegacyIdFromCuidIri(formInstance.getId());
+        final UpdateSite command = new UpdateSite(siteId, siteMap);
+        return Remotes.transform(execute(command), new Function<VoidResult, Boolean>() {
+            @Nullable
+            @Override
+            public Boolean apply(@Nullable VoidResult input) {
+                return Boolean.TRUE;
+            }
+        }).fetch();
+    }
+
+    @Override
+    public Promise<Iri> createUserForm(UserForm userForm) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Promise<Boolean> saveUserForm(UserForm userForm) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -131,7 +157,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         }
     }
 
-    private static class CreateResultAdaptor implements Function<CreateResult, Iri> {
+    private static class CreateSiteResultAdaptor implements Function<CreateResult, Iri> {
         @Nullable
         @Override
         public Iri apply(@Nullable CreateResult createResult) {
@@ -141,5 +167,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
             return Cuids.toIri(CuidAdapter.SITE_DOMAIN, createResult.getNewId());
         }
     }
+
+
 
 }
