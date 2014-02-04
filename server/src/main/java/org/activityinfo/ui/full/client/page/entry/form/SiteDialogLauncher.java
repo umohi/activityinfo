@@ -54,8 +54,7 @@ public class SiteDialogLauncher {
 
                 @Override
                 public void onFailure(Throwable arg0) {
-                    // TODO Auto-generated method stub
-
+                    Log.error("Unable to add site", arg0);
                 }
 
                 @Override

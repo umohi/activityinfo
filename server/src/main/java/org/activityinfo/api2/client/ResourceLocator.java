@@ -21,7 +21,7 @@ public interface ResourceLocator {
 
     Promise<Boolean> saveFormInstance(UserFormInstance formInstance);
 
-    Promise<Iri> createUserForm(UserForm userForm);
+    Promise<UserForm> createUserForm();
 
     Promise<Boolean> saveUserForm(UserForm userForm);
 

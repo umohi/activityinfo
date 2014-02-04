@@ -1115,6 +1115,15 @@ public interface UIConstants extends Constants {
     String errorOnServer();
 
     /**
+     * Translated "An unexpected error occurred".
+     *
+     * @return translated "An unexpected error occurred"
+     */
+    @DefaultStringValue("An unexpected error occurred.")
+    @Key("errorUnexpectedOccured")
+    String errorUnexpectedOccured();
+
+    /**
      * Translated "Excel".
      *
      * @return translated "Excel"
