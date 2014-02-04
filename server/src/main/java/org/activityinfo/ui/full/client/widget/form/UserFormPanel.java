@@ -130,6 +130,10 @@ public class UserFormPanel extends Composite {
         }
     }
 
+    public void addHandler(Handler handler) {
+        handlerList.add(handler);
+    }
+
     @UiHandler("saveButton")
     public void onSave(ClickEvent event) {
         for (Handler handler : handlerList) {
@@ -176,7 +180,7 @@ public class UserFormPanel extends Composite {
         return designEnabled;
     }
 
-    public FormInstance getValue() {
+    public UserFormInstance getValue() {
         return formInstance;
     }
 

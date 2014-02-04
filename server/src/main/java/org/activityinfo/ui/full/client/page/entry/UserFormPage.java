@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.api2.shared.form.UserFormInstance;
 import org.activityinfo.ui.full.client.Log;
@@ -82,6 +83,29 @@ public class UserFormPage extends Composite implements Page {
             fetchRemote();
         } else {
             Log.error("Unable to identify whether to CREATE or EDIT user form, token: " + History.getToken());
+        }
+
+        userFormPanel.addHandler(new UserFormPanel.Handler() {
+            @Override
+            public void onSave() {
+                UserFormPage.this.onSave();
+            }
+        });
+    }
+
+    private void onSave() {
+        final UserFormInstance value = userFormPanel.getValue();
+        if (value != null) {
+            resourceLocator.saveFormInstance(value).then(new AsyncCallback<Iri>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Log.error("Failed to save form instance");
+                }
+
+                @Override
+                public void onSuccess(Iri result) {
+                }
+            });
         }
     }
 
