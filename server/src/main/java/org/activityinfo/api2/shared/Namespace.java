@@ -11,8 +11,17 @@ public class Namespace {
     public static final String LEGACY_NS = "http://www.activityinfo.org/resources/";
     public static final String RDFS_LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
 
+    private Namespace() {
+    }
 
-    public static final Iri siteForm(int activityId) {
+    public static int siteForm(Iri activityId) {
+        String startString = LEGACY_NS + "Activity/";
+        final String idAsString = activityId.asString();
+        final String intAsString = idAsString.substring(startString.length(), idAsString.length() - "/SiteForm".length());
+        return Integer.parseInt(intAsString);
+    }
+
+    public static Iri siteForm(int activityId) {
         return new Iri(LEGACY_NS + "Activity/" + activityId + "/SiteForm");
     }
 

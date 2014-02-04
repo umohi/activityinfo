@@ -38,6 +38,8 @@ public class UserFormPanelShowCase extends FlowPanel {
     private final CheckBox readOnly = new CheckBox("Read-only");
     private final Button setTestData = new Button("setValue(<test data>)");
     private final CheckBox design = new CheckBox("Design Mode");
+    private final Button showError = new Button("Show error");
+    private final Button clearError = new Button("Clear error");
 
     private final UserForm userForm = DevUtils.createTestUserForm();
     private final UserFormPanel panel = new UserFormPanel(userForm);
@@ -48,6 +50,8 @@ public class UserFormPanelShowCase extends FlowPanel {
         add(readOnly);
         add(setTestData);
         add(design);
+        add(showError);
+        add(clearError);
         add(panel);
     }
 
@@ -68,6 +72,18 @@ public class UserFormPanelShowCase extends FlowPanel {
             @Override
             public void onClick(ClickEvent event) {
                 panel.setDesignEnabled(design.getValue());
+            }
+        });
+        showError.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                panel.showError("Test error message.");
+            }
+        });
+        clearError.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                panel.clearError();
             }
         });
     }

@@ -28,7 +28,6 @@ import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.model.AiLatLng;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
@@ -37,14 +36,12 @@ import java.util.Map;
  */
 public class UserFormInstance implements Resource, FormInstance {
 
-    @NotNull
-    private final Iri id;
-    @NotNull
-    private final Iri definitionId;
+    private Iri id;
+    private Iri definitionId;
     private final Map<Iri, Object> valueMap = Maps.newHashMap();
 
     public UserFormInstance(Iri id, Iri definitionId) {
-        Preconditions.checkNotNull(id);
+        // id can be null : for example during new form creation
         Preconditions.checkNotNull(definitionId);
         this.id = id;
         this.definitionId = definitionId;

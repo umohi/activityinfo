@@ -28,12 +28,14 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -89,6 +91,8 @@ public class UserFormPanel extends Composite {
     Button resetButton;
     @UiField
     FlowPanel contentPanel;
+    @UiField
+    DivElement errorContainer;
 
     public UserFormPanel() {
         TransitionUtil.ensureBootstrapInjected();
@@ -221,6 +225,14 @@ public class UserFormPanel extends Composite {
         for (FormFieldRow row : controlMap.values()) {
             row.setReadOnly(readOnly);
         }
+    }
+
+    public void showError(String errorMessage) {
+        errorContainer.setInnerSafeHtml(SafeHtmlUtils.fromSafeConstant(errorMessage));
+    }
+
+    public void clearError() {
+        errorContainer.setInnerHTML("");
     }
 
     public boolean isReadOnly() {

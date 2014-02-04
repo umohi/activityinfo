@@ -31,9 +31,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.api2.shared.form.UserFormInstance;
 import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
@@ -77,7 +79,30 @@ public class UserFormPage extends Composite implements Page {
 
     private void init() {
         if (userFormPlace.getUserFormType() != null) { // create new
-            // todo
+            resourceLocator.createUserForm().then(new AsyncCallback<UserForm>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Log.error("Unable to create user form.", caught);
+                    userFormPanel.showError(I18N.CONSTANTS.errorUnexpectedOccured());
+                }
+
+                @Override
+                public void onSuccess(UserForm result) {
+                    userFormPanel.renderForm(result);
+                    resourceLocator.createFormInstance(new UserFormInstance(null, userFormPanel.getUserForm().getId())).then(new AsyncCallback<Iri>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            Log.error("Unable to create user form instance", caught);
+                            userFormPanel.showError(I18N.CONSTANTS.errorUnexpectedOccured());
+                        }
+
+                        @Override
+                        public void onSuccess(Iri result) {
+                            userFormPanel.setValue(new UserFormInstance(result, userFormPanel.getUserForm().getId()));
+                        }
+                    });
+                }
+            });
         } else if (userFormPlace.getUserFormId() != null) { // edit
             fetchRemote();
         } else {

@@ -11,16 +11,21 @@ import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.api.shared.command.result.SiteResult;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.api2.client.*;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.Namespace;
 import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.api2.shared.form.UserFormInstance;
+import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Exposes a legacy {@code Dispatcher} implementation as new {@code ResourceLocator}
@@ -64,6 +69,13 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         for (Map.Entry<Iri, Object> entry : formInstance.getValueMap().entrySet()) {
             siteMap.put(entry.getKey().asString(), entry.getValue());
         }
+
+        final Random random = new Random();
+        siteMap.put("id", new KeyGenerator().generateInt()); // todo move key generator !
+        siteMap.put("activityId", Namespace.siteForm(formInstance.getDefinitionId()));
+        siteMap.put("locationId", 1); // todo : hardcode - remove later!
+        siteMap.put("partnerId", 1); // todo : hardcode - remove later!
+        siteMap.put("reportingPeriodId", 1); // todo : hardcode - remove later!
         final CreateSite command = new CreateSite(siteMap);
         return Remotes.transform(execute(command), new CreateSiteResultAdaptor()).fetch();
     }
@@ -87,8 +99,24 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<Iri> createUserForm(UserForm userForm) {
-        throw new UnsupportedOperationException();
+    public Promise<UserForm> createUserForm() {
+        return Remotes.transform(execute(new GetSchema()), new Function<SchemaDTO, UserForm>() {
+            @Nullable
+            @Override
+            public UserForm apply(@Nullable SchemaDTO input) {
+                // take first activity : similar to this : DataEntryPage.redirectToFirstActivity()
+                if (input != null) {
+                    for (UserDatabaseDTO db : input.getDatabases()) {
+                        if (!db.getActivities().isEmpty()) {
+                            ActivityDTO activity = input.getActivityById(db.getActivities().get(0).getId());
+                            ActivityUserFormBuilder builder = new ActivityUserFormBuilder(activity);
+                            return builder.build();
+                        }
+                    }
+                }
+                throw new NotCreatedException();
+            }
+        }).fetch();
     }
 
     @Override
@@ -167,7 +195,6 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
             return Cuids.toIri(CuidAdapter.SITE_DOMAIN, createResult.getNewId());
         }
     }
-
 
 
 }
