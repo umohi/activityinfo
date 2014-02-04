@@ -102,6 +102,7 @@ public class UserFormPanel extends Composite {
      */
     public void renderForm(UserForm userForm) {
         this.userForm = userForm;
+        contentPanel.clear();
         renderElements(this.userForm.getElements());
     }
 

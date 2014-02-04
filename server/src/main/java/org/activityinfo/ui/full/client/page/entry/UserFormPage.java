@@ -56,6 +56,7 @@ public class UserFormPage extends Composite implements Page {
 
     private final ResourceLocator resourceLocator;
     private final UserFormPanel userFormPanel;
+    private final UserFormPlace userFormPlace;
 
     @UiField
     FlowPanel panel;
@@ -67,18 +68,28 @@ public class UserFormPage extends Composite implements Page {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
+        userFormPlace = UserFormPlaceParser.parseToken(History.getToken());
         userFormPanel = new UserFormPanel();
         panel.add(userFormPanel);
-        fetchRemote();
+
+        init();
+    }
+
+    private void init() {
+        if (userFormPlace.getUserFormType() != null) { // create new
+            // todo
+        } else if (userFormPlace.getUserFormId() != null) { // edit
+            fetchRemote();
+        } else {
+            Log.error("Unable to identify whether to CREATE or EDIT user form, token: " + History.getToken());
+        }
     }
 
     private UserFormPlace fetchRemote() {
-        final UserFormPlace userFormPlace = UserFormPlaceParser.parseToken(History.getToken());
         resourceLocator.getUserForm(userFormPlace.getUserFormId()).fetch().then(new AsyncCallback<UserForm>() {
             @Override
             public void onFailure(Throwable caught) {
                 Log.error("Unable to fetch UserForm, iri=" + userFormPlace.getUserFormId(), caught);
-                // todo show error to user
             }
 
             @Override
