@@ -42,6 +42,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.*;
+import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import javax.annotation.Nonnull;
@@ -216,7 +217,12 @@ public class UserFormPanel extends Composite {
         Preconditions.checkNotNull(formInstance);
         for (Map.Entry<Iri, Object> entry : formInstance.getValueMap().entrySet()) {
             final FormFieldRow fieldRow = controlMap.get(entry.getKey());
-            fieldRow.setValue(entry.getValue());
+            if (fieldRow != null) {
+                fieldRow.setValue(entry.getValue());
+            } else {
+                Log.error("Form instance contains data which are not decrared by form definition. instanceid =" +
+                        formInstance.getId());
+            }
         }
     }
 

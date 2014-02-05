@@ -11,7 +11,6 @@ import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.api.shared.command.result.SiteResult;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.api2.client.*;

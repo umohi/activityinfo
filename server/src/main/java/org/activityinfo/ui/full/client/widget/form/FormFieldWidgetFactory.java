@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
 
 /**
@@ -55,6 +56,9 @@ public class FormFieldWidgetFactory {
                 case GEOGRAPHIC_POINT:
                     return new GeographicTextBox();
                 case REFERENCE:
+                    return createTextBox();
+                default:
+                    Log.error("Field type " + fieldType + " is not supported, created text box widget as fallback.");
                     return createTextBox();
             }
         }
