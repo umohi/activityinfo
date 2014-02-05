@@ -2,10 +2,7 @@ package org.activityinfo.geoadmin;
 
 import java.util.List;
 
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -17,6 +14,7 @@ public class ImportForm extends JPanel {
     private JTextField levelNameField;
     private JComboBox nameCombo;
     private JComboBox codeCombo;
+    private JCheckBox importGeometryCheckBox;
     private List<AdminEntity> parentUnits;
 
     public ImportForm(ImportSource source, List<AdminEntity> parents) {
@@ -43,6 +41,8 @@ public class ImportForm extends JPanel {
         add(new JLabel("Code Attribute"));
         add(codeCombo, "width 160!, wrap");
 
+        importGeometryCheckBox = new JCheckBox("Import Geometry");
+        add(importGeometryCheckBox);
     }
 
 	private String[] codeChoices(ImportSource source) {	
@@ -89,6 +89,10 @@ public class ImportForm extends JPanel {
 
     public int getCodeAttributeIndex() {
         return codeCombo.getSelectedIndex()-1;
+    }
+
+    public boolean isGeometryImported() {
+        return importGeometryCheckBox.isSelected();
     }
 
 }

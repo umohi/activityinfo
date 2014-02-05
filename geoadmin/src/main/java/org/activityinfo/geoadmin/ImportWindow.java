@@ -25,6 +25,7 @@ import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.vividsolutions.jts.geom.Envelope;
 import net.miginfocom.swing.MigLayout;
 
 import org.activityinfo.geoadmin.model.ActivityInfoClient;
@@ -210,7 +211,10 @@ public class ImportWindow extends JDialog {
 		            }
 		            Bounds bounds = GeoUtils.toBounds(feature.getEnvelope());
 		            entity.setBounds(bounds);
-		            entity.setGeometry(feature.getGeometry());
+
+                    if(importForm.isGeometryImported()) {
+		                entity.setGeometry(feature.getGeometry());
+                    }
 		
 		            if (parentLevel != null) {
 		                entity.setParentId(parent.getId());
@@ -223,7 +227,13 @@ public class ImportWindow extends JDialog {
 	        		LOGGER.info("Merging geometry for entity named '" + featureName + "'");
 	        		
 	        		AdminEntity entity = entityMap.get(key);
-	        		entity.setGeometry( entity.getGeometry().union(feature.getGeometry()) );
+
+                    Envelope bounds = GeoUtils.toEnvelope(entity.getBounds());
+                    bounds.expandToInclude(feature.getEnvelope());
+                    entity.setBounds(GeoUtils.toBounds(bounds));
+                    if(importForm.isGeometryImported()) {
+	        		    entity.setGeometry( entity.getGeometry().union(feature.getGeometry()) );
+                    }
 	        	}
         	}
         }

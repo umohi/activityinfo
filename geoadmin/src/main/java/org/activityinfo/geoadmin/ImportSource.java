@@ -134,6 +134,11 @@ public class ImportSource {
     private MathTransform createTransform() throws Exception {
         GeometryDescriptor geometryType = featureSource.getSchema().getGeometryDescriptor();
         CoordinateReferenceSystem sourceCrs = geometryType.getCoordinateReferenceSystem();
+        if(sourceCrs == null) {
+            // if it's not WGS84, we'll soon find out as we check the geometry against the
+            // country bounds
+            sourceCrs = DefaultGeographicCRS.WGS84;
+        }
 
         CoordinateReferenceSystem geoCRS = DefaultGeographicCRS.WGS84;
         boolean lenient = true; // allow for some error due to different datums
