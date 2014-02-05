@@ -568,7 +568,7 @@
     <profile>
       <id>release</id>
       <properties>
-        <display.verison>2.8.${BUILD_NUMBER}</display.verison>
+        <display.version>2.8.${BUILD_NUMBER}</display.version>
         <gae.application>activityinfoeu</gae.application>
         <gae.application.version>build${BUILD_NUMBER}</gae.application.version>
       </properties>
