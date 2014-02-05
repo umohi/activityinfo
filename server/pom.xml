@@ -510,7 +510,7 @@
               <logLevel>INFO</logLevel>
               <compileReport>true</compileReport>
               <modules>
-                <module>org.activityinfo.ui.full.ActivityInfoProduction</module>
+                <module>org.activityinfo.ui.full.ActivityInfoCI</module>
                 <module>org.activityinfo.ui.embed.Embed</module>
               </modules>
             </configuration>
@@ -559,11 +559,36 @@
            to the user -->
       <id>ci</id>
       <properties>
-        <display.version>2.7 Build ${BUILD_NUMBER}</display.version>
+        <display.version>Build ${BUILD_NUMBER}</display.version>
+        <gae.application>ai-staging</gae.application>
+        <gae.application.version>ci</gae.application.version>
       </properties>
     </profile>
 
-    <!-- Developement profile for fast UI development when you don't need backend -->
+    <profile>
+      <id>release</id>
+      <properties>
+        <display.verison>2.8.${BUILD_NUMBER}</display.verison>
+        <gae.application>activityinfoeu</gae.application>
+        <gae.application.version>build${BUILD_NUMBER}</gae.application.version>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>gwt-maven-plugin</artifactId>
+            <configuration>
+              <modules>
+                <module>org.activityinfo.ui.full.ActivityInfoRelease</module>
+                <module>org.activityinfo.ui.embed.Embed</module>
+              </modules>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Development profile for fast UI development when you don't need backend -->
     <profile>
       <id>dev-no-backend</id>
       <activation>

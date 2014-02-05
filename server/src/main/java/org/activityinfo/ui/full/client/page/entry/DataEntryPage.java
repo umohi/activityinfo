@@ -64,7 +64,7 @@ import org.activityinfo.ui.full.client.page.entry.grouping.GroupingComboBox;
 import org.activityinfo.ui.full.client.page.entry.place.DataEntryPlace;
 import org.activityinfo.ui.full.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.full.client.page.entry.sitehistory.SiteHistoryTab;
-import org.activityinfo.ui.full.client.util.GwtUtil;
+import org.activityinfo.ui.full.client.util.FeatureSwitch;
 
 import java.util.Set;
 
@@ -366,7 +366,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
     @Override
     public void onUIAction(String actionId) {
         if (UIActions.ADD.equals(actionId)) {
-            if (GwtUtil.isNewUI()) {
+            if (FeatureSwitch.isEnabled("newForm")) {
                 eventBus.fireEvent(new NavigationEvent(
                         NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(UserFormType.ACTIVITY)));
             } else {
@@ -382,7 +382,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
             }
         } else if (UIActions.EDIT.equals(actionId)) {
             final SiteDTO selection = gridPanel.getSelection();
-            if (GwtUtil.isNewUI()) {
+            if (FeatureSwitch.isEnabled("newForm")) {
                 eventBus.fireEvent(new NavigationEvent(
                         NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(selection.getActivityIri(), selection.getIri())));
             } else {
