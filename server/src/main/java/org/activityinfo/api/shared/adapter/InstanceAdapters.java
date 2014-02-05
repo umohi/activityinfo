@@ -26,9 +26,9 @@ public class InstanceAdapters {
     public static UserFormInstance fromSite(SiteDTO site) {
         UserFormInstance instance = new UserFormInstance(site.getIri(), site.getActivityIri());
 
-        instance.set(Namespace.REPORTED_BY, Cuids.toIri(CuidAdapter.PARTNER_DOMAIN, site.getPartnerId()));
+        instance.set(Namespace.REPORTED_BY, Cuids.toIri(CuidAdapter.PARTNER_DOMAIN, site.getPartnerId()).asString());
 
-        instance.set(Namespace.LOCATED_AT, Cuids.toIri(CuidAdapter.LOCATION_DOMAIN, site.getLocationId()));
+        instance.set(Namespace.LOCATED_AT, Cuids.toIri(CuidAdapter.LOCATION_DOMAIN, site.getLocationId()).asString());
 
         for(String propertyName : site.getPropertyNames()) {
             if(propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {
