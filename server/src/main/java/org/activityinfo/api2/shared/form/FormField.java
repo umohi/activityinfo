@@ -148,5 +148,12 @@ public class FormField implements FormElement {
         this.dimensions = dimensions;
     }
 
-
+    @Override
+    public String toString() {
+        return "FormField{" +
+                "id=" + id +
+                ", label=" + label +
+                ", type=" + type +
+                '}';
+    }
 }

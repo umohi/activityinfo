@@ -45,4 +45,11 @@ public class FormSection implements FormElement, FormElementContainer {
         elements.add(element);
     }
 
+    @Override
+    public String toString() {
+        return "FormSection{" +
+                "id=" + id +
+                ", label=" + label +
+                '}';
+    }
 }
