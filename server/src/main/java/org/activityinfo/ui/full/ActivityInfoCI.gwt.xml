@@ -20,6 +20,7 @@
   #L%
   -->
 
+<!-- Continuous Integration -->
 
 <module rename-to="ActivityInfo">
   <inherits name="org.activityinfo.ui.full.ActivityInfo"/>

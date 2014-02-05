@@ -34,7 +34,4 @@ public class GwtUtil {
     private GwtUtil() {
     }
 
-    public static boolean isNewUI() {
-        return Boolean.valueOf(Window.Location.getParameter("enableNewUI"));
-    }
 }
