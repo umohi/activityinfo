@@ -27,17 +27,20 @@ import com.google.common.base.Strings;
  * @author yuriyz on 2/3/14.
  */
 public enum UserFormType {
-    ACTIVITY("activity", UserFormInstanceType.SITE),
-    LOCATION_TYPE("location", UserFormInstanceType.LOCATION),
-    ATTRIBUTE_GROUP("attribute", UserFormInstanceType.ATTRIBUTE),
-    ADMIN_LEVEL("admin_level", UserFormInstanceType.ADMIN_ENTITY);
+
+    ACTIVITY("activity", UserFormInstanceType.SITE, 'a'),
+    LOCATION_TYPE("location", UserFormInstanceType.LOCATION, 'g'),
+    ATTRIBUTE_GROUP("attribute", UserFormInstanceType.ATTRIBUTE, 'a'),
+    ADMIN_LEVEL("admin_level", UserFormInstanceType.ADMIN_ENTITY, '.');
 
     private final String tokenValue;
     private final UserFormInstanceType instanceType;
+    private final char cuidChar;
 
-    UserFormType(String tokenValue, UserFormInstanceType instanceType) {
+    UserFormType(String tokenValue, UserFormInstanceType instanceType, char cuidChar) {
         this.tokenValue = tokenValue;
         this.instanceType = instanceType;
+        this.cuidChar = cuidChar;
     }
 
     public String getTokenValue() {
@@ -47,6 +50,20 @@ public enum UserFormType {
     public UserFormInstanceType getInstanceType() {
         return instanceType;
     }
+
+    public char getCuidChar() {
+        return cuidChar;
+    }
+
+    public static UserFormType fromCuidChar(char cuidChar) {
+        for (UserFormType type : values()) {
+            if (type.getCuidChar() == cuidChar) {
+                return type;
+            }
+        }
+        return null;
+    }
+
 
     public static UserFormType fromTokenValue(String tokenValue) {
         if (!Strings.isNullOrEmpty(tokenValue)) {

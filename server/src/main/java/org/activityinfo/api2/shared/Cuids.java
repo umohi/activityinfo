@@ -7,7 +7,7 @@ public class Cuids {
 
     public static final String SCHEME = "cuid";
 
-    private static final String IRI_PREFIX = SCHEME + ":";
+    public static final String IRI_PREFIX = SCHEME + ":";
 
     public static final int RADIX = Character.MAX_RADIX;
 

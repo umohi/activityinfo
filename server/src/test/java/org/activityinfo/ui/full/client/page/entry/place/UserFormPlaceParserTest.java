@@ -48,7 +48,7 @@ public class UserFormPlaceParserTest {
 
     @Test
     public void fromManualToken() {
-        String token = "#site-form/form=cuid:adp+instance=cuid:sxdg425+";
+        String token = "#site-form/adp/sxdg425";
         final UserFormPlace parsedPlace = UserFormPlaceParser.parseToken(token);
         Assert.assertTrue(parsedPlace != null && parsedPlace.getUserFormId() != null);
     }

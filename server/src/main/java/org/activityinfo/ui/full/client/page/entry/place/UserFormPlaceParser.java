@@ -22,34 +22,40 @@ package org.activityinfo.ui.full.client.page.entry.place;
  */
 
 import com.google.common.base.Strings;
+import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.UserFormType;
 import org.activityinfo.ui.full.client.page.PageStateParser;
 
 /**
+ * #form/a34234/s2343
+ * #form/{defId}/{siteId}
+ *
  * @author yuriyz on 2/3/14.
  */
 public class UserFormPlaceParser implements PageStateParser {
 
-    private static final String FORM_PARAMETER_NAME = "form";
-    private static final String FORM_INSTANCE_PARAMETER_NAME = "instance";
-    private static final String TYPE_PARAMETER_NAME = "type";
-
     public static String serialize(UserFormPlace place) {
         final StringBuilder fragment = new StringBuilder();
         if (place.getUserFormId() != null) {
-            fragment.append(FORM_PARAMETER_NAME).append("=").append(place.getUserFormId().asString());
-            fragment.append("+");
+            fragment.append(normalizeIri(place.getUserFormId())).append("/");
         }
         if (place.getUserFormInstanceId() != null) {
-            fragment.append(FORM_INSTANCE_PARAMETER_NAME).append("=").append(place.getUserFormInstanceId().asString());
-            fragment.append("+");
+            fragment.append(normalizeIri(place.getUserFormInstanceId())).append("/");
         }
         // type is not null only for new form -> therefore used only for new form creation
         if (place.getUserFormType() != null) {
-            fragment.append(TYPE_PARAMETER_NAME).append("=").append(place.getUserFormType().getTokenValue());
+            fragment.append(place.getUserFormType().getCuidChar());
         }
         return fragment.toString();
+    }
+
+    public static String normalizeIri(Iri iri) {
+        final String iriAsString = iri.asString();
+        if (iriAsString.contains(Cuids.IRI_PREFIX)) {
+            return iriAsString.substring(Cuids.IRI_PREFIX.length());
+        }
+        return iriAsString;
     }
 
     public static UserFormPlace parseToken(String token) {
@@ -61,24 +67,15 @@ public class UserFormPlaceParser implements PageStateParser {
                 token = token.substring(indexOf + searchString.length());
             }
 
-            final String[] parts = token.split("\\+");
-            for (String part : parts) {
-                final String[] subParts = part.split("\\=");
-                if (subParts.length == 2) {
-                    final String key = subParts[0];
-                    final String value = subParts[1];
-                    if (!Strings.isNullOrEmpty(value)) {
-                        if (FORM_PARAMETER_NAME.equals(key)) {
-                            place.setUserFormId(new Iri(value));
-                        }
-                        if (FORM_INSTANCE_PARAMETER_NAME.equals(key)) {
-                            place.setUserFormInstanceId(new Iri(value));
-                        }
-                        if (TYPE_PARAMETER_NAME.equals(key)) {
-                            place.setUserFormType(UserFormType.fromTokenValue(value));
-                        }
-                    }
+            final String[] parts = token.split("\\/");
+            if (parts.length == 1) { // type
+                final String firstPart = parts[0];
+                if (firstPart.length() == 1) {
+                    place.setUserFormType(UserFormType.fromCuidChar(firstPart.charAt(0)));
                 }
+            } else if (parts.length == 2) {
+                place.setUserFormId(new Iri(Cuids.IRI_PREFIX + parts[0]));
+                place.setUserFormInstanceId(new Iri(Cuids.IRI_PREFIX + parts[1]));
             }
         }
         return place;
