@@ -72,6 +72,8 @@ public class DimensionProxy extends RpcProxy<ListLoadResult<DimensionModel>> {
         list.add(new DimensionModel(DateUnit.QUARTER));
         list.add(new DimensionModel(DateUnit.MONTH));
         list.add(new DimensionModel(DateUnit.WEEK_MON));
+        
+        list.add(new DimensionModel(DimensionType.Location, I18N.CONSTANTS.location()));
 
         if (model.getIndicators().isEmpty()) {
             callback.onSuccess(new BaseListLoadResult<DimensionModel>(list));

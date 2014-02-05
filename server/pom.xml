@@ -476,7 +476,13 @@
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
           <packagingExcludes>ActivityInfo/compile-report,*.log,**/*.symbolMap</packagingExcludes>
-        </configuration>
+            <webResources>
+              <resource>
+                <directory>${basedir}/src/main/deploy</directory>
+                <filtering>true</filtering>
+              </resource>
+            </webResources>
+          </configuration>
       </plugin>
 
       <!-- configure the GWT-Maven plugin -->
@@ -531,6 +537,17 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <failOnError>false</failOnError>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
