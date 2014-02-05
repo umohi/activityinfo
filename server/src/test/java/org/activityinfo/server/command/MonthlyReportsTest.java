@@ -26,6 +26,7 @@ import org.activityinfo.api.shared.command.GetMonthlyReports;
 import org.activityinfo.api.shared.command.Month;
 import org.activityinfo.api.shared.command.UpdateMonthlyReports;
 import org.activityinfo.api.shared.command.result.MonthlyReportResult;
+import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Assert;
@@ -64,10 +65,8 @@ public class MonthlyReportsTest extends CommandTestCase {
         MonthlyReportResult result = execute(cmd);
 
         Assert.assertEquals(1, result.getData().size());
-        Assert.assertEquals(35, result.getData().get(0).getValue(2009, 1)
-                .intValue());
-        Assert.assertEquals(70, result.getData().get(0).getValue(2009, 2)
-                .intValue());
+        Assert.assertEquals(35, result.getData().get(0).getValue(2009, 1).intValue());
+        Assert.assertEquals(70, result.getData().get(0).getValue(2009, 2).intValue());
     }
 
     @Test
@@ -85,10 +84,8 @@ public class MonthlyReportsTest extends CommandTestCase {
     @Test
     public void testUpdate() throws Exception {
         ArrayList<UpdateMonthlyReports.Change> changes = new ArrayList<UpdateMonthlyReports.Change>();
-        changes
-                .add(new UpdateMonthlyReports.Change(6, new Month(2009, 1), 45.0));
-        changes
-                .add(new UpdateMonthlyReports.Change(6, new Month(2009, 3), 22.0));
+        changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 1), 45.0));
+        changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 3), 22.0));
 
         execute(new UpdateMonthlyReports(6, changes));
 
@@ -100,12 +97,32 @@ public class MonthlyReportsTest extends CommandTestCase {
         MonthlyReportResult result = execute(cmd);
 
         Assert.assertEquals(1, result.getData().size());
-        Assert.assertEquals(45, result.getData().get(0).getValue(2009, 1)
-                .intValue());
-        Assert.assertEquals(70, result.getData().get(0).getValue(2009, 2)
-                .intValue());
-        Assert.assertEquals(22, result.getData().get(0).getValue(2009, 3)
-                .intValue());
+        Assert.assertEquals(45, result.getData().get(0).getValue(2009, 1).intValue());
+        Assert.assertEquals(70, result.getData().get(0).getValue(2009, 2).intValue());
+        Assert.assertEquals(22, result.getData().get(0).getValue(2009, 3).intValue());
     }
 
+    @Test(expected = CommandException.class)
+    public void unauthorized() {
+
+        setUser(4); // marlene: viewall, but not editall
+
+        ArrayList<UpdateMonthlyReports.Change> changes = new ArrayList<UpdateMonthlyReports.Change>();
+        changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 1), 45.0));
+        changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 3), 22.0));
+
+        execute(new UpdateMonthlyReports(6, changes));
+    }
+
+    @Test
+    public void authorized() {
+
+        setUser(2); // bavon: viewall AND editall
+
+        ArrayList<UpdateMonthlyReports.Change> changes = new ArrayList<UpdateMonthlyReports.Change>();
+        changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 1), 45.0));
+        changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 3), 22.0));
+
+        execute(new UpdateMonthlyReports(6, changes));
+    }
 }

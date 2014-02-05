@@ -235,15 +235,14 @@ public class DataEntryPage extends LayoutContainer implements Page,
     private void updateSelection(ActivityDTO activity, SiteDTO site) {
 
         boolean permissionToEdit = activity.getDatabase().isAllowedToEdit(site);
-        toolBar.setActionEnabled(UIActions.EDIT,
-                permissionToEdit && !site.isLinked());
-        toolBar.setActionEnabled(UIActions.DELETE,
-                permissionToEdit && !site.isLinked());
+        toolBar.setActionEnabled(UIActions.EDIT, permissionToEdit && !site.isLinked());
+        toolBar.setActionEnabled(UIActions.DELETE, permissionToEdit && !site.isLinked());
 
         detailTab.setSite(site);
         attachmentsTab.setSite(site);
         if (activity.getReportingFrequency() == ActivityDTO.REPORT_MONTHLY) {
             monthlyPanel.load(site);
+            monthlyPanel.setReadOnly(!permissionToEdit);
             monthlyTab.setEnabled(true);
         } else {
             monthlyTab.setEnabled(false);

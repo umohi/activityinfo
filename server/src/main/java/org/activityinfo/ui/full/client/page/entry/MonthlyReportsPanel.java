@@ -67,6 +67,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
     private int currentSiteId;
 
     private ActionToolBar toolBar;
+    private boolean readOnly;
 
     public MonthlyReportsPanel(Dispatcher service) {
         this.service = service;
@@ -105,7 +106,6 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
         for (int year = today.getFullYear(); year != today.getFullYear() - 3; --year) {
 
             for (int month = 12; month != 0; --month) {
-
                 DateWrapper d = new DateWrapper(year, month, 1);
 
                 Month m = new Month(year, month);
@@ -186,6 +186,12 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
                     public void onSuccess(VoidResult result) {
                     }
                 });
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+        this.toolBar.setActionEnabled(UIActions.SAVE, !readOnly);
+        this.grid.setReadOnly(readOnly);
     }
 
     private class ReportingPeriodProxy extends RpcProxy<MonthlyReportResult> {

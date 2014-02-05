@@ -22,6 +22,9 @@ package org.activityinfo.ui.full.client.page.entry;
  * #L%
  */
 
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.DateWrapper;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
@@ -48,19 +51,22 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
 
     private static final int ROW_HEADER_WIDTH = 150;
     private static final int MONTH_COLUMN_WIDTH = 75;
+    private boolean readOnly = true;
 
     public MonthlyGrid(ListStore<IndicatorRowDTO> store) {
         super(store, createColumnModel());
 
         setAutoExpandColumn("indicatorName");
         setLoadMask(true);
+        addListener(Events.BeforeEdit, new Listener<BaseEvent>() {
+            @Override
+            public void handleEvent(BaseEvent event) {
+                if (readOnly) {
+                    event.setCancelled(true);
+                }
+            }
+        });
     }
-
-    @Override
-    protected void onRender(Element parent, int pos) {
-        super.onRender(parent, pos);
-    }
-
     /**
      * Updates the month headers based on the given start month
      */
@@ -94,8 +100,7 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
             indicatorField.getPropertyEditor().setFormat(
                     IndicatorNumberFormat.INSTANCE);
 
-            ColumnConfig valueColumn = new ColumnConfig("month" + i, "",
-                    MONTH_COLUMN_WIDTH);
+            ColumnConfig valueColumn = new ColumnConfig("month" + i, "", MONTH_COLUMN_WIDTH);
             valueColumn.setNumberFormat(IndicatorNumberFormat.INSTANCE);
             valueColumn.setEditor(new CellEditor(indicatorField));
             valueColumn.setSortable(false);
@@ -105,5 +110,9 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
         }
 
         return new ColumnModel(columns);
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
 }

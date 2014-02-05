@@ -29,6 +29,7 @@ import org.activityinfo.api.shared.command.UpdateMonthlyReports;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.server.database.hibernate.entity.*;
 import org.activityinfo.server.event.sitehistory.ChangeType;
@@ -74,6 +75,10 @@ public class UpdateMonthlyReportsHandler implements
             throw new CommandException(cmd, "site " + cmd.getSiteId() + " not found for user " + user.getEmail());
         }
 
+        if(!editAuthorized(user, site)) {
+            throw new IllegalAccessCommandException("Not authorized to modify sites");
+        }
+
         Map<Month, ReportingPeriod> periods = Maps.newHashMap();
         Map<String, Object> siteHistoryChangeMap = createChangeMap();
 
@@ -113,6 +118,25 @@ public class UpdateMonthlyReportsHandler implements
         siteHistoryProcessor.persistHistory(site, user, ChangeType.UPDATE, siteHistoryChangeMap);
 
         return new VoidResult();
+    }
+
+    private boolean editAuthorized(User user, Site site) {
+
+        if(site.getActivity().getDatabase().getOwner().getId() == user.getId()) {
+            return true;
+        }
+        UserPermission permission = site.getActivity().getDatabase().getPermissionByUser(user);
+        if(permission == null) {
+            return false;
+        }
+        if(permission.isAllowEditAll()) {
+            return true;
+        }
+        if(permission.isAllowEdit() && site.getPartner().getId() == permission.getPartner().getId()) {
+            return true;
+        }
+
+        return false;
     }
 
     public void updateIndicatorValue(EntityManager em, ReportingPeriod period,
