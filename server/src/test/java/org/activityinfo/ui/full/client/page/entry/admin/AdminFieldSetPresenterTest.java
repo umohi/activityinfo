@@ -208,57 +208,65 @@ public class AdminFieldSetPresenterTest {
     
     @Test
     public void testSortingAdminLevel() {
-        List<AdminLevelDTO> levels = new ArrayList<AdminLevelDTO>(); 
-        
         AdminLevelDTO country = new AdminLevelDTO();
         country.setId(0);
         country.setName("Country");
-        levels.add(country);
         
         AdminLevelDTO state = new AdminLevelDTO(); 
         state.setId(1);
         state.setName("state");
         state.setParentLevelId(0);
-        levels.add(state);
         
         AdminLevelDTO district = new AdminLevelDTO();
         district.setId(2);
         district.setParentLevelId(1);
         district.setName("District");
-        levels.add(district);
         
         AdminLevelDTO city = new AdminLevelDTO();
         city.setId(3);
         city.setParentLevelId(2);
         city.setName("City");
-        levels.add(city);
         
         AdminLevelDTO region = new AdminLevelDTO();
         region.setId(4);
         region.setParentLevelId(0);
         region.setName("Region");
-        levels.add(region);
         
         AdminLevelDTO northRegion = new AdminLevelDTO();
         northRegion.setId(5);
         northRegion.setParentLevelId(4);
         northRegion.setName("North region");
-        levels.add(northRegion);
         
         AdminLevelDTO southRegion = new AdminLevelDTO();
         southRegion.setId(6);
         southRegion.setParentLevelId(4);
         southRegion.setName("south region");
-        levels.add(southRegion);
         
         AdminLevelDTO southEastArea = new AdminLevelDTO();
         southEastArea.setId(7);
         southEastArea.setParentLevelId(6);
         southEastArea.setName("South east area");
-        levels.add(southEastArea);
 
-        System.out.println("Before sort = " + levels);
-        System.out.println("After sort = " + sort(levels));
+        List<AdminLevelDTO> levels = new ArrayList<AdminLevelDTO>();
+        levels.add(city);
+        levels.add(southEastArea);
+        levels.add(region);
+        levels.add(northRegion);
+        levels.add(southRegion);
+        levels.add(country);
+        levels.add(state);
+        levels.add(district);
+        
+        ArrayList<AdminLevelDTO> sortedLevels = sort(levels);
+        
+        assertTrue("country before state", sortedLevels.indexOf(country) <  sortedLevels.indexOf(state));
+        assertTrue("state before district", sortedLevels.indexOf(state)   <  sortedLevels.indexOf(district));
+        assertTrue("district before city", sortedLevels.indexOf(district) < sortedLevels.indexOf(city));
+
+        assertTrue("country before region", sortedLevels.indexOf(country) < sortedLevels.indexOf(region));
+        assertTrue("region before 'north region'", sortedLevels.indexOf(region) < sortedLevels.indexOf(northRegion));
+        assertTrue("'north region' before 'south region", sortedLevels.indexOf(northRegion) < sortedLevels.indexOf(southRegion));
+        assertTrue("'south region' before 'southEastArea", sortedLevels.indexOf(southRegion) < sortedLevels.indexOf(southEastArea));
     }
 
     private void expectSelections(Collection<AdminEntityDTO> values) {
