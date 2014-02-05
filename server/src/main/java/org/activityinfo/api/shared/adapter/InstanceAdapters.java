@@ -1,15 +1,12 @@
 package org.activityinfo.api.shared.adapter;
 
 
-import com.google.common.base.Function;
 import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api2.shared.Cuids;
+import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.Namespace;
-import org.activityinfo.api2.shared.form.UserForm;
 import org.activityinfo.api2.shared.form.UserFormInstance;
-
-import javax.annotation.Nullable;
 
 /**
  * Creates a {@code UserFormInstance} from {@code Site}
@@ -39,7 +36,11 @@ public class InstanceAdapters {
                 Double value = site.getIndicatorValue(indicatorId);
 
                 if(value != null) {
-                    instance.set(CuidAdapter.iri(CuidAdapter.INDICATOR_DOMAIN, indicatorId), value);
+                    // todo replace cuid with namespace since for form definition we are using namespace iri
+                    // if we need cuid everywhere then we should change form definition adaptor
+                    // final Iri iri = CuidAdapter.iri(CuidAdapter.INDICATOR_DOMAIN, indicatorId);
+                    final Iri iri = Namespace.indicatorProperty(indicatorId);
+                    instance.set(iri, value);
                 }
             }
         }
