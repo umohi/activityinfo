@@ -190,12 +190,10 @@ public class AdminFieldSetPresenter extends BaseObservable implements
     public AdminFieldSetPresenter(Dispatcher dispatcher, CountryDTO country,
                                   List<AdminLevelDTO> levels) {
         this.dispatcher = dispatcher;
-        this.levels = Lists.newArrayList(levels);
+        this.levels = Lists.newArrayList(sort(levels));
         this.levelMap = Maps.newHashMap();
         this.bounds = country.getBounds();
 
-        levels = sort(levels);
-        
         for (AdminLevelDTO level : levels) {
             levelMap.put(level.getId(), new Level(level));
         }
