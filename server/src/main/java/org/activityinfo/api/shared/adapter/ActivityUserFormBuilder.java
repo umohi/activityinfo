@@ -1,10 +1,10 @@
 package org.activityinfo.api.shared.adapter;
 
-import com.google.appengine.repackaged.com.google.common.base.Function;
-import com.google.appengine.repackaged.com.google.common.collect.Iterables;
-import com.google.appengine.repackaged.com.google.common.collect.Sets;
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Namespace;
