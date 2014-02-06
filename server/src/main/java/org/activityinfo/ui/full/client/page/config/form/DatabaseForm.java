@@ -22,6 +22,15 @@ package org.activityinfo.ui.full.client.page.config.form;
  * #L%
  */
 
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.command.GetCountries;
+import org.activityinfo.api.shared.command.result.CountryResult;
+import org.activityinfo.api.shared.model.CountryDTO;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
+import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.ui.full.client.widget.RemoteComboBox;
+
 import com.extjs.gxt.ui.client.binding.FieldBinding;
 import com.extjs.gxt.ui.client.binding.FormBinding;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
@@ -34,17 +43,10 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.GetCountries;
-import org.activityinfo.api.shared.command.result.CountryResult;
-import org.activityinfo.api.shared.model.CountryDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.widget.RemoteComboBox;
 
 public class DatabaseForm extends FormPanel {
     private final FormBinding binding;
+    private final ComboBox<CountryDTO> countryField;
 
     public DatabaseForm(final Dispatcher dispatcher) {
         binding = new FormBinding(this);
@@ -62,12 +64,13 @@ public class DatabaseForm extends FormPanel {
         binding.addFieldBinding(new FieldBinding(fullNameField, "fullName"));
         add(fullNameField);
 
-        ComboBox<CountryDTO> countryField = new RemoteComboBox<CountryDTO>();
+        countryField = new RemoteComboBox<CountryDTO>();
         countryField.setStore(createCountryStore(dispatcher, countryField));
         countryField.setFieldLabel(I18N.CONSTANTS.country());
         countryField.setValueField("id");
         countryField.setDisplayField("name");
         countryField.setAllowBlank(false);
+        countryField.setEnabled(true);
         countryField.setTriggerAction(TriggerAction.ALL);
 
         binding.addFieldBinding(new FieldBinding(countryField, "country") {
@@ -101,5 +104,9 @@ public class DatabaseForm extends FormPanel {
 
     public FormBinding getBinding() {
         return binding;
+    }
+    
+    public void disableCountry() {
+        countryField.setEnabled(false);
     }
 }

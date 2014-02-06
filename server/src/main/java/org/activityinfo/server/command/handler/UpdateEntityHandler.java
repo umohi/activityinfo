@@ -30,6 +30,7 @@ import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.server.command.handler.crud.ActivityPolicy;
 import org.activityinfo.server.command.handler.crud.PropertyMap;
+import org.activityinfo.server.command.handler.crud.UserDatabasePolicy;
 import org.activityinfo.server.database.hibernate.entity.*;
 
 import javax.persistence.EntityManager;
@@ -65,7 +66,10 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
         Map<String, Object> changes = cmd.getChanges().getTransientMap();
         PropertyMap changeMap = new PropertyMap(changes);
 
-        if ("Activity".equals(cmd.getEntityName())) {
+        if ("UserDatabase".equals(cmd.getEntityName())) {
+            UserDatabasePolicy policy = injector.getInstance(UserDatabasePolicy.class);
+            policy.update(user, cmd.getId(), changeMap);
+        }else if ("Activity".equals(cmd.getEntityName())) {
             ActivityPolicy policy = injector.getInstance(ActivityPolicy.class);
             policy.update(user, cmd.getId(), changeMap);
 
