@@ -1,6 +1,7 @@
 package org.activityinfo.api2.shared.form;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 
@@ -26,10 +27,31 @@ public class FormField implements FormElement {
     private boolean visible = true;
     private List<Iri> dimensions;
     private boolean required;
+    private FormFieldCardinality cardinality;
+    private Set<FormFieldEnumValue> enumValues = Sets.newHashSet();  ;
 
     public FormField(Iri id) {
         Preconditions.checkNotNull(id);
         this.id = id;
+    }
+
+    public Set<FormFieldEnumValue> getEnumValues() {
+        if (enumValues == null) {
+            enumValues = Sets.newHashSet();
+        }
+        return enumValues;
+    }
+
+    public void setEnumValues(Set<FormFieldEnumValue> enumValues) {
+        this.enumValues = enumValues;
+    }
+
+    public FormFieldCardinality getCardinality() {
+        return cardinality;
+    }
+
+    public void setCardinality(FormFieldCardinality cardinality) {
+        this.cardinality = cardinality;
     }
 
     public Iri getId() {
@@ -146,6 +168,23 @@ public class FormField implements FormElement {
 
     public void setDimensions(List<Iri> dimensions) {
         this.dimensions = dimensions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FormField formField = (FormField) o;
+
+        if (id != null ? !id.equals(formField.id) : formField.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override

@@ -75,6 +75,7 @@ public class UserFormPanel extends Composite {
     public static interface UserFormPanelUiBinder extends UiBinder<Widget, UserFormPanel> {
     }
 
+    private UserForm initialUserForm;
     private UserForm userForm;
     private UserFormInstance initialFormInstance;
     private UserFormInstance formInstance;
@@ -110,6 +111,7 @@ public class UserFormPanel extends Composite {
      */
     public void renderForm(UserForm userForm) {
         this.userForm = userForm;
+        this.initialUserForm = userForm.copy();
         contentPanel.clear();
         renderElements(this.userForm.getElements());
     }
@@ -239,6 +241,10 @@ public class UserFormPanel extends Composite {
 
     public void clearError() {
         errorContainer.setInnerHTML("");
+    }
+
+    public UserForm getInitialUserForm() {
+        return initialUserForm;
     }
 
     public boolean isReadOnly() {

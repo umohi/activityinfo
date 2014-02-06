@@ -112,7 +112,7 @@ class ActivityForm extends AbstractDesignForm {
 
             @Override
             public void handleEvent(BindingEvent be) {
-                locationTypeCombo.setEnabled(!isSaved(be.getModel()));
+//                locationTypeCombo.setEnabled(!isSaved(be.getModel()));
                 frequencyCombo.setEnabled(!isSaved(be.getModel()));
             }
         });

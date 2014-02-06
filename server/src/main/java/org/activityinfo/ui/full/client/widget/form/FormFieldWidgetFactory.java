@@ -22,11 +22,10 @@ package org.activityinfo.ui.full.client.widget.form;
  */
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.DoubleBox;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.FormFieldCardinality;
+import org.activityinfo.api2.shared.form.FormFieldEnumValue;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
@@ -35,6 +34,21 @@ import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
  * @author yuriyz on 1/28/14.
  */
 public class FormFieldWidgetFactory {
+
+    /**
+     * Based on this numbers FormField Widget generates different widgets and layouts:
+     *
+     * 1. Single :
+     *    less SMALL_BALANCE_NUMBER -> Radio buttons
+     *    less MEDIUM_BALANCE_NUMBER -> Dropdown list
+     *    more MEDIUM_BALANCE_NUMBER -> Suggest box
+     * 2. Multiple :
+     *    less SMALL_BALANCE_NUMBER -> Check boxes
+     *    less MEDIUM_BALANCE_NUMBER -> List of selected + add button
+     *    more MEDIUM_BALANCE_NUMBER -> List of selected + add button
+     */
+    public static final int SMALL_BALANCE_NUMBER = 10;
+    public static final int MEDIUM_BALANCE_NUMBER = 20;
 
     public static final DateTimeFormat DATE_TIME_FORMAT = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL);
 
@@ -55,6 +69,37 @@ public class FormFieldWidgetFactory {
                     return createDateTextBox();
                 case GEOGRAPHIC_POINT:
                     return new GeographicTextBox();
+                case ENUMERATED:
+                    final int enumValuesSize = field.getEnumValues().size();
+                    if (field.getCardinality() == FormFieldCardinality.SINGLE) {
+                        if (enumValuesSize < SMALL_BALANCE_NUMBER) {
+                            // Radio buttons
+                            return null;
+                        } else if (enumValuesSize < MEDIUM_BALANCE_NUMBER) {
+                            // Dropdown list
+                            final ListBox dropBox = new ListBox(false);
+                            for (FormFieldEnumValue value : field.getEnumValues()) {
+                                dropBox.addItem(value.getLabel().getValue(), value.getId().asString());
+                            }
+
+                            return dropBox;
+                        } else {
+                            // Suggest box
+                            return null;
+                        }
+                    } else {
+                        if (enumValuesSize < SMALL_BALANCE_NUMBER) {
+                            // Check boxes
+                            return null;
+                        } else if (enumValuesSize < MEDIUM_BALANCE_NUMBER) {
+                            // List of selected + add button
+                            final ListBox dropBox = new ListBox(true);
+                            return null;
+                        } else {
+                            // List of selected + add button
+                            return null;
+                        }
+                    }
                 case REFERENCE:
                     return createTextBox();
                 default:

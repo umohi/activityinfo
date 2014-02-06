@@ -365,7 +365,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
     @Override
     public void onUIAction(String actionId) {
         if (UIActions.ADD.equals(actionId)) {
-            if (FeatureSwitch.isEnabled("newForm")) {
+            if (FeatureSwitch.isNewFormEnabled()) {
                 eventBus.fireEvent(new NavigationEvent(
                         NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(UserFormType.ACTIVITY)));
             } else {
@@ -381,7 +381,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
             }
         } else if (UIActions.EDIT.equals(actionId)) {
             final SiteDTO selection = gridPanel.getSelection();
-            if (FeatureSwitch.isEnabled("newForm")) {
+            if (FeatureSwitch.isNewFormEnabled()) {
                 eventBus.fireEvent(new NavigationEvent(
                         NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(selection.getActivityIri(), selection.getIri())));
             } else {
