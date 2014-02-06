@@ -26,10 +26,28 @@ public class FormField implements FormElement {
     private boolean visible = true;
     private List<Iri> dimensions;
     private boolean required;
+    private FormFieldCardinality cardinality;
+    private List<FormFieldEnumValue> enumValues;
 
     public FormField(Iri id) {
         Preconditions.checkNotNull(id);
         this.id = id;
+    }
+
+    public List<FormFieldEnumValue> getEnumValues() {
+        return enumValues;
+    }
+
+    public void setEnumValues(List<FormFieldEnumValue> enumValues) {
+        this.enumValues = enumValues;
+    }
+
+    public FormFieldCardinality getCardinality() {
+        return cardinality;
+    }
+
+    public void setCardinality(FormFieldCardinality cardinality) {
+        this.cardinality = cardinality;
     }
 
     public Iri getId() {
@@ -146,6 +164,23 @@ public class FormField implements FormElement {
 
     public void setDimensions(List<Iri> dimensions) {
         this.dimensions = dimensions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FormField formField = (FormField) o;
+
+        if (id != null ? !id.equals(formField.id) : formField.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override

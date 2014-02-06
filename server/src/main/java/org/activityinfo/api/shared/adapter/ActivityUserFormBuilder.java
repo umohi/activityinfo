@@ -46,11 +46,11 @@ public class ActivityUserFormBuilder {
             FormField attributeField = new FormField(Namespace.attributeGroup(group.getId()));
             attributeField.setLabel(new LocalizedString(group.getName()));
             attributeField.setRange(Namespace.attributeGroup(group.getId()));
-
+            attributeField.setType(FormFieldType.REFERENCE);
             if (group.isMultipleAllowed()) {
-                attributeField.setType(FormFieldType.REFERENCE);
+                attributeField.setCardinality(FormFieldCardinality.MULTIPLE);
             } else {
-                attributeField.setType(FormFieldType.REFERENCE);
+                attributeField.setCardinality(FormFieldCardinality.SINGLE);
             }
             siteForm.addElement(attributeField);
         }
