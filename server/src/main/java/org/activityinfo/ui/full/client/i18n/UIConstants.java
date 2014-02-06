@@ -1725,6 +1725,15 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("New Database")
     @Key("newDatabase")
     String newDatabase();
+    
+    /**
+     * Translated "Rename Database"
+     * 
+     * @return translated "Database"
+     */
+    @DefaultStringValue("Rename Database")
+    @Key("renameDatabase")
+    String renameDatabase();
 
     /**
      * Translated "New Indicator".

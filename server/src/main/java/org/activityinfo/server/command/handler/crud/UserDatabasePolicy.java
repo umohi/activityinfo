@@ -22,22 +22,27 @@ package org.activityinfo.server.command.handler.crud;
  * #L%
  */
 
-import com.google.inject.Inject;
+import java.util.Date;
+
+import javax.persistence.EntityManager;
+
 import org.activityinfo.server.database.hibernate.dao.CountryDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
 import org.activityinfo.server.database.hibernate.entity.Country;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 
-import java.util.Date;
+import com.google.inject.Inject;
 
 public class UserDatabasePolicy implements EntityPolicy<UserDatabase> {
 
+    private final EntityManager em;
     private final UserDatabaseDAO databaseDAO;
     private final CountryDAO countryDAO;
 
     @Inject
-    public UserDatabasePolicy(UserDatabaseDAO databaseDAO, CountryDAO countryDAO) {
+    public UserDatabasePolicy(EntityManager em, UserDatabaseDAO databaseDAO, CountryDAO countryDAO) {
+        this.em = em;
         this.databaseDAO = databaseDAO;
         this.countryDAO = countryDAO;
     }
@@ -69,7 +74,8 @@ public class UserDatabasePolicy implements EntityPolicy<UserDatabase> {
 
     @Override
     public void update(User user, Object entityId, PropertyMap changes) {
-
+        UserDatabase database = em.find(UserDatabase.class, entityId);
+        applyProperties(database, changes);
     }
 
     private void applyProperties(UserDatabase database, PropertyMap properties) {

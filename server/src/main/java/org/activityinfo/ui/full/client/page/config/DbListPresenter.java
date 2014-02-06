@@ -22,24 +22,23 @@ package org.activityinfo.ui.full.client.page.config;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.data.*;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MessageBoxEvent;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.CreateEntity;
 import org.activityinfo.api.shared.command.Delete;
 import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.UpdateEntity;
+import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.full.client.AppEvents;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.api.client.AsyncMonitor;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.callback.Created;
 import org.activityinfo.ui.full.client.dispatch.callback.Deleted;
+import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.NavigationEvent;
 import org.activityinfo.ui.full.client.page.NavigationHandler;
@@ -51,8 +50,17 @@ import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
 import org.activityinfo.ui.full.client.page.config.form.DatabaseForm;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.extjs.gxt.ui.client.data.BaseListLoadResult;
+import com.extjs.gxt.ui.client.data.BaseListLoader;
+import com.extjs.gxt.ui.client.data.DataProxy;
+import com.extjs.gxt.ui.client.data.DataReader;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MessageBoxEvent;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
 
 public class DbListPresenter implements ActionListener {
     public static final PageId PAGE_ID = new PageId("dblist");
@@ -105,10 +113,13 @@ public class DbListPresenter implements ActionListener {
         if (selection == null) {
             view.setActionEnabled(UIActions.DELETE, false);
             view.setActionEnabled(UIActions.EDIT, false);
+            view.setActionEnabled(UIActions.RENAME, false);
         } else {
             view.setActionEnabled(UIActions.DELETE,
                     userHasRightToDeleteSelectedDatabase());
             view.setActionEnabled(UIActions.EDIT,
+                    userHasRightToEditSelectedDatabase());
+            view.setActionEnabled(UIActions.RENAME,
                     userHasRightToEditSelectedDatabase());
         }
     }
@@ -129,6 +140,8 @@ public class DbListPresenter implements ActionListener {
             onEdit();
         } else if (UIActions.ADD.equals(actionId)) {
             onAdd();
+        } else if (UIActions.RENAME.equals(actionId)) {
+            onRename();
         }
     }
 
@@ -154,6 +167,40 @@ public class DbListPresenter implements ActionListener {
                 });
     }
 
+    public void onRename() {
+        DatabaseForm form = new DatabaseForm(dispatcher);
+        form.getBinding().bind(selection);
+        form.disableCountry();
+        final FormDialogImpl dialog = new FormDialogImpl(form);
+        dialog.setWidth(400);
+        dialog.setHeight(200);
+        dialog.setHeadingText(I18N.CONSTANTS.renameDatabase());
+
+        dialog.show(new FormDialogCallback() {
+            @Override
+            public void onValidated() {
+                update(selection, dialog);
+            }
+        });
+    }
+    
+    private void update(UserDatabaseDTO db, final FormDialogImpl dialog) {
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put("name", db.getName());
+        properties.put("fullName", db.getFullName());
+        properties.put("countryId", db.getCountry().getId());
+
+        dispatcher.execute(new UpdateEntity(db.getEntityName(), db.getId(), properties), new SuccessCallback<VoidResult>() {
+            
+            @Override
+            public void onSuccess(VoidResult arg0) {
+                eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
+                loader.load();
+                dialog.hide();
+            }
+        });
+    }
+    
     public void onEdit() {
         requestNavigationToDatabaseEditPage();
     }
