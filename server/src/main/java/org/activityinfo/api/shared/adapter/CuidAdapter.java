@@ -23,6 +23,9 @@ public class CuidAdapter {
 
     public static final char LOCATION_DOMAIN = 'g'; // avoid lower case l !
 
+    public static final char LOCATION_TYPE_DOMAIN = 'L'; // avoid lower case l !
+
+
     public static final char PARTNER_DOMAIN = 'p';
 
     public static final char INDICATOR_DOMAIN = 'i';
@@ -56,48 +59,82 @@ public class CuidAdapter {
         return getLegacyIdFromCuid(id.asString());
     }
 
+    /**
+     * @return the {@code FormField} Cuid for the Partner field of a given Activity {@code FormClass}
+     */
     public static Cuid partnerField(int activityId) {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "p");
     }
 
+    /**
+     * @return the {@code FormField}  Cuid for the Location field of a given Activity {@code FormClass}
+     */
     public static Cuid locationField(int activityId) {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "L");
     }
 
+    /**
+     * @return the {@code FormClass} Cuid for a given LocationType
+     */
+    public static Cuid locationFormClass(int locationTypeId) {
+        return cuid(LOCATION_TYPE_DOMAIN, locationTypeId);
 
-    public static Cuid activityClass(int activityId) {
+    }
+
+    /**
+     * @return the {@code FormClass} Cuid for a given Activity
+     */
+    public static Cuid activityFormClass(int activityId) {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId));
     }
 
+
+    /**
+     * @return the {@code FormClass} Cuid for a given Activity
+     */
     public static Cuid commentsField(int activityId) {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
 
     }
 
+    /**
+     * @return the {@code FormField} Cuid for the indicator field within a given
+     * Activity {@code FormClass}
+     */
+    public static Cuid indicatorField(int indicatorId) {
+        return cuid(INDICATOR_DOMAIN, indicatorId);
+    }
+
+    /**
+     * @return the {@code FormField} Cuid for the field of a given Activity {@code FormClass} that
+     * references the given AttributeGroup FormClass
+     */
     public static Cuid attributeGroupField(ActivityDTO activity, AttributeGroupDTO group) {
         return new Cuid(ACTIVITY_DOMAIN + block(activity) + "a" +
                 Integer.toString(group.getId(), Cuids.RADIX));
     }
 
-    public static Cuid attributeGroupClass(AttributeGroupDTO group) {
+    /**
+     * @return the {@code FormClass} Cuid for a given AttributeGroup
+     */
+    public static Cuid attributeGroupFormClass(AttributeGroupDTO group) {
         return cuid(ATTRIBUTE_GROUP_DOMAIN, group.getId());
     }
 
+    /**
+     * @return the {@code FormSection} Cuid for a given indicator category within an
+     * Activity {@code FormClass}
+     */
     public static Cuid activityFormSection(int id, String name) {
         return new Cuid(ACTIVITY_DOMAIN + block(id) + block(name.hashCode()));
     }
 
     private static String block(int id) {
-        return CuidGenerator.pad(id, Cuids.RADIX);
+        return CuidGenerator.pad(id);
     }
 
     private static String block(EntityDTO entity) {
         return block(entity.getId());
-    }
-
-
-    public static Cuid indicatorField(int indicatorId) {
-        return cuid(INDICATOR_DOMAIN, indicatorId);
     }
 
     private static Cuid cuid(char domain, EntityDTO entityDTO) {

@@ -126,4 +126,13 @@ public class UserFormPlace implements PageState {
         result = 31 * result + (userFormInstanceId != null ? userFormInstanceId.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "UserFormPlace{" +
+                "userFormType=" + userFormType +
+                ", userFormId=" + userFormId +
+                ", userFormInstanceId=" + userFormInstanceId +
+                '}';
+    }
 }

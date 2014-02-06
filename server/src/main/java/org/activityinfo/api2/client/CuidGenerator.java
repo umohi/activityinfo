@@ -12,29 +12,30 @@ import java.util.Date;
  * <p>Cuids can be safely generated on the client and relied upon to be universally unique,
  * even if generated at a very fast rate, thanks to the inclusion of the counter.</p>
  *
- * Adapated from https://github.com/dilvie/cuid
+ * Adapted from https://github.com/dilvie/cuid
  */
 public class CuidGenerator {
 
+    private static final int BLOCK_SIZE = 4;
+
     private int c = 0;
-    private int blockSize = 4;
     private int base = 36;
-    private int discreteValues = (int) Math.pow(base, blockSize);
+    private int discreteValues = (int) Math.pow(base, BLOCK_SIZE);
     private String fingerprint;
 
     public CuidGenerator() {
 
-        this.fingerprint = pad(browserFingerPrint(), blockSize);
+        this.fingerprint = pad(browserFingerPrint());
     }
 
-    public static String pad(int num, int size) {
+    public static String pad(int num) {
         String s = "000000000" + Integer.toString(num, Cuids.RADIX);
-        return s.substring(s.length() - size);
+        return s.substring(s.length() - BLOCK_SIZE);
     }
 
     private String randomBlock() {
         int x = (int)(Random.nextDouble() * discreteValues);
-        return pad(x, base);
+        return pad(x);
     }
 
     public Cuid nextCuid() {
@@ -63,7 +64,7 @@ public class CuidGenerator {
         String random = randomBlock() + randomBlock();
 
         c = (c < discreteValues) ? c : 0;
-        counter = pad(c, blockSize);
+        counter = pad(c);
 
         c++; // this is not subliminal
 

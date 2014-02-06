@@ -38,13 +38,13 @@ public class ActivityUserFormBuilder {
 
         FormField locationField = new FormField(CuidAdapter.locationField(activity.getId()));
         locationField.setLabel(new LocalizedString(activity.getLocationType().getName()));
-        locationField.setRange(Namespace.locationType(activity.getLocationTypeId()));
+        locationField.setRange(CuidAdapter.locationFormClass(activity.getLocationTypeId()).asIri());
         locationField.setType(FormFieldType.REFERENCE);
 
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
             FormField attributeField = new FormField(CuidAdapter.attributeGroupField(activity, group));
             attributeField.setLabel(new LocalizedString(group.getName()));
-            attributeField.setRange(CuidAdapter.attributeGroupClass(group).asIri());
+            attributeField.setRange(CuidAdapter.attributeGroupFormClass(group).asIri());
             attributeField.setType(FormFieldType.REFERENCE);
             attributeField.setRequired(group.isMandatory());
             if (group.isMultipleAllowed()) {
