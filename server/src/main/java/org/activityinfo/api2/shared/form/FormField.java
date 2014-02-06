@@ -1,6 +1,7 @@
 package org.activityinfo.api2.shared.form;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 
@@ -27,7 +28,7 @@ public class FormField implements FormElement {
     private List<Iri> dimensions;
     private boolean required;
     private FormFieldCardinality cardinality;
-    private Set<FormFieldEnumValue> enumValues;
+    private Set<FormFieldEnumValue> enumValues = Sets.newHashSet();  ;
 
     public FormField(Iri id) {
         Preconditions.checkNotNull(id);
@@ -35,6 +36,9 @@ public class FormField implements FormElement {
     }
 
     public Set<FormFieldEnumValue> getEnumValues() {
+        if (enumValues == null) {
+            enumValues = Sets.newHashSet();
+        }
         return enumValues;
     }
 
