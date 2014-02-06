@@ -22,7 +22,10 @@ package org.activityinfo.server.command.handler.crud;
  * #L%
  */
 
-import com.google.inject.Inject;
+import java.util.Date;
+
+import javax.persistence.EntityManager;
+
 import org.activityinfo.api.shared.model.LocationTypeDTO;
 import org.activityinfo.server.database.hibernate.dao.ActivityDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
@@ -31,8 +34,7 @@ import org.activityinfo.server.database.hibernate.entity.LocationType;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 
-import javax.persistence.EntityManager;
-import java.util.Date;
+import com.google.inject.Inject;
 
 public class ActivityPolicy implements EntityPolicy<Activity> {
 
@@ -101,6 +103,13 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
     private void applyProperties(Activity activity, PropertyMap changes) {
         if (changes.containsKey("name")) {
             activity.setName((String) changes.get("name"));
+        }
+        
+        if(changes.containsKey("locationTypeId")) {
+            LocationType location = em.find(LocationType.class, changes.get("locationTypeId"));
+            if(location != null) {
+                activity.setLocationType(location);
+            }
         }
 
         if (changes.containsKey("locationType")) {
