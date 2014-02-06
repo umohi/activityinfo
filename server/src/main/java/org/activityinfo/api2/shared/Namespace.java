@@ -14,43 +14,6 @@ public class Namespace {
     private Namespace() {
     }
 
-    public static int siteForm(Cuid activityId) {
-        String startString = LEGACY_NS + "Activity/";
-        final String idAsString = activityId.asString();
-        final String intAsString = idAsString.substring(startString.length(), idAsString.length() - "/SiteForm".length());
-        return Integer.parseInt(intAsString);
-    }
-
-    public static Iri siteForm(int activityId) {
-        return new Iri(LEGACY_NS + "Activity/" + activityId + "/SiteForm");
-    }
-
-    public static final Iri monthlyReportForm(int activityId) {
-        return new Iri(LEGACY_NS + "Activity/" + activityId + "/MonthlyForm");
-    }
-
-
-    public static Iri activityFormSection(int activityId, String categoryName) {
-        return new Iri(LEGACY_NS + "/Activity/" + activityId + "/" + categoryName);
-    }
-
-    /**
-     * @param id the id of the location type
-     * @return the IRI of the class for the given location type id
-     */
-    public static final Iri locationType(int id) {
-        return new Iri(LEGACY_NS + "LocationType/" + id);
-    }
-
-    /**
-     * @param id
-     * @return the IRI of the property for the given indicator
-     */
-    public static Iri indicatorProperty(int id) {
-        return new Iri(LEGACY_NS + "indicator/" + id);
-    }
-
-
     public static Iri attributeGroup(int id) {
         return new Iri(LEGACY_NS + "attributeGroup/" + id);
     }

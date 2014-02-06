@@ -52,8 +52,8 @@ public class CuidAdapter {
         return cuid(domain, id).asIri();
     }
 
-    public static int getLegacyIdFromCuid(Cuid formId) {
-        return getLegacyIdFromCuid(formId.asString());
+    public static int getLegacyIdFromCuid(Cuid id) {
+        return getLegacyIdFromCuid(id.asString());
     }
 
     public static Cuid partnerField(int activityId) {
@@ -64,6 +64,10 @@ public class CuidAdapter {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "L");
     }
 
+
+    public static Cuid activityClass(int activityId) {
+        return new Cuid(ACTIVITY_DOMAIN + block(activityId));
+    }
 
     public static Cuid commentsField(int activityId) {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
@@ -99,4 +103,5 @@ public class CuidAdapter {
     private static Cuid cuid(char domain, EntityDTO entityDTO) {
         return cuid(domain, entityDTO.getId());
     }
+
 }
