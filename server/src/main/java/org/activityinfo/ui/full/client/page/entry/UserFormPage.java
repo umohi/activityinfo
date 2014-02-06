@@ -32,8 +32,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.form.UserForm;
-import org.activityinfo.api2.shared.form.UserFormInstance;
+import org.activityinfo.api2.shared.form.FormClass;
+import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
@@ -78,36 +78,36 @@ public class UserFormPage extends Composite implements Page {
     }
 
     private void init() {
-        if (userFormPlace.getUserFormType() != null) { // create new
-            resourceLocator.createUserForm().then(new AsyncCallback<UserForm>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    Log.error("Unable to create user form.", caught);
-                    userFormPanel.showError(I18N.CONSTANTS.errorUnexpectedOccured());
-                }
-
-                @Override
-                public void onSuccess(UserForm result) {
-                    userFormPanel.renderForm(result);
-                    resourceLocator.createFormInstance(new UserFormInstance(null, userFormPanel.getUserForm().getId())).then(new AsyncCallback<Iri>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            Log.error("Unable to create user form instance", caught);
-                            userFormPanel.showError(I18N.CONSTANTS.errorUnexpectedOccured());
-                        }
-
-                        @Override
-                        public void onSuccess(Iri result) {
-                            userFormPanel.setValue(new UserFormInstance(result, userFormPanel.getUserForm().getId()));
-                        }
-                    });
-                }
-            });
-        } else if (userFormPlace.getUserFormId() != null) { // edit
-            fetchRemote();
-        } else {
-            Log.error("Unable to identify whether to CREATE or EDIT user form, token: " + History.getToken());
-        }
+//        if (userFormPlace.getUserFormType() != null) { // create new
+//            resourceLocator.createUserForm().then(new AsyncCallback<FormClass>() {
+//                @Override
+//                public void onFailure(Throwable caught) {
+//                    Log.error("Unable to create user form.", caught);
+//                    userFormPanel.showError(I18N.CONSTANTS.errorUnexpectedOccured());
+//                }
+//
+//                @Override
+//                public void onSuccess(FormClass result) {
+//                    userFormPanel.renderForm(result);
+//                    resourceLocator.createFormInstance(new FormInstance(null, userFormPanel.getFormClass().getId())).then(new AsyncCallback<Iri>() {
+//                        @Override
+//                        public void onFailure(Throwable caught) {
+//                            Log.error("Unable to create user form instance", caught);
+//                            userFormPanel.showError(I18N.CONSTANTS.errorUnexpectedOccured());
+//                        }
+//
+//                        @Override
+//                        public void onSuccess(Iri result) {
+//                            userFormPanel.setValue(new FormInstance(result, userFormPanel.getFormClass().getId()));
+//                        }
+//                    });
+//                }
+//            });
+//        } else if (userFormPlace.getUserFormId() != null) { // edit
+//            fetchRemote();
+//        } else {
+//            Log.error("Unable to identify whether to CREATE or EDIT user form, token: " + History.getToken());
+//        }
 
         userFormPanel.addHandler(new UserFormPanel.Handler() {
             @Override
@@ -118,39 +118,39 @@ public class UserFormPage extends Composite implements Page {
     }
 
     private void onSave() {
-        final UserFormInstance value = userFormPanel.getValue();
+        final FormInstance value = userFormPanel.getValue();
         if (value != null) {
-            resourceLocator.saveFormInstance(value).then(new AsyncCallback<Boolean>() {
+            resourceLocator.persist(value).then(new AsyncCallback<Void>() {
                 @Override
                 public void onFailure(Throwable caught) {
                     Log.error("Failed to save form instance");
                 }
 
                 @Override
-                public void onSuccess(Boolean result) {
+                public void onSuccess(Void result) {
                 }
             });
         }
     }
 
     private UserFormPlace fetchRemote() {
-        resourceLocator.getUserForm(userFormPlace.getUserFormId()).fetch().then(new AsyncCallback<UserForm>() {
+        resourceLocator.getUserForm(userFormPlace.getUserFormId()).fetch().then(new AsyncCallback<FormClass>() {
             @Override
             public void onFailure(Throwable caught) {
                 Log.error("Unable to fetch UserForm, iri=" + userFormPlace.getUserFormId(), caught);
             }
 
             @Override
-            public void onSuccess(UserForm result) {
+            public void onSuccess(FormClass result) {
                 userFormPanel.renderForm(result);
-                resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).fetch().then(new AsyncCallback<UserFormInstance>() {
+                resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).fetch().then(new AsyncCallback<FormInstance>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Log.error("Unable to fetch UserFormInstance, iri=" + userFormPlace.getUserFormInstanceId(), caught);
+                        Log.error("Unable to fetch FormInstance, iri=" + userFormPlace.getUserFormInstanceId(), caught);
                     }
 
                     @Override
-                    public void onSuccess(UserFormInstance result) {
+                    public void onSuccess(FormInstance result) {
                         userFormPanel.setValue(result);
                     }
                 });

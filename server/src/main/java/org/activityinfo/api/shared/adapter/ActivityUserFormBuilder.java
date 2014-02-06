@@ -1,70 +1,57 @@
 package org.activityinfo.api.shared.adapter;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Namespace;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * Adapts a Legacy "Activity" model to a UserForm
+ * Adapts a Legacy "Activity" model to a FormClass
  */
 public class ActivityUserFormBuilder {
 
-    public static class AttributeDtoToFormFieldEnumValue implements Function<AttributeDTO, FormFieldEnumValue> {
-        @Nullable
-        @Override
-        public FormFieldEnumValue apply(@Nullable AttributeDTO attributeDTO) {
-            final FormFieldEnumValue value = new FormFieldEnumValue(Namespace.attribute(attributeDTO.getId()));
-            value.setLabel(new LocalizedString(attributeDTO.getName()));
-            return value;
-        }
-    }
 
     private final ActivityDTO activity;
     private List<FormElement> siteElements = Lists.newArrayList();
 
-    private UserForm siteForm;
+    private FormClass siteForm;
 
     public ActivityUserFormBuilder(ActivityDTO activity) {
         this.activity = activity;
     }
 
-    public UserForm build() {
-        siteForm = new UserForm(Namespace.siteForm(activity.getId()));
+    public FormClass build() {
+        siteForm = new FormClass(CuidAdapter.cuid(CuidAdapter.ACTIVITY_DOMAIN, activity.getId()));
 
-        FormField partnerField = new FormField(Namespace.REPORTED_BY);
+        FormField partnerField = new FormField(CuidAdapter.partnerField(activity.getId()));
+        partnerField.addSuperProperty(Namespace.REPORTED_BY);
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
         partnerField.setRange(Namespace.PARTNER);
         partnerField.setType(FormFieldType.REFERENCE);
         siteForm.addElement(partnerField);
 
 
-        FormField locationField = new FormField(Namespace.LOCATED_AT);
+        FormField locationField = new FormField(CuidAdapter.locationField(activity.getId()));
         locationField.setLabel(new LocalizedString(activity.getLocationType().getName()));
         locationField.setRange(Namespace.locationType(activity.getLocationTypeId()));
         locationField.setType(FormFieldType.REFERENCE);
 
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
-            FormField attributeField = new FormField(Namespace.attributeGroup(group.getId()));
+            FormField attributeField = new FormField(CuidAdapter.attributeGroupField(activity, group));
             attributeField.setLabel(new LocalizedString(group.getName()));
-            attributeField.setRange(Namespace.attributeGroup(group.getId()));
-            attributeField.setType(FormFieldType.ENUMERATED);
+            attributeField.setRange(CuidAdapter.attributeGroupClass(group).asIri());
+            attributeField.setType(FormFieldType.REFERENCE);
             attributeField.setRequired(group.isMandatory());
             if (group.isMultipleAllowed()) {
                 attributeField.setCardinality(FormFieldCardinality.MULTIPLE);
             } else {
                 attributeField.setCardinality(FormFieldCardinality.SINGLE);
             }
-            attributeField.setEnumValues(Sets.newHashSet(Iterables.transform(group.getAttributes(), new AttributeDtoToFormFieldEnumValue())));
             siteForm.addElement(attributeField);
         }
 
@@ -72,7 +59,7 @@ public class ActivityUserFormBuilder {
             if (Strings.isNullOrEmpty(group.getName())) {
                 addIndicators(siteForm, group);
             } else {
-                FormSection section = new FormSection(Namespace.activityFormSection(activity.getId(), group.getName()));
+                FormSection section = new FormSection(CuidAdapter.activityFormSection(activity.getId(), group.getName()));
                 section.setLabel(new LocalizedString(group.getName()));
 
                 addIndicators(section, group);
@@ -81,7 +68,7 @@ public class ActivityUserFormBuilder {
             }
         }
 
-        FormField commentsField = new FormField(Namespace.COMMENTS_PROPERTY);
+        FormField commentsField = new FormField(CuidAdapter.commentsField(activity.getId()));
         commentsField.setType(FormFieldType.NARRATIVE);
         commentsField.setLabel(new LocalizedString(I18N.CONSTANTS.comments()));
         siteForm.addElement(commentsField);
@@ -91,7 +78,7 @@ public class ActivityUserFormBuilder {
 
     private void addIndicators(FormElementContainer container, IndicatorGroup group) {
         for (IndicatorDTO indicator : group.getIndicators()) {
-            FormField field = new FormField(Namespace.indicatorProperty(indicator.getId()));
+            FormField field = new FormField(CuidAdapter.indicatorField(indicator.getId()));
             field.setLabel(new LocalizedString(indicator.getName()));
             field.setDescription(new LocalizedString(indicator.getDescription()));
             field.setType(FormFieldType.QUANTITY);

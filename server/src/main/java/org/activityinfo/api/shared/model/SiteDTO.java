@@ -26,6 +26,7 @@ import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.google.common.collect.Maps;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 
@@ -93,7 +94,7 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
         return (Integer) get("id");
     }
 
-    public Iri getIri() {
+    public Cuid getIri() {
         return Cuids.toIri(CUID_DOMAIN, getId());
     }
 
@@ -107,7 +108,7 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
     }
 
 
-    public Iri getActivityIri() {
+    public Cuid getActivityIri() {
         return Cuids.toIri(CuidAdapter.ACTIVITY_DOMAIN, getActivityId());
     }
 

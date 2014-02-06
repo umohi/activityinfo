@@ -3,6 +3,7 @@ package org.activityinfo.api2.shared.form;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Resource;
@@ -17,38 +18,36 @@ import java.util.Set;
  * and potentially relationships with other UserForms.
  * <p/>
  * <p>UserForms are a superset of an OWL class. The user can define them as subclasses or superclasses of
- * another UserForm or RDFS class.</p>
+ * another FormClass or RDFS class.</p>
  */
-public class UserForm implements Resource, FormElementContainer {
+public class FormClass implements Resource, FormElementContainer {
 
     @NotNull
-    private Iri id;
+    private Cuid id;
     private LocalizedString label;
-    private Iri parentForm;
     private Set<Iri> superClasses = Sets.newHashSet();
     private Set<Iri> subClasses = Sets.newHashSet();
     private List<FormElement> elements = Lists.newArrayList();
 
-    public UserForm(Iri id) {
+    public FormClass(Cuid id) {
         Preconditions.checkNotNull(id);
         this.id = id;
     }
 
-    public UserForm copy() {
-        final UserForm copy = new UserForm(this.getId());
+    public FormClass copy() {
+        final FormClass copy = new FormClass(this.getId());
         copy.getElements().addAll(this.getElements());
         copy.getSubClasses().addAll(this.getSubClasses());
         copy.getSuperClasses().addAll(this.getSuperClasses());
-        copy.setParentForm(this.getParentForm());
         copy.setLabel(this.getLabel());
         return copy;
     }
 
-    public Iri getId() {
+    public Cuid getId() {
         return id;
     }
 
-    public void setId(Iri id) {
+    public void setId(Cuid id) {
         this.id = id;
     }
 
@@ -58,14 +57,6 @@ public class UserForm implements Resource, FormElementContainer {
 
     public void setLabel(LocalizedString label) {
         this.label = label;
-    }
-
-    public Iri getParentForm() {
-        return parentForm;
-    }
-
-    public void setParentForm(Iri parentForm) {
-        this.parentForm = parentForm;
     }
 
     public Set<Iri> getSuperClasses() {

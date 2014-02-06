@@ -21,6 +21,7 @@ package org.activityinfo.ui.full.client.page.entry.place;
  * #L%
  */
 
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.UserFormType;
 import org.activityinfo.ui.full.client.page.PageId;
@@ -39,8 +40,8 @@ public class UserFormPlace implements PageState {
     public static final PageId PAGE_ID = new PageId("site-form");
 
     private UserFormType userFormType;
-    private Iri userFormId;
-    private Iri userFormInstanceId;
+    private Cuid userFormId;
+    private Cuid userFormInstanceId;
 
     public UserFormPlace() {
     }
@@ -54,7 +55,7 @@ public class UserFormPlace implements PageState {
         this.userFormType = userFormType;
     }
 
-    public UserFormPlace(Iri userFormId, Iri userFormInstanceId) {
+    public UserFormPlace(Cuid userFormId, Cuid userFormInstanceId) {
         this.userFormId = userFormId;
         this.userFormInstanceId = userFormInstanceId;
     }
@@ -87,19 +88,19 @@ public class UserFormPlace implements PageState {
         this.userFormType = userFormType;
     }
 
-    public Iri getUserFormId() {
+    public Cuid getUserFormId() {
         return userFormId;
     }
 
-    public void setUserFormId(Iri userFormId) {
+    public void setUserFormId(Cuid userFormId) {
         this.userFormId = userFormId;
     }
 
-    public Iri getUserFormInstanceId() {
+    public Cuid getUserFormInstanceId() {
         return userFormInstanceId;
     }
 
-    public void setUserFormInstanceId(Iri userFormInstanceId) {
+    public void setUserFormInstanceId(Cuid userFormInstanceId) {
         this.userFormInstanceId = userFormInstanceId;
     }
 

@@ -22,6 +22,7 @@ package org.activityinfo.api2.shared.expr;
  */
 
 import junit.framework.Assert;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.Namespace;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class NamespaceTest {
     @Test
     public void siteId() {
         final int activityId = 34;
-        final Iri asIri = Namespace.siteForm(activityId);
+        final Cuid asIri = Namespace.siteForm(activityId);
         Assert.assertEquals(activityId, Namespace.siteForm(asIri));
     }
 

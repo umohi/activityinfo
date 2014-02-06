@@ -22,6 +22,7 @@ package org.activityinfo.dev.client;
  */
 
 import com.google.gwt.user.client.Random;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.*;
@@ -35,7 +36,7 @@ public class DevUtils {
     private DevUtils() {
     }
 
-    public static Iri randomIri() {
+    public static Cuid randomIri() {
         return new Iri(Random.nextInt() + "_" + new Date().getTime());
     }
 

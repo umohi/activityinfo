@@ -27,8 +27,7 @@ public class Cuids {
      * @param id the original numeric id
      * @return an IRI with the cuid: scheme
      */
-    public static Iri toIri(char cuidDomain, int id) {
-        return new Iri(IRI_PREFIX + cuidDomain + Integer.toString(id, RADIX));
-
+    public static Cuid toIri(char cuidDomain, int id) {
+        return new Cuid(cuidDomain + Integer.toString(id, RADIX));
     }
 }

@@ -22,6 +22,7 @@ package org.activityinfo.ui.full.client.page.entry.place;
  */
 
 import com.google.common.base.Strings;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.UserFormType;
@@ -50,7 +51,7 @@ public class UserFormPlaceParser implements PageStateParser {
         return fragment.toString();
     }
 
-    public static String normalizeIri(Iri iri) {
+    public static String normalizeIri(Cuid iri) {
         final String iriAsString = iri.asString();
         if (iriAsString.contains(Cuids.IRI_PREFIX)) {
             return iriAsString.substring(Cuids.IRI_PREFIX.length());
@@ -74,8 +75,8 @@ public class UserFormPlaceParser implements PageStateParser {
                     place.setUserFormType(UserFormType.fromCuidChar(firstPart.charAt(0)));
                 }
             } else if (parts.length == 2) {
-                place.setUserFormId(new Iri(Cuids.IRI_PREFIX + parts[0]));
-                place.setUserFormInstanceId(new Iri(Cuids.IRI_PREFIX + parts[1]));
+                place.setUserFormId(new Cuid(parts[0]));
+                place.setUserFormInstanceId(new Cuid(parts[1]));
             }
         }
         return place;

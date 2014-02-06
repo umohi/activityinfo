@@ -39,7 +39,7 @@ public class DevelopmentEntryPoint implements EntryPoint {
     }
 
 //    public void gxt() {
-//        final UserForm userForm = DevUtils.createTestUserForm();
+//        final FormClass userForm = DevUtils.createTestUserForm();
 //
 //        final UserFormPanel panel = new UserFormPanel(userForm, null);
 //        panel.setDesignEnabled(true);

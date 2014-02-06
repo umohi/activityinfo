@@ -41,7 +41,7 @@ import org.activityinfo.ui.full.client.widget.MappingComboBox;
 import org.activityinfo.ui.full.client.widget.MappingComboBoxBinding;
 
 /**
- * UserForm for editing ActivityDTO
+ * FormClass for editing ActivityDTO
  */
 class ActivityForm extends AbstractDesignForm {
 

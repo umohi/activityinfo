@@ -1,9 +1,14 @@
 package org.activityinfo.api2.client;
 
 
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.form.UserForm;
-import org.activityinfo.api2.shared.form.UserFormInstance;
+import org.activityinfo.api2.shared.Resource;
+import org.activityinfo.api2.shared.criteria.InstanceCriteria;
+import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.FormClass;
+
+import java.util.List;
 
 public interface ResourceLocator {
 
@@ -13,16 +18,30 @@ public interface ResourceLocator {
      * @param formId
      * @return
      */
-    Remote<UserForm> getUserForm(Iri formId);
+    Remote<FormClass> getUserForm(Cuid formId);
 
-    Remote<UserFormInstance> getFormInstance(Iri formId);
+    Remote<FormInstance> getFormInstance(Cuid formId);
 
-    Promise<Iri> createFormInstance(UserFormInstance formInstance);
+    /**
+     * Persists a resource to the server, creating or updating as necessary.
+     *
+     * @param resource the resource to persist.
+     * @return a Promise that resolves when the persistance operation completes
+     * successfully.
+     */
+    Promise<Void> persist(Resource resource);
 
-    Promise<Boolean> saveFormInstance(UserFormInstance formInstance);
 
-    Promise<UserForm> createUserForm();
+    /**
+     * Counts the form instances that match the given criteria.
+     * @param criteria
+     */
+    Remote<Integer> countInstances(InstanceCriteria criteria);
 
-    Promise<Boolean> saveUserForm(UserForm userForm);
+    /**
+     * Retrieves the form instances that match the given criteria.
+     * @param criteria
+     */
+    Remote<List<FormInstance>> queryInstances(InstanceCriteria criteria);
 
 }

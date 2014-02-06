@@ -22,6 +22,7 @@ package org.activityinfo.api2.shared.form;
  */
 
 import com.google.common.base.Preconditions;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 
@@ -30,17 +31,17 @@ import org.activityinfo.api2.shared.LocalizedString;
  */
 public class FormFieldEnumValue implements FormElement  {
 
-    private final Iri id;
+    private final Cuid id;
     private LocalizedString label;
     private LocalizedString description;
 
-    public FormFieldEnumValue(Iri id) {
+    public FormFieldEnumValue(Cuid id) {
         Preconditions.checkNotNull(id);
         this.id = id;
     }
 
     @Override
-    public Iri getId() {
+    public Cuid getId() {
         return id;
     }
 

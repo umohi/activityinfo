@@ -36,10 +36,9 @@ import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.client.Promise;
-import org.activityinfo.api2.client.PromiseMatchers;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuids;
-import org.activityinfo.api2.shared.form.UserForm;
+import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
@@ -292,9 +291,9 @@ public class GetSchemaTest extends CommandTestCase2 {
 
         ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
 
-        Promise<UserForm> userForm = locator.getUserForm(Cuids.toIri(CuidAdapter.ACTIVITY_DOMAIN, 1)).fetch();
+        Promise<FormClass> userForm = locator.getUserForm(Cuids.toIri(CuidAdapter.ACTIVITY_DOMAIN, 1)).fetch();
 
-        assertThat(userForm, resolution(CoreMatchers.<UserForm>notNullValue()));
+        assertThat(userForm, resolution(CoreMatchers.<FormClass>notNullValue()));
 
 
     }

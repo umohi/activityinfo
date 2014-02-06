@@ -14,7 +14,7 @@ public class Namespace {
     private Namespace() {
     }
 
-    public static int siteForm(Iri activityId) {
+    public static int siteForm(Cuid activityId) {
         String startString = LEGACY_NS + "Activity/";
         final String idAsString = activityId.asString();
         final String intAsString = idAsString.substring(startString.length(), idAsString.length() - "/SiteForm".length());

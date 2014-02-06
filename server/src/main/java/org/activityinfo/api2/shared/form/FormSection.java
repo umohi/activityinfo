@@ -2,6 +2,7 @@ package org.activityinfo.api2.shared.form;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 
@@ -9,21 +10,21 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * A group of form fields
+ * A logical group of form fields
  */
 public class FormSection implements FormElement, FormElementContainer {
 
 
-    private final Iri id;
+    private final Cuid id;
     private LocalizedString label;
     private final List<FormElement> elements = Lists.newArrayList();
 
-    public FormSection(Iri id) {
+    public FormSection(Cuid id) {
         Preconditions.checkNotNull(id);
         this.id = id;
     }
 
-    public Iri getId() {
+    public Cuid getId() {
         return id;
     }
 

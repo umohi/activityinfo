@@ -2,6 +2,7 @@ package org.activityinfo.api2.shared.form;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 
@@ -16,7 +17,7 @@ import java.util.Set;
  */
 public class FormField implements FormElement {
 
-    private final Iri id;
+    private final Cuid id;
     private LocalizedString label;
     private LocalizedString description;
     private LocalizedString unit;
@@ -26,11 +27,12 @@ public class FormField implements FormElement {
     private boolean readOnly;
     private boolean visible = true;
     private List<Iri> dimensions;
+    private Set<Iri> superProperties = Sets.newHashSet();
     private boolean required;
     private FormFieldCardinality cardinality;
     private Set<FormFieldEnumValue> enumValues = Sets.newHashSet();  ;
 
-    public FormField(Iri id) {
+    public FormField(Cuid id) {
         Preconditions.checkNotNull(id);
         this.id = id;
     }
@@ -54,7 +56,7 @@ public class FormField implements FormElement {
         this.cardinality = cardinality;
     }
 
-    public Iri getId() {
+    public Cuid getId() {
         return id;
     }
 
@@ -194,5 +196,17 @@ public class FormField implements FormElement {
                 ", label=" + label +
                 ", type=" + type +
                 '}';
+    }
+
+    public Set<Iri> getSuperProperties() {
+        return superProperties;
+    }
+
+    public void addSuperProperty(Iri iri) {
+        superProperties.add(iri);
+    }
+
+    public void setSuperProperties(Set<Iri> superProperties) {
+        this.superProperties = superProperties;
     }
 }

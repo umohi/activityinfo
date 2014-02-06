@@ -40,7 +40,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -52,7 +52,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Panel to render UserForm definition.
+ * Panel to render FormClass definition.
  *
  * @author YuriyZ
  */
@@ -75,17 +75,17 @@ public class UserFormPanel extends Composite {
     public static interface UserFormPanelUiBinder extends UiBinder<Widget, UserFormPanel> {
     }
 
-    private UserForm initialUserForm;
-    private UserForm userForm;
-    private UserFormInstance initialFormInstance;
-    private UserFormInstance formInstance;
+    private FormClass initialFormClass;
+    private FormClass formClass;
+    private FormInstance initialFormInstance;
+    private FormInstance formInstance;
     private boolean readOnly = false;
     private boolean designEnabled = false;
     private final List<Handler> handlerList = Lists.newArrayList();
     //
 //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
 //    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
-    private final Map<Iri, FormFieldRow> controlMap = Maps.newHashMap();
+    private final Map<Cuid, FormFieldRow> controlMap = Maps.newHashMap();
 
     @UiField
     Button saveButton;
@@ -101,19 +101,19 @@ public class UserFormPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public UserFormPanel(UserForm userForm) {
+    public UserFormPanel(FormClass formClass) {
         this();
-        renderForm(userForm);
+        renderForm(formClass);
     }
 
     /**
      * Renders user form.
      */
-    public void renderForm(UserForm userForm) {
-        this.userForm = userForm;
-        this.initialUserForm = userForm.copy();
+    public void renderForm(FormClass formClass) {
+        this.formClass = formClass;
+        this.initialFormClass = formClass.copy();
         contentPanel.clear();
-        renderElements(this.userForm.getElements());
+        renderElements(this.formClass.getElements());
     }
 
     /**
@@ -150,12 +150,12 @@ public class UserFormPanel extends Composite {
 
     @UiHandler("resetButton")
     public void onReset(ClickEvent event) {
-        final List<FormField> userFormFields = userForm.getFields();
+        final List<FormField> userFormFields = formClass.getFields();
         if (initialFormInstance != null) {
             applyValue(initialFormInstance);
 
             final List<FormField> fieldsCopy = new ArrayList<FormField>(userFormFields);
-            final Set<Iri> fieldsWithValues = initialFormInstance.getValueMap().keySet();
+            final Set<Cuid> fieldsWithValues = initialFormInstance.getValueMap().keySet();
             Iterables.removeIf(fieldsCopy, new Predicate<FormField>() {
                 @Override
                 public boolean apply(FormField input) {
@@ -175,8 +175,8 @@ public class UserFormPanel extends Composite {
         }
     }
 
-    public UserForm getUserForm() {
-        return userForm;
+    public FormClass getFormClass() {
+        return formClass;
     }
 
     public void setDesignEnabled(boolean designEnabled) {
@@ -187,11 +187,11 @@ public class UserFormPanel extends Composite {
         return designEnabled;
     }
 
-    public UserFormInstance getValue() {
+    public FormInstance getValue() {
         return formInstance;
     }
 
-    public void setValue(@Nonnull UserFormInstance formInstance) {
+    public void setValue(@Nonnull FormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
         this.initialFormInstance = formInstance.copy();
         this.formInstance = formInstance;
@@ -199,9 +199,9 @@ public class UserFormPanel extends Composite {
         addValueChangeHandler(formInstance);
     }
 
-    private void addValueChangeHandler(@Nonnull final UserFormInstance formInstance) {
+    private void addValueChangeHandler(@Nonnull final FormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
-        for (final Map.Entry<Iri, FormFieldRow> entry : controlMap.entrySet()) {
+        for (final Map.Entry<Cuid, FormFieldRow> entry : controlMap.entrySet()) {
             final IsWidget widget = entry.getValue().getFormFieldWidget();
             if (widget instanceof HasValueChangeHandlers) {
                 final HasValueChangeHandlers hasValueChangeHandlers = (HasValueChangeHandlers) widget;
@@ -215,9 +215,9 @@ public class UserFormPanel extends Composite {
         }
     }
 
-    private void applyValue(@Nonnull UserFormInstance formInstance) {
+    private void applyValue(@Nonnull FormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
-        for (Map.Entry<Iri, Object> entry : formInstance.getValueMap().entrySet()) {
+        for (Map.Entry<Cuid, Object> entry : formInstance.getValueMap().entrySet()) {
             final FormFieldRow fieldRow = controlMap.get(entry.getKey());
             if (fieldRow != null) {
                 fieldRow.setValue(entry.getValue());
@@ -243,19 +243,19 @@ public class UserFormPanel extends Composite {
         errorContainer.setInnerHTML("");
     }
 
-    public UserForm getInitialUserForm() {
-        return initialUserForm;
+    public FormClass getInitialFormClass() {
+        return initialFormClass;
     }
 
     public boolean isReadOnly() {
         return readOnly;
     }
 
-    public UserFormInstance getInitialFormInstance() {
+    public FormInstance getInitialFormInstance() {
         return initialFormInstance;
     }
 
-    public void setInitialFormInstance(UserFormInstance initialFormInstance) {
+    public void setInitialFormInstance(FormInstance initialFormInstance) {
         this.initialFormInstance = initialFormInstance;
     }
 }
