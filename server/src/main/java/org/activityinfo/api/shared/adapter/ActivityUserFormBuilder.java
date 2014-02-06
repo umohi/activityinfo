@@ -1,22 +1,33 @@
 package org.activityinfo.api.shared.adapter;
 
+import com.google.appengine.repackaged.com.google.common.base.Function;
+import com.google.appengine.repackaged.com.google.common.collect.Iterables;
+import com.google.appengine.repackaged.com.google.common.collect.Sets;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
-import org.activityinfo.api.shared.model.IndicatorDTO;
-import org.activityinfo.api.shared.model.IndicatorGroup;
+import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Namespace;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
  * Adapts a Legacy "Activity" model to a UserForm
  */
 public class ActivityUserFormBuilder {
+
+    public static class AttributeDtoToFormFieldEnumValue implements Function<AttributeDTO, FormFieldEnumValue> {
+        @Nullable
+        @Override
+        public FormFieldEnumValue apply(@Nullable AttributeDTO attributeDTO) {
+            final FormFieldEnumValue value = new FormFieldEnumValue(Namespace.attribute(attributeDTO.getId()));
+            value.setLabel(new LocalizedString(attributeDTO.getName()));
+            return value;
+        }
+    }
 
     private final ActivityDTO activity;
     private List<FormElement> siteElements = Lists.newArrayList();
@@ -46,12 +57,14 @@ public class ActivityUserFormBuilder {
             FormField attributeField = new FormField(Namespace.attributeGroup(group.getId()));
             attributeField.setLabel(new LocalizedString(group.getName()));
             attributeField.setRange(Namespace.attributeGroup(group.getId()));
-            attributeField.setType(FormFieldType.REFERENCE);
+            attributeField.setType(FormFieldType.ENUMERATED);
+            attributeField.setRequired(group.isMandatory());
             if (group.isMultipleAllowed()) {
                 attributeField.setCardinality(FormFieldCardinality.MULTIPLE);
             } else {
                 attributeField.setCardinality(FormFieldCardinality.SINGLE);
             }
+            attributeField.setEnumValues(Sets.newHashSet(Iterables.transform(group.getAttributes(), new AttributeDtoToFormFieldEnumValue())));
             siteForm.addElement(attributeField);
         }
 
@@ -65,7 +78,6 @@ public class ActivityUserFormBuilder {
                 addIndicators(section, group);
 
                 siteForm.addElement(section);
-
             }
         }
 

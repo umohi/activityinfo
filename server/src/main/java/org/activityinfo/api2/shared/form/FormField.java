@@ -27,18 +27,18 @@ public class FormField implements FormElement {
     private List<Iri> dimensions;
     private boolean required;
     private FormFieldCardinality cardinality;
-    private List<FormFieldEnumValue> enumValues;
+    private Set<FormFieldEnumValue> enumValues;
 
     public FormField(Iri id) {
         Preconditions.checkNotNull(id);
         this.id = id;
     }
 
-    public List<FormFieldEnumValue> getEnumValues() {
+    public Set<FormFieldEnumValue> getEnumValues() {
         return enumValues;
     }
 
-    public void setEnumValues(List<FormFieldEnumValue> enumValues) {
+    public void setEnumValues(Set<FormFieldEnumValue> enumValues) {
         this.enumValues = enumValues;
     }
 

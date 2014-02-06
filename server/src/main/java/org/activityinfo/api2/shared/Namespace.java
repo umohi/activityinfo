@@ -55,6 +55,10 @@ public class Namespace {
         return new Iri(LEGACY_NS + "attributeGroup/" + id);
     }
 
+    public static Iri attribute(int id) {
+        return new Iri(LEGACY_NS + "attribute/" + id);
+    }
+
     public static final Iri PARTNER = new Iri(NS + "Partner");
 
     public static final String ACTIVITY = NS + "Activity";
