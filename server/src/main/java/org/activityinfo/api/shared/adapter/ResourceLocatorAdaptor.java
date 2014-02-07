@@ -1,23 +1,29 @@
 package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.command.GetSites;
+import org.activityinfo.api.shared.command.*;
+import org.activityinfo.api.shared.command.result.AttributeGroupResult;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.command.result.SiteResult;
 import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.AttributeDTO;
+import org.activityinfo.api.shared.model.AttributeGroupDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api2.client.*;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.criteria.InstanceCriteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.reports.shared.model.DimensionType;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,6 +67,32 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Remote<List<FormInstance>> queryInstances(InstanceCriteria criteria) {
+        if (criteria != null && criteria.getClasses() != null) {
+            final Filter filter = new Filter();
+            final List<Integer> idList = Lists.newArrayList(Iterables.transform(criteria.getClasses(), new Function<Iri, Integer>() {
+                @Nullable
+                @Override
+                public Integer apply(@Nullable Iri input) {
+                    return CuidAdapter.attributeGroupLegacyId(input);
+                }
+            }));
+            filter.addRestriction(DimensionType.AttributeGroup, idList);
+            return Remotes.transform(execute(new GetAttributeGroupsDimension(filter)), new Function<AttributeGroupResult, List<FormInstance>>() {
+                @Nullable
+                @Override
+                public List<FormInstance> apply(@Nullable AttributeGroupResult input) {
+                    final List<AttributeGroupDTO> data = input.getData();
+                    final List<FormInstance> list = new ArrayList<FormInstance>();
+                    for (AttributeGroupDTO attributeGroup : data) {
+                        final List<AttributeDTO> attributes = attributeGroup.getAttributes();
+                        for (AttributeDTO attribute : attributes) {
+                            list.add(InstanceAdapters.fromAttribute(attribute, CuidAdapter.attributeGroupFormClass(attributeGroup)));
+                        }
+                    }
+                    return list;
+                }
+            });
+        }
         return Remotes.error(new UnsupportedOperationException());
     }
 

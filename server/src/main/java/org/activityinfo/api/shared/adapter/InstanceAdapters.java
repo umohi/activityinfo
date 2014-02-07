@@ -1,6 +1,7 @@
 package org.activityinfo.api.shared.adapter;
 
 
+import org.activityinfo.api.shared.model.AttributeDTO;
 import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api2.shared.Cuid;
@@ -41,6 +42,12 @@ public class InstanceAdapters {
             }
         }
 
+        return instance;
+    }
+
+    public static FormInstance fromAttribute(AttributeDTO attribute, Cuid formClassId) {
+        final FormInstance instance = new FormInstance(CuidAdapter.attributeField(attribute.getId()), formClassId);
+        instance.set(CuidAdapter.attributeField(attribute.getId()), attribute.getName());
         return instance;
     }
 }

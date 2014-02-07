@@ -32,6 +32,8 @@ public class CuidAdapter {
 
     public static final char ATTRIBUTE_GROUP_DOMAIN = 'A';
 
+    public static final char ATTRIBUTE_DOMAIN = 't';
+
 
     /**
      * Avoid instance creation.
@@ -105,6 +107,10 @@ public class CuidAdapter {
         return cuid(INDICATOR_DOMAIN, indicatorId);
     }
 
+    public static Cuid attributeField(int indicatorId) {
+        return cuid(ATTRIBUTE_DOMAIN, indicatorId);
+    }
+
     public static Cuid siteField(int siteId) {
         return cuid(INDICATOR_DOMAIN, siteId);
     }
@@ -143,5 +149,20 @@ public class CuidAdapter {
 
     private static Cuid cuid(char domain, EntityDTO entityDTO) {
         return cuid(domain, entityDTO.getId());
+    }
+
+    public static int attributeGroupLegacyId(Iri iri) {
+        String iriAsString = iri.asString();
+        if (iriAsString.startsWith(Cuids.IRI_PREFIX)) {
+            iriAsString = iriAsString.substring(Cuids.IRI_PREFIX.length());
+        }
+        if (iriAsString.charAt(0) == ATTRIBUTE_GROUP_DOMAIN) {
+            iriAsString = iriAsString.substring(1);
+        }
+        try {
+            return Integer.parseInt(iriAsString);
+        } catch (Exception e){
+            return -1;
+        }
     }
 }
