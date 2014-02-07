@@ -37,6 +37,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.command.DeleteSite;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.FilterUrlSerializer;
@@ -46,12 +47,12 @@ import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.api2.shared.form.UserFormType;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
+import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 import org.activityinfo.ui.full.client.page.*;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
@@ -366,8 +367,13 @@ public class DataEntryPage extends LayoutContainer implements Page,
     public void onUIAction(String actionId) {
         if (UIActions.ADD.equals(actionId)) {
             if (FeatureSwitch.isNewFormEnabled()) {
+                int activityId = currentPlace.getFilter().getRestrictedCategory(
+                        DimensionType.Activity);
+                int newSiteId = new KeyGenerator().generateInt();
                 eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(UserFormType.ACTIVITY)));
+                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(
+                        CuidAdapter.activityFormClass(activityId),
+                        CuidAdapter.siteField(newSiteId))));
             } else {
                 SiteDialogLauncher formHelper = new SiteDialogLauncher(dispatcher);
                 formHelper.addSite(currentPlace.getFilter(),

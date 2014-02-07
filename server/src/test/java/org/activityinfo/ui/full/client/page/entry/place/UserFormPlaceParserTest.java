@@ -23,8 +23,6 @@ package org.activityinfo.ui.full.client.page.entry.place;
 
 import junit.framework.Assert;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.form.UserFormType;
 import org.junit.Test;
 
 /**
@@ -35,11 +33,6 @@ public class UserFormPlaceParserTest {
     @Test
     public void empty() {
         assertCorrect(new UserFormPlace());
-    }
-
-    @Test
-    public void formWithTypePresent() {
-        assertCorrect(new UserFormPlace(UserFormType.ACTIVITY));
     }
 
     @Test

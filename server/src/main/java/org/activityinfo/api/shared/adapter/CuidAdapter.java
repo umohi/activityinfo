@@ -105,6 +105,10 @@ public class CuidAdapter {
         return cuid(INDICATOR_DOMAIN, indicatorId);
     }
 
+    public static Cuid siteField(int siteId) {
+        return cuid(INDICATOR_DOMAIN, siteId);
+    }
+
     /**
      * @return the {@code FormField} Cuid for the field of a given Activity {@code FormClass} that
      * references the given AttributeGroup FormClass
@@ -140,5 +144,4 @@ public class CuidAdapter {
     private static Cuid cuid(char domain, EntityDTO entityDTO) {
         return cuid(domain, entityDTO.getId());
     }
-
 }

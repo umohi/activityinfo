@@ -24,8 +24,6 @@ package org.activityinfo.ui.full.client.page.entry.place;
 import com.google.common.base.Strings;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
-import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.form.UserFormType;
 import org.activityinfo.ui.full.client.page.PageStateParser;
 
 /**
@@ -43,10 +41,6 @@ public class UserFormPlaceParser implements PageStateParser {
         }
         if (place.getUserFormInstanceId() != null) {
             fragment.append(normalizeIri(place.getUserFormInstanceId())).append("/");
-        }
-        // type is not null only for new form -> therefore used only for new form creation
-        if (place.getUserFormType() != null) {
-            fragment.append(place.getUserFormType().getCuidChar());
         }
         return fragment.toString();
     }
@@ -69,12 +63,7 @@ public class UserFormPlaceParser implements PageStateParser {
             }
 
             final String[] parts = token.split("\\/");
-            if (parts.length == 1) { // type
-                final String firstPart = parts[0];
-                if (firstPart.length() == 1) {
-                    place.setUserFormType(UserFormType.fromCuidChar(firstPart.charAt(0)));
-                }
-            } else if (parts.length == 2) {
+            if (parts.length == 2) {
                 place.setUserFormId(new Cuid(parts[0]));
                 place.setUserFormInstanceId(new Cuid(parts[1]));
             }

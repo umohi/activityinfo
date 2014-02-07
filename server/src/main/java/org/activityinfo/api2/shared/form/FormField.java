@@ -30,22 +30,10 @@ public class FormField implements FormElement {
     private Set<Iri> superProperties = Sets.newHashSet();
     private boolean required;
     private FormFieldCardinality cardinality;
-    private Set<FormFieldEnumValue> enumValues = Sets.newHashSet();  ;
 
     public FormField(Cuid id) {
         Preconditions.checkNotNull(id);
         this.id = id;
-    }
-
-    public Set<FormFieldEnumValue> getEnumValues() {
-        if (enumValues == null) {
-            enumValues = Sets.newHashSet();
-        }
-        return enumValues;
-    }
-
-    public void setEnumValues(Set<FormFieldEnumValue> enumValues) {
-        this.enumValues = enumValues;
     }
 
     public FormFieldCardinality getCardinality() {

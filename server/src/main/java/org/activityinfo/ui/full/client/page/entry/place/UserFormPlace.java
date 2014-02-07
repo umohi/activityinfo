@@ -22,13 +22,10 @@ package org.activityinfo.ui.full.client.page.entry.place;
  */
 
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.form.UserFormType;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.app.Section;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,29 +36,15 @@ public class UserFormPlace implements PageState {
 
     public static final PageId PAGE_ID = new PageId("site-form");
 
-    private UserFormType userFormType;
     private Cuid userFormId;
     private Cuid userFormInstanceId;
 
     public UserFormPlace() {
     }
 
-    /**
-     * Used when new form should be created.
-     *
-     * @param userFormType user form type to create.
-     */
-    public UserFormPlace(@Nonnull UserFormType userFormType) {
-        this.userFormType = userFormType;
-    }
-
     public UserFormPlace(Cuid userFormId, Cuid userFormInstanceId) {
         this.userFormId = userFormId;
         this.userFormInstanceId = userFormInstanceId;
-    }
-
-    public UserFormType getUserFormType() {
-        return userFormType;
     }
 
     @Override
@@ -82,10 +65,6 @@ public class UserFormPlace implements PageState {
     @Override
     public Section getSection() {
         return Section.DATA_ENTRY;
-    }
-
-    public void setUserFormType(UserFormType userFormType) {
-        this.userFormType = userFormType;
     }
 
     public Cuid getUserFormId() {
@@ -114,15 +93,13 @@ public class UserFormPlace implements PageState {
         if (userFormId != null ? !userFormId.equals(that.userFormId) : that.userFormId != null) return false;
         if (userFormInstanceId != null ? !userFormInstanceId.equals(that.userFormInstanceId) : that.userFormInstanceId != null)
             return false;
-        if (userFormType != that.userFormType) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = userFormType != null ? userFormType.hashCode() : 0;
-        result = 31 * result + (userFormId != null ? userFormId.hashCode() : 0);
+        int result = userFormId != null ? userFormId.hashCode() : 0;
         result = 31 * result + (userFormInstanceId != null ? userFormInstanceId.hashCode() : 0);
         return result;
     }
@@ -130,7 +107,6 @@ public class UserFormPlace implements PageState {
     @Override
     public String toString() {
         return "UserFormPlace{" +
-                "userFormType=" + userFormType +
                 ", userFormId=" + userFormId +
                 ", userFormInstanceId=" + userFormInstanceId +
                 '}';
