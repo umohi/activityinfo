@@ -121,7 +121,7 @@ public class CreateEntityHandler extends BaseEntityHandler implements
                 properties.get("activityId"));
         indicator.setActivity(activity);
 
-        assertDesignPriviledges(user, indicator.getActivity().getDatabase());
+        assertDesignPrivileges(user, indicator.getActivity().getDatabase());
 
         updateIndicatorProperties(indicator, properties);
 

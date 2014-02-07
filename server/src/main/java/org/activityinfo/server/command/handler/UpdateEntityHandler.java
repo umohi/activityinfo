@@ -96,7 +96,7 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
         Indicator indicator = entityManager()
                 .find(Indicator.class, cmd.getId());
 
-        assertDesignPriviledges(user, indicator.getActivity().getDatabase());
+        assertDesignPrivileges(user, indicator.getActivity().getDatabase());
 
         updateIndicatorProperties(indicator, changes);
     }
@@ -107,7 +107,7 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
                 cmd.getId());
 
         // TODO: check permissions when updating the LockedPeriod
-        // assertDesignPriviledges(user, database)
+        // assertDesignPrivileges(user, database)
 
         updateLockedPeriodProperties(lockedPeriod, changes);
     }
@@ -118,7 +118,7 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
                 .find(Attribute.class, cmd.getId());
 
         // TODO: decide where attributes belong and how to manage them
-        // assertDesignPriviledges(user, attribute.get);
+        // assertDesignPrivileges(user, attribute.get);
 
         updateAttributeProperties(changes, attribute);
         AttributeGroup ag = entityManager().find(AttributeGroup.class,

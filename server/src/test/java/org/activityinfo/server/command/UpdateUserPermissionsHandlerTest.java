@@ -134,8 +134,7 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
 
         UpdateUserPermissions cmd = new UpdateUserPermissions(1, dto);
 
-        UpdateUserPermissionsHandler.verifyAuthority(cmd,
-                executingUserPermissions);
+        UpdateUserPermissionsHandler.verifyAuthority(cmd, executingUserPermissions);
     }
 
     /**
@@ -157,8 +156,7 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
 
         UpdateUserPermissions cmd = new UpdateUserPermissions(1, dto);
 
-        UpdateUserPermissionsHandler.verifyAuthority(cmd,
-                executingUserPermissions);
+        UpdateUserPermissionsHandler.verifyAuthority(cmd, executingUserPermissions);
     }
 
     @Test(expected = IllegalAccessCommandException.class)
@@ -176,8 +174,7 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
 
         UpdateUserPermissions cmd = new UpdateUserPermissions(1, dto);
 
-        UpdateUserPermissionsHandler.verifyAuthority(cmd,
-                executingUserPermissions);
+        UpdateUserPermissionsHandler.verifyAuthority(cmd, executingUserPermissions);
     }
 
     @Test
@@ -196,8 +193,7 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
 
         UpdateUserPermissions cmd = new UpdateUserPermissions(1, dto);
 
-        UpdateUserPermissionsHandler.verifyAuthority(cmd,
-                executingUserPermissions);
+        UpdateUserPermissionsHandler.verifyAuthority(cmd, executingUserPermissions);
     }
 
     /**
@@ -223,10 +219,8 @@ public class UpdateUserPermissionsHandlerTest extends CommandTestCase {
 
         UserResult result = execute(new GetUsers(1));
         Assert.assertEquals(1, result.getTotalLength());
-        Assert.assertEquals("ralph@lauren.com", result.getData().get(0)
-                .getEmail());
-        Assert.assertTrue("edit permissions", result.getData().get(0)
-                .getAllowEdit());
+        Assert.assertEquals("ralph@lauren.com", result.getData().get(0).getEmail());
+        Assert.assertTrue("edit permissions", result.getData().get(0).getAllowEdit());
     }
 
     /**

@@ -1,6 +1,7 @@
 package org.activityinfo.server.entity.change;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Provider;
 import org.activityinfo.server.database.hibernate.entity.Deleteable;
 import org.activityinfo.server.entity.auth.Authorization;
@@ -26,12 +27,14 @@ public class ChangeHandler {
 
     private static final Logger LOGGER = Logger.getLogger(ChangeHandler.class.getName());
 
+    private final Injector injector;
     private final Provider<EntityManager> entityManager;
     private final Validator validator;
 
     @Inject
-    public ChangeHandler(Provider<EntityManager> entityManager, Validator validator) {
+    public ChangeHandler(Injector injector, Provider<EntityManager> entityManager, Validator validator) {
         super();
+        this.injector = injector;
         this.entityManager = entityManager;
         this.validator = validator;
     }
@@ -214,7 +217,7 @@ public class ChangeHandler {
 
             boolean authorized;
             try {
-                AuthorizationHandler<T> authorizationHandler = authorization.handler().newInstance();
+                AuthorizationHandler<T> authorizationHandler = injector.getInstance(authorization.handler());
                 authorized = authorizationHandler.isAuthorized(request.getRequestingUser(), entity);
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Exception thrown by authorization handler", e);

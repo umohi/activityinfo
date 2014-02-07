@@ -23,8 +23,8 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
+import com.google.inject.util.Providers;
 import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
-import org.activityinfo.api.shared.model.LocationTypeDTO;
 import org.activityinfo.server.database.hibernate.entity.*;
 
 import javax.persistence.EntityManager;
@@ -39,9 +39,12 @@ import java.util.Map;
 public class BaseEntityHandler {
 
     private final EntityManager em;
+    private final PermissionOracle permissionsOracle;
+
 
     public BaseEntityHandler(EntityManager em) {
         this.em = em;
+        this.permissionsOracle = new PermissionOracle(Providers.of(em));
     }
 
     protected void updateIndicatorProperties(Indicator indicator,
@@ -128,38 +131,6 @@ public class BaseEntityHandler {
         entityManager().merge(lockedPeriod);
     }
 
-    protected void updateActivityProperties(Activity activity,
-                                            Map<String, Object> changes) {
-        if (changes.containsKey("name")) {
-            activity.setName(trim(changes.get("name")));
-        }
-
-        if (changes.containsKey("locationType")) {
-            activity.setLocationType(
-                    entityManager().getReference(LocationType.class,
-                            ((LocationTypeDTO) changes.get("locationType")).getId()));
-        }
-
-        if (changes.containsKey("category")) {
-            activity.setCategory(trim(changes.get("category")));
-        }
-
-        if (changes.containsKey("mapIcon")) {
-            activity.setMapIcon(trim(changes.get("mapIcon")));
-        }
-
-        if (changes.containsKey("reportingFrequency")) {
-            activity.setReportingFrequency((Integer) changes
-                    .get("reportingFrequency"));
-        }
-
-        if (changes.containsKey("sortOrder")) {
-            activity.setSortOrder((Integer) changes.get("sortOrder"));
-        }
-
-        activity.getDatabase().setLastSchemaUpdate(new Date());
-    }
-
     private String trim(Object value) {
         if (value instanceof String) {
             return ((String) value).toString();
@@ -210,13 +181,12 @@ public class BaseEntityHandler {
      * @param database The database the user is trying to modify
      * @throws IllegalAccessCommandException If the user does not have permission
      */
-    protected void assertDesignPriviledges(User user, UserDatabase database)
+    protected void assertDesignPrivileges(User user, UserDatabase database)
             throws IllegalAccessCommandException {
 
-        if (!database.isAllowedDesign(user)) {
+        if (!permissionsOracle.isDesignAllowed(database, user)) {
             throw new IllegalAccessCommandException();
         }
-
     }
 
     public EntityManager entityManager() {

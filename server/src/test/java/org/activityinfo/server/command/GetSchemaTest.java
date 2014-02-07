@@ -29,6 +29,7 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.matcher.Matchers;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api.shared.command.CreateEntity;
@@ -36,7 +37,6 @@ import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.client.Promise;
-import org.activityinfo.api2.client.PromiseMatchers;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.form.UserForm;
@@ -143,9 +143,8 @@ public class GetSchemaTest extends CommandTestCase2 {
 
         SchemaDTO schema = execute(new GetSchema());
 
-        assertThat(schema.getDatabases().size(), equalTo(1));
-        assertThat("BAVON in PEAR", schema.getDatabaseById(1),
-                is(not(nullValue())));
+        assertThat(schema.getDatabases().size(), equalTo(2));
+        assertThat("BAVON in PEAR", schema.getDatabaseById(1), is(not(nullValue())));
         assertThat(schema.getDatabaseById(1).getMyPartnerId(), equalTo(1));
         assertThat(schema.getDatabaseById(1).isEditAllowed(), equalTo(true));
         assertThat(schema.getDatabaseById(1).isEditAllAllowed(), equalTo(false));
