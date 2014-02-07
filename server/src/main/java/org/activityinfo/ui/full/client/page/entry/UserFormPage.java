@@ -111,22 +111,21 @@ public class UserFormPage extends Composite implements Page {
             @Override
             public void onSuccess(FormClass result) {
                 userFormPanel.renderForm(result);
+                resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).fetch().then(new AsyncCallback<FormInstance>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Log.error("Unable to fetch FormInstance, iri=" + userFormPlace.getUserFormInstanceId(), caught);
+                    }
 
-                if (userFormPlace.isCreateNewForm()) {
-                    userFormPanel.setValue(new FormInstance(userFormPlace.getUserFormId(), userFormPlace.getUserFormInstanceId()));
-                } else {
-                    resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).fetch().then(new AsyncCallback<FormInstance>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            Log.error("Unable to fetch FormInstance, iri=" + userFormPlace.getUserFormInstanceId(), caught);
-                        }
-
-                        @Override
-                        public void onSuccess(FormInstance result) {
+                    @Override
+                    public void onSuccess(FormInstance result) {
+                        if (result == null || result.getId() == null) {
+                            userFormPanel.setValue(new FormInstance(userFormPlace.getUserFormId(), userFormPlace.getUserFormInstanceId()));
+                        } else {
                             userFormPanel.setValue(result);
                         }
-                    });
-                }
+                    }
+                });
             }
         });
         return userFormPlace;

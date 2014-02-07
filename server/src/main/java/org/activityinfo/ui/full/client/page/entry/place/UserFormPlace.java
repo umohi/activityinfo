@@ -44,21 +44,8 @@ public class UserFormPlace implements PageState {
     }
 
     public UserFormPlace(Cuid userFormId, Cuid userFormInstanceId) {
-        this(userFormId, userFormInstanceId, false);
-    }
-
-    public UserFormPlace(Cuid userFormId, Cuid userFormInstanceId, boolean createNewForm) {
         this.userFormId = userFormId;
         this.userFormInstanceId = userFormInstanceId;
-        this.createNewForm = createNewForm;
-    }
-
-    public boolean isCreateNewForm() {
-        return createNewForm;
-    }
-
-    public void setCreateNewForm(boolean createNewForm) {
-        this.createNewForm = createNewForm;
     }
 
     @Override

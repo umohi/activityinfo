@@ -41,12 +41,6 @@ public class UserFormPlaceParserTest {
     }
 
     @Test
-    public void formAndInstanceIdWithCreateFlagPresent() {
-        assertCorrect(new UserFormPlace(new Cuid("adf"), new Cuid("sdf"), true));
-        assertCorrect(new UserFormPlace(new Cuid("adf"), new Cuid("sdf"), false));
-    }
-
-    @Test
     public void fromManualToken() {
         String token = "#site-form/adp/sxdg425";
         final UserFormPlace parsedPlace = UserFormPlaceParser.parseToken(token);

@@ -373,7 +373,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
                 final Cuid siteCuid = CuidAdapter.siteField(new KeyGenerator().generateInt());
                 final Cuid activityCuid = CuidAdapter.activityFormClass(activityId);
                 eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(activityCuid, siteCuid, true)));
+                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(activityCuid, siteCuid)));
             } else {
                 SiteDialogLauncher formHelper = new SiteDialogLauncher(dispatcher);
                 formHelper.addSite(currentPlace.getFilter(),
