@@ -28,11 +28,9 @@ import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.api.shared.command.result.DuplicateCreateResult;
 import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.server.database.hibernate.entity.Partner;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.server.database.hibernate.entity.UserPermission;
 
 import javax.persistence.EntityManager;
 import java.util.Date;
@@ -58,13 +56,7 @@ public class AddPartnerHandler implements CommandHandler<AddPartner> {
             throws CommandException {
 
         UserDatabase db = em.find(UserDatabase.class, cmd.getDatabaseId());
-        if (db.getOwner().getId() != user.getId()) {
-            UserPermission perm = db.getPermissionByUser(user);
-            if (perm == null || !perm.isAllowManageAllUsers()) {
-                throw new IllegalAccessCommandException(
-                        "The user does not have the manageAllUsers permission.");
-            }
-        }
+        PermissionOracle.using(em).assertManagePartnerAllowed(db, user);
 
         // first check to see if an organization by this name is already
         // a partner

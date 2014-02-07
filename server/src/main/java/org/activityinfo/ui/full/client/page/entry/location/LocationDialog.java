@@ -37,6 +37,7 @@ import org.activityinfo.api.shared.model.CountryDTO;
 import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api2.shared.workflow.Workflow;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 import org.activityinfo.ui.full.client.page.entry.form.resources.SiteFormResources;
@@ -50,6 +51,7 @@ public class LocationDialog extends Window {
     private Dispatcher dispatcher;
     private final LocationSearchPresenter searchPresenter;
     private final NewLocationPresenter newLocationPresenter;
+    private final LocationTypeDTO locationType;
 
     private Html formHeader;
     private Html addLocationHeader;
@@ -64,12 +66,12 @@ public class LocationDialog extends Window {
 
     private Callback callback;
 
-    public LocationDialog(Dispatcher dispatcher, CountryDTO country,
-                          LocationTypeDTO locationType) {
+    public LocationDialog(Dispatcher dispatcher, CountryDTO country, LocationTypeDTO locationType) {
+
         this.dispatcher = dispatcher;
-        this.searchPresenter = new LocationSearchPresenter(dispatcher, country,
-                locationType);
+        this.searchPresenter = new LocationSearchPresenter(dispatcher, country, locationType);
         this.newLocationPresenter = new NewLocationPresenter(country);
+        this.locationType = locationType;
 
         setHeadingText(I18N.CONSTANTS.chooseLocation());
         setWidth((int) (com.google.gwt.user.client.Window.getClientWidth() * 0.95));
@@ -80,8 +82,7 @@ public class LocationDialog extends Window {
         addMap();
 
         getButtonBar().setAlignment(HorizontalAlignment.LEFT);
-        getButtonBar().add(
-                useLocationButton = new Button(I18N.CONSTANTS.useLocation(),
+        getButtonBar().add(useLocationButton = new Button(I18N.CONSTANTS.useLocation(),
                         IconImageBundle.ICONS.useLocation(),
                         new SelectionListener<ButtonEvent>() {
 
@@ -92,8 +93,7 @@ public class LocationDialog extends Window {
                         }));
         useLocationButton.disable();
 
-        getButtonBar().add(
-                new Button(I18N.CONSTANTS.cancel(),
+        getButtonBar().add(new Button(I18N.CONSTANTS.cancel(),
                         new SelectionListener<ButtonEvent>() {
                             @Override
                             public void componentSelected(ButtonEvent ce) {
@@ -112,11 +112,9 @@ public class LocationDialog extends Window {
                         } else {
                             formHeader.setHtml(I18N.CONSTANTS.searchLocations());
                         }
-                        addLocationHeader.setVisible(!newLocationPresenter
-                                .isActive());
+                        addLocationHeader.setVisible(!newLocationPresenter.isActive());
                         addLocationHelp.setVisible(!newLocationPresenter.isActive());
-                        addLocationButton.setVisible(!newLocationPresenter
-                                .isActive());
+                        addLocationButton.setVisible(!newLocationPresenter.isActive());
                         layout();
                     }
                 });
@@ -163,32 +161,32 @@ public class LocationDialog extends Window {
                 .locationDialogPane());
 
         container.add(newHeader(I18N.CONSTANTS.chooseLocation()));
-        container
-                .add(newExplanation(I18N.CONSTANTS.chooseLocationDescription()));
+        container.add(newExplanation(I18N.CONSTANTS.chooseLocationDescription()));
 
         container.add(formHeader = newHeader(I18N.CONSTANTS.searchLocations()));
-        container.add(new LocationForm(dispatcher, locationType,
-                searchPresenter, newLocationPresenter));
+        container.add(new LocationForm(dispatcher, locationType, searchPresenter, newLocationPresenter));
 
         container.add(newHeader(I18N.CONSTANTS.searchResults()));
         container.add(new SearchListView(searchPresenter));
         container.add(new SearchStatusView(searchPresenter));
 
-        container.add(addLocationHeader = newHeader(I18N.CONSTANTS
-                .addLocation()));
-        container.add(addLocationHelp = newExplanation(I18N.CONSTANTS
-                .addLocationDescription()));
-        container.add(addLocationButton = new Button(I18N.CONSTANTS
-                .newLocation(), IconImageBundle.ICONS.add(),
+        addLocationHeader = newHeader(I18N.CONSTANTS.addLocation());
+        addLocationHelp = newExplanation(I18N.CONSTANTS.addLocationDescription());
+        addLocationButton = new Button(I18N.CONSTANTS.newLocation(), IconImageBundle.ICONS.add(),
                 new SelectionListener<ButtonEvent>() {
 
                     @Override
                     public void componentSelected(ButtonEvent ce) {
                         newLocationPresenter.setActive(true);
                     }
-                }));
-        addLocationButton.addStyleName(SiteFormResources.INSTANCE.style()
-                .addLocationButton());
+                });
+        addLocationButton.addStyleName(SiteFormResources.INSTANCE.style().addLocationButton());
+
+        if(isAddAllowed()) {
+            container.add(addLocationHeader);
+            container.add(addLocationHelp);
+            container.add(addLocationButton);
+        }
 
         BorderLayoutData layout = new BorderLayoutData(LayoutRegion.WEST);
         layout.setSize(350);
@@ -198,27 +196,31 @@ public class LocationDialog extends Window {
 
     private Html newHeader(String string) {
         Html html = new Html(string);
-        html.addStyleName(SiteFormResources.INSTANCE.style()
-                .locationDialogHeader());
+        html.addStyleName(SiteFormResources.INSTANCE.style().locationDialogHeader());
         return html;
     }
 
     private Html newExplanation(String string) {
         Html html = new Html(string);
-        html.addStyleName(SiteFormResources.INSTANCE.style()
-                .locationDialogHelp());
+        html.addStyleName(SiteFormResources.INSTANCE.style().locationDialogHelp());
         return html;
     }
 
     private void addMap() {
-        LocationMap mapView = new LocationMap(searchPresenter,
-                newLocationPresenter);
-
+        LocationMap mapView = new LocationMap(searchPresenter, newLocationPresenter);
         add(mapView, new BorderLayoutData(LayoutRegion.CENTER));
     }
 
     public void show(Callback callback) {
         this.callback = callback;
         show();
+    }
+
+    /**
+     *
+     * @return true if this LocationType's workflow allows adding new locations
+     */
+    private boolean isAddAllowed() {
+        return !Workflow.CLOSED_WORKFLOW_ID.equals(locationType.getWorkflowId());
     }
 }

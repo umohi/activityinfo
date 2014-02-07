@@ -39,6 +39,7 @@ import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 import javax.persistence.EntityManager;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +52,7 @@ public class UpdateMonthlyReportsHandler implements
     private final EntityManager em;
     private final KeyGenerator keyGenerator;
     private final SiteHistoryProcessor siteHistoryProcessor;
+    private final PermissionOracle permissionOracle;
 
     @Inject
     public UpdateMonthlyReportsHandler(EntityManager em,
@@ -58,6 +60,7 @@ public class UpdateMonthlyReportsHandler implements
         this.em = em;
         this.keyGenerator = keyGenerator;
         this.siteHistoryProcessor = siteHistoryProcessor;
+        this.permissionOracle = new PermissionOracle(em);
     }
 
     public static void main(String[] args) {
@@ -75,7 +78,7 @@ public class UpdateMonthlyReportsHandler implements
             throw new CommandException(cmd, "site " + cmd.getSiteId() + " not found for user " + user.getEmail());
         }
 
-        if(!editAuthorized(user, site)) {
+        if(!permissionOracle.isEditAllowed(site, user)) {
             throw new IllegalAccessCommandException("Not authorized to modify sites");
         }
 
@@ -118,25 +121,6 @@ public class UpdateMonthlyReportsHandler implements
         siteHistoryProcessor.persistHistory(site, user, ChangeType.UPDATE, siteHistoryChangeMap);
 
         return new VoidResult();
-    }
-
-    private boolean editAuthorized(User user, Site site) {
-
-        if(site.getActivity().getDatabase().getOwner().getId() == user.getId()) {
-            return true;
-        }
-        UserPermission permission = site.getActivity().getDatabase().getPermissionByUser(user);
-        if(permission == null) {
-            return false;
-        }
-        if(permission.isAllowEditAll()) {
-            return true;
-        }
-        if(permission.isAllowEdit() && site.getPartner().getId() == permission.getPartner().getId()) {
-            return true;
-        }
-
-        return false;
     }
 
     public void updateIndicatorValue(EntityManager em, ReportingPeriod period,
