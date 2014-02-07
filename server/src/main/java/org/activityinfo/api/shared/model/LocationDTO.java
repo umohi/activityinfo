@@ -173,4 +173,12 @@ public class LocationDTO extends BaseModelData implements EntityDTO,
     public boolean hasAxe() {
         return !Strings.isNullOrEmpty(getAxe());
     }
+
+    public void setWorkflowStatusId(String workflowStatusId) {
+        set("workflowStatusId", workflowStatusId);
+    }
+
+    public String getWorkflowStatusId() {
+        return get("workflowStatusId");
+    }
 }

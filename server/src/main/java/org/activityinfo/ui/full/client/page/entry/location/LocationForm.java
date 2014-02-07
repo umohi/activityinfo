@@ -37,6 +37,7 @@ import org.activityinfo.api.shared.model.AdminLevelDTO;
 import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api2.shared.workflow.Workflow;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
@@ -96,8 +97,7 @@ public class LocationForm extends LayoutContainer {
                     }
                 });
 
-        newLocationPresenter.addListener(
-                NewLocationPresenter.ACTIVE_STATE_CHANGED,
+        newLocationPresenter.addListener(NewLocationPresenter.ACTIVE_STATE_CHANGED,
                 new Listener<BaseEvent>() {
                     @Override
                     public void handleEvent(BaseEvent be) {
@@ -217,8 +217,7 @@ public class LocationForm extends LayoutContainer {
         newFormButtonContainer.setWidth(FIELD_WIDTH);
         newFormButtonContainer.setLayout(new HBoxLayout());
         newFormButtonContainer.add(saveButton);
-        newFormButtonContainer.add(cancelButton, new HBoxLayoutData(0, 0, 0,
-                BUTTON_SPACE));
+        newFormButtonContainer.add(cancelButton, new HBoxLayoutData(0, 0, 0, BUTTON_SPACE));
 
         add(newFormButtonContainer, buttonLayout());
 

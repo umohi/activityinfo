@@ -55,7 +55,9 @@ public class SchemaMigration {
             "ALTER TABLE UserLogin ADD COLUMN organization TEXT",
             "ALTER TABLE UserLogin ADD COLUMN jobtitle TEXT",
             "ALTER TABLE UserLogin ADD COLUMN invitedBy INT",
-            "ALTER TABLE UserLogin ADD COLUMN dateCreated REAL"
+            "ALTER TABLE UserLogin ADD COLUMN dateCreated REAL",
+            "ALTER TABLE Location ADD COLUMN workflowStatusId",
+            "ALTER TABLE LocationType ADD COLUMN workflowId"
     };
 
     @Inject
