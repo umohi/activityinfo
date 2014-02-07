@@ -36,7 +36,9 @@ import org.activityinfo.server.mail.InvitationMessage;
 import org.activityinfo.server.mail.MailSender;
 import org.activityinfo.server.mail.Message;
 
+import javax.persistence.EntityManager;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,8 +59,8 @@ public class UpdateUserPermissionsHandler implements
 
     private final MailSender mailSender;
 
-    private static final Logger logger = Logger
-            .getLogger(UpdateUserPermissionsHandler.class.getName());
+
+    private static final Logger logger = Logger.getLogger(UpdateUserPermissionsHandler.class.getName());
 
     @Inject
     public UpdateUserPermissionsHandler(UserDatabaseDAO databaseDAO,
@@ -83,7 +85,7 @@ public class UpdateUserPermissionsHandler implements
          */
         boolean isOwner = executingUser.getId() == database.getOwner().getId();
         if (!isOwner) {
-            verifyAuthority(cmd, database.getPermissionByUser(executingUser));
+            verifyAuthority(cmd, queryUserPermission(executingUser, database));
         }
 
         User user = null;
@@ -92,28 +94,29 @@ public class UpdateUserPermissionsHandler implements
         }
 
         if (user == null) {
-            user = createNewUser(executingUser, dto, cmd.getHost());
+            user = createNewUser(executingUser, dto);
         }
 
         /*
          * Does the permission record exist ?
          */
-        UserPermission perm = database.getPermissionByUser(user);
+        UserPermission perm = queryUserPermission(user, database);
         if (perm == null) {
             perm = new UserPermission(database, user);
-            doUpdate(perm, dto, isOwner,
-                    database.getPermissionByUser(executingUser));
+            doUpdate(perm, dto, isOwner, queryUserPermission(executingUser, database));
             permDAO.persist(perm);
         } else {
-            doUpdate(perm, dto, isOwner,
-                    database.getPermissionByUser(executingUser));
+            doUpdate(perm, dto, isOwner, queryUserPermission(executingUser, database));
         }
 
         return null;
     }
 
-    private User createNewUser(User executingUser, UserPermissionDTO dto, String host)
-            throws CommandException {
+    private UserPermission queryUserPermission(User user, UserDatabase database) {
+        return permDAO.findUserPermissionByUserIdAndDatabaseId(user.getId(), database.getId());
+    }
+
+    private User createNewUser(User executingUser, UserPermissionDTO dto) throws CommandException {
         if (executingUser.getId() == 0) {
             throw new AssertionError("executingUser.id == 0!");
         }
@@ -121,14 +124,12 @@ public class UpdateUserPermissionsHandler implements
             throw new AssertionError("executingUser.name == null!");
         }
 
-        User user = UserDAOImpl.createNewUser(dto.getEmail(), dto.getName(),
-                executingUser.getLocale());
+        User user = UserDAOImpl.createNewUser(dto.getEmail(), dto.getName(), executingUser.getLocale());
         user.setInvitedBy(executingUser);
         userDAO.persist(user);
 
         try {
-            Message message = mailSender
-                    .createMessage(new InvitationMessage(user, executingUser));
+            Message message = mailSender.createMessage(new InvitationMessage(user, executingUser));
             message.replyTo(executingUser.getEmail(), executingUser.getName());
             mailSender.send(message);
         } catch (Exception e) {

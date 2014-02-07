@@ -1,6 +1,8 @@
 package org.activityinfo.server.entity.auth;
 
+import com.google.inject.Inject;
 import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.server.command.handler.PermissionOracle;
 import org.activityinfo.server.database.hibernate.entity.Site;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.database.hibernate.entity.UserPermission;
@@ -10,27 +12,15 @@ import org.activityinfo.server.database.hibernate.entity.UserPermission;
  */
 public class SiteAuthorizationHandler implements AuthorizationHandler<Site> {
 
+    private final PermissionOracle permissionOracle;
+
+    @Inject
+    public SiteAuthorizationHandler(PermissionOracle permissionOracle) {
+        this.permissionOracle = permissionOracle;
+    }
+
     @Override
     public boolean isAuthorized(AuthenticatedUser requestingUser, Site site) {
-        UserDatabase database = site.getActivity().getDatabase();
-
-        // is the user the owner?
-        if (database.getOwner().getId() == requestingUser.getId()) {
-            return true;
-        }
-
-        for (UserPermission permission : database.getUserPermissions()) {
-            if (permission.getUser().getId() == requestingUser.getId()) {
-                if (permission.isAllowEditAll()) {
-                    // user can edit all sites
-                    return true;
-                } else if (permission.isAllowEdit() &&
-                        permission.getPartner().getId() == site.getPartner().getId()) {
-                    // the user can edit this partner
-                    return true;
-                }
-            }
-        }
-        return false;
+        return permissionOracle.isEditAllowed(site, requestingUser);
     }
 }

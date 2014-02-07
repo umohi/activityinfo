@@ -79,4 +79,12 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
     public boolean isAdminLevel() {
         return getBoundAdminLevelId() != null;
     }
+
+    public void setWorkflowId(String workflowId) {
+        set("workflowId", workflowId);
+    }
+
+    public String getWorkflowId() {
+        return get("workflowId");
+    }
 }

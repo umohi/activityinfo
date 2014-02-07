@@ -44,6 +44,7 @@ public class LocationType implements Serializable {
     private Country country;
     private Set<Location> locations = new HashSet<Location>(0);
     private Set<Activity> activities = new HashSet<Activity>(0);
+    private String workflowId;
 
     private AdminLevel boundAdminLevel;
 
@@ -116,5 +117,17 @@ public class LocationType implements Serializable {
 
     public void setBoundAdminLevel(AdminLevel boundAdminLevel) {
         this.boundAdminLevel = boundAdminLevel;
+    }
+
+    /**
+     *
+     * @return the id of the workflow associated with this LocationType.
+     */
+    public String getWorkflowId() {
+        return workflowId;
+    }
+
+    public void setWorkflowId(String workflowId) {
+        this.workflowId = workflowId;
     }
 }

@@ -48,7 +48,7 @@ public class GetLocationsHandler implements
         if (command.hasLocationIds()) {
             final Map<Integer, LocationDTO> dtos = new HashMap<Integer, LocationDTO>();
 
-            SqlQuery.select("locationID", "name", "axe", "x", "y")
+            SqlQuery.select("locationID", "name", "axe", "x", "y", "workflowStatusId")
                     .from(Tables.LOCATION)
                     .where("locationId").in(command.getLocationIds())
                     .execute(context.getTransaction(), new SqlResultCallback() {
@@ -60,6 +60,7 @@ public class GetLocationsHandler implements
                                 dto.setId(row.getInt("locationID"));
                                 dto.setName(row.getString("name"));
                                 dto.setAxe(row.getString("axe"));
+                                dto.setWorkflowStatusId(row.getString("workflowStatusId"));
                                 if (!row.isNull("x") && !row.isNull("y")) {
                                     dto.setLatitude(row.getDouble("y"));
                                     dto.setLongitude(row.getDouble("x"));

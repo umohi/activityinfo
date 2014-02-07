@@ -113,7 +113,7 @@ public class SchemaUpdateBuilder implements UpdateBuilder {
             databases = userDatabaseDAO.queryAllUserDatabasesAlphabetically();
 
             long localVersion = request.getLocalVersion() == null ? 0 : Long.parseLong(request.getLocalVersion());
-            long serverVersion = getCurrentSchemaVersion(user);
+            long serverVersion = getCurrentSchemaVersion();
 
             LOGGER.info("Schema versions: local = " + localVersion + ", server = " + serverVersion);
 
@@ -320,18 +320,16 @@ public class SchemaUpdateBuilder implements UpdateBuilder {
                 .getResultList();
     }
 
-    public long getCurrentSchemaVersion(User user) {
+    public long getCurrentSchemaVersion() {
         long currentVersion = 1;
         for (UserDatabase db : databases) {
             if (db.getVersion() > currentVersion) {
                 currentVersion = db.getVersion();
             }
-
-            if (db.getOwner().getId() != user.getId()) {
-                UserPermission permission = db.getPermissionByUser(user);
-                if (permission.getVersion() > currentVersion) {
-                    currentVersion = permission.getVersion();
-                }
+        }
+        for(UserPermission perm : userPermissions) {
+            if(perm.getVersion() > currentVersion) {
+                currentVersion = perm.getVersion();
             }
         }
         return currentVersion;

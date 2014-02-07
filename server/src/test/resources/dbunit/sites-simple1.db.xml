@@ -241,6 +241,12 @@
                   allowEditAll="0" allowManageUsers="1" allowManageAllUsers="1"
                   allowDesign="0" lastSchemaUpdate="2009-01-01"/>
 
+  <userPermission userPermissionId="91" databaseId="2"
+                  userId="2" partnerId="1" allowView="1" allowViewAll="1" allowEdit="1"
+                  allowEditAll="1" allowManageUsers="1" allowManageAllUsers="1"
+                  allowDesign="0" lastSchemaUpdate="2009-01-01"/>
+
+
   <!-- Christian at NRC had access, but has been fired -->
 
   <userPermission userPermissionId="2" databaseId="1"

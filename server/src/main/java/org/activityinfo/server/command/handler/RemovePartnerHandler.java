@@ -28,11 +28,9 @@ import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.command.result.RemoveFailedResult;
 import org.activityinfo.api.shared.command.result.RemoveResult;
 import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.server.database.hibernate.entity.Partner;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
-import org.activityinfo.server.database.hibernate.entity.UserPermission;
 
 import javax.persistence.EntityManager;
 import java.util.Date;
@@ -51,17 +49,11 @@ public class RemovePartnerHandler implements CommandHandler<RemovePartner> {
     }
 
     @Override
-    public CommandResult execute(RemovePartner cmd, User user)
-            throws CommandException {
+    public CommandResult execute(RemovePartner cmd, User user) throws CommandException {
 
         // verify the current user has access to this site
-        UserDatabase db = em.find(UserDatabase.class, cmd.getDatabaseId());
-        if (db.getOwner().getId() != user.getId()) {
-            UserPermission perm = db.getPermissionByUser(user);
-            if (perm == null || !perm.isAllowDesign()) {
-                throw new IllegalAccessCommandException();
-            }
-        }
+        UserDatabase db = em.getReference(UserDatabase.class, cmd.getDatabaseId());
+        PermissionOracle.using(em).isManagePartnersAllowed(db, user);
 
         // check to see if there are already sites associated with this partner
         int siteCount = ((Number) em.createQuery(

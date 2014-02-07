@@ -27,12 +27,10 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import org.activityinfo.api.shared.model.LocationTypeDTO;
+import org.activityinfo.server.command.handler.PermissionOracle;
 import org.activityinfo.server.database.hibernate.dao.ActivityDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
-import org.activityinfo.server.database.hibernate.entity.Activity;
-import org.activityinfo.server.database.hibernate.entity.LocationType;
-import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.database.hibernate.entity.UserDatabase;
+import org.activityinfo.server.database.hibernate.entity.*;
 
 import com.google.inject.Inject;
 
@@ -54,7 +52,7 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
     public Object create(User user, PropertyMap properties) {
 
         UserDatabase database = getDatabase(properties);
-        assertDesignPrivileges(user, database);
+        PermissionOracle.using(em).assertDesignPrivileges(database, user);
 
         // create the entity
         Activity activity = new Activity();
@@ -73,15 +71,9 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
     public void update(User user, Object entityId, PropertyMap changes) {
         Activity activity = em.find(Activity.class, entityId);
 
-        assertDesignPrivileges(user, activity.getDatabase());
+        PermissionOracle.using(em).assertDesignPrivileges(activity.getDatabase(), user);
 
         applyProperties(activity, changes);
-    }
-
-    private void assertDesignPrivileges(User user, UserDatabase database) {
-        if (!database.isAllowedDesign(user)) {
-            throw new IllegalAccessError();
-        }
     }
 
     private UserDatabase getDatabase(PropertyMap properties) {

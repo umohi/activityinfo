@@ -15,6 +15,8 @@
   <inherits name='com.extjs.gxt.ui.GXT'/>
 
   <inherits name='org.activityinfo.api2.Api2'/>
+  <inherits name="com.bedatadriven.rebar.sql.Sql"/>
+  <inherits name="com.bedatadriven.rebar.sql.Sql"/>
 
   <source path='client'/>
   <source path='shared'/>

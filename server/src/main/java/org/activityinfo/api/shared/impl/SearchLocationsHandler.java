@@ -36,6 +36,7 @@ import com.google.inject.Inject;
 import org.activityinfo.api.shared.command.SearchLocations;
 import org.activityinfo.api.shared.command.result.LocationResult;
 import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.api2.shared.workflow.Workflow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +112,7 @@ public class SearchLocationsHandler implements
 
     private SqlQuery baseQuery(final SearchLocations command) {
         SqlQuery query = SqlQuery.select().from("location");
+        query.where("workflowStatusId").equalTo(Workflow.VALIDATED);
 
         if (command.getAdminEntityIds() != null) {
             for (Integer adminEntityId : command.getAdminEntityIds()) {
