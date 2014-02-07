@@ -26,6 +26,7 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
+import org.activityinfo.server.command.handler.PermissionOracle;
 import org.activityinfo.server.database.hibernate.dao.CountryDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
 import org.activityinfo.server.database.hibernate.entity.Country;
@@ -75,6 +76,7 @@ public class UserDatabasePolicy implements EntityPolicy<UserDatabase> {
     @Override
     public void update(User user, Object entityId, PropertyMap changes) {
         UserDatabase database = em.find(UserDatabase.class, entityId);
+        PermissionOracle.using(em).assertDesignPrivileges(database, user);
         applyProperties(database, changes);
     }
 
