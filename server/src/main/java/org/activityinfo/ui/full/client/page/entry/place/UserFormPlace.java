@@ -38,13 +38,27 @@ public class UserFormPlace implements PageState {
 
     private Cuid userFormId;
     private Cuid userFormInstanceId;
+    private boolean createNewForm;
 
     public UserFormPlace() {
     }
 
     public UserFormPlace(Cuid userFormId, Cuid userFormInstanceId) {
+        this(userFormId, userFormInstanceId, false);
+    }
+
+    public UserFormPlace(Cuid userFormId, Cuid userFormInstanceId, boolean createNewForm) {
         this.userFormId = userFormId;
         this.userFormInstanceId = userFormInstanceId;
+        this.createNewForm = createNewForm;
+    }
+
+    public boolean isCreateNewForm() {
+        return createNewForm;
+    }
+
+    public void setCreateNewForm(boolean createNewForm) {
+        this.createNewForm = createNewForm;
     }
 
     @Override

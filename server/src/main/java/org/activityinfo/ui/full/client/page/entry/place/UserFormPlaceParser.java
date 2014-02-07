@@ -42,6 +42,9 @@ public class UserFormPlaceParser implements PageStateParser {
         if (place.getUserFormInstanceId() != null) {
             fragment.append(normalizeIri(place.getUserFormInstanceId())).append("/");
         }
+        if (place.isCreateNewForm()) {
+            fragment.append(place.isCreateNewForm()).append("/");
+        }
         return fragment.toString();
     }
 
@@ -66,6 +69,10 @@ public class UserFormPlaceParser implements PageStateParser {
             if (parts.length == 2) {
                 place.setUserFormId(new Cuid(parts[0]));
                 place.setUserFormInstanceId(new Cuid(parts[1]));
+            } else if (parts.length == 3) {
+                place.setUserFormId(new Cuid(parts[0]));
+                place.setUserFormInstanceId(new Cuid(parts[1]));
+                place.setCreateNewForm(Boolean.valueOf(parts[2]));
             }
         }
         return place;
