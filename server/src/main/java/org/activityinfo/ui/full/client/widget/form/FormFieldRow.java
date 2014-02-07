@@ -27,6 +27,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -62,10 +63,10 @@ public class FormFieldRow extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public FormFieldRow(FormField formField) {
+    public FormFieldRow(FormField formField, ResourceLocator resourceLocator) {
         this();
         this.formField = formField;
-        this.formFieldWidget = FormFieldWidgetFactory.create(formField);
+        this.formFieldWidget = FormFieldWidgetFactory.create(formField, resourceLocator);
         render();
     }
 

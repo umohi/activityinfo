@@ -1,29 +1,24 @@
 package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.*;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.api.shared.command.GetSites;
 import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.api2.client.*;
-import org.activityinfo.api2.shared.*;
+import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.criteria.InstanceCriteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 /**
  * Exposes a legacy {@code Dispatcher} implementation as new {@code ResourceLocator}

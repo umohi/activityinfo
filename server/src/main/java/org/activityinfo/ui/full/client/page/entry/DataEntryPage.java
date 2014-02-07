@@ -38,7 +38,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
-import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api.shared.command.DeleteSite;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.FilterUrlSerializer;
@@ -48,12 +47,9 @@ import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
@@ -374,18 +370,10 @@ public class DataEntryPage extends LayoutContainer implements Page,
             if (FeatureSwitch.isNewFormEnabled()) {
                 int activityId = currentPlace.getFilter().getRestrictedCategory(
                         DimensionType.Activity);
-                final ResourceLocator resouceLocator = new ResourceLocatorAdaptor(dispatcher);
                 final Cuid siteCuid = CuidAdapter.siteField(new KeyGenerator().generateInt());
                 final Cuid activityCuid = CuidAdapter.activityFormClass(activityId);
-
-                // first persist form instance, it must be create before navigation to FormPage
-                resouceLocator.persist(new FormInstance(siteCuid, activityCuid)).then(new SuccessCallback<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        eventBus.fireEvent(new NavigationEvent(
-                                NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(activityCuid,siteCuid)));
-                    }
-                });
+                eventBus.fireEvent(new NavigationEvent(
+                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(activityCuid, siteCuid)));
             } else {
                 SiteDialogLauncher formHelper = new SiteDialogLauncher(dispatcher);
                 formHelper.addSite(currentPlace.getFilter(),

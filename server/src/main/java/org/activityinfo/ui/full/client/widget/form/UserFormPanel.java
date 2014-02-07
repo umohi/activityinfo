@@ -40,6 +40,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
+import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.Log;
@@ -79,6 +80,7 @@ public class UserFormPanel extends Composite {
     private FormClass formClass;
     private FormInstance initialFormInstance;
     private FormInstance formInstance;
+    private ResourceLocator resourceLocator;
     private boolean readOnly = false;
     private boolean designEnabled = false;
     private final List<Handler> handlerList = Lists.newArrayList();
@@ -96,13 +98,14 @@ public class UserFormPanel extends Composite {
     @UiField
     DivElement errorContainer;
 
-    public UserFormPanel() {
+    public UserFormPanel(ResourceLocator resourceLocator) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+        this.resourceLocator = resourceLocator;
     }
 
-    public UserFormPanel(FormClass formClass) {
-        this();
+    public UserFormPanel(FormClass formClass, ResourceLocator resourceLocator) {
+        this(resourceLocator);
         renderForm(formClass);
     }
 
@@ -125,7 +128,7 @@ public class UserFormPanel extends Composite {
         if (elements != null && !elements.isEmpty()) {
             for (FormElement element : elements) {
                 if (element instanceof FormField) {
-                    final FormFieldRow w = new FormFieldRow((FormField) element);
+                    final FormFieldRow w = new FormFieldRow((FormField) element, resourceLocator);
                     contentPanel.add(w);
                     controlMap.put(element.getId(), w);
                 } else if (element instanceof FormSection) {

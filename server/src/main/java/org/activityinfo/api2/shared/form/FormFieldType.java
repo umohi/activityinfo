@@ -33,11 +33,6 @@ public enum FormFieldType {
     GEOGRAPHIC_POINT,
 
     /**
-     * Enumerates values within form field enumerated values
-     */
-    ENUMERATED,
-
-    /**
      * References another FormInstance or RDFS resource
      */
     REFERENCE

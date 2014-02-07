@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.Log;
@@ -36,27 +37,12 @@ import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
  */
 public class FormFieldWidgetFactory {
 
-    /**
-     * Based on this numbers FormField Widget generates different widgets and layouts:
-     *
-     * 1. Single :
-     *    less SMALL_BALANCE_NUMBER -> Radio buttons
-     *    less MEDIUM_BALANCE_NUMBER -> Dropdown list
-     *    more MEDIUM_BALANCE_NUMBER -> Suggest box
-     * 2. Multiple :
-     *    less SMALL_BALANCE_NUMBER -> Check boxes
-     *    less MEDIUM_BALANCE_NUMBER -> List of selected + add button
-     *    more MEDIUM_BALANCE_NUMBER -> List of selected + add button
-     */
-    public static final int SMALL_BALANCE_NUMBER = 10;
-    public static final int MEDIUM_BALANCE_NUMBER = 20;
-
     public static final DateTimeFormat DATE_TIME_FORMAT = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL);
 
     private FormFieldWidgetFactory() {
     }
 
-    public static IsWidget create(FormField field) {
+    public static IsWidget create(FormField field, ResourceLocator resourceLocator) {
         final FormFieldType fieldType = field.getType();
         if (fieldType != null) {
             switch (fieldType) {
@@ -70,44 +56,13 @@ public class FormFieldWidgetFactory {
                     return createDateTextBox();
                 case GEOGRAPHIC_POINT:
                     return new GeographicTextBox();
-                case ENUMERATED:
-//                    if (field.getCardinality() == FormFieldCardinality.SINGLE) {
-//                        if (enumValuesSize < SMALL_BALANCE_NUMBER) {
-//                            // Radio buttons
-//                            return null;
-//                        } else if (enumValuesSize < MEDIUM_BALANCE_NUMBER) {
-//                            // Dropdown list
-//                            final ListBox dropBox = new ListBox(false);
-//                            for (FormFieldEnumValue value : field.getEnumValues()) {
-//                                dropBox.addItem(value.getLabel().getValue(), value.getId().asString());
-//                            }
-//
-//                            return dropBox;
-//                        } else {
-//                            // Suggest box
-//                            return null;
-//                        }
-//                    } else {
-//                        if (enumValuesSize < SMALL_BALANCE_NUMBER) {
-//                            // Check boxes
-//                            return null;
-//                        } else if (enumValuesSize < MEDIUM_BALANCE_NUMBER) {
-//                            // List of selected + add button
-//                            final ListBox dropBox = new ListBox(true);
-//                            return null;
-//                        } else {
-//                            // List of selected + add button
-//                            return null;
-//                        }
-//                    }
                 case REFERENCE:
-                    return createTextBox();
+                    return new FormFieldWidgetReference(field, resourceLocator);
                 default:
                     Log.error("Field type " + fieldType + " is not supported, created text box widget as fallback.");
-                    return createTextBox();
             }
         }
-        return null;
+        return new FormFieldWidgetDummy();
     }
 
     private static TextArea createTextArea() {

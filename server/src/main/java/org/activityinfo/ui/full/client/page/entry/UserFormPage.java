@@ -69,7 +69,7 @@ public class UserFormPage extends Composite implements Page {
         initWidget(uiBinder.createAndBindUi(this));
 
         userFormPlace = UserFormPlaceParser.parseToken(History.getToken());
-        userFormPanel = new UserFormPanel();
+        userFormPanel = new UserFormPanel(resourceLocator);
         panel.add(userFormPanel);
 
         init();

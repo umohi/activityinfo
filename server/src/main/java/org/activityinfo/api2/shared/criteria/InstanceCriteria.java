@@ -20,4 +20,12 @@ public class InstanceCriteria {
     public InstanceCriteria(Set<Iri> classes) {
         this.classes = classes;
     }
+
+    public static InstanceCriteria getInstance(Set<Iri> classes) {
+        return new InstanceCriteria(classes);
+    }
+
+    public Set<Iri> getClasses() {
+        return classes;
+    }
 }
