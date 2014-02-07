@@ -31,11 +31,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
@@ -78,37 +76,7 @@ public class UserFormPage extends Composite implements Page {
     }
 
     private void init() {
-//        if (userFormPlace.getUserFormType() != null) { // create new
-//            resourceLocator.createUserForm().then(new AsyncCallback<FormClass>() {
-//                @Override
-//                public void onFailure(Throwable caught) {
-//                    Log.error("Unable to create user form.", caught);
-//                    userFormPanel.showError(I18N.CONSTANTS.errorUnexpectedOccured());
-//                }
-//
-//                @Override
-//                public void onSuccess(FormClass result) {
-//                    userFormPanel.renderForm(result);
-//                    resourceLocator.createFormInstance(new FormInstance(null, userFormPanel.getFormClass().getId())).then(new AsyncCallback<Iri>() {
-//                        @Override
-//                        public void onFailure(Throwable caught) {
-//                            Log.error("Unable to create user form instance", caught);
-//                            userFormPanel.showError(I18N.CONSTANTS.errorUnexpectedOccured());
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(Iri result) {
-//                            userFormPanel.setValue(new FormInstance(result, userFormPanel.getFormClass().getId()));
-//                        }
-//                    });
-//                }
-//            });
-//        } else if (userFormPlace.getUserFormId() != null) { // edit
-//            fetchRemote();
-//        } else {
-//            Log.error("Unable to identify whether to CREATE or EDIT user form, token: " + History.getToken());
-//        }
-
+        fetchRemote();
         userFormPanel.addHandler(new UserFormPanel.Handler() {
             @Override
             public void onSave() {
