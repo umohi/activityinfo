@@ -58,6 +58,9 @@ public class PlaceNames {
      * @return a value between 0-1 of the similarity
      */
     public static double similarity(final String string1, final String string2) {
+        if(string1.equals(string2)) {
+            return Double.MAX_VALUE;
+        }
     	String c1 = cleanName(string1);
 		String c2 = cleanName(string2);
 		float distance = JARO_WINKLER.getDistance(c1, c2);

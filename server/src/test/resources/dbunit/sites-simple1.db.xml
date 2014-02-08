@@ -72,6 +72,11 @@
   <userLogin userId="2" name="Bavon" email="bavon@nrc.org"
              password="$2a$10$zc7fiaYWXwIN7w4LtFQL7u1ng3vbSNaJ7X24hzISDRMpWpvOHZu1."
              locale="fr" organization="" jobtitle="" emailnotification="0"/>
+
+  <userLogin userId="21" name="Pacifique" email="pacifique@nrc.org"
+             password="$2a$10$zc7fiaYWXwIN7w4LtFQL7u1ng3vbSNaJ7X24hzISDRMpWpvOHZu1."
+             locale="fr" organization="" jobtitle="" emailnotification="0"/>
+
   <userLogin userId="5" name="Christian" email="christian@nrc.org"
              password="xyz" locale="fr" organization="" jobtitle="" emailnotification="0"/>
   <userLogin userId="3" name="Lisa"
@@ -241,10 +246,6 @@
                   allowEditAll="0" allowManageUsers="1" allowManageAllUsers="1"
                   allowDesign="0" lastSchemaUpdate="2009-01-01"/>
 
-  <userPermission userPermissionId="91" databaseId="2"
-                  userId="2" partnerId="1" allowView="1" allowViewAll="1" allowEdit="1"
-                  allowEditAll="1" allowManageUsers="1" allowManageAllUsers="1"
-                  allowDesign="0" lastSchemaUpdate="2009-01-01"/>
 
 
   <!-- Christian at NRC had access, but has been fired -->
@@ -263,6 +264,20 @@
                   userId="4" partnerId="2" allowView="1" allowViewAll="0" allowEdit="0"
                   allowEditAll="1" allowDesign="1" allowManageUsers="0"
                   allowManageAllUsers="0" lastSchemaUpdate="2009-01-01"/>
+
+  <!-- PEAR PLUS Permissions -->
+
+  <!-- Bavon at NRC has edit all permissions -->
+  <userPermission userPermissionId="91" databaseId="2"
+                  userId="2" partnerId="1" allowView="1" allowViewAll="1" allowEdit="1"
+                  allowEditAll="1" allowManageUsers="1" allowManageAllUsers="1"
+                  allowDesign="0" lastSchemaUpdate="2009-01-01"/>
+
+  <!-- Pacifique at NRC has only edit all permissions -->
+  <userPermission userPermissionId="8884" databaseId="2"
+                  userId="21" partnerId="1" allowView="1" allowViewAll="1" allowEdit="1"
+                  allowEditAll="0" allowManageUsers="0" allowManageAllUsers="0"
+                  allowDesign="0" lastSchemaUpdate="2009-01-01"/>
 
 
   <!-- id=1 NFI Distribution at Penekusu, Sud Kivu 2 jan 2009 -->

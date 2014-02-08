@@ -40,27 +40,6 @@ import java.util.Date;
  * @author Alex Bertram
  */
 @Entity
-@org.hibernate.annotations.Filters({
-        @org.hibernate.annotations.Filter(
-                name = "userVisible",
-                condition = "DatabaseId in "
-                        +
-                        "(select d.DatabaseId from userdatabase d where "
-                        +
-                        "d.OwnerUserId = :currentUserId or "
-                        +
-                        "d.DatabaseId in "
-                        +
-                        "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p.AllowManageAllUsers) or "
-                        +
-                        "d.DatabaseId in "
-                        +
-                        "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p.AllowManageUsers and p.PartnerId = PartnerId))"),
-        @org.hibernate.annotations.Filter(
-                name = "hideDeleted",
-                condition = "AllowView"
-        )
-})
 @NamedQueries({
         @NamedQuery(name = "findUserPermissionByUserIdAndDatabaseId",
                 query = "select p from UserPermission p where p.database.id = :databaseId and p.user.id = :userId")

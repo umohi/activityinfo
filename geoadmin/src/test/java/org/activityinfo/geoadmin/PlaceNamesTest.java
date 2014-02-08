@@ -15,6 +15,13 @@ public class PlaceNamesTest {
 	
 	}
 
+    @Test
+    public void zataari() {
+        check("District 1", "District 12");
+        check("District 1", "District 1");
+
+    }
+
 	private void check(String s1, String s2) {
 		System.out.println(String.format("%s <=> %s => %f", s1, s2, PlaceNames.similarity(s1, s2)));
 	}
