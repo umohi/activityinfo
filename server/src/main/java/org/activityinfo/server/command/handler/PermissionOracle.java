@@ -35,6 +35,16 @@ public class PermissionOracle {
         return getPermissionByUser(database, user).isAllowDesign();
     }
 
+    public boolean isManageUsersAllowed(UserDatabase database, User user) {
+        return getPermissionByUser(database, user).isAllowDesign() ||
+                getPermissionByUser(database, user).isAllowManageUsers();
+    }
+
+
+    public boolean isManagePartnersAllowed(UserDatabase db, User user) {
+        UserPermission perm = getPermissionByUser(db, user);
+        return perm.isAllowDesign() || perm.isAllowManageAllUsers();
+    }
 
     public void assertDesignPrivileges(UserDatabase database, User user) {
         if(!isDesignAllowed(database, user)) {
@@ -44,11 +54,6 @@ public class PermissionOracle {
         }
     }
 
-
-    public boolean isManagePartnersAllowed(UserDatabase db, User user) {
-        UserPermission perm = getPermissionByUser(db, user);
-        return perm.isAllowDesign() || perm.isAllowManageAllUsers();
-    }
 
     public void assertManagePartnerAllowed(UserDatabase database, User user) {
         if(!isManagePartnersAllowed(database, user)) {

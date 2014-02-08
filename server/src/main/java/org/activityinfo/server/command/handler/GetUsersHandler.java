@@ -28,13 +28,16 @@ import org.activityinfo.api.shared.command.GetUsers;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.command.result.UserResult;
 import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.api.shared.model.UserPermissionDTO;
 import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.database.hibernate.entity.UserPermission;
 import org.dozer.Mapper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +59,15 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
     @Override
     public CommandResult execute(GetUsers cmd, User currentUser)
             throws CommandException {
+
+        UserDatabase db = em.getReference(UserDatabase.class, cmd.getDatabaseId());
+        List<UserPermissionDTO> models = new ArrayList<>();
+
+        if(!PermissionOracle.using(em).isManageUsersAllowed(db, currentUser)) {
+            throw new IllegalAccessCommandException(String.format(
+                    "User %d does not have permission to view user permissions in database %d",
+                    currentUser.getId(), db.getId()));
+        }
 
         String orderByClause = "";
 
@@ -80,9 +92,9 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
             }
         }
 
-        Query query = em.createQuery("select up from UserPermission up where " +
+        TypedQuery<UserPermission> query = em.createQuery("select up from UserPermission up where " +
                 "up.database.id = :dbId and " +
-                "up.user.id <> :currentUserId " + orderByClause)
+                "up.user.id <> :currentUserId " + orderByClause, UserPermission.class)
                 .setParameter("dbId", cmd.getDatabaseId())
                 .setParameter("currentUserId", currentUser.getId());
 
@@ -94,7 +106,6 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
         }
 
         List<UserPermission> perms = query.getResultList();
-        List<UserPermissionDTO> models = new ArrayList<UserPermissionDTO>();
 
         for (UserPermission perm : perms) {
             models.add(mapper.map(perm, UserPermissionDTO.class));

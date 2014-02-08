@@ -115,13 +115,23 @@ public class MonthlyReportsTest extends CommandTestCase {
     }
 
     @Test
-    public void authorized() {
+    public void authorizedByEditAll() {
 
         setUser(2); // bavon: viewall AND editall
 
         ArrayList<UpdateMonthlyReports.Change> changes = new ArrayList<UpdateMonthlyReports.Change>();
         changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 1), 45.0));
         changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 3), 22.0));
+
+        execute(new UpdateMonthlyReports(6, changes));
+    }
+
+    @Test
+    public void authorizedByEdit() {
+        setUser(21); // pacifique, only edit
+
+        ArrayList<UpdateMonthlyReports.Change> changes = new ArrayList<UpdateMonthlyReports.Change>();
+        changes.add(new UpdateMonthlyReports.Change(6, new Month(2009, 1), 45.0));
 
         execute(new UpdateMonthlyReports(6, changes));
     }

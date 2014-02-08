@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Strings;
 import org.activityinfo.geoadmin.GeoUtils;
 import org.activityinfo.geoadmin.ImportFeature;
 import org.activityinfo.geoadmin.ParentGuesser;
@@ -54,6 +55,14 @@ public class LocationAdminMatcher {
 
 	private void matchChildren(AdminLevelNode parentLevel, AdminEntity parentEntity, ImportFeature feature, List<AdminEntity> matches) {
 		for(AdminLevelNode level : parentLevel.getChildLevels()) {
+
+            Integer attributeIndex = attributeMap.get(level);
+            if(attributeIndex != null) {
+                if(Strings.isNullOrEmpty(feature.getAttributeStringValue(attributeIndex))) {
+                    continue;
+                }
+            }
+
 			AdminEntity bestMatch = findBestParent(feature, queryEntities(level, parentEntity));
 			if(bestMatch != null) {
 				matches.add(bestMatch);
