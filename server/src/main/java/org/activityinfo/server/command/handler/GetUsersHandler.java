@@ -36,7 +36,6 @@ import org.activityinfo.server.database.hibernate.entity.UserPermission;
 import org.dozer.Mapper;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,15 +60,61 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
             throws CommandException {
 
         UserDatabase db = em.getReference(UserDatabase.class, cmd.getDatabaseId());
-        List<UserPermissionDTO> models = new ArrayList<>();
 
-        if(!PermissionOracle.using(em).isManageUsersAllowed(db, currentUser)) {
-            throw new IllegalAccessCommandException(String.format(
-                    "User %d does not have permission to view user permissions in database %d",
-                    currentUser.getId(), db.getId()));
+        UserPermission currentUserPermission = PermissionOracle.using(em)
+                .getPermissionByUser(db, currentUser);
+
+        assertAuthorized(currentUserPermission);
+
+        String whereClause =
+                "up.database.id = :dbId and " +
+                "up.user.id <> :currentUserId and " +
+                "up.allowView = true";
+
+        if(!currentUserPermission.isAllowManageAllUsers()) {
+            whereClause += " and up.partner.id = " + currentUserPermission.getPartner().getId();
         }
 
-        String orderByClause = "";
+        TypedQuery<UserPermission> query = em.createQuery("select up from UserPermission up where " +
+               whereClause + " " + composeOrderByClause(cmd), UserPermission.class)
+                .setParameter("dbId", cmd.getDatabaseId())
+                .setParameter("currentUserId", currentUser.getId());
+
+        if (cmd.getOffset() > 0) {
+            query.setFirstResult(cmd.getOffset());
+        }
+        if (cmd.getLimit() > 0) {
+            query.setMaxResults(cmd.getLimit());
+        }
+
+        List<UserPermissionDTO> models = new ArrayList<>();
+        for (UserPermission perm : query.getResultList()) {
+            models.add(mapper.map(perm, UserPermissionDTO.class));
+        }
+
+        return new UserResult(models, cmd.getOffset(),
+                queryTotalCount(cmd, currentUser, whereClause));
+    }
+
+    private void assertAuthorized(UserPermission currentUserPermission) {
+        if(!currentUserPermission.isAllowManageUsers()) {
+            throw new IllegalAccessCommandException(String.format(
+                    "User %d does not have permission to view user permissions in database %d",
+                    currentUserPermission.getUser().getId(), currentUserPermission.getDatabase().getId()));
+        }
+    }
+
+    private int queryTotalCount(GetUsers cmd, User currentUser, String whereClause) {
+        return ((Number) em
+                    .createQuery("select count(up) from UserPermission up where " + whereClause)
+                    .setParameter("dbId", cmd.getDatabaseId())
+                    .setParameter("currentUserId", currentUser.getId())
+                    .getSingleResult())
+                    .intValue();
+    }
+
+    private String composeOrderByClause(GetUsers cmd) {
+        String orderByClause = " ";
 
         if (cmd.getSortInfo().getSortDir() != Style.SortDir.NONE) {
             String dir = cmd.getSortInfo().getSortDir() == Style.SortDir.ASC ? "asc"
@@ -91,35 +136,6 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
                 orderByClause = " order by " + property + " " + dir;
             }
         }
-
-        TypedQuery<UserPermission> query = em.createQuery("select up from UserPermission up where " +
-                "up.database.id = :dbId and " +
-                "up.user.id <> :currentUserId " + orderByClause, UserPermission.class)
-                .setParameter("dbId", cmd.getDatabaseId())
-                .setParameter("currentUserId", currentUser.getId());
-
-        if (cmd.getOffset() > 0) {
-            query.setFirstResult(cmd.getOffset());
-        }
-        if (cmd.getLimit() > 0) {
-            query.setMaxResults(cmd.getLimit());
-        }
-
-        List<UserPermission> perms = query.getResultList();
-
-        for (UserPermission perm : perms) {
-            models.add(mapper.map(perm, UserPermissionDTO.class));
-        }
-
-        int totalCount = ((Number) em
-                .createQuery("select count(up) from UserPermission up where " +
-                        "up.database.id = :dbId and " +
-                        "up.user.id <> :currentUserId ")
-                .setParameter("dbId", cmd.getDatabaseId())
-                .setParameter("currentUserId", currentUser.getId())
-                .getSingleResult())
-                .intValue();
-
-        return new UserResult(models, cmd.getOffset(), totalCount);
+        return orderByClause;
     }
 }
