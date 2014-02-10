@@ -116,9 +116,10 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
                 return new FormFieldWidgetReferenceRadioPanel(formInstances);
             } else if (size < MEDIUM_BALANCE_NUMBER) {
                 // Dropdown list
-                return new FromFieldWidgetReferenceCombo(formInstances);
+                return new FromFieldWidgetReferenceComboBox(formInstances);
             } else {
                 // Suggest box
+                return new FormFieldWidgetReferenceSuggestBox(formInstances);
             }
         } else {
             if (size < SMALL_BALANCE_NUMBER) {

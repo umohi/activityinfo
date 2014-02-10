@@ -2,7 +2,6 @@ package org.activityinfo.api2.client;
 
 
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.criteria.InstanceCriteria;
 import org.activityinfo.api2.shared.form.FormInstance;
