@@ -3,6 +3,8 @@ package org.activityinfo.api.shared.adapter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.activityinfo.api.shared.model.*;
+import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Namespace;
 import org.activityinfo.api2.shared.form.*;
@@ -26,20 +28,32 @@ public class ActivityUserFormBuilder {
     }
 
     public FormClass build() {
-        siteForm = new FormClass(CuidAdapter.cuid(CuidAdapter.ACTIVITY_DOMAIN, activity.getId()));
+        Cuid classId = CuidAdapter.activityFormClass(activity.getId());
 
-        FormField partnerField = new FormField(CuidAdapter.partnerField(activity.getId()));
+        siteForm = new FormClass(classId);
+        FormField partnerField = new FormField(CuidAdapter.field(classId, CuidAdapter.PARTNER_FIELD));
         partnerField.addSuperProperty(Namespace.REPORTED_BY);
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
-        partnerField.setRange(Namespace.PARTNER);
+        partnerField.setRange(CuidAdapter.partnerFormClass(activity.getDatabase().getId()).asIri());
         partnerField.setType(FormFieldType.REFERENCE);
         siteForm.addElement(partnerField);
 
+        FormField projectField = new FormField(CuidAdapter.field(classId, CuidAdapter.PROJECT_FIELD));
+        projectField.setLabel(new LocalizedString(I18N.CONSTANTS.project()));
+        projectField.setRange(CuidAdapter.projectFormClass(activity.getDatabase().getId()).asIri());
+        projectField.setType(FormFieldType.REFERENCE);
+        siteForm.addElement(projectField);
+
+        FormField dateField = new FormField(CuidAdapter.field(classId, CuidAdapter.DATE_FIELD));
+        dateField.setLabel(new LocalizedString(I18N.CONSTANTS.endDate()));
+        dateField.setType(FormFieldType.LOCAL_DATE);
+        siteForm.addElement(dateField);
 
         FormField locationField = new FormField(CuidAdapter.locationField(activity.getId()));
         locationField.setLabel(new LocalizedString(activity.getLocationType().getName()));
-        locationField.setRange(CuidAdapter.locationFormClass(activity.getLocationTypeId()).asIri());
+        locationField.setRange(locationClass(activity.getLocationType()).asIri());
         locationField.setType(FormFieldType.REFERENCE);
+        siteForm.addElement(locationField);
 
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
             FormField attributeField = new FormField(CuidAdapter.attributeGroupField(activity, group));
@@ -74,6 +88,14 @@ public class ActivityUserFormBuilder {
         siteForm.addElement(commentsField);
 
         return siteForm;
+    }
+
+    private Cuid locationClass(LocationTypeDTO locationType) {
+        if(locationType.isAdminLevel()) {
+            return CuidAdapter.adminLevelFormClass(locationType.getBoundAdminLevelId());
+        } else {
+            return CuidAdapter.locationFormClass(locationType.getId());
+        }
     }
 
     private void addIndicators(FormElementContainer container, IndicatorGroup group) {

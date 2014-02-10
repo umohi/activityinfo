@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
@@ -45,9 +46,11 @@ public class FormTree {
         }
 
         public void addChildren(FormClass formClass) {
-            Preconditions.checkState(formClass == null);
+            Preconditions.checkState(this.formClass == null);
             this.formClass = formClass;
-            for (FormField property : parent.getFormClass().getFields()) {
+            for (FormField property : formClass.getFields()) {
+                Preconditions.checkNotNull(property);
+
                 FormTree.Node childNode = new FormTree.Node();
                 childNode.parent = this;
                 childNode.field = property;
@@ -78,20 +81,30 @@ public class FormTree {
             return field.getRange();
         }
 
-        public String debugLabel() {
+        public String debugPath() {
+            StringBuilder path = new StringBuilder();
+            path.append(this);
+            Node parent = this.parent;
+            while(parent != null) {
+                path.insert(0, parent + " -> ");
+                parent = parent.parent;
+            }
+            return path.toString();
+        }
+
+        @Override
+        public String toString() {
             if(isRoot()) {
                 return "ROOT";
+            } else if(formClass != null) {
+                return toString(field.getLabel()) + ":" + toString(formClass.getLabel());
             } else {
-                StringBuilder label = new StringBuilder();
-                label.append(field.getLabel()).append("[").append(field.getType().name()).append("]");
-
-                Node parent = this.parent;
-                while(parent != null) {
-                    label.insert(0, field.getLabel() + ".");
-                    parent = parent.parent;
-                }
-                return label.toString();
+                return toString(field.getLabel()) + ":" + field.getType().name();
             }
+        }
+
+        private String toString(LocalizedString label) {
+            return "[" + label.getValue() + "]";
         }
     }
 
@@ -184,10 +197,11 @@ public class FormTree {
         return Predicates.not(pathIn(paths));
     }
 
-    public String dump() {
+    @Override
+    public String toString() {
         StringBuilder s = new StringBuilder();
         for(Node node : getLeaves()) {
-            s.append(node.debugLabel()).append("\n");
+            s.append(node.debugPath()).append("\n");
         }
         return s.toString();
     }

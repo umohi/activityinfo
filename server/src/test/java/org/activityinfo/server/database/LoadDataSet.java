@@ -43,8 +43,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class LoadDataSet extends Statement {
+
+    private static final Logger LOGGER = Logger.getLogger(LoadDataSet.class.getName());
+
     private final Statement next;
     private final Object target;
     private final Provider<Connection> connectionProvider;
@@ -63,10 +67,10 @@ public class LoadDataSet extends Statement {
 
         JdbcScheduler.get().forceCleanup();
 
-        System.err.println("DBUnit: removing all rows");
+        LOGGER.info("Removing all rows");
         removeAllRows();
 
-        System.err.println("DBUnit: loading " + name + " into the database.");
+        LOGGER.info("DBUnit: loading " + name + " into the database.");
         IDataSet data = loadDataSet();
 
         List<Throwable> errors = new ArrayList<Throwable>();
@@ -104,13 +108,10 @@ public class LoadDataSet extends Statement {
 
     private void executeOperation(final DatabaseOperation op,
                                   final IDataSet dataSet) throws DatabaseUnitException, SQLException {
-        Connection connection = connectionProvider.get();
-        try {
+        try (Connection connection = connectionProvider.get()) {
             IDatabaseConnection dbUnitConnection = new MySqlConnection(
                     connection, null);
             op.execute(dbUnitConnection, dataSet);
-        } finally {
-            connection.close();
         }
     }
 

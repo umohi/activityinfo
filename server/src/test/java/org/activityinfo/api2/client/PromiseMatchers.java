@@ -10,7 +10,21 @@ import org.junit.internal.matchers.TypeSafeMatcher;
  */
 public class PromiseMatchers {
 
-    public static <T> Matcher<Promise<T>> resolution(final Matcher<T> matcher) {
+    public static <T> void assertResolves(Promise<T> promise) {
+        promise.then(new AsyncCallback<T>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new RuntimeException(caught);
+            }
+
+            @Override
+            public void onSuccess(T result) {
+                // no problems
+            }
+        });
+    }
+
+    public static <T> Matcher<Promise<T>> resolvesTo(final Matcher<T> matcher) {
         return new TypeSafeMatcher<Promise<T>>() {
 
             private T resolution = null;

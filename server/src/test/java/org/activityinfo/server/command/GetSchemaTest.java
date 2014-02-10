@@ -35,12 +35,9 @@ import org.activityinfo.api.shared.command.CreateEntity;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
-import org.activityinfo.api2.client.Action;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
@@ -58,7 +55,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.activityinfo.api2.client.PromiseMatchers.resolution;
+import static org.activityinfo.api2.client.PromiseMatchers.resolvesTo;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -294,20 +291,8 @@ public class GetSchemaTest extends CommandTestCase2 {
 
         Promise<FormClass> userForm = locator.getFormClass(CuidAdapter.activityFormClass(1));
 
-        assertThat(userForm, resolution(CoreMatchers.<FormClass>notNullValue()));
+        assertThat(userForm, resolvesTo(CoreMatchers.<FormClass>notNullValue()));
     }
 
-    @Test
-    public void treeResolver() {
-        ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
-        AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(locator);
-        Promise<FormTree> tree = treeBuilder.build(CuidAdapter.activityFormClass(1));
 
-        tree.then(new Action<FormTree>() {
-            @Override
-            public void execute(FormTree input) {
-                System.out.println(input.dump());
-            }
-        });
-    }
 }

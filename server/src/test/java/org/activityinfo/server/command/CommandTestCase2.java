@@ -46,6 +46,8 @@ import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
+import java.util.logging.LogManager;
 
 /**
  * Test fixture for running hibernate-free commands.

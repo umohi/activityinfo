@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * Provides a connection to the test database.
@@ -41,6 +42,9 @@ import java.util.Properties;
  * activityinfo.properties file, or add them as system variables.
  */
 public class TestConnectionProvider implements Provider<Connection> {
+
+    private static final Logger LOGGER = Logger.getLogger(TestConnectionProvider.class.getName());
+
     private static final String PASSWORD_PROPERTY = "testDatabasePassword";
     private static final String USERNAME_PROPERTY = "testDatabaseUsername";
     private static final String URL_PROPERTY = "testDatabaseUrl";
@@ -54,38 +58,31 @@ public class TestConnectionProvider implements Provider<Connection> {
     static {
         try {
             Properties activityinfoProperties = new Properties();
-            File propertiesFile = new File(System.getProperty("user.home"),
-                    "activityinfo.properties");
+            File propertiesFile = new File(System.getProperty("user.home"), "activityinfo.properties");
             if (propertiesFile.exists()) {
-                activityinfoProperties
-                        .load(new FileInputStream(propertiesFile));
+                activityinfoProperties.load(new FileInputStream(propertiesFile));
             }
 
-            String urlProperty = activityinfoProperties
-                    .getProperty(URL_PROPERTY);
-            URL = urlProperty != null ? urlProperty : System.getProperty(
-                    URL_PROPERTY, DEFAULT_URL);
+            String urlProperty = activityinfoProperties.getProperty(URL_PROPERTY);
+            URL = urlProperty != null ? urlProperty : System.getProperty(URL_PROPERTY, DEFAULT_URL);
 
-            String usernameProperty = activityinfoProperties
-                    .getProperty(USERNAME_PROPERTY);
-            USERNAME = usernameProperty != null ? usernameProperty : System
-                    .getProperty(USERNAME_PROPERTY, DEFAULT_USERNAME);
+            String usernameProperty = activityinfoProperties.getProperty(USERNAME_PROPERTY);
+            USERNAME = usernameProperty != null ? usernameProperty :
+                    System.getProperty(USERNAME_PROPERTY, DEFAULT_USERNAME);
 
-            String passwordProperty = activityinfoProperties
-                    .getProperty(PASSWORD_PROPERTY);
-            PASSWORD = passwordProperty != null ? passwordProperty : System
-                    .getProperty(PASSWORD_PROPERTY, DEFAULT_PASSWORD);
+            String passwordProperty = activityinfoProperties.getProperty(PASSWORD_PROPERTY);
+            PASSWORD = passwordProperty != null ? passwordProperty :
+                    System.getProperty(PASSWORD_PROPERTY, DEFAULT_PASSWORD);
+
         } catch (Exception e) {
-            throw new RuntimeException(
-                    "Can't initialize TestConnectionProvider, error loading propertyfile",
-                    e);
+            throw new RuntimeException("Can't initialize TestConnectionProvider, error loading propertyfile", e);
         }
     }
 
     @Override
     public Connection get() {
         try {
-            System.err.println("Opening test database at " + URL);
+            LOGGER.info("Opening test database at " + URL);
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (Exception e) {

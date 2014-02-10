@@ -50,7 +50,7 @@ public class AsyncFormTreeBuilder {
 
         private void requestFormClassForNode(final FormTree.Node node, final Cuid formClassId) {
 
-            LOGGER.fine("Requesting form class for " + node.debugLabel());
+            LOGGER.fine("Requesting form class for " + node);
 
             outstandingRequests++;
             locator.getFormClass(formClassId).then(new AsyncCallback<FormClass>() {

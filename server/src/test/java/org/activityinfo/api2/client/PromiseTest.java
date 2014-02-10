@@ -23,7 +23,7 @@ public class PromiseTest {
         promise.resolve(64);
 
         assertThat(promise.getState(), equalTo(Promise.State.FULFILLED));
-        assertThat(promise, PromiseMatchers.resolution(equalTo(64)));
+        assertThat(promise, PromiseMatchers.resolvesTo(equalTo(64)));
 
         Function<Integer, Double> takeSquareRoot = new Function<Integer, Double>() {
 
@@ -34,6 +34,6 @@ public class PromiseTest {
             }
         };
 
-        assertThat(promise.then(takeSquareRoot), PromiseMatchers.resolution(equalTo(8.0)));
+        assertThat(promise.then(takeSquareRoot), PromiseMatchers.resolvesTo(equalTo(8.0)));
     }
 }

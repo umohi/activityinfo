@@ -25,8 +25,9 @@ public class CuidAdapter {
 
     public static final char LOCATION_TYPE_DOMAIN = 'L'; // avoid lower case l !
 
-
     public static final char PARTNER_DOMAIN = 'p';
+
+    public static final char PARTNER_FORM_CLASS_DOMAIN = 'P';
 
     public static final char INDICATOR_DOMAIN = 'i';
 
@@ -34,6 +35,21 @@ public class CuidAdapter {
 
     public static final char ATTRIBUTE_DOMAIN = 't';
 
+    public static final char DATABASE_DOMAIN = 'd';
+
+    public static final char ADMIN_LEVEL_DOMAIN = 'E';
+
+    public static final char PROJECT_DOMAIN = 'R';
+
+    public static final int NAME_FIELD = 1;
+    public static final int PARENT_FIELD = 2;
+    public static final int CODE_FIELD = 3;
+    public static final int AXE_FIELD = 4;
+    public static final int GEOMETRY_FIELD = 4;
+    public static final int ADMIN_FIELD = 4;
+    public static final int PARTNER_FIELD = 5;
+    public static final int PROJECT_FIELD = 6;
+    public static final int DATE_FIELD = 7;
 
     /**
      * Avoid instance creation.
@@ -81,6 +97,21 @@ public class CuidAdapter {
     public static Cuid locationFormClass(int locationTypeId) {
         return cuid(LOCATION_TYPE_DOMAIN, locationTypeId);
 
+    }
+
+    public static Cuid adminLevelFormClass(int adminLevelId) {
+        return cuid(ADMIN_LEVEL_DOMAIN, adminLevelId);
+    }
+
+    /**
+     * Generates a CUID for a FormField in a given previously-built-in FormClass using
+     * the FormClass's CUID and a field index.
+     * @param classId
+     * @param fieldIndex
+     * @return
+     */
+    public static Cuid field(Cuid classId, int fieldIndex) {
+        return new Cuid(classId.asString() + block(fieldIndex));
     }
 
     /**
@@ -132,6 +163,22 @@ public class CuidAdapter {
     }
 
     /**
+     * @param databaseId the id of the user database
+     * @return the {@code FormClass} Cuid for a given database's list of partners.
+     */
+    public static Cuid partnerFormClass(int databaseId) {
+        return cuid(PARTNER_FORM_CLASS_DOMAIN, databaseId);
+    }
+
+    /**
+     * @param databaseId the id of the user database
+     * @return the {@code FormClass} Cuid for a given database's list of projects.
+     */
+    public static Cuid projectFormClass(int databaseId) {
+        return cuid(PROJECT_DOMAIN, databaseId);
+    }
+
+    /**
      * @return the {@code FormSection} Cuid for a given indicator category within an
      * Activity {@code FormClass}
      */
@@ -165,4 +212,5 @@ public class CuidAdapter {
             return -1;
         }
     }
+
 }

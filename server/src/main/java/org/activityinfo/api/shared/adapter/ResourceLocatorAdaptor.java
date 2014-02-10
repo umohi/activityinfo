@@ -26,6 +26,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.activityinfo.api.shared.adapter.BuiltinFormClasses.*;
+import static org.activityinfo.api.shared.adapter.CuidAdapter.*;
+
 /**
  * Exposes a legacy {@code Dispatcher} implementation as new {@code ResourceLocator}
  */
@@ -39,17 +42,35 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Promise<FormClass> getFormClass(Cuid formId) {
-        if (formId.getDomain() == CuidAdapter.ACTIVITY_DOMAIN) {
-            int activityId = CuidAdapter.getLegacyIdFromCuid(formId);
-            return execute(new GetSchema()).then(new ActivityAdapter(activityId));
+        switch(formId.getDomain()) {
+            case ACTIVITY_DOMAIN:
+                int activityId = getLegacyIdFromCuid(formId);
+                return execute(new GetSchema()).then(new ActivityAdapter(activityId));
+
+            case PARTNER_FORM_CLASS_DOMAIN:
+                return Promise.resolved(BuiltinFormClasses.partnerFormClass(getLegacyIdFromCuid(formId)));
+
+            case PROJECT_DOMAIN:
+                return Promise.resolved(BuiltinFormClasses.projectFormClass(getLegacyIdFromCuid(formId)));
+
+            case ATTRIBUTE_GROUP_DOMAIN:
+                return execute(new GetSchema()).then(new AttributeGroupAdapter(getLegacyIdFromCuid(formId)));
+
+            case ADMIN_LEVEL_DOMAIN:
+                return execute(new GetSchema()).then(new AdminLevelFormClassAdapter(getLegacyIdFromCuid(formId)));
+
+            case LOCATION_TYPE_DOMAIN:
+                return execute(new GetSchema()).then(new LocationTypeFormClassAdapter(getLegacyIdFromCuid(formId)));
+
+            default:
+                return Promise.rejected(new NotFoundException(formId.asIri()));
         }
-        return Promise.rejected(new NotFoundException(formId.asIri()));
     }
 
     @Override
     public Promise<FormInstance> getFormInstance(Cuid instanceId) {
-        if (instanceId.getDomain() == CuidAdapter.SITE_DOMAIN) {
-            int siteId = CuidAdapter.getLegacyIdFromCuid(instanceId);
+        if (instanceId.getDomain() == SITE_DOMAIN) {
+            int siteId = getLegacyIdFromCuid(instanceId);
             return execute(GetSites.byId(siteId)).then(new SiteAdapter());
         }
         return Promise.rejected(new NotFoundException(instanceId.asIri()));
@@ -73,7 +94,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
                 @Nullable
                 @Override
                 public Integer apply(@Nullable Iri input) {
-                    return CuidAdapter.attributeGroupLegacyId(input);
+                    return attributeGroupLegacyId(input);
                 }
             }));
             filter.addRestriction(DimensionType.AttributeGroup, idList);
@@ -86,7 +107,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
                     for (AttributeGroupDTO attributeGroup : data) {
                         final List<AttributeDTO> attributes = attributeGroup.getAttributes();
                         for (AttributeDTO attribute : attributes) {
-                            list.add(InstanceAdapters.fromAttribute(attribute, CuidAdapter.attributeGroupFormClass(attributeGroup)));
+                            list.add(InstanceAdapters.fromAttribute(attribute, attributeGroupFormClass(attributeGroup)));
                         }
                     }
                     return list;

@@ -29,11 +29,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 
 /**
  * Cleans the MySQL test database
  */
 public class DatabaseCleaner {
+
+    private static final Logger LOGGER = Logger.getLogger(DatabaseCleaner.class.getName());
 
     private final Provider<Connection> connectionProvider;
 
@@ -52,15 +55,13 @@ public class DatabaseCleaner {
             Statement statement = connection.createStatement();
             statement.execute("SET foreign_key_checks = 0");
 
-            ResultSet tables = connection.getMetaData().getTables(null, null,
-                    null, new String[]{"TABLE"});
+            ResultSet tables = connection.getMetaData().getTables(null, null, null, new String[]{"TABLE"});
             try {
                 while (tables.next()) {
                     String tableName = tables.getString(3);
-                    if (!tableName.toLowerCase().startsWith(
-                            LIQUIBASE_TABLE_PREFIX)) {
+                    if (!tableName.toLowerCase().startsWith(LIQUIBASE_TABLE_PREFIX)) {
                         statement.execute("DELETE FROM " + tableName);
-                        System.err.println("Dropped all from " + tableName);
+                        LOGGER.fine("Dropped all from " + tableName);
                     }
                 }
             } finally {
