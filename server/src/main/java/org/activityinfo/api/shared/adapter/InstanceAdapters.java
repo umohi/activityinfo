@@ -1,10 +1,12 @@
 package org.activityinfo.api.shared.adapter;
 
 
+import com.google.common.collect.Lists;
 import org.activityinfo.api.shared.model.AttributeDTO;
 import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormInstance;
 
 /**
@@ -26,10 +28,10 @@ public class InstanceAdapters {
         FormInstance instance = new FormInstance(site.getIri(), site.getActivityIri());
 
         instance.set(CuidAdapter.partnerField(site.getActivityId()),
-                CuidAdapter.cuid(CuidAdapter.PARTNER_DOMAIN, site.getPartnerId()));
+                Lists.newArrayList(CuidAdapter.cuid(CuidAdapter.PARTNER_DOMAIN, site.getPartnerId())));
 
         instance.set(CuidAdapter.locationField(site.getActivityId()),
-                CuidAdapter.cuid(CuidAdapter.LOCATION_DOMAIN, site.getLocationId()));
+                Lists.newArrayList(CuidAdapter.cuid(CuidAdapter.LOCATION_DOMAIN, site.getLocationId())));
 
         for(String propertyName : site.getPropertyNames()) {
             if(propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {
@@ -47,7 +49,7 @@ public class InstanceAdapters {
 
     public static FormInstance fromAttribute(AttributeDTO attribute, Cuid formClassId) {
         final FormInstance instance = new FormInstance(CuidAdapter.attributeField(attribute.getId()), formClassId);
-        instance.set(CuidAdapter.attributeField(attribute.getId()), attribute.getName());
+        instance.setLabel(new LocalizedString(attribute.getName()));
         return instance;
     }
 }

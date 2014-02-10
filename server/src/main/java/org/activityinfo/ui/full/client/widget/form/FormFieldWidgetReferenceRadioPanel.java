@@ -72,7 +72,7 @@ public class FormFieldWidgetReferenceRadioPanel extends Composite implements For
         this.instances = instances;
         final String groupId = Integer.toString(new KeyGenerator().generateInt());
         for (final FormInstance formInstance : instances) {
-            final RadioButton radioButton = new RadioButton(groupId, formInstance.getId().asString());
+            final RadioButton radioButton = new RadioButton(groupId, formInstance.getLabel().getValue());
             radioButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
                 @Override
                 public void onValueChange(ValueChangeEvent<Boolean> event) {
