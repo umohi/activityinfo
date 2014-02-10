@@ -102,7 +102,7 @@ public class UserFormPage extends Composite implements Page {
     }
 
     private UserFormPlace fetchRemote() {
-        resourceLocator.getUserForm(userFormPlace.getUserFormId()).fetch().then(new AsyncCallback<FormClass>() {
+        resourceLocator.getFormClass(userFormPlace.getUserFormId()).then(new AsyncCallback<FormClass>() {
             @Override
             public void onFailure(Throwable caught) {
                 Log.error("Unable to fetch UserForm, iri=" + userFormPlace.getUserFormId(), caught);
@@ -111,7 +111,7 @@ public class UserFormPage extends Composite implements Page {
             @Override
             public void onSuccess(FormClass result) {
                 userFormPanel.renderForm(result);
-                resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).fetch().then(new AsyncCallback<FormInstance>() {
+                resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).then(new AsyncCallback<FormInstance>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Log.error("Unable to fetch FormInstance, iri=" + userFormPlace.getUserFormInstanceId(), caught);

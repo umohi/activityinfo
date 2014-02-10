@@ -29,17 +29,18 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.matcher.Matchers;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api.shared.command.CreateEntity;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
+import org.activityinfo.api2.client.Action;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.Cuids;
+import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.api2.shared.form.FormClass;
+import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
@@ -291,10 +292,22 @@ public class GetSchemaTest extends CommandTestCase2 {
 
         ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
 
-        Promise<FormClass> userForm = locator.getUserForm(Cuids.toIri(CuidAdapter.ACTIVITY_DOMAIN, 1)).fetch();
+        Promise<FormClass> userForm = locator.getFormClass(CuidAdapter.activityFormClass(1));
 
         assertThat(userForm, resolution(CoreMatchers.<FormClass>notNullValue()));
+    }
 
+    @Test
+    public void treeResolver() {
+        ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
+        AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(locator);
+        Promise<FormTree> tree = treeBuilder.build(CuidAdapter.activityFormClass(1));
 
+        tree.then(new Action<FormTree>() {
+            @Override
+            public void execute(FormTree input) {
+                System.out.println(input.dump());
+            }
+        });
     }
 }

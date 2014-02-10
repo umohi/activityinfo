@@ -13,10 +13,10 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.ImportModel;
 import org.activityinfo.ui.full.client.importer.data.ImportColumnDescriptor;
 import org.activityinfo.ui.full.client.importer.data.ImportRow;
-import org.activityinfo.ui.full.client.importer.ont.PropertyPath;
 
 /**
  * A DataGrid that shows the original columns in the imported table
@@ -88,7 +88,7 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
         @Override
         public void render(Context context, Integer columnIndex, SafeHtmlBuilder sb) {
             String header = mapping.getSource().getColumnHeader(columnIndex);
-            PropertyPath binding = mapping.getColumnBindings().get(columnIndex);
+            FieldPath binding = mapping.getColumnBindings().get(columnIndex);
 
             if (binding == null) {
                 sb.append(TEMPLATES.ignoredColumn(header));

@@ -9,8 +9,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.ImportModel;
-import org.activityinfo.ui.full.client.importer.ont.PropertyPath;
 import org.activityinfo.ui.full.client.importer.page.ColumnSelectionChangedEvent.Handler;
 
 /**
@@ -63,10 +63,10 @@ public class ColumnMappingPage<T> extends ResizeComposite {
             }
         });
 
-        propertyChooser.addValueChangeHandler(new ValueChangeHandler<PropertyPath>() {
+        propertyChooser.addValueChangeHandler(new ValueChangeHandler<FieldPath>() {
 
             @Override
-            public void onValueChange(ValueChangeEvent<PropertyPath> event) {
+            public void onValueChange(ValueChangeEvent<FieldPath> event) {
                 updateColumnMapping(event.getValue());
             }
         });
@@ -85,7 +85,7 @@ public class ColumnMappingPage<T> extends ResizeComposite {
         columnChooserHeader.setInnerText(importModel.getSource().getColumnHeader(selectedColumnIndex));
     }
 
-    private void updateColumnMapping(PropertyPath property) {
+    private void updateColumnMapping(FieldPath property) {
 
         if (property == null) {
             importModel.clearColumnBinding(selectedColumnIndex);

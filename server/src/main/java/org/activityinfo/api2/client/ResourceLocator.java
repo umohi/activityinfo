@@ -18,9 +18,9 @@ public interface ResourceLocator {
      * @param formId
      * @return
      */
-    Remote<FormClass> getUserForm(Cuid formId);
+    Promise<FormClass> getFormClass(Cuid formId);
 
-    Remote<FormInstance> getFormInstance(Cuid formId);
+    Promise<FormInstance> getFormInstance(Cuid formId);
 
     /**
      * Persists a resource to the server, creating or updating as necessary.
@@ -36,12 +36,12 @@ public interface ResourceLocator {
      * Counts the form instances that match the given criteria.
      * @param criteria
      */
-    Remote<Integer> countInstances(InstanceCriteria criteria);
+    Promise<Integer> countInstances(InstanceCriteria criteria);
 
     /**
      * Retrieves the form instances that match the given criteria.
      * @param criteria
      */
-    Remote<List<FormInstance>> queryInstances(InstanceCriteria criteria);
+    Promise<List<FormInstance>> queryInstances(InstanceCriteria criteria);
 
 }

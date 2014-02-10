@@ -2,7 +2,7 @@ package org.activityinfo.ui.full.client.importer.page;
 
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.ui.full.client.importer.ont.PropertyPath;
+import org.activityinfo.api2.shared.form.tree.FieldPath;
 
 /**
  * A {@code CellPopup} that provides a list of actions to the user
@@ -13,10 +13,10 @@ import org.activityinfo.ui.full.client.importer.ont.PropertyPath;
 public class ChoiceCellPopup<T> implements CellPopup {
 
     private MenuBar menuBar = new MenuBar();
-    private final PropertyPath property;
+    private final FieldPath property;
     private UpdateCommandFactory<T> commandFactory;
 
-    public ChoiceCellPopup(PropertyPath property, UpdateCommandFactory<T> commandFactory) {
+    public ChoiceCellPopup(FieldPath property, UpdateCommandFactory<T> commandFactory) {
         super();
         this.property = property;
         this.commandFactory = commandFactory;

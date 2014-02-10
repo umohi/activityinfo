@@ -3,14 +3,14 @@ package org.activityinfo.ui.full.client.importer.page;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.user.cellview.client.Column;
+import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.DraftModel;
-import org.activityinfo.ui.full.client.importer.ont.PropertyPath;
 
 public class PropertyColumn<C> extends Column<DraftModel, C> {
 
-    private final PropertyPath property;
+    private final FieldPath property;
 
-    public PropertyColumn(PropertyPath property, Cell<C> cell) {
+    public PropertyColumn(FieldPath property, Cell<C> cell) {
         super(cell);
         this.property = property;
     }

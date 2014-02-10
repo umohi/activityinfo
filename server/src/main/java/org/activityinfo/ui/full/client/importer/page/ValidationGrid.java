@@ -5,11 +5,9 @@ import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.DraftModel;
 import org.activityinfo.ui.full.client.importer.binding.ImportModel;
-import org.activityinfo.ui.full.client.importer.binding.InstanceMatch;
-import org.activityinfo.ui.full.client.importer.ont.DataTypeProperty;
-import org.activityinfo.ui.full.client.importer.ont.PropertyPath;
 
 import java.util.Map;
 
@@ -21,7 +19,7 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 
     private DataGrid<DraftModel> dataGrid;
     private ImportModel<T> importModel;
-    private Map<PropertyPath, PropertyColumn<?>> columns;
+    private Map<FieldPath, PropertyColumn<?>> columns;
 
     public ValidationGrid(ImportModel<T> importModel) {
         this.importModel = importModel;
@@ -38,7 +36,7 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
         }
         columns = Maps.newHashMap();
 
-        for (PropertyPath property : importModel.getPropertiesToValidate()) {
+        for (FieldPath property : importModel.getPropertiesToValidate()) {
             PropertyColumn<?> column = createColumn(property);
 
             columns.put(property, column);
@@ -47,15 +45,15 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
     }
 
 
-    private PropertyColumn<?> createColumn(PropertyPath path) {
-        if (path.getProperty() instanceof DataTypeProperty) {
-            switch (path.asDatatypeProperty().getType()) {
-                case STRING:
-                    return new PropertyColumn<String>(path, new EditTextCell());
+    private PropertyColumn<?> createColumn(FieldPath path) {
+        if (!path.isReference()) {
+            switch (path.getField().getType()) {
+                case FREE_TEXT:
+                    return new PropertyColumn<>(path, new EditTextCell());
             }
-            throw new IllegalArgumentException(path.asDatatypeProperty().getType().name());
+            throw new IllegalArgumentException(path.getField().getType().name());
         } else {
-            return new PropertyColumn<InstanceMatch>(path, new InstanceMatchCell());
+            return new PropertyColumn<>(path, new InstanceMatchCell());
         }
 
     }
@@ -66,7 +64,7 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
     }
 
     @Override
-    public ScheduledCommand setColumnValue(final PropertyPath property, final String value) {
+    public ScheduledCommand setColumnValue(final FieldPath property, final String value) {
         return new ScheduledCommand() {
 
             @Override

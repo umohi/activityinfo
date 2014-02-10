@@ -9,9 +9,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.BatchCommand;
 import org.activityinfo.api.shared.command.result.BatchResult;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.binding.DraftModel;
 import org.activityinfo.ui.full.client.importer.binding.ImportModel;
-import org.activityinfo.ui.full.client.importer.binding.InstanceImporter;
 import org.activityinfo.ui.full.client.importer.page.ChooseSourcePage;
 import org.activityinfo.ui.full.client.importer.page.ColumnMappingPage;
 import org.activityinfo.ui.full.client.importer.page.ValidationPage;
@@ -38,11 +39,11 @@ public class ImportPresenter<T> {
 
     private ImportModel<T> importModel;
 
-    private Dispatcher dispatcher;
+    private ResourceLocator dispatcher;
 
-    public ImportPresenter(Dispatcher dispatcher, InstanceImporter binder) {
+    public ImportPresenter(ResourceLocator dispatcher, FormTree formTree) {
         this.dispatcher = dispatcher;
-        this.importModel = new ImportModel<T>(binder);
+        this.importModel = new ImportModel<T>(formTree);
 
         chooseSourcePage = new ChooseSourcePage(eventBus);
         matchingPage = new ColumnMappingPage<T>(importModel);
@@ -79,23 +80,23 @@ public class ImportPresenter<T> {
         dialogBox.getFinishButton().setEnabled(false);
         dialogBox.setStatusText("Importing...");
 
-        BatchCommand batch = new BatchCommand();
-        for (DraftModel draftModel : importModel.getDraftModels()) {
-            batch.add(importModel.getBinder().createCommand(draftModel));
-        }
-
-        dispatcher.execute(batch, new AsyncCallback<BatchResult>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                dialogBox.setStatusText("Import failed: " + caught.getMessage());
-            }
-
-            @Override
-            public void onSuccess(BatchResult result) {
-                overlay.hide();
-            }
-        });
+//        BatchCommand batch = new BatchCommand();
+//        for (DraftModel draftModel : importModel.getDraftModels()) {
+//            //batch.add(importModel.getBinder().createCommand(draftModel));
+//        }
+//
+//        dispatcher.execute(batch, new AsyncCallback<BatchResult>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                dialogBox.setStatusText("Import failed: " + caught.getMessage());
+//            }
+//
+//            @Override
+//            public void onSuccess(BatchResult result) {
+//                overlay.hide();
+//            }
+//        });
     }
 
     public void show() {

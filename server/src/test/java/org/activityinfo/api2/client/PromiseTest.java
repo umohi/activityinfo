@@ -16,7 +16,7 @@ public class PromiseTest {
     @Test
     public void normallyResolved() {
 
-        Promise<Integer> promise = new Promise<>();
+        Promise<Integer> promise = new Promise<Integer>(Promise.NO_OP);
         assertFalse(promise.isSettled());
         assertThat(promise.getState(), equalTo(Promise.State.PENDING));
 

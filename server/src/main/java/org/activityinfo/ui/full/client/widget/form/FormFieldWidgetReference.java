@@ -87,8 +87,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     }
 
     private void loadFormInstances(final FormField formField) {
-        resourceLocator.queryInstances(InstanceCriteria.getInstance(formField.getRange())).
-                fetch().then(new SuccessCallback<List<FormInstance>>() {
+        resourceLocator.queryInstances(InstanceCriteria.getInstance(formField.getRange())).then(new SuccessCallback<List<FormInstance>>() {
             @Override
             public void onSuccess(List<FormInstance> result) {
                 FormFieldWidgetReference.this.widget = createWidget(result);

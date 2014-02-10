@@ -38,21 +38,21 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Remote<FormClass> getUserForm(Cuid formId) {
+    public Promise<FormClass> getFormClass(Cuid formId) {
         if (formId.getDomain() == CuidAdapter.ACTIVITY_DOMAIN) {
             int activityId = CuidAdapter.getLegacyIdFromCuid(formId);
-            return Remotes.transform(execute(new GetSchema()), new ActivityAdapter(activityId));
+            return execute(new GetSchema()).then(new ActivityAdapter(activityId));
         }
-        return Remotes.error(new NotFoundException(formId.asIri()));
+        return Promise.rejected(new NotFoundException(formId.asIri()));
     }
 
     @Override
-    public Remote<FormInstance> getFormInstance(Cuid instanceId) {
+    public Promise<FormInstance> getFormInstance(Cuid instanceId) {
         if (instanceId.getDomain() == CuidAdapter.SITE_DOMAIN) {
             int siteId = CuidAdapter.getLegacyIdFromCuid(instanceId);
-            return Remotes.transform(execute(GetSites.byId(siteId)), new SiteAdapter());
+            return execute(GetSites.byId(siteId)).then(new SiteAdapter());
         }
-        return Remotes.error(new NotFoundException(instanceId.asIri()));
+        return Promise.rejected(new NotFoundException(instanceId.asIri()));
     }
 
     @Override
@@ -61,12 +61,12 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Remote<Integer> countInstances(InstanceCriteria criteria) {
-        return Remotes.error(new UnsupportedOperationException());
+    public Promise<Integer> countInstances(InstanceCriteria criteria) {
+        return Promise.rejected(new UnsupportedOperationException());
     }
 
     @Override
-    public Remote<List<FormInstance>> queryInstances(InstanceCriteria criteria) {
+    public Promise<List<FormInstance>> queryInstances(InstanceCriteria criteria) {
         if (criteria != null && criteria.getClasses() != null) {
             final Filter filter = new Filter();
             final List<Integer> idList = Lists.newArrayList(Iterables.transform(criteria.getClasses(), new Function<Iri, Integer>() {
@@ -77,7 +77,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
                 }
             }));
             filter.addRestriction(DimensionType.AttributeGroup, idList);
-            return Remotes.transform(execute(new GetAttributeGroupsDimension(filter)), new Function<AttributeGroupResult, List<FormInstance>>() {
+            return execute(new GetAttributeGroupsDimension(filter)).then(new Function<AttributeGroupResult, List<FormInstance>>() {
                 @Nullable
                 @Override
                 public List<FormInstance> apply(@Nullable AttributeGroupResult input) {
@@ -93,7 +93,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
                 }
             });
         }
-        return Remotes.error(new UnsupportedOperationException());
+        return Promise.rejected(new UnsupportedOperationException());
     }
 
     /**
@@ -102,13 +102,12 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
      * @param command the command to execute
      * @param <R>     the type of the {@code Command}'s {@code CommandResult}
      */
-    private <R extends CommandResult> Remote<R> execute(final Command<R> command) {
-        return new Remote<R>() {
+    private <R extends CommandResult> Promise<R> execute(final Command<R> command) {
+        return new Promise<R>(new Promise.AsyncOperation<R>() {
 
             @Override
-            public Promise<R> fetch() {
+            public void start(final Promise<R> promise) {
                 try {
-                    final Promise<R> promise = new Promise<>();
                     dispatcher.execute(command, new AsyncCallback<R>() {
                         @Override
                         public void onFailure(Throwable throwable) {
@@ -120,12 +119,11 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
                             promise.resolve(result);
                         }
                     });
-                    return promise;
                 } catch (Throwable caught) {
-                    return Promise.rejected(caught);
+                    promise.reject(caught);
                 }
             }
-        };
+        });
     }
 
     private static class ActivityAdapter implements Function<SchemaDTO, FormClass> {

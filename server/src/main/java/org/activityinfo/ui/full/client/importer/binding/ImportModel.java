@@ -3,15 +3,15 @@ package org.activityinfo.ui.full.client.importer.binding;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.data.ImportRow;
 import org.activityinfo.ui.full.client.importer.data.ImportSource;
-import org.activityinfo.ui.full.client.importer.ont.PropertyPath;
-import org.activityinfo.ui.full.client.importer.ont.PropertyTree;
-import org.activityinfo.ui.full.client.importer.ont.PropertyTree.SearchOrder;
+import org.activityinfo.api2.shared.form.tree.FormTree.SearchOrder;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A model which defines the mapping from an {@code ImportSource}
@@ -19,22 +19,21 @@ import java.util.Map;
  */
 public class ImportModel<T> {
 
-    private InstanceImporter binder;
     private ImportSource source;
     private List<DraftModel> models;
 
-    private PropertyTree propertyTree;
+    private FormTree formTree;
 
 
     /**
      * Defines the binding of property path
      */
-    private Map<Integer, PropertyPath> bindings = Maps.newHashMap();
+    private Map<Integer, FieldPath> bindings = Maps.newHashMap();
+    private Map<FieldPath, Object> providedValues;
 
 
-    public ImportModel(InstanceImporter binder) {
-        this.binder = binder;
-        this.propertyTree = new PropertyTree(binder.getOntClass(), binder);
+    public ImportModel(FormTree formTree) {
+        this.formTree = this.formTree;
 
     }
 
@@ -59,13 +58,13 @@ public class ImportModel<T> {
     public void updateDrafts() {
         String[] propertyKeys = new String[source.getColumns().size()];
         for (int i = 0; i != propertyKeys.length; ++i) {
-            PropertyPath bound = bindings.get(i);
+            FieldPath bound = bindings.get(i);
             if (bound != null) {
                 propertyKeys[i] = bound.getKey();
             }
         }
 
-        List<PropertyPath> objectProperties = getObjectPropertiesToResolve();
+        List<FieldPath> objectProperties = getObjectPropertiesToResolve();
 
         for (DraftModel draftModel : getDraftModels()) {
 
@@ -80,8 +79,8 @@ public class ImportModel<T> {
             }
 
             // Now, try to match the object properties based on the given data type properties
-            for (PropertyPath path : objectProperties) {
-                InstanceMatch match = binder.matchInstance(path.asObjectProperty().getRange(),
+            for (FieldPath path : objectProperties) {
+                InstanceMatch match = matchInstance(path.getField().getRange(),
                         propertiesFor(path, draftModel));
 
                 if (match != null) {
@@ -91,14 +90,18 @@ public class ImportModel<T> {
         }
     }
 
-    private Map<String, Object> propertiesFor(PropertyPath path, DraftModel draftModel) {
-        Map<String, Object> values = Maps.newHashMap();
-        for (PropertyTree.Node childNode : propertyTree.getNodeByPath(path).getChildren()) {
+    private InstanceMatch matchInstance(Set<Iri> range, Map<Cuid, Object> stringObjectMap) {
+        throw new UnsupportedOperationException("todo");
+    }
+
+    private Map<Cuid, Object> propertiesFor(FieldPath path, DraftModel draftModel) {
+        Map<Cuid, Object> values = Maps.newHashMap();
+        for (FormTree.Node childNode : formTree.getNodeByPath(path).getChildren()) {
             Object value = draftModel.getValue(childNode.getPath().getKey());
             if (value instanceof InstanceMatch) {
-                values.put(childNode.getPropertyId(), ((InstanceMatch) value).getInstanceId());
+                values.put(childNode.getFieldId(), ((InstanceMatch) value).getInstanceId());
             } else if (value != null) {
-                values.put(childNode.getPropertyId(), value);
+                values.put(childNode.getFieldId(), value);
             }
         }
         return values;
@@ -127,17 +130,13 @@ public class ImportModel<T> {
         return source;
     }
 
-    public InstanceImporter getBinder() {
-        return binder;
-    }
-
-    public Map<Integer, PropertyPath> getColumnBindings() {
+    public Map<Integer, FieldPath> getColumnBindings() {
         return bindings;
     }
 
-    public void setColumnBinding(PropertyPath property, Integer columnIndex) {
+    public void setColumnBinding(FieldPath property, Integer columnIndex) {
         // for now, a property may be assigned to only one column
-        Iterator<Map.Entry<Integer, PropertyPath>> it = bindings.entrySet().iterator();
+        Iterator<Map.Entry<Integer, FieldPath>> it = bindings.entrySet().iterator();
         while (it.hasNext()) {
             if (it.next().getValue().equals(property)) {
                 it.remove();
@@ -151,35 +150,35 @@ public class ImportModel<T> {
         bindings.remove(columnIndex);
     }
 
-    public List<PropertyPath> getDataTypePropertiesToMatch() {
-        return propertyTree.search(SearchOrder.BREADTH_FIRST,
+    public List<FieldPath> getDataTypePropertiesToMatch() {
+        return formTree.search(SearchOrder.BREADTH_FIRST,
                 // descend if...
-                PropertyTree.pathNotIn(binder.getProvidedValues().keySet()),
+                FormTree.pathNotIn(providedValues.keySet()),
                 // match if...
                 Predicates.and(
-                        PropertyTree.isDataTypeProperty(),
-                        PropertyTree.pathNotIn(binder.getProvidedValues().keySet())));
+                        FormTree.isDataTypeProperty(),
+                        FormTree.pathNotIn(providedValues.keySet())));
     }
 
-    public List<PropertyPath> getObjectPropertiesToResolve() {
-        return propertyTree.search(SearchOrder.DEPTH_FIRST,
+    public List<FieldPath> getObjectPropertiesToResolve() {
+        return formTree.search(SearchOrder.DEPTH_FIRST,
                 // descend if...
-                PropertyTree.pathNotIn(binder.getProvidedValues().keySet()),
+                FormTree.pathNotIn(providedValues.keySet()),
                 // match if...
                 Predicates.and(
-                        PropertyTree.isObjectProperty(),
-                        PropertyTree.pathNotIn(binder.getProvidedValues().keySet())));
+                        FormTree.isObjectProperty(),
+                        FormTree.pathNotIn(providedValues.keySet())));
     }
 
-    public List<PropertyPath> getPropertiesToValidate() {
-        return propertyTree.search(SearchOrder.BREADTH_FIRST,
+    public List<FieldPath> getPropertiesToValidate() {
+        return formTree.search(SearchOrder.BREADTH_FIRST,
                 // descend if...
-                PropertyTree.pathNotIn(binder.getProvidedValues().keySet()),
+                FormTree.pathNotIn(providedValues.keySet()),
                 // match if...
                 Predicates.and(
-                        PropertyTree.pathNotIn(binder.getProvidedValues().keySet()),
+                        FormTree.pathNotIn(providedValues.keySet()),
                         Predicates.or(
-                                PropertyTree.isObjectProperty(),
-                                PropertyTree.pathIn(bindings.values()))));
+                                FormTree.isObjectProperty(),
+                                FormTree.pathIn(bindings.values()))));
     }
 }
