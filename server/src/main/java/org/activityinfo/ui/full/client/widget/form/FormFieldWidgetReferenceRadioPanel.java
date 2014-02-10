@@ -21,10 +21,11 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -43,7 +44,7 @@ import java.util.Map;
 /**
  * @author yuriyz on 2/7/14.
  */
-public class FormFieldWidgetReferenceRadioPanel extends Composite implements FormFieldWidget<Cuid> {
+public class FormFieldWidgetReferenceRadioPanel extends Composite implements FormFieldWidget<List<Cuid>> {
 
     private static FormFieldWidgetReferenceRadioPanelUiBinder uiBinder = GWT
             .create(FormFieldWidgetReferenceRadioPanelUiBinder.class);
@@ -70,8 +71,15 @@ public class FormFieldWidgetReferenceRadioPanel extends Composite implements For
     public void init(List<FormInstance> instances) {
         this.instances = instances;
         final String groupId = Integer.toString(new KeyGenerator().generateInt());
-        for (FormInstance formInstance : instances) {
+        for (final FormInstance formInstance : instances) {
             final RadioButton radioButton = new RadioButton(groupId, formInstance.getId().asString());
+            radioButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+                @Override
+                public void onValueChange(ValueChangeEvent<Boolean> event) {
+                    fireEvent(new CuidValueChangeEvent(Lists.newArrayList(formInstance.getId())));
+                }
+            });
+
             panel.add(radioButton);
             controls.put(formInstance.getId(), radioButton);
         }
@@ -94,33 +102,34 @@ public class FormFieldWidgetReferenceRadioPanel extends Composite implements For
     }
 
     @Override
-    public Cuid getValue() {
+    public List<Cuid> getValue() {
         for (Map.Entry<Cuid, RadioButton> entry : controls.entrySet()) {
             if (entry.getValue().getValue()) {
-                return entry.getKey();
+                return Lists.newArrayList(entry.getKey());
             }
         }
-        return null;
+        return Lists.newArrayList();
     }
 
     @Override
-    public void setValue(Cuid value) {
+    public void setValue(List<Cuid> value) {
         setValue(value, false);
     }
 
     @Override
-    public void setValue(Cuid value, boolean fireEvents) {
+    public void setValue(List<Cuid> value, boolean fireEvents) {
+        final List<Cuid> oldValue = getValue();
         final RadioButton radioButton = controls.get(value);
-        radioButton.setValue(true);
+        if (radioButton != null) {
+            radioButton.setValue(true);
+            if (fireEvents) {
+                CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
+            }
+        }
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Cuid> handler) {
-        return null;
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<List<Cuid>> handler) {
+        return addHandler(handler, ValueChangeEvent.getType());
     }
 }
