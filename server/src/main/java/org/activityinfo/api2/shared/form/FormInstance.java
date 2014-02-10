@@ -123,4 +123,14 @@ public class FormInstance implements Resource {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "FormInstance{" +
+                "id=" + id +
+                ", classId=" + classId +
+                ", label=" + label +
+                ", valueMap=" + valueMap +
+                '}';
+    }
 }

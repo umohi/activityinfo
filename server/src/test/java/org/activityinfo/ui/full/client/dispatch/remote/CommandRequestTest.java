@@ -31,10 +31,10 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
-import static org.junit.internal.matchers.IsCollectionContaining.hasItem;
 
 public class CommandRequestTest {
 
@@ -53,8 +53,7 @@ public class CommandRequestTest {
         boolean merged = secondRequest.mergeSuccessfulInto(pending);
 
         assertThat("merged", merged, is(true));
-        assertThat(firstCommand.getCallbacks(),
-                hasItem(first(secondRequest.getCallbacks())));
+        assertThat(firstCommand.getCallbacks(), hasItem(first(secondRequest.getCallbacks())));
 
     }
 

@@ -1,0 +1,47 @@
+package org.activityinfo.api2.shared.criteria;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
+import org.activityinfo.api2.shared.form.FormInstance;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * A {@code Criteria} that is satisfied only if all of its
+ * children are satisfied
+ */
+public class CriteriaIntersection implements Criteria, Iterable<Criteria> {
+
+    private final List<Criteria> members;
+
+    public CriteriaIntersection(List<Criteria> members) {
+        this.members = members;
+    }
+
+    public CriteriaIntersection(Criteria... members) {
+        this.members = Lists.newArrayList(members);
+    }
+
+    @Override
+    public boolean apply(@Nonnull FormInstance input) {
+        for(Criteria criteria : members) {
+            if(!criteria.apply(input)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void accept(CriteriaVisitor visitor) {
+        visitor.visitIntersection(this);
+    }
+
+    @Override
+    public Iterator<Criteria> iterator() {
+        return members.iterator();
+    }
+}

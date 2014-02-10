@@ -39,8 +39,11 @@ import javax.persistence.NoResultException;
 import javax.ws.rs.core.Response;
 
 import static org.easymock.EasyMock.*;
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -83,8 +86,7 @@ public class ConfirmInviteControllerTest {
         Viewable response = resource.getPage(RestMockUtils
                 .mockUriInfo("http://www.activityinfo.org/confirm?xyz123"));
 
-        assertThat(response.getModel(),
-                instanceOf(ConfirmInvitePageModel.class));
+        assertThat(response.getModel(), instanceOf(ConfirmInvitePageModel.class));
 
     }
 

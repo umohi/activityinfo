@@ -25,7 +25,6 @@ package org.activityinfo.server.command;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.SortInfo;
-import junit.framework.Assert;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetSites;
@@ -35,6 +34,7 @@ import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,7 +75,7 @@ public class GetSitesTest extends CommandTestCase2 {
         Assert.assertEquals("entityName", "Ituri", s.getAdminEntity(1)
                 .getName());
         Assert.assertNotNull("admin bounds", s.getAdminEntity(1).getBounds());
-        Assert.assertEquals("indicator", 10000.0, s.getIndicatorValue(1));
+        Assert.assertThat("indicator", s.getIndicatorValue(1), equalTo(10000.0));
         Assert.assertNull("site x", s.getX());
 
         // assure project is present
@@ -98,12 +98,9 @@ public class GetSitesTest extends CommandTestCase2 {
         PagingLoadResult<SiteDTO> result = execute(cmd);
 
         // assure sorted
-        Assert.assertEquals("sorted", 10000.0, result.getData().get(0)
-                .getIndicatorValue(1));
-        Assert.assertEquals("sorted", 3600.0, result.getData().get(1)
-                .getIndicatorValue(1));
-        Assert.assertEquals("sorted", 1500.0, result.getData().get(2)
-                .getIndicatorValue(1));
+        assertThat("sorted", result.getData().get(0).getIndicatorValue(1), equalTo(10000.0));
+        Assert.assertEquals("sorted", result.getData().get(1).getIndicatorValue(1), equalTo(3600.0));
+        Assert.assertEquals("sorted", result.getData().get(2).getIndicatorValue(1), equalTo(1500.0));
 
         Assert.assertNotNull("activityId", result.getData().get(0)
                 .getActivityId());
@@ -276,7 +273,7 @@ public class GetSitesTest extends CommandTestCase2 {
         Assert.assertEquals("entityName", "Ituri", s.getAdminEntity(1)
                 .getName());
         Assert.assertNotNull("admin bounds", s.getAdminEntity(1).getBounds());
-        Assert.assertEquals("indicator", 10000.0, s.getIndicatorValue(1));
+        Assert.assertThat("indicator",s.getIndicatorValue(1), equalTo(10000.0));
         Assert.assertNull("site x", s.getX());
 
         // assure project is present

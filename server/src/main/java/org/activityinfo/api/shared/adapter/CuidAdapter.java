@@ -39,6 +39,8 @@ public class CuidAdapter {
 
     public static final char ADMIN_LEVEL_DOMAIN = 'E';
 
+    private static final char ADMIN_ENTITY_DOMAIN = 'e';
+
     public static final char PROJECT_DOMAIN = 'R';
 
     public static final int NAME_FIELD = 1;
@@ -50,6 +52,7 @@ public class CuidAdapter {
     public static final int PARTNER_FIELD = 5;
     public static final int PROJECT_FIELD = 6;
     public static final int DATE_FIELD = 7;
+    public static final int FULL_NAME_FIELD = 8;
 
     /**
      * Avoid instance creation.
@@ -88,6 +91,11 @@ public class CuidAdapter {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "p");
     }
 
+
+    public static Cuid partnerInstanceId(int partnerId) {
+        return cuid(PARTNER_DOMAIN, partnerId);
+    }
+
     public static Cuid adminField(Cuid locationTypeFormClass, int adminLevelId) {
         return new Cuid(locationTypeFormClass.asString() + block(ADMIN_FIELD) + block(adminLevelId));
     }
@@ -104,11 +112,20 @@ public class CuidAdapter {
      */
     public static Cuid locationFormClass(int locationTypeId) {
         return cuid(LOCATION_TYPE_DOMAIN, locationTypeId);
+    }
 
+    public static Cuid locationInstanceId(int locationId) {
+        return cuid(LOCATION_DOMAIN, locationId);
     }
 
     public static Cuid adminLevelFormClass(int adminLevelId) {
         return cuid(ADMIN_LEVEL_DOMAIN, adminLevelId);
+    }
+
+
+    public static Cuid adminEntityInstanceId(int adminEntityId) {
+        return cuid(ADMIN_ENTITY_DOMAIN, adminEntityId);
+
     }
 
     /**
@@ -135,7 +152,6 @@ public class CuidAdapter {
      */
     public static Cuid commentsField(int activityId) {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
-
     }
 
     /**
@@ -174,6 +190,10 @@ public class CuidAdapter {
         return cuid(ATTRIBUTE_GROUP_DOMAIN, attributeGroupId);
     }
 
+    public static Cuid attributeId(int attributeId) {
+        return cuid(ATTRIBUTE_DOMAIN, attributeId);
+    }
+
     /**
      * @param databaseId the id of the user database
      * @return the {@code FormClass} Cuid for a given database's list of partners.
@@ -208,21 +228,6 @@ public class CuidAdapter {
 
     private static Cuid cuid(char domain, EntityDTO entityDTO) {
         return cuid(domain, entityDTO.getId());
-    }
-
-    public static int attributeGroupLegacyId(Iri iri) {
-        String iriAsString = iri.asString();
-        if (iriAsString.startsWith(Cuids.IRI_PREFIX)) {
-            iriAsString = iriAsString.substring(Cuids.IRI_PREFIX.length());
-        }
-        if (iriAsString.charAt(0) == ATTRIBUTE_GROUP_DOMAIN) {
-            iriAsString = iriAsString.substring(1);
-        }
-        try {
-            return Integer.parseInt(iriAsString);
-        } catch (Exception e){
-            return -1;
-        }
     }
 
 }

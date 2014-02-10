@@ -389,7 +389,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
             final SiteDTO selection = gridPanel.getSelection();
             if (FeatureSwitch.isNewFormEnabled()) {
                 eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(selection.getActivityIri(), selection.getIri())));
+                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(selection.getActivityCuid(), selection.getCuid())));
             } else {
                 SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
                 launcher.editSite(selection,

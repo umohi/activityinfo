@@ -90,7 +90,7 @@ public class ActivityUserFormBuilder {
         return siteForm;
     }
 
-    private Cuid locationClass(LocationTypeDTO locationType) {
+    private static Cuid locationClass(LocationTypeDTO locationType) {
         if(locationType.isAdminLevel()) {
             return CuidAdapter.adminLevelFormClass(locationType.getBoundAdminLevelId());
         } else {
@@ -98,7 +98,7 @@ public class ActivityUserFormBuilder {
         }
     }
 
-    private void addIndicators(FormElementContainer container, IndicatorGroup group) {
+    private static void addIndicators(FormElementContainer container, IndicatorGroup group) {
         for (IndicatorDTO indicator : group.getIndicators()) {
             FormField field = new FormField(CuidAdapter.indicatorField(indicator.getId()));
             field.setLabel(new LocalizedString(indicator.getName()));

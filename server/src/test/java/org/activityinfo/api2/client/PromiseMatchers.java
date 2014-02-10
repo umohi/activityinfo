@@ -3,7 +3,7 @@ package org.activityinfo.api2.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.junit.internal.matchers.TypeSafeMatcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +36,13 @@ public class PromiseMatchers {
         return results.get(0);
     }
 
-    public static <T> Matcher<Promise<T>> resolvesTo(final Matcher<T> matcher) {
-        return new TypeSafeMatcher<Promise<T>>() {
+    public static <T> Matcher<Promise<? extends T>> resolvesTo(final Matcher<T> matcher) {
+        return new TypeSafeMatcher<Promise<? extends T>>() {
 
             private T resolution = null;
 
             @Override
-            public boolean matchesSafely(Promise<T> item) {
+            public boolean matchesSafely(Promise<? extends T> item) {
 
                 item.then(new AsyncCallback<T>() {
                     @Override

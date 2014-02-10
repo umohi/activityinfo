@@ -244,8 +244,7 @@ public final class SchemaDTO extends BaseModelData implements DTO {
     public AttributeGroupDTO getAttributeGroupById(int attributeGroupId) {
         for (UserDatabaseDTO db : getDatabases()) {
             for (ActivityDTO activity : db.getActivities()) {
-                AttributeGroupDTO group = activity
-                        .getAttributeGroupById(attributeGroupId);
+                AttributeGroupDTO group = activity.getAttributeGroupById(attributeGroupId);
                 if (group != null) {
                     return group;
                 }

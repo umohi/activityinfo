@@ -1,11 +1,24 @@
 package org.activityinfo.api2.shared.criteria;
 
-/**
- * Created by alex on 2/10/14.
- */
-public interface CriteriaVisitor {
+public abstract class CriteriaVisitor {
 
-    void visitFieldCriteria(FieldCriteria criteria);
+    public void visitFieldCriteria(FieldCriteria criteria) {
 
-    void visitClassCriteria(ClassCriteria criteria);
+    }
+
+    public void visitClassCriteria(ClassCriteria criteria) {
+
+    }
+
+    public void visitFuzzyFieldCriteria(FuzzyFieldCriteria criteria) {
+
+    }
+
+    public void visitIntersection(CriteriaIntersection intersection) {
+
+    }
+
+    public void visitUnion(CriteriaUnion criteria) {
+
+    }
 }

@@ -46,12 +46,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.easymock.EasyMock.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.internal.matchers.IsCollectionContaining.hasItem;
-import static org.junit.internal.matchers.IsCollectionContaining.hasItems;
+import static org.junit.Assert.assertTrue;;
 
 public class DbListPresenterTest {
     private static final int OWNED_DB_ID = 1;
@@ -211,10 +212,8 @@ public class DbListPresenterTest {
         }).anyTimes();
     }
 
-    private <T extends CommandResult> void expectDispatch(Command<T> command,
-                                                          final T result) {
-        this.dispatcher.execute(eq(command),
-                isA(AsyncCallback.class));
+    private <T extends CommandResult> void expectDispatch(Command<T> command, final T result) {
+        this.dispatcher.execute(eq(command), isA(AsyncCallback.class));
         expectLastCall().andAnswer(new IAnswer<Void>() {
             @Override
             public Void answer() throws Throwable {

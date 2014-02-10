@@ -54,7 +54,7 @@ public final class Promise<T> {
     private T value;
     private Throwable exception;
 
-    private List<AsyncCallback<T>> callbacks = null;
+    private List<AsyncCallback<? super T>> callbacks = null;
 
     public Promise(AsyncOperation<T> asyncOperation) {
         this.asyncOperation = asyncOperation;
@@ -85,7 +85,7 @@ public final class Promise<T> {
         }
     }
 
-    public void then(AsyncCallback<T> callback) {
+    public void then(AsyncCallback<? super T> callback) {
         switch (state) {
             case PENDING:
                 if (callbacks == null) {
@@ -102,7 +102,7 @@ public final class Promise<T> {
         }
     }
 
-    public <F> Promise<F> then(final Function<T, F> f) {
+    public <F> Promise<F> then(final Function<? super T, F> f) {
         final Promise<F> chained = new Promise<F>(this.<F>chainTask());
         then(new AsyncCallback<T>() {
 
@@ -171,7 +171,7 @@ public final class Promise<T> {
 
     private void publishRejection() {
         if (callbacks != null) {
-            for (AsyncCallback<T> callback : callbacks) {
+            for (AsyncCallback<? super T> callback : callbacks) {
                 callback.onFailure(exception);
             }
         }
@@ -179,7 +179,7 @@ public final class Promise<T> {
 
     private void publishFulfillment() {
         if (callbacks != null) {
-            for (AsyncCallback<T> callback : callbacks) {
+            for (AsyncCallback<? super T> callback : callbacks) {
                 callback.onSuccess(value);
             }
         }

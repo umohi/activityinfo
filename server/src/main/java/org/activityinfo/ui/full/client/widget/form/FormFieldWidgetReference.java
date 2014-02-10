@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.criteria.InstanceCriteria;
+import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormInstance;
@@ -90,7 +90,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     }
 
     private void loadFormInstances(final FormField formField) {
-        resourceLocator.queryInstances(InstanceCriteria.getInstance(formField.getRange())).then(new SuccessCallback<List<FormInstance>>() {
+        resourceLocator.queryInstances(ClassCriteria.union(formField.getRange())).then(new SuccessCallback<List<FormInstance>>() {
             @Override
             public void onSuccess(List<FormInstance> result) {
                 FormFieldWidgetReference.this.widget = createWidget(result);

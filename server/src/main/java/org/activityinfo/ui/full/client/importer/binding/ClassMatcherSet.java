@@ -4,6 +4,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
@@ -19,9 +20,10 @@ import java.util.Set;
 public class ClassMatcherSet {
 
     /**
-     * Maps FormClass cuid to ClassMatcher
+     * Maps FormClass cuid to ReferenceMatcher
      */
-    private Map<Cuid, ClassMatcher> matchers = Maps.newHashMap();
+    private Map<Cuid, ReferenceMatcher> matchers = Maps.newHashMap();
+    private ResourceLocator resourceLocator;
 
     public ClassMatcherSet(FormTree tree, Map<Integer, FieldPath> columnToFieldPath) {
 
@@ -48,13 +50,13 @@ public class ClassMatcherSet {
         }
     }
 
-    private ClassMatcher matcherForClass(FormTree.Node node) {
-        ClassMatcher classMatcher = matchers.get(node.getFormClass().getId());
-        if(classMatcher == null) {
-            classMatcher = new ClassMatcher(resourceLocator, node.getFormClass());
-            matchers.put(node.getFormClass().getId(), classMatcher);
+    private ReferenceMatcher matcherForClass(FormTree.Node node) {
+        ReferenceMatcher referenceMatcher = matchers.get(node.getFormClass().getId());
+        if(referenceMatcher == null) {
+            referenceMatcher = new ReferenceMatcher(resourceLocator, node.getFormClass());
+            matchers.put(node.getFormClass().getId(), referenceMatcher);
         }
-        return classMatcher;
+        return referenceMatcher;
     }
 
     private Multimap<Integer, Cuid> mapColumnToField(FormTree.Node node, Map<FieldPath, Integer> fieldPathToColumn) {
@@ -72,7 +74,7 @@ public class ClassMatcherSet {
     public void match(ImportSource source) {
         for(int i=0;i!=source.getColumns().size();++i) {
             Set<String> distinctValues = source.distinctValues(i);
-            for(ClassMatcher matcher : matchers.values()) {
+            for(ReferenceMatcher matcher : matchers.values()) {
                 matcher.matchColumn(i, distinctValues);
             }
         }

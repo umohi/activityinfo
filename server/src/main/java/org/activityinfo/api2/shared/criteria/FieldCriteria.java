@@ -1,19 +1,32 @@
 package org.activityinfo.api2.shared.criteria;
 
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.form.FormInstance;
+
+import javax.annotation.Nullable;
+import java.util.Objects;
 
 /**
- * Created by alex on 2/10/14.
+ * Accepts an instance if the given field value matches
+ * exactly.
  */
-public class FieldCriteria {
+public class FieldCriteria implements Criteria {
 
     private Cuid fieldId;
     private Object value;
-    private boolean allowFuzzy;
 
-    public FieldCriteria(Cuid fieldId, Object value, boolean allowFuzzy) {
+    public FieldCriteria(Cuid fieldId, Object value) {
         this.fieldId = fieldId;
         this.value = value;
-        this.allowFuzzy = allowFuzzy;
+    }
+
+    @Override
+    public void accept(CriteriaVisitor visitor) {
+
+    }
+
+    @Override
+    public boolean apply(@Nullable FormInstance input) {
+        return Objects.equals(input.get(fieldId), value);
     }
 }

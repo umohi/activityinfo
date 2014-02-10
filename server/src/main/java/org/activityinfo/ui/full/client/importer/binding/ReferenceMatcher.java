@@ -4,18 +4,15 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.criteria.InstanceCriteria;
+import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.ui.full.client.importer.data.ImportRow;
-import org.activityinfo.ui.full.client.importer.data.ImportSource;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
  * Matches instances of a given FormClass
  */
-public class ClassMatcher {
+public class ReferenceMatcher {
 
     private final FormClass formClass;
     private final ResourceLocator resourceLocator;
@@ -24,7 +21,7 @@ public class ClassMatcher {
     private Multimap<String, Cuid> mapping = HashMultimap.create();
 
 
-    public ClassMatcher(ResourceLocator resourceLocator, FormClass formClass) {
+    public ReferenceMatcher(ResourceLocator resourceLocator, FormClass formClass) {
         this.resourceLocator = resourceLocator;
         this.formClass = formClass;
     }
@@ -35,7 +32,7 @@ public class ClassMatcher {
 
     public void matchColumn(int columnIndex, Set<String> distinctValues) {
         for(Cuid fieldId : columnToFieldMap.get(columnIndex)) {
-           resourceLocator.queryInstances(new InstanceCriteria(classes,))
+          // resourceLocator.queryInstances(new ClassCriteria(classes,))
         }
     }
 }
