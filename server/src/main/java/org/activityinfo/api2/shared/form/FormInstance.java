@@ -24,7 +24,7 @@ package org.activityinfo.api2.shared.form;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.model.AiLatLng;
 
@@ -40,6 +40,7 @@ public class FormInstance implements Resource {
 
     private Cuid id;
     private Cuid classId;
+    private LocalizedString label;
     private final Map<Cuid, Object> valueMap = Maps.newHashMap();
 
     /**
@@ -58,6 +59,14 @@ public class FormInstance implements Resource {
     @Override
     public Cuid getId() {
         return id;
+    }
+
+    public LocalizedString getLabel() {
+        return label;
+    }
+
+    public void setLabel(LocalizedString label) {
+        this.label = label;
     }
 
     public Cuid getClassId() {

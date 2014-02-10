@@ -116,11 +116,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
                 return new FormFieldWidgetReferenceRadioPanel(formInstances);
             } else if (size < MEDIUM_BALANCE_NUMBER) {
                 // Dropdown list
-                final ListBox dropBox = new ListBox(false);
-                for (FormInstance instance : formInstances) {
-                    //dropBox.addItem(instance.g, instance.getId().asString());
-                }
-
+                return new FromFieldWidgetReferenceCombo(formInstances);
             } else {
                 // Suggest box
             }
@@ -150,10 +146,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
 
     @Override
     public boolean isReadOnly() {
-        if (widget != null) {
-            return widget.isReadOnly();
-        }
-        return false;
+        return widget != null && widget.isReadOnly();
     }
 
     @Override
@@ -161,7 +154,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
         if (widget != null) {
             return widget.getValue();
         }
-        return null;
+        return Lists.newArrayList();
     }
 
     @Override
@@ -189,7 +182,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
                 }
             };
         } else {
-            return addHandler(handler, CuidValueChangeEvent.getType());
+            return widget.addValueChangeHandler(handler);
         }
     }
 

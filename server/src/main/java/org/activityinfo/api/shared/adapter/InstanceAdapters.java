@@ -6,6 +6,7 @@ import org.activityinfo.api.shared.model.AttributeDTO;
 import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormInstance;
 
 /**
@@ -48,7 +49,7 @@ public class InstanceAdapters {
 
     public static FormInstance fromAttribute(AttributeDTO attribute, Cuid formClassId) {
         final FormInstance instance = new FormInstance(CuidAdapter.attributeField(attribute.getId()), formClassId);
-        instance.set(CuidAdapter.attributeField(attribute.getId()), attribute.getName());
+        instance.setLabel(new LocalizedString(attribute.getName()));
         return instance;
     }
 }
