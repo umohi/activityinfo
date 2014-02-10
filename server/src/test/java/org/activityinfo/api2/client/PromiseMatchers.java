@@ -5,12 +5,16 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Hamcrest matchers for promises
  */
 public class PromiseMatchers {
 
-    public static <T> void assertResolves(Promise<T> promise) {
+    public static <T> T assertResolves(Promise<T> promise) {
+        final List<T> results = new ArrayList<>();
         promise.then(new AsyncCallback<T>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -20,8 +24,16 @@ public class PromiseMatchers {
             @Override
             public void onSuccess(T result) {
                 // no problems
+                results.add(result);
             }
         });
+        if(results.size() > 1) {
+            throw new RuntimeException("Callback called " + results.size() + " times, expected exactly one callback.");
+        }
+        if(results.isEmpty()) {
+            throw new RuntimeException("Callback not called, expected exactly one callback.");
+        }
+        return results.get(0);
     }
 
     public static <T> Matcher<Promise<T>> resolvesTo(final Matcher<T> matcher) {

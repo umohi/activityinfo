@@ -7,7 +7,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.DraftModel;
-import org.activityinfo.ui.full.client.importer.binding.ImportModel;
+import org.activityinfo.ui.full.client.importer.Importer;
 
 import java.util.Map;
 
@@ -18,11 +18,11 @@ import java.util.Map;
 public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandFactory<T> {
 
     private DataGrid<DraftModel> dataGrid;
-    private ImportModel<T> importModel;
+    private Importer<T> importer;
     private Map<FieldPath, PropertyColumn<?>> columns;
 
-    public ValidationGrid(ImportModel<T> importModel) {
-        this.importModel = importModel;
+    public ValidationGrid(Importer<T> importer) {
+        this.importer = importer;
         this.dataGrid = new BootstrapDataGrid<DraftModel>(100);
 
         syncColumns();
@@ -36,7 +36,7 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
         }
         columns = Maps.newHashMap();
 
-        for (FieldPath property : importModel.getPropertiesToValidate()) {
+        for (FieldPath property : importer.getPropertiesToValidate()) {
             PropertyColumn<?> column = createColumn(property);
 
             columns.put(property, column);
@@ -60,7 +60,7 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 
     public void refreshRows() {
         syncColumns();
-        dataGrid.setRowData(importModel.getDraftModels());
+        dataGrid.setRowData(importer.getDraftModels());
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 
             @Override
             public void execute() {
-                for (DraftModel draftModel : importModel.getDraftModels()) {
+                for (DraftModel draftModel : importer.getDraftModels()) {
                     draftModel.setValue(property.getKey(), value);
                 }
                 dataGrid.redraw();

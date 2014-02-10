@@ -8,6 +8,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.FormClass;
+import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.api2.shared.form.tree.FormTree;
 
 import java.util.Set;

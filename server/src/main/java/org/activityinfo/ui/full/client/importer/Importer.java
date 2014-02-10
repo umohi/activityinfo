@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.importer.binding;
+package org.activityinfo.ui.full.client.importer;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
@@ -7,6 +7,8 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.ui.full.client.importer.binding.DraftModel;
+import org.activityinfo.ui.full.client.importer.binding.InstanceMatch;
 import org.activityinfo.ui.full.client.importer.data.ImportRow;
 import org.activityinfo.ui.full.client.importer.data.ImportSource;
 import org.activityinfo.api2.shared.form.tree.FormTree.SearchOrder;
@@ -17,7 +19,7 @@ import java.util.*;
  * A model which defines the mapping from an {@code ImportSource}
  * to a list of models of class {@code T}
  */
-public class ImportModel<T> {
+public class Importer<T> {
 
     private ImportSource source;
     private List<DraftModel> models;
@@ -29,11 +31,11 @@ public class ImportModel<T> {
      * Defines the binding of property path
      */
     private Map<Integer, FieldPath> bindings = Maps.newHashMap();
-    private Map<FieldPath, Object> providedValues;
+    private Map<FieldPath, Object> providedValues = Maps.newHashMap();
 
 
-    public ImportModel(FormTree formTree) {
-        this.formTree = this.formTree;
+    public Importer(FormTree formTree) {
+        this.formTree = formTree;
 
     }
 
@@ -150,7 +152,7 @@ public class ImportModel<T> {
         bindings.remove(columnIndex);
     }
 
-    public List<FieldPath> getDataTypePropertiesToMatch() {
+    public List<FieldPath> getFieldsToMatch() {
         return formTree.search(SearchOrder.BREADTH_FIRST,
                 // descend if...
                 FormTree.pathNotIn(providedValues.keySet()),
@@ -166,7 +168,7 @@ public class ImportModel<T> {
                 FormTree.pathNotIn(providedValues.keySet()),
                 // match if...
                 Predicates.and(
-                        FormTree.isObjectProperty(),
+                        FormTree.isReference(),
                         FormTree.pathNotIn(providedValues.keySet())));
     }
 
@@ -178,7 +180,7 @@ public class ImportModel<T> {
                 Predicates.and(
                         FormTree.pathNotIn(providedValues.keySet()),
                         Predicates.or(
-                                FormTree.isObjectProperty(),
+                                FormTree.isReference(),
                                 FormTree.pathIn(bindings.values()))));
     }
 }

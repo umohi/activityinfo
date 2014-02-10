@@ -1,6 +1,7 @@
 package org.activityinfo.ui.full.client.importer.data;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ImportSource {
 
@@ -9,4 +10,6 @@ public interface ImportSource {
     List<ImportRow> getRows();
 
     String getColumnHeader(Integer columnIndex);
+
+    Set<String> distinctValues(int columnIndex);
 }

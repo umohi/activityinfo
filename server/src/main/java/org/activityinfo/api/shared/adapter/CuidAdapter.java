@@ -88,6 +88,10 @@ public class CuidAdapter {
         return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "p");
     }
 
+    public static Cuid adminField(Cuid locationTypeFormClass, int adminLevelId) {
+        return new Cuid(locationTypeFormClass.asString() + block(ADMIN_FIELD) + block(adminLevelId));
+    }
+
     /**
      * @return the {@code FormField}  Cuid for the Location field of a given Activity {@code FormClass}
      */

@@ -14,7 +14,7 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.binding.ImportModel;
+import org.activityinfo.ui.full.client.importer.Importer;
 import org.activityinfo.ui.full.client.importer.data.ImportColumnDescriptor;
 import org.activityinfo.ui.full.client.importer.data.ImportRow;
 
@@ -28,9 +28,9 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
 
     private DataGrid<ImportRow> dataGrid;
 
-    private final ImportModel<T> mapping;
+    private final Importer<T> mapping;
 
-    public ColumnMappingGrid(ImportModel<T> mapping) {
+    public ColumnMappingGrid(Importer<T> mapping) {
 
         this.mapping = mapping;
 

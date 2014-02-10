@@ -70,6 +70,23 @@ public class FieldPath {
     }
 
     @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        for(FormField field : path) {
+            if(s.length() > 0) {
+                s.append(".");
+            }
+            String label = field.getLabel().getValue();
+            if(label.contains(" ")) {
+                s.append("[").append(label).append("]");
+            } else {
+                s.append(label);
+            }
+        }
+        return s.toString();
+    }
+
+    @Override
     public int hashCode() {
         return getKey().hashCode();
     }

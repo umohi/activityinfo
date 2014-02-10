@@ -1,6 +1,7 @@
 package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
@@ -8,9 +9,14 @@ import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 import javax.annotation.Nullable;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.singleton;
 import static org.activityinfo.api.shared.adapter.CuidAdapter.adminLevelFormClass;
@@ -129,22 +135,34 @@ public class BuiltinFormClasses {
             axeField.setType(FormFieldType.FREE_TEXT);
             formClass.addElement(axeField);
 
-            AdminLevelDTO adminLevel = country.getAdminLevels().get(0);
-
-            FormField adminField = new FormField(CuidAdapter.field(classId, CuidAdapter.ADMIN_FIELD));
-            adminField.setLabel(new LocalizedString(adminLevel.getName()));
-            adminField.setType(FormFieldType.REFERENCE);
-            adminField.setCardinality(FormFieldCardinality.SINGLE);
-            adminField.setRange(singleton(adminLevelFormClass(adminLevel.getId()).asIri()));
-            formClass.addElement(adminField);
+            for(AdminLevelDTO level :  findLeaves(country.getAdminLevels())) {
+                FormField adminField = new FormField(CuidAdapter.adminField(classId, level.getId()));
+                adminField.setLabel(new LocalizedString(level.getName()));
+                adminField.setType(FormFieldType.REFERENCE);
+                adminField.setCardinality(FormFieldCardinality.SINGLE);
+                adminField.setRange(singleton(adminLevelFormClass(level.getId()).asIri()));
+                formClass.addElement(adminField);
+            }
 
             FormField pointField = new FormField(CuidAdapter.field(classId, CuidAdapter.GEOMETRY_FIELD));
             pointField.setLabel(new LocalizedString(I18N.CONSTANTS.geographicCoordinatesFieldLabel()));
             pointField.setType(FormFieldType.GEOGRAPHIC_POINT);
             formClass.addElement(pointField);
 
-
             return formClass;
+        }
+
+        private Collection<AdminLevelDTO> findLeaves(List<AdminLevelDTO> levels) {
+            Map<Integer, AdminLevelDTO> idMap = Maps.newHashMap();
+            for(AdminLevelDTO level : levels) {
+                idMap.put(level.getId(), level);
+            }
+            for(AdminLevelDTO level : levels) {
+                if(!level.isRoot()) {
+                    idMap.remove(level.getParentLevelId());
+                }
+            }
+            return idMap.values();
         }
 
         private CountryDTO findCountry(SchemaDTO schema, int locationTypeId) {
@@ -191,7 +209,7 @@ public class BuiltinFormClasses {
             }
 
             FormField nameField = new FormField(CuidAdapter.field(classId, CuidAdapter.NAME_FIELD));
-            nameField.setLabel(new LocalizedString(I18N.CONSTANTS.labelFieldLabel()));
+            nameField.setLabel(new LocalizedString(I18N.CONSTANTS.name()));
             nameField.setType(FormFieldType.FREE_TEXT);
             nameField.setRequired(true);
             formClass.addElement(nameField);

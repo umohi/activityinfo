@@ -5,14 +5,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.BatchCommand;
-import org.activityinfo.api.shared.command.result.BatchResult;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.tree.FormTree;
-import org.activityinfo.ui.full.client.importer.binding.DraftModel;
-import org.activityinfo.ui.full.client.importer.binding.ImportModel;
 import org.activityinfo.ui.full.client.importer.page.ChooseSourcePage;
 import org.activityinfo.ui.full.client.importer.page.ColumnMappingPage;
 import org.activityinfo.ui.full.client.importer.page.ValidationPage;
@@ -37,17 +31,17 @@ public class ImportPresenter<T> {
 
     private Step currentStep;
 
-    private ImportModel<T> importModel;
+    private Importer<T> importer;
 
     private ResourceLocator dispatcher;
 
     public ImportPresenter(ResourceLocator dispatcher, FormTree formTree) {
         this.dispatcher = dispatcher;
-        this.importModel = new ImportModel<T>(formTree);
+        this.importer = new Importer<T>(formTree);
 
         chooseSourcePage = new ChooseSourcePage(eventBus);
-        matchingPage = new ColumnMappingPage<T>(importModel);
-        validationPage = new ValidationPage<T>(importModel);
+        matchingPage = new ColumnMappingPage<T>(importer);
+        validationPage = new ValidationPage<T>(importer);
 
 
         dialogBox.getNextButton().addClickHandler(new ClickHandler() {
@@ -81,8 +75,8 @@ public class ImportPresenter<T> {
         dialogBox.setStatusText("Importing...");
 
 //        BatchCommand batch = new BatchCommand();
-//        for (DraftModel draftModel : importModel.getDraftModels()) {
-//            //batch.add(importModel.getBinder().createCommand(draftModel));
+//        for (DraftModel draftModel : importer.getDraftModels()) {
+//            //batch.add(importer.getBinder().createCommand(draftModel));
 //        }
 //
 //        dispatcher.execute(batch, new AsyncCallback<BatchResult>() {
@@ -111,12 +105,12 @@ public class ImportPresenter<T> {
                 dialogBox.setPage(chooseSourcePage);
                 break;
             case COLUMN_MATCHING:
-                importModel.setSource(chooseSourcePage.getImportSource());
+                importer.setSource(chooseSourcePage.getImportSource());
                 matchingPage.refresh();
                 dialogBox.setPage(matchingPage);
                 break;
             case VALIDATION:
-                importModel.updateDrafts();
+                importer.updateDrafts();
                 validationPage.refresh();
                 dialogBox.setPage(validationPage);
                 break;

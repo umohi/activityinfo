@@ -1,8 +1,10 @@
 package org.activityinfo.ui.full.client.importer.data;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * An import source pasted in to a text field by the user.
@@ -143,5 +145,20 @@ public class PastedImportSource implements ImportSource {
     @Override
     public String getColumnHeader(Integer columnIndex) {
         return columns.get(columnIndex).getHeader();
+    }
+
+    @Override
+    public Set<String> distinctValues(int columnIndex) {
+        Set<String> set = Sets.newHashSet();
+        for(ImportRow row : getRows()) {
+            String value = row.getColumnValue(columnIndex);
+            if(value != null) {
+                String trimmedValue = value.trim();
+                if(trimmedValue.length() > 0) {
+                    set.add(trimmedValue.toLowerCase());
+                }
+            }
+        }
+        return set;
     }
 }

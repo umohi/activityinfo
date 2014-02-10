@@ -81,6 +81,10 @@ public class FormTree {
             return field.getRange();
         }
 
+        public FormFieldType getFieldType() {
+            return field.getType();
+        }
+
         public String debugPath() {
             StringBuilder path = new StringBuilder();
             path.append(this);
@@ -148,14 +152,14 @@ public class FormTree {
         return leaves;
     }
 
-    public List<FieldPath> search(SearchOrder order, Predicate<Node> descendPredicate, Predicate<Node> matchPredicate) {
+    public List<FieldPath> search(SearchOrder order, Predicate<? super Node> descendPredicate, Predicate<Node> matchPredicate) {
         List<FieldPath> paths = Lists.newArrayList();
         search(paths, root, order, descendPredicate, matchPredicate);
         return paths;
     }
 
     private void search(List<FieldPath> paths, Node parent, SearchOrder searchOrder,
-                        Predicate<Node> descendPredicate, Predicate<Node> matchPredicate) {
+                        Predicate<? super Node> descendPredicate, Predicate<Node> matchPredicate) {
         if (searchOrder == SearchOrder.BREADTH_FIRST && !parent.isRoot() && matchPredicate.apply(parent)) {
             paths.add(parent.path);
         }
@@ -179,7 +183,7 @@ public class FormTree {
         };
     }
 
-    public static Predicate<Node> isObjectProperty() {
+    public static Predicate<Node> isReference() {
         return Predicates.not(isDataTypeProperty());
     }
 
