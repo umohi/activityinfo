@@ -15,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.google.common.collect.Lists;
 import org.activityinfo.geoadmin.GeoAdmin;
 import org.activityinfo.geoadmin.ImportSource;
 import org.activityinfo.geoadmin.model.ActivityInfoClient;
@@ -54,7 +55,7 @@ public class LocationWindow extends JFrame {
 
 	private void addTable() {
 
-		List<Location> locations = client.getLocations(locationType.getId());
+		List<Location> locations = Lists.newArrayList(); //  client.getLocations(locationType.getId());
 
 		GenericTableModel.Builder<Location> model = GenericTableModel.newModel(locations);
 		model.addColumn("name", String.class, new Function<Location, String>() {

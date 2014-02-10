@@ -182,7 +182,7 @@ public class LocationImportWindow extends JFrame {
 			Point point = (Point)location.getFeature().getGeometry();
 			
 			NewLocation newLocation = new NewLocation();
-			newLocation.setName(location.getFeature().getAttributeStringValue(nameIndex));
+			newLocation.setName(truncate(location.getFeature().getAttributeStringValue(nameIndex)));
 			newLocation.setLongitude(point.getX());
 			newLocation.setLatitude(point.getY());
 		
@@ -197,4 +197,11 @@ public class LocationImportWindow extends JFrame {
 		
 		setVisible(false);
 	}
+
+    private String truncate(String name) {
+        if(name.length() < 50) {
+            return name;
+        }
+        return name.substring(0, 50);
+    }
 }
