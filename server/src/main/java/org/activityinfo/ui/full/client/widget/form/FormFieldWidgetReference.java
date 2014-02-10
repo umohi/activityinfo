@@ -180,13 +180,17 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
 
     @Override
     public HandlerRegistration addValueChangeHandler(final ValueChangeHandler<List<Cuid>> handler) {
-        handlers.add(handler);
-        return new HandlerRegistration() {
-            @Override
-            public void removeHandler() {
-                handlers.remove(handler);
-            }
-        };
+        if (widget == null) {
+            handlers.add(handler);
+            return new HandlerRegistration() {
+                @Override
+                public void removeHandler() {
+                    handlers.remove(handler);
+                }
+            };
+        } else {
+            return addHandler(handler, CuidValueChangeEvent.getType());
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.activityinfo.api.shared.adapter;
 
 
+import com.google.common.collect.Lists;
 import org.activityinfo.api.shared.model.AttributeDTO;
 import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
@@ -26,10 +27,10 @@ public class InstanceAdapters {
         FormInstance instance = new FormInstance(site.getIri(), site.getActivityIri());
 
         instance.set(CuidAdapter.partnerField(site.getActivityId()),
-                CuidAdapter.cuid(CuidAdapter.PARTNER_DOMAIN, site.getPartnerId()));
+                Lists.newArrayList(CuidAdapter.cuid(CuidAdapter.PARTNER_DOMAIN, site.getPartnerId())));
 
         instance.set(CuidAdapter.locationField(site.getActivityId()),
-                CuidAdapter.cuid(CuidAdapter.LOCATION_DOMAIN, site.getLocationId()));
+                Lists.newArrayList(CuidAdapter.cuid(CuidAdapter.LOCATION_DOMAIN, site.getLocationId())));
 
         for(String propertyName : site.getPropertyNames()) {
             if(propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {
