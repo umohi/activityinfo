@@ -90,13 +90,15 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     public Promise<List<FormInstance>> queryInstances(InstanceCriteria criteria) {
         if (criteria != null && criteria.getClasses() != null) {
             final Filter filter = new Filter();
-            final List<Integer> idList = Lists.newArrayList(Iterables.transform(criteria.getClasses(), new Function<Iri, Integer>() {
-                @Nullable
-                @Override
-                public Integer apply(@Nullable Iri input) {
-                    return attributeGroupLegacyId(input);
+            final List<Integer> idList = Lists.newArrayList();
+            for (Iri iri : criteria.getClasses()) {
+                try {
+                    idList.add(CuidAdapter.getLegacyIdFromCuidIri(iri));
+                } catch (Exception e) {
+                    // ignore : right now we may get exception for hardcodes, e.g. partner iri
+                    // org.activityinfo.api2.shared.Namespace.PARTNER
                 }
-            }));
+            }
             filter.addRestriction(DimensionType.AttributeGroup, idList);
             return execute(new GetAttributeGroupsDimension(filter)).then(new Function<AttributeGroupResult, List<FormInstance>>() {
                 @Nullable

@@ -21,6 +21,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -31,7 +32,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.criteria.InstanceCriteria;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldCardinality;
@@ -44,7 +45,7 @@ import java.util.List;
 /**
  * @author yuriyz on 2/7/14.
  */
-public class FormFieldWidgetReference extends Composite implements FormFieldWidget<Iri> {
+public class FormFieldWidgetReference extends Composite implements FormFieldWidget<List<Cuid>> {
 
     /**
      * Based on this numbers FormField Widget generates different widgets and layouts:
@@ -67,12 +68,14 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     interface FormFieldWidgetReferenceUiBinder extends UiBinder<Widget, FormFieldWidgetReference> {
     }
 
+    private final List<ValueChangeHandler<List<Cuid>>> handlers = Lists.newArrayList();
+
     private ResourceLocator resourceLocator;
     @UiField
     FlowPanel panel;
 
     private FormField formField;
-    private FormFieldWidget<Iri> widget;
+    private FormFieldWidget<List<Cuid>> widget;
 
     public FormFieldWidgetReference(final FormField formField, final ResourceLocator resourceLocator) {
         this.formField = formField;
@@ -91,20 +94,26 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
             @Override
             public void onSuccess(List<FormInstance> result) {
                 FormFieldWidgetReference.this.widget = createWidget(result);
-                if (FormFieldWidgetReference.this.widget != null) {
-                    FormFieldWidgetReference.this.panel.add(FormFieldWidgetReference.this.widget);
-                }
+                addWidget();
             }
         });
     }
 
-    private FormFieldWidget<Iri> createWidget(List<FormInstance> formInstances) {
+    private void addWidget() {
+        if (widget != null) {
+            panel.add(widget);
+            for (ValueChangeHandler<List<Cuid>> handler : handlers) {
+                widget.addValueChangeHandler(handler);
+            }
+        }
+    }
+
+    private FormFieldWidget<List<Cuid>> createWidget(List<FormInstance> formInstances) {
         final int size = formInstances.size();
         if (this.formField.getCardinality() == FormFieldCardinality.SINGLE) {
             if (size < SMALL_BALANCE_NUMBER) {
                 // Radio buttons
-                final FormFieldWidgetReferenceRadioPanel radioPanel = new FormFieldWidgetReferenceRadioPanel();
-                radioPanel.init(formInstances);
+                return new FormFieldWidgetReferenceRadioPanel(formInstances);
             } else if (size < MEDIUM_BALANCE_NUMBER) {
                 // Dropdown list
                 final ListBox dropBox = new ListBox(false);
@@ -148,7 +157,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     }
 
     @Override
-    public Iri getValue() {
+    public List<Cuid> getValue() {
         if (widget != null) {
             return widget.getValue();
         }
@@ -156,25 +165,28 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     }
 
     @Override
-    public void setValue(Iri value) {
+    public void setValue(List<Cuid> value) {
         if (widget != null) {
             widget.setValue(value);
         }
     }
 
     @Override
-    public void setValue(Iri value, boolean fireEvents) {
+    public void setValue(List<Cuid> value, boolean fireEvents) {
         if (widget != null) {
             widget.setValue(value, fireEvents);
         }
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Iri> handler) {
-        if (widget != null) {
-            return widget.addValueChangeHandler(handler);
-        }
-        return this.addValueChangeHandler(handler);
+    public HandlerRegistration addValueChangeHandler(final ValueChangeHandler<List<Cuid>> handler) {
+        handlers.add(handler);
+        return new HandlerRegistration() {
+            @Override
+            public void removeHandler() {
+                handlers.remove(handler);
+            }
+        };
     }
 
     @Override

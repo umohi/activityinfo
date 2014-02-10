@@ -57,8 +57,12 @@ public class CuidAdapter {
     private CuidAdapter() {
     }
 
-    public static int getLegacyIdFromCuidIri(@Nonnull Cuid iri) {
-        return Integer.parseInt(iri.asString().substring(1), Cuids.RADIX);
+    public static int getLegacyIdFromCuidIri(@Nonnull Iri iri) {
+        String iriAsString = iri.asString();
+        if (iriAsString.startsWith(Cuids.IRI_PREFIX)) {
+            iriAsString = iriAsString.substring(Cuids.IRI_PREFIX.length());
+        }
+        return Integer.parseInt(iriAsString.substring(1), Cuids.RADIX);
     }
 
     public static final int getLegacyIdFromCuid(String cuid) {
@@ -159,7 +163,11 @@ public class CuidAdapter {
      * @return the {@code FormClass} Cuid for a given AttributeGroup
      */
     public static Cuid attributeGroupFormClass(AttributeGroupDTO group) {
-        return cuid(ATTRIBUTE_GROUP_DOMAIN, group.getId());
+        return attributeGroupFormClass(group.getId());
+    }
+
+    public static Cuid attributeGroupFormClass(int attributeGroupId) {
+        return cuid(ATTRIBUTE_GROUP_DOMAIN, attributeGroupId);
     }
 
     /**

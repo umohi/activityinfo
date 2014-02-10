@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
   <g:HTMLPanel addStyleNames="bs">
-    <g:FlowPanel ui:field="panel">
-    </g:FlowPanel>
+    <g:VerticalPanel ui:field="panel">
+    </g:VerticalPanel>
   </g:HTMLPanel>
 </ui:UiBinder>
