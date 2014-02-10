@@ -33,7 +33,6 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -44,7 +43,7 @@ import java.util.Map;
 /**
  * @author yuriyz on 2/7/14.
  */
-public class FormFieldWidgetReferenceRadioPanel extends Composite implements FormFieldWidget<Iri> {
+public class FormFieldWidgetReferenceRadioPanel extends Composite implements FormFieldWidget<Cuid> {
 
     private static FormFieldWidgetReferenceRadioPanelUiBinder uiBinder = GWT
             .create(FormFieldWidgetReferenceRadioPanelUiBinder.class);
@@ -95,28 +94,28 @@ public class FormFieldWidgetReferenceRadioPanel extends Composite implements For
     }
 
     @Override
-    public Iri getValue() {
+    public Cuid getValue() {
         for (Map.Entry<Cuid, RadioButton> entry : controls.entrySet()) {
             if (entry.getValue().getValue()) {
-                return entry.getKey().asIri(); // todo change to Cuid?
+                return entry.getKey();
             }
         }
         return null;
     }
 
     @Override
-    public void setValue(Iri value) {
+    public void setValue(Cuid value) {
         setValue(value, false);
     }
 
     @Override
-    public void setValue(Iri value, boolean fireEvents) {
-        final RadioButton radioButton = controls.get(value);// todo fix!!!
+    public void setValue(Cuid value, boolean fireEvents) {
+        final RadioButton radioButton = controls.get(value);
         radioButton.setValue(true);
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Iri> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Cuid> handler) {
         return null;
     }
 

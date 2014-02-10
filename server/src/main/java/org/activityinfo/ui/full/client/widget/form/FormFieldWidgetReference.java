@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.criteria.InstanceCriteria;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldCardinality;
@@ -44,7 +44,7 @@ import java.util.List;
 /**
  * @author yuriyz on 2/7/14.
  */
-public class FormFieldWidgetReference extends Composite implements FormFieldWidget<Iri> {
+public class FormFieldWidgetReference extends Composite implements FormFieldWidget<Cuid> {
 
     /**
      * Based on this numbers FormField Widget generates different widgets and layouts:
@@ -72,7 +72,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     FlowPanel panel;
 
     private FormField formField;
-    private FormFieldWidget<Iri> widget;
+    private FormFieldWidget<Cuid> widget;
 
     public FormFieldWidgetReference(final FormField formField, final ResourceLocator resourceLocator) {
         this.formField = formField;
@@ -98,7 +98,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
         });
     }
 
-    private FormFieldWidget<Iri> createWidget(List<FormInstance> formInstances) {
+    private FormFieldWidget<Cuid> createWidget(List<FormInstance> formInstances) {
         final int size = formInstances.size();
         if (this.formField.getCardinality() == FormFieldCardinality.SINGLE) {
             if (size < SMALL_BALANCE_NUMBER) {
@@ -147,7 +147,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     }
 
     @Override
-    public Iri getValue() {
+    public Cuid getValue() {
         if (widget != null) {
             return widget.getValue();
         }
@@ -155,21 +155,21 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     }
 
     @Override
-    public void setValue(Iri value) {
+    public void setValue(Cuid value) {
         if (widget != null) {
             widget.setValue(value);
         }
     }
 
     @Override
-    public void setValue(Iri value, boolean fireEvents) {
+    public void setValue(Cuid value, boolean fireEvents) {
         if (widget != null) {
             widget.setValue(value, fireEvents);
         }
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Iri> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Cuid> handler) {
         if (widget != null) {
             return widget.addValueChangeHandler(handler);
         }
