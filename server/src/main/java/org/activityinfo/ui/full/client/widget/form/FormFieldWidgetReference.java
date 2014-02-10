@@ -103,8 +103,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
         if (this.formField.getCardinality() == FormFieldCardinality.SINGLE) {
             if (size < SMALL_BALANCE_NUMBER) {
                 // Radio buttons
-                final FormFieldWidgetReferenceRadioPanel radioPanel = new FormFieldWidgetReferenceRadioPanel();
-                radioPanel.init(formInstances);
+                return new FormFieldWidgetReferenceRadioPanel(formInstances);
             } else if (size < MEDIUM_BALANCE_NUMBER) {
                 // Dropdown list
                 final ListBox dropBox = new ListBox(false);
