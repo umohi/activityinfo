@@ -37,15 +37,13 @@ import java.util.Map;
 /**
  * @author yuriyz on 2/10/14.
  */
-public class FromFieldWidgetReferenceCombo extends Composite implements FormFieldWidget<List<Cuid>> {
+public class FromFieldWidgetReferenceComboBox extends Composite implements FormFieldWidget<List<Cuid>> {
 
     private final ListBox dropBox = new ListBox(false);
 
-    private final List<FormInstance> instances;
     private final Map<Integer, Cuid> dropdownIndexToCuidMap = Maps.newHashMap();
 
-    public FromFieldWidgetReferenceCombo(List<FormInstance> instances) {
-        this.instances = instances;
+    public FromFieldWidgetReferenceComboBox(List<FormInstance> instances) {
         initWidget(dropBox);
         for (FormInstance instance : instances) {
             dropBox.addItem(instance.getLabel().getValue(), instance.getId().asString());
