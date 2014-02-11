@@ -62,7 +62,14 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
             oracle.add(labelValue);
             labelToCuidMap.put(labelValue, instance.getId());
         }
-        return new SuggestBox(oracle);
+        final SuggestBox box = new SuggestBox(oracle);
+        box.addValueChangeHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                fireEvent(new CuidValueChangeEvent(Sets.newHashSet(getValue())));
+            }
+        });
+        return box;
     }
 
     @Override

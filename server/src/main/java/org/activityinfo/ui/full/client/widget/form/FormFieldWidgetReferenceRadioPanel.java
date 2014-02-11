@@ -121,14 +121,14 @@ public class FormFieldWidgetReferenceRadioPanel extends Composite implements For
     @Override
     public void setValue(Set<Cuid> value, boolean fireEvents) {
         if (value != null && !value.isEmpty()) {
-        final Set<Cuid> oldValue = getValue();
-        final RadioButton radioButton = controls.get(value.iterator().next());
-        if (radioButton != null) {
-            radioButton.setValue(true);
-            if (fireEvents) {
-                CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
+            final Set<Cuid> oldValue = getValue();
+            final RadioButton radioButton = controls.get(value.iterator().next());
+            if (radioButton != null) {
+                radioButton.setValue(true);
+                if (fireEvents) {
+                    CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
+                }
             }
-        }
         }
     }
 

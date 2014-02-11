@@ -23,6 +23,8 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -53,6 +55,12 @@ public class FromFieldWidgetReferenceComboBox extends Composite implements FormF
         for (int i = 0; i < dropBox.getItemCount(); i++) {
             dropdownIndexToCuidMap.put(i, new Cuid(dropBox.getValue(i)));
         }
+        dropBox.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                fireEvent(new CuidValueChangeEvent(getValue()));
+            }
+        });
     }
 
     public int getIndexByCuid(Cuid cuid) {
