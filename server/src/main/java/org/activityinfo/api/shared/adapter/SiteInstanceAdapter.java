@@ -6,6 +6,8 @@ import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 
+import java.util.Set;
+
 
 public class SiteInstanceAdapter implements Function<SiteDTO, FormInstance> {
 
@@ -25,6 +27,8 @@ public class SiteInstanceAdapter implements Function<SiteDTO, FormInstance> {
         instance.set(CuidAdapter.locationField(site.getActivityId()),
                 Sets.newHashSet(CuidAdapter.cuid(CuidAdapter.LOCATION_DOMAIN, site.getLocationId())));
 
+        final ActivityDTO activity = this.schemaDTO.getActivityById(site.getActivityId());
+
         for (String propertyName : site.getPropertyNames()) {
             if (propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {
                 int indicatorId = IndicatorDTO.indicatorIdForPropertyName(propertyName);
@@ -38,10 +42,15 @@ public class SiteInstanceAdapter implements Function<SiteDTO, FormInstance> {
                 if (site.getAttributeValue(attributeId)) {
                     final Cuid attributeCuid = CuidAdapter.attributeId(attributeId);
 
-                    final ActivityDTO activity = this.schemaDTO.getActivityById(site.getActivityId());
                     for (AttributeGroupDTO attributeGroup : activity.getAttributeGroups()) {
                         if (attributeGroup.getAttributeIds().contains(attributeId)) {
-                            instance.set(CuidAdapter.attributeGroupField(activity, attributeGroup), Sets.newHashSet(attributeCuid));
+                            final Cuid attributeGroupCuid = CuidAdapter.attributeGroupField(activity, attributeGroup);
+                            final Object set = instance.get(attributeGroupCuid);
+                            if (set instanceof Set) {
+                                ((Set) set).add(attributeCuid);
+                            } else {
+                                instance.set(attributeGroupCuid, Sets.newHashSet(attributeCuid));
+                            }
                         }
                     }
                 }
