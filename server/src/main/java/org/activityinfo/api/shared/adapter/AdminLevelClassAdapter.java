@@ -10,8 +10,6 @@ import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
-import javax.annotation.Nullable;
-
 import static org.activityinfo.api.shared.adapter.CuidAdapter.adminLevelFormClass;
 
 /**

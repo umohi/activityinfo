@@ -1,10 +1,8 @@
 package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Namespace;
 import org.activityinfo.api2.shared.form.*;
@@ -19,7 +17,7 @@ public class ActivityUserFormBuilder {
 
 
     private final ActivityDTO activity;
-    private List<FormElement> siteElements = Lists.newArrayList();
+//    private List<FormElement> siteElements = Lists.newArrayList();
 
     private FormClass siteForm;
 

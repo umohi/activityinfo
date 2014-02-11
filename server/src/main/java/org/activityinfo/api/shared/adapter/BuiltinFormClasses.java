@@ -1,29 +1,16 @@
 package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.activityinfo.api.shared.command.result.AdminEntityResult;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.model.*;
-import org.activityinfo.api2.client.NotFoundException;
+import org.activityinfo.api.shared.model.ActivityDTO;
+import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
-import org.activityinfo.api2.shared.form.*;
-import org.activityinfo.server.database.hibernate.entity.AdminEntity;
-import org.activityinfo.server.database.hibernate.entity.AdminLevel;
+import org.activityinfo.api2.shared.form.FormClass;
+import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 import javax.annotation.Nullable;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Collections.singleton;
-import static org.activityinfo.api.shared.adapter.CuidAdapter.NAME_FIELD;
-import static org.activityinfo.api.shared.adapter.CuidAdapter.adminLevelFormClass;
-import static org.activityinfo.api.shared.adapter.CuidAdapter.attributeId;
 
 /**
  * In the old api, many "FormClasses" were builtins, defined as part
@@ -36,7 +23,6 @@ public class BuiltinFormClasses {
     /**
      * Partner was a builtin object type in api1. However, we need a different
      * FormClass for each legacy UserDatabase.
-     *
      */
     public static FormClass projectFormClass(int databaseId) {
 

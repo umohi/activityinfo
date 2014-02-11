@@ -6,9 +6,7 @@ import org.activityinfo.api.shared.model.PartnerDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormInstance;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 

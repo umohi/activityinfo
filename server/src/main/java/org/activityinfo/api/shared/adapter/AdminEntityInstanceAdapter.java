@@ -1,13 +1,9 @@
 package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import org.activityinfo.api.shared.command.result.AdminEntityResult;
 import org.activityinfo.api.shared.model.AdminEntityDTO;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
-
-import java.util.List;
 
 /**
 * Converts an AdminEntityDTO to a FormInstance

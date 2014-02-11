@@ -66,7 +66,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         if (instanceId.getDomain() == SITE_DOMAIN) {
             final int siteId = getLegacyIdFromCuid(instanceId);
 
-            final Promise<FormInstance> promise = new Promise<>(new Promise.AsyncOperation<FormInstance>() {
+            return new Promise<>(new Promise.AsyncOperation<FormInstance>() {
                 @Override
                 public void start(final Promise<FormInstance> promise) {
                     // execute via dispatcher directly to avoi promise.resolve(),
@@ -97,7 +97,6 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
                     });
                 }
             });
-            return promise;
         }
         return Promise.rejected(new NotFoundException(instanceId.asIri()));
     }
