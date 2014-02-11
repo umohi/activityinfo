@@ -21,6 +21,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -28,6 +29,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -78,7 +80,9 @@ public class FormFieldRow extends Composite {
     }
 
     public void setValue(Object value) {
-        if (formFieldWidget instanceof HasValue) {
+        if (value instanceof Cuid && formFieldWidget instanceof FormFieldWidgetReference) { // autofix of wrong data in form instance
+            ((FormFieldWidgetReference) formFieldWidget).setValue(Sets.newHashSet((Cuid) value));
+        } else if (formFieldWidget instanceof HasValue) { // run here is data in form instance is correct
             ((HasValue) formFieldWidget).setValue(value);
         }
     }
