@@ -26,24 +26,24 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import org.activityinfo.api2.shared.Cuid;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author yuriyz on 2/10/14.
  */
-public class CuidValueChangeEvent extends ValueChangeEvent<List<Cuid>> {
+public class CuidValueChangeEvent extends ValueChangeEvent<Set<Cuid>> {
 
     /**
      * Creates a value change event.
      *
      * @param value the value
      */
-    protected CuidValueChangeEvent(List<Cuid> value) {
+    protected CuidValueChangeEvent(Set<Cuid> value) {
         super(value);
     }
 
-    public static <S extends HasValueChangeHandlers<List<Cuid>> & HasHandlers> void fireIfNotEqual(
-            S source, List<Cuid> oldValue, List<Cuid> newValue) {
+    public static <S extends HasValueChangeHandlers<Set<Cuid>> & HasHandlers> void fireIfNotEqual(
+            S source, Set<Cuid> oldValue, Set<Cuid> newValue) {
         if (ValueChangeEvent.shouldFire(source, oldValue, newValue)) {
             source.fireEvent(new CuidValueChangeEvent(newValue));
         }

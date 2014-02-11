@@ -23,8 +23,8 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -38,11 +38,12 @@ import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author yuriyz on 2/10/14.
  */
-public class FormFieldWidgetReferenceSuggestBox extends Composite implements FormFieldWidget<List<Cuid>> {
+public class FormFieldWidgetReferenceSuggestBox extends Composite implements FormFieldWidget<Set<Cuid>> {
 
     private final SuggestBox suggestBox;
     private final List<FormInstance> instances;
@@ -75,23 +76,23 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
     }
 
     @Override
-    public List<Cuid> getValue() {
+    public Set<Cuid> getValue() {
         final Cuid cuid = labelToCuidMap.get(suggestBox.getValue());
         if (cuid != null) {
-            return Lists.newArrayList(cuid);
+            return Sets.newHashSet(cuid);
         }
-        return Lists.newArrayList();
+        return Sets.newHashSet();
     }
 
     @Override
-    public void setValue(List<Cuid> value) {
+    public void setValue(Set<Cuid> value) {
         setValue(value, false);
     }
 
     @Override
-    public void setValue(List<Cuid> value, boolean fireEvents) {
+    public void setValue(Set<Cuid> value, boolean fireEvents) {
         if (value != null && !value.isEmpty()) {
-            final List<Cuid> oldValue = getValue();
+            final Set<Cuid> oldValue = getValue();
             final Cuid cuid = value.iterator().next();
             final FormInstance formInstance = Iterables.find(instances, new Predicate<FormInstance>() {
                 @Override
@@ -107,7 +108,7 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<List<Cuid>> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Set<Cuid>> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 }

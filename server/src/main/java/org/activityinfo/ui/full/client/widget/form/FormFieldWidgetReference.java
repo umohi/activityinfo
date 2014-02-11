@@ -22,6 +22,7 @@ package org.activityinfo.ui.full.client.widget.form;
  */
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -41,11 +42,12 @@ import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author yuriyz on 2/7/14.
  */
-public class FormFieldWidgetReference extends Composite implements FormFieldWidget<List<Cuid>> {
+public class FormFieldWidgetReference extends Composite implements FormFieldWidget<Set<Cuid>> {
 
     /**
      * Based on this numbers FormField Widget generates different widgets and layouts:
@@ -68,14 +70,14 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     interface FormFieldWidgetReferenceUiBinder extends UiBinder<Widget, FormFieldWidgetReference> {
     }
 
-    private final List<ValueChangeHandler<List<Cuid>>> handlers = Lists.newArrayList();
+    private final List<ValueChangeHandler<Set<Cuid>>> handlers = Lists.newArrayList();
 
     private ResourceLocator resourceLocator;
     @UiField
     FlowPanel panel;
 
     private FormField formField;
-    private FormFieldWidget<List<Cuid>> widget;
+    private FormFieldWidget<Set<Cuid>> widget;
 
     public FormFieldWidgetReference(final FormField formField, final ResourceLocator resourceLocator) {
         this.formField = formField;
@@ -102,13 +104,13 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     private void addWidget() {
         if (widget != null) {
             panel.add(widget);
-            for (ValueChangeHandler<List<Cuid>> handler : handlers) {
+            for (ValueChangeHandler<Set<Cuid>> handler : handlers) {
                 widget.addValueChangeHandler(handler);
             }
         }
     }
 
-    private FormFieldWidget<List<Cuid>> createWidget(List<FormInstance> formInstances) {
+    private FormFieldWidget<Set<Cuid>> createWidget(List<FormInstance> formInstances) {
         final int size = formInstances.size();
         if (this.formField.getCardinality() == FormFieldCardinality.SINGLE) {
             if (size < SMALL_BALANCE_NUMBER) {
@@ -151,29 +153,29 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     }
 
     @Override
-    public List<Cuid> getValue() {
+    public Set<Cuid> getValue() {
         if (widget != null) {
             return widget.getValue();
         }
-        return Lists.newArrayList();
+        return Sets.newHashSet();
     }
 
     @Override
-    public void setValue(List<Cuid> value) {
+    public void setValue(Set<Cuid> value) {
         if (widget != null) {
             widget.setValue(value);
         }
     }
 
     @Override
-    public void setValue(List<Cuid> value, boolean fireEvents) {
+    public void setValue(Set<Cuid> value, boolean fireEvents) {
         if (widget != null) {
             widget.setValue(value, fireEvents);
         }
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(final ValueChangeHandler<List<Cuid>> handler) {
+    public HandlerRegistration addValueChangeHandler(final ValueChangeHandler<Set<Cuid>> handler) {
         if (widget == null) {
             handlers.add(handler);
             return new HandlerRegistration() {
