@@ -41,7 +41,7 @@ public class AttributeInstanceListAdapter implements Function<SchemaDTO, List<Fo
         List<AttributeDTO> attributes = group.getAttributes();
         List<FormInstance> instances = Lists.newArrayList();
         for(AttributeDTO attribute : attributes) {
-            FormInstance instance = new FormInstance(classId, CuidAdapter.attributeId(attribute.getId()));
+            FormInstance instance = new FormInstance(CuidAdapter.attributeId(attribute.getId()), classId);
             instance.set(CuidAdapter.field(classId, NAME_FIELD), attribute.getName());
             instances.add(instance);
         }
