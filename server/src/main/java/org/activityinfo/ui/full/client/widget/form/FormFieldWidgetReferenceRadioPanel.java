@@ -35,6 +35,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
@@ -72,7 +73,7 @@ public class FormFieldWidgetReferenceRadioPanel extends Composite implements For
         this.instances = instances;
         final String groupId = Integer.toString(new KeyGenerator().generateInt());
         for (final FormInstance formInstance : instances) {
-            final RadioButton radioButton = new RadioButton(groupId, formInstance.getLabel().getValue());
+            final RadioButton radioButton = new RadioButton(groupId, FormInstanceLabeler.getLabel(formInstance));
             radioButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
                 @Override
                 public void onValueChange(ValueChangeEvent<Boolean> event) {

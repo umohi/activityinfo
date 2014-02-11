@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -56,7 +57,7 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
     private SuggestBox createSuggestBox() {
         final MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
         for (FormInstance instance : instances) {
-            final String labelValue = instance.getLabel().getValue();
+            final String labelValue = FormInstanceLabeler.getLabel(instance);
             oracle.add(labelValue);
             labelToCuidMap.put(labelValue, instance.getId());
         }
@@ -98,7 +99,7 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
                     return input != null && cuid.equals(input.getId());
                 }
             });
-            suggestBox.setValue(formInstance.getLabel().getValue());
+            suggestBox.setValue(FormInstanceLabeler.getLabel(formInstance));
             if (fireEvents) {
                 CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
             }

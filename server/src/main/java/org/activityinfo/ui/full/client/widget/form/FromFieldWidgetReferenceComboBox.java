@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class FromFieldWidgetReferenceComboBox extends Composite implements FormF
     public FromFieldWidgetReferenceComboBox(List<FormInstance> instances) {
         initWidget(dropBox);
         for (FormInstance instance : instances) {
-            dropBox.addItem(instance.getLabel().getValue(), instance.getId().asString());
+            dropBox.addItem(FormInstanceLabeler.getLabel(instance), instance.getId().asString());
         }
         for (int i = 0; i < dropBox.getItemCount(); i++) {
             dropdownIndexToCuidMap.put(i, new Cuid(dropBox.getValue(i)));
