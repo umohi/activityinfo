@@ -7,6 +7,7 @@ import org.activityinfo.api2.client.CuidGenerator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.api2.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
 
@@ -58,6 +59,10 @@ public class CuidAdapter {
      * Avoid instance creation.
      */
     private CuidAdapter() {
+    }
+
+    public static Cuid getFormInstanceLabelCuid(FormInstance formInstance) {
+        return CuidAdapter.field(formInstance.getClassId(), NAME_FIELD);
     }
 
     public static int getLegacyIdFromCuidIri(@Nonnull Iri iri) {

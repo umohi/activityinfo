@@ -22,23 +22,21 @@ package org.activityinfo.api2.shared.form;
  */
 
 import com.google.common.base.Strings;
-import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
 
 /**
  * @author yuriyz on 2/11/14.
  */
 public class FormInstanceLabeler {
 
-    private static final Cuid LABEL_CUID = new Cuid("_forminstance_label");
-
     private FormInstanceLabeler() {
     }
 
     public static String getLabel(FormInstance instance) {
-        return Strings.nullToEmpty(instance.getString(LABEL_CUID));
+        return Strings.nullToEmpty(instance.getString(CuidAdapter.getFormInstanceLabelCuid(instance)));
     }
 
     public static void setLabel(FormInstance instance, String label) {
-        instance.set(LABEL_CUID, label);
+        instance.set(CuidAdapter.getFormInstanceLabelCuid(instance), label);
     }
 }
