@@ -167,8 +167,8 @@ public class CuidAdapter {
         return cuid(INDICATOR_DOMAIN, indicatorId);
     }
 
-    public static Cuid attributeField(int indicatorId) {
-        return cuid(ATTRIBUTE_DOMAIN, indicatorId);
+    public static Cuid attributeField(int attributeId) {
+        return cuid(ATTRIBUTE_DOMAIN, attributeId);
     }
 
     public static Cuid siteField(int siteId) {

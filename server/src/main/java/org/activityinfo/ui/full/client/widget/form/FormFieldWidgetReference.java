@@ -30,7 +30,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
@@ -78,6 +77,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
 
     private FormField formField;
     private FormFieldWidget<Set<Cuid>> widget;
+    private Set<Cuid> value = Sets.newHashSet();
 
     public FormFieldWidgetReference(final FormField formField, final ResourceLocator resourceLocator) {
         this.formField = formField;
@@ -107,6 +107,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
             for (ValueChangeHandler<Set<Cuid>> handler : handlers) {
                 widget.addValueChangeHandler(handler);
             }
+            widget.setValue(value);
         }
     }
 
@@ -126,9 +127,9 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
         } else {
             if (size < SMALL_BALANCE_NUMBER) {
                 // Check boxes
+                return new FormFieldWidgetReferenceCheckBoxPanel(formInstances);
             } else if (size < MEDIUM_BALANCE_NUMBER) {
                 // List of selected + add button
-                final ListBox dropBox = new ListBox(true);
             } else {
                 // List of selected + add button
             }
@@ -162,8 +163,12 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
 
     @Override
     public void setValue(Set<Cuid> value) {
-        if (widget != null) {
-            widget.setValue(value);
+        if (value != null) {
+            if (widget != null) {
+                widget.setValue(value);
+            } else {
+                this.value = value;
+            }
         }
     }
 

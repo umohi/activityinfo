@@ -3,10 +3,9 @@ package org.activityinfo.api2.client;
 
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Resource;
-import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.Criteria;
-import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormClass;
+import org.activityinfo.api2.shared.form.FormInstance;
 
 import java.util.List;
 
