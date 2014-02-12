@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+  <g:HTMLPanel addStyleNames="bs">
+    <g:VerticalPanel>
+      <g:HorizontalPanel ui:field="panel">
+        <g:Button ui:field="addButton"/>
+      </g:HorizontalPanel>
+      <g:ListBox multipleSelect="true"/>
+    </g:VerticalPanel>
+  </g:HTMLPanel>
+</ui:UiBinder>

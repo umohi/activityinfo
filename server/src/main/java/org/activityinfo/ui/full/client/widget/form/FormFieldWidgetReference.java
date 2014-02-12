@@ -130,15 +130,12 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
                 return new FormFieldWidgetReferenceCheckBoxPanel(formInstances);
             } else if (size < MEDIUM_BALANCE_NUMBER) {
                 // List of selected + add button
+                return new FormFieldWidgetReferenceListPanel(formInstances);
             } else {
                 // List of selected + add button
+                return new FormFieldWidgetReferenceListPanel(formInstances);
             }
         }
-        return null;
-    }
-
-    public FormField getFormField() {
-        return formField;
     }
 
     @Override
