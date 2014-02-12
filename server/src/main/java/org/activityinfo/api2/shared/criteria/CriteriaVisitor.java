@@ -21,4 +21,9 @@ public abstract class CriteriaVisitor {
     public void visitUnion(CriteriaUnion criteria) {
 
     }
+
+    public void visitInstanceIdCriteria(IdCriteria criteria) {
+
+
+    }
 }

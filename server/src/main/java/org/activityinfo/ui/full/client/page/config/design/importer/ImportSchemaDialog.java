@@ -13,7 +13,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.ui.full.client.importer.data.PastedImportSource;
+import org.activityinfo.ui.full.client.importer.data.PastedTable;
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.ProgressListener;
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.Warning;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -116,7 +116,7 @@ public class ImportSchemaDialog {
     @UiHandler("textArea")
     public void onTextAreaChanged(ChangeEvent changeEvent) {
         importer.clearWarnings();
-        boolean succesful = importer.parseColumns(new PastedImportSource(textArea.getText()));
+        boolean succesful = importer.parseColumns(new PastedTable(textArea.getText()));
         continueButton.setEnabled(succesful);
 
         // show any warnings about the import

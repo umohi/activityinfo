@@ -1,4 +1,4 @@
-package org.activityinfo.api2.shared.criteria;
+package org.activityinfo.ui.full.client.importer.match;
 
 
 /*

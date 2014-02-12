@@ -1,13 +1,12 @@
 package org.activityinfo.ui.full.client.importer.page;
 
 import com.google.common.collect.Maps;
-import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.binding.DraftModel;
 import org.activityinfo.ui.full.client.importer.Importer;
+import org.activityinfo.ui.full.client.importer.draft.DraftInstance;
 
 import java.util.Map;
 
@@ -17,13 +16,13 @@ import java.util.Map;
  */
 public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandFactory<T> {
 
-    private DataGrid<DraftModel> dataGrid;
+    private DataGrid<DraftInstance> dataGrid;
     private Importer<T> importer;
     private Map<FieldPath, PropertyColumn<?>> columns;
 
     public ValidationGrid(Importer<T> importer) {
         this.importer = importer;
-        this.dataGrid = new BootstrapDataGrid<DraftModel>(100);
+        this.dataGrid = new BootstrapDataGrid<DraftInstance>(100);
 
         syncColumns();
 
@@ -46,21 +45,12 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 
 
     private PropertyColumn<?> createColumn(FieldPath path) {
-        if (!path.isReference()) {
-            switch (path.getField().getType()) {
-                case FREE_TEXT:
-                    return new PropertyColumn<>(path, new EditTextCell());
-            }
-            throw new IllegalArgumentException(path.getField().getType().name());
-        } else {
-            return new PropertyColumn<>(path, new InstanceMatchCell());
-        }
-
+        throw new UnsupportedOperationException();
     }
 
     public void refreshRows() {
         syncColumns();
-        dataGrid.setRowData(importer.getDraftModels());
+        //dataGrid.setRowData(importer.getDraftModels());
     }
 
     @Override
@@ -69,9 +59,9 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
 
             @Override
             public void execute() {
-                for (DraftModel draftModel : importer.getDraftModels()) {
-                    draftModel.setValue(property.getKey(), value);
-                }
+//                for (DraftModel draftModel : importer.getDraftModels()) {
+//                    draftModel.setValue(property.getKey(), value);
+//                }
                 dataGrid.redraw();
             }
         };

@@ -27,6 +27,7 @@ import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api2.client.Promise;
 import org.activityinfo.ui.full.client.dispatch.monitor.MonitoringCallback;
 
 public abstract class AbstractDispatcher implements Dispatcher {
@@ -40,6 +41,37 @@ public abstract class AbstractDispatcher implements Dispatcher {
         } else {
             execute(command, new MonitoringCallback(monitor, callback));
         }
+    }
+
+
+    /**
+     * Wraps a legacy command dispatch in a new {@code Remote} object
+     *
+     * @param command the command to execute
+     * @param <R>     the type of the {@code Command}'s {@code CommandResult}
+     */
+    public final <R extends CommandResult> Promise<R> execute(final Command<R> command) {
+        return new Promise<R>(new Promise.AsyncOperation<R>() {
+
+            @Override
+            public void start(final Promise<R> promise) {
+                try {
+                    execute(command, new AsyncCallback<R>() {
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            promise.reject(throwable);
+                        }
+
+                        @Override
+                        public void onSuccess(R result) {
+                            promise.resolve(result);
+                        }
+                    });
+                } catch (Throwable caught) {
+                    promise.reject(caught);
+                }
+            }
+        });
     }
 
 }

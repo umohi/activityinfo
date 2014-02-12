@@ -2,10 +2,12 @@ package org.activityinfo.api2.client;
 
 
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.tree.FieldPath;
 
 import java.util.List;
 
@@ -42,5 +44,7 @@ public interface ResourceLocator {
      * @param criteria
      */
     Promise<List<FormInstance>> queryInstances(Criteria criteria);
+
+    Promise<List<Projection>> query(List<FieldPath> paths, Criteria criteria);
 
 }

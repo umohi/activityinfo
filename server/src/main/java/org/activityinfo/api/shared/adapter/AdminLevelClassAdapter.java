@@ -23,6 +23,11 @@ public class AdminLevelClassAdapter implements Function<SchemaDTO, FormClass> {
         this.adminLevelId = adminLevelId;
     }
 
+
+    public static Cuid getNameFieldId(Cuid classId) {
+        return CuidAdapter.field(classId, CuidAdapter.NAME_FIELD);
+    }
+
     @Override
     public FormClass apply(SchemaDTO schema) {
         AdminLevelDTO adminLevel = schema.getAdminLevelById(adminLevelId);
@@ -35,7 +40,7 @@ public class AdminLevelClassAdapter implements Function<SchemaDTO, FormClass> {
             // TODO add country field
         } else {
             AdminLevelDTO parentLevel = schema.getAdminLevelById(adminLevel.getParentLevelId());
-            FormField parentField = new FormField(CuidAdapter.field(classId, CuidAdapter.PARENT_FIELD));
+            FormField parentField = new FormField(CuidAdapter.field(classId, CuidAdapter.ADMIN_PARENT_FIELD));
             parentField.setLabel(new LocalizedString(parentLevel.getName()));
             parentField.setRange(adminLevelFormClass(adminLevel.getParentLevelId()).asIri());
             parentField.setType(FormFieldType.REFERENCE);
@@ -43,7 +48,7 @@ public class AdminLevelClassAdapter implements Function<SchemaDTO, FormClass> {
             formClass.addElement(parentField);
         }
 
-        FormField nameField = new FormField(CuidAdapter.field(classId, CuidAdapter.NAME_FIELD));
+        FormField nameField = new FormField(getNameFieldId(classId));
         nameField.setLabel(new LocalizedString(I18N.CONSTANTS.name()));
         nameField.setType(FormFieldType.FREE_TEXT);
         nameField.setRequired(true);

@@ -1,13 +1,14 @@
 package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import org.activityinfo.api.shared.model.AttributeDTO;
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.client.NotFoundException;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.server.database.hibernate.entity.AttributeGroup;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -18,31 +19,33 @@ import java.util.List;
 */
 public class AttributeInstanceListAdapter implements Function<SchemaDTO, List<FormInstance>> {
 
-    private final int attributeGroupId;
+    private final Predicate<Cuid> criteria;
 
-    public AttributeInstanceListAdapter(int attributeGroupId) {
-        this.attributeGroupId = attributeGroupId;
-    }
-
-    public AttributeInstanceListAdapter(Cuid formClassId) {
-        this.attributeGroupId = CuidAdapter.getLegacyIdFromCuid(formClassId);
+    public AttributeInstanceListAdapter(Criteria criteria) {
+        this.criteria = CriteriaEvaluation.evaluatePartiallyOnClassId(criteria);
     }
 
     @Nullable
     @Override
     public List<FormInstance> apply(@Nullable SchemaDTO schema) {
-        Cuid classId = CuidAdapter.attributeGroupFormClass(attributeGroupId);
-        AttributeGroupDTO group = schema.getAttributeGroupById(attributeGroupId);
-        if(group == null) {
-            throw new NotFoundException(classId.asIri());
-        }
-        List<AttributeDTO> attributes = group.getAttributes();
+
         List<FormInstance> instances = Lists.newArrayList();
-        for(AttributeDTO attribute : attributes) {
-            FormInstance instance = new FormInstance(CuidAdapter.attributeId(attribute.getId()), classId);
-            instance.set(CuidAdapter.getFormInstanceLabelCuid(instance), attribute.getName());
-            instances.add(instance);
+        for(UserDatabaseDTO db : schema.getDatabases()) {
+            for(ActivityDTO activity : db.getActivities()) {
+                for(AttributeGroupDTO group : activity.getAttributeGroups()) {
+                    Cuid classId = CuidAdapter.attributeGroupFormClass(group.getId());
+                    if(criteria.apply(classId)) {
+                        for(AttributeDTO attribute : group.getAttributes()) {
+                            Cuid instanceId = CuidAdapter.attributeId(attribute.getId());
+                            FormInstance instance = new FormInstance(classId, instanceId);
+                            instance.set(CuidAdapter.getFormInstanceLabelCuid(instance), attribute.getName());
+                            instances.add(instance);
+                        }
+                    }
+                }
+            }
         }
+
         return instances;
     }
 }

@@ -110,7 +110,7 @@ public class ImportPresenter<T> {
                 dialogBox.setPage(matchingPage);
                 break;
             case VALIDATION:
-                importer.updateDrafts();
+                //importer.updateDrafts();
                 validationPage.refresh();
                 dialogBox.setPage(validationPage);
                 break;

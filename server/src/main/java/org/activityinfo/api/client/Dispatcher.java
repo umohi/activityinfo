@@ -29,6 +29,7 @@ package org.activityinfo.api.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.api2.client.Promise;
 
 /**
  * Executes {@link org.activityinfo.api.shared.command.Command}s on behalf of client
@@ -47,7 +48,7 @@ public interface Dispatcher {
      * @param command  The command to execute
      * @param monitor  The monitor which handles status reports to the user
      * @param callback The callback which implements application logic
-     * @param <T>      The Command subclass
+     * @param <T>      The type of the {@code CommandResult}
      */
     <T extends CommandResult> void execute(Command<T> command,
                                            AsyncMonitor monitor,
@@ -59,11 +60,18 @@ public interface Dispatcher {
      * complete in the order they were submitted.
      *
      * @param command  The command to execute
-     * @param monitor  The monitor which handles status reports to the user
      * @param callback The callback which implements application logic
-     * @param <T>      The Command subclass
+     * @param <T>      The type of the {@code CommandResult}
      */
     <T extends CommandResult> void execute(Command<T> command,
                                            AsyncCallback<T> callback);
 
+
+    /**
+     * Returns a retryable Promise for the given {@code Command}
+     * @param command
+     * @param <T>
+     * @return
+     */
+    <T extends CommandResult> Promise<T> execute(Command<T> command);
 }

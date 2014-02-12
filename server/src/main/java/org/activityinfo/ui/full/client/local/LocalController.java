@@ -40,6 +40,7 @@ import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.authentication.ClientSideAuthProvider;
 import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.Remote;
 import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.local.LocalStateChangeEvent.State;
@@ -58,7 +59,7 @@ import java.util.List;
  * goes into offline mode.
  */
 @Singleton
-public class LocalController implements Dispatcher {
+public class LocalController extends AbstractDispatcher {
 
     public interface PromptConnectCallback {
         void onCancel();
@@ -127,12 +128,6 @@ public class LocalController implements Dispatcher {
         return activeStrategy.getState();
     }
 
-    @Override
-    public <T extends CommandResult> void execute(Command<T> command,
-                                                  AsyncMonitor monitor, AsyncCallback<T> callback) {
-
-        activeStrategy.dispatch(command, callback);
-    }
 
     @Override
     public <T extends CommandResult> void execute(Command<T> command,

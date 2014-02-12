@@ -22,18 +22,17 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetLocations.GetLocationsResult;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.api.shared.command.result.LocationResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetLocations implements Command<GetLocationsResult> {
+public class GetLocations implements Command<LocationResult> {
     private static final long serialVersionUID = 6998517531187983518L;
 
     private List<Integer> locationIds;
     private Filter filter;
+    private Integer locationTypeId;
 
     public GetLocations() {
         locationIds = new ArrayList<Integer>();
@@ -62,8 +61,8 @@ public class GetLocations implements Command<GetLocationsResult> {
         locationIds = ids;
     }
 
-    public boolean hasLocationIds() {
-        return (locationIds != null && locationIds.size() > 0);
+    public Integer getLocationTypeId() {
+        return locationTypeId;
     }
     
     public Filter getFilter() {
@@ -74,34 +73,12 @@ public class GetLocations implements Command<GetLocationsResult> {
         this.filter = filter;
     }
 
-    public static class GetLocationsResult implements CommandResult {
-        private static final long serialVersionUID = 4418411241161619590L;
-
-        private List<LocationDTO> locations = new ArrayList<LocationDTO>();
-
-        public GetLocationsResult() {
-        }
-
-        public GetLocationsResult(List<LocationDTO> locations) {
-            if (locations != null) {
-                this.locations = locations;
-            }
-        }
-
-        public List<LocationDTO> getLocations() {
-            return locations;
-        }
-
-        public boolean hasLocations() {
-            return (locations != null && locations.size() > 0);
-        }
-
-        public LocationDTO getLocation() {
-            if (locations != null && locations.size() > 0) {
-                return locations.get(0);
-            } else {
-                return null;
-            }
-        }
+    public void setLocationTypeId(Integer locationTypeId) {
+        this.locationTypeId = locationTypeId;
     }
+
+    public boolean hasLocationIds() {
+        return (locationIds != null && locationIds.size() > 0);
+    }
+
 }

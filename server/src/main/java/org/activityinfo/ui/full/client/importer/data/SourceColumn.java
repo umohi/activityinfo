@@ -3,7 +3,7 @@ package org.activityinfo.ui.full.client.importer.data;
 /**
  * Describes a column in the imported table
  */
-public class ImportColumnDescriptor {
+public class SourceColumn {
 
     private String header;
     private int index;

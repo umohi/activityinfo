@@ -50,6 +50,5 @@ public class ClassCriteria implements Criteria {
             }
             return new CriteriaUnion(criteriaList);
         }
-
     }
 }

@@ -40,7 +40,7 @@ public class GetLocationsTest extends CommandTestCase2 {
     public void testGetLocation() {
         setUser(1);
 
-        LocationDTO location = execute(new GetLocations(1)).getLocation();
+        LocationDTO location = execute(new GetLocations(1)).getData().get(0);
 
         assertThat(location, notNullValue());
         assertThat(location.getName(), equalTo("Penekusu Kivu"));

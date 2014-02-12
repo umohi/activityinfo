@@ -85,7 +85,7 @@ public class SearchLocationsHandler implements
                                    final ExecutionContext context,
                                    final AsyncCallback<LocationResult> callback) {
         SqlQuery query = baseQuery(command)
-                .appendColumns("LocationId", "Name", "Axe", "X", "Y")
+                .appendColumns("LocationId", "Name", "Axe", "X", "Y", "LocationTypeId")
                 .setLimitClause(dialect.limitClause(0, 26));
 
         query.execute(context.getTransaction(), new SqlResultCallback() {

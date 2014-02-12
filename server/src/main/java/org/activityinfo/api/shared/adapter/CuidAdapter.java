@@ -40,12 +40,14 @@ public class CuidAdapter {
 
     public static final char ADMIN_LEVEL_DOMAIN = 'E';
 
-    private static final char ADMIN_ENTITY_DOMAIN = 'e';
+    public static final char ADMIN_ENTITY_DOMAIN = 'e';
 
-    public static final char PROJECT_DOMAIN = 'R';
+    public static final char PROJECT_CLASS_DOMAIN = 'R';
+
+    public static final char PROJECT_DOMAIN = 'r';
 
     public static final int NAME_FIELD = 1;
-    public static final int PARENT_FIELD = 2;
+    public static final int ADMIN_PARENT_FIELD = 2;
     public static final int CODE_FIELD = 3;
     public static final int AXE_FIELD = 4;
     public static final int GEOMETRY_FIELD = 4;
@@ -212,7 +214,7 @@ public class CuidAdapter {
      * @return the {@code FormClass} Cuid for a given database's list of projects.
      */
     public static Cuid projectFormClass(int databaseId) {
-        return cuid(PROJECT_DOMAIN, databaseId);
+        return cuid(PROJECT_CLASS_DOMAIN, databaseId);
     }
 
     /**

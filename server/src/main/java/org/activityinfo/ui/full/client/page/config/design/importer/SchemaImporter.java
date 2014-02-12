@@ -11,9 +11,9 @@ import org.activityinfo.api.shared.command.result.BatchResult;
 import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.importer.data.ImportColumnDescriptor;
-import org.activityinfo.ui.full.client.importer.data.ImportRow;
-import org.activityinfo.ui.full.client.importer.data.ImportSource;
+import org.activityinfo.ui.full.client.importer.data.SourceColumn;
+import org.activityinfo.ui.full.client.importer.data.SourceRow;
+import org.activityinfo.ui.full.client.importer.data.SourceTable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -81,7 +81,7 @@ public class SchemaImporter {
             this.maxLength = maxLength;
         }
 
-        public String get(ImportRow row) {
+        public String get(SourceRow row) {
             if (index < 0) {
                 return null;
             }
@@ -98,7 +98,7 @@ public class SchemaImporter {
     private Column activityCategory;
     private Column activityName;
 
-    private ImportSource source;
+    private SourceTable source;
     private Column formFieldType;
     private Column fieldName;
     private Column fieldCategory;
@@ -136,7 +136,7 @@ public class SchemaImporter {
     }
 
 
-    public boolean parseColumns(ImportSource source) {
+    public boolean parseColumns(SourceTable source) {
         this.source = source;
         findColumns();
         return !fatalError;
@@ -151,8 +151,8 @@ public class SchemaImporter {
         return warnings;
     }
 
-    private void processRows(ImportSource source) {
-        for (ImportRow row : source.getRows()) {
+    private void processRows(SourceTable source) {
+        for (SourceRow row : source.getRows()) {
             ActivityDTO activity = getActivity(row);
             String fieldType = formFieldType.get(row);
             if ("Indicator".equals(fieldType)) {
@@ -209,7 +209,7 @@ public class SchemaImporter {
         return columnValue != null && "1".equals(columnValue);
     }
 
-    private ActivityDTO getActivity(ImportRow row) {
+    private ActivityDTO getActivity(SourceRow row) {
         String name = activityName.get(row);
         String category = activityCategory.get(row);
 
@@ -234,7 +234,7 @@ public class SchemaImporter {
 
     }
 
-    private int findLocationType(ActivityDTO activity, ImportRow row) {
+    private int findLocationType(ActivityDTO activity, SourceRow row) {
         String name = locationType.get(row);
         if (Strings.isNullOrEmpty(name)) {
             warn("No location type given for Activity " + activity.getName());
@@ -258,7 +258,7 @@ public class SchemaImporter {
     }
 
     private int findColumn(String name) {
-        for (ImportColumnDescriptor col : source.getColumns()) {
+        for (SourceColumn col : source.getColumns()) {
             if (col.getHeader().equalsIgnoreCase(name)) {
                 return col.getIndex();
             }

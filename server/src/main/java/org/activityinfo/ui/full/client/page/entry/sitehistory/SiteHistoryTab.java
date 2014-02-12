@@ -27,10 +27,10 @@ import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.GetLocations;
-import org.activityinfo.api.shared.command.GetLocations.GetLocationsResult;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.command.GetSiteHistory;
 import org.activityinfo.api.shared.command.GetSiteHistory.GetSiteHistoryResult;
+import org.activityinfo.api.shared.command.result.LocationResult;
 import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
@@ -73,7 +73,7 @@ public class SiteHistoryTab extends TabItem {
                         if (historyResult.hasHistories()) {
                             dispatcher.execute(
                                     new GetLocations(historyResult.collectLocationIds()),
-                                    new AsyncCallback<GetLocationsResult>() {
+                                    new AsyncCallback<LocationResult>() {
                                         @Override
                                         public void onFailure(Throwable caught) {
                                             renderNotAvailable(site);
@@ -81,7 +81,7 @@ public class SiteHistoryTab extends TabItem {
 
                                         @Override
                                         public void onSuccess(
-                                                final GetLocationsResult locationsResult) {
+                                                final LocationResult locationsResult) {
                                             dispatcher.execute(new GetSchema(),
                                                     new AsyncCallback<SchemaDTO>() {
                                                         @Override
@@ -94,7 +94,7 @@ public class SiteHistoryTab extends TabItem {
                                                         public void onSuccess(
                                                                 SchemaDTO schema) {
                                                             render(schema, locationsResult
-                                                                    .getLocations(), site,
+                                                                    .getData(), site,
                                                                     historyResult
                                                                             .getSiteHistories());
                                                         }

@@ -4,10 +4,13 @@ package org.activityinfo.ui.full.client.importer;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicates;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.io.Resources;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
-import org.activityinfo.api2.client.PromiseMatchers;
+import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
@@ -15,23 +18,29 @@ import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.ui.full.client.importer.binding.ClassMatcherSet;
-import org.activityinfo.ui.full.client.importer.data.ImportColumnDescriptor;
-import org.activityinfo.ui.full.client.importer.data.PastedImportSource;
+import org.activityinfo.ui.full.client.importer.columns.DraftColumn;
+import org.activityinfo.ui.full.client.importer.data.PastedTable;
+import org.activityinfo.ui.full.client.importer.data.SourceColumn;
+import org.activityinfo.ui.full.client.importer.draft.Draft;
+import org.activityinfo.ui.full.client.importer.draft.DraftInstance;
+import org.activityinfo.ui.full.client.importer.match.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.io.Resources.*;
+import static org.activityinfo.api2.client.PromiseMatchers.assertResolves;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/brac-import.db.xml")
 public class ImporterTest extends CommandTestCase2 {
 
     private static final Cuid HOUSEHOLD_SURVEY_FORM_CLASS = CuidAdapter.activityFormClass(1);
+    public static final int COLUMN_WIDTH = 50;
 
 
     private ResourceLocatorAdaptor resourceLocator;
@@ -47,7 +56,7 @@ public class ImporterTest extends CommandTestCase2 {
     @Test
     public void test() throws IOException {
 
-        FormTree formTree = PromiseMatchers.assertResolves(formTreeBuilder.build(HOUSEHOLD_SURVEY_FORM_CLASS));
+        FormTree formTree = assertResolves(formTreeBuilder.build(HOUSEHOLD_SURVEY_FORM_CLASS));
         dumpList("TREE NODES", formTree.search(FormTree.SearchOrder.BREADTH_FIRST,
                 Predicates.alwaysTrue(), Predicates.<FormTree.Node>alwaysTrue()));
 
@@ -55,41 +64,96 @@ public class ImporterTest extends CommandTestCase2 {
 
 
         // Step 1: User pastes in data to import
-        PastedImportSource source = new PastedImportSource(
+        PastedTable source = new PastedTable(
                 Resources.toString(getResource(Importer.class, "qis.csv"), Charsets.UTF_8));
         importer.setSource(source);
 
         dumpList("COLUMNS", source.getColumns());
 
-
         // Step 2: User maps imported columns to FormFields
         dumpList("FIELDS", importer.getFieldsToMatch());
         importer.setColumnBinding(field("NumAdultMale"), columnIndex("MEMBER_NO_ADULT_FEMALE"));
         importer.setColumnBinding(field("[End Date]"), columnIndex("_SUBMISSION_DATE"));
-        importer.setColumnBinding(field("localite.Upzilla.District.Division.Name"), columnIndex("district"));
-        importer.setColumnBinding(field("localite.Upzilla.Name"), columnIndex("upazila"));
+        importer.setColumnBinding(field("Upzilla.District.Name"), columnIndex("district"));
+        importer.setColumnBinding(field("Upzilla.Name"), columnIndex("upazila"));
 
-        // Step 3: Match Instances
+        // Step 3: Populate draft instances
+        Draft draft = new Draft(resourceLocator, importer);
+        draft.updateDrafts();
+
+        // Step 4: Match Instances
         // For each row object field, we need to determine the range of possible/probably values
-        ClassMatcherSet matcherSet = new ClassMatcherSet(formTree, importer.getColumnBindings());
+        assertResolves(draft.matchReferences());
 
-        matcherSet.match(importer.getSource());
 
+        // Step 4: Present to the user for validation / correction
+        List columns = importer.getImportColumns();
+        dumpHeaders(columns);
+        dumpRows(columns, draft.getInstances());
+
+    }
+
+
+    private void dumpHeaders(List<DraftColumn> importColumns) {
+
+        for(DraftColumn col : importColumns) {
+            System.out.print("  " + Strings.padEnd(col.getHeader().getValue(), COLUMN_WIDTH - 2, ' '));
+        }
+        System.out.println();
+        System.out.println(Strings.repeat("-", COLUMN_WIDTH * importColumns.size()));
+
+    }
+
+    private void dumpRows(List<DraftColumn> columns, List<DraftInstance> draftInstances) {
+        for(DraftInstance instance : draftInstances) {
+            for(DraftColumn col : columns) {
+                Object value = col.getValue(instance);
+                String stringValue = "";
+                if(value != null) {
+                    stringValue = value.toString();
+                    if(stringValue.length() > (COLUMN_WIDTH-2)) {
+                        stringValue = stringValue.substring(0, COLUMN_WIDTH-2);
+                    }
+                }
+                System.out.print(" " + icon(col.getStatus(instance)) + Strings.padEnd(stringValue,
+                        COLUMN_WIDTH - 2, ' '));
+            }
+            System.out.println();
+        }
+    }
+
+    private String icon(ValueStatus status) {
+        if(status == null) {
+            return "?";
+        }
+        switch(status) {
+
+            case OK:
+                return " ";
+            case WARNING:
+                return "*";
+            case ERROR:
+                return "!";
+        }
+        return "?";
     }
 
     private FieldPath field(String debugFieldPath) {
         List<FieldPath> fieldsToMatch = importer.getFieldsToMatch();
+        List<String> fieldsWeHave = Lists.newArrayList();
         for(FieldPath path : fieldsToMatch) {
-            if(path.toString().equals(debugFieldPath)) {
+            String debugPath = importer.getFormTree().getNodeByPath(path).debugPath();
+            if(debugPath.equals(debugFieldPath)) {
                 return path;
             }
+            fieldsWeHave.add(debugPath);
         }
         throw new RuntimeException(String.format("No field matching '%s', we have: %s",
-                debugFieldPath, fieldsToMatch));
+                debugFieldPath, fieldsWeHave));
     }
 
     private int columnIndex(String header) {
-        for(ImportColumnDescriptor column : importer.getSource().getColumns()) {
+        for(SourceColumn column : importer.getSource().getColumns()) {
             if(column.getHeader().equals(header)) {
                 return column.getIndex();
             }

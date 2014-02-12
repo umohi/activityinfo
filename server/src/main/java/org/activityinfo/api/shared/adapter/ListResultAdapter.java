@@ -28,5 +28,4 @@ public class ListResultAdapter<T extends ModelData> implements
     public List<FormInstance> apply(ListResult<T> input) {
         return Lists.transform(input.getData(), instanceAdapter);
     }
-
 }

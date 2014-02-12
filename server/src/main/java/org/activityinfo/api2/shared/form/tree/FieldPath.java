@@ -1,10 +1,10 @@
 package org.activityinfo.api2.shared.form.tree;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.FormFieldType;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,17 +12,30 @@ import java.util.List;
  */
 public class FieldPath {
 
-    private final List<FormField> path;
-    private String key;
+    private final List<Cuid> path;
 
     public FieldPath(List<FormField> prefix, FormField field) {
         path = Lists.newArrayList();
-        path.addAll(prefix);
-        path.add(field);
+        for(FormField prefixField : prefix) {
+            path.add(prefixField.getId());
+        }
+        path.add(field.getId());
     }
 
-    public FieldPath(FormField... field) {
-        path = Arrays.asList(field);
+
+    public FieldPath(FieldPath prefix, Cuid key) {
+        path = Lists.newArrayList();
+        if(prefix != null) {
+            path.addAll(prefix.path);
+        }
+        path.add(key);
+    }
+
+    public FieldPath(FormField... fields) {
+        path = Lists.newArrayList();
+        for(FormField field : fields) {
+            path.add(field.getId());
+        }
     }
 
     public FieldPath(FieldPath parent, FormField field) {
@@ -31,64 +44,76 @@ public class FieldPath {
         if (parent != null) {
             path.addAll(parent.path);
         }
-        path.add(field);
+        path.add(field.getId());
     }
 
-    public String getKey() {
-        if (key == null) {
-            StringBuilder sb = new StringBuilder();
-            for (FormField field : path) {
-                sb.append(".");
-                sb.append(field.getId());
-            }
-            key = sb.toString();
-        }
-        return key;
+    public FieldPath(List<Cuid> fieldIds) {
+        path = Lists.newArrayList(fieldIds);
+    }
+
+    public FieldPath(Cuid... fieldIds) {
+        path = Lists.newArrayList(fieldIds);
+    }
+
+
+    public boolean isNested() {
+        return path.size() > 1;
+    }
+
+
+    public int getDepth() {
+        return path.size();
+    }
+
+    public FieldPath relativeTo(Cuid rootFieldId) {
+        Preconditions.checkArgument(path.get(0).equals(rootFieldId));
+        return new FieldPath(path.subList(1, path.size()));
+    }
+
+    public Cuid getLeafId() {
+        return path.get(path.size()-1);
+    }
+
+    /**
+     * Creates a new FieldPath that describes the nth ancestor of this
+     * path. n=1 is the direct parent, n=2, grand parent, etc.
+     */
+    public FieldPath ancestor(int n) {
+        return new FieldPath(path.subList(0, path.size()-n));
+    }
+
+    public Cuid getRoot() {
+        return path.get(0);
     }
 
     public String getLabel() {
-        StringBuilder sb = new StringBuilder();
-        for (FormField field : path) {
-            if (sb.length() > 0) {
-                sb.append(" ");
-            }
-            sb.append(field.getLabel());
-        }
-        return sb.toString();
+        // TODO: remove this method
+        return this.toString();
     }
 
-    public FormField getField() {
-        return path.get(path.size() - 1);
-    }
-
-    public boolean isReference() {
-        return getField().getType() == FormFieldType.REFERENCE;
+    public boolean isDescendantOf(Cuid fieldId) {
+        return path.get(0).equals(fieldId);
     }
 
     public FieldPath child(FormField field) {
-        return new FieldPath(path, field);
+        return new FieldPath(this, field);
     }
 
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        for(FormField field : path) {
+        for(Cuid fieldId : path) {
             if(s.length() > 0) {
                 s.append(".");
             }
-            String label = field.getLabel().getValue();
-            if(label.contains(" ")) {
-                s.append("[").append(label).append("]");
-            } else {
-                s.append(label);
-            }
+            s.append(fieldId.asString());
         }
         return s.toString();
     }
 
     @Override
     public int hashCode() {
-        return getKey().hashCode();
+        return path.hashCode();
     }
 
     @Override
@@ -101,7 +126,7 @@ public class FieldPath {
         }
         FieldPath otherPath = (FieldPath) obj;
 
-        return getKey().equals(otherPath.getKey());
+        return path.equals(otherPath.path);
     }
 
 }

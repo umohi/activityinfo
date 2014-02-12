@@ -41,7 +41,7 @@ import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
-import org.activityinfo.ui.full.client.importer.data.PastedImportSource;
+import org.activityinfo.ui.full.client.importer.data.PastedTable;
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter;
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.ProgressListener;
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.Warning;
@@ -220,7 +220,7 @@ public class GetSchemaTest extends CommandTestCase2 {
     public void importCsv() throws IOException {
 
         String csv = Resources.toString(Resources.getResource("schema_1064.csv"), Charsets.UTF_8);
-        PastedImportSource source = new PastedImportSource(csv);
+        PastedTable source = new PastedTable(csv);
 
         Map<String, Object> dbProps = Maps.newHashMap();
         dbProps.put("name", "Syria");

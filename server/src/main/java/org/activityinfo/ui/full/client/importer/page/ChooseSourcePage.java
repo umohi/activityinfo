@@ -9,8 +9,8 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.ui.full.client.importer.data.ImportSource;
-import org.activityinfo.ui.full.client.importer.data.PastedImportSource;
+import org.activityinfo.ui.full.client.importer.data.PastedTable;
+import org.activityinfo.ui.full.client.importer.data.SourceTable;
 
 /**
  * Start page for the table import process that prompts the user
@@ -44,8 +44,8 @@ public class ChooseSourcePage extends Composite implements ImportPage {
         }
     }
 
-    public ImportSource getImportSource() {
-        return new PastedImportSource(textArea.getText());
+    public SourceTable getImportSource() {
+        return new PastedTable(textArea.getText());
     }
 
     @Override

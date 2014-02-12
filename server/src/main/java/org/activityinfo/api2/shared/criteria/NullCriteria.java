@@ -24,4 +24,5 @@ public class NullCriteria implements Criteria {
     public boolean apply(@Nonnull FormInstance instance) {
         return true;
     }
+
 }

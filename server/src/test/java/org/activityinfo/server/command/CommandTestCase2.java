@@ -41,6 +41,7 @@ import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.util.TemplateModule;
 import org.activityinfo.server.util.blob.BlobServiceModuleStub;
 import org.activityinfo.server.util.config.ConfigModuleStub;
+import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
 import org.junit.Before;
 import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
@@ -133,7 +134,7 @@ public class CommandTestCase2 {
     }
 
     public Dispatcher getDispatcher() {
-        return new Dispatcher() {
+        return new AbstractDispatcher() {
 
             @Override
             public <T extends CommandResult> void execute(Command<T> command,
@@ -142,11 +143,6 @@ public class CommandTestCase2 {
                 callback.onSuccess(result);
             }
 
-            @Override
-            public <T extends CommandResult> void execute(Command<T> command,
-                                                          AsyncMonitor monitor, AsyncCallback<T> callback) {
-                execute(command, callback);
-            }
         };
     }
 }

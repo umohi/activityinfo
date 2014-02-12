@@ -27,9 +27,7 @@ public class FormTree {
 
     public class Node {
 
-        private String id;
         private Node parent;
-        private Cuid parentField;
         private FormField field;
 
         private FieldPath path;
@@ -54,7 +52,6 @@ public class FormTree {
                 FormTree.Node childNode = new FormTree.Node();
                 childNode.parent = this;
                 childNode.field = property;
-                childNode.parentField = property.getId();
                 childNode.path = new FieldPath(this.path, property);
                 children.add(childNode);
                 nodeMap.put(childNode.path, childNode);
@@ -67,6 +64,10 @@ public class FormTree {
 
         public FieldPath getPath() {
             return path;
+        }
+
+        public FormField getField() {
+            return field;
         }
 
         public Cuid getFieldId() {
@@ -85,12 +86,16 @@ public class FormTree {
             return field.getType();
         }
 
+        public Node getParent() {
+            return parent;
+        }
+
         public String debugPath() {
             StringBuilder path = new StringBuilder();
-            path.append(this);
+            path.append(toString(this.getField().getLabel()));
             Node parent = this.parent;
-            while(parent != null) {
-                path.insert(0, parent + " -> ");
+            while(!parent.isRoot()) {
+                path.insert(0, toString(parent.getField().getLabel()) + ".");
                 parent = parent.parent;
             }
             return path.toString();
@@ -108,7 +113,11 @@ public class FormTree {
         }
 
         private String toString(LocalizedString label) {
-            return "[" + label.getValue() + "]";
+            if(label.getValue().contains(" ")) {
+                return "[" + label.getValue() + "]";
+            } else {
+                return label.getValue();
+            }
         }
     }
 
@@ -152,14 +161,16 @@ public class FormTree {
         return leaves;
     }
 
-    public List<FieldPath> search(SearchOrder order, Predicate<? super Node> descendPredicate, Predicate<Node> matchPredicate) {
+    public List<FieldPath> search(SearchOrder order, Predicate<? super Node> descendPredicate,
+                                  Predicate<? super Node> matchPredicate) {
         List<FieldPath> paths = Lists.newArrayList();
         search(paths, root, order, descendPredicate, matchPredicate);
         return paths;
     }
 
     private void search(List<FieldPath> paths, Node parent, SearchOrder searchOrder,
-                        Predicate<? super Node> descendPredicate, Predicate<Node> matchPredicate) {
+                        Predicate<? super Node> descendPredicate,
+                        Predicate<? super Node> matchPredicate) {
         if (searchOrder == SearchOrder.BREADTH_FIRST && !parent.isRoot() && matchPredicate.apply(parent)) {
             paths.add(parent.path);
         }

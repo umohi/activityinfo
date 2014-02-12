@@ -22,11 +22,12 @@ public class FieldCriteria implements Criteria {
 
     @Override
     public void accept(CriteriaVisitor visitor) {
-
+        visitor.visitFieldCriteria(this);
     }
 
     @Override
     public boolean apply(@Nullable FormInstance input) {
         return Objects.equals(input.get(fieldId), value);
     }
+
 }

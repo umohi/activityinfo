@@ -1,31 +1,29 @@
 package org.activityinfo.ui.full.client.importer.data;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * An import source pasted in to a text field by the user.
  */
-public class PastedImportSource implements ImportSource {
+public class PastedTable implements SourceTable {
 
     private static final char QUOTE_CHAR = '"';
     private String text;
     //private List<Integer> rowStarts;
-    private List<ImportColumnDescriptor> columns;
-    private List<ImportRow> rows;
+    private List<SourceColumn> columns;
+    private List<SourceRow> rows;
 
     private String delimeter;
 
-    public PastedImportSource(String text) {
+    public PastedTable(String text) {
         this.text = text;
     }
 
 
     @Override
-    public List<ImportColumnDescriptor> getColumns() {
+    public List<SourceColumn> getColumns() {
         ensureParsed();
         return columns;
     }
@@ -53,7 +51,7 @@ public class PastedImportSource implements ImportSource {
                 return;
             }
 
-            rows.add(new PastedImportRow(parseRow(text.substring(rowStarts, rowEnds))));
+            rows.add(new PastedRow(parseRow(text.substring(rowStarts, rowEnds))));
             rowStarts = rowEnds + 1;
         }
     }
@@ -63,8 +61,7 @@ public class PastedImportSource implements ImportSource {
         row = maybeRemoveCarriageReturn(row);
         boolean usesQuote = row.indexOf(QUOTE_CHAR) != -1;
         if (usesQuote) {
-            String[] cols = new String[columns.size()];
-            int colIndex = 0;
+            List<String> cols = Lists.newArrayList();
             boolean quoted = false;
             char delimiterChar = delimeter.charAt(0);
             StringBuilder col = new StringBuilder();
@@ -82,13 +79,9 @@ public class PastedImportSource implements ImportSource {
                         charIndex++;
                     }
                 } else if (!quoted && c == delimiterChar) {
-                    cols[colIndex] = col.toString();
+                    cols.add(col.toString());
                     col.setLength(0);
                     charIndex++;
-                    colIndex++;
-                    if (colIndex >= cols.length) {
-                        return cols;
-                    }
                 } else {
                     col.append(c);
                     charIndex++;
@@ -96,9 +89,14 @@ public class PastedImportSource implements ImportSource {
             }
 
             // final column
-            cols[colIndex] = col.toString();
+            cols.add(col.toString());
 
-            return cols;
+            String[] array = new String[cols.size()];
+            for(int i=0;i!=array.length;++i) {
+                array[i] = cols.get(i);
+            }
+
+            return array;
 
         } else {
             return row.split(delimeter);
@@ -116,7 +114,7 @@ public class PastedImportSource implements ImportSource {
     private void parseHeaders(String headers[]) {
         columns = Lists.newArrayList();
         for (int i = 0; i != headers.length; ++i) {
-            ImportColumnDescriptor column = new ImportColumnDescriptor();
+            SourceColumn column = new SourceColumn();
             column.setIndex(i);
             column.setHeader(headers[i]);
             columns.add(column);
@@ -124,7 +122,7 @@ public class PastedImportSource implements ImportSource {
     }
 
     @Override
-    public List<ImportRow> getRows() {
+    public List<SourceRow> getRows() {
         ensureParsed();
         return rows;
     }
@@ -147,18 +145,4 @@ public class PastedImportSource implements ImportSource {
         return columns.get(columnIndex).getHeader();
     }
 
-    @Override
-    public Set<String> distinctValues(int columnIndex) {
-        Set<String> set = Sets.newHashSet();
-        for(ImportRow row : getRows()) {
-            String value = row.getColumnValue(columnIndex);
-            if(value != null) {
-                String trimmedValue = value.trim();
-                if(trimmedValue.length() > 0) {
-                    set.add(trimmedValue.toLowerCase());
-                }
-            }
-        }
-        return set;
-    }
 }

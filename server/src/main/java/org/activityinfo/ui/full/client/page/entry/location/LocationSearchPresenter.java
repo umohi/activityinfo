@@ -28,7 +28,6 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.api.shared.command.GetLocations;
-import org.activityinfo.api.shared.command.GetLocations.GetLocationsResult;
 import org.activityinfo.api.shared.command.SearchLocations;
 import org.activityinfo.api.shared.command.result.LocationResult;
 import org.activityinfo.api.shared.model.CountryDTO;
@@ -125,7 +124,7 @@ public class LocationSearchPresenter extends BaseObservable {
     public void accept() {
         // retrieve the full version of this location
         dispatcher.execute(new GetLocations(selection.getId()),
-                new AsyncCallback<GetLocationsResult>() {
+                new AsyncCallback<LocationResult>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -133,8 +132,12 @@ public class LocationSearchPresenter extends BaseObservable {
                     }
 
                     @Override
-                    public void onSuccess(GetLocationsResult result) {
-                        selection = result.getLocation();
+                    public void onSuccess(LocationResult result) {
+                        if(result.getData().isEmpty()) {
+                            selection = null;
+                        } else {
+                            selection = result.getData().get(0);
+                        }
                         fireEvent(ACCEPTED, new BaseEvent(ACCEPTED));
                     }
                 });

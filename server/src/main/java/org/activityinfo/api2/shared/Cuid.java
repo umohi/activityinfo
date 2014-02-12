@@ -39,9 +39,7 @@ public final class Cuid {
 
         Cuid cuid = (Cuid) o;
 
-        if (!value.equals(cuid.value)) return false;
-
-        return true;
+        return value.equals(cuid.value);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class AdminEntityInstanceAdapter implements Function<AdminEntityDTO, Form
 
         // Parent field value
         if(input.getParentId() != null) {
-            instance.set(CuidAdapter.field(classId, CuidAdapter.PARENT_FIELD),
+            instance.set(CuidAdapter.field(classId, CuidAdapter.ADMIN_PARENT_FIELD),
                     CuidAdapter.adminEntityInstanceId(input.getParentId()));
         }
 

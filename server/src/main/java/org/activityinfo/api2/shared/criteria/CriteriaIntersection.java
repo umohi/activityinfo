@@ -1,11 +1,9 @@
 package org.activityinfo.api2.shared.criteria;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 

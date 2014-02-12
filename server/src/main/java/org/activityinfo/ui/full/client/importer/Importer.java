@@ -3,27 +3,27 @@ package org.activityinfo.ui.full.client.importer;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
-import org.activityinfo.ui.full.client.importer.binding.DraftModel;
-import org.activityinfo.ui.full.client.importer.binding.InstanceMatch;
-import org.activityinfo.ui.full.client.importer.data.ImportRow;
-import org.activityinfo.ui.full.client.importer.data.ImportSource;
+import org.activityinfo.ui.full.client.importer.columns.DataColumn;
+import org.activityinfo.ui.full.client.importer.columns.DraftColumn;
+import org.activityinfo.ui.full.client.importer.columns.MissingFieldColumn;
+import org.activityinfo.ui.full.client.importer.columns.NestedFieldColumn;
+import org.activityinfo.ui.full.client.importer.data.SourceColumn;
+import org.activityinfo.ui.full.client.importer.data.SourceTable;
 import org.activityinfo.api2.shared.form.tree.FormTree.SearchOrder;
 
 import java.util.*;
 
 /**
- * A model which defines the mapping from an {@code ImportSource}
+ * A model which defines the mapping from an {@code SourceTable}
  * to a list of models of class {@code T}
  */
 public class Importer<T> {
 
-    private ImportSource source;
-    private List<DraftModel> models;
-
+    private SourceTable source;
     private FormTree formTree;
 
 
@@ -36,100 +36,22 @@ public class Importer<T> {
 
     public Importer(FormTree formTree) {
         this.formTree = formTree;
-
     }
 
-    public void setSource(ImportSource source) {
+    public void setSource(SourceTable source) {
         this.source = source;
 
         // clear calculations based on this source
         this.bindings = Maps.newHashMap();
-        this.models = null;
     }
 
-    public List<DraftModel> getDraftModels() {
-        if (models == null) {
-            models = Lists.newArrayListWithCapacity(source.getRows().size());
-            for (int i = 0; i != source.getRows().size(); ++i) {
-                models.add(new DraftModel(i));
-            }
-        }
-        return models;
-    }
-
-    public void updateDrafts() {
-        String[] propertyKeys = new String[source.getColumns().size()];
-        for (int i = 0; i != propertyKeys.length; ++i) {
-            FieldPath bound = bindings.get(i);
-            if (bound != null) {
-                propertyKeys[i] = bound.getKey();
-            }
-        }
-
-        List<FieldPath> objectProperties = getObjectPropertiesToResolve();
-
-        for (DraftModel draftModel : getDraftModels()) {
-
-            // first update the data type properties using the column mappings
-
-            ImportRow row = source.getRows().get(draftModel.getRowIndex());
-            for (int i = 0; i != propertyKeys.length; ++i) {
-                String key = propertyKeys[i];
-                if (key != null) {
-                    draftModel.setValue(key, row.getColumnValue(i));
-                }
-            }
-
-            // Now, try to match the object properties based on the given data type properties
-            for (FieldPath path : objectProperties) {
-                InstanceMatch match = matchInstance(path.getField().getRange(),
-                        propertiesFor(path, draftModel));
-
-                if (match != null) {
-                    draftModel.setValue(path.getKey(), match);
-                }
-            }
-        }
-    }
-
-    private InstanceMatch matchInstance(Set<Iri> range, Map<Cuid, Object> stringObjectMap) {
-        throw new UnsupportedOperationException("todo");
-    }
-
-    private Map<Cuid, Object> propertiesFor(FieldPath path, DraftModel draftModel) {
-        Map<Cuid, Object> values = Maps.newHashMap();
-        for (FormTree.Node childNode : formTree.getNodeByPath(path).getChildren()) {
-            Object value = draftModel.getValue(childNode.getPath().getKey());
-            if (value instanceof InstanceMatch) {
-                values.put(childNode.getFieldId(), ((InstanceMatch) value).getInstanceId());
-            } else if (value != null) {
-                values.put(childNode.getFieldId(), value);
-            }
-        }
-        return values;
-    }
-
-    /**
-     * Rebinds all draft models to their columns
-     */
-    public List<T> bind() {
-        List<T> models = Lists.newArrayList();
-//		for(DraftModel<T> draftModel : getDraftModels()) {
-//			T model = binder.newModel();
-//			for(Map.Entry<DataTypeProperty<T, ?>, ColumnBinding> binding : bindings.entrySet() ) {
-//				String importedValue = binding.getValue().getValue(draftModel.getRowIndex());
-//				if(importedValue != null) {
-//					binding.getKey().tryConvertAndUpdate(model, importedValue);
-//				}
-//			}
-//			models.add(model);
-//		}	
-        return models;
-    }
-
-
-    public ImportSource getSource() {
+    public SourceTable getSource() {
         return source;
+    }
+
+
+    public Set<FieldPath> getMappedFieldPaths() {
+        return Sets.newHashSet(bindings.values());
     }
 
     public Map<Integer, FieldPath> getColumnBindings() {
@@ -150,6 +72,32 @@ public class Importer<T> {
 
     public void clearColumnBinding(Integer columnIndex) {
         bindings.remove(columnIndex);
+    }
+
+    public List<DraftColumn> getImportColumns() {
+        List<DraftColumn> columns = Lists.newArrayList();
+
+        Set<FieldPath> mapped = Sets.newHashSet(getColumnBindings().values());
+
+        for(FieldPath path : mapped) {
+            if(path.isNested()) {
+                columns.add(new NestedFieldColumn(formTree.getNodeByPath(path)));
+            } else {
+                columns.add(new DataColumn(formTree.getNodeByPath(path)));
+            }
+        }
+
+        Set<Cuid> mappedRootField = Sets.newHashSet();
+        for(FieldPath fieldPath : mapped) {
+            mappedRootField.add(fieldPath.getRoot());
+        }
+        for(FormTree.Node node : formTree.getRoot().getChildren()) {
+            if(!mappedRootField.contains(node.getFieldId()) && node.getField().isRequired()) {
+                columns.add(new MissingFieldColumn(node.getField()));
+            }
+        }
+
+        return columns;
     }
 
     public List<FieldPath> getFieldsToMatch() {
@@ -183,4 +131,9 @@ public class Importer<T> {
                                 FormTree.isReference(),
                                 FormTree.pathIn(bindings.values()))));
     }
+
+    public FormTree getFormTree() {
+        return formTree;
+    }
+
 }

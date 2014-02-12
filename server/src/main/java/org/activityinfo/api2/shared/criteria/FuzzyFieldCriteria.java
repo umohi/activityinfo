@@ -2,6 +2,7 @@ package org.activityinfo.api2.shared.criteria;
 
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.ui.full.client.importer.match.JaroWinklerDistance;
 
 import javax.annotation.Nullable;
 
@@ -30,4 +31,9 @@ public class FuzzyFieldCriteria implements Criteria {
         String inputValue = input.getString(fieldId);
         return JaroWinklerDistance.DEFAULT.getDistance(value, inputValue) > threshold;
     }
+
+    public boolean applyToClassId(Cuid classId) {
+        return true;
+    }
+
 }

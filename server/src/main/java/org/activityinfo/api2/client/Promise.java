@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.base.Function;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -16,8 +17,7 @@ import java.util.List;
  *
  * @param <T> the type of the promised value
  */
-public final class Promise<T> {
-
+public final class Promise<T> implements AsyncCallback<T> {
 
 
     public interface AsyncOperation<T> {
@@ -158,6 +158,15 @@ public final class Promise<T> {
         };
     }
 
+    @Override
+    public void onFailure(Throwable caught) {
+        reject(caught);
+    }
+
+    @Override
+    public void onSuccess(T result) {
+        resolve(result);
+    }
 
     public final void reject(Throwable caught) {
         if (state != State.PENDING) {
@@ -198,30 +207,63 @@ public final class Promise<T> {
         return promise;
     }
 
-//
-//    public static <X> Promise<List<X>> all(final List<Promise<X>> promises) {
-//        final Promise<List<X>> all = new Promise<>(new AsyncOperation<List<X>>() {
-//            @Override
-//            public void start(Promise<List<X>> all) {
-//                for(Promise<X> promise : promises) {
-//                    promise.retry();
-//                }
-//            }
-//        });
-//        for(Promise<X> promise : promises) {
-//            promise.then(new AsyncCallback<X>() {
-//                @Override
-//                public void onFailure(Throwable caught) {
-//                    all.reject(caught);
-//                }
-//
-//                @Override
-//                public void onSuccess(X result) {
-//                    all
-//                }
-//            });
-//        }
-//    }
+
+    public static <X> Promise<List<X>> all(final List<Promise<X>> promises) {
+
+        if(promises.isEmpty()) {
+            return Promise.resolved(Collections.<X>emptyList());
+        }
+
+        final Promise<List<X>> all = new Promise<>(new AsyncOperation<List<X>>() {
+            @Override
+            public void start(Promise<List<X>> all) {
+                for(Promise<X> promise : promises) {
+                    promise.retry();
+                }
+            }
+        });
+
+        final List<X> results = Lists.newArrayList();
+        final Counter remaining = new Counter(promises.size());
+
+        for(int i=0;i!=promises.size();++i) {
+            results.add(null);
+            final int promiseIndex = i;
+            promises.get(i).then(new AsyncCallback<X>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    all.reject(caught);
+                }
+
+                @Override
+                public void onSuccess(X result) {
+                    results.set(promiseIndex, result);
+                    remaining.decrement();
+                    if (remaining.isZero()) {
+                        all.resolve(results);
+                    }
+                }
+            });
+        }
+
+        return all;
+    }
+
+    private static class Counter {
+        private int value;
+
+        public Counter(int value) {
+            this.value = value;
+        }
+
+        public void decrement() {
+            value--;
+        }
+
+        public boolean isZero() {
+            return value == 0;
+        }
+    }
 
     @Override
     public String toString() {

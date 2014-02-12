@@ -1,22 +1,5 @@
 package org.activityinfo.ui.full.client.filter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetLocations;
-import org.activityinfo.api.shared.command.GetLocations.GetLocationsResult;
-import org.activityinfo.api.shared.model.LocationDTO;
-import org.activityinfo.api.shared.model.LocationTypeDTO;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterEvent;
-import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterHandler;
-import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterEvent;
-import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterHandler;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.icon.IconImageBundle;
-
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.ListViewEvent;
@@ -30,6 +13,22 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GetLocations;
+import org.activityinfo.api.shared.command.result.LocationResult;
+import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.api.shared.model.LocationTypeDTO;
+import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterEvent;
+import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterHandler;
+import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterEvent;
+import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterHandler;
+import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.ui.full.client.icon.IconImageBundle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationFilterPanel extends ContentPanel implements FilterPanel {
 
@@ -171,7 +170,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         filter.clearRestrictions(DimensionType.Location);
 
         if (baseFilter == null || !baseFilter.equals(filter)) {
-            service.execute(new GetLocations(filter), new AsyncCallback<GetLocationsResult>() {
+            service.execute(new GetLocations(filter), new AsyncCallback<LocationResult>() {
                 
                 @Override
                 public void onFailure(Throwable arg0) {
@@ -180,10 +179,10 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
                 }
                 
                 @Override
-                public void onSuccess(GetLocationsResult result) {
+                public void onSuccess(LocationResult result) {
                     List<Integer> ids = getSelectedIds();
                     store.removeAll();
-                    store.add(result.getLocations());
+                    store.add(result.getData());
                     applyInternalValue();
 
                     for (LocationDTO partner : store.getModels()) {

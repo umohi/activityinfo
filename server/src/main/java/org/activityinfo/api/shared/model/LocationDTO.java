@@ -51,6 +51,7 @@ public class LocationDTO extends BaseModelData implements EntityDTO,
         String axe = row.isNull("Axe") ? null : row.getString("Axe");
         Double longitude = row.isNull("X") ? null : row.getDouble("X");
         Double latitude = row.isNull("Y") ? null : row.getDouble("Y");
+        Integer locationType = row.isNull("LocationTypeId") ? null : row.getInt("LocationTypeId");
         int id = row.getInt("LocationId");
 
         return new LocationDTO()
@@ -58,7 +59,8 @@ public class LocationDTO extends BaseModelData implements EntityDTO,
                 .setName(name)
                 .setAxe(axe)
                 .setLongitude(longitude)
-                .setLatitude(latitude);
+                .setLatitude(latitude)
+                .setLocationTypeId(locationType);
     }
 
     @Override

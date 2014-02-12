@@ -34,6 +34,7 @@ public class ActivityUserFormBuilder {
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
         partnerField.setRange(CuidAdapter.partnerFormClass(activity.getDatabase().getId()).asIri());
         partnerField.setType(FormFieldType.REFERENCE);
+        partnerField.setRequired(true);
         siteForm.addElement(partnerField);
 
         FormField projectField = new FormField(CuidAdapter.field(classId, CuidAdapter.PROJECT_FIELD));
@@ -45,12 +46,14 @@ public class ActivityUserFormBuilder {
         FormField dateField = new FormField(CuidAdapter.field(classId, CuidAdapter.DATE_FIELD));
         dateField.setLabel(new LocalizedString(I18N.CONSTANTS.endDate()));
         dateField.setType(FormFieldType.LOCAL_DATE);
+        dateField.setRequired(true);
         siteForm.addElement(dateField);
 
         FormField locationField = new FormField(CuidAdapter.locationField(activity.getId()));
         locationField.setLabel(new LocalizedString(activity.getLocationType().getName()));
         locationField.setRange(locationClass(activity.getLocationType()).asIri());
         locationField.setType(FormFieldType.REFERENCE);
+        locationField.setRequired(true);
         siteForm.addElement(locationField);
 
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {

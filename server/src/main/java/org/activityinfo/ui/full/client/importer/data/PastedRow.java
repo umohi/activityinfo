@@ -1,11 +1,11 @@
 package org.activityinfo.ui.full.client.importer.data;
 
 
-public class PastedImportRow implements ImportRow {
+public class PastedRow implements SourceRow {
 
     private String[] columns;
 
-    public PastedImportRow(String[] columns) {
+    public PastedRow(String[] columns) {
         super();
         this.columns = columns;
     }
