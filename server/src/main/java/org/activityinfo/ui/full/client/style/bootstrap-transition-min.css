@@ -1669,7 +1669,10 @@
 .bs label {
     display: inline-block;
     margin-bottom: 5px;
-    font-weight: bold
+    /* yuriyz : gwt by default use <label> tag to represent text near controls (e.g. check box),
+    disable bold font*/
+    /*font-weight: bold*/
+    font-weight: normal;
 }
 
 .bs input[type="search"] {

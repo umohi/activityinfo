@@ -18,4 +18,7 @@ public interface TransitionBundle extends ClientBundle {
     @Source("bootstrap-transition-min.css")
     TextResource bootstrapStyle();
 
+    @Source("gwt-standard-transition.css")
+    TextResource gwtStyle();
+
 }
