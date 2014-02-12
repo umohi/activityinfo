@@ -4,10 +4,14 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <g:VerticalPanel>
-      <g:HorizontalPanel ui:field="panel">
+      <g:HorizontalPanel ui:field="suggestPanel">
+        <g:SuggestBox ui:field="suggestBox"/>
         <g:Button ui:field="addButton"/>
       </g:HorizontalPanel>
-      <g:ListBox multipleSelect="true"/>
+      <g:HorizontalPanel ui:field="listPanel">
+        <g:ListBox multipleSelect="true" ui:field="selectedList"/>
+        <g:Button ui:field="removeButton"/>
+      </g:HorizontalPanel>
     </g:VerticalPanel>
   </g:HTMLPanel>
 </ui:UiBinder>
