@@ -22,21 +22,9 @@ package org.activityinfo.ui.full.client.page.entry;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.data.BaseListLoader;
-import com.extjs.gxt.ui.client.data.ListLoader;
-import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldEvent;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.state.StateManager;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.store.Record;
-import com.extjs.gxt.ui.client.util.DateWrapper;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import java.util.ArrayList;
+
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetMonthlyReports;
 import org.activityinfo.api.shared.command.Month;
 import org.activityinfo.api.shared.command.UpdateMonthlyReports;
@@ -44,7 +32,6 @@ import org.activityinfo.api.shared.command.result.MonthlyReportResult;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.IndicatorRowDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
@@ -53,13 +40,27 @@ import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
 import org.activityinfo.ui.full.client.widget.MappingComboBox;
 
-import java.util.ArrayList;
+import com.extjs.gxt.ui.client.data.BaseListLoader;
+import com.extjs.gxt.ui.client.data.ListLoader;
+import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.state.StateManager;
+import com.extjs.gxt.ui.client.store.GroupingStore;
+import com.extjs.gxt.ui.client.store.Record;
+import com.extjs.gxt.ui.client.util.DateWrapper;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class MonthlyReportsPanel extends ContentPanel implements ActionListener {
     private final Dispatcher service;
 
     private ListLoader<MonthlyReportResult> loader;
-    private ListStore<IndicatorRowDTO> store;
+    private GroupingStore<IndicatorRowDTO> store;
     private MonthlyGrid grid;
     private ReportingPeriodProxy proxy;
     private MappingComboBox<Month> monthCombo;
@@ -78,8 +79,9 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
 
         proxy = new ReportingPeriodProxy();
         loader = new BaseListLoader<MonthlyReportResult>(proxy);
-        store = new ListStore<IndicatorRowDTO>(loader);
+        store = new GroupingStore<IndicatorRowDTO>(loader);
         store.setMonitorChanges(true);
+        store.groupBy("category");
         grid = new MonthlyGrid(store);
         add(grid);
 
