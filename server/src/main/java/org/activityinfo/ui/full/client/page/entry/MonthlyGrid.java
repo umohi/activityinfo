@@ -22,25 +22,26 @@ package org.activityinfo.ui.full.client.page.entry;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.activityinfo.api.shared.command.Month;
+import org.activityinfo.api.shared.model.IndicatorRowDTO;
+import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.ui.full.client.util.IndicatorNumberFormat;
+
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.GroupingStore;
 import com.extjs.gxt.ui.client.util.DateWrapper;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
+import com.extjs.gxt.ui.client.widget.grid.GroupingView;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Element;
-import org.activityinfo.api.shared.command.Month;
-import org.activityinfo.api.shared.model.IndicatorRowDTO;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.util.IndicatorNumberFormat;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Grid for use in the MonthlyTab
@@ -53,7 +54,7 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
     private static final int MONTH_COLUMN_WIDTH = 75;
     private boolean readOnly = true;
 
-    public MonthlyGrid(ListStore<IndicatorRowDTO> store) {
+    public MonthlyGrid(GroupingStore<IndicatorRowDTO> store) {
         super(store, createColumnModel());
 
         setAutoExpandColumn("indicatorName");
@@ -66,6 +67,11 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
                 }
             }
         });
+        
+        GroupingView view = new GroupingView();
+        view.setShowGroupedColumn(false);
+        view.setForceFit(true);
+        setView(view);
     }
     /**
      * Updates the month headers based on the given start month

@@ -76,6 +76,7 @@ public class GetMonthlyReportsHandler implements
             dto.setIndicatorId(indicator.getId());
             dto.setSiteId(cmd.getSiteId());
             dto.setIndicatorName(indicator.getName());
+            dto.setCategory(indicator.getCategory());
 
             for (ReportingPeriod period : periods) {
 
