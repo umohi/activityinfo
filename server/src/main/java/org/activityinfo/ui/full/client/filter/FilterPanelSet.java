@@ -79,6 +79,8 @@ public class FilterPanelSet implements FilterPanel {
                 ((AttributeGroupFilterWidgets) panel).clearFilter();
             } else if (panel instanceof PartnerFilterPanel) {
                 ((PartnerFilterPanel) panel).clearFilter();
+            } else if(panel instanceof LocationFilterPanel) {
+                ((LocationFilterPanel)panel).clearFilter();
             }
         }
     }
