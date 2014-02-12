@@ -28,10 +28,12 @@ import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
 import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import org.activityinfo.api.shared.command.GetLocations;
 import org.activityinfo.api.shared.command.GetLocations.GetLocationsResult;
 import org.activityinfo.api.shared.model.AdminEntityDTO;
 import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.reports.shared.model.DimensionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,8 +114,76 @@ public class GetLocationsHandler implements
                                             });
                         }
                     });
-        } else {
-            callback.onSuccess(new GetLocationsResult());
+        } else if(command.getFilter() != null ) {
+            if(!command.getFilter().isRestricted(DimensionType.Database) &&
+                !command.getFilter().isRestricted(DimensionType.Activity) &&
+                !command.getFilter().isRestricted(DimensionType.Indicator)) {
+                callback.onSuccess(new GetLocationsResult());
+            } else {
+                final Map<Integer, LocationDTO> dtos = new HashMap<Integer, LocationDTO>();
+
+                SqlQuery.select("locationID", "name", "axe", "x", "y", "workflowStatusId")
+                    .from(Tables.LOCATION)
+                    .execute(context.getTransaction(), new SqlResultCallback() {
+                        @Override
+                        public void onSuccess(SqlTransaction tx,
+                                              SqlResultSet results) {
+                            for (SqlResultSetRow row : results.getRows()) {
+                                final LocationDTO dto = new LocationDTO();
+                                dto.setId(row.getInt("locationID"));
+                                dto.setName(row.getString("name"));
+                                dto.setAxe(row.getString("axe"));
+                                dto.setWorkflowStatusId(row.getString("workflowStatusId"));
+                                if (!row.isNull("x") && !row.isNull("y")) {
+                                    dto.setLatitude(row.getDouble("y"));
+                                    dto.setLongitude(row.getDouble("x"));
+                                }
+                                dtos.put(dto.getId(), dto);
+                            }
+
+                            SqlQuery
+                                    .select()
+                                    .appendColumn("AdminEntity.AdminEntityId",
+                                            "adminEntityId")
+                                    .appendColumn("AdminEntity.Name", "name")
+                                    .appendColumn("AdminEntity.AdminLevelId", "levelId")
+                                    .appendColumn("link.LocationID", "locationId")
+                                    .from(Tables.LOCATION_ADMIN_LINK, "link")
+                                    .leftJoin(Tables.ADMIN_ENTITY, "AdminEntity")
+                                    .on("link.AdminEntityId=AdminEntity.AdminEntityId")
+                                    .execute(context.getTransaction(),
+                                            new SqlResultCallback() {
+                                                @Override
+                                                public void onSuccess(SqlTransaction tx,
+                                                                      SqlResultSet results) {
+                                                    for (SqlResultSetRow row : results
+                                                            .getRows()) {
+                                                        AdminEntityDTO entity = new AdminEntityDTO();
+                                                        entity.setId(row
+                                                                .getInt("adminEntityId"));
+                                                        entity.setName(row
+                                                                .getString("name"));
+                                                        entity.setLevelId(row
+                                                                .getInt("levelId"));
+
+                                                        LocationDTO dto = dtos.get(row
+                                                                .getInt("locationId"));
+                                                        if (dto != null) {
+                                                            dto.setAdminEntity(
+                                                                    entity.getLevelId(), entity);
+                                                        }
+                                                    }
+
+                                                    List<LocationDTO> list = new ArrayList<LocationDTO>(
+                                                            dtos.values());
+                                                    callback
+                                                            .onSuccess(new GetLocationsResult(
+                                                                    list));
+                                                }
+                                            });
+                        }
+                    });
+            }
         }
     }
 

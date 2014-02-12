@@ -33,6 +33,7 @@ public class GetLocations implements Command<GetLocationsResult> {
     private static final long serialVersionUID = 6998517531187983518L;
 
     private List<Integer> locationIds;
+    private Filter filter;
 
     public GetLocations() {
         locationIds = new ArrayList<Integer>();
@@ -49,6 +50,10 @@ public class GetLocations implements Command<GetLocationsResult> {
         locationIds = ids;
     }
 
+    public GetLocations(Filter filter) {
+        this.filter = filter;
+    }
+
     public List<Integer> getLocationIds() {
         return locationIds;
     }
@@ -59,6 +64,14 @@ public class GetLocations implements Command<GetLocationsResult> {
 
     public boolean hasLocationIds() {
         return (locationIds != null && locationIds.size() > 0);
+    }
+    
+    public Filter getFilter() {
+        return filter;
+    }
+    
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
     public static class GetLocationsResult implements CommandResult {

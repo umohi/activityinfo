@@ -42,15 +42,17 @@ public class FilterPane extends ContentPanel {
         DateRangePanel datePanel = new DateRangePanel();
         PartnerFilterPanel partnerPanel = new PartnerFilterPanel(dispatcher);
         AttributeFilterPanel attributePanel = new AttributeFilterPanel(dispatcher);
+        LocationFilterPanel locationFilterPanel = new LocationFilterPanel(dispatcher);
 
         add(activityFilterPanel);
         add(adminFilterPanel);
         add(datePanel);
         add(partnerPanel);
         add(attributePanel);
+        add(locationFilterPanel);
 
         filterPanelSet = new FilterPanelSet(activityFilterPanel,
-                adminFilterPanel, datePanel, partnerPanel, attributePanel);
+                adminFilterPanel, datePanel, partnerPanel, attributePanel, locationFilterPanel);
     }
 
     public FilterPanelSet getSet() {

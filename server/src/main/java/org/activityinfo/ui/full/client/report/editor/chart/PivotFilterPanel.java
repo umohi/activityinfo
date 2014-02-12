@@ -26,6 +26,7 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+
 import org.activityinfo.reports.shared.model.PivotReportElement;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.ui.full.client.EventBus;
@@ -64,9 +65,12 @@ public class PivotFilterPanel extends ContentPanel implements
 
         AttributeFilterPanel attributePanel = new AttributeFilterPanel(dispatcher);
         add(attributePanel);
+        
+        LocationFilterPanel locationFilterPanel = new LocationFilterPanel(dispatcher);
+        add(locationFilterPanel);
 
         panelSet = new FilterPanelSet(indicatorPanel, adminFilterPanel,
-                dateFilterPanel, partnerFilterPanel, attributePanel);
+                dateFilterPanel, partnerFilterPanel, attributePanel, locationFilterPanel);
 
         // if a nested filterpanel changed the filter
         panelSet.addValueChangeHandler(new ValueChangeHandler<Filter>() {
