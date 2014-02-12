@@ -99,12 +99,12 @@ public class FromFieldWidgetReferenceComboBox extends Composite implements FormF
 
     @Override
     public void setValue(Set<Cuid> value, boolean fireEvents) {
+        final Set<Cuid> oldValue = getValue();
         if (value != null && !value.isEmpty()) {
-            final Set<Cuid> oldValue = getValue();
             dropBox.setSelectedIndex(getIndexByCuid(value.iterator().next()));
-            if (fireEvents) {
-                CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
-            }
+        }
+        if (fireEvents) {
+            CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
         }
     }
 

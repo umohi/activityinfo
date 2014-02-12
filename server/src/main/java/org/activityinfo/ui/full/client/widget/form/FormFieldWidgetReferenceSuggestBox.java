@@ -98,8 +98,8 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
 
     @Override
     public void setValue(Set<Cuid> value, boolean fireEvents) {
+        final Set<Cuid> oldValue = getValue();
         if (value != null && !value.isEmpty()) {
-            final Set<Cuid> oldValue = getValue();
             final Cuid cuid = value.iterator().next();
             final FormInstance formInstance = Iterables.find(instances, new Predicate<FormInstance>() {
                 @Override
@@ -108,9 +108,11 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
                 }
             });
             suggestBox.setValue(FormInstanceLabeler.getLabel(formInstance));
-            if (fireEvents) {
-                CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
-            }
+        } else {
+            suggestBox.setValue("");
+        }
+        if (fireEvents) {
+            CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
         }
     }
 

@@ -119,15 +119,12 @@ public class FormFieldWidgetReferenceCheckBoxPanel extends Composite implements 
 
     @Override
     public void setValue(Set<Cuid> value, boolean fireEvents) {
-        if (value != null && !value.isEmpty()) {
-            final Set<Cuid> oldValue = getValue();
-            for (Map.Entry<Cuid, CheckBox> entry : controls.entrySet()) {
-                entry.getValue().setValue(value.contains(entry.getKey()));
-            }
-
-            if (fireEvents) {
-                CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
-            }
+        final Set<Cuid> oldValue = getValue();
+        for (Map.Entry<Cuid, CheckBox> entry : controls.entrySet()) {
+            entry.getValue().setValue(value != null && value.contains(entry.getKey()));
+        }
+        if (fireEvents) {
+            CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
         }
     }
 

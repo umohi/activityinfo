@@ -21,10 +21,12 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -38,7 +40,6 @@ import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -52,8 +53,6 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
     interface FormFieldWidgetReferenceListPanelUiBinder extends UiBinder<Widget, FormFieldWidgetReferenceListPanel> {
     }
 
-    private final Map<String, Cuid> labelToCuidMap = Maps.newHashMap();
-
     @UiField
     ListBox selectedList;
     @UiField(provided = true)
@@ -63,14 +62,15 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
     @UiField
     Button removeButton;
 
-    //    private final Map<Integer, Cuid> listIndexToCuidMap = Maps.newHashMap();
+    private final BiMap<String, Cuid> labelToCuidBiMap = HashBiMap.create();
     private final MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
     private List<FormInstance> instances;
 
     public FormFieldWidgetReferenceListPanel() {
+        suggestBox = new SuggestBox(oracle);
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
-        suggestBox = new SuggestBox(oracle);
+        setRemoveButtonState();
     }
 
     public FormFieldWidgetReferenceListPanel(List<FormInstance> formInstances) {
@@ -81,17 +81,36 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
     public void init(List<FormInstance> instances) {
         this.instances = instances;
         initOracle(instances);
+        selectedList.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setRemoveButtonState();
+            }
+        });
+    }
+
+    private void setRemoveButtonState() {
+        removeButton.setEnabled(selectedList.getSelectedIndex() != -1);
     }
 
     @UiHandler("addButton")
     public void onAdd(ClickEvent event) {
-        // todo
-        fireEvent(new CuidValueChangeEvent(Sets.newHashSet(getValue())));
+        final String label = suggestBox.getValue();
+        final Cuid cuid = labelToCuidBiMap.get(label);
+        if (cuid != null && !getValue().contains(cuid)) {
+            selectedList.addItem(label, cuid.asString());
+            suggestBox.setValue(""); // clear box
+            fireEvent(new CuidValueChangeEvent(Sets.newHashSet(getValue())));
+        }
     }
 
     @UiHandler("removeButton")
     public void onRemove(ClickEvent event) {
-        // todo
+        for (int i = 0; i < selectedList.getItemCount(); i++) {
+            if (selectedList.isItemSelected(i)) {
+                selectedList.removeItem(i);
+            }
+        }
         fireEvent(new CuidValueChangeEvent(Sets.newHashSet(getValue())));
     }
 
@@ -99,7 +118,7 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
         for (FormInstance instance : instances) {
             final String labelValue = FormInstanceLabeler.getLabel(instance);
             oracle.add(labelValue);
-            labelToCuidMap.put(labelValue, instance.getId());
+            labelToCuidBiMap.forcePut(labelValue, instance.getId());
         }
     }
 
@@ -124,7 +143,9 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
     @Override
     public Set<Cuid> getValue() {
         final Set<Cuid> value = Sets.newHashSet();
-        // todo : resolve index from list
+        for (int i = 0; i < selectedList.getItemCount(); i++) {
+            value.add(new Cuid(selectedList.getValue(i)));
+        }
         return value;
     }
 
@@ -135,13 +156,20 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
 
     @Override
     public void setValue(Set<Cuid> value, boolean fireEvents) {
+        selectedList.clear();
+        final Set<Cuid> oldValue = getValue();
         if (value != null && !value.isEmpty()) {
-            final Set<Cuid> oldValue = getValue();
-            // todo : resolve index from list
-
-            if (fireEvents) {
-                CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
+            for (Cuid cuid : value) {
+                final String label = labelToCuidBiMap.inverse().get(cuid);
+                selectedList.addItem(label, cuid.asString());
             }
+        } else {
+            suggestBox.setValue("");
+            selectedList.clear();
+            setRemoveButtonState();
+        }
+        if (fireEvents) {
+            CuidValueChangeEvent.fireIfNotEqual(this, oldValue, value);
         }
     }
 

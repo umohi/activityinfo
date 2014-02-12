@@ -174,7 +174,9 @@ public class UserFormPanel extends Composite {
     protected void clearFields(@Nonnull List<FormField> fields) {
         for (FormField field : fields) {
             final FormFieldRow formFieldRow = controlMap.get(field.getId());
-            formFieldRow.clear();
+            if (formFieldRow != null) {
+                formFieldRow.clear();
+            }
         }
     }
 
