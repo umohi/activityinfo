@@ -7,7 +7,6 @@ import com.google.common.base.Predicates;
 import com.google.common.io.Resources;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
-import org.activityinfo.api2.client.PromiseMatchers;
 import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
@@ -16,7 +15,10 @@ import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.ui.full.client.importer.binding.ClassMatcherSet;
+import org.activityinfo.ui.full.client.importer.binding.ReferenceMatch;
+import org.activityinfo.ui.full.client.importer.binding.ReferenceMatcher;
 import org.activityinfo.ui.full.client.importer.data.ImportColumnDescriptor;
+import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.data.PastedImportSource;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.google.common.io.Resources.*;
+import static org.activityinfo.api2.client.PromiseMatchers.assertResolves;
 
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/brac-import.db.xml")
@@ -47,7 +50,7 @@ public class ImporterTest extends CommandTestCase2 {
     @Test
     public void test() throws IOException {
 
-        FormTree formTree = PromiseMatchers.assertResolves(formTreeBuilder.build(HOUSEHOLD_SURVEY_FORM_CLASS));
+        FormTree formTree = assertResolves(formTreeBuilder.build(HOUSEHOLD_SURVEY_FORM_CLASS));
         dumpList("TREE NODES", formTree.search(FormTree.SearchOrder.BREADTH_FIRST,
                 Predicates.alwaysTrue(), Predicates.<FormTree.Node>alwaysTrue()));
 
@@ -66,15 +69,29 @@ public class ImporterTest extends CommandTestCase2 {
         dumpList("FIELDS", importer.getFieldsToMatch());
         importer.setColumnBinding(field("NumAdultMale"), columnIndex("MEMBER_NO_ADULT_FEMALE"));
         importer.setColumnBinding(field("[End Date]"), columnIndex("_SUBMISSION_DATE"));
-        importer.setColumnBinding(field("localite.Upzilla.District.Division.Name"), columnIndex("district"));
-        importer.setColumnBinding(field("localite.Upzilla.Name"), columnIndex("upazila"));
+        importer.setColumnBinding(field("Upzilla.District.Name"), columnIndex("district"));
+        importer.setColumnBinding(field("Upzilla.Name"), columnIndex("upazila"));
 
         // Step 3: Match Instances
         // For each row object field, we need to determine the range of possible/probably values
-        ClassMatcherSet matcherSet = new ClassMatcherSet(formTree, importer.getColumnBindings());
+        ClassMatcherSet matcherSet = new ClassMatcherSet(resourceLocator, formTree, importer.getColumnBindings());
 
-        matcherSet.match(importer.getSource());
+        for(SourceRow row : source.getRows()) {
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            for(ReferenceMatcher matcher : matcherSet.getMatchers()) {
+                System.out.println("Matching " + prettyPrint(matcher.getValues(row)) + " against " + matcher.getFieldPath().toString());
+                List<ReferenceMatch> matches = assertResolves(matcher.match(row));
+                for(ReferenceMatch match : matches) {
+                    System.out.println(match.prettyPrintScores() +
+                            matcher.getValues(match.getInstance()));
+                }
+            }
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        }
+    }
 
+    private String prettyPrint(List<String> values) {
+        return "[" + Joiner.on(", ").join(values) + "]";
     }
 
     private FieldPath field(String debugFieldPath) {

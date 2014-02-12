@@ -12,7 +12,7 @@ import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.importer.data.ImportColumnDescriptor;
-import org.activityinfo.ui.full.client.importer.data.ImportRow;
+import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.data.ImportSource;
 
 import java.util.Iterator;
@@ -81,7 +81,7 @@ public class SchemaImporter {
             this.maxLength = maxLength;
         }
 
-        public String get(ImportRow row) {
+        public String get(SourceRow row) {
             if (index < 0) {
                 return null;
             }
@@ -152,7 +152,7 @@ public class SchemaImporter {
     }
 
     private void processRows(ImportSource source) {
-        for (ImportRow row : source.getRows()) {
+        for (SourceRow row : source.getRows()) {
             ActivityDTO activity = getActivity(row);
             String fieldType = formFieldType.get(row);
             if ("Indicator".equals(fieldType)) {
@@ -209,7 +209,7 @@ public class SchemaImporter {
         return columnValue != null && "1".equals(columnValue);
     }
 
-    private ActivityDTO getActivity(ImportRow row) {
+    private ActivityDTO getActivity(SourceRow row) {
         String name = activityName.get(row);
         String category = activityCategory.get(row);
 
@@ -234,7 +234,7 @@ public class SchemaImporter {
 
     }
 
-    private int findLocationType(ActivityDTO activity, ImportRow row) {
+    private int findLocationType(ActivityDTO activity, SourceRow row) {
         String name = locationType.get(row);
         if (Strings.isNullOrEmpty(name)) {
             warn("No location type given for Activity " + activity.getName());

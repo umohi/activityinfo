@@ -26,10 +26,12 @@ import com.google.common.collect.Maps;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Resource;
+import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.model.AiLatLng;
 
 import javax.annotation.Nonnull;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
@@ -102,6 +104,14 @@ public class FormInstance implements Resource {
         return null;
     }
 
+    public Cuid getInstanceId(Cuid fieldId) {
+        final Object value = get(fieldId);
+        if(value instanceof Cuid) {
+            return (Cuid) value;
+        }
+        return null;
+    }
+
     public Double getDouble(Cuid fieldId) {
         final Object value = get(fieldId);
         if (value instanceof Double) {
@@ -133,4 +143,6 @@ public class FormInstance implements Resource {
                 ", valueMap=" + valueMap +
                 '}';
     }
+
+
 }

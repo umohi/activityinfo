@@ -2,6 +2,7 @@ package org.activityinfo.api2.shared.criteria;
 
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.ui.full.client.importer.match.JaroWinklerDistance;
 
 import javax.annotation.Nullable;
 

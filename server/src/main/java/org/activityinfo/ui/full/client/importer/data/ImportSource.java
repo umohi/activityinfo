@@ -7,7 +7,7 @@ public interface ImportSource {
 
     List<ImportColumnDescriptor> getColumns();
 
-    List<ImportRow> getRows();
+    List<SourceRow> getRows();
 
     String getColumnHeader(Integer columnIndex);
 

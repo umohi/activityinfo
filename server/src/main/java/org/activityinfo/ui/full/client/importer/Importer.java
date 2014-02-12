@@ -9,7 +9,7 @@ import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.binding.DraftModel;
 import org.activityinfo.ui.full.client.importer.binding.InstanceMatch;
-import org.activityinfo.ui.full.client.importer.data.ImportRow;
+import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.data.ImportSource;
 import org.activityinfo.api2.shared.form.tree.FormTree.SearchOrder;
 
@@ -72,7 +72,7 @@ public class Importer<T> {
 
             // first update the data type properties using the column mappings
 
-            ImportRow row = source.getRows().get(draftModel.getRowIndex());
+            SourceRow row = source.getRows().get(draftModel.getRowIndex());
             for (int i = 0; i != propertyKeys.length; ++i) {
                 String key = propertyKeys[i];
                 if (key != null) {

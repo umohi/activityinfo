@@ -15,7 +15,7 @@ public class PastedImportSource implements ImportSource {
     private String text;
     //private List<Integer> rowStarts;
     private List<ImportColumnDescriptor> columns;
-    private List<ImportRow> rows;
+    private List<SourceRow> rows;
 
     private String delimeter;
 
@@ -63,8 +63,7 @@ public class PastedImportSource implements ImportSource {
         row = maybeRemoveCarriageReturn(row);
         boolean usesQuote = row.indexOf(QUOTE_CHAR) != -1;
         if (usesQuote) {
-            String[] cols = new String[columns.size()];
-            int colIndex = 0;
+            List<String> cols = Lists.newArrayList();
             boolean quoted = false;
             char delimiterChar = delimeter.charAt(0);
             StringBuilder col = new StringBuilder();
@@ -82,13 +81,9 @@ public class PastedImportSource implements ImportSource {
                         charIndex++;
                     }
                 } else if (!quoted && c == delimiterChar) {
-                    cols[colIndex] = col.toString();
+                    cols.add(col.toString());
                     col.setLength(0);
                     charIndex++;
-                    colIndex++;
-                    if (colIndex >= cols.length) {
-                        return cols;
-                    }
                 } else {
                     col.append(c);
                     charIndex++;
@@ -96,9 +91,14 @@ public class PastedImportSource implements ImportSource {
             }
 
             // final column
-            cols[colIndex] = col.toString();
+            cols.add(col.toString());
 
-            return cols;
+            String[] array = new String[cols.size()];
+            for(int i=0;i!=array.length;++i) {
+                array[i] = cols.get(i);
+            }
+
+            return array;
 
         } else {
             return row.split(delimeter);
@@ -124,7 +124,7 @@ public class PastedImportSource implements ImportSource {
     }
 
     @Override
-    public List<ImportRow> getRows() {
+    public List<SourceRow> getRows() {
         ensureParsed();
         return rows;
     }
@@ -150,7 +150,7 @@ public class PastedImportSource implements ImportSource {
     @Override
     public Set<String> distinctValues(int columnIndex) {
         Set<String> set = Sets.newHashSet();
-        for(ImportRow row : getRows()) {
+        for(SourceRow row : getRows()) {
             String value = row.getColumnValue(columnIndex);
             if(value != null) {
                 String trimmedValue = value.trim();

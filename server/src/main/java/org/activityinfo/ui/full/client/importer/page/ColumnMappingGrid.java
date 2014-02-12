@@ -16,7 +16,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.Importer;
 import org.activityinfo.ui.full.client.importer.data.ImportColumnDescriptor;
-import org.activityinfo.ui.full.client.importer.data.ImportRow;
+import org.activityinfo.ui.full.client.importer.data.SourceRow;
 
 /**
  * A DataGrid that shows the original columns in the imported table
@@ -26,7 +26,7 @@ import org.activityinfo.ui.full.client.importer.data.ImportRow;
 public class ColumnMappingGrid<T> extends ResizeComposite {
 
 
-    private DataGrid<ImportRow> dataGrid;
+    private DataGrid<SourceRow> dataGrid;
 
     private final Importer<T> mapping;
 
@@ -34,15 +34,15 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
 
         this.mapping = mapping;
 
-        dataGrid = new BootstrapDataGrid<ImportRow>(100);
+        dataGrid = new BootstrapDataGrid<SourceRow>(100);
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
         dataGrid.setSelectionModel(new NullRowSelectionModel());
         dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
-        dataGrid.addCellPreviewHandler(new Handler<ImportRow>() {
+        dataGrid.addCellPreviewHandler(new Handler<SourceRow>() {
 
             @Override
-            public void onCellPreview(CellPreviewEvent<ImportRow> event) {
+            public void onCellPreview(CellPreviewEvent<SourceRow> event) {
                 if (BrowserEvents.CLICK.equals(event.getNativeEvent().getType())) {
                     fireEvent(new ColumnSelectionChangedEvent(event.getColumn()));
                 }
