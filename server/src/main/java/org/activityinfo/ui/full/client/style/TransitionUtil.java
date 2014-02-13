@@ -17,6 +17,7 @@ public class TransitionUtil {
             StyleInjector.inject(bundle.bootstrapStyle().getText());
             if (FeatureSwitch.isNewFormEnabled()) {
                 StyleInjector.inject(bundle.gwtStyle().getText());
+                StyleInjector.inject(bundle.newUiStyle().getText());
             }
             injected = true;
         }

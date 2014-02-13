@@ -21,4 +21,6 @@ public interface TransitionBundle extends ClientBundle {
     @Source("gwt-standard-transition.css")
     TextResource gwtStyle();
 
+    @Source("newui-transition.css")
+    TextResource newUiStyle();
 }

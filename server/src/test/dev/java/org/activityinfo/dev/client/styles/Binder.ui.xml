@@ -3,10 +3,6 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
   <ui:style>
-    .space {
-      margin: 3px 3px 3px 3px;
-    }
-
     .btn-custom {
       margin: 3px 3px 3px 3px;
       height: 34px;
@@ -15,11 +11,11 @@
   </ui:style>
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
 
-  <g:HTMLPanel addStyleNames="bs">
+  <g:HTMLPanel addStyleNames="ai bs">
     <g:HorizontalPanel width="100%">
       <g:VerticalPanel width="100%">
-        <g:SuggestBox ui:field="suggestBox" width="100%" addStyleNames="form-control {style.space}"/>
-        <g:ListBox multipleSelect="true" ui:field="selectedList" width="100%" addStyleNames="form-control {style.space}"/>
+        <g:SuggestBox ui:field="suggestBox" width="100%" addStyleNames="form-control"/>
+        <g:ListBox multipleSelect="true" ui:field="selectedList" width="100%" addStyleNames="form-control"/>
       </g:VerticalPanel>
       <g:VerticalPanel>
         <g:Button ui:field="addButton" addStyleNames="btn btn-default {style.btn-custom}">
