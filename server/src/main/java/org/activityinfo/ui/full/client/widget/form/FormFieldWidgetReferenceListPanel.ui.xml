@@ -2,22 +2,28 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
+  <ui:style>
+    /*.space {*/
+      /*margin: 3px 3px 3px 3px;*/
+      /*padding: 3px;*/
+    /*}*/
+  </ui:style>
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <g:VerticalPanel>
-      <g:HorizontalPanel ui:field="suggestPanel">
-        <g:SuggestBox ui:field="suggestBox"/>
+    <g:HorizontalPanel width="100%">
+      <g:VerticalPanel width="100%">
+        <g:SuggestBox ui:field="suggestBox" width="100%"/>
+        <g:ListBox multipleSelect="true" ui:field="selectedList" width="100%"/>
+      </g:VerticalPanel>
+      <g:VerticalPanel>
         <g:Button ui:field="addButton">
           <img src="{img.add.getSafeUri}" alt="Add"/>
         </g:Button>
-      </g:HorizontalPanel>
-      <g:HorizontalPanel ui:field="listPanel" width="100%">
-        <g:ListBox multipleSelect="true" ui:field="selectedList" width="100%"/>
         <g:Button ui:field="removeButton">
           <img src="{img.delete.getSafeUri}" alt="Remove"/>
         </g:Button>
-      </g:HorizontalPanel>
-    </g:VerticalPanel>
+      </g:VerticalPanel>
+    </g:HorizontalPanel>
   </g:HTMLPanel>
 </ui:UiBinder>
