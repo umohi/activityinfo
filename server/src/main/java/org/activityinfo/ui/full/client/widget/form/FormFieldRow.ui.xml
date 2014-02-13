@@ -10,9 +10,9 @@
       <div class="col-sm-4">
         <p class="edit">
           <div ui:field="label"/>
-          <button type="button" class="btn btn-default btn-xs design-edit">
-            <i class="fa fa-pencil"/>
-          </button>
+          <!--<button type="button" class="btn btn-default btn-xs design-edit">-->
+          <!--<i class="fa fa-pencil"/>-->
+          <!--</button>-->
         </p>
       </div>
       <div class="col-sm-3">
@@ -24,20 +24,20 @@
       <div class="col-sm-3">
         <p class="text-muted edit">
           <div ui:field="description"/>
-          <button type="button" class="btn btn-default btn-xs design-edit">Edit</button>
+          <!--<button type="button" class="btn btn-default btn-xs design-edit">Edit</button>-->
         </p>
       </div>
-      <div class="col-sm-1">
-        <div>
-          <i title="Map this indicator" class="fa fa-map-marker"/>
-          <i title="Create a table" class="fa fa-table"/>
-          <i title="Create a chart of this indicator" class="glyphicon glyphicon-stats"/>
-        </div>
-        <div>
-          <i title="Edit this field" class="fa fa-pencil"/>
-          <i title="Delete this field" class="fa fa-trash-o"/>
-        </div>
-      </div>
+      <!--<div class="col-sm-1">-->
+        <!--<div>-->
+          <!--<i title="Map this indicator" class="fa fa-map-marker"/>-->
+          <!--<i title="Create a table" class="fa fa-table"/>-->
+          <!--<i title="Create a chart of this indicator" class="glyphicon glyphicon-stats"/>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<i title="Edit this field" class="fa fa-pencil"/>-->
+          <!--<i title="Delete this field" class="fa fa-trash-o"/>-->
+        <!--</div>-->
+      <!--</div>-->
       <hr/>
     </div>
   </g:HTMLPanel>
