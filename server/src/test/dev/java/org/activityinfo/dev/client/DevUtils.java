@@ -23,7 +23,6 @@ package org.activityinfo.dev.client;
 
 import com.google.gwt.user.client.Random;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.*;
 
@@ -37,12 +36,12 @@ public class DevUtils {
     }
 
     public static Cuid randomIri() {
-        return new Iri(Random.nextInt() + "_" + new Date().getTime());
+        return new Cuid(Random.nextInt() + "_" + new Date().getTime());
     }
 
-    static UserFormInstance createTestUserFormInstance(UserForm userForm) {
-        final UserFormInstance instance = new UserFormInstance(randomIri(), userForm.getId());
-        for (FormField field : userForm.getFields()) {
+    static FormInstance createTestUserFormInstance(FormClass formClass) {
+        final FormInstance instance = new FormInstance(randomIri(), formClass.getId());
+        for (FormField field : formClass.getFields()) {
             switch (field.getType()) {
                 case FREE_TEXT:
                     instance.set(field.getId(), field.getId().asString());
@@ -62,7 +61,7 @@ public class DevUtils {
         return instance;
     }
 
-    static UserForm createTestUserForm() {
+    static FormClass createTestUserForm() {
         final FormField item1 = new FormField(randomIri());
         item1.setType(FormFieldType.FREE_TEXT);
         item1.setDescription(new LocalizedString("The State Coordinator and different sections are involved in many meetings with the GRSS. When the specific objective of the meeting is to discuss PoC issues, these should be counted for the indicator. CAD, PoC Advisors and SOC should be responsible for providing information for this."));
@@ -113,7 +112,7 @@ public class DevUtils {
         section2.addElement(item1);
         section2.addElement(item2);
 
-        final UserForm form = new UserForm(randomIri());
+        final FormClass form = new FormClass(randomIri());
         form.addElement(section1);
         form.addElement(section2);
         return form;

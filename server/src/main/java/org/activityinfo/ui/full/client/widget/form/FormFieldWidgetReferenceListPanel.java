@@ -67,7 +67,7 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
     private List<FormInstance> instances;
 
     public FormFieldWidgetReferenceListPanel() {
-        suggestBox = new SuggestBox(oracle);
+        suggestBox = FormFieldWidgetFactory.createSuggestBox(oracle);
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         setRemoveButtonState();

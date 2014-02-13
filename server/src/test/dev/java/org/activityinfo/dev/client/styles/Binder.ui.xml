@@ -5,8 +5,6 @@
   <ui:style>
     .space {
       margin: 3px 3px 3px 3px;
-      /*height: 34px;*/
-      /*padding: 3px;*/
     }
 
     .btn-custom {
@@ -19,7 +17,7 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <g:HorizontalPanel width="100%">
-      <g:VerticalPanel width="100%" addStyleNames="{style.space}">
+      <g:VerticalPanel width="100%">
         <g:SuggestBox ui:field="suggestBox" width="100%" addStyleNames="form-control {style.space}"/>
         <g:ListBox multipleSelect="true" ui:field="selectedList" width="100%" addStyleNames="form-control {style.space}"/>
       </g:VerticalPanel>

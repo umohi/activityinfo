@@ -22,10 +22,7 @@ package org.activityinfo.ui.full.client.widget.form;
  */
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.DoubleBox;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
@@ -89,5 +86,11 @@ public class FormFieldWidgetFactory {
         dateBox.getTextBox().addStyleName("form-control");
         dateBox.setFormat(new DateBoxWithReadOnly.DefaultFormat(DATE_TIME_FORMAT));
         return dateBox;
+    }
+
+    public static SuggestBox createSuggestBox(SuggestOracle oracle) {
+        final SuggestBox suggestBox = new SuggestBox(oracle);
+        suggestBox.getValueBox().addStyleName("form-control");
+        return suggestBox;
     }
 }
