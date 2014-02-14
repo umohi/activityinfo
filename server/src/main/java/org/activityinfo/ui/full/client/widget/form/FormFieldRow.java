@@ -63,14 +63,14 @@ public class FormFieldRow extends Composite {
     @UiField
     DivElement toolbar;
 
-    private UserFormPanel userFormPanel;
+    private FormPanel formPanel;
     private FormField formField;
     private IsWidget formFieldWidget;
 
-    public FormFieldRow(FormField formField, UserFormPanel userFormPanel) {
-        this.userFormPanel = userFormPanel;
+    public FormFieldRow(FormField formField, FormPanel formPanel) {
+        this.formPanel = formPanel;
         this.formField = formField;
-        this.formFieldWidget = FormFieldWidgetFactory.create(formField, userFormPanel.getResourceLocator());
+        this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel.getResourceLocator());
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         addHandlers();
@@ -85,7 +85,7 @@ public class FormFieldRow extends Composite {
     }
 
     private boolean isDesignEnabled() {
-        return userFormPanel.isDesignEnabled();
+        return formPanel.isDesignEnabled();
     }
 
     private void addHandlers() {

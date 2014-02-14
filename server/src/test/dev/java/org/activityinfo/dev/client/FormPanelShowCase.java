@@ -28,12 +28,12 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
+import org.activityinfo.ui.full.client.widget.form.FormPanel;
 
 /**
  * @author yuriyz on 1/31/14.
  */
-public class UserFormPanelShowCase extends FlowPanel {
+public class FormPanelShowCase extends FlowPanel {
 
     private final CheckBox readOnly = new CheckBox("Read-only");
     private final Button setTestData = new Button("setValue(<test data>)");
@@ -42,10 +42,10 @@ public class UserFormPanelShowCase extends FlowPanel {
     private final Button clearError = new Button("Clear error");
 
     private final FormClass formClass = DevUtils.createTestUserForm();
-    private final UserFormPanel panel = new UserFormPanel(formClass, new DevResourceLocatorAdaptor());
+    private final FormPanel panel = new FormPanel(formClass, new DevResourceLocatorAdaptor());
     private final FormInstance formInstance = DevUtils.createTestUserFormInstance(formClass);
 
-    public UserFormPanelShowCase() {
+    public FormPanelShowCase() {
         init();
         add(readOnly);
         add(setTestData);
@@ -56,6 +56,8 @@ public class UserFormPanelShowCase extends FlowPanel {
     }
 
     private void init() {
+        panel.setDesignEnabled(true);
+        design.setValue(true);
         readOnly.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

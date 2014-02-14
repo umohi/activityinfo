@@ -41,53 +41,53 @@ import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.full.client.page.entry.place.UserFormPlaceParser;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
+import org.activityinfo.ui.full.client.widget.form.FormPanel;
 
 /**
  * @author yuriyz on 1/31/14.
  */
-public class UserFormPage extends Composite implements Page {
+public class FormPanelPage extends Composite implements Page {
 
     private static SiteFormPageUiBinder uiBinder = GWT
             .create(SiteFormPageUiBinder.class);
 
-    public static interface SiteFormPageUiBinder extends UiBinder<Widget, UserFormPage> {
+    public static interface SiteFormPageUiBinder extends UiBinder<Widget, FormPanelPage> {
     }
 
     private final ResourceLocator resourceLocator;
-    private final UserFormPanel userFormPanel;
+    private final FormPanel formPanel;
     private final UserFormPlace userFormPlace;
 
     @UiField
     FlowPanel panel;
 
     @Inject
-    public UserFormPage(ResourceLocator resourceLocator) {
+    public FormPanelPage(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
 
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         userFormPlace = UserFormPlaceParser.parseToken(History.getToken());
-        userFormPanel = new UserFormPanel(resourceLocator);
-        userFormPanel.setDesignEnabled(true);
-        panel.add(userFormPanel);
+        formPanel = new FormPanel(resourceLocator);
+        formPanel.setDesignEnabled(true);
+        panel.add(formPanel);
 
         init();
     }
 
     private void init() {
         fetchRemote();
-        userFormPanel.addHandler(new UserFormPanel.Handler() {
+        formPanel.addHandler(new FormPanel.Handler() {
             @Override
             public void onSave() {
-                UserFormPage.this.onSave();
+                FormPanelPage.this.onSave();
             }
         });
     }
 
     private void onSave() {
-        final FormInstance value = userFormPanel.getValue();
+        final FormInstance value = formPanel.getValue();
         if (value != null) {
             resourceLocator.persist(value).then(new AsyncCallback<Void>() {
                 @Override
@@ -111,7 +111,7 @@ public class UserFormPage extends Composite implements Page {
 
             @Override
             public void onSuccess(FormClass result) {
-                userFormPanel.renderForm(result);
+                formPanel.renderForm(result);
                 resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).then(new AsyncCallback<FormInstance>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -121,9 +121,9 @@ public class UserFormPage extends Composite implements Page {
                     @Override
                     public void onSuccess(FormInstance result) {
                         if (result == null || result.getId() == null) {
-                            userFormPanel.setValue(new FormInstance(userFormPlace.getUserFormId(), userFormPlace.getUserFormInstanceId()));
+                            formPanel.setValue(new FormInstance(userFormPlace.getUserFormId(), userFormPlace.getUserFormInstanceId()));
                         } else {
-                            userFormPanel.setValue(result);
+                            formPanel.setValue(result);
                         }
                     }
                 });

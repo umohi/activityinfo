@@ -41,7 +41,7 @@ public class DevelopmentEntryPoint implements EntryPoint {
 
     private void userFormPanelShowcase() {
         TransitionUtil.ensureBootstrapInjected();
-        RootPanel.get().add(new UserFormPanelShowCase());
+        RootPanel.get().add(new FormPanelShowCase());
     }
 
     private void binder() {

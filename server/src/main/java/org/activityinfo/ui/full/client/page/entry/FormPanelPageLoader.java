@@ -33,15 +33,15 @@ import org.activityinfo.ui.full.client.page.entry.place.UserFormPlaceParser;
 /**
  * @author yuriyz on 1/31/14.
  */
-public class UserFormLoader implements PageLoader {
+public class FormPanelPageLoader implements PageLoader {
 
-    private final Provider<UserFormPage> dataEntryPageProvider;
+    private final Provider<FormPanelPage> dataEntryPageProvider;
 
     @Inject
-    public UserFormLoader(
+    public FormPanelPageLoader(
             NavigationHandler pageManager,
             PageStateSerializer placeSerializer,
-            Provider<UserFormPage> dataEntryPageProvider) {
+            Provider<FormPanelPage> dataEntryPageProvider) {
 
         this.dataEntryPageProvider = dataEntryPageProvider;
 
@@ -55,7 +55,7 @@ public class UserFormLoader implements PageLoader {
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onSuccess() {
-                final UserFormPage userFormPage = dataEntryPageProvider.get();
+                final FormPanelPage userFormPage = dataEntryPageProvider.get();
                 userFormPage.navigate(pageState);
                 callback.onSuccess(userFormPage);
             }
