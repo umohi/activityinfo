@@ -24,6 +24,7 @@ package org.activityinfo.dev.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 import org.activityinfo.dev.client.styles.Binder;
+import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 /**
  * Dev only entry point.
@@ -34,10 +35,17 @@ public class DevelopmentEntryPoint implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
-//        TransitionUtil.ensureBootstrapInjected();
-//        RootPanel.get().add(new UserFormPanelShowCase());
-        RootPanel.get().add(new Binder());
+        userFormPanelShowcase();
+        //binder();
+    }
 
+    private void userFormPanelShowcase() {
+        TransitionUtil.ensureBootstrapInjected();
+        RootPanel.get().add(new UserFormPanelShowCase());
+    }
+
+    private void binder() {
+        RootPanel.get().add(new Binder());
     }
 
 //    public void gxt() {

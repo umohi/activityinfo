@@ -26,7 +26,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
-import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.widget.form.UserFormPanel;
@@ -43,7 +42,7 @@ public class UserFormPanelShowCase extends FlowPanel {
     private final Button clearError = new Button("Clear error");
 
     private final FormClass formClass = DevUtils.createTestUserForm();
-    private final UserFormPanel panel = new UserFormPanel(formClass, new ResourceLocatorAdaptor(null));
+    private final UserFormPanel panel = new UserFormPanel(formClass, new DevResourceLocatorAdaptor());
     private final FormInstance formInstance = DevUtils.createTestUserFormInstance(formClass);
 
     public UserFormPanelShowCase() {

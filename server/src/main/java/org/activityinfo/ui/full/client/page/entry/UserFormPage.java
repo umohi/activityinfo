@@ -101,7 +101,7 @@ public class UserFormPage extends Composite implements Page {
         }
     }
 
-    private UserFormPlace fetchRemote() {
+    private void fetchRemote() {
         resourceLocator.getFormClass(userFormPlace.getUserFormId()).then(new AsyncCallback<FormClass>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -128,7 +128,6 @@ public class UserFormPage extends Composite implements Page {
                 });
             }
         });
-        return userFormPlace;
     }
 
     @Override
