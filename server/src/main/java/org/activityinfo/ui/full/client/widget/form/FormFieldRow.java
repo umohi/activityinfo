@@ -24,6 +24,10 @@ package org.activityinfo.ui.full.client.widget.form;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -33,6 +37,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
 
 import java.io.Serializable;
@@ -56,6 +61,8 @@ public class FormFieldRow extends Composite {
     DivElement unit;
     @UiField
     FlowPanel control;
+    @UiField
+    DivElement toolbar;
 
     private FormField formField;
     private IsWidget formFieldWidget;
@@ -63,6 +70,7 @@ public class FormFieldRow extends Composite {
     public FormFieldRow() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+        addHandlers();
     }
 
     public FormFieldRow(FormField formField, ResourceLocator resourceLocator) {
@@ -78,6 +86,22 @@ public class FormFieldRow extends Composite {
         unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
         control.add(formFieldWidget);
     }
+
+    private void addHandlers() {
+        addDomHandler(new MouseOverHandler() {
+            @Override
+            public void onMouseOver(MouseOverEvent event) {
+                GwtUtil.setVisible(toolbar, true);
+            }
+        }, MouseOverEvent.getType());
+        addDomHandler(new MouseOutHandler() {
+            @Override
+            public void onMouseOut(MouseOutEvent event) {
+                GwtUtil.setVisible(toolbar, false);
+            }
+        }, MouseOutEvent.getType());
+    }
+
 
     public void setValue(Object value) {
         if (value instanceof Cuid && formFieldWidget instanceof FormFieldWidgetReference) { // autofix of wrong data in form instance

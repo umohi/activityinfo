@@ -2,17 +2,22 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-  <!--<ui:style> -->
-  <!--</ui:style>-->
+  <ui:style>
+    .toobar {
+      position: absolute;
+      width: 300px;
+      /*border: dashed;*/
+      /*border-width: 2px;*/
+      /*border-color: #000810;*/
+    }
+  </ui:style>
+  <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
 
   <g:HTMLPanel addStyleNames="bs">
     <div class="row userform-field" draggable="true">
       <div class="col-sm-4">
         <p class="edit">
           <div ui:field="label"/>
-          <!--<button type="button" class="btn btn-default btn-xs design-edit">-->
-          <!--<i class="fa fa-pencil"/>-->
-          <!--</button>-->
         </p>
       </div>
       <div class="col-sm-3">
@@ -27,18 +32,35 @@
           <!--<button type="button" class="btn btn-default btn-xs design-edit">Edit</button>-->
         </p>
       </div>
-      <!--<div class="col-sm-1">-->
+      <div class="col-sm-1">
+        <div ui:field="toolbar" class="hidden {style.toobar}">
+          <g:Button ui:field="editButton" addStyleNames="btn btn-primary btn-xs">
+            <img src="{img.edit.getSafeUri}" alt="Edit"/>
+          </g:Button>
+          <g:Button ui:field="addButton" addStyleNames="btn btn-success btn-xs">
+            <img src="{img.add.getSafeUri}" alt="Add"/>
+          </g:Button>
+          <g:Button ui:field="removeButton" addStyleNames="btn btn-danger btn-xs">
+            <img src="{img.delete.getSafeUri}" alt="Remove"/>
+          </g:Button>
+          <g:Button ui:field="upButton" addStyleNames="btn btn-default btn-xs">
+            <img src="{img.up.getSafeUri}" alt="Up"/>
+          </g:Button>
+          <g:Button ui:field="downButton" addStyleNames="btn btn-default btn-xs">
+            <img src="{img.down.getSafeUri}" alt="Down"/>
+          </g:Button>
+
+        </div>
         <!--<div>-->
-          <!--<i title="Map this indicator" class="fa fa-map-marker"/>-->
-          <!--<i title="Create a table" class="fa fa-table"/>-->
-          <!--<i title="Create a chart of this indicator" class="glyphicon glyphicon-stats"/>-->
+        <!--<i title="Map this indicator" class="fa fa-map-marker"/>-->
+        <!--<i title="Create a table" class="fa fa-table"/>-->
+        <!--<i title="Create a chart of this indicator" class="glyphicon glyphicon-stats"/>-->
         <!--</div>-->
         <!--<div>-->
-          <!--<i title="Edit this field" class="fa fa-pencil"/>-->
-          <!--<i title="Delete this field" class="fa fa-trash-o"/>-->
+        <!--<i title="Edit this field" class="fa fa-pencil"/>-->
+        <!--<i title="Delete this field" class="fa fa-trash-o"/>-->
         <!--</div>-->
-      <!--</div>-->
-      <hr/>
+      </div>
     </div>
   </g:HTMLPanel>
 </ui:UiBinder>

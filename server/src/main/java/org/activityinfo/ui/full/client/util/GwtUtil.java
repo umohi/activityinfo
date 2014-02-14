@@ -21,7 +21,7 @@ package org.activityinfo.ui.full.client.util;
  * #L%
  */
 
-import com.google.gwt.user.client.Window;
+import com.google.gwt.dom.client.Element;
 
 /**
  * @author yuriyz on 1/27/14.
@@ -34,4 +34,15 @@ public class GwtUtil {
     private GwtUtil() {
     }
 
+    public static void setVisible(Element element, boolean visible) {
+        if (element != null) {
+            if (visible) {
+                element.removeClassName("hidden");
+                element.addClassName("show");
+            } else {
+                element.removeClassName("show");
+                element.addClassName("hidden");
+            }
+        }
+    }
 }

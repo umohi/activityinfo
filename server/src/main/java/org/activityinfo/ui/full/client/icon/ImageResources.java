@@ -37,4 +37,13 @@ public interface ImageResources extends ClientBundle {
 
     @Source("delete.png")
     ImageResource delete();
+
+    @Source("edit.png")
+    ImageResource edit();
+
+    @Source("up.png")
+    ImageResource up();
+
+    @Source("down.png")
+    ImageResource down();
 }

@@ -70,6 +70,7 @@ public class UserFormPage extends Composite implements Page {
 
         userFormPlace = UserFormPlaceParser.parseToken(History.getToken());
         userFormPanel = new UserFormPanel(resourceLocator);
+        userFormPanel.setDesignEnabled(true);
         panel.add(userFormPanel);
 
         init();
