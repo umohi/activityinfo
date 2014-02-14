@@ -21,10 +21,13 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
+import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.Resource;
+import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
@@ -58,6 +61,12 @@ public class DevResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Promise<List<FormInstance>> queryInstances(Criteria criteria) {
-        return null;
+        if (criteria instanceof ClassCriteria) {
+            final Iri iri = ((ClassCriteria) criteria).getClassIri();
+            final int legacyId = CuidAdapter.getLegacyIdFromCuidIri(iri);
+            return Promise.resolved(DevUtils.getFormInstanceList(legacyId));
+        }
+
+        return Promise.rejected(new UnsupportedOperationException());
     }
 }

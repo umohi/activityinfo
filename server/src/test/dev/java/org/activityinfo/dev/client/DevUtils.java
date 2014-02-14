@@ -21,17 +21,28 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.Random;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yuriyz on 1/24/14.
  */
 public class DevUtils {
+
+    public static final int SINGLE_SMALL_ID = 1;
+    public static final int SINGLE_MEDIUM_ID = 2;
+    public static final int SINGLE_UNBOUND_ID = 3;
+    public static final int MULTIPLE_SMALL_ID = 4;
+    public static final int MULTIPLE_MEDIUM_ID = 5;
+    public static final int MULTIPLE_UNBOUND_ID = 6;
+
     private DevUtils() {
     }
 
@@ -64,14 +75,14 @@ public class DevUtils {
     static FormClass createTestUserForm() {
         final FormField item1 = new FormField(randomIri());
         item1.setType(FormFieldType.FREE_TEXT);
-        item1.setDescription(new LocalizedString("The State Coordinator and different sections are involved in many meetings with the GRSS. When the specific objective of the meeting is to discuss PoC issues, these should be counted for the indicator. CAD, PoC Advisors and SOC should be responsible for providing information for this."));
         item1.setLabel(new LocalizedString("Advocacy meetings with GRSS to promote responsibility for PoC, tackle impunity and strenghten accountability"));
+        item1.setDescription(new LocalizedString("The State Coordinator and different sections are involved in many meetings with the GRSS. When the specific objective of the meeting is to discuss PoC issues, these should be counted for the indicator. CAD, PoC Advisors and SOC should be responsible for providing information for this."));
         item1.setUnit(new LocalizedString("Meetings"));
 
         final FormField item2 = new FormField(randomIri());
         item2.setType(FormFieldType.FREE_TEXT);
-        item2.setDescription(new LocalizedString("Advocacy meetings with SPLA to improve compliance with human rights obigations in PoC high risk locations "));
         item2.setLabel(new LocalizedString("Advocacy meetings can be informal or formal and can seek to address internal conduct and discipline, but also focus on a proactive implementation of those obligations.  As above the objective of the meeting should be explicitly related to PoC. MLOs should provide this information."));
+        item2.setDescription(new LocalizedString("Advocacy meetings with SPLA to improve compliance with human rights obigations in PoC high risk locations "));
         item2.setUnit(new LocalizedString("Meetings"));
 
         final FormField quantityField = new FormField(randomIri());
@@ -94,18 +105,13 @@ public class DevUtils {
         geographicPointField.setDescription(new LocalizedString("Geographic point description"));
         geographicPointField.setLabel(new LocalizedString("Geographic point"));
 
-        final FormField referenceField = new FormField(randomIri());
-        referenceField.setType(FormFieldType.REFERENCE);
-        referenceField.setDescription(new LocalizedString("Reference description"));
-        referenceField.setLabel(new LocalizedString("Reference point"));
-
         final FormSection section1 = new FormSection(randomIri());
         section1.setLabel(new LocalizedString("Tier 1 - Reduced physical threats to civilians"));
         section1.addElement(quantityField);
         section1.addElement(freeTextField);
         section1.addElement(localDateField);
         section1.addElement(geographicPointField);
-        section1.addElement(referenceField);
+        section1.getElements().addAll(createReferenceFields());
 
         final FormSection section2 = new FormSection(randomIri());
         section2.setLabel(new LocalizedString("Tier 2 - GRSS fulfill PoC responsibility"));
@@ -116,5 +122,86 @@ public class DevUtils {
         form.addElement(section1);
         form.addElement(section2);
         return form;
+    }
+
+    private static List<FormField> createReferenceFields() {
+        final FormField singleSmallField = new FormField(randomIri());
+        singleSmallField.setType(FormFieldType.REFERENCE);
+        singleSmallField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_SMALL_ID).asIri());
+        singleSmallField.setDescription(new LocalizedString("Single small description"));
+        singleSmallField.setLabel(new LocalizedString("Single small"));
+        singleSmallField.setCardinality(FormFieldCardinality.SINGLE);
+
+        final FormField singleMediumField = new FormField(randomIri());
+        singleMediumField.setType(FormFieldType.REFERENCE);
+        singleMediumField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_MEDIUM_ID).asIri());
+        singleMediumField.setDescription(new LocalizedString("Single medium description"));
+        singleMediumField.setLabel(new LocalizedString("Single medium"));
+        singleMediumField.setCardinality(FormFieldCardinality.SINGLE);
+
+        final FormField singleUnboundField = new FormField(randomIri());
+        singleUnboundField.setType(FormFieldType.REFERENCE);
+        singleUnboundField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_UNBOUND_ID).asIri());
+        singleUnboundField.setDescription(new LocalizedString("Single unbound description"));
+        singleUnboundField.setLabel(new LocalizedString("Single unbound"));
+        singleUnboundField.setCardinality(FormFieldCardinality.SINGLE);
+
+        final FormField multipleSmallField = new FormField(randomIri());
+        multipleSmallField.setType(FormFieldType.REFERENCE);
+        multipleSmallField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_SMALL_ID).asIri());
+        multipleSmallField.setDescription(new LocalizedString("Multiple small description"));
+        multipleSmallField.setLabel(new LocalizedString("Multiple small"));
+        multipleSmallField.setCardinality(FormFieldCardinality.MULTIPLE);
+
+        final FormField multipleMediumField = new FormField(randomIri());
+        multipleMediumField.setType(FormFieldType.REFERENCE);
+        multipleMediumField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_MEDIUM_ID).asIri());
+        multipleMediumField.setDescription(new LocalizedString("Multiple medium description"));
+        multipleMediumField.setLabel(new LocalizedString("Multiple medium"));
+        multipleMediumField.setCardinality(FormFieldCardinality.MULTIPLE);
+
+        final FormField multipleUnboundField = new FormField(randomIri());
+        multipleUnboundField.setType(FormFieldType.REFERENCE);
+        multipleUnboundField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_UNBOUND_ID).asIri());
+        multipleUnboundField.setDescription(new LocalizedString("Multiple unbound description"));
+        multipleUnboundField.setLabel(new LocalizedString("Multiple unbound"));
+        multipleUnboundField.setCardinality(FormFieldCardinality.MULTIPLE);
+
+        final List<FormField> list = Lists.newArrayList();
+        list.add(singleSmallField);
+        list.add(singleMediumField);
+        list.add(singleUnboundField);
+        list.add(multipleSmallField);
+        list.add(multipleMediumField);
+        list.add(multipleUnboundField);
+        return list;
+    }
+
+    public static List<FormInstance> getFormInstanceList(int legacyId) {
+        final List<FormInstance> instances = Lists.newArrayList();
+        switch (legacyId) {
+            case SINGLE_SMALL_ID:
+                fillList(instances, 3, legacyId);
+                break;
+            case SINGLE_MEDIUM_ID:
+                fillList(instances, 13, legacyId);
+                break;
+            case SINGLE_UNBOUND_ID:
+                fillList(instances, 23, legacyId);
+                break;
+        }
+        return instances;
+    }
+
+    private static void fillList(List<FormInstance> instances, int itemCount, int legacyId) {
+        for (int i = 0; i < itemCount; i++) {
+            instances.add(createAttributeFormInstance(i, legacyId));
+        }
+    }
+
+    public static FormInstance createAttributeFormInstance(int index, int classId) {
+        FormInstance instance = new FormInstance(CuidAdapter.attributeId(index), CuidAdapter.attributeGroupFormClass(classId));
+        instance.set(CuidAdapter.getFormInstanceLabelCuid(instance), "a" + index);
+        return instance;
     }
 }
