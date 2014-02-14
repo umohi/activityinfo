@@ -22,6 +22,7 @@ package org.activityinfo.dev.client;
  */
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.gwt.user.client.Random;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
@@ -66,6 +67,7 @@ public class DevUtils {
                     instance.set(field.getId(), 5.5);
                     break;
                 case REFERENCE:
+                    instance.set(field.getId(), Sets.newHashSet(CuidAdapter.attributeId(2)));
                     break;
             }
         }
@@ -181,12 +183,15 @@ public class DevUtils {
         final List<FormInstance> instances = Lists.newArrayList();
         switch (legacyId) {
             case SINGLE_SMALL_ID:
+            case MULTIPLE_SMALL_ID:
                 fillList(instances, 3, legacyId);
                 break;
             case SINGLE_MEDIUM_ID:
+            case MULTIPLE_MEDIUM_ID:
                 fillList(instances, 13, legacyId);
                 break;
             case SINGLE_UNBOUND_ID:
+            case MULTIPLE_UNBOUND_ID:
                 fillList(instances, 23, legacyId);
                 break;
         }
