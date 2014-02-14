@@ -32,7 +32,6 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.Log;
@@ -64,19 +63,17 @@ public class FormFieldRow extends Composite {
     @UiField
     DivElement toolbar;
 
+    private UserFormPanel userFormPanel;
     private FormField formField;
     private IsWidget formFieldWidget;
 
-    public FormFieldRow() {
+    public FormFieldRow(FormField formField, UserFormPanel userFormPanel) {
+        this.userFormPanel = userFormPanel;
+        this.formField = formField;
+        this.formFieldWidget = FormFieldWidgetFactory.create(formField, userFormPanel.getResourceLocator());
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         addHandlers();
-    }
-
-    public FormFieldRow(FormField formField, ResourceLocator resourceLocator) {
-        this();
-        this.formField = formField;
-        this.formFieldWidget = FormFieldWidgetFactory.create(formField, resourceLocator);
         render();
     }
 
@@ -87,17 +84,25 @@ public class FormFieldRow extends Composite {
         control.add(formFieldWidget);
     }
 
+    private boolean isDesignEnabled() {
+        return userFormPanel.isDesignEnabled();
+    }
+
     private void addHandlers() {
         addDomHandler(new MouseOverHandler() {
             @Override
             public void onMouseOver(MouseOverEvent event) {
-                GwtUtil.setVisible(toolbar, true);
+                if (isDesignEnabled()) {
+                    GwtUtil.setVisible(toolbar, true);
+                }
             }
         }, MouseOverEvent.getType());
         addDomHandler(new MouseOutHandler() {
             @Override
             public void onMouseOut(MouseOutEvent event) {
-                GwtUtil.setVisible(toolbar, false);
+                if (isDesignEnabled()) {
+                    GwtUtil.setVisible(toolbar, false);
+                }
             }
         }, MouseOutEvent.getType());
     }

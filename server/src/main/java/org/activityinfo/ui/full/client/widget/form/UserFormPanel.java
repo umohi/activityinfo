@@ -109,6 +109,10 @@ public class UserFormPanel extends Composite {
         renderForm(formClass);
     }
 
+    public ResourceLocator getResourceLocator() {
+        return resourceLocator;
+    }
+
     /**
      * Renders user form.
      */
@@ -128,7 +132,7 @@ public class UserFormPanel extends Composite {
         if (elements != null && !elements.isEmpty()) {
             for (FormElement element : elements) {
                 if (element instanceof FormField) {
-                    final FormFieldRow w = new FormFieldRow((FormField) element, resourceLocator);
+                    final FormFieldRow w = new FormFieldRow((FormField) element, this);
                     contentPanel.add(w);
                     controlMap.put(element.getId(), w);
                 } else if (element instanceof FormSection) {
