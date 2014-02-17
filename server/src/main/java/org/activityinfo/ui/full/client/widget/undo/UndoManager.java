@@ -30,18 +30,24 @@ import java.util.List;
  */
 public class UndoManager {
 
-    private List<IsUndoable> undoables = Lists.newArrayList();
+    private final List<IsUndoable> undoables = Lists.newArrayList();
+    private final List<UndoListener> listeners = Lists.newArrayList();
     private int position = 0;
+
+    public UndoManager() {
+    }
 
     public void addUndoable(IsUndoable undoable) {
         undoables.add(undoable);
         position++;
+        fireCreatedEvent(new UndoableCreatedEvent(undoable));
     }
 
     public void undo() {
         final IsUndoable last = getLast();
         if (last != null) {
             last.undo();
+            fireExecutedEvent(new UndoableExecutedEvent(last));
         }
     }
 
@@ -61,6 +67,27 @@ public class UndoManager {
         final IsUndoable last = getLast();
         if (last != null) {
             last.undo();
+            fireExecutedEvent(new UndoableExecutedEvent(last));
         }
+    }
+
+    private void fireExecutedEvent(UndoableExecutedEvent undoEvent) {
+        for (UndoListener listener : listeners) {
+            listener.onUndoableExecuted(undoEvent);
+        }
+    }
+
+    private void fireCreatedEvent(UndoableCreatedEvent undoEvent) {
+        for (UndoListener listener : listeners) {
+            listener.onUndoableCreated(undoEvent);
+        }
+    }
+
+    public void addListener(UndoListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(UndoListener listener) {
+        listeners.remove(listener);
     }
 }

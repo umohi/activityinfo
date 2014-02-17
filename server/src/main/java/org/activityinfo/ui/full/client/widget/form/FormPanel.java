@@ -46,7 +46,10 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.undo.UndoListener;
 import org.activityinfo.ui.full.client.widget.undo.UndoManager;
+import org.activityinfo.ui.full.client.widget.undo.UndoableCreatedEvent;
+import org.activityinfo.ui.full.client.widget.undo.UndoableExecutedEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -88,7 +91,7 @@ public class FormPanel extends Composite {
     private final List<Handler> handlerList = Lists.newArrayList();
     private final UndoManager undoManager = new UndoManager();
 
-//    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
+    //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
 //    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
     private final BiMap<Cuid, FormFieldRow> controlMap = HashBiMap.create();
 
@@ -102,11 +105,16 @@ public class FormPanel extends Composite {
     DivElement errorContainer;
     @UiField
     DivElement progressDiv;
+    @UiField
+    Button undoButton;
+    @UiField
+    Button redoButton;
 
     public FormPanel(ResourceLocator resourceLocator) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         this.resourceLocator = resourceLocator;
+        initUndo();
     }
 
     public FormPanel(FormClass formClass, ResourceLocator resourceLocator) {
@@ -149,6 +157,26 @@ public class FormPanel extends Composite {
         }
     }
 
+    private void initUndo() {
+        setUndoRedoButtonsState();
+        undoManager.addListener(new UndoListener() {
+            @Override
+            public void onUndoableExecuted(UndoableExecutedEvent event) {
+                setUndoRedoButtonsState();
+            }
+
+            @Override
+            public void onUndoableCreated(UndoableCreatedEvent event) {
+                setUndoRedoButtonsState();
+            }
+        });
+    }
+
+    private void setUndoRedoButtonsState() {
+        undoButton.setEnabled(undoManager.canUndo());
+        redoButton.setEnabled(undoManager.canRedo());
+    }
+
     public void addHandler(Handler handler) {
         handlerList.add(handler);
     }
@@ -167,6 +195,16 @@ public class FormPanel extends Composite {
         } else {
             resetFormInstanceValues(); // Resets only form instance values.
         }
+    }
+
+    @UiHandler("undoButton")
+    public void onUndo(ClickEvent event) {
+        undoManager.undo();
+    }
+
+    @UiHandler("redoButton")
+    public void onRedo(ClickEvent event) {
+        undoManager.redo();
     }
 
     /**
@@ -243,11 +281,17 @@ public class FormPanel extends Composite {
                 hasValueChangeHandlers.addValueChangeHandler(new ValueChangeHandler() {
                     @Override
                     public void onValueChange(ValueChangeEvent event) {
+                        final Object oldValue = formInstance.get(entry.getKey());
+                        pushUndoOperation(oldValue, event);
                         formInstance.set(entry.getKey(), event.getValue());
                     }
                 });
             }
         }
+    }
+
+    private void pushUndoOperation(Object oldValue, ValueChangeEvent event) {
+        // todo
     }
 
     private void applyValue(@Nonnull FormInstance formInstance) {
@@ -281,6 +325,10 @@ public class FormPanel extends Composite {
     public void removeRow(FormFieldRow formFieldRow) {
         contentPanel.remove(formFieldRow);
         controlMap.remove(controlMap.inverse().get(formFieldRow));
+    }
+
+    public UndoManager getUndoManager() {
+        return undoManager;
     }
 
     public FormClass getInitialFormClass() {

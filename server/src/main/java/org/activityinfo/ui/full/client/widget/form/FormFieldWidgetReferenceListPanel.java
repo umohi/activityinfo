@@ -38,6 +38,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.undo.UndoManager;
 
 import java.util.List;
 import java.util.Set;
@@ -66,15 +67,15 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
     private final MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
     private List<FormInstance> instances;
 
-    public FormFieldWidgetReferenceListPanel() {
-        suggestBox = FormFieldWidgetFactory.createSuggestBox(oracle);
+    public FormFieldWidgetReferenceListPanel(UndoManager undoManager) {
+        suggestBox = FormFieldWidgetFactory.createSuggestBox(oracle, undoManager);
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         setRemoveButtonState();
     }
 
-    public FormFieldWidgetReferenceListPanel(List<FormInstance> formInstances) {
-        this();
+    public FormFieldWidgetReferenceListPanel(UndoManager undoManager, List<FormInstance> formInstances) {
+        this(undoManager);
         init(formInstances);
     }
 

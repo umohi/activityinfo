@@ -34,6 +34,7 @@ import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
 import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
+import org.activityinfo.ui.full.client.widget.undo.UndoManager;
 
 /**
  * @author yuriyz on 1/31/14.
@@ -54,6 +55,10 @@ public class GeographicTextBox extends Composite implements HasValue<AiLatLng>, 
     public GeographicTextBox() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public GeographicTextBox(UndoManager undoManager) {
+        this();
     }
 
     @Override

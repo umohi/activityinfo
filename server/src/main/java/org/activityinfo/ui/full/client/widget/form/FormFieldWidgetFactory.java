@@ -21,13 +21,18 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
+import org.activityinfo.ui.full.client.widget.undo.UndoManager;
+import org.activityinfo.ui.full.client.widget.undo.UndoableValueBoxBaseOperation;
+
+import java.util.Date;
 
 /**
  * @author yuriyz on 1/28/14.
@@ -39,22 +44,23 @@ public class FormFieldWidgetFactory {
     private FormFieldWidgetFactory() {
     }
 
-    public static IsWidget create(FormField field, ResourceLocator resourceLocator) {
+    public static IsWidget create(FormField field, FormPanel formPanel) {
         final FormFieldType fieldType = field.getType();
         if (fieldType != null) {
+            final UndoManager undoManager = formPanel.getUndoManager();
             switch (fieldType) {
                 case QUANTITY:
-                    return createDoubleBox();
+                    return createDoubleBox(undoManager);
                 case NARRATIVE:
-                    return createTextArea();
+                    return createTextArea(undoManager);
                 case FREE_TEXT:
-                    return createTextBox();
+                    return createTextBox(undoManager);
                 case LOCAL_DATE:
-                    return createDateTextBox();
+                    return createDateTextBox(undoManager);
                 case GEOGRAPHIC_POINT:
-                    return new GeographicTextBox();
+                    return new GeographicTextBox(undoManager);
                 case REFERENCE:
-                    return new FormFieldWidgetReference(field, resourceLocator);
+                    return new FormFieldWidgetReference(field, formPanel.getResourceLocator(), undoManager);
                 default:
                     Log.error("Field type " + fieldType + " is not supported, created text box widget as fallback.");
             }
@@ -62,35 +68,61 @@ public class FormFieldWidgetFactory {
         return new FormFieldWidgetDummy();
     }
 
-    private static TextArea createTextArea() {
+    public static void addUndoableOnValueChange(final ValueBoxBase valueBoxBase, final UndoManager undoManager) {
+        valueBoxBase.addValueChangeHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                undoManager.addUndoable(new UndoableValueBoxBaseOperation(valueBoxBase, valueBoxBase.getValue()));
+            }
+        });
+    }
+
+    private static TextArea createTextArea(final UndoManager undoManager) {
         final TextArea textBox = new TextArea();
         textBox.addStyleName("form-control");
+        addUndoableOnValueChange(textBox, undoManager);
         return textBox;
     }
 
-    public static TextBox createTextBox() {
+    public static TextBox createTextBox(UndoManager undoManager) {
         final TextBox textBox = new TextBox();
         textBox.addStyleName("form-control");
+        addUndoableOnValueChange(textBox, undoManager);
         return textBox;
     }
 
-    public static DoubleBox createDoubleBox() {
+    public static DoubleBox createDoubleBox(UndoManager undoManager) {
         final DoubleBox doubleBox = new DoubleBox();
         doubleBox.addStyleName("form-control");
         doubleBox.getElement().setPropertyString("type", "number");
+        addUndoableOnValueChange(doubleBox, undoManager);
         return doubleBox;
     }
 
-    public static DateBoxWithReadOnly createDateTextBox() {
+    public static DateBoxWithReadOnly createDateTextBox(final UndoManager undoManager) {
         final DateBoxWithReadOnly dateBox = new DateBoxWithReadOnly();
         dateBox.getTextBox().addStyleName("form-control");
         dateBox.setFormat(new DateBoxWithReadOnly.DefaultFormat(DATE_TIME_FORMAT));
+        dateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Date> event) {
+                // todo
+                //undoManager.addUndoable(new UndoableValueBoxBaseOperation(valueBoxBase));
+            }
+        });
         return dateBox;
     }
 
-    public static SuggestBox createSuggestBox(SuggestOracle oracle) {
+    public static SuggestBox createSuggestBox(SuggestOracle oracle, UndoManager undoManager) {
         final SuggestBox suggestBox = new SuggestBox(oracle);
         suggestBox.getValueBox().addStyleName("form-control");
+        suggestBox.addValueChangeHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                // todo
+                //undoManager.addUndoable(new UndoableValueBoxBaseOperation(valueBoxBase));
+            }
+        });
         return suggestBox;
     }
 }

@@ -68,7 +68,7 @@ public class FormFieldRow extends Composite {
     public FormFieldRow(FormField formField, FormPanel formPanel) {
         this.formPanel = formPanel;
         this.formField = formField;
-        this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel.getResourceLocator());
+        this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         addHandlers();
