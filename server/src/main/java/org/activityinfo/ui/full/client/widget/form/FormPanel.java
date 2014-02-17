@@ -46,6 +46,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.undo.UndoManager;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -85,7 +86,8 @@ public class FormPanel extends Composite {
     private boolean readOnly = false;
     private boolean designEnabled = false;
     private final List<Handler> handlerList = Lists.newArrayList();
-    //
+    private final UndoManager undoManager = new UndoManager();
+
 //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
 //    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
     private final BiMap<Cuid, FormFieldRow> controlMap = HashBiMap.create();

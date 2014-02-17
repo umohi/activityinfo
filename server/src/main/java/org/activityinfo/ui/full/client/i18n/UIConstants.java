@@ -1916,6 +1916,42 @@ public interface UIConstants extends Constants {
     String noSearch();
 
     /**
+     * Translated "Undo".
+     *
+     * @return translated "Undo"
+     */
+    @DefaultStringValue("Undo")
+    @Key("undo")
+    String undo();
+
+    /**
+     * Translated "Redo".
+     *
+     * @return translated "Redo"
+     */
+    @DefaultStringValue("Redo")
+    @Key("redo")
+    String redo();
+
+    /**
+     * Translated "Move up".
+     *
+     * @return translated "Move up"
+     */
+    @DefaultStringValue("Move up")
+    @Key("moveUp")
+    String moveUp();
+
+    /**
+     * Translated "Move down".
+     *
+     * @return translated "Move down"
+     */
+    @DefaultStringValue("Move down")
+    @Key("moveDown")
+    String moveDown();
+
+    /**
      * Translated "No Target".
      *
      * @return translated "No Target"
@@ -3200,4 +3236,5 @@ public interface UIConstants extends Constants {
 
     @DefaultStringValue("Geographic coordinates")
     String geographicCoordinatesFieldLabel();
+
 }

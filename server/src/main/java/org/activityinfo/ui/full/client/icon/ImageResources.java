@@ -41,6 +41,18 @@ public interface ImageResources extends ClientBundle {
     @Source("edit.png")
     ImageResource edit();
 
+    @Source("undo.png")
+    ImageResource undo();
+
+    @Source("undo32.png")
+    ImageResource undo32();
+
+    @Source("redo32.png")
+    ImageResource redo32();
+
+    @Source("redo.png")
+    ImageResource redo();
+
     @Source("up.png")
     ImageResource up();
 

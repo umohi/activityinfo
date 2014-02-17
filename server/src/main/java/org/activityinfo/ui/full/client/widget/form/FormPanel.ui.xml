@@ -3,6 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
+  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
     <div class="container">
@@ -11,13 +12,20 @@
       </div>
       <g:FlowPanel ui:field="contentPanel" width="100%">
       </g:FlowPanel>
+      <div class="pull-left">
+        <g:Button addStyleNames="btn btn-default" ui:field="undoButton" title="{res.undo}">
+          <img src="{img.undo.getSafeUri}" alt="{res.undo}"/>
+        </g:Button>
+        <g:Button addStyleNames="btn btn-default" ui:field="redoButton" title="{res.redo}">
+          <img src="{img.redo.getSafeUri}" alt="{res.redo}"/>
+        </g:Button>
+      </div>
       <div class="pull-right">
         <div class="pull-left hidden" ui:field="progressDiv">
           <img src="{img.progress.getSafeUri}" alt="Progress"/>
         </div>
-        <g:Button addStyleNames="btn btn-primary" ui:field="saveButton" text="Save"/>
-        <!--&nbsp;-->
-        <g:Button addStyleNames="btn btn-default" ui:field="resetButton" text="Reset"/>
+        <g:Button addStyleNames="btn btn-primary" ui:field="saveButton" text="{res.save}"/>
+        <g:Button addStyleNames="btn btn-default" ui:field="resetButton" text="{res.reset}"/>
       </div>
     </div>
   </g:HTMLPanel>

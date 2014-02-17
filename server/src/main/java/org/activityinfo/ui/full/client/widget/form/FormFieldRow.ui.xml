@@ -11,7 +11,9 @@
       /*border-color: #000810;*/
     }
   </ui:style>
+
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
+  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
     <div class="row userform-field" draggable="true">
@@ -35,19 +37,19 @@
       <div class="col-sm-1">
         <div ui:field="toolbar" class="hidden {style.toobar}">
           <g:Button ui:field="editButton" addStyleNames="btn btn-primary btn-xs">
-            <img src="{img.edit.getSafeUri}" alt="Edit"/>
+            <img src="{img.edit.getSafeUri}" alt="{res.edit}" title="{res.edit}"/>
           </g:Button>
           <g:Button ui:field="addButton" addStyleNames="btn btn-success btn-xs">
-            <img src="{img.add.getSafeUri}" alt="Add"/>
+            <img src="{img.add.getSafeUri}" alt="{res.add}" title="{res.add}"/>
           </g:Button>
           <g:Button ui:field="removeButton" addStyleNames="btn btn-danger btn-xs">
-            <img src="{img.delete.getSafeUri}" alt="Remove"/>
+            <img src="{img.delete.getSafeUri}" alt="{res.remove}" title="{res.remove}"/>
           </g:Button>
           <g:Button ui:field="upButton" addStyleNames="btn btn-default btn-xs">
-            <img src="{img.up.getSafeUri}" alt="Up"/>
+            <img src="{img.up.getSafeUri}" alt="{res.moveUp}" title="{res.moveUp}"/>
           </g:Button>
           <g:Button ui:field="downButton" addStyleNames="btn btn-default btn-xs">
-            <img src="{img.down.getSafeUri}" alt="Down"/>
+            <img src="{img.down.getSafeUri}" alt="{res.moveDown}" title="{res.moveDown}"/>
           </g:Button>
 
         </div>
