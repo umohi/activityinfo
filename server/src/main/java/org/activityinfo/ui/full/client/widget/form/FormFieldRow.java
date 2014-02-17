@@ -24,13 +24,11 @@ package org.activityinfo.ui.full.client.widget.form;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
@@ -86,6 +84,31 @@ public class FormFieldRow extends Composite {
 
     private boolean isDesignEnabled() {
         return formPanel.isDesignEnabled();
+    }
+
+    @UiHandler("editButton")
+    public void onEdit(ClickEvent event) {
+        // todo
+    }
+
+    @UiHandler("addButton")
+    public void onAdd(ClickEvent event) {
+        // todo
+    }
+
+    @UiHandler("removeButton")
+    public void onRemove(ClickEvent event) {
+        formPanel.removeRow(this);
+    }
+
+    @UiHandler("upButton")
+    public void onMoveUp(ClickEvent event) {
+        // todo
+    }
+
+    @UiHandler("downButton")
+    public void onMoveDown(ClickEvent event) {
+        // todo
     }
 
     private void addHandlers() {

@@ -24,9 +24,10 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -87,7 +88,7 @@ public class FormPanel extends Composite {
     //
 //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
 //    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
-    private final Map<Cuid, FormFieldRow> controlMap = Maps.newHashMap();
+    private final BiMap<Cuid, FormFieldRow> controlMap = HashBiMap.create();
 
     @UiField
     Button saveButton;
@@ -97,6 +98,8 @@ public class FormPanel extends Composite {
     FlowPanel contentPanel;
     @UiField
     DivElement errorContainer;
+    @UiField
+    DivElement progressDiv;
 
     public FormPanel(ResourceLocator resourceLocator) {
         TransitionUtil.ensureBootstrapInjected();
@@ -157,6 +160,17 @@ public class FormPanel extends Composite {
 
     @UiHandler("resetButton")
     public void onReset(ClickEvent event) {
+        if (isDesignEnabled()) {
+            rebuildPanel(); // Completely rebuilds panel.
+        } else {
+            resetFormInstanceValues(); // Resets only form instance values.
+        }
+    }
+
+    /**
+     * Resets only form instance values.
+     */
+    private void resetFormInstanceValues() {
         final List<FormField> userFormFields = formClass.getFields();
         if (initialFormInstance != null) {
             applyValue(initialFormInstance);
@@ -172,6 +186,16 @@ public class FormPanel extends Composite {
             clearFields(fieldsCopy);
         } else {
             clearFields(userFormFields);
+        }
+    }
+
+    /**
+     * Completely rebuilds panel.
+     */
+    private void rebuildPanel() {
+        renderForm(initialFormClass);
+        if (initialFormInstance != null) {
+            setValue(initialFormInstance);
         }
     }
 
@@ -250,6 +274,11 @@ public class FormPanel extends Composite {
 
     public void clearError() {
         errorContainer.setInnerHTML("");
+    }
+
+    public void removeRow(FormFieldRow formFieldRow) {
+        contentPanel.remove(formFieldRow);
+        controlMap.remove(controlMap.inverse().get(formFieldRow));
     }
 
     public FormClass getInitialFormClass() {

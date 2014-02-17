@@ -2,6 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
+  <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
+
   <g:HTMLPanel addStyleNames="bs">
     <div class="container">
       <div class="has-error">
@@ -10,6 +12,9 @@
       <g:FlowPanel ui:field="contentPanel" width="100%">
       </g:FlowPanel>
       <div class="pull-right">
+        <div class="pull-left hidden" ui:field="progressDiv">
+          <img src="{img.progress.getSafeUri}" alt="Progress"/>
+        </div>
         <g:Button addStyleNames="btn btn-primary" ui:field="saveButton" text="Save"/>
         <!--&nbsp;-->
         <g:Button addStyleNames="btn btn-default" ui:field="resetButton" text="Reset"/>
