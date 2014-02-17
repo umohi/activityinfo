@@ -7,11 +7,7 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <div class="container">
-      <div class="has-error">
-        <div class="control-label" ui:field="errorContainer"/>
-      </div>
-      <g:FlowPanel ui:field="contentPanel" width="100%">
-      </g:FlowPanel>
+      <br/>
       <div class="pull-left">
         <g:Button addStyleNames="btn btn-default" ui:field="undoButton" title="{res.undo}">
           <img src="{img.undo.getSafeUri}" alt="{res.undo}"/>
@@ -27,6 +23,12 @@
         <g:Button addStyleNames="btn btn-primary" ui:field="saveButton" text="{res.save}"/>
         <g:Button addStyleNames="btn btn-default" ui:field="resetButton" text="{res.reset}"/>
       </div>
+      <br/>
+      <div class="has-error">
+        <div class="control-label" ui:field="errorContainer"/>
+      </div>
+      <g:FlowPanel ui:field="contentPanel" width="100%">
+      </g:FlowPanel>
     </div>
   </g:HTMLPanel>
 </ui:UiBinder>
