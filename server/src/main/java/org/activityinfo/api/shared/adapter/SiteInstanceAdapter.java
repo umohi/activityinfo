@@ -4,21 +4,18 @@ import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Pair;
 import org.activityinfo.api2.shared.form.FormInstance;
 
 import java.util.Set;
 
 
-public class SiteInstanceAdapter implements Function<SiteDTO, FormInstance> {
-
-    private final SchemaDTO schemaDTO;
-
-    public SiteInstanceAdapter(SchemaDTO schemaDTO) {
-        this.schemaDTO = schemaDTO;
-    }
+public class SiteInstanceAdapter implements Function<Pair<SchemaDTO, SiteDTO>, FormInstance> {
 
     @Override
-    public FormInstance apply(final SiteDTO site) {
+    public FormInstance apply(final Pair<SchemaDTO, SiteDTO> input) {
+        SchemaDTO schemaDTO = input.getA();
+        SiteDTO site = input.getB();
         final FormInstance instance = new FormInstance(site.getCuid(), site.getActivityCuid());
 
         instance.set(CuidAdapter.partnerField(site.getActivityId()),
@@ -27,7 +24,7 @@ public class SiteInstanceAdapter implements Function<SiteDTO, FormInstance> {
         instance.set(CuidAdapter.locationField(site.getActivityId()),
                 Sets.newHashSet(CuidAdapter.cuid(CuidAdapter.LOCATION_DOMAIN, site.getLocationId())));
 
-        final ActivityDTO activity = this.schemaDTO.getActivityById(site.getActivityId());
+        final ActivityDTO activity = schemaDTO.getActivityById(site.getActivityId());
 
         for (String propertyName : site.getPropertyNames()) {
             if (propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {

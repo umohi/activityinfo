@@ -1,4 +1,4 @@
-package org.activityinfo.api2.client;
+package org.activityinfo.api2.client.promises;
 
 
 import com.google.common.base.Function;

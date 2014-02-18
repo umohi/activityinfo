@@ -3,16 +3,15 @@ package org.activityinfo.api2.client.promises;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api2.client.AsyncFunction;
-import org.activityinfo.api2.client.Promise;
 
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Sequentially transforms a list of inputs into outputs using a provided
- * Asynchronous function
+ * Asynchronous transformation
  */
-public class AsyncMapFunction<F, T> implements AsyncFunction<Iterable<F>, List<T>> {
+class AsyncMapFunction<F, T> implements AsyncFunction<Iterable<F>, List<T>> {
 
     private final AsyncFunction<F, T> transformation;
 
@@ -20,54 +19,33 @@ public class AsyncMapFunction<F, T> implements AsyncFunction<Iterable<F>, List<T
         this.transformation = transformation;
     }
 
-
     @Override
-    public Promise<List<T>> apply(final Iterable<F> input) {
-        Promise<List<T>> promisedOutput = new Promise<>(new Promise.AsyncOperation<List<T>>() {
-            @Override
-            public void start(Promise<List<T>> promise) {
-                new Transformation(input.iterator(), promise);
-            }
-        });
-        return promisedOutput;
+    public void apply(Iterable<F> input, AsyncCallback<List<T>> callback) {
+        List<T> output = Lists.newArrayList();
+        matchNext(input.iterator(), output, callback);
     }
 
-    public static <F,T> Promise<List<T>> transform(List<F> inputList, AsyncFunction<F, T> transformation) {
-        return new AsyncMapFunction<F, T>(transformation).apply(inputList);
-    }
+    private void matchNext(final Iterator<F> iterator, final List<T> output,
+                           final AsyncCallback<? super List<T>> callback) {
 
-    private class Transformation {
-        private Iterator<F> inputIterator;
-        private Promise<List<T>> promisedOutput;
-        private List<T> output = Lists.newArrayList();
+        if(!iterator.hasNext()) {
+            callback.onSuccess(output);
+        } else {
+            try {
+                transformation.apply(iterator.next(), new AsyncCallback<T>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        callback.onFailure(caught);
+                    }
 
-        private Transformation(Iterator<F> sourceIterator, Promise<List<T>> promisedOutput) {
-            this.promisedOutput = promisedOutput;
-            this.inputIterator = sourceIterator;
-            matchNext();
-        }
-
-        private void matchNext() {
-
-            if(!inputIterator.hasNext()) {
-                promisedOutput.resolve(output);
-            } else {
-                try {
-                    transformation.apply(inputIterator.next()).then(new AsyncCallback<T>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            promisedOutput.reject(caught);
-                        }
-
-                        @Override
-                        public void onSuccess(T result) {
-                            output.add(result);
-                            matchNext();
-                        }
-                    });
-                } catch(Throwable caught) {
-                    promisedOutput.reject(caught);
-                }
+                    @Override
+                    public void onSuccess(T result) {
+                        output.add(result);
+                        matchNext(iterator, output, callback);
+                    }
+                });
+            } catch(Throwable caught) {
+                callback.onFailure(caught);
             }
         }
     }

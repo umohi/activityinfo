@@ -10,6 +10,7 @@ public class DraftFieldValue {
     private Object matchedValue;
     private Object importedValue;
     private boolean conversionError;
+    private boolean ambiguous;
 
     private double matchScore;
 
@@ -49,6 +50,14 @@ public class DraftFieldValue {
 
     public void setConversionError(boolean conversionError) {
         this.conversionError = conversionError;
+    }
+
+    public boolean isAmbiguous() {
+        return ambiguous;
+    }
+
+    public void setAmbiguous(boolean ambiguous) {
+        this.ambiguous = ambiguous;
     }
 
     public void setMatchScore(double matchScore) {

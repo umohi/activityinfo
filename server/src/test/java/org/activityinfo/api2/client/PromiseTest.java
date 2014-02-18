@@ -16,7 +16,7 @@ public class PromiseTest {
     @Test
     public void normallyResolved() {
 
-        Promise<Integer> promise = new Promise<Integer>(Promise.NO_OP);
+        Promise<Integer> promise = new Promise<Integer>();
         assertFalse(promise.isSettled());
         assertThat(promise.getState(), equalTo(Promise.State.PENDING));
 
@@ -35,5 +35,13 @@ public class PromiseTest {
         };
 
         assertThat(promise.then(takeSquareRoot), PromiseMatchers.resolvesTo(equalTo(8.0)));
+    }
+
+    @Test
+    public void retryable() {
+
+
+
+
     }
 }

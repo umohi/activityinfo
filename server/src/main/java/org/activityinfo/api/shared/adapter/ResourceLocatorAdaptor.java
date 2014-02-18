@@ -1,6 +1,5 @@
 package org.activityinfo.api.shared.adapter;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.command.GetSites;
@@ -65,37 +64,13 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         if (instanceId.getDomain() == SITE_DOMAIN) {
             final int siteId = getLegacyIdFromCuid(instanceId);
 
-            return new Promise<>(new Promise.AsyncOperation<FormInstance>() {
-                @Override
-                public void start(final Promise<FormInstance> promise) {
-                    // execute via dispatcher directly to avoi promise.resolve(),
-                    // we want to resolve it when sub-call is finished
-                    dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            promise.reject(throwable);
-                        }
-
-                        @Override
-                        public void onSuccess(final SchemaDTO schemaDTO) {
-                            dispatcher.execute(GetSites.byId(siteId)).
-                                    then(new SingleListResultAdapter<SiteDTO>()).
-                                    then(new SiteInstanceAdapter(schemaDTO)).
-                                    then(new AsyncCallback<FormInstance>() {
-                                        @Override
-                                        public void onFailure(Throwable caught) {
-                                            promise.reject(caught);
-                                        }
-
-                                        @Override
-                                        public void onSuccess(FormInstance result) {
-                                            promise.resolve(result);
-                                        }
-                                    });
-                        }
-                    });
-                }
-            });
+            Promise<SchemaDTO> schema = dispatcher
+                    .execute(new GetSchema());
+            Promise<SiteDTO> sites = dispatcher
+                    .execute(GetSites.byId(siteId))
+                    .then(new SingleListResultAdapter<SiteDTO>());
+            return Promise.pair(schema, sites)
+                    .then(new SiteInstanceAdapter());
         }
         return Promise.rejected(new NotFoundException(instanceId.asIri()));
     }

@@ -2,6 +2,7 @@ package org.activityinfo.ui.full.client.importer.match;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import org.activityinfo.api2.client.promises.Action;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.criteria.ClassCriteria;
@@ -56,38 +57,46 @@ public class ReferenceMatcher {
         return relativeFieldPaths;
     }
 
-    public void match(List<DraftInstance> instances, List<Projection> projections) {
-        for(DraftInstance instance : instances) {
-            match(instance, projections);
-        }
+    public Action<DraftInstance> matchFunction(List<Projection> projections) {
+        return new MatchFunction(projections);
     }
 
-    private void match(DraftInstance instance, List<Projection> projections) {
+    private class MatchFunction extends Action<DraftInstance> {
 
-        String[] imported = importedValues(instance);
+        private final List<Projection> projections;
 
-        List<ScoredReference> potentialMatches = Lists.newArrayList();
-        for(Projection projection : projections) {
-            double[] scores = scorePotentialMatch(imported, projection);
-            if(scores != null) {
-                potentialMatches.add(new ScoredReference(projection, scores));
-            }
+        private MatchFunction(List<Projection> projections) {
+            this.projections = projections;
         }
 
-        // find the best projection using a simple sum of the scores
-        ScoredReference best = null;
-        double bestScore = 0;
-        for(ScoredReference match : potentialMatches) {
-            double total = match.sum();
-            if(total > bestScore) {
-                best = match;
-                bestScore = total;
+        @Override
+        public void execute(DraftInstance instance) {
+
+            String[] imported = importedValues(instance);
+
+            List<ScoredReference> potentialMatches = Lists.newArrayList();
+            for(Projection projection : projections) {
+                double[] scores = scorePotentialMatch(imported, projection);
+                if(scores != null) {
+                    potentialMatches.add(new ScoredReference(projection, scores));
+                }
             }
-        }
-        if(best == null) {
-            updateInstanceWithNoMatch(instance);
-        } else {
-            updateInstanceWithMatch(instance, best);
+
+            // find the best projection using a simple sum of the scores
+            ScoredReference best = null;
+            double bestScore = 0;
+            for(ScoredReference match : potentialMatches) {
+                double total = match.sum();
+                if(total > bestScore) {
+                    best = match;
+                    bestScore = total;
+                }
+            }
+            if(best == null) {
+                updateInstanceWithNoMatch(instance);
+            } else {
+                updateInstanceWithMatch(instance, best);
+            }
         }
     }
 

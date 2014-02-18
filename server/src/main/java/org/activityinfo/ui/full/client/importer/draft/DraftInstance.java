@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public class DraftInstance {
 
+    private ImportAction action;
+    private boolean valid;
     private final Map<FieldPath, DraftFieldValue> fields = Maps.newHashMap();
 
     public DraftInstance() {
@@ -25,4 +27,21 @@ public class DraftInstance {
         }
         return field;
     }
+
+    public ImportAction getAction() {
+        return action;
+    }
+
+    public void setAction(ImportAction action) {
+        this.action = action;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
 }

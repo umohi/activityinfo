@@ -2,13 +2,12 @@ package org.activityinfo.api2.client.form.tree;
 
 import com.google.common.base.Preconditions;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.api2.client.AsyncFunction;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.api2.shared.form.tree.FormTree;
 
 import java.util.Set;
@@ -17,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * Builds a {@link FormTree}
  */
-public class AsyncFormTreeBuilder {
+public class AsyncFormTreeBuilder implements AsyncFunction<Cuid, FormTree> {
 
     private static final Logger LOGGER = Logger.getLogger(AsyncFormTreeBuilder.class.getName());
 
@@ -27,26 +26,31 @@ public class AsyncFormTreeBuilder {
         this.locator = locator;
     }
 
-    public Promise<FormTree> build(final Cuid formClassId) {
-        return new Promise<>(new Promise.AsyncOperation<FormTree>() {
-            @Override
-            public void start(Promise<FormTree> promise) {
-                new Resolver(promise, formClassId);
-            }
-        });
+    @Override
+    public void apply(Cuid formClassId, AsyncCallback<FormTree> callback) {
+        new Resolver(formClassId, callback);
     }
 
     public class Resolver {
 
-        private Promise<FormTree> promise;
+        private AsyncCallback<? super FormTree> callback;
         private FormTree tree;
         private int outstandingRequests = 0;
 
-        public Resolver(Promise<FormTree> promise, Cuid formClassId) {
-            this.promise = promise;
-            this.tree = new FormTree();
+        public Resolver(final Cuid formClassId, final AsyncCallback<FormTree> callback) {
+            this.callback = callback;
+            locator.getFormClass(formClassId).then(new AsyncCallback<FormClass>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    callback.onFailure(caught);
+                }
 
-            requestFormClassForNode(tree.getRoot(), formClassId);
+                @Override
+                public void onSuccess(FormClass result) {
+                    tree = new FormTree(result);
+                    requestFormClassForNode(tree.getRoot(), formClassId);
+                }
+            });
         }
 
         private void requestFormClassForNode(final FormTree.Node node, final Cuid formClassId) {
@@ -57,7 +61,7 @@ public class AsyncFormTreeBuilder {
             locator.getFormClass(formClassId).then(new AsyncCallback<FormClass>() {
                 @Override
                 public void onFailure(Throwable caught) {
-                    Resolver.this.promise.reject(caught);
+                    Resolver.this.callback.onFailure(caught);
                 }
 
                 @Override
@@ -66,7 +70,7 @@ public class AsyncFormTreeBuilder {
 
                     outstandingRequests--;
                     if(outstandingRequests == 0) {
-                        promise.resolve(tree);
+                        callback.onSuccess(tree);
                     }
                 }
             });
@@ -83,7 +87,11 @@ public class AsyncFormTreeBuilder {
             node.addChildren(formClass);
             for(FormTree.Node child : node.getChildren()) {
                 if(child.isReference()) {
-                    requestFormClassForNode(child, formIdFromRange(child.getRange()));
+                    for(Iri rangeClass : child.getRange()) {
+                        if(rangeClass.getScheme().equals(Cuids.SCHEME)) {
+                            requestFormClassForNode(child, new Cuid(rangeClass.getSchemeSpecificPart()));
+                        }
+                    }
                 }
             }
         }

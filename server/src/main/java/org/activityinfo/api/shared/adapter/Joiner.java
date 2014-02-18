@@ -4,8 +4,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api2.client.AsyncFunction;
+import org.activityinfo.api2.client.promises.AsyncTask;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.promises.MapFunction;
@@ -22,7 +24,7 @@ import java.util.*;
  * Naive implementation that joins and projects a multi-level
  * instance query.
  */
-class Joiner implements Promise.AsyncOperation<List<Projection>> {
+class Joiner extends AsyncTask<List<Projection>> {
 
 
     private final Criteria criteria;
@@ -80,7 +82,7 @@ class Joiner implements Promise.AsyncOperation<List<Projection>> {
     }
 
     @Override
-    public void start(Promise<List<Projection>> promise) {
+    protected void apply(AsyncCallback<List<Projection>> callback) {
 
         Promise<List<Projection>> results = query(criteria)
                 .then(new MapFunction<>(new Project(null)));
@@ -90,8 +92,9 @@ class Joiner implements Promise.AsyncOperation<List<Projection>> {
             results = results.then(new NestedInstancesFetch(fieldToJoin));
         }
 
-        results.then(promise);
+        results.then(callback);
     }
+
 
     private Promise<List<FormInstance>> query(Criteria criteria) {
         return new QueryExecutor(dispatcher, criteria).execute();
@@ -131,7 +134,7 @@ class Joiner implements Promise.AsyncOperation<List<Projection>> {
         }
 
         @Override
-        public Promise<List<Projection>> apply(List<Projection> projections) {
+        public void apply(List<Projection> projections, AsyncCallback<List<Projection>> callback) {
 
             // first collect the ids of the nested FormInstances
             Set<Cuid> instanceIds = Sets.newHashSet();
@@ -140,11 +143,12 @@ class Joiner implements Promise.AsyncOperation<List<Projection>> {
             }
 
             if(instanceIds.isEmpty()) {
-                return Promise.resolved(projections);
+                callback.onSuccess(projections);
             } else {
-                return new QueryExecutor(dispatcher, new IdCriteria(instanceIds))
+                new QueryExecutor(dispatcher, new IdCriteria(instanceIds))
                     .execute()
-                    .then(new Join(referenceField, projections));
+                    .then(new Join(referenceField, projections))
+                    .then(callback);
             }
 
         }

@@ -25,14 +25,14 @@ import java.util.Set;
 public class FormTree {
 
 
+    private FormClass rootFormClass;
+
     public class Node {
 
         private Node parent;
         private FormField field;
 
         private FieldPath path;
-        private FormClass formClass;
-
         private List<Node> children = Lists.newArrayList();
 
         public boolean isRoot() {
@@ -44,8 +44,6 @@ public class FormTree {
         }
 
         public void addChildren(FormClass formClass) {
-            Preconditions.checkState(this.formClass == null);
-            this.formClass = formClass;
             for (FormField property : formClass.getFields()) {
                 Preconditions.checkNotNull(property);
 
@@ -72,10 +70,6 @@ public class FormTree {
 
         public Cuid getFieldId() {
             return field.getId();
-        }
-
-        public FormClass getFormClass() {
-            return formClass;
         }
 
         public Set<Iri> getRange() {
@@ -105,8 +99,6 @@ public class FormTree {
         public String toString() {
             if(isRoot()) {
                 return "ROOT";
-            } else if(formClass != null) {
-                return toString(field.getLabel()) + ":" + toString(formClass.getLabel());
             } else {
                 return toString(field.getLabel()) + ":" + field.getType().name();
             }
@@ -129,12 +121,18 @@ public class FormTree {
     private Node root;
     private Map<FieldPath, Node> nodeMap = Maps.newHashMap();
 
-    public FormTree() {
+    public FormTree(FormClass rootFormClass) {
+        this.rootFormClass = rootFormClass;
         root = new Node();
     }
 
     public Node getRoot() {
         return root;
+    }
+
+
+    public FormClass getRootFormClass() {
+        return rootFormClass;
     }
 
     public Node getNodeByPath(FieldPath path) {
