@@ -24,10 +24,7 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -90,7 +87,8 @@ public class FormPanel extends Composite {
 
     //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
 //    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
-    private final BiMap<Cuid, FormFieldRow> controlMap = HashBiMap.create();
+    private final BiMap<Cuid, FormFieldRow> rowMap = HashBiMap.create();
+    private final BiMap<Cuid, Widget> sectionMap = HashBiMap.create();
 
     @UiField
     Button saveButton;
@@ -142,12 +140,14 @@ public class FormPanel extends Composite {
         if (elements != null && !elements.isEmpty()) {
             for (FormElement element : elements) {
                 if (element instanceof FormField) {
-                    final FormFieldRow w = new FormFieldRow((FormField) element, this);
-                    contentPanel.add(w);
-                    controlMap.put(element.getId(), w);
+                    final FormFieldRow fieldRow = new FormFieldRow((FormField) element, this);
+                    contentPanel.add(fieldRow);
+                    rowMap.put(element.getId(), fieldRow);
                 } else if (element instanceof FormSection) {
                     final FormSection section = (FormSection) element;
-                    contentPanel.add(new HTML(SECTION_TEMPLATE.title(section.getLabel().getValue())));
+                    final HTML sectionWidget = new HTML(SECTION_TEMPLATE.title(section.getLabel().getValue()));
+                    contentPanel.add(sectionWidget);
+                    sectionMap.put(element.getId(), sectionWidget);
                     renderElements(section.getElements());
                 }
             }
@@ -180,9 +180,13 @@ public class FormPanel extends Composite {
 
     @UiHandler("saveButton")
     public void onSave(ClickEvent event) {
+        beforeSave();
         for (Handler handler : handlerList) {
             handler.onSave();
         }
+    }
+
+    protected void beforeSave() {
     }
 
     @UiHandler("resetButton")
@@ -238,7 +242,7 @@ public class FormPanel extends Composite {
 
     protected void clearFields(@Nonnull List<FormField> fields) {
         for (FormField field : fields) {
-            final FormFieldRow formFieldRow = controlMap.get(field.getId());
+            final FormFieldRow formFieldRow = rowMap.get(field.getId());
             if (formFieldRow != null) {
                 formFieldRow.clear();
             }
@@ -271,7 +275,7 @@ public class FormPanel extends Composite {
 
     private void addValueChangeHandler(@Nonnull final FormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
-        for (final Map.Entry<Cuid, FormFieldRow> entry : controlMap.entrySet()) {
+        for (final Map.Entry<Cuid, FormFieldRow> entry : rowMap.entrySet()) {
             final IsWidget widget = entry.getValue().getFormFieldWidget();
             if (widget instanceof HasValueChangeHandlers) {
                 final HasValueChangeHandlers hasValueChangeHandlers = (HasValueChangeHandlers) widget;
@@ -290,7 +294,7 @@ public class FormPanel extends Composite {
     private void applyValue(@Nonnull FormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
         for (Map.Entry<Cuid, Object> entry : formInstance.getValueMap().entrySet()) {
-            final FormFieldRow fieldRow = controlMap.get(entry.getKey());
+            final FormFieldRow fieldRow = rowMap.get(entry.getKey());
             if (fieldRow != null) {
                 fieldRow.setValue(entry.getValue());
             } else {
@@ -302,7 +306,7 @@ public class FormPanel extends Composite {
 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
-        for (FormFieldRow row : controlMap.values()) {
+        for (FormFieldRow row : rowMap.values()) {
             row.setReadOnly(readOnly);
         }
     }
@@ -315,9 +319,38 @@ public class FormPanel extends Composite {
         errorContainer.setInnerHTML("");
     }
 
-    public void removeRow(FormFieldRow formFieldRow) {
-        contentPanel.remove(formFieldRow);
-        controlMap.remove(controlMap.inverse().get(formFieldRow));
+    public void removeRow(final FormFieldRow formFieldRow) {
+        final int widgetIndex = contentPanel.getWidgetIndex(formFieldRow);
+        if (widgetIndex != -1) {
+            contentPanel.remove(widgetIndex);
+            rowMap.remove(rowMap.inverse().get(formFieldRow));
+
+            final FormField formField = formFieldRow.getFormField();
+            final FormElementContainer parentElement = formClass.getParent(formField);
+            final int formFieldIndexInClass = parentElement.getElements().indexOf(formField);
+            parentElement.getElements().remove(formFieldIndexInClass);
+
+            final Object fieldValue = formInstance.getValueMap().get(formField.getId());
+            formInstance.getValueMap().remove(formField.getId());
+
+            undoManager.addUndoable(new IsUndoable() {
+                @Override
+                public void undo() {
+                    contentPanel.insert(formFieldRow, widgetIndex);
+                    rowMap.put(formField.getId(), formFieldRow);
+                    parentElement.getElements().add(formFieldIndexInClass, formField);
+                    formInstance.getValueMap().put(formField.getId(), fieldValue);
+                }
+
+                @Override
+                public void redo() {
+                    contentPanel.remove(widgetIndex);
+                    rowMap.remove(rowMap.inverse().get(formFieldRow));
+                    parentElement.getElements().remove(formFieldIndexInClass);
+                    formInstance.getValueMap().remove(formField.getId());
+                }
+            });
+        }
     }
 
     public UndoManager getUndoManager() {

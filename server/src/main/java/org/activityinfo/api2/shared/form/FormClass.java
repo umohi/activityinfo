@@ -1,6 +1,8 @@
 package org.activityinfo.api2.shared.form;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Cuid;
@@ -41,6 +43,43 @@ public class FormClass implements Resource, FormElementContainer {
         copy.getSuperClasses().addAll(this.getSuperClasses());
         copy.setLabel(this.getLabel());
         return copy;
+    }
+
+    public FormElementContainer getParent(FormElement element) {
+        return getContainerElementsImpl(this, element);
+    }
+
+    private static FormElementContainer getContainerElementsImpl(FormElementContainer container, final FormElement searchElement) {
+        if (container.getElements().contains(searchElement)) {
+            return container;
+        }
+        for (FormElement elem : container.getElements()) {
+            if (elem instanceof FormElementContainer) {
+                final FormElementContainer result = getContainerElementsImpl((FormElementContainer) elem, searchElement);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public List<Cuid> getElementIds() {
+        final List<Cuid> list = Lists.newArrayList();
+        for (FormElement element : elements) {
+            list.add(element.getId());
+        }
+        return list;
+    }
+
+    public void removeElementsById(final List<Cuid> list) {
+        Iterables.removeIf(elements, new Predicate<FormElement>() {
+            @Override
+            public boolean apply(FormElement input) {
+                return list.contains(input.getId());
+            }
+        });
     }
 
     public Cuid getId() {
