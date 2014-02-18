@@ -22,8 +22,7 @@ package org.activityinfo.ui.full.client.widget.undo;
  */
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.user.client.ui.ValueBoxBase;
-import org.activityinfo.ui.full.client.widget.form.FormFieldWidget;
+import com.google.gwt.user.client.ui.HasValue;
 
 /**
  * Creates undoable.
@@ -37,10 +36,8 @@ public class UndoableCreator {
 
     public static IsUndoable create(ValueChangeEvent event, Object oldValue) {
         final Object source = event.getSource();
-        if (source instanceof ValueBoxBase) {
-            return new UndoableValueBoxBaseOperation((ValueBoxBase) source, oldValue);
-        } else if (source instanceof FormFieldWidget) {
-            return new UndoableFormFieldWidgetOperation((FormFieldWidget)source, oldValue);
+        if (source instanceof HasValue) {
+            return new UndoableEditOperation((HasValue) source, oldValue);
         }
         return null;
     }

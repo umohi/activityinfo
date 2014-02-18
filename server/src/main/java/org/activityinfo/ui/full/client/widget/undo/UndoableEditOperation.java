@@ -21,18 +21,18 @@ package org.activityinfo.ui.full.client.widget.undo;
  * #L%
  */
 
-import org.activityinfo.ui.full.client.widget.form.FormFieldWidget;
+import com.google.gwt.user.client.ui.HasValue;
 
 /**
- * @author yuriyz on 2/18/14.
+ * @author yuriyz on 2/17/14.
  */
-public class UndoableFormFieldWidgetOperation implements IsUndoable {
+public class UndoableEditOperation implements IsUndoable {
 
-    private FormFieldWidget widget;
-    private Object value;
+    private final HasValue widget;
+    private final Object value;
     private Object newValue;
 
-    public UndoableFormFieldWidgetOperation(FormFieldWidget widget, Object value) {
+    public UndoableEditOperation(HasValue widget, Object value) {
         this.widget = widget;
         this.value = value;
     }
@@ -50,5 +50,9 @@ public class UndoableFormFieldWidgetOperation implements IsUndoable {
 
     public Object getValue() {
         return value;
+    }
+
+    public HasValue getWidget() {
+        return widget;
     }
 }
