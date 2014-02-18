@@ -32,42 +32,57 @@ public class UndoManager {
 
     private final List<IsUndoable> undoables = Lists.newArrayList();
     private final List<UndoListener> listeners = Lists.newArrayList();
-    private int position = 0;
+    private int position = -1;
 
     public UndoManager() {
     }
 
     public void addUndoable(IsUndoable undoable) {
-        undoables.add(undoable);
-        position++;
-        fireCreatedEvent(new UndoableCreatedEvent(undoable));
+        if (undoable != null) {
+            undoables.add(undoable);
+            position++;
+            fireCreatedEvent(new UndoableCreatedEvent(undoable));
+        }
+    }
+
+    private IsUndoable getUndoAtPosition() {
+        return getUndoableAtPosition(position);
+    }
+
+    private IsUndoable getRedoAtPosition() {
+        return getUndoableAtPosition(position + 1);
+    }
+
+    private IsUndoable getUndoableAtPosition(int position) {
+        if (position < 0 || position >= undoables.size()) {
+            return null;
+        }
+        return undoables.get(position);
     }
 
     public void undo() {
-        final IsUndoable last = getLast();
-        if (last != null) {
-            last.undo();
-            fireExecutedEvent(new UndoableExecutedEvent(last));
+        final IsUndoable undoable = getUndoAtPosition();
+        if (undoable != null) {
+            position--;
+            undoable.undo();
+            fireExecutedEvent(new UndoableExecutedEvent(undoable));
         }
     }
 
     public boolean canUndo() {
-        return getLast() != null;
-    }
-
-    private IsUndoable getLast() {
-        return !undoables.isEmpty() ? undoables.get(undoables.size() - 1) : null;
+        return getUndoAtPosition() != null;
     }
 
     public boolean canRedo() {
-        return position < undoables.size();
+        return getRedoAtPosition() != null;
     }
 
     public void redo() {
-        final IsUndoable last = getLast();
-        if (last != null) {
-            last.undo();
-            fireExecutedEvent(new UndoableExecutedEvent(last));
+        final IsUndoable undoable = getRedoAtPosition();
+        if (undoable != null) {
+            position++;
+            undoable.redo();
+            fireExecutedEvent(new UndoableExecutedEvent(undoable));
         }
     }
 

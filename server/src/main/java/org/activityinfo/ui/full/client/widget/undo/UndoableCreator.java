@@ -21,38 +21,24 @@ package org.activityinfo.ui.full.client.widget.undo;
  * #L%
  */
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 
 /**
+ * Creates undoable.
+ *
  * @author yuriyz on 2/17/14.
  */
-public class UndoableValueBoxBaseOperation implements IsUndoable {
+public class UndoableCreator {
 
-    private final ValueBoxBase valueBoxBase;
-    private final Object value;
-    private Object newValue;
-
-    public UndoableValueBoxBaseOperation(ValueBoxBase valueBoxBase, Object value) {
-        this.valueBoxBase = valueBoxBase;
-        this.value = value;
+    private UndoableCreator() {
     }
 
-    @Override
-    public void undo() {
-        newValue = valueBoxBase.getValue();
-        valueBoxBase.setValue(value, false);
-    }
-
-    @Override
-    public void redo() {
-        valueBoxBase.setValue(newValue, false);
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public ValueBoxBase getValueBoxBase() {
-        return valueBoxBase;
+    public static IsUndoable create(ValueChangeEvent event, Object oldValue) {
+        final Object source = event.getSource();
+        if (source instanceof ValueBoxBase) {
+            return new UndoableValueBoxBaseOperation((ValueBoxBase) source, oldValue);
+        }
+        return null;
     }
 }

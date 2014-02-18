@@ -34,7 +34,6 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
-import org.activityinfo.ui.full.client.widget.undo.UndoManager;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -50,20 +49,20 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
     private final List<FormInstance> instances;
     private final Map<String, Cuid> labelToCuidMap = Maps.newHashMap();
 
-    public FormFieldWidgetReferenceSuggestBox(UndoManager undoManager, List<FormInstance> instances) {
+    public FormFieldWidgetReferenceSuggestBox(List<FormInstance> instances) {
         this.instances = instances;
-        suggestBox = createSuggestBox(undoManager);
+        suggestBox = createSuggestBox();
         initWidget(suggestBox);
     }
 
-    private SuggestBox createSuggestBox(UndoManager undoManager) {
+    private SuggestBox createSuggestBox() {
         final MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
         for (FormInstance instance : instances) {
             final String labelValue = FormInstanceLabeler.getLabel(instance);
             oracle.add(labelValue);
             labelToCuidMap.put(labelValue, instance.getId());
         }
-        final SuggestBox box = FormFieldWidgetFactory.createSuggestBox(oracle, undoManager);
+        final SuggestBox box = FormFieldWidgetFactory.createSuggestBox(oracle);
         box.addValueChangeHandler(new ValueChangeHandler<String>() {
             @Override
             public void onValueChange(ValueChangeEvent<String> event) {

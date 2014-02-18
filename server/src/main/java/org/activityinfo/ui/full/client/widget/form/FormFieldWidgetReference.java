@@ -39,7 +39,6 @@ import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.undo.UndoManager;
 
 import java.util.List;
 import java.util.Set;
@@ -76,15 +75,13 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     FlowPanel panel;
 
     private ResourceLocator resourceLocator;
-    private UndoManager undoManager;
     private FormField formField;
     private FormFieldWidget<Set<Cuid>> widget;
     private Set<Cuid> value = Sets.newHashSet();
 
-    public FormFieldWidgetReference(final FormField formField, final ResourceLocator resourceLocator, final UndoManager undoManager) {
+    public FormFieldWidgetReference(final FormField formField, final ResourceLocator resourceLocator) {
         this.formField = formField;
         this.resourceLocator = resourceLocator;
-        this.undoManager = undoManager;
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         loadFormInstances(formField);
@@ -125,7 +122,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
                 return new FromFieldWidgetReferenceComboBox(formInstances);
             } else {
                 // Suggest box
-                return new FormFieldWidgetReferenceSuggestBox(undoManager, formInstances);
+                return new FormFieldWidgetReferenceSuggestBox(formInstances);
             }
         } else {
             if (size < SMALL_BALANCE_NUMBER) {
@@ -133,10 +130,10 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
                 return new FormFieldWidgetReferenceCheckBoxPanel(formInstances);
             } else if (size < MEDIUM_BALANCE_NUMBER) {
                 // List of selected + add button
-                return new FormFieldWidgetReferenceListPanel(undoManager, formInstances);
+                return new FormFieldWidgetReferenceListPanel(formInstances);
             } else {
                 // List of selected + add button
-                return new FormFieldWidgetReferenceListPanel(undoManager, formInstances);
+                return new FormFieldWidgetReferenceListPanel(formInstances);
             }
         }
     }

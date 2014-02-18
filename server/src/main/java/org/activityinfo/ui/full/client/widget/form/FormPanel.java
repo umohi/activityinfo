@@ -46,10 +46,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.undo.UndoListener;
-import org.activityinfo.ui.full.client.widget.undo.UndoManager;
-import org.activityinfo.ui.full.client.widget.undo.UndoableCreatedEvent;
-import org.activityinfo.ui.full.client.widget.undo.UndoableExecutedEvent;
+import org.activityinfo.ui.full.client.widget.undo.*;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -282,16 +279,12 @@ public class FormPanel extends Composite {
                     @Override
                     public void onValueChange(ValueChangeEvent event) {
                         final Object oldValue = formInstance.get(entry.getKey());
-                        pushUndoOperation(oldValue, event);
+                        undoManager.addUndoable(UndoableCreator.create(event, oldValue)); // push undoable
                         formInstance.set(entry.getKey(), event.getValue());
                     }
                 });
             }
         }
-    }
-
-    private void pushUndoOperation(Object oldValue, ValueChangeEvent event) {
-        // todo
     }
 
     private void applyValue(@Nonnull FormInstance formInstance) {
