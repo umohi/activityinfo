@@ -40,7 +40,7 @@ import org.activityinfo.server.database.hibernate.entity.LocationType;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
 import org.activityinfo.server.util.beanMapping.BeanMappingModule;
 import org.activityinfo.server.util.logging.LoggingModule;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -21,6 +21,7 @@ package org.activityinfo.api2.shared.form;
  * #L%
  */
 
+import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import org.activityinfo.api2.shared.Cuid;
@@ -32,6 +33,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
+import java.util.*;
 
 /**
  * @author yuriyz on 1/29/14.
@@ -91,10 +93,10 @@ public class FormInstance implements Resource {
         return null;
     }
 
-    public Date getDate(Cuid fieldId) {
+    public LocalDate getDate(Cuid fieldId) {
         final Object value = get(fieldId);
         if (value instanceof Date) {
-            return (Date) value;
+            return (LocalDate) value;
         }
         return null;
     }
@@ -103,6 +105,17 @@ public class FormInstance implements Resource {
         final Object value = get(fieldId);
         if(value instanceof Cuid) {
             return (Cuid) value;
+        }
+        return null;
+    }
+
+
+    public Set<Cuid> getReferences(Cuid fieldId) {
+        final Object value = get(fieldId);
+        if(value instanceof Cuid) {
+            return Collections.singleton((Cuid)value);
+        } else if(value instanceof Set) {
+            return (Set<Cuid>)value;
         }
         return null;
     }

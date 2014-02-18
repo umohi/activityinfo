@@ -1,11 +1,19 @@
 package org.activityinfo.api2.client;
 
 
-import com.google.common.collect.Lists;
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api2.shared.function.BiFunction;
+import org.activityinfo.api2.shared.function.BiFunctions;
+import org.activityinfo.api2.shared.function.BinaryOperator;
+import org.activityinfo.api2.shared.function.ConcatList;
+import org.activityinfo.api2.shared.monad.ListMonad;
+import org.activityinfo.api2.shared.monad.MonadicValue;
 
-import java.util.Collections;
+import javax.annotation.Nullable;
 import java.util.List;
 
 
@@ -17,18 +25,9 @@ import java.util.List;
  *
  * @param <T> the type of the promised value
  */
-public final class Promise<T> implements AsyncCallback<T> {
+public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
 
 
-    public interface AsyncOperation<T> {
-        void start(Promise<T> promise);
-    }
-
-    public static final AsyncOperation NO_OP = new AsyncOperation() {
-        @Override
-        public void start(Promise promise) {
-        }
-    };
 
     public enum State {
 
@@ -48,17 +47,13 @@ public final class Promise<T> implements AsyncCallback<T> {
         PENDING
     }
 
-    private final AsyncOperation<T> asyncOperation;
-
     private State state = State.PENDING;
     private T value;
     private Throwable exception;
 
     private List<AsyncCallback<? super T>> callbacks = null;
 
-    public Promise(AsyncOperation<T> asyncOperation) {
-        this.asyncOperation = asyncOperation;
-        this.asyncOperation.start(this);
+    public Promise() {
     }
 
     public State getState() {
@@ -79,12 +74,6 @@ public final class Promise<T> implements AsyncCallback<T> {
         publishFulfillment();
     }
 
-    public void retry() {
-        if(state == State.REJECTED) {
-            asyncOperation.start(this);
-        }
-    }
-
     public void then(AsyncCallback<? super T> callback) {
         switch (state) {
             case PENDING:
@@ -102,8 +91,31 @@ public final class Promise<T> implements AsyncCallback<T> {
         }
     }
 
-    public <F> Promise<F> then(final Function<? super T, F> f) {
-        final Promise<F> chained = new Promise<F>(this.<F>chainTask());
+    public <R> Promise<R> join(final Function<? super T, Promise<R>> function) {
+        final Promise<R> chained = new Promise<R>();
+        then(new AsyncCallback<T>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                chained.onFailure(caught);
+            }
+
+            @Override
+            public void onSuccess(T t) {
+                function.apply(t).then(chained);
+            }
+        });
+        return chained;
+    }
+
+    /**
+     *
+     * @param function
+     * @param <R>
+     * @return
+     */
+    @Override
+    public <R> Promise<R> then(final Function<? super T, R> function) {
+        final Promise<R> chained = new Promise<R>();
         then(new AsyncCallback<T>() {
 
             @Override
@@ -112,50 +124,15 @@ public final class Promise<T> implements AsyncCallback<T> {
             }
 
             @Override
-            public void onSuccess(T result) {
+            public void onSuccess(T t) {
                 try {
-                    chained.resolve(f.apply(result));
+                    chained.resolve(function.apply(t));
                 } catch (Throwable caught) {
                     chained.reject(caught);
                 }
             }
         });
         return chained;
-    }
-
-    public <F> Promise<F> then(final AsyncFunction<T, F> f) {
-        final Promise<F> chained = new Promise<F>(this.<F>chainTask());
-        then(new AsyncCallback<T>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                chained.reject(caught);
-            }
-
-            @Override
-            public void onSuccess(T result) {
-                f.apply(result).then(new AsyncCallback<F>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        chained.reject(caught);
-                    }
-
-                    @Override
-                    public void onSuccess(F result) {
-                        chained.resolve(result);
-                    }
-                });
-            }
-        });
-        return chained;
-    }
-
-    private <X> AsyncOperation<X> chainTask() {
-        return new AsyncOperation<X>() {
-            @Override
-            public void start(Promise<X> promise) {
-                asyncOperation.start(Promise.this);
-            }
-        };
     }
 
     @Override
@@ -195,75 +172,81 @@ public final class Promise<T> implements AsyncCallback<T> {
     }
 
     public static <T> Promise<T> resolved(T value) {
-        Promise<T> promise = new Promise<T>(NO_OP);
+        Promise<T> promise = new Promise<T>();
         promise.resolve(value);
         return promise;
     }
 
 
     public static <X> Promise<X> rejected(Throwable exception) {
-        Promise<X> promise = new Promise<X>(NO_OP);
+        Promise<X> promise = new Promise<X>();
         promise.reject(exception);
         return promise;
     }
 
-
-    public static <X> Promise<List<X>> all(final List<Promise<X>> promises) {
-
-        if(promises.isEmpty()) {
-            return Promise.resolved(Collections.<X>emptyList());
-        }
-
-        final Promise<List<X>> all = new Promise<>(new AsyncOperation<List<X>>() {
+    /**
+     * Transforms a function {@code T → R} to a function which operates on the equivalent
+     * Promised values: {@code Promise<T> → Promise<R> }
+     */
+    public static <T, R> Function<Promise<T>, Promise<R>> fmap(final Function<T, R> function) {
+        return new Function<Promise<T>, Promise<R>>() {
             @Override
-            public void start(Promise<List<X>> all) {
-                for(Promise<X> promise : promises) {
-                    promise.retry();
-                }
+            public Promise<R> apply(Promise<T> input) {
+                return input.then(function);
             }
-        });
+        };
+    }
 
-        final List<X> results = Lists.newArrayList();
-        final Counter remaining = new Counter(promises.size());
+    /**
+     * Transforms a binary function {@code (T, U) → R} to a function which operates on the equivalent
+     * Promised values: {@code ( Promise<T>, Promise<U> ) → Promise<R> }
+     */
+    public static <T, U, R> BiFunction<Promise<T>, Promise<U>, Promise<R>> fmap(final BiFunction<T, U, R> function) {
+        return new BiFunction<Promise<T>, Promise<U>, Promise<R>>() {
+            @Override
+            public Promise<R> apply(final Promise<T> promiseT, final Promise<U> promiseU) {
+                Preconditions.checkNotNull(promiseT, "promise cannot be null");
+                return promiseT.join(new Function<T, Promise<R>>() {
 
-        for(int i=0;i!=promises.size();++i) {
-            results.add(null);
-            final int promiseIndex = i;
-            promises.get(i).then(new AsyncCallback<X>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    all.reject(caught);
-                }
-
-                @Override
-                public void onSuccess(X result) {
-                    results.set(promiseIndex, result);
-                    remaining.decrement();
-                    if (remaining.isZero()) {
-                        all.resolve(results);
+                    @Nullable
+                    @Override
+                    public Promise<R> apply(@Nullable T t) {
+                        return promiseU.then(function.apply(t));
                     }
-                }
-            });
-        }
-
-        return all;
+                });
+            }
+        };
     }
 
-    private static class Counter {
-        private int value;
-
-        public Counter(int value) {
-            this.value = value;
-        }
-
-        public void decrement() {
-            value--;
-        }
-
-        public boolean isZero() {
-            return value == 0;
+    /**
+     * Convenience function for applying an asynchronous consumer to all elements of a list in sequence.
+     * Equivalent to {@code fmap(foldLeft) ( unit(null), void operator, transform(items, consumer) ) }
+     *
+     */
+    public static <T> Promise<Void> applyAll(Iterable<T> items, Function<T, Promise<Void>> consumer) {
+        try {
+            return BiFunctions.foldLeft(Promise.<Void>resolved(null), fmap(BinaryOperator.VOID),
+                    Iterables.transform(items, consumer));
+        } catch(Throwable caught) {
+            return Promise.rejected(caught);
         }
     }
+
+    /**
+     * Convenience function for applying an fmap'd foldLeft to a list of Promises.
+     */
+    public static <T> Promise<T> foldLeft(T initialValue, BiFunction<T, T, T> operator, Iterable<Promise<T>> promises) {
+        return BiFunctions.foldLeft(Promise.resolved(initialValue), fmap(operator), promises);
+    }
+
+    /**
+     * Convenience function for concatenating a promised item with a promised list of items of the same type
+     */
+    public static <T> Promise<List<T>> concatenate(Promise<T> a, Promise<List<T>> b) {
+        Promise<List<T>> aList = a.then(ListMonad.<T>unit());
+        return fmap(new ConcatList<T>()).apply(aList, b);
+    }
+
 
     @Override
     public String toString() {

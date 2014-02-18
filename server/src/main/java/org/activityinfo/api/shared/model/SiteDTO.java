@@ -94,9 +94,11 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
         return (Integer) get("id");
     }
 
-    public Cuid getCuid() {
-        return Cuids.toIri(CUID_DOMAIN, getId());
+    public Cuid getInstanceId() {
+        return CuidAdapter.cuid(CuidAdapter.SITE_DOMAIN, getId());
     }
+
+
 
     /**
      * @return the id of the Activity to which this Site belongs
@@ -106,8 +108,8 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
     }
 
 
-    public Cuid getActivityCuid() {
-        return Cuids.toIri(CuidAdapter.ACTIVITY_DOMAIN, getActivityId());
+    public Cuid getFormClassId() {
+        return CuidAdapter.cuid(CuidAdapter.ACTIVITY_DOMAIN, getActivityId());
     }
 
     /**

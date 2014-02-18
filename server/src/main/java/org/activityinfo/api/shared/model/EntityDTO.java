@@ -23,6 +23,7 @@ package org.activityinfo.api.shared.model;
  */
 
 import com.extjs.gxt.ui.client.data.ModelData;
+import org.activityinfo.api2.shared.Cuid;
 
 /**
  * A data transfer object with a one-to-one relationship with a JPA @Entity.

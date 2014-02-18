@@ -56,6 +56,7 @@ public class CuidAdapter {
     public static final int PROJECT_FIELD = 6;
     public static final int DATE_FIELD = 7;
     public static final int FULL_NAME_FIELD = 8;
+    public static final int LOCATION_FIELD = 9;
 
     /**
      * Avoid instance creation.
@@ -95,9 +96,12 @@ public class CuidAdapter {
      * @return the {@code FormField} Cuid for the Partner field of a given Activity {@code FormClass}
      */
     public static Cuid partnerField(int activityId) {
-        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "p");
+        return field(activityFormClass(activityId), PARTNER_FIELD);
     }
 
+    public static Cuid projectField(int activityId) {
+        return field(activityFormClass(activityId), PROJECT_FIELD);
+    }
 
     public static Cuid partnerInstanceId(int partnerId) {
         return cuid(PARTNER_DOMAIN, partnerId);
@@ -111,7 +115,7 @@ public class CuidAdapter {
      * @return the {@code FormField}  Cuid for the Location field of a given Activity {@code FormClass}
      */
     public static Cuid locationField(int activityId) {
-        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "L");
+        return field(activityFormClass(activityId), LOCATION_FIELD);
     }
 
     /**

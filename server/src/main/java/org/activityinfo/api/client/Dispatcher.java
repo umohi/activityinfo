@@ -26,6 +26,7 @@ package org.activityinfo.api.client;
  * #L%
  */
 
+import com.google.common.base.Function;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
@@ -38,7 +39,7 @@ import org.activityinfo.api2.client.Promise;
  *
  * @author Alex Bertram (akbertram@gmail.com)
  */
-public interface Dispatcher {
+public interface Dispatcher extends Function<Command, Promise<CommandResult>> {
 
     /**
      * Attempts to execute a command. The command may not neccessarily be

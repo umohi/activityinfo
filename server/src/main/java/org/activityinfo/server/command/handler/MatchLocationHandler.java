@@ -14,7 +14,7 @@ import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 import org.activityinfo.server.database.hibernate.entity.Location;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.util.Jaro;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 
 import javax.persistence.EntityManager;
 import java.util.Collection;

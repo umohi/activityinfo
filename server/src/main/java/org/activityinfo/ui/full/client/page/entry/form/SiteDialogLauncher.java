@@ -34,7 +34,7 @@ import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.ui.full.client.page.entry.LockedPeriodSet;
 import org.activityinfo.ui.full.client.page.entry.location.LocationDialog;
 

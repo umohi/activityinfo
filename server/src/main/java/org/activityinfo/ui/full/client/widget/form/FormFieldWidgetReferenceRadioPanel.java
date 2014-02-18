@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;

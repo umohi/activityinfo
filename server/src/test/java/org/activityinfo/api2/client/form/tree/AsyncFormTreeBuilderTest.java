@@ -2,7 +2,7 @@ package org.activityinfo.api2.client.form.tree;
 
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
-import org.activityinfo.api2.client.Action;
+import org.activityinfo.api2.client.promises.Action;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.tree.FormTree;
@@ -27,7 +27,7 @@ public class AsyncFormTreeBuilderTest extends CommandTestCase2 {
     public void treeResolver() {
         ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
         AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(locator);
-        Promise<FormTree> tree = treeBuilder.build(CuidAdapter.activityFormClass(1));
+        Promise<FormTree> tree = treeBuilder.apply(CuidAdapter.activityFormClass(1));
 
         assertResolves(tree.then(new Action<FormTree>() {
             @Override

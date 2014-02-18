@@ -25,7 +25,7 @@ package org.activityinfo.server.command;
 import org.activityinfo.api.shared.model.PartnerDTO;
 import org.activityinfo.api.shared.model.ProjectDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 import org.junit.Assert;
 
 import java.util.GregorianCalendar;

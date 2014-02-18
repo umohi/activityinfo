@@ -27,7 +27,7 @@ import org.activityinfo.api.shared.command.CreateLocation;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.ui.full.client.page.entry.admin.AdminComboBox;
 import org.activityinfo.ui.full.client.page.entry.admin.AdminComboBoxSet;
 import org.activityinfo.ui.full.client.page.entry.admin.AdminFieldSetPresenter;

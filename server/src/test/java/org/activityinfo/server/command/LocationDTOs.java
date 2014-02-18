@@ -23,7 +23,7 @@ package org.activityinfo.server.command;
  */
 
 import org.activityinfo.api.shared.model.LocationDTO;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 
 public class LocationDTOs {
     public static LocationDTO newLocation() {

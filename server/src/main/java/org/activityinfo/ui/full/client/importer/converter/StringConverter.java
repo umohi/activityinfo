@@ -3,7 +3,7 @@ package org.activityinfo.ui.full.client.importer.converter;
 import javax.annotation.Nonnull;
 
 /**
- * Performs no conversion
+ * Converts an imported value to String
  */
 public class StringConverter implements Converter  {
 

@@ -121,7 +121,7 @@ public class GetLocationsHandler implements
 
                                 List<LocationDTO> list = new ArrayList<>(dtos.values());
                                 callback.onSuccess(new LocationResult(list));
-                            }
+                           }
                         });
             }
         });

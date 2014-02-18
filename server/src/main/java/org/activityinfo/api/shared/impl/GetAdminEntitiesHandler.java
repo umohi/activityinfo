@@ -72,6 +72,10 @@ public class GetAdminEntitiesHandler implements
             query.where("AdminEntity.AdminLevelId").equalTo(cmd.getLevelId());
         }
 
+        if (cmd.getEntityId() != null) {
+            query.where("AdminEntity.AdminEntityId").equalTo(cmd.getEntityId());
+        }
+
         if (cmd.getParentId() != null) {
             query.where("AdminEntity.AdminEntityParentId").equalTo(
                     cmd.getParentId());

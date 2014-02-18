@@ -34,12 +34,11 @@ import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.server.database.hibernate.entity.*;
 import org.activityinfo.server.event.sitehistory.ChangeType;
 import org.activityinfo.server.event.sitehistory.SiteHistoryProcessor;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 
 import javax.persistence.EntityManager;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 
 /**

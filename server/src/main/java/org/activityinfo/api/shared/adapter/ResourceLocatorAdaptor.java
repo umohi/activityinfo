@@ -1,11 +1,14 @@
 package org.activityinfo.api.shared.adapter;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.common.base.Functions;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.adapter.bindings.SiteBinding;
+import org.activityinfo.api.shared.adapter.bindings.SiteBindingFactory;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.command.GetSites;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.NotFoundException;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
@@ -15,7 +18,6 @@ import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
 
 import java.util.List;
 
@@ -65,43 +67,37 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         if (instanceId.getDomain() == SITE_DOMAIN) {
             final int siteId = getLegacyIdFromCuid(instanceId);
 
-            return new Promise<>(new Promise.AsyncOperation<FormInstance>() {
-                @Override
-                public void start(final Promise<FormInstance> promise) {
-                    // execute via dispatcher directly to avoi promise.resolve(),
-                    // we want to resolve it when sub-call is finished
-                    dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            promise.reject(throwable);
-                        }
+            Promise<SchemaDTO> schema = dispatcher
+                    .execute(new GetSchema());
 
-                        @Override
-                        public void onSuccess(final SchemaDTO schemaDTO) {
-                            dispatcher.execute(GetSites.byId(siteId)).
-                                    then(new SingleListResultAdapter<SiteDTO>()).
-                                    then(new SiteInstanceAdapter(schemaDTO)).
-                                    then(new AsyncCallback<FormInstance>() {
-                                        @Override
-                                        public void onFailure(Throwable caught) {
-                                            promise.reject(caught);
-                                        }
+            Promise<SiteDTO> site = dispatcher
+                    .execute(GetSites.byId(siteId))
+                    .then(new SingleListResultAdapter<SiteDTO>());
 
-                                        @Override
-                                        public void onSuccess(FormInstance result) {
-                                            promise.resolve(result);
-                                        }
-                                    });
-                        }
-                    });
-                }
-            });
+            return Promise.fmap(new SiteInstanceAdapter()).apply(schema, site);
         }
         return Promise.rejected(new NotFoundException(instanceId.asIri()));
+
+
     }
 
     @Override
     public Promise<Void> persist(Resource resource) {
+        if(resource instanceof FormInstance) {
+            FormInstance instance = (FormInstance) resource;
+            if(instance.getId().getDomain() == CuidAdapter.SITE_DOMAIN) {
+                int activityId = CuidAdapter.getLegacyIdFromCuid(instance.getClassId());
+
+                Promise<SiteBinding> siteBinding = dispatcher
+                        .execute(new GetSchema())
+                        .then(new SiteBindingFactory(activityId));
+
+                return Promise.fmap(new SitePersistFunction(dispatcher))
+                        .apply(siteBinding, Promise.resolved(instance))
+                        .then(Functions.<Void>constant(null));
+
+            }
+        }
         return Promise.rejected(new UnsupportedOperationException());
     }
 
@@ -116,8 +112,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<List<Projection>> query(List<FieldPath> paths, Criteria criteria) {
-        return new Promise<>(new Joiner(dispatcher, paths, criteria));
+    public Promise<List<Projection>> query(InstanceQuery query) {
+        return new Joiner(dispatcher, query.getFieldPaths(), query.getCriteria()).apply(query);
     }
-
 }

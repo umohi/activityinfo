@@ -37,6 +37,7 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
     private Collection<Integer> countryIds;
     private Integer levelId;
     private Integer parentId;
+    private Integer entityId;
     private Filter filter;
 
     public GetAdminEntities() {
@@ -88,6 +89,15 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
 
     public void setCountryId(Integer countryId) {
         this.countryIds = Arrays.asList(countryId);
+    }
+
+    public Integer getEntityId() {
+        return entityId;
+    }
+
+    public GetAdminEntities setEntityId(Integer entityId) {
+        this.entityId = entityId;
+        return this;
     }
 
     public void setCountryIds(Collection<Integer> countryIds) {

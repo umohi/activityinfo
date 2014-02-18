@@ -32,7 +32,7 @@ import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

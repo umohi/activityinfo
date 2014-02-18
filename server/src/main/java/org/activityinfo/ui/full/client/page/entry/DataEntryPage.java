@@ -53,7 +53,7 @@ import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
-import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.ui.full.client.page.*;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
@@ -389,7 +389,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
             final SiteDTO selection = gridPanel.getSelection();
             if (FeatureSwitch.isNewFormEnabled()) {
                 eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(selection.getActivityCuid(), selection.getCuid())));
+                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(selection.getFormClassId(), selection.getInstanceId())));
             } else {
                 SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
                 launcher.editSite(selection,

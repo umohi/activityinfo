@@ -45,6 +45,6 @@ public interface ResourceLocator {
      */
     Promise<List<FormInstance>> queryInstances(Criteria criteria);
 
-    Promise<List<Projection>> query(List<FieldPath> paths, Criteria criteria);
+    Promise<List<Projection>> query(InstanceQuery query);
 
 }
