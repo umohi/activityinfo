@@ -24,7 +24,10 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -46,10 +49,7 @@ import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.undo.*;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Panel to render FormClass definition.
@@ -350,6 +350,31 @@ public class FormPanel extends Composite {
                     formInstance.getValueMap().remove(formField.getId());
                 }
             });
+        }
+    }
+
+    public void moveUpRow(FormFieldRow formFieldRow) {
+        final int widgetIndex = contentPanel.getWidgetIndex(formFieldRow);
+        if (widgetIndex > 0) { // widget is not first and != -1
+            contentPanel.remove(widgetIndex);
+            contentPanel.insert(formFieldRow, (widgetIndex - 1));
+
+            final FormElementContainer parent = formClass.getParent(formFieldRow.getFormField());
+            final int indexInClass = parent.getElements().indexOf(formFieldRow.getFormField());
+            Collections.swap(parent.getElements(), indexInClass, (indexInClass - 1));
+        }
+    }
+
+    public void moveDownRow(FormFieldRow formFieldRow) {
+        final int widgetIndex = contentPanel.getWidgetIndex(formFieldRow);
+        final int widgetCount = contentPanel.getWidgetCount();
+        if (widgetIndex != -1 && (widgetIndex + 1) < widgetCount) { // widget is found and has "room" to move down
+            contentPanel.remove(widgetIndex);
+            contentPanel.insert(formFieldRow, (widgetIndex + 1));
+
+            final FormElementContainer parent = formClass.getParent(formFieldRow.getFormField());
+            final int indexInClass = parent.getElements().indexOf(formFieldRow.getFormField());
+            Collections.swap(parent.getElements(), indexInClass, (indexInClass + 1));
         }
     }
 

@@ -45,8 +45,8 @@ public class FormClass implements Resource, FormElementContainer {
         return copy;
     }
 
-    public FormElementContainer getParent(FormElement element) {
-        return getContainerElementsImpl(this, element);
+    public FormElementContainer getParent(FormElement childElement) {
+        return getContainerElementsImpl(this, childElement);
     }
 
     private static FormElementContainer getContainerElementsImpl(FormElementContainer container, final FormElement searchElement) {

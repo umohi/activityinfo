@@ -103,12 +103,12 @@ public class FormFieldRow extends Composite {
 
     @UiHandler("upButton")
     public void onMoveUp(ClickEvent event) {
-        // todo
+        formPanel.moveUpRow(this);
     }
 
     @UiHandler("downButton")
     public void onMoveDown(ClickEvent event) {
-        // todo
+        formPanel.moveDownRow(this);
     }
 
     private void addHandlers() {
