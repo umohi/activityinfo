@@ -21,27 +21,34 @@ package org.activityinfo.ui.full.client.widget.undo;
  * #L%
  */
 
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.user.client.ui.ValueBoxBase;
 import org.activityinfo.ui.full.client.widget.form.FormFieldWidget;
 
 /**
- * Creates undoable.
- *
- * @author yuriyz on 2/17/14.
+ * @author yuriyz on 2/18/14.
  */
-public class UndoableCreator {
+public class UndoableFormFieldWidgetOperation implements IsUndoable {
 
-    private UndoableCreator() {
+    private FormFieldWidget widget;
+    private Object value;
+    private Object newValue;
+
+    public UndoableFormFieldWidgetOperation(FormFieldWidget widget, Object value) {
+        this.widget = widget;
+        this.value = value;
     }
 
-    public static IsUndoable create(ValueChangeEvent event, Object oldValue) {
-        final Object source = event.getSource();
-        if (source instanceof ValueBoxBase) {
-            return new UndoableValueBoxBaseOperation((ValueBoxBase) source, oldValue);
-        } else if (source instanceof FormFieldWidget) {
-            return new UndoableFormFieldWidgetOperation((FormFieldWidget)source, oldValue);
-        }
-        return null;
+    @Override
+    public void undo() {
+        newValue = widget.getValue();
+        widget.setValue(value, false);
+    }
+
+    @Override
+    public void redo() {
+        widget.setValue(newValue, false);
+    }
+
+    public Object getValue() {
+        return value;
     }
 }
