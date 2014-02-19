@@ -16,6 +16,4 @@ public class QuantityConverter implements Converter {
     public Double convertString(@Nonnull String value) {
         return Double.parseDouble(value);
     }
-
-
 }

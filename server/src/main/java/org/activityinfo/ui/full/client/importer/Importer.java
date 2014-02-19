@@ -7,11 +7,7 @@ import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
-import org.activityinfo.ui.full.client.importer.columns.DataColumn;
-import org.activityinfo.ui.full.client.importer.columns.DraftColumn;
-import org.activityinfo.ui.full.client.importer.columns.MissingFieldColumn;
-import org.activityinfo.ui.full.client.importer.columns.NestedFieldColumn;
-import org.activityinfo.ui.full.client.importer.data.SourceColumn;
+import org.activityinfo.ui.full.client.importer.binding.*;
 import org.activityinfo.ui.full.client.importer.data.SourceTable;
 import org.activityinfo.api2.shared.form.tree.FormTree.SearchOrder;
 
@@ -74,30 +70,45 @@ public class Importer<T> {
         bindings.remove(columnIndex);
     }
 
-    public List<DraftColumn> getImportColumns() {
-        List<DraftColumn> columns = Lists.newArrayList();
+    private Set<FieldPath> mappedReferenceFields() {
+        Set<FieldPath> referenceFields = Sets.newHashSet();
 
-        Set<FieldPath> mapped = Sets.newHashSet(getColumnBindings().values());
+        for(FieldPath mappedPath : getMappedFieldPaths()) {
+            if(mappedPath.isNested()) {
+                referenceFields.add(new FieldPath(mappedPath.getRoot()));
+            }
+        }
+        return referenceFields;
+    }
 
-        for(FieldPath path : mapped) {
-            if(path.isNested()) {
-                columns.add(new NestedFieldColumn(formTree.getNodeByPath(path)));
-            } else {
-                columns.add(new DataColumn(formTree.getNodeByPath(path)));
+
+    public List<FieldBinding> createFieldBindings() {
+        List<FieldBinding> fieldImporters = Lists.newArrayList();
+
+        // Add Reference fields that have been mapped
+        for(FieldPath referenceFieldPath : mappedReferenceFields()) {
+            fieldImporters.add(new MappedReferenceFieldBinding(
+                    formTree.getNodeByPath(referenceFieldPath),
+                    getColumnBindings()));
+        }
+
+        // Add simple data fields that have been mapped
+        for(Map.Entry<Integer, FieldPath> binding : getColumnBindings().entrySet()) {
+            if(!binding.getValue().isNested()) {
+                FormTree.Node fieldNode = formTree.getNodeByPath(binding.getValue());
+                fieldImporters.add(new MappedDataFieldBinding(fieldNode, binding.getKey()));
             }
         }
 
+        // Finally add any missing fields
         Set<Cuid> mappedRootField = Sets.newHashSet();
-        for(FieldPath fieldPath : mapped) {
-            mappedRootField.add(fieldPath.getRoot());
-        }
         for(FormTree.Node node : formTree.getRoot().getChildren()) {
             if(!mappedRootField.contains(node.getFieldId()) && node.getField().isRequired()) {
-                columns.add(new MissingFieldColumn(node.getField()));
+                fieldImporters.add(new MissingFieldBinding(node));
             }
         }
 
-        return columns;
+        return fieldImporters;
     }
 
     public List<FieldPath> getFieldsToMatch() {
@@ -110,30 +121,11 @@ public class Importer<T> {
                         FormTree.pathNotIn(providedValues.keySet())));
     }
 
-    public List<FieldPath> getObjectPropertiesToResolve() {
-        return formTree.search(SearchOrder.DEPTH_FIRST,
-                // descend if...
-                FormTree.pathNotIn(providedValues.keySet()),
-                // match if...
-                Predicates.and(
-                        FormTree.isReference(),
-                        FormTree.pathNotIn(providedValues.keySet())));
-    }
 
-    public List<FieldPath> getPropertiesToValidate() {
-        return formTree.search(SearchOrder.BREADTH_FIRST,
-                // descend if...
-                FormTree.pathNotIn(providedValues.keySet()),
-                // match if...
-                Predicates.and(
-                        FormTree.pathNotIn(providedValues.keySet()),
-                        Predicates.or(
-                                FormTree.isReference(),
-                                FormTree.pathIn(bindings.values()))));
-    }
 
     public FormTree getFormTree() {
         return formTree;
     }
+
 
 }

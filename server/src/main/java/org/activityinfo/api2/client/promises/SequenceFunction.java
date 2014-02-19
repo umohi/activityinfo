@@ -6,9 +6,9 @@ import org.activityinfo.api2.client.AsyncFunction;
 import java.util.Iterator;
 
 /**
- * Created by alex on 2/17/14.
+ * Executes a list of nullary async functions in a sequence.
  */
-public class SequenceFunction extends AsyncTask<Void> {
+public class SequenceFunction implements AsyncFunction<Void, Void> {
 
     private final Iterable<? extends AsyncFunction<Void, Void>> tasks;
 
@@ -17,7 +17,7 @@ public class SequenceFunction extends AsyncTask<Void> {
     }
 
     @Override
-    protected void apply(AsyncCallback<Void> callback) {
+    public void apply(Void noInput, AsyncCallback<Void> callback) {
         executeNext(tasks.iterator(), callback);
     }
 

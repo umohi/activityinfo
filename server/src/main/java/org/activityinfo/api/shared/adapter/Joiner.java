@@ -7,7 +7,6 @@ import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api2.client.AsyncFunction;
-import org.activityinfo.api2.client.promises.AsyncTask;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.promises.MapFunction;
@@ -24,7 +23,7 @@ import java.util.*;
  * Naive implementation that joins and projects a multi-level
  * instance query.
  */
-class Joiner extends AsyncTask<List<Projection>> {
+class Joiner implements AsyncFunction<Void, List<Projection>> {
 
 
     private final Criteria criteria;
@@ -82,7 +81,7 @@ class Joiner extends AsyncTask<List<Projection>> {
     }
 
     @Override
-    protected void apply(AsyncCallback<List<Projection>> callback) {
+    public void apply(Void noInput, AsyncCallback<List<Projection>> callback) {
 
         Promise<List<Projection>> results = query(criteria)
                 .then(new MapFunction<>(new Project(null)));

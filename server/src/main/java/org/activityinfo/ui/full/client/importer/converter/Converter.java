@@ -3,7 +3,8 @@ package org.activityinfo.ui.full.client.importer.converter;
 import javax.annotation.Nonnull;
 
 /**
- * Created by alex on 2/14/14.
+ * Converts raw imported values from the {@code ImportSource} to the
+ * correct field value
  */
 public interface Converter {
 

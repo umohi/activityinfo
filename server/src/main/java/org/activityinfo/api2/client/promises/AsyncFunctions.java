@@ -37,7 +37,7 @@ public class AsyncFunctions {
     }
 
 
-    public static AsyncTask<Void> sequence(List<AsyncTask<Void>> tasks) {
+    public static AsyncFunction<Void, Void> sequence(List<AsyncFunction<Void, Void>> tasks) {
         return new SequenceFunction(tasks);
     }
 
@@ -63,37 +63,31 @@ public class AsyncFunctions {
         };
     }
 
-    public static <T> AsyncTask<T> constant(final T value) {
-        return new AsyncTask<T>() {
+    public static <T> AsyncFunction<Object, T> constant(final T value) {
+        return new AsyncFunction<Object, T>() {
             @Override
-            protected void apply(AsyncCallback<T> callback) {
+            public void apply(@Nullable Object o, AsyncCallback<T> callback) {
                 callback.onSuccess(value);
             }
         };
     }
 
-    public static <T> AsyncTask<T> failure(final Throwable caught) {
-        return new AsyncTask<T>() {
+    public static <T> AsyncFunction<Object, T> failure(final Throwable caught) {
+        return new AsyncFunction<Object, T>() {
             @Override
-            protected void apply(AsyncCallback<T> callback) {
+            public void apply(@Nullable Object o, AsyncCallback<T> callback) {
                 callback.onFailure(caught);
             }
         };
     }
 
-
     /**
-     * "Applies" a function to a given argument and returns a new nullary function that
-     * @param argument
-     * @param function
-     * @param <T>
-     * @param <F>
-     * @return
+     * Captures the provided argument and returns a new nullary async function
      */
-    public static <T, F> AsyncTask<F> apply(final T argument, final AsyncFunction<T, F> function) {
-        return new AsyncTask<F>() {
+    public static <T, F> AsyncFunction<Void, F> apply(final T argument, final AsyncFunction<T, F> function) {
+        return new AsyncFunction<Void, F>() {
             @Override
-            protected void apply(AsyncCallback<F> callback) {
+            public void apply(@Nullable Void aVoid, AsyncCallback<F> callback) {
                 function.apply(argument, callback);
             }
         };

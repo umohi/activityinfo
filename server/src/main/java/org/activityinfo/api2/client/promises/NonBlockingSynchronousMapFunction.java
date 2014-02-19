@@ -9,7 +9,7 @@ import java.util.Iterator;
 /**
  * Executes a set of work items in chunks to avoid blocking the UI thread
  */
-public class NonBlockingSynchronousMapFunction<T> implements AsyncFunction<Iterable<T>, Void> {
+class NonBlockingSynchronousMapFunction<T> implements AsyncFunction<Iterable<T>, Void> {
 
     private final Scheduler scheduler;
     private final Action<T> action;

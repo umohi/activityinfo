@@ -203,7 +203,9 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
     }
 
     public static <T> Promise<T> resolved(T value) {
-        return new Promise<T>(AsyncFunctions.constant(value));
+        Promise<T> promise = new Promise<T>();
+        promise.resolve(value);
+        return promise;
     }
 
 

@@ -44,6 +44,8 @@ public class PastedTable implements SourceTable {
         String[] headers = parseRow(headerRow);
         parseHeaders(headers);
 
+        int rowIndex = 0;
+
         int rowStarts = headerEnds + 1;
         while (true) {
             int rowEnds = text.indexOf('\n', rowStarts);
@@ -51,7 +53,7 @@ public class PastedTable implements SourceTable {
                 return;
             }
 
-            rows.add(new PastedRow(parseRow(text.substring(rowStarts, rowEnds))));
+            rows.add(new PastedRow(parseRow(text.substring(rowStarts, rowEnds)), rowIndex++));
             rowStarts = rowEnds + 1;
         }
     }

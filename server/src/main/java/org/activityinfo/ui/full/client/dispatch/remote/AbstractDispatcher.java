@@ -27,8 +27,8 @@ import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api2.client.AsyncFunction;
 import org.activityinfo.api2.client.Promise;
-import org.activityinfo.api2.client.promises.AsyncTask;
 import org.activityinfo.ui.full.client.dispatch.monitor.MonitoringCallback;
 
 public abstract class AbstractDispatcher implements Dispatcher {
@@ -52,10 +52,10 @@ public abstract class AbstractDispatcher implements Dispatcher {
      * @param <R>     the type of the {@code Command}'s {@code CommandResult}
      */
     public final <R extends CommandResult> Promise<R> execute(final Command<R> command) {
-        return new Promise<R>(new AsyncTask<R>() {
+        return new Promise<R>(new AsyncFunction<Void, R>() {
 
             @Override
-            public void apply(final AsyncCallback<R> callback) {
+            public void apply(Void noInput, final AsyncCallback<R> callback) {
                 try {
                     execute(command, new AsyncCallback<R>() {
                         @Override
