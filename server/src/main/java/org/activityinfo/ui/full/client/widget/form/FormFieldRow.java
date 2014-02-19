@@ -99,7 +99,7 @@ public class FormFieldRow extends Composite {
         toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                formPanel.removeRow(FormFieldRow.this);
+                formPanel.removeFieldRow(FormFieldRow.this);
             }
         });
         toolbar.getUpButton().addClickHandler(new ClickHandler() {

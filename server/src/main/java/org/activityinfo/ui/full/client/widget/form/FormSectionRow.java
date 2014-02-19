@@ -22,6 +22,8 @@ package org.activityinfo.ui.full.client.widget.form;
  */
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -59,6 +61,8 @@ public class FormSectionRow extends Composite {
         this.toolbar.attach(this);
         this.toolbar.setFormPanel(formPanel);
         this.label.setHTML(SafeHtmlUtils.fromSafeConstant(formSection.getLabel().getValue()));
+
+        addHandlers();
     }
 
     public FormSection getFormSection() {
@@ -67,5 +71,38 @@ public class FormSectionRow extends Composite {
 
     public FormPanel getFormPanel() {
         return formPanel;
+    }
+
+    private void addHandlers() {
+        toolbar.getEditButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // todo
+            }
+        });
+        toolbar.getAddButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // todo
+            }
+        });
+        toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                formPanel.removeSectionRow(FormSectionRow.this);
+            }
+        });
+        toolbar.getUpButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                formPanel.moveUpRow(FormSectionRow.this);
+            }
+        });
+        toolbar.getDownButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                formPanel.moveDownRow(FormSectionRow.this);
+            }
+        });
     }
 }

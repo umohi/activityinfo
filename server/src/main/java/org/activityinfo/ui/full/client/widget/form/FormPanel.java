@@ -310,7 +310,11 @@ public class FormPanel extends Composite {
         errorContainer.setInnerHTML("");
     }
 
-    public void removeRow(final FormFieldRow formFieldRow) {
+    public void removeSectionRow(FormSectionRow formSectionRow) {
+        // todo
+    }
+
+    public void removeFieldRow(final FormFieldRow formFieldRow) {
         final int widgetIndex = contentPanel.getWidgetIndex(formFieldRow);
         if (widgetIndex != -1) {
             contentPanel.remove(widgetIndex);
@@ -342,6 +346,14 @@ public class FormPanel extends Composite {
                 }
             });
         }
+    }
+
+    public void moveUpRow(FormSectionRow formSectionRow) {
+        // todo
+    }
+
+    public void moveDownRow(FormSectionRow formSectionRow) {
+        // todo
     }
 
     public void moveUpRow(FormFieldRow formFieldRow) {
