@@ -27,6 +27,7 @@
       <div class="has-error">
         <div class="control-label" ui:field="errorContainer"/>
       </div>
+      <br/>
       <g:FlowPanel ui:field="contentPanel" width="100%">
       </g:FlowPanel>
     </div>

@@ -34,8 +34,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -62,13 +60,6 @@ public class FormPanel extends Composite {
         public void onSave();
     }
 
-    public static interface SectionTemplate extends SafeHtmlTemplates {
-        @Template("<h3>{0}</h3><hr/>")
-        SafeHtml title(String label);
-    }
-
-    private static final SectionTemplate SECTION_TEMPLATE = GWT.create(SectionTemplate.class);
-
     private static UserFormPanelUiBinder uiBinder = GWT
             .create(UserFormPanelUiBinder.class);
 
@@ -88,7 +79,7 @@ public class FormPanel extends Composite {
     //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
 //    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
     private final BiMap<Cuid, FormFieldRow> rowMap = HashBiMap.create();
-    private final BiMap<Cuid, Widget> sectionMap = HashBiMap.create();
+    private final BiMap<Cuid, FormSectionRow> sectionMap = HashBiMap.create();
 
     @UiField
     Button saveButton;
@@ -145,7 +136,7 @@ public class FormPanel extends Composite {
                     rowMap.put(element.getId(), fieldRow);
                 } else if (element instanceof FormSection) {
                     final FormSection section = (FormSection) element;
-                    final HTML sectionWidget = new HTML(SECTION_TEMPLATE.title(section.getLabel().getValue()));
+                    final FormSectionRow sectionWidget = new FormSectionRow(section, this);
                     contentPanel.add(sectionWidget);
                     sectionMap.put(element.getId(), sectionWidget);
                     renderElements(section.getElements());

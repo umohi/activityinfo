@@ -24,20 +24,17 @@ package org.activityinfo.ui.full.client.widget.form;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
-
-import java.io.Serializable;
 
 /**
  * @author yuriyz on 1/28/14.
@@ -59,18 +56,22 @@ public class FormFieldRow extends Composite {
     @UiField
     FlowPanel control;
     @UiField
-    DivElement toolbar;
+    RowToolbar toolbar;
 
     private FormPanel formPanel;
     private FormField formField;
     private IsWidget formFieldWidget;
 
     public FormFieldRow(FormField formField, FormPanel formPanel) {
+        TransitionUtil.ensureBootstrapInjected();
+        initWidget(uiBinder.createAndBindUi(this));
+
         this.formPanel = formPanel;
         this.formField = formField;
         this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
-        TransitionUtil.ensureBootstrapInjected();
-        initWidget(uiBinder.createAndBindUi(this));
+        this.toolbar.attach(this);
+        this.toolbar.setFormPanel(formPanel);
+
         addHandlers();
         render();
     }
@@ -82,52 +83,37 @@ public class FormFieldRow extends Composite {
         control.add(formFieldWidget);
     }
 
-    private boolean isDesignEnabled() {
-        return formPanel.isDesignEnabled();
-    }
-
-    @UiHandler("editButton")
-    public void onEdit(ClickEvent event) {
-        // todo
-    }
-
-    @UiHandler("addButton")
-    public void onAdd(ClickEvent event) {
-        // todo
-    }
-
-    @UiHandler("removeButton")
-    public void onRemove(ClickEvent event) {
-        formPanel.removeRow(this);
-    }
-
-    @UiHandler("upButton")
-    public void onMoveUp(ClickEvent event) {
-        formPanel.moveUpRow(this);
-    }
-
-    @UiHandler("downButton")
-    public void onMoveDown(ClickEvent event) {
-        formPanel.moveDownRow(this);
-    }
-
     private void addHandlers() {
-        addDomHandler(new MouseOverHandler() {
+        toolbar.getEditButton().addClickHandler(new ClickHandler() {
             @Override
-            public void onMouseOver(MouseOverEvent event) {
-                if (isDesignEnabled()) {
-                    GwtUtil.setVisible(toolbar, true);
-                }
+            public void onClick(ClickEvent event) {
+                // todo
             }
-        }, MouseOverEvent.getType());
-        addDomHandler(new MouseOutHandler() {
+        });
+        toolbar.getAddButton().addClickHandler(new ClickHandler() {
             @Override
-            public void onMouseOut(MouseOutEvent event) {
-                if (isDesignEnabled()) {
-                    GwtUtil.setVisible(toolbar, false);
-                }
+            public void onClick(ClickEvent event) {
+                // todo
             }
-        }, MouseOutEvent.getType());
+        });
+        toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                formPanel.removeRow(FormFieldRow.this);
+            }
+        });
+        toolbar.getUpButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                formPanel.moveUpRow(FormFieldRow.this);
+            }
+        });
+        toolbar.getDownButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                formPanel.moveDownRow(FormFieldRow.this);
+            }
+        });
     }
 
 
@@ -139,9 +125,9 @@ public class FormFieldRow extends Composite {
         }
     }
 
-    public Serializable setValue() {
+    public Object setValue() {
         if (formFieldWidget instanceof HasValue) {
-            return ((HasValue<Serializable>) formFieldWidget).getValue();
+            return ((HasValue) formFieldWidget).getValue();
         }
         return null;
     }
