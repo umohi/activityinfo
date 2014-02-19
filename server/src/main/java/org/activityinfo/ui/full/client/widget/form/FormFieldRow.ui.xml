@@ -17,7 +17,7 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <div class="row userform-field" draggable="true">
-      <div class="col-sm-4">
+      <div class="col-sm-2">
         <p class="edit">
           <div ui:field="label"/>
         </p>
@@ -34,7 +34,7 @@
           <!--<button type="button" class="btn btn-default btn-xs design-edit">Edit</button>-->
         </p>
       </div>
-      <div class="col-sm-1">
+      <div class="col-sm-3">
         <div ui:field="toolbar" class="hidden {style.toobar}">
           <g:Button ui:field="editButton" addStyleNames="btn btn-primary btn-xs">
             <img src="{img.edit.getSafeUri}" alt="{res.edit}" title="{res.edit}"/>

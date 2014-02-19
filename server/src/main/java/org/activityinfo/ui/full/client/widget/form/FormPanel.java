@@ -354,27 +354,63 @@ public class FormPanel extends Composite {
     }
 
     public void moveUpRow(FormFieldRow formFieldRow) {
-        final int widgetIndex = contentPanel.getWidgetIndex(formFieldRow);
-        if (widgetIndex > 0) { // widget is not first and != -1
-            contentPanel.remove(widgetIndex);
-            contentPanel.insert(formFieldRow, (widgetIndex - 1));
-
-            final FormElementContainer parent = formClass.getParent(formFieldRow.getFormField());
-            final int indexInClass = parent.getElements().indexOf(formFieldRow.getFormField());
-            Collections.swap(parent.getElements(), indexInClass, (indexInClass - 1));
-        }
+        moveUpWidget(formFieldRow, formFieldRow.getFormField(), true);
     }
 
     public void moveDownRow(FormFieldRow formFieldRow) {
-        final int widgetIndex = contentPanel.getWidgetIndex(formFieldRow);
-        final int widgetCount = contentPanel.getWidgetCount();
-        if (widgetIndex != -1 && (widgetIndex + 1) < widgetCount) { // widget is found and has "room" to move down
-            contentPanel.remove(widgetIndex);
-            contentPanel.insert(formFieldRow, (widgetIndex + 1));
+        moveDownWidget(formFieldRow, formFieldRow.getFormField(), true);
+    }
 
-            final FormElementContainer parent = formClass.getParent(formFieldRow.getFormField());
-            final int indexInClass = parent.getElements().indexOf(formFieldRow.getFormField());
+    protected void moveUpWidget(final Widget widget, final FormElement formElement, boolean addUndo) {
+        final int widgetIndex = contentPanel.getWidgetIndex(widget);
+        final FormElementContainer parent = formClass.getParent(formElement);
+        final int indexInClass = parent.getElements().indexOf(formElement);
+        if (widgetIndex > 0 && indexInClass > 0) { // widget is not first and != -1
+            contentPanel.remove(widgetIndex);
+            contentPanel.insert(widget, (widgetIndex - 1));
+            Collections.swap(parent.getElements(), indexInClass, (indexInClass - 1));
+
+            if (addUndo) {
+                undoManager.addUndoable(new IsUndoable() {
+                    @Override
+                    public void undo() {
+                        moveDownWidget(widget, formElement, false);
+                    }
+
+                    @Override
+                    public void redo() {
+                        moveUpWidget(widget, formElement, false);
+                    }
+                });
+            }
+        }
+    }
+
+    public void moveDownWidget(final Widget widget, final FormElement formElement, boolean addUndo) {
+        final int widgetIndex = contentPanel.getWidgetIndex(widget);
+        final int widgetCount = contentPanel.getWidgetCount();
+        final FormElementContainer parent = formClass.getParent(formElement);
+        final int indexInClass = parent.getElements().indexOf(formElement);
+
+        if (widgetIndex != -1 && (widgetIndex + 1) < widgetCount &&  // widget is found and has "room" to move down
+                indexInClass != -1 && (indexInClass + 1) < parent.getElements().size()) { // form field bounds is container elements
+            contentPanel.remove(widgetIndex);
+            contentPanel.insert(widget, (widgetIndex + 1));
             Collections.swap(parent.getElements(), indexInClass, (indexInClass + 1));
+
+            if (addUndo) {
+                undoManager.addUndoable(new IsUndoable() {
+                    @Override
+                    public void undo() {
+                        moveUpWidget(widget, formElement, false);
+                    }
+
+                    @Override
+                    public void redo() {
+                        moveDownWidget(widget, formElement, false);
+                    }
+                });
+            }
         }
     }
 
