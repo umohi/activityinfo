@@ -231,7 +231,7 @@ public class FormPanel extends Composite {
             if (fieldRow != null) {
                 fieldRow.setValue(entry.getValue());
             } else {
-                Log.error("Form instance contains data which are not decrared by form definition. instanceid =" +
+                Log.error("Form instance contains data which are not declared by form definition. formInstanceId =" +
                         formInstance.getId());
             }
         }

@@ -39,8 +39,8 @@ public class UndoManager {
 
     public void addUndoable(IsUndoable undoable) {
         if (undoable != null) {
-            undoables.add(undoable);
             position++;
+            undoables.add(position, undoable);
             fireCreatedEvent(new UndoableCreatedEvent(undoable));
         }
     }

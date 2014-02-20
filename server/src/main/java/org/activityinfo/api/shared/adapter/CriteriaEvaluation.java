@@ -23,6 +23,7 @@ public class CriteriaEvaluation {
      */
     public static Predicate<Cuid> evaluatePartiallyOnClassId(Criteria criteria) {
         ClassIdEvaluator evaluator = new ClassIdEvaluator();
+        criteria.accept(evaluator);
         return evaluator.getPredicate();
     }
 
