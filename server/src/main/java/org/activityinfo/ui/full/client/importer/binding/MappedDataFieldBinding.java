@@ -32,9 +32,13 @@ public class MappedDataFieldBinding implements FieldBinding {
         return fieldNode.getField();
     }
 
+    public int getSourceColumn() {
+        return sourceColumn;
+    }
+
     @Override
     public Object getFieldValue(SourceRow row) {
-        String importedValue = row.getColumnValue(sourceColumn);
+        String importedValue = getImportedValue(row);
         if(importedValue == null) {
             return null;
         } else {
@@ -44,5 +48,18 @@ public class MappedDataFieldBinding implements FieldBinding {
                 return null;
             }
         }
+    }
+
+    public String getImportedValue(SourceRow row) {
+        return row.getColumnValue(sourceColumn);
+    }
+
+    @Override
+    public void accept(FieldBindingColumnVisitor visitor) {
+        visitor.visitMappedColumn(this);
+    }
+
+    public Object convert(String importedValue) {
+        return converter.convertString(importedValue);
     }
 }

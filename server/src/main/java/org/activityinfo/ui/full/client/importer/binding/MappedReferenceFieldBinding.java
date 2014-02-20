@@ -1,27 +1,31 @@
 package org.activityinfo.ui.full.client.importer.binding;
 
 import com.google.common.collect.Lists;
+import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Pair;
 import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.ui.full.client.importer.converter.StringConverter;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.importer.match.MatchKey;
+import org.activityinfo.ui.full.client.importer.match.TextScorerer;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * Imports a reference field which has been mapped to one or more source columns.
+ *
  */
 public class MappedReferenceFieldBinding implements FieldBinding {
 
     private final FormTree.Node fieldNode;
     private final Cuid fieldId;
     private final Criteria range;
-    private final List<MatchField> matchFields = Lists.newArrayList();
+    private final List<MatchFieldBinding> matchFields = Lists.newArrayList();
 
     private final MatchTable matchTable;
 
@@ -31,6 +35,7 @@ public class MappedReferenceFieldBinding implements FieldBinding {
 
         this.range = ClassCriteria.union(fieldNode.getField().getRange());
 
+        int matchIndex = 0;
         for(Map.Entry<Integer, FieldPath> binding : columnBindings.entrySet()) {
             if(binding.getValue().isDescendantOf(fieldId)) {
                 // the column index of this field's value in the source
@@ -39,7 +44,10 @@ public class MappedReferenceFieldBinding implements FieldBinding {
                 // get the path of the nested field relative to the referenced instance
                 FieldPath relativePath = binding.getValue().relativeTo(fieldId);
 
-                matchFields.add(new MatchField(relativePath, sourceColumn));
+                matchFields.add(new MatchFieldBinding(matchIndex++,
+                        node.findDescendant(relativePath),
+                        relativePath, sourceColumn,
+                        new StringConverter(), new TextScorerer()));
             }
         }
 
@@ -61,12 +69,11 @@ public class MappedReferenceFieldBinding implements FieldBinding {
         return matchTable.getMatchedInstanceId(row.getRowIndex());
     }
 
-    private MatchKey matchKey(SourceRow row) {
-        String[] values = new String[matchFields.size()];
-        for(int i=0;i!=values.length;++i) {
-            values[i] = matchFields.get(i).getImportedValue(row);
+    @Override
+    public void accept(FieldBindingColumnVisitor visitor) {
+        for(MatchFieldBinding field : matchFields) {
+            visitor.visitMatchColumn(this, field);
         }
-        return new MatchKey(values);
     }
 
     public Criteria getRange() {
@@ -77,7 +84,16 @@ public class MappedReferenceFieldBinding implements FieldBinding {
         return matchTable;
     }
 
-    public List<MatchField> getMatchFields() {
+    public List<MatchFieldBinding> getMatchFields() {
         return matchFields;
+    }
+
+    public InstanceQuery queryPotentialMatches() {
+        final List<FieldPath> paths = Lists.newArrayList();
+        for(MatchFieldBinding matchField : getMatchFields()) {
+            paths.add(matchField.getRelativeFieldPath());
+        }
+
+        return new InstanceQuery(paths, getRange());
     }
 }

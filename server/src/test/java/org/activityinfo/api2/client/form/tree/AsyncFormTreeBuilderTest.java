@@ -27,7 +27,7 @@ public class AsyncFormTreeBuilderTest extends CommandTestCase2 {
     public void treeResolver() {
         ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
         AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(locator);
-        Promise<FormTree> tree = Promise.promise(CuidAdapter.activityFormClass(1), treeBuilder);
+        Promise<FormTree> tree = Promise.apply(treeBuilder, CuidAdapter.activityFormClass(1));
 
         assertResolves(tree.then(new Action<FormTree>() {
             @Override

@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api2.client.promises.AsyncFunctions;
 import org.activityinfo.api2.client.promises.Retryable;
 import org.activityinfo.api2.shared.Pair;
+import org.activityinfo.ui.full.client.importer.data.SourceRow;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -136,7 +137,7 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         return chained;
     }
 
-    public <F> Promise<F> then(final AsyncFunction<T, F> f) {
+    public <F> Promise<F> then(final AsyncFunction<? super T, F> f) {
         final Promise<F> chained = new Promise<F>(this);
         then(new AsyncCallback<T>() {
             @Override
@@ -161,6 +162,50 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         });
         return chained;
     }
+
+    public <F> Promise<F> then(Promise<AsyncFunction<? super T, F>> f) {
+        final Promise<F> result = new Promise<>();
+        f.then(new AsyncCallback<AsyncFunction<? super T, F>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                result.onFailure(caught);
+            }
+
+            @Override
+            public void onSuccess(AsyncFunction<? super T, F> function) {
+                Promise.this.then(function).then(result);
+            }
+        });
+        return result;
+    }
+
+//
+//    public <F> Promise<Pair<T, F>> thenBind(final AsyncFunction<? super T, F> f) {
+//        final Promise<Pair<T,F>> bound = new Promise<>(this);
+//        then(new AsyncCallback<T>() {
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                bound.onFailure(caught);
+//            }
+//
+//            @Override
+//            public void onSuccess(final T input) {
+//                f.apply(result, new AsyncCallback<F>() {
+//                    @Override
+//                    public void onFailure(Throwable caught) {
+//                        bound.onFailure(caught);
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(F result) {
+//                        bound.onSuccess(new Pair<T, F>(input, result));
+//                    }
+//                });
+//            }
+//        });
+//        return bound;
+//    }
+
 
     @Override
     public void onFailure(Throwable caught) {
@@ -198,8 +243,12 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         }
     }
 
-    public static <F, T> Promise<T> promise(final F input, final AsyncFunction<F, T> function) {
-        return new Promise<T>(AsyncFunctions.apply(input, function));
+    public static <F, T> Promise<T> apply(final AsyncFunction<F, T> function, final F input) {
+        return new Promise<T>(AsyncFunctions.curry0(function, input));
+    }
+
+    public static <T> Promise<T> apply(final AsyncFunction<Void, T> function) {
+        return new Promise<T>(function);
     }
 
     public static <T> Promise<T> resolved(T value) {

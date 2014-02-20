@@ -5,8 +5,9 @@ package org.activityinfo.ui.full.client.importer.data;
  */
 public interface SourceRow {
 
+
     int getRowIndex();
 
-    String getColumnValue(int index);
+    String getColumnValue(int columnIndex);
 
 }

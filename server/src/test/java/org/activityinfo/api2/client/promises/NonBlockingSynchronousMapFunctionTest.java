@@ -59,8 +59,8 @@ public class NonBlockingSynchronousMapFunctionTest {
     private Promise<Void> execute(List<Integer> input, Action<Integer> worker) {
         StubScheduler scheduler = new StubScheduler();
 
-        NonBlockingSynchronousMapFunction<Integer> mapFunction = new NonBlockingSynchronousMapFunction<>(scheduler, worker);
-        Promise<Void> promise = Promise.promise(input, mapFunction);
+        IncrementalMapReduceFunction<Integer> mapFunction = new IncrementalMapReduceFunction<>(scheduler, worker);
+        Promise<Void> promise = Promise.apply(mapFunction, input);
 
         while(scheduler.executeCommands()) {  }
 

@@ -13,7 +13,7 @@ public class MissingFieldBinding implements FieldBinding {
 
     private final FormTree.Node fieldNode;
 
-    private Cuid providedValue;
+    private Object providedValue;
 
     public MissingFieldBinding(FormTree.Node fieldNode) {
         this.fieldNode = fieldNode;
@@ -29,16 +29,30 @@ public class MissingFieldBinding implements FieldBinding {
         return fieldNode.getField();
     }
 
-    public Cuid getProvidedValue() {
+    public FormTree.Node getFieldNode() {
+        return fieldNode;
+    }
+
+    /**
+     *
+     * @return the value provided by the user, that will be used
+     *  to populate this field in all imported {@code FormInstances}
+     */
+    public Object getProvidedValue() {
         return providedValue;
     }
 
-    public void setProvidedValue(Cuid providedValue) {
+    public void setProvidedValue(Object providedValue) {
         this.providedValue = providedValue;
     }
 
     @Override
     public Object getFieldValue(SourceRow row) {
         return providedValue;
+    }
+
+    @Override
+    public void accept(FieldBindingColumnVisitor visitor) {
+        visitor.visitMissingColumn(this);
     }
 }

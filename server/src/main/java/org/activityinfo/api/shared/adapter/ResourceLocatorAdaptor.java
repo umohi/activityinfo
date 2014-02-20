@@ -5,6 +5,7 @@ import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.command.GetSites;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.NotFoundException;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
@@ -91,8 +92,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<List<Projection>> query(List<FieldPath> paths, Criteria criteria) {
-        return new Promise<>(new Joiner(dispatcher, paths, criteria));
+    public Promise<List<Projection>> query(InstanceQuery query) {
+        return new Promise<>(new Joiner(dispatcher, query.getFieldPaths(), query.getCriteria()));
     }
-
 }

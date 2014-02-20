@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.importer;
+package org.activityinfo.ui.full.client.importer.ui;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -7,6 +7,8 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.ui.full.client.importer.ImportModel;
+import org.activityinfo.ui.full.client.importer.ui.ImportDialog;
 import org.activityinfo.ui.full.client.importer.ui.source.ChooseSourcePage;
 import org.activityinfo.ui.full.client.importer.ui.mapping.ColumnMappingPage;
 import org.activityinfo.ui.full.client.importer.ui.validation.ValidationPage;
@@ -31,17 +33,17 @@ public class ImportPresenter<T> {
 
     private Step currentStep;
 
-    private Importer<T> importer;
+    private ImportModel<T> importModel;
 
     private ResourceLocator dispatcher;
 
     public ImportPresenter(ResourceLocator dispatcher, FormTree formTree) {
         this.dispatcher = dispatcher;
-        this.importer = new Importer<T>(formTree);
+        this.importModel = new ImportModel<T>(formTree);
 
         chooseSourcePage = new ChooseSourcePage(eventBus);
-        matchingPage = new ColumnMappingPage<T>(importer);
-        validationPage = new ValidationPage<T>(importer);
+        matchingPage = new ColumnMappingPage<T>(importModel);
+        validationPage = new ValidationPage<T>(importModel);
 
 
         dialogBox.getNextButton().addClickHandler(new ClickHandler() {
@@ -105,7 +107,7 @@ public class ImportPresenter<T> {
                 dialogBox.setPage(chooseSourcePage);
                 break;
             case COLUMN_MATCHING:
-                importer.setSource(chooseSourcePage.getImportSource());
+                importModel.setSource(chooseSourcePage.getImportSource());
                 matchingPage.refresh();
                 dialogBox.setPage(matchingPage);
                 break;

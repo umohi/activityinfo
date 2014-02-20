@@ -22,6 +22,11 @@ public class FieldPath {
         path.add(field.getId());
     }
 
+    public FieldPath(Cuid rootFieldId, FieldPath relativePath) {
+        path = Lists.newArrayList(rootFieldId);
+        path.addAll(relativePath.path);
+    }
+
 
     public FieldPath(FieldPath prefix, Cuid key) {
         path = Lists.newArrayList();
@@ -36,6 +41,13 @@ public class FieldPath {
         for(FormField field : fields) {
             path.add(field.getId());
         }
+    }
+
+
+    public FieldPath(FieldPath parent, FieldPath relativePath) {
+        this.path = Lists.newArrayList();
+        this.path.addAll(parent.path);
+        this.path.addAll(relativePath.path);
     }
 
     public FieldPath(FieldPath parent, FormField field) {

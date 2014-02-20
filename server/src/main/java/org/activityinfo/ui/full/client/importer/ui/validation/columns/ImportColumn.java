@@ -1,32 +1,39 @@
 package org.activityinfo.ui.full.client.importer.ui.validation.columns;
 
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.user.cellview.client.Column;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.draft.DraftInstance;
+import org.activityinfo.ui.full.client.importer.data.SourceRow;
+import org.activityinfo.ui.full.client.importer.match.ValueStatus;
 
-public class ImportColumn<C> extends Column<DraftInstance, C> {
+public abstract class ImportColumn<C> extends Column<SourceRow, C> {
 
 
     public ImportColumn(Cell<C> cell) {
         super(cell);
     }
 
-    @Override
-    public C getValue(DraftInstance object) {
-        //C value = (C) object.getValue(property.getKey());
-        return null;
+    public abstract String getHeader();
+
+    /**
+     *
+     * @return the index of this ImportColumn's {@code SourceColumn}, or -1
+     * if it is not mapped to a SourceColumn.
+     */
+    public abstract int getSourceColumn();
+
+    public abstract FieldPath getFieldPath();
+
+
+    public boolean isConversionError() {
+        return false;
     }
 
-    @Override
-    public String getCellStyleNames(Context context, DraftInstance object) {
-        if (object == null) {
-            return null;
-        }
-//        if (object.getValue(property.getKey()) == null) {
-//            return "danger";
-//        }
-        return null;
+    public boolean isValidationError() {
+        return false;
+    }
+
+    public ValueStatus getStatus(SourceRow row) {
+        return ValueStatus.OK;
     }
 }

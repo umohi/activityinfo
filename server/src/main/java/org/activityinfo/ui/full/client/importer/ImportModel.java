@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.binding.*;
@@ -17,7 +18,7 @@ import java.util.*;
  * A model which defines the mapping from an {@code SourceTable}
  * to a list of models of class {@code T}
  */
-public class Importer<T> {
+public class ImportModel<T> {
 
     private SourceTable source;
     private FormTree formTree;
@@ -30,7 +31,7 @@ public class Importer<T> {
     private Map<FieldPath, Object> providedValues = Maps.newHashMap();
 
 
-    public Importer(FormTree formTree) {
+    public ImportModel(FormTree formTree) {
         this.formTree = formTree;
     }
 
@@ -45,6 +46,10 @@ public class Importer<T> {
         return source;
     }
 
+
+    public FormClass getFormClass() {
+        return getFormTree().getRootFormClass();
+    }
 
     public Set<FieldPath> getMappedFieldPaths() {
         return Sets.newHashSet(bindings.values());
@@ -101,9 +106,13 @@ public class Importer<T> {
         }
 
         // Finally add any missing fields
-        Set<Cuid> mappedRootField = Sets.newHashSet();
+        Set<Cuid> mappedRootFields = Sets.newHashSet();
+        for(FieldPath mappedPath : getColumnBindings().values()) {
+            mappedRootFields.add(mappedPath.getRoot());
+        }
+
         for(FormTree.Node node : formTree.getRoot().getChildren()) {
-            if(!mappedRootField.contains(node.getFieldId()) && node.getField().isRequired()) {
+            if(!mappedRootFields.contains(node.getFieldId()) && node.getField().isRequired()) {
                 fieldImporters.add(new MissingFieldBinding(node));
             }
         }
@@ -126,6 +135,5 @@ public class Importer<T> {
     public FormTree getFormTree() {
         return formTree;
     }
-
 
 }

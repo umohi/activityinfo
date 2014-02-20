@@ -111,6 +111,25 @@ public class FormTree {
                 return label.getValue();
             }
         }
+
+        public Node findDescendant(FieldPath relativePath) {
+            FieldPath path = new FieldPath(getPath(), relativePath);
+            return findDescendantByAbsolutePath(path);
+        }
+
+        private Node findDescendantByAbsolutePath(FieldPath path) {
+            if(this.path.equals(path)) {
+                return this;
+            } else {
+                for(Node child : children) {
+                    Node descendant = child.findDescendantByAbsolutePath(path);
+                    if(descendant != null) {
+                        return descendant;
+                    }
+                }
+                return null;
+            }
+        }
     }
 
     public enum SearchOrder {

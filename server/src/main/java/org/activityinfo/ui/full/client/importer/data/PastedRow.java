@@ -18,9 +18,9 @@ public class PastedRow implements SourceRow {
     }
 
     @Override
-    public String getColumnValue(int index) {
-        if (index < columns.length) {
-            return columns[index];
+    public String getColumnValue(int columnIndex) {
+        if (columnIndex < columns.length) {
+            return columns[columnIndex];
         } else {
             return "";
         }

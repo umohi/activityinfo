@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.importer;
+package org.activityinfo.ui.full.client.importer.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;

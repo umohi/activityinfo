@@ -25,4 +25,8 @@ public class MatchTable {
     public void setMatch(int rowIndex, ScoredReference apply) {
         matches.put(rowIndex, apply);
     }
+
+    public ScoredReference getMatch(int rowIndex) {
+        return matches.get(rowIndex);
+    }
 }

@@ -5,7 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.ui.full.client.importer.Importer;
+import org.activityinfo.ui.full.client.importer.ImportModel;
 
 public class ValidationPage<T> extends Composite {
 
@@ -18,7 +18,7 @@ public class ValidationPage<T> extends Composite {
     @UiField(provided = true)
     ValidationGrid<T> dataGrid;
 
-    public ValidationPage(Importer<T> mapping) {
+    public ValidationPage(ImportModel<T> mapping) {
 
         dataGrid = new ValidationGrid<T>(mapping);
 

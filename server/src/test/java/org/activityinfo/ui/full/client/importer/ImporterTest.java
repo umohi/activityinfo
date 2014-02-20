@@ -5,12 +5,14 @@ import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.gwt.core.client.testing.StubScheduler;
+import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
-import org.activityinfo.api2.client.AsyncFunction;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
-import org.activityinfo.api2.client.promises.AsyncFunctions;
+import org.activityinfo.api2.server.form.JavaTextQuantityFormatterFactory;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
@@ -18,14 +20,14 @@ import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.ui.full.client.importer.binding.FieldBinding;
-import org.activityinfo.ui.full.client.importer.binding.MappedReferenceFieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.importer.process.AsyncReferenceMatcher;
-import org.activityinfo.ui.full.client.importer.process.CountValidRows;
 import org.activityinfo.ui.full.client.importer.data.PastedTable;
 import org.activityinfo.ui.full.client.importer.data.SourceColumn;
-import org.activityinfo.ui.full.client.importer.draft.DraftInstance;
 import org.activityinfo.ui.full.client.importer.match.*;
+import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplatesStub;
+import org.activityinfo.ui.full.client.importer.ui.validation.columns.ColumnFactory;
+import org.activityinfo.ui.full.client.importer.ui.validation.columns.ImportColumn;
+import org.activityinfo.ui.full.client.importer.ui.validation.columns.MissingReferenceColumn;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,141 +50,132 @@ public class ImporterTest extends CommandTestCase2 {
     public static final int COLUMN_WIDTH = 50;
 
 
-
     private ResourceLocatorAdaptor resourceLocator;
     private AsyncFormTreeBuilder formTreeBuilder;
-    private Importer importer;
+    private ImportModel importModel;
     private StubScheduler scheduler;
+    private NumberFormat numberFormat;
 
     @Before
     public void setupAdapters() {
         resourceLocator = new ResourceLocatorAdaptor(getDispatcher());
         formTreeBuilder = new AsyncFormTreeBuilder(resourceLocator);
         scheduler = new StubScheduler();
+
+        // disable GWT.create so that references in static initializers
+        // don't sink our test
+
+        GWTMockUtilities.disarm();
     }
 
     @Test
     public void test() throws IOException {
 
-        FormTree formTree = assertResolves(Promise.promise(HOUSEHOLD_SURVEY_FORM_CLASS, formTreeBuilder));
+        FormTree formTree = assertResolves(Promise.apply(formTreeBuilder, HOUSEHOLD_SURVEY_FORM_CLASS));
         dumpList("TREE NODES", formTree.search(FormTree.SearchOrder.BREADTH_FIRST,
                 Predicates.alwaysTrue(), Predicates.<FormTree.Node>alwaysTrue()));
 
-        importer = new Importer(formTree);
+        importModel = new ImportModel(formTree);
 
 
         // Step 1: User pastes in data to import
         PastedTable source = new PastedTable(
-                Resources.toString(getResource(Importer.class, "qis.csv"), Charsets.UTF_8));
-        importer.setSource(source);
+                Resources.toString(getResource(ImportModel.class, "qis.csv"), Charsets.UTF_8));
+        importModel.setSource(source);
 
         dumpList("COLUMNS", source.getColumns());
 
         // Step 2: User maps imported columns to FormFields
-        dumpList("FIELDS", importer.getFieldsToMatch());
-        importer.setColumnBinding(field("NumAdultMale"), columnIndex("MEMBER_NO_ADULT_FEMALE"));
-        importer.setColumnBinding(field("[End Date]"), columnIndex("_SUBMISSION_DATE"));
-        importer.setColumnBinding(field("Upzilla.District.Name"), columnIndex("district"));
-        importer.setColumnBinding(field("Upzilla.Name"), columnIndex("upazila"));
+        dumpList("FIELDS", importModel.getFieldsToMatch());
+        importModel.setColumnBinding(field("NumAdultMale"), columnIndex("MEMBER_NO_ADULT_FEMALE"));
+        importModel.setColumnBinding(field("[End Date]"), columnIndex("_SUBMISSION_DATE"));
+        importModel.setColumnBinding(field("Upzilla.District.Name"), columnIndex("district"));
+        importModel.setColumnBinding(field("Upzilla.Name"), columnIndex("upazila"));
 
-        List<FieldBinding> bindings = importer.createFieldBindings();
+        List<FieldBinding> bindings = importModel.createFieldBindings();
 
         // Step 3: Match Instances
         // For each row object field, we need to determine the range of possible/probably values
 
-        List<AsyncFunction<Void, Void>> tasks = Lists.newArrayList();
-        List<MappedReferenceFieldBinding> referenceBindings = Lists.newArrayList();
-        AsyncReferenceMatcher referenceMatcher = new AsyncReferenceMatcher(
-                scheduler,
-                resourceLocator,
-                importer.getSource());
 
-        for(FieldBinding binding : bindings) {
-            if(binding instanceof MappedReferenceFieldBinding) {
-                tasks.add(AsyncFunctions.apply((MappedReferenceFieldBinding) binding, referenceMatcher));
-            }
-        }
-
-        Promise<Void> matching = new Promise<>();
-        AsyncFunctions.sequence(tasks).apply(null, matching);
 
         runAll();
         assertResolves(matching);
 
-        // Step 5: Validate
-        CountValidRows count = new CountValidRows(bindings);
-        for(SourceRow row : importer.getSource().getRows()) {
-            count.apply(row);
-        }
-        System.out.println("Valid: " + count.getValidCount());
-        System.out.println("Invalid: " + count.getInvalidCount());
+        // Step 4: Validate
+        validateRows(bindings);
 
-        // Step 6: Present to the user for validation / correction
-//        List columns = importer.createFieldBindings();
-//        dumpHeaders(columns);
-//        dumpRows(columns, draft.getInstances());
-//
-//        // Step 7: Users provides input to complete
-//        Promise<Void> transformPromise = draft.transformField(field("Partner"), Functions.constant(BRAC_PARTNER_CUID));
-//        runAll();
-//        assertResolves(transformPromise);
-//
-//        System.out.println("AFTER FIX");
-//
-//        dumpHeaders(columns);
-//        dumpRows(columns, draft.getInstances());
-//
-//        // everything valid?
-//        // IMPORT !!
-//        assertThat(draft.getValidCount(), equalTo(100));
-//        assertThat(draft.getInvalidCount(), equalTo(0));
+        // Step 5: Present to the user for validation / correction
+        ColumnFactory columnFactory = new ColumnFactory(
+                new JavaTextQuantityFormatterFactory(),
+                new ValidationCellTemplatesStub(),
+                importModel.getFormTree());
+
+        List<ImportColumn<?>> columns = columnFactory.create(bindings);
+
+        dumpHeaders(columns);
+        dumpRows(columns, importModel.getSource().getRows());
+
+        // Step 6: Users provides input to complete
+        MissingReferenceColumn partnerColumn = (MissingReferenceColumn) columns.get(0);
+        partnerColumn.getBinding().setProvidedValue(BRAC_PARTNER_CUID);
+
+        validateRows(bindings);
+
+        // Step 7: Import!!!!
 
 
 
 
     }
+
 
     private void runAll() {
         while(scheduler.executeCommands()) {}
     }
 
-//
-//    private void dumpHeaders(List<ImportColumn> importColumns) {
-//
-//        System.out.print("  ");
-//        for(ImportColumn col : importColumns) {
-//            System.out.print("  " + Strings.padEnd(col.getHeader().getValue(), COLUMN_WIDTH - 2, ' '));
-//        }
-//        System.out.println();
-//        System.out.println(Strings.repeat("-", COLUMN_WIDTH * importColumns.size()));
-//
-//    }
-//
-//    private void dumpRows(List<ImportColumn> columns, List<DraftInstance> draftInstances) {
-//        for(DraftInstance instance : draftInstances) {
-//            System.out.print(rowIcon(instance) + " ");
-//            for(ImportColumn col : columns) {
-//                Object value = col.getValue(instance);
-//                String stringValue = "";
-//                if(value != null) {
-//                    stringValue = value.toString();
-//                    if(stringValue.length() > (COLUMN_WIDTH-2)) {
-//                        stringValue = stringValue.substring(0, COLUMN_WIDTH-2);
-//                    }
-//                }
-//                System.out.print(" " + icon(col.getStatus(instance)) + Strings.padEnd(stringValue,
-//                        COLUMN_WIDTH - 2, ' '));
-//            }
-//            System.out.println();
-//        }
-//    }
 
-    private String rowIcon(DraftInstance instance) {
-        if(!instance.isValid()) {
-            return "x";
-        } else {
-            return " ";
+    private void dumpHeaders(List<ImportColumn<?>> importColumns) {
+
+        System.out.print("  ");
+        for(ImportColumn col : importColumns) {
+            System.out.print("  " + Strings.padEnd(col.getHeader(), COLUMN_WIDTH - 2, ' '));
         }
+        System.out.println();
+        System.out.println(Strings.repeat("-", COLUMN_WIDTH * importColumns.size()));
+
+    }
+
+    private void dumpRows(List<ImportColumn<?>> columns, List<SourceRow> rows) {
+        for(SourceRow instance : rows) {
+            System.out.print(rowIcon(instance) + " ");
+            for(ImportColumn<?> col : columns) {
+                Object value = col.getValue(instance);
+                String stringValue = "";
+                if(value != null) {
+                    if(value instanceof SafeHtml) {
+                        stringValue = ((SafeHtml) value).asString();
+                    } else {
+                        stringValue = value.toString();
+                    }
+                    if(stringValue.length() > (COLUMN_WIDTH-2)) {
+                        stringValue = stringValue.substring(0, COLUMN_WIDTH-2);
+                    }
+                }
+                System.out.print(" " + icon(col.getStatus(instance)) + Strings.padEnd(stringValue,
+                        COLUMN_WIDTH - 2, ' '));
+            }
+            System.out.println();
+        }
+    }
+
+    private String rowIcon(SourceRow instance) {
+//        if(!instance.isValid()) {
+//            return "x";
+//        } else {
+//            return " ";
+//        }
+        return " ";
     }
 
     private String icon(ValueStatus status) {
@@ -202,12 +195,12 @@ public class ImporterTest extends CommandTestCase2 {
     }
 
     private FieldPath field(String debugFieldPath) {
-        List<FieldPath> fieldsToMatch = importer.getFormTree().search(FormTree.SearchOrder.BREADTH_FIRST,
+        List<FieldPath> fieldsToMatch = importModel.getFormTree().search(FormTree.SearchOrder.BREADTH_FIRST,
                 Predicates.alwaysTrue(), Predicates.alwaysTrue());
 
         List<String> fieldsWeHave = Lists.newArrayList();
         for(FieldPath path : fieldsToMatch) {
-            String debugPath = importer.getFormTree().getNodeByPath(path).debugPath();
+            String debugPath = importModel.getFormTree().getNodeByPath(path).debugPath();
             if(debugPath.equals(debugFieldPath)) {
                 return path;
             }
@@ -218,7 +211,7 @@ public class ImporterTest extends CommandTestCase2 {
     }
 
     private int columnIndex(String header) {
-        for(SourceColumn column : importer.getSource().getColumns()) {
+        for(SourceColumn column : importModel.getSource().getColumns()) {
             if(column.getHeader().equals(header)) {
                 return column.getIndex();
             }
