@@ -19,5 +19,7 @@
       </div>
     </div>
     <hr/>
+    <g:FlowPanel ui:field="contentPanel" width="100%">
+    </g:FlowPanel>
   </g:HTMLPanel>
 </ui:UiBinder>

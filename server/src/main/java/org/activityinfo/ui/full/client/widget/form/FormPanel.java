@@ -25,15 +25,11 @@ package org.activityinfo.ui.full.client.widget.form;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -73,13 +69,9 @@ public class FormPanel extends Composite {
     private ResourceLocator resourceLocator;
     private boolean readOnly = false;
     private boolean designEnabled = false;
+    private ElementNode elementNode;
     private final List<Handler> handlerList = Lists.newArrayList();
     private final UndoManager undoManager = new UndoManager();
-
-    //    private final Button addFieldButton = new Button(I18N.CONSTANTS.newField());
-//    private final Button removeFieldButton = new Button(I18N.CONSTANTS.removeField());
-    private final BiMap<Cuid, FormFieldRow> rowMap = HashBiMap.create();
-    private final BiMap<Cuid, FormSectionRow> sectionMap = HashBiMap.create();
 
     @UiField
     Button saveButton;
@@ -118,31 +110,8 @@ public class FormPanel extends Composite {
     public void renderForm(FormClass formClass) {
         this.formClass = formClass;
         this.initialFormClass = formClass.copy();
-        contentPanel.clear();
-        renderElements(this.formClass.getElements());
-    }
-
-    /**
-     * Renders form element recursively.
-     *
-     * @param elements elements to render
-     */
-    private void renderElements(List<FormElement> elements) {
-        if (elements != null && !elements.isEmpty()) {
-            for (FormElement element : elements) {
-                if (element instanceof FormField) {
-                    final FormFieldRow fieldRow = new FormFieldRow((FormField) element, this);
-                    contentPanel.add(fieldRow);
-                    rowMap.put(element.getId(), fieldRow);
-                } else if (element instanceof FormSection) {
-                    final FormSection section = (FormSection) element;
-                    final FormSectionRow sectionWidget = new FormSectionRow(section, this);
-                    contentPanel.add(sectionWidget);
-                    sectionMap.put(element.getId(), sectionWidget);
-                    renderElements(section.getElements());
-                }
-            }
-        }
+        this.elementNode = new ElementNode(this, contentPanel, null, formClass);
+        elementNode.renderElements(this.formClass.getElements());
     }
 
     private void initUndo() {
@@ -215,9 +184,9 @@ public class FormPanel extends Composite {
                     return fieldsWithValues.contains(input.getId());
                 }
             });
-            clearFields(fieldsCopy);
+            elementNode.clearFields(fieldsCopy);
         } else {
-            clearFields(userFormFields);
+            elementNode.clearFields(userFormFields);
         }
     }
 
@@ -228,15 +197,6 @@ public class FormPanel extends Composite {
         renderForm(initialFormClass);
         if (initialFormInstance != null) {
             setValue(initialFormInstance);
-        }
-    }
-
-    protected void clearFields(@Nonnull List<FormField> fields) {
-        for (FormField field : fields) {
-            final FormFieldRow formFieldRow = rowMap.get(field.getId());
-            if (formFieldRow != null) {
-                formFieldRow.clear();
-            }
         }
     }
 
@@ -261,31 +221,13 @@ public class FormPanel extends Composite {
         this.initialFormInstance = formInstance.copy();
         this.formInstance = formInstance;
         applyValue(formInstance);
-        addValueChangeHandler(formInstance);
-    }
-
-    private void addValueChangeHandler(@Nonnull final FormInstance formInstance) {
-        Preconditions.checkNotNull(formInstance);
-        for (final Map.Entry<Cuid, FormFieldRow> entry : rowMap.entrySet()) {
-            final IsWidget widget = entry.getValue().getFormFieldWidget();
-            if (widget instanceof HasValueChangeHandlers) {
-                final HasValueChangeHandlers hasValueChangeHandlers = (HasValueChangeHandlers) widget;
-                hasValueChangeHandlers.addValueChangeHandler(new ValueChangeHandler() {
-                    @Override
-                    public void onValueChange(ValueChangeEvent event) {
-                        final Object oldValue = formInstance.get(entry.getKey());
-                        undoManager.addUndoable(UndoableCreator.create(event, oldValue)); // push undoable
-                        formInstance.set(entry.getKey(), event.getValue());
-                    }
-                });
-            }
-        }
     }
 
     private void applyValue(@Nonnull FormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
+        final BiMap<Cuid,FormFieldRow> allFieldMap = elementNode.getOwnAndChildFieldMap();
         for (Map.Entry<Cuid, Object> entry : formInstance.getValueMap().entrySet()) {
-            final FormFieldRow fieldRow = rowMap.get(entry.getKey());
+            final FormFieldRow fieldRow = allFieldMap.get(entry.getKey());
             if (fieldRow != null) {
                 fieldRow.setValue(entry.getValue());
             } else {
@@ -297,7 +239,7 @@ public class FormPanel extends Composite {
 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
-        for (FormFieldRow row : rowMap.values()) {
+        for (FormFieldRow row : elementNode.getOwnAndChildFieldMap().values()) {
             row.setReadOnly(readOnly);
         }
     }
@@ -308,113 +250,6 @@ public class FormPanel extends Composite {
 
     public void clearError() {
         errorContainer.setInnerHTML("");
-    }
-
-    public void removeSectionRow(FormSectionRow formSectionRow) {
-        // todo
-    }
-
-    public void removeFieldRow(final FormFieldRow formFieldRow) {
-        final int widgetIndex = contentPanel.getWidgetIndex(formFieldRow);
-        if (widgetIndex != -1) {
-            contentPanel.remove(widgetIndex);
-            rowMap.remove(rowMap.inverse().get(formFieldRow));
-
-            final FormField formField = formFieldRow.getFormField();
-            final FormElementContainer parentElement = formClass.getParent(formField);
-            final int formFieldIndexInClass = parentElement.getElements().indexOf(formField);
-            parentElement.getElements().remove(formFieldIndexInClass);
-
-            final Object fieldValue = formInstance.getValueMap().get(formField.getId());
-            formInstance.getValueMap().remove(formField.getId());
-
-            undoManager.addUndoable(new IsUndoable() {
-                @Override
-                public void undo() {
-                    contentPanel.insert(formFieldRow, widgetIndex);
-                    rowMap.put(formField.getId(), formFieldRow);
-                    parentElement.getElements().add(formFieldIndexInClass, formField);
-                    formInstance.getValueMap().put(formField.getId(), fieldValue);
-                }
-
-                @Override
-                public void redo() {
-                    contentPanel.remove(widgetIndex);
-                    rowMap.remove(rowMap.inverse().get(formFieldRow));
-                    parentElement.getElements().remove(formFieldIndexInClass);
-                    formInstance.getValueMap().remove(formField.getId());
-                }
-            });
-        }
-    }
-
-    public void moveUpRow(FormSectionRow formSectionRow) {
-        // todo
-    }
-
-    public void moveDownRow(FormSectionRow formSectionRow) {
-        // todo
-    }
-
-    public void moveUpRow(FormFieldRow formFieldRow) {
-        moveUpWidget(formFieldRow, formFieldRow.getFormField(), true);
-    }
-
-    public void moveDownRow(FormFieldRow formFieldRow) {
-        moveDownWidget(formFieldRow, formFieldRow.getFormField(), true);
-    }
-
-    protected void moveUpWidget(final Widget widget, final FormElement formElement, boolean addUndo) {
-        final int widgetIndex = contentPanel.getWidgetIndex(widget);
-        final FormElementContainer parent = formClass.getParent(formElement);
-        final int indexInClass = parent.getElements().indexOf(formElement);
-        if (widgetIndex > 0 && indexInClass > 0) { // widget is not first and != -1
-            contentPanel.remove(widgetIndex);
-            contentPanel.insert(widget, (widgetIndex - 1));
-            Collections.swap(parent.getElements(), indexInClass, (indexInClass - 1));
-
-            if (addUndo) {
-                undoManager.addUndoable(new IsUndoable() {
-                    @Override
-                    public void undo() {
-                        moveDownWidget(widget, formElement, false);
-                    }
-
-                    @Override
-                    public void redo() {
-                        moveUpWidget(widget, formElement, false);
-                    }
-                });
-            }
-        }
-    }
-
-    public void moveDownWidget(final Widget widget, final FormElement formElement, boolean addUndo) {
-        final int widgetIndex = contentPanel.getWidgetIndex(widget);
-        final int widgetCount = contentPanel.getWidgetCount();
-        final FormElementContainer parent = formClass.getParent(formElement);
-        final int indexInClass = parent.getElements().indexOf(formElement);
-
-        if (widgetIndex != -1 && (widgetIndex + 1) < widgetCount &&  // widget is found and has "room" to move down
-                indexInClass != -1 && (indexInClass + 1) < parent.getElements().size()) { // form field bounds is container elements
-            contentPanel.remove(widgetIndex);
-            contentPanel.insert(widget, (widgetIndex + 1));
-            Collections.swap(parent.getElements(), indexInClass, (indexInClass + 1));
-
-            if (addUndo) {
-                undoManager.addUndoable(new IsUndoable() {
-                    @Override
-                    public void undo() {
-                        moveUpWidget(widget, formElement, false);
-                    }
-
-                    @Override
-                    public void redo() {
-                        moveDownWidget(widget, formElement, false);
-                    }
-                });
-            }
-        }
     }
 
     public UndoManager getUndoManager() {

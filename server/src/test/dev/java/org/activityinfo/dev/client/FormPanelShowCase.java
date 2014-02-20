@@ -53,6 +53,7 @@ public class FormPanelShowCase extends FlowPanel {
         add(showError);
         add(clearError);
         add(panel);
+        panel.setValue(formInstance);
     }
 
     private void init() {

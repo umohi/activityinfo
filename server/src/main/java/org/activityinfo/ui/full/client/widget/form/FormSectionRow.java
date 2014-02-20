@@ -21,6 +21,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.BiMap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -28,8 +29,10 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
@@ -46,13 +49,17 @@ public class FormSectionRow extends Composite {
 
     private final FormSection formSection;
     private final FormPanel formPanel;
+    private final ElementNode node;
+    private final ElementNode parentNode;
 
     @UiField
     HTML label;
     @UiField
     RowToolbar toolbar;
+    @UiField
+    FlowPanel contentPanel;
 
-    public FormSectionRow(FormSection formSection, FormPanel formPanel) {
+    public FormSectionRow(FormSection formSection, FormPanel formPanel, ElementNode parentNode) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -61,8 +68,18 @@ public class FormSectionRow extends Composite {
         this.toolbar.attach(this);
         this.toolbar.setFormPanel(formPanel);
         this.label.setHTML(SafeHtmlUtils.fromSafeConstant(formSection.getLabel().getValue()));
-
+        this.node = new ElementNode(formPanel, contentPanel, parentNode, formSection);
+        this.node.renderElements(formSection.getElements());
+        this.parentNode = parentNode;
         addHandlers();
+    }
+
+    public void putFormFieldRows(BiMap<Cuid, FormFieldRow> ownAndChildFieldMap) {
+        node.putFormFieldRows(ownAndChildFieldMap);
+    }
+
+    public ElementNode getNode() {
+        return node;
     }
 
     public FormSection getFormSection() {
@@ -89,19 +106,19 @@ public class FormSectionRow extends Composite {
         toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                formPanel.removeSectionRow(FormSectionRow.this);
+                parentNode.remove(FormSectionRow.this);
             }
         });
         toolbar.getUpButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                formPanel.moveUpRow(FormSectionRow.this);
+                parentNode.moveUpWidget(FormSectionRow.this, formSection, true);
             }
         });
         toolbar.getDownButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                formPanel.moveDownRow(FormSectionRow.this);
+                parentNode.moveDownWidget(FormSectionRow.this, formSection, true);
             }
         });
     }

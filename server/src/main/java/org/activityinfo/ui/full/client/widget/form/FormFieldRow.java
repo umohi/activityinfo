@@ -61,13 +61,15 @@ public class FormFieldRow extends Composite {
     private FormPanel formPanel;
     private FormField formField;
     private IsWidget formFieldWidget;
+    private ElementNode node;
 
-    public FormFieldRow(FormField formField, FormPanel formPanel) {
+    public FormFieldRow(FormField formField, FormPanel formPanel, ElementNode node) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         this.formPanel = formPanel;
         this.formField = formField;
+        this.node = node;
         this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
         this.toolbar.attach(this);
         this.toolbar.setFormPanel(formPanel);
@@ -99,19 +101,19 @@ public class FormFieldRow extends Composite {
         toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                formPanel.removeFieldRow(FormFieldRow.this);
+                node.remove(FormFieldRow.this);
             }
         });
         toolbar.getUpButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                formPanel.moveUpRow(FormFieldRow.this);
+                node.moveUpWidget(FormFieldRow.this, formField, true);
             }
         });
         toolbar.getDownButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                formPanel.moveDownRow(FormFieldRow.this);
+                node.moveDownWidget(FormFieldRow.this, formField, true);
             }
         });
     }

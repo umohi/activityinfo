@@ -25,14 +25,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Resource;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.model.AiLatLng;
 
 import javax.annotation.Nonnull;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author yuriyz on 1/29/14.
@@ -67,6 +66,12 @@ public class FormInstance implements Resource {
 
     public Map<Cuid, Object> getValueMap() {
         return valueMap;
+    }
+
+    public void removeAll(Set<Cuid> fieldIds) {
+        for (Cuid fieldId : fieldIds) {
+            valueMap.remove(fieldId);
+        }
     }
 
     public void set(@NotNull Cuid fieldId, Object fieldValue) {
