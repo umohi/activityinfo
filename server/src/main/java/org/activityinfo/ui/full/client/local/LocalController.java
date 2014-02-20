@@ -32,14 +32,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.ui.full.client.AppEvents;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.authentication.ClientSideAuthProvider;
-import org.activityinfo.api.client.AsyncMonitor;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.Remote;
 import org.activityinfo.ui.full.client.i18n.UIConstants;
@@ -132,7 +131,9 @@ public class LocalController extends AbstractDispatcher {
     @Override
     public <T extends CommandResult> void execute(Command<T> command,
                                                   AsyncCallback<T> callback) {
-        execute(command, null, callback);
+        // yuriyz -> alex: todo please check : temporarily commented due to StackOverflowError
+        // execute(command, null, callback);
+        activeStrategy.dispatch(command, callback);
     }
 
     private void activateStrategy(Strategy strategy) {
