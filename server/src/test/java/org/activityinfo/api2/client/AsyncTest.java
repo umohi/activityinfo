@@ -10,7 +10,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 
-public class PromiseTest {
+public class AsyncTest {
 
 
     @Test

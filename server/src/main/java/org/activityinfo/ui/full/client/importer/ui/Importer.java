@@ -84,12 +84,6 @@ public class Importer {
 
             }
         }
-
-
-
-
-
-
     }
 
     private void matchReferences(MappedReferenceFieldBinding binding) {
