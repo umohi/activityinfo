@@ -41,7 +41,19 @@ public class UndoManager {
         if (undoable != null) {
             position++;
             undoables.add(position, undoable);
+            removeUndoablesFrom(position);
             fireCreatedEvent(new UndoableCreatedEvent(undoable));
+        }
+    }
+
+    /**
+     * Removes undoables from list start from position but excluding this position itself.
+     *
+     * @param position position from which undoables will be removed but excluding this position itself
+     */
+    private void removeUndoablesFrom(int position) {
+        for (int i = position + 1; i < undoables.size(); i++) {
+            undoables.remove(i);
         }
     }
 
