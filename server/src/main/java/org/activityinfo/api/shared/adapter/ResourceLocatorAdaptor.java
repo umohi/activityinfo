@@ -1,5 +1,6 @@
 package org.activityinfo.api.shared.adapter;
 
+import com.google.common.base.Function;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.command.GetSites;
@@ -70,10 +71,12 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
             Promise<SiteDTO> sites = dispatcher
                     .execute(GetSites.byId(siteId))
                     .then(new SingleListResultAdapter<SiteDTO>());
-            return Promise.pair(schema, sites)
-                    .then(new SiteInstanceAdapter());
+
+            return Promise.fmap(new SiteInstanceAdapter()).apply(schema, sites);
         }
         return Promise.rejected(new NotFoundException(instanceId.asIri()));
+
+
     }
 
     @Override
@@ -93,6 +96,6 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Promise<List<Projection>> query(InstanceQuery query) {
-        return new Promise<>(new Joiner(dispatcher, query.getFieldPaths(), query.getCriteria()));
+        return new Joiner(dispatcher, query.getFieldPaths(), query.getCriteria()).apply(query);
     }
 }

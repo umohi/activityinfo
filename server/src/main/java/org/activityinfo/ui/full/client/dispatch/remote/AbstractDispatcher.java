@@ -23,11 +23,10 @@ package org.activityinfo.ui.full.client.dispatch.remote;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api2.client.AsyncFunction;
+import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.ui.full.client.dispatch.monitor.MonitoringCallback;
 
@@ -52,27 +51,20 @@ public abstract class AbstractDispatcher implements Dispatcher {
      * @param <R>     the type of the {@code Command}'s {@code CommandResult}
      */
     public final <R extends CommandResult> Promise<R> execute(final Command<R> command) {
-        return new Promise<R>(new AsyncFunction<Void, R>() {
+        final Promise<R> promise = new Promise<>();
+
+        execute(command, new AsyncCallback<R>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                promise.onFailure(throwable);
+            }
 
             @Override
-            public void apply(Void noInput, final AsyncCallback<R> callback) {
-                try {
-                    execute(command, new AsyncCallback<R>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            callback.onFailure(throwable);
-                        }
-
-                        @Override
-                        public void onSuccess(R result) {
-                            callback.onSuccess(result);
-                        }
-                    });
-                } catch (Throwable caught) {
-                    callback.onFailure(caught);
-                }
+            public void onSuccess(R result) {
+                promise.onSuccess(result);
             }
         });
+        return promise;
     }
 
 }

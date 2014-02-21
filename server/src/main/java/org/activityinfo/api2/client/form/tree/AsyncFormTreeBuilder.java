@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * Builds a {@link FormTree}
  */
-public class AsyncFormTreeBuilder implements AsyncFunction<Cuid, FormTree> {
+public class AsyncFormTreeBuilder extends AsyncFunction<Cuid, FormTree> {
 
     private static final Logger LOGGER = Logger.getLogger(AsyncFormTreeBuilder.class.getName());
 

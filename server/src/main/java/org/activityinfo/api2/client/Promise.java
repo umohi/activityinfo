@@ -1,16 +1,17 @@
 package org.activityinfo.api2.client;
 
 
-import com.google.common.collect.Lists;
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api2.client.promises.AsyncFunctions;
-import org.activityinfo.api2.client.promises.Retryable;
-import org.activityinfo.api2.shared.Pair;
-import org.activityinfo.ui.full.client.importer.data.SourceRow;
+import org.activityinfo.api2.shared.function.BiFunction;
+import org.activityinfo.api2.shared.function.BiFunctions;
+import org.activityinfo.api2.shared.function.BinaryOperator;
+import org.activityinfo.api2.shared.monad.MonadicValue;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -22,7 +23,8 @@ import java.util.List;
  *
  * @param <T> the type of the promised value
  */
-public final class Promise<T> implements AsyncCallback<T>, Retryable {
+public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
+
 
 
     public enum State {
@@ -43,8 +45,6 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         PENDING
     }
 
-    private final Retryable parent;
-
     private State state = State.PENDING;
     private T value;
     private Throwable exception;
@@ -52,26 +52,6 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
     private List<AsyncCallback<? super T>> callbacks = null;
 
     public Promise() {
-        this.parent = new Retryable() {
-            @Override
-            public void retry() {
-                reject(new UnsupportedOperationException());
-            }
-        };
-    }
-
-    private Promise(Retryable parent) {
-        this.parent = parent;
-    }
-
-    public Promise(final AsyncFunction<Void, T> operation) {
-        this.parent = new Retryable() {
-            @Override
-            public void retry() {
-                operation.apply(null, Promise.this);
-            }
-        };
-        operation.apply(null, this);
     }
 
     public State getState() {
@@ -92,13 +72,6 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         publishFulfillment();
     }
 
-    public void retry() {
-        if(state == State.REJECTED) {
-            state = State.PENDING;
-            parent.retry();
-        }
-    }
-
     public void then(AsyncCallback<? super T> callback) {
         switch (state) {
             case PENDING:
@@ -116,8 +89,31 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         }
     }
 
-    public <F> Promise<F> then(final Function<? super T, F> f) {
-        final Promise<F> chained = new Promise<F>(parent);
+    public <R> Promise<R> join(final Function<? super T, Promise<R>> function) {
+        final Promise<R> chained = new Promise<R>();
+        then(new AsyncCallback<T>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                chained.onFailure(caught);
+            }
+
+            @Override
+            public void onSuccess(T t) {
+                function.apply(t).then(chained);
+            }
+        });
+        return chained;
+    }
+
+    /**
+     *
+     * @param function
+     * @param <R>
+     * @return
+     */
+    @Override
+    public <R> Promise<R> then(final Function<? super T, R> function) {
+        final Promise<R> chained = new Promise<R>();
         then(new AsyncCallback<T>() {
 
             @Override
@@ -126,9 +122,9 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
             }
 
             @Override
-            public void onSuccess(T result) {
+            public void onSuccess(T t) {
                 try {
-                    chained.resolve(f.apply(result));
+                    chained.resolve(function.apply(t));
                 } catch (Throwable caught) {
                     chained.reject(caught);
                 }
@@ -136,76 +132,6 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         });
         return chained;
     }
-
-    public <F> Promise<F> then(final AsyncFunction<? super T, F> f) {
-        final Promise<F> chained = new Promise<F>(this);
-        then(new AsyncCallback<T>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                chained.reject(caught);
-            }
-
-            @Override
-            public void onSuccess(T result) {
-                f.apply(result, new AsyncCallback<F>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        chained.reject(caught);
-                    }
-
-                    @Override
-                    public void onSuccess(F result) {
-                        chained.resolve(result);
-                    }
-                });
-            }
-        });
-        return chained;
-    }
-
-    public <F> Promise<F> then(Promise<AsyncFunction<? super T, F>> f) {
-        final Promise<F> result = new Promise<>();
-        f.then(new AsyncCallback<AsyncFunction<? super T, F>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                result.onFailure(caught);
-            }
-
-            @Override
-            public void onSuccess(AsyncFunction<? super T, F> function) {
-                Promise.this.then(function).then(result);
-            }
-        });
-        return result;
-    }
-
-//
-//    public <F> Promise<Pair<T, F>> thenBind(final AsyncFunction<? super T, F> f) {
-//        final Promise<Pair<T,F>> bound = new Promise<>(this);
-//        then(new AsyncCallback<T>() {
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                bound.onFailure(caught);
-//            }
-//
-//            @Override
-//            public void onSuccess(final T input) {
-//                f.apply(result, new AsyncCallback<F>() {
-//                    @Override
-//                    public void onFailure(Throwable caught) {
-//                        bound.onFailure(caught);
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(F result) {
-//                        bound.onSuccess(new Pair<T, F>(input, result));
-//                    }
-//                });
-//            }
-//        });
-//        return bound;
-//    }
-
 
     @Override
     public void onFailure(Throwable caught) {
@@ -243,14 +169,6 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         }
     }
 
-    public static <F, T> Promise<T> apply(final AsyncFunction<F, T> function, final F input) {
-        return new Promise<T>(AsyncFunctions.curry0(function, input));
-    }
-
-    public static <T> Promise<T> apply(final AsyncFunction<Void, T> function) {
-        return new Promise<T>(function);
-    }
-
     public static <T> Promise<T> resolved(T value) {
         Promise<T> promise = new Promise<T>();
         promise.resolve(value);
@@ -264,90 +182,58 @@ public final class Promise<T> implements AsyncCallback<T>, Retryable {
         return promise;
     }
 
-    public static <X,Y> Promise<Pair<X,Y>> pair(final Promise<X> x, final Promise<Y> y) {
-        return new Promise<>(new AsyncFunction<Void, Pair<X,Y>>() {
+    /**
+     * Transforms a function {@code T → R} to a function which operates on the equivalent
+     * Promised values: {@code Promise<T> → Promise<R> }
+     */
+    public static <T, R> Function<Promise<T>, Promise<R>> fmap(final Function<T, R> function) {
+        return new Function<Promise<T>, Promise<R>>() {
             @Override
-            public void apply(Void noInput, final AsyncCallback<Pair<X, Y>> callback) {
-                x.retry();
-                y.retry();
-                x.then(new AsyncCallback<X>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        callback.onFailure(caught);
-                    }
+            public Promise<R> apply(Promise<T> input) {
+                return input.then(function);
+            }
+        };
+    }
 
-                    @Override
-                    public void onSuccess(final X x) {
-                        y.then(new AsyncCallback<Y>() {
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                callback.onFailure(caught);
-                            }
+    /**
+     * Transforms a binary function {@code (T, U) → R} to a function which operates on the equivalent
+     * Promised values: {@code ( Promise<T>, Promise<U> ) → Promise<R> }
+     */
+    public static <T, U, R> BiFunction<Promise<T>, Promise<U>, Promise<R>> fmap(final BiFunction<T, U, R> function) {
+        return new BiFunction<Promise<T>, Promise<U>, Promise<R>>() {
+            @Override
+            public Promise<R> apply(final Promise<T> promiseT, final Promise<U> promiseU) {
+                Preconditions.checkNotNull(promiseT, "promise cannot be null");
+                return promiseT.join(new Function<T, Promise<R>>() {
 
-                            @Override
-                            public void onSuccess(Y y) {
-                                callback.onSuccess(new Pair<X, Y>(x, y));
-                            }
-                        });
+                    @Nullable
+                    @Override
+                    public Promise<R> apply(@Nullable T t) {
+                        return promiseU.then(function.apply(t));
                     }
                 });
             }
-        });
+        };
     }
 
-    public static <X> Promise<List<X>> all(final List<Promise<X>> promises) {
-
-        if(promises.isEmpty()) {
-            return Promise.resolved(Collections.<X>emptyList());
+    /**
+     * Convenience function for applying an asynchronous consumer to all elements of a list in sequency
+     * @param items
+     * @param consumer
+     * @param <T>
+     * @return
+     */
+    public static <T> Promise<Void> applyAll(Iterable<T> items, Function<T, Promise<Void>> consumer) {
+        try {
+            return BiFunctions.foldLeft(Promise.<Void>resolved(null), fmap(BinaryOperator.VOID),
+                    Iterables.transform(items, consumer));
+        } catch(Throwable caught) {
+            return Promise.rejected(caught);
         }
-
-        return new Promise<>(new AsyncFunction<Void, List<X>>() {
-            @Override
-            public void apply(Void noInput, final AsyncCallback<List<X>> callback) {
-                for(Promise<X> promise : promises) {
-                    promise.retry();
-                }
-
-                final List<X> results = Lists.newArrayList();
-                final Counter remaining = new Counter(promises.size());
-
-                for(int i=0;i!=promises.size();++i) {
-                    results.add(null);
-                    final int promiseIndex = i;
-                    promises.get(i).then(new AsyncCallback<X>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            callback.onFailure(caught);
-                        }
-
-                        @Override
-                        public void onSuccess(X result) {
-                            results.set(promiseIndex, result);
-                            remaining.decrement();
-                            if (remaining.isZero()) {
-                                callback.onSuccess(results);
-                            }
-                        }
-                    });
-                }
-            }
-        });
     }
 
-    private static class Counter {
-        private int value;
-
-        public Counter(int value) {
-            this.value = value;
-        }
-
-        public void decrement() {
-            value--;
-        }
-
-        public boolean isZero() {
-            return value == 0;
-        }
+    public static <T> Promise<T> foldLeft(T initialValue, BiFunction<T, T, T> operator, Iterable<Promise<T>> promises) {
+        return BiFunctions.foldLeft(Promise.resolved(initialValue), fmap(operator), promises);
     }
 
     @Override

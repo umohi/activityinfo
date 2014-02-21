@@ -38,15 +38,20 @@ public class MatchedFieldColumn extends ImportColumn<SafeHtml> {
     public SafeHtml getValue(SourceRow row) {
         ScoredReference match = referenceBinding.getMatchTable().getMatch(row.getRowIndex());
         Object importedValue = fieldBinding.getImportedValue(row);
-        Object referencedValue = fieldBinding.getReferencedValue(match.getProjection());
-        double score = match.getScore(fieldBinding.getIndex());
-        if(score == 1.0) {
-            return SafeHtmlUtils.fromString(renderer.apply(importedValue));
+
+        if(match == null) {
+            return templates.invalid(renderer.apply(importedValue));
         } else {
-            SafeHtmlBuilder sb = new SafeHtmlBuilder();
-            sb.append(templates.deleted(renderer.apply(importedValue)));
-            sb.append(templates.inserted(renderer.apply(referencedValue)));
-            return sb.toSafeHtml();
+            Object referencedValue = fieldBinding.getReferencedValue(match.getProjection());
+            double score = match.getScore(fieldBinding.getIndex());
+            if(score == 1.0) {
+                return SafeHtmlUtils.fromString(renderer.apply(importedValue));
+            } else {
+                SafeHtmlBuilder sb = new SafeHtmlBuilder();
+                sb.append(templates.deleted(renderer.apply(importedValue)));
+                sb.append(templates.inserted(renderer.apply(referencedValue)));
+                return sb.toSafeHtml();
+            }
         }
     }
 

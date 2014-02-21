@@ -1,12 +1,10 @@
 package org.activityinfo.ui.full.client.importer.process;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import org.activityinfo.api2.shared.Pair;
 import org.activityinfo.api2.shared.Projection;
+import org.activityinfo.api2.shared.function.BiFunction;
 import org.activityinfo.ui.full.client.importer.binding.MatchFieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.importer.match.JaroWinklerDistance;
 import org.activityinfo.ui.full.client.importer.match.ScoredReference;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import java.util.List;
  * Matches a SourceRow against a list of Potential matches and returns the
  * best match.
  */
-public class MatchRowFunction implements Function<Pair<List<Projection>, SourceRow>, ScoredReference> {
+public class MatchRowFunction extends BiFunction<List<Projection>, SourceRow, ScoredReference> {
 
     private static final double MINIMUM_SCORE = 0.5;
 
@@ -26,11 +24,11 @@ public class MatchRowFunction implements Function<Pair<List<Projection>, SourceR
     }
 
     @Override
-    public ScoredReference apply(Pair<List<Projection>, SourceRow> input) {
-        Object[] imported = importedValues(input.getB());
+    public ScoredReference apply(List<Projection> projections, SourceRow sourceRow) {
+        Object[] imported = importedValues(sourceRow);
 
         List<ScoredReference> potentialMatches = Lists.newArrayList();
-        for(Projection projection : input.getA()) {
+        for(Projection projection : projections) {
             double[] scores = scorePotentialMatch(imported, projection);
             if(scores != null) {
                 potentialMatches.add(new ScoredReference(projection, scores));

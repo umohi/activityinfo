@@ -1,18 +1,16 @@
 package org.activityinfo.ui.full.client.importer.ui;
 
 import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
-import org.activityinfo.api2.client.*;
-import org.activityinfo.api2.client.promises.AsyncFunctions;
-import org.activityinfo.api2.client.promises.IncrementalMapReduceFunction;
-import org.activityinfo.api2.client.promises.Reducers;
-import org.activityinfo.api2.client.promises.Result;
+import org.activityinfo.api2.client.Promise;
+import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.client.Resources;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Pair;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.ui.full.client.importer.ImportModel;
 import org.activityinfo.ui.full.client.importer.binding.FieldBinding;
@@ -20,20 +18,18 @@ import org.activityinfo.ui.full.client.importer.binding.MappedReferenceFieldBind
 import org.activityinfo.ui.full.client.importer.binding.MatchTable;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.match.ScoredReference;
-import org.activityinfo.ui.full.client.importer.process.*;
+import org.activityinfo.ui.full.client.importer.process.CreateInstanceFunction;
+import org.activityinfo.ui.full.client.importer.process.MatchRowFunction;
+import org.activityinfo.ui.full.client.importer.process.ValidRowPredicate;
 import org.activityinfo.ui.full.client.local.command.handler.KeyGenerator;
 
 import javax.annotation.Nullable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.base.Functions.forPredicate;
+import static com.google.common.base.Functions.compose;
 import static com.google.common.collect.Iterables.filter;
-import static org.activityinfo.api2.client.Promise.apply;
-import static org.activityinfo.api2.client.promises.AsyncFunctions.*;
-import static org.activityinfo.api2.client.promises.Reducers.count;
-import static org.activityinfo.api2.client.promises.Reducers.countTrue;
-import static org.activityinfo.api2.client.promises.Reducers.nullReducer;
 
 /**
  * Client-side importer that is able to work offline
@@ -41,10 +37,11 @@ import static org.activityinfo.api2.client.promises.Reducers.nullReducer;
 public class Importer {
 
     private final ResourceLocator resourceLocator;
+    private final List<FieldBinding> bindings;
     private Scheduler scheduler;
     private Resources resources;
     private ImportModel importModel;
-    private KeyGenerator keyGenerator;
+    private KeyGenerator keyGenerator = new KeyGenerator();
 
     private Map<Integer, Cuid> rowIds = Maps.newHashMap();
 
@@ -56,14 +53,25 @@ public class Importer {
         this.resourceLocator = resourceLocator;
         this.resources = new Resources(resourceLocator);
         this.importModel = importModel;
+        this.bindings = importModel.createFieldBindings();
     }
 
-    public Promise<List<SourceRow>> getRows() {
-        return Promise.resolved(importModel.getSource().getRows());
+    public List<FieldBinding> getBindings() {
+        return bindings;
+    }
+
+    private List<MappedReferenceFieldBinding> getMappedReferenceFieldBindings() {
+        List<MappedReferenceFieldBinding> bindings = Lists.newArrayList();
+        for(FieldBinding binding : this.bindings) {
+            if(binding instanceof MappedReferenceFieldBinding) {
+                bindings.add((MappedReferenceFieldBinding) binding);
+            }
+        }
+        return bindings;
     }
 
     public Promise<Integer> countValidRows() {
-        return getRows().then(mapReduce(scheduler, forPredicate(isValid()), countTrue()));
+        return Promise.resolved(Iterables.size(Iterables.filter(importModel.getSource().getRows(), isValid())));
     }
 
     /**
@@ -71,67 +79,27 @@ public class Importer {
      * matches.
      */
     public Promise<Void> matchReferences() {
-
-        Promise<Void> promise = Promise.resolved(null);
-
-        List<MappedReferenceFieldBinding> fields = Lists.newArrayList();
-        for(FieldBinding binding : createFieldBindings()) {
-            if(binding instanceof MappedReferenceFieldBinding) {
-
-                matchReferences(((MappedReferenceFieldBinding) binding));
-
-                Promise<List<Projection>> projections = resources.query(.queryPotentialMatches())
-
-            }
-        }
+        return Promise.applyAll(getMappedReferenceFieldBindings(), new MatchFieldFunction());
     }
-
-    private void matchReferences(MappedReferenceFieldBinding binding) {
-        
-
-        // get the list of possible matches for this REFERENCE field
-        Promise<List<Projection>> projections = resources
-                .query(binding.queryPotentialMatches());
-
-
-        // our MatchRowFunction takes (projections, sourceRow) -> match,
-        // so we use the curry function to get a new a function which takes
-        // projections and gives us a function (projections -> (sourceRow -> match)
-        // which we can chain with the query results
-        Promise<AsyncFunction<Iterable<SourceRow>, Void>> updateMatch = projections
-                .then(curry(new MatchRowFunction(binding.getMatchFields())))
-                .then(curry(new UpdateMatchFunction(binding.getMatchTable())))
-                .then(curry(AsyncFunctions.<SourceRow>incrementalMap()));
-
-
-        // now use this function to
-        getRows().then(updateMatch);
-    }
-
 
 
     /**
      * Persists all valid, imported FormInstances
      */
-    public Promise<Integer> persistInstances() {
+    public Promise<Void> persistInstances() {
 
         List<SourceRow> rows = importModel.getSource().getRows();
 
         CreateInstanceFunction create = new CreateInstanceFunction(
                 importModel.getFormClass(),
-                createFieldBindings(),
+                bindings,
                 new InstanceIdentityFunction());
 
-        return Promise.resolved(filter(rows, isValid()))
-                .then(mapReduce(compose(resources.persist(), create), count()));
-    }
-
-    private List<FieldBinding> createFieldBindings() {
-        return importModel.createFieldBindings();
+        return Promise.applyAll(filter(rows, isValid()), compose(resources.persist(), create));
     }
 
     private ValidRowPredicate isValid() {
-        return new ValidRowPredicate(createFieldBindings());
+        return new ValidRowPredicate(bindings);
     }
 
     private class InstanceIdentityFunction implements Function<SourceRow, Cuid> {
@@ -148,29 +116,50 @@ public class Importer {
         }
     }
 
+    private class MatchFieldFunction implements Function<MappedReferenceFieldBinding, Promise<Void>> {
+        @Override
+        public Promise<Void> apply(@Nullable MappedReferenceFieldBinding binding) {
+            // get the list of possible matches for this REFERENCE field
+            return resources
+                    .query(binding.queryPotentialMatches())
+                    .join(new UpdateMatchesFunction(binding));
+        }
+    }
 
-    private class UpdateMatchFunction implements Function<Pair<Function<SourceRow, ScoredReference>, SourceRow>, Void> {
+    private class UpdateMatchesFunction implements Function<List<Projection>, Promise<Void>> {
 
+        private final MatchRowFunction matchFunction;
         private final MatchTable matchTable;
 
-        private UpdateMatchFunction(MatchTable matchTable) {
-            this.matchTable = matchTable;
-        }
-
-        @Nullable
-        @Override
-        public Void apply(@Nullable SourceRow input) {
-            ScoredReference match = matchFunction.apply(input);
-            matchTable.setMatch(input.getRowIndex(), match);
-            return null;
+        private UpdateMatchesFunction(MappedReferenceFieldBinding binding) {
+            this.matchFunction = new MatchRowFunction(binding.getMatchFields());
+            this.matchTable = binding.getMatchTable();
         }
 
         @Override
-        public Void apply(Pair<Function<SourceRow, ScoredReference>, SourceRow> input) {
-            SourceRow row = input.getB();
-            ScoredReference match = input.getA().apply(row);
-            matchTable.setMatch(row.getRowIndex(), match);
-            return null;
+        public Promise<Void> apply(final List<Projection> projections) {
+            final Promise<Void> promise = new Promise<>();
+            final Iterator<SourceRow> iterator = importModel.getSource().getRows().iterator();
+            scheduler.scheduleIncremental(new Scheduler.RepeatingCommand() {
+                @Override
+                public boolean execute() {
+                    if(iterator.hasNext())  {
+                        try {
+                            SourceRow row = iterator.next();
+                            ScoredReference match = matchFunction.apply(projections, row);
+                            matchTable.setMatch(row.getRowIndex(), match);
+                            return true;
+                        } catch(Throwable caught) {
+                            promise.reject(caught);
+                            return false;
+                        }
+                    } else {
+                        promise.resolve(null);
+                        return false;
+                    }
+                }
+            });
+            return promise;
         }
     }
 }

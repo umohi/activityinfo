@@ -6,6 +6,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.ImportModel;
+import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.UpdateCommandFactory;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ImportColumn;
@@ -18,13 +19,13 @@ import java.util.Map;
  */
 public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandFactory<T> {
 
-    private DataGrid<DraftInstance> dataGrid;
+    private DataGrid<SourceRow> dataGrid;
     private ImportModel<T> importModel;
     private Map<FieldPath, ImportColumn<?>> columns;
 
     public ValidationGrid(ImportModel<T> importModel) {
         this.importModel = importModel;
-        this.dataGrid = new BootstrapDataGrid<DraftInstance>(100);
+        this.dataGrid = new BootstrapDataGrid<SourceRow>(100);
 
         syncColumns();
 

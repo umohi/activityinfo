@@ -1,29 +1,29 @@
 package org.activityinfo.api.shared.adapter;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api2.client.AsyncFunction;
+import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.client.Promise;
-import org.activityinfo.api2.client.promises.MapFunction;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.criteria.IdCriteria;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
+import com.google.common.base.Function;
 
 import javax.annotation.Nullable;
 import java.util.*;
+
+import static org.activityinfo.api2.shared.function.BiFunctions.concatMap;
 
 /**
  * Naive implementation that joins and projects a multi-level
  * instance query.
  */
-class Joiner implements AsyncFunction<Void, List<Projection>> {
+class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
 
     private final Criteria criteria;
@@ -81,29 +81,30 @@ class Joiner implements AsyncFunction<Void, List<Projection>> {
     }
 
     @Override
-    public void apply(Void noInput, AsyncCallback<List<Projection>> callback) {
+    public Promise<List<Projection>> apply(InstanceQuery instanceQuery) {
 
-        Promise<List<Projection>> results = query(criteria)
-                .then(new MapFunction<>(new Project(null)));
+        Promise<List<Projection>> results =
+                query(criteria)
+                .then(concatMap(new ProjectFunction(null)));
 
         // now schedule the joins
         for(FieldPath fieldToJoin : joinFields) {
-            results = results.then(new NestedInstancesFetch(fieldToJoin));
+            results = results.join(new FetchAndJoinFunction(fieldToJoin));
         }
 
-        results.then(callback);
+        return results;
     }
-
 
     private Promise<List<FormInstance>> query(Criteria criteria) {
         return new QueryExecutor(dispatcher, criteria).execute();
     }
 
-    private class Project implements Function<FormInstance, Projection> {
+
+    private class ProjectFunction implements Function<FormInstance, Projection> {
 
         private FieldPath prefix;
 
-        private Project(FieldPath prefix) {
+        private ProjectFunction(FieldPath prefix) {
             this.prefix = prefix;
         }
 
@@ -124,16 +125,16 @@ class Joiner implements AsyncFunction<Void, List<Projection>> {
     /**
      * Fetches all instances that are referenced by the parent instances
      */
-    private class NestedInstancesFetch implements AsyncFunction<List<Projection>, List<Projection>> {
+    private class FetchAndJoinFunction implements Function<List<Projection>, Promise<List<Projection>>> {
 
         private FieldPath referenceField;
 
-        public NestedInstancesFetch(FieldPath referenceField) {
+        public FetchAndJoinFunction(FieldPath referenceField) {
             this.referenceField = referenceField;
         }
 
         @Override
-        public void apply(List<Projection> projections, AsyncCallback<List<Projection>> callback) {
+        public Promise<List<Projection>> apply(List<Projection> projections) {
 
             // first collect the ids of the nested FormInstances
             Set<Cuid> instanceIds = Sets.newHashSet();
@@ -142,23 +143,21 @@ class Joiner implements AsyncFunction<Void, List<Projection>> {
             }
 
             if(instanceIds.isEmpty()) {
-                callback.onSuccess(projections);
+                return Promise.resolved(projections);
             } else {
-                new QueryExecutor(dispatcher, new IdCriteria(instanceIds))
+                return new QueryExecutor(dispatcher, new IdCriteria(instanceIds))
                     .execute()
-                    .then(new Join(referenceField, projections))
-                    .then(callback);
+                    .then(new JoinFunction(referenceField, projections));
             }
-
         }
     }
 
-    private class Join implements Function<List<FormInstance>, List<Projection>> {
+    private class JoinFunction implements Function<List<FormInstance>, List<Projection>> {
 
         private final FieldPath referenceField;
         private final List<Projection> projections;
 
-        public Join(FieldPath referenceField, List<Projection> projections) {
+        public JoinFunction(FieldPath referenceField, List<Projection> projections) {
             this.referenceField = referenceField;
             this.projections = projections;
         }

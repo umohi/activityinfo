@@ -3,6 +3,7 @@ package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.shared.Cuid;
@@ -78,8 +79,9 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
 
 
         List<Projection> projections = assertResolves(resourceLocator.query(
-                Lists.newArrayList(locationName, locationAdminUnitName),
-                new ClassCriteria(HEALTH_CENTER_CLASS)));
+                new InstanceQuery(
+                    Lists.newArrayList(locationName, locationAdminUnitName),
+                    new ClassCriteria(HEALTH_CENTER_CLASS))));
 
         System.out.println(Joiner.on("\n").join(projections));
     }

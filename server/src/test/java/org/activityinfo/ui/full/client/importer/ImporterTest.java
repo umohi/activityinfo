@@ -24,6 +24,7 @@ import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.data.PastedTable;
 import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.match.*;
+import org.activityinfo.ui.full.client.importer.ui.Importer;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplatesStub;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ColumnFactory;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ImportColumn;
@@ -37,6 +38,7 @@ import java.util.List;
 
 import static com.google.common.io.Resources.*;
 import static org.activityinfo.api2.client.PromiseMatchers.assertResolves;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
@@ -71,7 +73,7 @@ public class ImporterTest extends CommandTestCase2 {
     @Test
     public void test() throws IOException {
 
-        FormTree formTree = assertResolves(Promise.apply(formTreeBuilder, HOUSEHOLD_SURVEY_FORM_CLASS));
+        FormTree formTree = assertResolves(formTreeBuilder.apply(HOUSEHOLD_SURVEY_FORM_CLASS));
         dumpList("TREE NODES", formTree.search(FormTree.SearchOrder.BREADTH_FIRST,
                 Predicates.alwaysTrue(), Predicates.<FormTree.Node>alwaysTrue()));
 
@@ -92,18 +94,14 @@ public class ImporterTest extends CommandTestCase2 {
         importModel.setColumnBinding(field("Upzilla.District.Name"), columnIndex("district"));
         importModel.setColumnBinding(field("Upzilla.Name"), columnIndex("upazila"));
 
-        List<FieldBinding> bindings = importModel.createFieldBindings();
-
         // Step 3: Match Instances
         // For each row object field, we need to determine the range of possible/probably values
-
-
-
-        runAll();
-        assertResolves(matching);
+        Importer importer = new Importer(scheduler, resourceLocator, importModel);
+        runScheduledAndAssertResolves(importer.matchReferences());
 
         // Step 4: Validate
-        validateRows(bindings);
+        Integer validCount = runScheduledAndAssertResolves(importer.countValidRows());
+        System.out.println("VALID ROWS: " + validCount);
 
         // Step 5: Present to the user for validation / correction
         ColumnFactory columnFactory = new ColumnFactory(
@@ -111,7 +109,7 @@ public class ImporterTest extends CommandTestCase2 {
                 new ValidationCellTemplatesStub(),
                 importModel.getFormTree());
 
-        List<ImportColumn<?>> columns = columnFactory.create(bindings);
+        List<ImportColumn<?>> columns = columnFactory.create(importer.getBindings());
 
         dumpHeaders(columns);
         dumpRows(columns, importModel.getSource().getRows());
@@ -120,15 +118,19 @@ public class ImporterTest extends CommandTestCase2 {
         MissingReferenceColumn partnerColumn = (MissingReferenceColumn) columns.get(0);
         partnerColumn.getBinding().setProvidedValue(BRAC_PARTNER_CUID);
 
-        validateRows(bindings);
+        validCount = runScheduledAndAssertResolves(importer.countValidRows());
+        assertThat(validCount, equalTo(importModel.getSource().getRows().size()));
 
         // Step 7: Import!!!!
 
 
 
-
     }
 
+    private <T> T runScheduledAndAssertResolves(Promise<T> promise) {
+        runAll();
+        return assertResolves(promise);
+    }
 
     private void runAll() {
         while(scheduler.executeCommands()) {}

@@ -9,12 +9,12 @@ import org.activityinfo.api.shared.command.GetAdminEntities;
 import org.activityinfo.api.shared.command.GetLocations;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api2.client.Promise;
-import org.activityinfo.api2.client.promises.MapFunction;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.criteria.*;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.function.ConcatList;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.activityinfo.api.shared.adapter.CuidAdapter.*;
+import static org.activityinfo.api2.shared.function.BiFunctions.concatMap;
 
 /**
  * Given an intersection of Criteria, fetch the corresponding entities
@@ -94,7 +95,7 @@ public class QueryExecutor  {
             for(Character domain : ids.keySet()) {
                 resultSets.add(queryByIds(domain, ids.get(domain)));
             }
-            return Promise.all(resultSets).then(new UnionFunction());
+            return Promise.foldLeft(Collections.<FormInstance>emptyList(), new ConcatList<FormInstance>(), resultSets);
         }
     }
 
@@ -141,7 +142,7 @@ public class QueryExecutor  {
             case PARTNER_FORM_CLASS_DOMAIN:
                 return dispatcher.execute(new GetSchema())
                         .then(new PartnerListExtractor(criteria))
-                        .then(new MapFunction<>(new PartnerInstanceAdapter(formClassId)));
+                        .then(concatMap(new PartnerInstanceAdapter(formClassId)));
 
             default:
                 return Promise.rejected(new UnsupportedOperationException(
