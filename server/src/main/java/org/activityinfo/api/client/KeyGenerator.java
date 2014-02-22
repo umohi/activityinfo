@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.local.command.handler;
+package org.activityinfo.api.client;
 
 /*
  * #%L
