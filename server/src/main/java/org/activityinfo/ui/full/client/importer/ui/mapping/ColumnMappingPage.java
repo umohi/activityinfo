@@ -10,7 +10,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.ImportModel;
+import org.activityinfo.ui.full.client.importer.model.ColumnAction;
+import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.ui.mapping.ColumnSelectionChangedEvent.Handler;
 
 /**
@@ -41,7 +42,7 @@ public class ColumnMappingPage<T> extends ResizeComposite {
     @UiField
     HeadingElement columnChooserHeader;
     @UiField(provided = true)
-    FieldChooser fieldChooser;
+    ColumnActionChooser actionChooser;
 
     private final ImportModel<T> importModel;
 
@@ -51,7 +52,7 @@ public class ColumnMappingPage<T> extends ResizeComposite {
         this.importModel = importModel;
 
         dataGrid = new ColumnMappingGrid<T>(importModel);
-        fieldChooser = new FieldChooser(importModel.getFieldsToMatch());
+        actionChooser = new ColumnActionChooser(importModel.getColumnActions());
 
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -63,10 +64,10 @@ public class ColumnMappingPage<T> extends ResizeComposite {
             }
         });
 
-        fieldChooser.addValueChangeHandler(new ValueChangeHandler<FieldPath>() {
+        actionChooser.addValueChangeHandler(new ValueChangeHandler<ColumnAction>() {
 
             @Override
-            public void onValueChange(ValueChangeEvent<FieldPath> event) {
+            public void onValueChange(ValueChangeEvent<ColumnAction> event) {
                 updateColumnMapping(event.getValue());
             }
         });
@@ -78,17 +79,14 @@ public class ColumnMappingPage<T> extends ResizeComposite {
 
     private void onColumnChanged(ColumnSelectionChangedEvent e) {
         selectedColumnIndex = e.getSelectedColumnIndex();
-        fieldChooser.setValue(importModel.getColumnBindings().get(selectedColumnIndex), false);
+        actionChooser.setValue(importModel.getColumnBindings().get(selectedColumnIndex), false);
         columnChooserHeader.setInnerText(importModel.getSource().getColumnHeader(selectedColumnIndex));
     }
 
-    private void updateColumnMapping(FieldPath property) {
+    private void updateColumnMapping(ColumnAction action) {
 
-        if (property == null) {
-            importModel.clearColumnBinding(selectedColumnIndex);
-        } else {
-            importModel.setColumnBinding(property, selectedColumnIndex);
-        }
+
+        importModel.setColumnBinding(action, selectedColumnIndex);
 
         dataGrid.refreshMappings();
     }

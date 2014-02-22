@@ -23,6 +23,7 @@ package org.activityinfo.ui.full.client.widget.coord;
  */
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import org.activityinfo.api2.shared.model.CoordinateAxis;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 /**
@@ -31,11 +32,6 @@ import org.activityinfo.ui.full.client.i18n.I18N;
  * the fly.
  */
 public class CoordinateField extends TextField<Double> {
-
-    public static enum Axis {
-        LATITUDE,
-        LONGITUDE
-    }
 
     /**
      * Because of the conversion between DMS and degrees decimal, we may loose
@@ -53,7 +49,7 @@ public class CoordinateField extends TextField<Double> {
     /**
      * @param axis
      */
-    public CoordinateField(Axis axis) {
+    public CoordinateField(CoordinateAxis axis) {
         super();
         editor = new CoordinateEditor(axis);
         this.setPropertyEditor(editor);

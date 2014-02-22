@@ -11,7 +11,7 @@ import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.client.Resources;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.ui.full.client.importer.ImportModel;
+import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.binding.FieldBinding;
 import org.activityinfo.ui.full.client.importer.binding.MappedReferenceFieldBinding;
 import org.activityinfo.ui.full.client.importer.binding.MatchTable;
@@ -105,7 +105,7 @@ public class Importer {
 
         @Nullable
         @Override
-        public Cuid apply(@Nullable SourceRow input) {
+        public Cuid apply(SourceRow input) {
             Cuid siteCuid = rowIds.get(input.getRowIndex());
             if(siteCuid == null) {
                 siteCuid = CuidAdapter.cuid(CuidAdapter.SITE_DOMAIN, keyGenerator.generateInt());
@@ -117,7 +117,7 @@ public class Importer {
 
     private class MatchFieldFunction implements Function<MappedReferenceFieldBinding, Promise<Void>> {
         @Override
-        public Promise<Void> apply(@Nullable MappedReferenceFieldBinding binding) {
+        public Promise<Void> apply(MappedReferenceFieldBinding binding) {
             // get the list of possible matches for this REFERENCE field
             return resources
                     .query(binding.queryPotentialMatches())

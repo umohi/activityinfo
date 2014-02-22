@@ -5,7 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.ui.full.client.importer.ImportModel;
+import org.activityinfo.ui.full.client.importer.model.ImportModel;
 
 public class ValidationPage<T> extends Composite {
 

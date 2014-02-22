@@ -12,24 +12,25 @@ import org.activityinfo.ui.full.client.importer.data.SourceRow;
  */
 public class MappedDataFieldBinding implements FieldBinding {
 
-    private final FormTree.Node fieldNode;
+    private final FormField field;
     private final Converter converter;
     private final int sourceColumn;
+    private boolean newField;
 
-    public MappedDataFieldBinding(FormTree.Node fieldNode, int sourceColumn) {
-        this.fieldNode = fieldNode;
+    public MappedDataFieldBinding(FormField field, int sourceColumn) {
+        this.field = field;
         this.sourceColumn = sourceColumn;
-        this.converter = ConverterFactory.create(fieldNode.getFieldType());
+        this.converter = ConverterFactory.create(field.getType());
     }
 
     @Override
     public Cuid getFieldId() {
-        return fieldNode.getFieldId();
+        return field.getId();
     }
 
     @Override
     public FormField getField() {
-        return fieldNode.getField();
+        return field;
     }
 
     public int getSourceColumn() {
@@ -52,6 +53,14 @@ public class MappedDataFieldBinding implements FieldBinding {
 
     public String getImportedValue(SourceRow row) {
         return row.getColumnValue(sourceColumn);
+    }
+
+    public boolean isNewField() {
+        return newField;
+    }
+
+    public void setNewField(boolean newField) {
+        this.newField = newField;
     }
 
     @Override

@@ -29,7 +29,7 @@
       <g:east size="30">
         <g:HTMLPanel>
           <h2 ui:field="columnChooserHeader"/>
-          <a:FieldChooser ui:field="fieldChooser"/>
+          <a:ColumnActionChooser ui:field="actionChooser"/>
         </g:HTMLPanel>
       </g:east>
     </g:DockLayoutPanel>

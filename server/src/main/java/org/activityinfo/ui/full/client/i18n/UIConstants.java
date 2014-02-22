@@ -3237,4 +3237,10 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Geographic coordinates")
     String geographicCoordinatesFieldLabel();
 
+    @DefaultStringValue("Ignore this column")
+    String ignoreColumnAction();
+
+    @DefaultStringValue("Import this column as a new field")
+    String importNewColumnAction();
+
 }

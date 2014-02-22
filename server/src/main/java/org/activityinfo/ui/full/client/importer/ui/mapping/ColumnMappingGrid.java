@@ -14,7 +14,8 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.ImportModel;
+import org.activityinfo.ui.full.client.importer.model.ColumnAction;
+import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
 
@@ -88,7 +89,7 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
         @Override
         public void render(Context context, Integer columnIndex, SafeHtmlBuilder sb) {
             String header = mapping.getSource().getColumnHeader(columnIndex);
-            FieldPath binding = mapping.getColumnBindings().get(columnIndex);
+            ColumnAction binding = mapping.getColumnBindings().get(columnIndex);
 
             if (binding == null) {
                 sb.append(TEMPLATES.ignoredColumn(header));

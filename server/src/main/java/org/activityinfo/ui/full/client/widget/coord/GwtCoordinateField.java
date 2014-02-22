@@ -23,6 +23,7 @@ package org.activityinfo.ui.full.client.widget.coord;
 
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.user.client.ui.DoubleBox;
+import org.activityinfo.api2.shared.model.CoordinateAxis;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
 /**
@@ -33,13 +34,13 @@ public class GwtCoordinateField extends DoubleBox {
     private CoordinateEditor editor;
 
     public @UiConstructor GwtCoordinateField(String axis) {
-        this(CoordinateField.Axis.valueOf(axis));
+        this(CoordinateAxis.valueOf(axis));
     }
 
     /**
      * @param axis axis
      */
-    public GwtCoordinateField(CoordinateField.Axis axis) {
+    public GwtCoordinateField(CoordinateAxis axis) {
         super();
         editor = new CoordinateEditor(axis);
         addStyleName("form-control");

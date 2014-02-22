@@ -26,19 +26,19 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import org.activityinfo.api2.shared.model.AiLatLng;
+import org.activityinfo.api2.shared.model.CoordinateAxis;
 import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.widget.coord.CoordinateField.Axis;
 
 public class CoordinateFields {
     private CoordinateField latitudeField;
     private CoordinateField longitudeField;
 
     public CoordinateFields() {
-        longitudeField = new CoordinateField(Axis.LONGITUDE);
+        longitudeField = new CoordinateField(CoordinateAxis.LONGITUDE);
         longitudeField.setFieldLabel(I18N.CONSTANTS.longitude());
 
-        latitudeField = new CoordinateField(Axis.LATITUDE);
+        latitudeField = new CoordinateField(CoordinateAxis.LATITUDE);
         latitudeField.setFieldLabel(I18N.CONSTANTS.latitude());
     }
 

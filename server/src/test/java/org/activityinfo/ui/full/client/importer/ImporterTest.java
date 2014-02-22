@@ -25,12 +25,13 @@ import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
-import org.activityinfo.server.database.hibernate.entity.Site;
-import org.activityinfo.ui.full.client.importer.binding.FieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.data.PastedTable;
 import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.match.*;
+import org.activityinfo.ui.full.client.importer.model.ColumnAction;
+import org.activityinfo.ui.full.client.importer.model.ImportExistingAction;
+import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.ui.Importer;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplatesStub;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ColumnFactory;
@@ -91,7 +92,7 @@ public class ImporterTest extends CommandTestCase2 {
 
         // Step 1: User pastes in data to import
         PastedTable source = new PastedTable(
-                Resources.toString(getResource(ImportModel.class, "qis.csv"), Charsets.UTF_8));
+                Resources.toString(getResource("org/activityinfo/ui/full/client/importer/qis.csv"), Charsets.UTF_8));
         importModel.setSource(source);
 
         dumpList("COLUMNS", source.getColumns());
@@ -219,7 +220,7 @@ public class ImporterTest extends CommandTestCase2 {
         return "?";
     }
 
-    private FieldPath field(String debugFieldPath) {
+    private ColumnAction field(String debugFieldPath) {
         List<FieldPath> fieldsToMatch = importModel.getFormTree().search(FormTree.SearchOrder.BREADTH_FIRST,
                 Predicates.alwaysTrue(), Predicates.alwaysTrue());
 
@@ -227,7 +228,7 @@ public class ImporterTest extends CommandTestCase2 {
         for(FieldPath path : fieldsToMatch) {
             String debugPath = importModel.getFormTree().getNodeByPath(path).debugPath();
             if(debugPath.equals(debugFieldPath)) {
-                return path;
+                return new ImportExistingAction(debugPath, path);
             }
             fieldsWeHave.add(debugPath);
         }

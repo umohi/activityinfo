@@ -25,6 +25,7 @@ package org.activityinfo.ui.full.client.widget.coord;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.PropertyEditor;
 import com.extjs.gxt.ui.client.widget.form.Validator;
+import org.activityinfo.api2.shared.model.CoordinateAxis;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
@@ -85,7 +86,7 @@ public class CoordinateEditor implements PropertyEditor<Double>, Validator {
 
     private boolean requireSign = true;
 
-    CoordinateEditor(CoordinateField.Axis axis, NumberFormats format) {
+    CoordinateEditor(CoordinateAxis axis, NumberFormats format) {
         this.formats = format;
         switch (axis) {
             case LATITUDE:
@@ -105,7 +106,7 @@ public class CoordinateEditor implements PropertyEditor<Double>, Validator {
         }
     }
 
-    public CoordinateEditor(CoordinateField.Axis axis) {
+    public CoordinateEditor(CoordinateAxis axis) {
         this(axis, new CoordinateFormatter());
     }
 

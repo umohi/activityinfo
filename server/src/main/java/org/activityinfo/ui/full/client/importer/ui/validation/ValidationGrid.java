@@ -5,7 +5,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.ImportModel;
+import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.UpdateCommandFactory;

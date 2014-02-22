@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.widget.coord;
  */
 
 import com.teklabs.gwt.i18n.server.LocaleProxy;
-import org.activityinfo.ui.full.client.widget.coord.CoordinateField.Axis;
+import org.activityinfo.api2.shared.model.CoordinateAxis;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +51,7 @@ public class CoordinateEditorTest {
     }
 
     private void createLatitudeEditor() {
-        editor = new CoordinateEditor(Axis.LATITUDE, new JreNumberFormats());
+        editor = new CoordinateEditor(CoordinateAxis.LATITUDE, new JreNumberFormats());
     }
 
     @Test(expected = CoordinateFormatException.class)
@@ -76,7 +76,7 @@ public class CoordinateEditorTest {
     }
 
     private void createLongitudeEditor() {
-        editor = new CoordinateEditor(Axis.LONGITUDE, new JreNumberFormats());
+        editor = new CoordinateEditor(CoordinateAxis.LONGITUDE, new JreNumberFormats());
     }
 
     @Test
