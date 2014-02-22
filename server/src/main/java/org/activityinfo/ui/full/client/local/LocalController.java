@@ -131,8 +131,6 @@ public class LocalController extends AbstractDispatcher {
     @Override
     public <T extends CommandResult> void execute(Command<T> command,
                                                   AsyncCallback<T> callback) {
-        // yuriyz -> alex: todo please check : temporarily commented due to StackOverflowError
-        // execute(command, null, callback);
         activeStrategy.dispatch(command, callback);
     }
 
