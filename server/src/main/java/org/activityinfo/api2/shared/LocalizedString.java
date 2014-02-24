@@ -35,6 +35,26 @@ public class LocalizedString {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LocalizedString that = (LocalizedString) o;
+
+        if (locale != null ? !locale.equals(that.locale) : that.locale != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value != null ? value.hashCode() : 0;
+        result = 31 * result + (locale != null ? locale.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return value + "@" + locale;
     }

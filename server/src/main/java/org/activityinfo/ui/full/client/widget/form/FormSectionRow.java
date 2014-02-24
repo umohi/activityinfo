@@ -72,11 +72,16 @@ public class FormSectionRow extends Composite {
         this.node = new ElementNode(formPanel, contentPanel, parentNode, formSection);
         this.node.renderElements(formSection.getElements());
         this.parentNode = parentNode;
+        setLabelText();
         addHandlers();
     }
 
     public void putFormFieldRows(BiMap<Cuid, FormFieldRow> ownAndChildFieldMap) {
         node.putFormFieldRows(ownAndChildFieldMap);
+    }
+
+    public void setLabelText() {
+        this.label.setHTML(SafeHtmlUtils.fromSafeConstant(formSection.getLabel().getValue()));
     }
 
     public ElementNode getNode() {
@@ -125,9 +130,8 @@ public class FormSectionRow extends Composite {
     }
 
     private void edit(DialogActionType actionType) {
-        final FormSectionEditDialog dialog = new FormSectionEditDialog();
-        dialog.setFormSection(formSection);
-        dialog.show(actionType);
+        final FormSectionEditDialog dialog = new FormSectionEditDialog(this, actionType);
+        dialog.show();
     }
 
 }
