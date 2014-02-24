@@ -405,11 +405,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.0.2</version>
+        <version>3.1</version>
         <configuration>
 
           <source>1.7</source>
           <target>1.7</target>
+          <!-- Avoid duplicate class errors for GWT jars that include both source and class files -->
+          <compilerArgs>
+            <arg>-implicit:none</arg>
+          </compilerArgs>
           <encoding>UTF-8</encoding>
           <excludes>
             <!-- Exclude emulation gwt sources -->

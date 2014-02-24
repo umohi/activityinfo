@@ -76,7 +76,7 @@ public class GetLocationsHandler implements
                     dto.setName(row.getString("name"));
                     dto.setAxe(row.getString("axe"));
                     dto.setWorkflowStatusId(row.getString("workflowStatusId"));
-                    dto.setLocationTypeId(row.getInt("locationTypeId"));
+                    dto.setLocationTypeId(row.getInt("LocationTypeId"));
                     if (!row.isNull("x") && !row.isNull("y")) {
                         dto.setLatitude(row.getDouble("y"));
                         dto.setLongitude(row.getDouble("x"));
