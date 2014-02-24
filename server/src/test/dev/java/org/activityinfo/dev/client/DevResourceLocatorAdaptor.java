@@ -22,6 +22,7 @@ package org.activityinfo.dev.client;
  */
 
 import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
@@ -32,7 +33,6 @@ import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
 
 import java.util.List;
 
@@ -73,7 +73,7 @@ public class DevResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<List<Projection>> query(List<FieldPath> paths, Criteria criteria) {
+    public Promise<List<Projection>> query(InstanceQuery query) {
         return Promise.rejected(new UnsupportedOperationException());
     }
 }
