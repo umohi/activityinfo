@@ -59,8 +59,6 @@ public class FormSectionRow extends Composite {
     RowToolbar toolbar;
     @UiField
     FlowPanel contentPanel;
-    @UiField
-    FormSectionEditDialog editDialog;
 
     public FormSectionRow(FormSection formSection, FormPanel formPanel, ElementNode parentNode) {
         TransitionUtil.ensureBootstrapInjected();
@@ -127,8 +125,9 @@ public class FormSectionRow extends Composite {
     }
 
     private void edit(DialogActionType actionType) {
-        editDialog.setFormSection(formSection);
-        editDialog.show(actionType);
+        final FormSectionEditDialog dialog = new FormSectionEditDialog();
+        dialog.setFormSection(formSection);
+        dialog.show(actionType);
     }
 
 }

@@ -5,21 +5,25 @@
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <g:Button addStyleNames="close" ui:field="closeButton" text="×"/>
-          <h4 class="modal-title" ui:field="title"/>
+    <g:PopupPanel autoHideEnabled="false" modal="true" ui:field="dialog" styleName="ai">
+      <g:HTMLPanel>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <g:Button addStyleNames="close" ui:field="closeButton" text="×"/>
+              <h4 class="modal-title" ui:field="title"/>
+            </div>
+            <div class="modal-body">
+              <ui:text from='{res.sectionLabel}'/>
+              <g:TextBox addStyleNames="form-control" width="100%" ui:field="sectionLabel"/>
+            </div>
+            <div class="modal-footer">
+              <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
+              <g:Button addStyleNames="btn btn-default" text="Cancel" ui:field="cancelButton"/>
+            </div>
+          </div>
         </div>
-        <div class="modal-body">
-          <ui:text from='{res.sectionLabel}'/>
-          <g:TextBox addStyleNames="form-control" width="100%" ui:field="sectionLabel"/>
-        </div>
-        <div class="modal-footer">
-          <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
-          <g:Button addStyleNames="btn btn-default" text="Cancel" ui:field="cancelButton"/>
-        </div>
-      </div>
-    </div>
+      </g:HTMLPanel>
+    </g:PopupPanel>
   </g:HTMLPanel>
 </ui:UiBinder>

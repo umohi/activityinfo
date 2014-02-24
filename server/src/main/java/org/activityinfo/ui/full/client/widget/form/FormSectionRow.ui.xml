@@ -19,7 +19,6 @@
       </div>
     </div>
     <hr/>
-    <ai:FormSectionEditDialog ui:field="editDialog" addStyleNames="hidden"/>
     <g:FlowPanel ui:field="contentPanel" width="100%">
     </g:FlowPanel>
   </g:HTMLPanel>

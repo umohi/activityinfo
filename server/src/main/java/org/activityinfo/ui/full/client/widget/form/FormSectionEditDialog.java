@@ -27,10 +27,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -54,13 +51,11 @@ public class FormSectionEditDialog extends Composite {
     @UiField
     HeadingElement title;
     @UiField
-    Button closeButton;
-    @UiField
     Button okButton;
     @UiField
-    Button cancelButton;
-    @UiField
     TextBox sectionLabel;
+    @UiField
+    PopupPanel dialog;
 
     public FormSectionEditDialog() {
         TransitionUtil.ensureBootstrapInjected();
@@ -75,7 +70,7 @@ public class FormSectionEditDialog extends Composite {
         this.actionType = actionType;
         title.setInnerHTML(getDialogTitle());
         sectionLabel.setValue(formSection != null ? formSection.getLabel().getValue() : "");
-        setVisible(true);
+        dialog.center();
     }
 
     private String getDialogTitle() {
@@ -92,12 +87,12 @@ public class FormSectionEditDialog extends Composite {
 
     @UiHandler("closeButton")
     public void onClose(ClickEvent event) {
-        setVisible(false);
+        dialog.hide();
     }
 
     @UiHandler("cancelButton")
     public void cancelButton(ClickEvent event) {
-        setVisible(false);
+        dialog.hide();
     }
 
     public FormSection getFormSection() {
