@@ -3243,4 +3243,15 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Import this column as a new field")
     String importNewColumnAction();
 
+    @DefaultStringValue("Add new section")
+    @Key("addSection")
+    String addSection();
+
+    @DefaultStringValue("Edit section")
+    @Key("editSection")
+    String editSection();
+
+    @DefaultStringValue("Section label")
+    @Key("sectionLabel")
+    String sectionLabel();
 }

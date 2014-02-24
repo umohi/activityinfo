@@ -35,6 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.dialog.DialogActionType;
 
 /**
  * @author yuriyz on 2/18/14.
@@ -96,13 +97,13 @@ public class FormSectionRow extends Composite {
         toolbar.getEditButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                edit();
+                edit(DialogActionType.EDIT);
             }
         });
         toolbar.getAddButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // todo
+                edit(DialogActionType.ADD);
             }
         });
         toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
@@ -125,9 +126,9 @@ public class FormSectionRow extends Composite {
         });
     }
 
-    private void edit() {
-        editDialog.setVisible(true);
+    private void edit(DialogActionType actionType) {
+        editDialog.setFormSection(formSection);
+        editDialog.show(actionType);
     }
-
 
 }
