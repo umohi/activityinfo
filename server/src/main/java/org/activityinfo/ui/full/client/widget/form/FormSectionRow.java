@@ -58,6 +58,8 @@ public class FormSectionRow extends Composite {
     RowToolbar toolbar;
     @UiField
     FlowPanel contentPanel;
+    @UiField
+    FormSectionEditDialog editDialog;
 
     public FormSectionRow(FormSection formSection, FormPanel formPanel, ElementNode parentNode) {
         TransitionUtil.ensureBootstrapInjected();
@@ -94,7 +96,7 @@ public class FormSectionRow extends Composite {
         toolbar.getEditButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // todo
+                edit();
             }
         });
         toolbar.getAddButton().addClickHandler(new ClickHandler() {
@@ -122,4 +124,10 @@ public class FormSectionRow extends Composite {
             }
         });
     }
+
+    private void edit() {
+        editDialog.setVisible(true);
+    }
+
+
 }
