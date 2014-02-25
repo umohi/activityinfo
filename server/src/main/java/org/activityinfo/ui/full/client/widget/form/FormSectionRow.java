@@ -32,10 +32,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api.client.KeyGenerator;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.dialog.DialogActionType;
+import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
 /**
  * @author yuriyz on 2/18/14.
@@ -100,13 +104,13 @@ public class FormSectionRow extends Composite {
         toolbar.getEditButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                edit(DialogActionType.EDIT);
+                edit();
             }
         });
         toolbar.getAddButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                edit(DialogActionType.ADD);
+                addNew();
             }
         });
         toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
@@ -129,9 +133,43 @@ public class FormSectionRow extends Composite {
         });
     }
 
-    private void edit(DialogActionType actionType) {
-        final FormSectionEditDialog dialog = new FormSectionEditDialog(this, actionType);
+    private void addNew() {
+        final Cuid newCuid = CuidAdapter.cuid('x', new KeyGenerator().generateInt());
+        final FormSection newSection = new FormSection(newCuid);
+        final FormSectionEditDialog dialog = new FormSectionEditDialog(newSection, DialogActionType.ADD);
         dialog.show();
+        dialog.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                getNode().addSection(newSection);
+            }
+        });
     }
 
+    private void edit() {
+        final FormSectionEditDialog dialog = new FormSectionEditDialog(formSection, DialogActionType.EDIT);
+        dialog.show();
+        dialog.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                final LocalizedString oldLabel = formSection.getLabel();
+                final LocalizedString newLabel = new LocalizedString(dialog.getSectionLabel().getValue(), oldLabel.getLocale());
+                formSection.setLabel(newLabel);
+                setLabelText();
+                getFormPanel().getUndoManager().addUndoable(new IsUndoable() {
+                    @Override
+                    public void undo() {
+                        formSection.setLabel(oldLabel);
+                        setLabelText();
+                    }
+
+                    @Override
+                    public void redo() {
+                        formSection.setLabel(newLabel);
+                        setLabelText();
+                    }
+                });
+            }
+        });
+    }
 }

@@ -166,6 +166,10 @@ public class ElementNode {
         }
     }
 
+    public void addSection(FormSection section) {
+        // todo
+    }
+
     public void remove(final FormSectionRow formSectionRow) {
         final int widgetIndex = contentPanel.getWidgetIndex(formSectionRow);
         if (widgetIndex != -1) {

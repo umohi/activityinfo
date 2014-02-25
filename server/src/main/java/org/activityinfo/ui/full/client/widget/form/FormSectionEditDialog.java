@@ -30,13 +30,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.dialog.DialogActionType;
-import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
 import javax.annotation.Nonnull;
 
@@ -51,7 +49,7 @@ public class FormSectionEditDialog extends Composite {
     interface FormSectionEditDialogBinder extends UiBinder<Widget, FormSectionEditDialog> {
     }
 
-    private final FormSectionRow formSectionRow;
+    private final FormSection formSection;
     private final DialogActionType actionType;
 
     @UiField
@@ -63,15 +61,14 @@ public class FormSectionEditDialog extends Composite {
     @UiField
     PopupPanel dialog;
 
-    public FormSectionEditDialog(FormSectionRow formSectionRow, @Nonnull DialogActionType actionType) {
+    public FormSectionEditDialog(FormSection formSection, @Nonnull DialogActionType actionType) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
-        this.formSectionRow = formSectionRow;
+        this.formSection = formSection;
         this.actionType = actionType;
         this.title.setInnerHTML(getDialogTitle());
 
-        final FormSection formSection = formSectionRow.getFormSection();
         this.sectionLabel.setValue(formSection != null && actionType == DialogActionType.EDIT ?
                 formSection.getLabel().getValue() : "");
         this.sectionLabel.addKeyUpHandler(new KeyUpHandler() {
@@ -83,7 +80,6 @@ public class FormSectionEditDialog extends Composite {
     }
 
     private void setOkButtonState() {
-        final FormSection formSection = formSectionRow.getFormSection();
         okButton.setEnabled(formSection != null && !formSection.getLabel().getValue().equals(sectionLabel.getValue()));
     }
 
@@ -109,32 +105,12 @@ public class FormSectionEditDialog extends Composite {
         return okButton;
     }
 
+    public TextBox getSectionLabel() {
+        return sectionLabel;
+    }
+
     @UiHandler("okButton")
     public void onOk(ClickEvent event) {
-        final FormSection formSection = formSectionRow.getFormSection();
-        switch (actionType) {
-            case EDIT:
-                final LocalizedString oldLabel = formSection.getLabel();
-                final LocalizedString newLabel = new LocalizedString(sectionLabel.getValue(), oldLabel.getLocale());
-                formSection.setLabel(newLabel);
-                formSectionRow.setLabelText();
-                formSectionRow.getFormPanel().getUndoManager().addUndoable(new IsUndoable() {
-                    @Override
-                    public void undo() {
-                        formSection.setLabel(oldLabel);
-                        formSectionRow.setLabelText();
-                    }
-
-                    @Override
-                    public void redo() {
-                        formSection.setLabel(newLabel);
-                        formSectionRow.setLabelText();
-                    }
-                });
-                break;
-            case ADD:
-                break;
-        }
         dialog.hide();
     }
 
