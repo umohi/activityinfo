@@ -6,22 +6,12 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <g:HTMLPanel>
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <g:Button addStyleNames="close" ui:field="closeButton" text="×"/>
-            <h4 class="modal-title" ui:field="title"/>
-          </div>
-          <div class="modal-body">
-            <ui:text from='{res.sectionLabel}'/>
-            <g:TextBox addStyleNames="form-control" width="90%" ui:field="sectionLabel"/>
-          </div>
-          <div class="modal-footer">
-            <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
-            <g:Button addStyleNames="btn btn-default" text="Cancel" ui:field="cancelButton"/>
-          </div>
-        </div>
-      </div>
+      <!--<g:Button addStyleNames="close" ui:field="closeButton" text="×"/>-->
+      <!--<h4 class="modal-title" ui:field="title"/>-->
+      <!--<ui:text from='{res.sectionLabel}'/>-->
+      <g:TextBox addStyleNames="form-control" width="100%" ui:field="sectionLabel"/>
+      <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
+      <g:Button addStyleNames="btn btn-default" text="Cancel" ui:field="cancelButton"/>
     </g:HTMLPanel>
   </g:HTMLPanel>
 </ui:UiBinder>

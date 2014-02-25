@@ -39,7 +39,6 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.dialog.ActionType;
 import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
@@ -153,10 +152,8 @@ public class FormSectionRow extends Composite {
     }
 
     private void edit() {
-        editPanel.apply(formSection);
-        GwtUtil.setVisible(sectionRowContainer, false);
-        GwtUtil.setVisible(editPanel.getElement(), true);
-
+        editPanel.apply(formSection, sectionRowContainer);
+        editPanel.setVisible(true);
         editPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

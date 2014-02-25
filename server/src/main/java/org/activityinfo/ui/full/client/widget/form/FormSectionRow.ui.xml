@@ -7,15 +7,17 @@
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <div class="row" ui:field="sectionRowContainer">
-      <div class="col-sm-8">
-        <h3>
-          <g:HTML ui:field="label"/>
-        </h3>
-      </div>
-      <div class="col-sm-4">
-        <br/>
-        <ai:RowToolbar ui:field="toolbar"/>
+    <div ui:field="sectionRowContainer">
+      <div class="row">
+        <div class="col-sm-8">
+          <h3>
+            <g:HTML ui:field="label"/>
+          </h3>
+        </div>
+        <div class="col-sm-4">
+          <br/>
+          <ai:RowToolbar ui:field="toolbar"/>
+        </div>
       </div>
       <hr/>
       <g:FlowPanel ui:field="contentPanel" width="100%">
