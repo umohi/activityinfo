@@ -1,0 +1,27 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+
+  <g:HTMLPanel addStyleNames="bs">
+    <g:HTMLPanel>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <g:Button addStyleNames="close" ui:field="closeButton" text="×"/>
+            <h4 class="modal-title" ui:field="title"/>
+          </div>
+          <div class="modal-body">
+            <ui:text from='{res.sectionLabel}'/>
+            <g:TextBox addStyleNames="form-control" width="90%" ui:field="sectionLabel"/>
+          </div>
+          <div class="modal-footer">
+            <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
+            <g:Button addStyleNames="btn btn-default" text="Cancel" ui:field="cancelButton"/>
+          </div>
+        </div>
+      </div>
+    </g:HTMLPanel>
+  </g:HTMLPanel>
+</ui:UiBinder>

@@ -24,6 +24,6 @@ package org.activityinfo.ui.full.client.widget.dialog;
 /**
  * @author yuriyz on 2/20/14.
  */
-public enum DialogActionType {
+public enum ActionType {
     ADD, EDIT
 }

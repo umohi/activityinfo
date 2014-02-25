@@ -29,28 +29,25 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormSection;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
-import org.activityinfo.ui.full.client.widget.dialog.ActionType;
-
-import javax.annotation.Nonnull;
 
 /**
- * @author yuriyz on 2/20/14.
+ * @author yuriyz on 2/25/14.
  */
-public class FormSectionEditDialog extends Composite {
+public class FormSectionInlineEdit extends Composite {
+    private static FormSectionInlineEditBinder uiBinder = GWT
+            .create(FormSectionInlineEditBinder.class);
 
-    private static FormSectionEditDialogBinder uiBinder = GWT
-            .create(FormSectionEditDialogBinder.class);
-
-    interface FormSectionEditDialogBinder extends UiBinder<Widget, FormSectionEditDialog> {
+    interface FormSectionInlineEditBinder extends UiBinder<Widget, FormSectionInlineEdit> {
     }
 
-    private final FormSection formSection;
-    private final ActionType actionType;
+    private FormSection formSection;
 
     @UiField
     HeadingElement title;
@@ -58,25 +55,33 @@ public class FormSectionEditDialog extends Composite {
     Button okButton;
     @UiField
     TextBox sectionLabel;
-    @UiField
-    PopupPanel dialog;
 
-    public FormSectionEditDialog(FormSection formSection, @Nonnull ActionType actionType) {
+    public FormSectionInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+    }
 
-        this.formSection = formSection;
-        this.actionType = actionType;
-        this.title.setInnerHTML(getDialogTitle());
-
-        this.sectionLabel.setValue(formSection != null && actionType == ActionType.EDIT ?
-                formSection.getLabel().getValue() : "");
+    public void apply() {
+        this.sectionLabel.setValue(formSection != null ? formSection.getLabel().getValue() : "");
         this.sectionLabel.addKeyUpHandler(new KeyUpHandler() {
             public void onKeyUp(KeyUpEvent event) {
                 setOkButtonState();
             }
         });
         setOkButtonState();
+    }
+
+    public void apply(FormSection formSection) {
+        setFormSection(formSection);
+        apply();
+    }
+
+    public void setFormSection(FormSection formSection) {
+        this.formSection = formSection;
+    }
+
+    public FormSection getFormSection() {
+        return formSection;
     }
 
     private void setOkButtonState() {
@@ -87,18 +92,8 @@ public class FormSectionEditDialog extends Composite {
         GwtUtil.setVisible(getElement(), visible);
     }
 
-    public void show() {
-        dialog.center();
-    }
-
-    private String getDialogTitle() {
-        switch (actionType) {
-            case ADD:
-                return I18N.CONSTANTS.addSection();
-            case EDIT:
-                return I18N.CONSTANTS.editSection();
-        }
-        return "";
+    public void setPanelTitle(String title) {
+        this.title.setInnerHTML(title);
     }
 
     public Button getOkButton() {
@@ -111,16 +106,20 @@ public class FormSectionEditDialog extends Composite {
 
     @UiHandler("okButton")
     public void onOk(ClickEvent event) {
-        dialog.hide();
+        hide();
     }
 
     @UiHandler("closeButton")
     public void onClose(ClickEvent event) {
-        dialog.hide();
+        hide();
     }
 
     @UiHandler("cancelButton")
     public void cancelButton(ClickEvent event) {
-        dialog.hide();
+        hide();
+    }
+
+    public void hide() {
+        setVisible(false);
     }
 }

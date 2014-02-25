@@ -23,6 +23,7 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.common.collect.BiMap;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -38,7 +39,8 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.dialog.DialogActionType;
+import org.activityinfo.ui.full.client.util.GwtUtil;
+import org.activityinfo.ui.full.client.widget.dialog.ActionType;
 import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
 /**
@@ -63,6 +65,10 @@ public class FormSectionRow extends Composite {
     RowToolbar toolbar;
     @UiField
     FlowPanel contentPanel;
+    @UiField
+    FormSectionInlineEdit editPanel;
+    @UiField
+    DivElement sectionRowContainer;
 
     public FormSectionRow(FormSection formSection, FormPanel formPanel, ElementNode parentNode) {
         TransitionUtil.ensureBootstrapInjected();
@@ -136,7 +142,7 @@ public class FormSectionRow extends Composite {
     private void addNew() {
         final Cuid newCuid = CuidAdapter.cuid('x', new KeyGenerator().generateInt());
         final FormSection newSection = new FormSection(newCuid);
-        final FormSectionEditDialog dialog = new FormSectionEditDialog(newSection, DialogActionType.ADD);
+        final FormSectionEditDialog dialog = new FormSectionEditDialog(newSection, ActionType.ADD);
         dialog.show();
         dialog.getOkButton().addClickHandler(new ClickHandler() {
             @Override
@@ -147,13 +153,15 @@ public class FormSectionRow extends Composite {
     }
 
     private void edit() {
-        final FormSectionEditDialog dialog = new FormSectionEditDialog(formSection, DialogActionType.EDIT);
-        dialog.show();
-        dialog.getOkButton().addClickHandler(new ClickHandler() {
+        editPanel.apply(formSection);
+        GwtUtil.setVisible(sectionRowContainer, false);
+        GwtUtil.setVisible(editPanel.getElement(), true);
+
+        editPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 final LocalizedString oldLabel = formSection.getLabel();
-                final LocalizedString newLabel = new LocalizedString(dialog.getSectionLabel().getValue(), oldLabel.getLocale());
+                final LocalizedString newLabel = new LocalizedString(editPanel.getSectionLabel().getValue(), oldLabel.getLocale());
                 formSection.setLabel(newLabel);
                 setLabelText();
                 getFormPanel().getUndoManager().addUndoable(new IsUndoable() {

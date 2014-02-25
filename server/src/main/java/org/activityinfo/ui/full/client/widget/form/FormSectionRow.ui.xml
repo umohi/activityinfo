@@ -7,7 +7,7 @@
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <div class="row">
+    <div class="row" ui:field="sectionRowContainer">
       <div class="col-sm-8">
         <h3>
           <g:HTML ui:field="label"/>
@@ -17,9 +17,10 @@
         <br/>
         <ai:RowToolbar ui:field="toolbar"/>
       </div>
+      <hr/>
+      <g:FlowPanel ui:field="contentPanel" width="100%">
+      </g:FlowPanel>
     </div>
-    <hr/>
-    <g:FlowPanel ui:field="contentPanel" width="100%">
-    </g:FlowPanel>
+    <ai:FormSectionInlineEdit ui:field="editPanel" addStyleNames="hidden"/>
   </g:HTMLPanel>
 </ui:UiBinder>

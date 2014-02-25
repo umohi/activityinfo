@@ -15,7 +15,7 @@
             </div>
             <div class="modal-body">
               <ui:text from='{res.sectionLabel}'/>
-              <g:TextBox addStyleNames="form-control" width="100%" ui:field="sectionLabel"/>
+              <g:TextBox addStyleNames="form-control" width="90%" ui:field="sectionLabel"/>
             </div>
             <div class="modal-footer">
               <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
