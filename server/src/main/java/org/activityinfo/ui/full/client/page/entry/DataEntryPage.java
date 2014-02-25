@@ -170,7 +170,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
         tabPanel.add(siteHistoryTab);
         tabPanel.setSelection(detailTab);
         center.add(tabPanel, tabPanel.getBorderLayoutData());
-
+        onNoSelection();
         add(center, new BorderLayoutData(LayoutRegion.CENTER));
     }
 
@@ -258,6 +258,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
     private void onNoSelection() {
         toolBar.setActionEnabled(UIActions.EDIT, false);
         toolBar.setActionEnabled(UIActions.DELETE, false);
+        monthlyPanel.onNoSeletion();
     }
 
     @Override
@@ -345,7 +346,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
         if (activities.size() == 1) {
             enableToolbarButtons(activities.iterator().next());
         }
-
+        onNoSelection();
     }
 
     private void enableToolbarButtons(final int activityId) {

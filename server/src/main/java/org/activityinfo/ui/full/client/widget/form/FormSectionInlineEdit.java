@@ -22,6 +22,7 @@ package org.activityinfo.ui.full.client.widget.form;
  */
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -48,9 +49,10 @@ public class FormSectionInlineEdit extends Composite {
     }
 
     private FormSection formSection;
+    private Element mirrorElement;
 
-    @UiField
-    HeadingElement title;
+//    @UiField
+//    HeadingElement title;
     @UiField
     Button okButton;
     @UiField
@@ -71,8 +73,9 @@ public class FormSectionInlineEdit extends Composite {
         setOkButtonState();
     }
 
-    public void apply(FormSection formSection) {
+    public void apply(FormSection formSection, Element mirrorElement) {
         setFormSection(formSection);
+        setMirrorElement(mirrorElement);
         apply();
     }
 
@@ -90,11 +93,14 @@ public class FormSectionInlineEdit extends Composite {
 
     public void setVisible(boolean visible) {
         GwtUtil.setVisible(getElement(), visible);
+        if (mirrorElement != null) {
+            GwtUtil.setVisible(mirrorElement, !visible);
+        }
     }
 
-    public void setPanelTitle(String title) {
-        this.title.setInnerHTML(title);
-    }
+//    public void setPanelTitle(String title) {
+//        this.title.setInnerHTML(title);
+//    }
 
     public Button getOkButton() {
         return okButton;
@@ -109,10 +115,10 @@ public class FormSectionInlineEdit extends Composite {
         hide();
     }
 
-    @UiHandler("closeButton")
-    public void onClose(ClickEvent event) {
-        hide();
-    }
+//    @UiHandler("closeButton")
+//    public void onClose(ClickEvent event) {
+//        hide();
+//    }
 
     @UiHandler("cancelButton")
     public void cancelButton(ClickEvent event) {
@@ -121,5 +127,13 @@ public class FormSectionInlineEdit extends Composite {
 
     public void hide() {
         setVisible(false);
+    }
+
+    public Element getMirrorElement() {
+        return mirrorElement;
+    }
+
+    public void setMirrorElement(Element mirrorElement) {
+        this.mirrorElement = mirrorElement;
     }
 }
