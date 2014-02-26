@@ -3,10 +3,16 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget.form">
 
+  <ui:style>
+    .margin-left {
+      margin-left: 15px;
+    }
+  </ui:style>
+
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
-  <g:HTMLPanel addStyleNames="bs">
+  <g:HTMLPanel addStyleNames="{style.margin-left} bs">
     <ai:FormSectionInlineEdit ui:field="editPanel" addStyleNames="hidden"/>
     <ai:FormSectionInlineEdit ui:field="addPanel" addStyleNames="hidden"/>
     <div ui:field="sectionRowContainer">
