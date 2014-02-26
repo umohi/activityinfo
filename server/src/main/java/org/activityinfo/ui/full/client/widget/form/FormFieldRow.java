@@ -31,6 +31,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -57,22 +58,32 @@ public class FormFieldRow extends Composite {
     FlowPanel control;
     @UiField
     RowToolbar toolbar;
+    @UiField
+    DivElement rowContainer;
+    @UiField
+    FormSectionInlineEdit addSectionPanel;
 
-    private FormPanel formPanel;
     private FormField formField;
     private IsWidget formFieldWidget;
-    private ElementNode node;
+    private final ElementNode node;
 
-    public FormFieldRow(FormField formField, FormPanel formPanel, ElementNode node) {
+    public FormFieldRow(FormField formField, FormPanel formPanel, final ElementNode node) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
-        this.formPanel = formPanel;
         this.formField = formField;
         this.node = node;
         this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
         this.toolbar.attach(this);
         this.toolbar.setFormPanel(formPanel);
+        this.addSectionPanel.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addSectionPanel.getFormSection().setLabel(new LocalizedString(addSectionPanel.getSectionLabel().getValue()));
+                final int rowIndexOnPanel = node.getContentPanel().getWidgetIndex(FormFieldRow.this) ;
+                node.addSection(addSectionPanel.getFormSection(), rowIndexOnPanel);
+            }
+        });
 
         addHandlers();
         render();
@@ -96,6 +107,13 @@ public class FormFieldRow extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 // todo
+            }
+        });
+        toolbar.getAddSectionButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addSectionPanel.applyNew();
+                addSectionPanel.setVisible(true);
             }
         });
         toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
