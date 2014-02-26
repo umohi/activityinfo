@@ -3254,4 +3254,8 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Section label")
     @Key("sectionLabel")
     String sectionLabel();
+    
+    @DefaultStringValue("Unknown Group")
+    @Key("unknownGroup")
+    String unknownGroup();
 }
