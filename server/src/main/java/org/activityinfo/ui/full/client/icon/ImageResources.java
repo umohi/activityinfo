@@ -59,6 +59,12 @@ public interface ImageResources extends ClientBundle {
     @Source("down.png")
     ImageResource down();
 
+    @Source("add_folder.png")
+    ImageResource addFolder();
+
+    @Source("add_folder32.png")
+    ImageResource addFolder32();
+
     @Source("progress.gif")
     ImageResource progress();
 }

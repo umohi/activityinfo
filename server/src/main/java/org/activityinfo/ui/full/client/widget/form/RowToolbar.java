@@ -58,6 +58,8 @@ public class RowToolbar extends Composite {
     Button downButton;
     @UiField
     DivElement toolbar;
+    @UiField
+    Button addSectionButton;
 
     private FormPanel formPanel;
 
@@ -91,6 +93,9 @@ public class RowToolbar extends Composite {
         }, MouseOutEvent.getType());
     }
 
+    public Button getAddSectionButton() {
+        return addSectionButton;
+    }
 
     public Button getEditButton() {
         return editButton;

@@ -20,8 +20,11 @@
       <g:Button ui:field="editButton" addStyleNames="btn btn-primary btn-xs">
         <img src="{img.edit.getSafeUri}" alt="{res.edit}" title="{res.edit}"/>
       </g:Button>
+      <g:Button ui:field="addSectionButton" addStyleNames="btn btn-success btn-xs">
+        <img src="{img.addFolder.getSafeUri}" alt="{res.addSection}" title="{res.addSection}"/>
+      </g:Button>
       <g:Button ui:field="addButton" addStyleNames="btn btn-success btn-xs">
-        <img src="{img.add.getSafeUri}" alt="{res.add}" title="{res.add}"/>
+        <img src="{img.add.getSafeUri}" alt="{res.addField}" title="{res.addField}"/>
       </g:Button>
       <g:Button ui:field="removeButton" addStyleNames="btn btn-danger btn-xs">
         <img src="{img.delete.getSafeUri}" alt="{res.remove}" title="{res.remove}"/>

@@ -39,7 +39,6 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.dialog.ActionType;
 import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
 /**
@@ -112,12 +111,19 @@ public class FormSectionRow extends Composite {
                 edit();
             }
         });
+        toolbar.getAddSectionButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addNewSection();
+            }
+        });
         toolbar.getAddButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                addNew();
+                addNewField();
             }
         });
+
         toolbar.getRemoveButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -138,21 +144,25 @@ public class FormSectionRow extends Composite {
         });
     }
 
-    private void addNew() {
+    private void addNewField() {
+        // todo
+    }
+
+    private void addNewSection() {
         final Cuid newCuid = CuidAdapter.cuid('x', new KeyGenerator().generateInt());
         final FormSection newSection = new FormSection(newCuid);
-        final FormSectionEditDialog dialog = new FormSectionEditDialog(newSection, ActionType.ADD);
-        dialog.show();
-        dialog.getOkButton().addClickHandler(new ClickHandler() {
+        editPanel.apply(newSection, toolbar.getElement());
+        editPanel.setVisible(true);
+        editPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                getNode().addSection(newSection);
+                getNode().addSection(newSection, node.getContentPanel().getWidgetIndex(FormSectionRow.this));
             }
         });
     }
 
     private void edit() {
-        editPanel.apply(formSection, sectionRowContainer);
+        editPanel.apply(formSection, label.getElement(), toolbar.getElement());
         editPanel.setVisible(true);
         editPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override

@@ -3247,6 +3247,10 @@ public interface UIConstants extends Constants {
     @Key("addSection")
     String addSection();
 
+    @DefaultStringValue("Add new field")
+    @Key("addField")
+    String addField();
+
     @DefaultStringValue("Edit section")
     @Key("editSection")
     String editSection();

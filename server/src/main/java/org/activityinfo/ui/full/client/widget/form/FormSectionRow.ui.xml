@@ -7,6 +7,7 @@
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
+    <ai:FormSectionInlineEdit ui:field="editPanel" addStyleNames="hidden"/>
     <div ui:field="sectionRowContainer">
       <div class="row">
         <div class="col-sm-8">
@@ -23,6 +24,5 @@
       <g:FlowPanel ui:field="contentPanel" width="100%">
       </g:FlowPanel>
     </div>
-    <ai:FormSectionInlineEdit ui:field="editPanel" addStyleNames="hidden"/>
   </g:HTMLPanel>
 </ui:UiBinder>

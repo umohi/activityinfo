@@ -23,7 +23,6 @@ package org.activityinfo.ui.full.client.widget.form;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
@@ -31,17 +30,18 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.util.GwtUtil;
+import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
+
+import java.util.Arrays;
 
 /**
  * @author yuriyz on 2/25/14.
  */
-public class FormSectionInlineEdit extends Composite {
+public class FormSectionInlineEdit extends CompositeWithMirror {
     private static FormSectionInlineEditBinder uiBinder = GWT
             .create(FormSectionInlineEditBinder.class);
 
@@ -49,7 +49,6 @@ public class FormSectionInlineEdit extends Composite {
     }
 
     private FormSection formSection;
-    private Element mirrorElement;
 
 //    @UiField
 //    HeadingElement title;
@@ -73,9 +72,16 @@ public class FormSectionInlineEdit extends Composite {
         setOkButtonState();
     }
 
-    public void apply(FormSection formSection, Element mirrorElement) {
+    public void apply(FormSection formSection) {
+        apply(formSection, new Element[0]);
+    }
+
+    public void apply(FormSection formSection, Element... mirrorElements) {
         setFormSection(formSection);
-        setMirrorElement(mirrorElement);
+        getMirrorElements().clear();
+        if (mirrorElements != null) {
+            getMirrorElements().addAll(Arrays.asList(mirrorElements));
+        }
         apply();
     }
 
@@ -91,12 +97,6 @@ public class FormSectionInlineEdit extends Composite {
         okButton.setEnabled(formSection != null && !formSection.getLabel().getValue().equals(sectionLabel.getValue()));
     }
 
-    public void setVisible(boolean visible) {
-        GwtUtil.setVisible(getElement(), visible);
-        if (mirrorElement != null) {
-            GwtUtil.setVisible(mirrorElement, !visible);
-        }
-    }
 
 //    public void setPanelTitle(String title) {
 //        this.title.setInnerHTML(title);
@@ -127,13 +127,5 @@ public class FormSectionInlineEdit extends Composite {
 
     public void hide() {
         setVisible(false);
-    }
-
-    public Element getMirrorElement() {
-        return mirrorElement;
-    }
-
-    public void setMirrorElement(Element mirrorElement) {
-        this.mirrorElement = mirrorElement;
     }
 }

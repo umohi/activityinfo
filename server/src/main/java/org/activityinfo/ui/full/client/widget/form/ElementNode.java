@@ -166,8 +166,30 @@ public class ElementNode {
         }
     }
 
-    public void addSection(FormSection section) {
-        // todo
+    public void addSection(final FormSection section, int rowIndexOnPanel) {
+        final int index = rowIndexOnPanel != -1 ? rowIndexOnPanel : 0;
+        final FormSectionRow row = new FormSectionRow(section, formPanel, parentNode);
+        final FormInstance formInstance = formPanel.getValue();
+
+        contentPanel.insert(row, index);
+        sectionMap.put(section.getId(), row);
+        formElementContainer.getElements().add(index, section);
+
+        undoManager.addUndoable(new IsUndoable() {
+            @Override
+            public void undo() {
+                contentPanel.remove(index);
+                sectionMap.remove(section.getId());
+                formElementContainer.getElements().remove(section);
+            }
+
+            @Override
+            public void redo() {
+                contentPanel.insert(row, index);
+                sectionMap.put(section.getId(), row);
+                formElementContainer.getElements().add(index, section);
+            }
+        });
     }
 
     public void remove(final FormSectionRow formSectionRow) {
