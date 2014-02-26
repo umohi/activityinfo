@@ -47,12 +47,15 @@ import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.state.StateManager;
 import com.extjs.gxt.ui.client.store.GroupingStore;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.util.DateWrapper;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -66,6 +69,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
     private MonthlyGrid grid;
     private ReportingPeriodProxy proxy;
     private MappingComboBox<Month> monthCombo;
+    private GridSelectionModel<IndicatorRowDTO> rowSelector, cellSelector;
 
     private int currentSiteId;
 
@@ -92,6 +96,18 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
         });
         
         grid = new MonthlyGrid(store);
+        cellSelector = new GridSelectionModel<IndicatorRowDTO>();
+
+
+        rowSelector = new GridSelectionModel<IndicatorRowDTO>();
+        rowSelector.addSelectionChangedListener(new SelectionChangedListener<IndicatorRowDTO>() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<IndicatorRowDTO> se) {
+                if(!readOnly && se.getSelectedItem() != null) {
+                    MonthlyReportsPanel.this.toolBar.setActionEnabled(UIActions.EDIT, true);
+                }
+            }
+        });
         add(grid);
 
         addToolBar();
@@ -100,6 +116,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
     private void addToolBar() {
         toolBar = new ActionToolBar();
         toolBar.setListener(this);
+        toolBar.addEditButton();
         toolBar.addSaveSplitButton();
         toolBar.add(new LabelToolItem(I18N.CONSTANTS.month() + ": "));
 
@@ -172,6 +189,9 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
             save();
         } else if(UIActions.DISCARD_CHANGES.equals(actionId)) {
             store.rejectChanges();
+            setEditMode(false);
+        } else if(UIActions.EDIT.equals(actionId)) {
+            setEditMode(true);
         }
     }
 
@@ -199,16 +219,40 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
                     @Override
                     public void onSuccess(VoidResult result) {
                         store.commitChanges();
+                        setEditMode(false);
                     }
                 });
     }
 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+        setEditMode(false);
 //        this.toolBar.setActionEnabled(UIActions.SAVE, !readOnly);
-        this.grid.setReadOnly(readOnly);
     }
-
+    
+    public void onNoSeletion() {
+        this.grid.getStore().removeAll();
+        this.grid.getView().setEmptyText(I18N.MESSAGES.SelectSiteAbove());
+        setEditMode(false);
+    }
+    
+    private void setEditMode(boolean editMode) {
+        if(!readOnly) {
+            this.toolBar.setActionEnabled(UIActions.EDIT, !editMode);
+            this.grid.setReadOnly(!editMode);
+            if(editMode) {
+                int rowIndex = getSelectedRowIndex();
+                this.grid.getSelectionModel().deselectAll();
+                this.grid.setSelectionModel(cellSelector);
+                this.grid.startEditing(rowIndex, 1);
+            } else {
+                this.grid.setSelectionModel(rowSelector);
+            }
+        } else {
+            this.grid.setSelectionModel(rowSelector);
+        }
+    }
+    
     private class ReportingPeriodProxy extends RpcProxy<MonthlyReportResult> {
 
         private Month startMonth;
@@ -229,5 +273,17 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
             service.execute(new GetMonthlyReports(siteId, startMonth, 7),
                     callback);
         }
+    }
+    
+    private int getSelectedRowIndex() {
+        int i = 0;
+        if(this.grid.getSelectionModel().getSelectedItem() != null) {
+            for(i=0; i<=this.grid.getStore().getCount();i++) {
+                if(this.grid.getSelectionModel().getSelectedItem().equals(this.grid.getStore().getAt(i))) {
+                    break;
+                }
+            }    
+        }
+        return i;
     }
 }

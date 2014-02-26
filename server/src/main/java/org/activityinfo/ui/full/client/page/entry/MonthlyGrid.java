@@ -40,6 +40,8 @@ import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
+import com.extjs.gxt.ui.client.widget.grid.GridGroupRenderer;
+import com.extjs.gxt.ui.client.widget.grid.GroupColumnData;
 import com.extjs.gxt.ui.client.widget.grid.GroupingView;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
@@ -69,6 +71,17 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
         });
         
         GroupingView view = new GroupingView();
+        view.setGroupRenderer(new GridGroupRenderer() {
+            
+            @Override
+            public String render(GroupColumnData data) {
+                if(data.text != null && !data.text.isEmpty()) {
+                    return data.text;
+                } else { 
+                    return I18N.CONSTANTS.unknownGroup();
+                }
+            }
+        });
         view.setShowGroupedColumn(false);
         view.setForceFit(true);
         setView(view);

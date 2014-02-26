@@ -291,4 +291,7 @@ public interface UIMessages extends com.google.gwt.i18n.client.Messages {
     
     @DefaultMessage("Are you sure want to delete?")
     String confirmDeleteSite();
+    
+    @DefaultMessage("Select a site above.")
+    String SelectSiteAbove();
 }
