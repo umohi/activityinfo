@@ -23,6 +23,8 @@ package org.activityinfo.reports.server.generator.map;
  */
 
 import com.google.common.collect.Lists;
+import org.activityinfo.api.shared.model.AdminEntityDTO;
+import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.clustering.AdministrativeLevelClustering;
 import org.activityinfo.reports.shared.model.layers.PointMapLayer;
@@ -30,8 +32,11 @@ import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetSites;
 import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.server.command.DispatcherSync;
+import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
+import org.activityinfo.ui.full.client.map.AdminBoundsHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -79,7 +84,7 @@ public abstract class PointLayerGenerator<T extends PointMapLayer> implements
         GetSites query = new GetSites();
         query.setFilter(layerFilter);
         query.setFetchAttributes(false);
-        query.setFetchAdminEntities(layer.getClustering() instanceof AdministrativeLevelClustering);
+        query.setFetchAdminEntities(true);
         query.setFetchAllIndicators(false);
         query.setFetchIndicators(physicalIndicators(layer));
 
@@ -140,6 +145,36 @@ public abstract class PointLayerGenerator<T extends PointMapLayer> implements
             }
         }
         return value;
+    }
+
+    protected AiLatLng getPoint(SiteDTO site) {
+        if(site.hasLatLong()) {
+            return new AiLatLng(site.getLatitude(), site.getLongitude());
+        } else {
+            Extents bounds = getBounds(site);
+
+            if(bounds != null) {
+                return bounds.center();
+            } else {
+                return null;
+            }
+        }
+    }
+
+    protected Extents getBounds(SiteDTO site) {
+        // if we don't have a lat/long point, get a centroid from the
+        // bounds
+        Extents bounds = null;
+        for(AdminEntityDTO entity : site.getAdminEntities().values()) {
+            if(entity.hasBounds()) {
+                if(bounds == null) {
+                    bounds = entity.getBounds();
+                } else {
+                    bounds = bounds.intersect(entity.getBounds());
+                }
+            }
+        }
+        return bounds;
     }
 
 }

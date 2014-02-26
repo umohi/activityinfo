@@ -67,8 +67,15 @@ public class IconLayerGenerator extends PointLayerGenerator<IconMapLayer> {
     public Extents calculateExtents() {
         Extents extents = Extents.emptyExtents();
         for (SiteDTO site : sites) {
-            if (meetsCriteria(site) && site.hasLatLong()) {
-                extents.grow(site.getLatitude(), site.getLongitude());
+            if (meetsCriteria(site)) {
+                if(site.hasLatLong()) {
+                    extents.grow(site.getLatitude(), site.getLongitude());
+                } else {
+                    Extents siteExtents = getBounds(site);
+                    if(siteExtents != null) {
+                        extents.grow(siteExtents);
+                    }
+                }
             }
         }
         return extents;
@@ -101,11 +108,11 @@ public class IconLayerGenerator extends PointLayerGenerator<IconMapLayer> {
 
         for (SiteDTO site : sites) {
             if (meetsCriteria(site)) {
-                if (clusterer.isMapped(site)) {
+                AiLatLng geoPoint = getPoint(site);
+                if (geoPoint != null || clusterer.isMapped(site)) {
                     Point point = null;
-                    if (site.hasLatLong()) {
-                        point = map.fromLatLngToPixel(new AiLatLng(site
-                                .getLatitude(), site.getLongitude()));
+                    if (geoPoint != null) {
+                        point = map.fromLatLngToPixel(geoPoint);
                     }
                     points.add(new PointValue(site, point,
                             point == null ? null : rectCalculator.iconRect(point),
