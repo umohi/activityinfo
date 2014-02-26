@@ -66,6 +66,8 @@ public class FormSectionRow extends Composite {
     @UiField
     FormSectionInlineEdit editPanel;
     @UiField
+    FormSectionInlineEdit addPanel;
+    @UiField
     DivElement sectionRowContainer;
 
     public FormSectionRow(FormSection formSection, FormPanel formPanel, ElementNode parentNode) {
@@ -82,6 +84,7 @@ public class FormSectionRow extends Composite {
         this.parentNode = parentNode;
         setLabelText();
         addHandlers();
+        configurePanels();
     }
 
     public void putFormFieldRows(BiMap<Cuid, FormFieldRow> ownAndChildFieldMap) {
@@ -151,19 +154,16 @@ public class FormSectionRow extends Composite {
     private void addNewSection() {
         final Cuid newCuid = CuidAdapter.cuid('x', new KeyGenerator().generateInt());
         final FormSection newSection = new FormSection(newCuid);
-        editPanel.apply(newSection, toolbar.getElement());
-        editPanel.setVisible(true);
-        editPanel.getOkButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                getNode().addSection(newSection, node.getContentPanel().getWidgetIndex(FormSectionRow.this));
-            }
-        });
+        addPanel.apply(newSection, toolbar.getElement());
+        addPanel.setVisible(true);
     }
 
     private void edit() {
         editPanel.apply(formSection, label.getElement(), toolbar.getElement());
         editPanel.setVisible(true);
+    }
+
+    private void configurePanels() {
         editPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -184,6 +184,12 @@ public class FormSectionRow extends Composite {
                         setLabelText();
                     }
                 });
+            }
+        });
+        addPanel.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                getNode().addSection(addPanel.getFormSection(), node.getContentPanel().getWidgetIndex(FormSectionRow.this));
             }
         });
     }

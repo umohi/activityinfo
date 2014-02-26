@@ -8,6 +8,7 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <ai:FormSectionInlineEdit ui:field="editPanel" addStyleNames="hidden"/>
+    <ai:FormSectionInlineEdit ui:field="addPanel" addStyleNames="hidden"/>
     <div ui:field="sectionRowContainer">
       <div class="row">
         <div class="col-sm-8">
