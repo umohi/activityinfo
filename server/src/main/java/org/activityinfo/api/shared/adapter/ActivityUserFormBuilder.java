@@ -105,6 +105,7 @@ public class ActivityUserFormBuilder {
             field.setLabel(new LocalizedString(indicator.getName()));
             field.setDescription(new LocalizedString(indicator.getDescription()));
             field.setType(FormFieldType.QUANTITY);
+            field.setUnit(new LocalizedString(indicator.getUnits()));
             container.addElement(field);
         }
     }
