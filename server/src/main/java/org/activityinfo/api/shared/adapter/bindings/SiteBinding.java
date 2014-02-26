@@ -14,7 +14,7 @@ public class SiteBinding extends ModelBinding<SiteDTO> {
 
     private final ActivityDTO activity;
 
-    public SiteBinding(ActivityDTO activity) {
+    SiteBinding(ActivityDTO activity) {
         super(CuidAdapter.activityFormClass(activity.getId()), CuidAdapter.SITE_DOMAIN);
         this.activity = activity;
     }
