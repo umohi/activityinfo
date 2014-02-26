@@ -7,7 +7,7 @@
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
   <ui:with field='style' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
-  <g:HTMLPanel addStyleNames="{style.newUiStyle.marginLeft} bs">
+  <g:HTMLPanel addStyleNames="{style.newUiStyle.sectionMarginLeft} bs">
     <ai:FormSectionInlineEdit ui:field="editPanel" addStyleNames="hidden"/>
     <ai:FormSectionInlineEdit ui:field="addPanel" addStyleNames="hidden"/>
     <div ui:field="sectionRowContainer">

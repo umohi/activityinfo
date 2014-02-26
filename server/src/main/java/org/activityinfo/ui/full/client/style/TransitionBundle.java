@@ -20,8 +20,8 @@ public interface TransitionBundle extends ClientBundle {
         @ClassName("gwt-PopupPanel")
         String gwtPopupPanel();
 
-        @ClassName("margin-left")
-        String marginLeft();
+        @ClassName("section-margin-left")
+        String sectionMarginLeft();
     }
 
     /**
