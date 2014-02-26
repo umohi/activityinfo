@@ -53,8 +53,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
 
     private FormSection formSection;
 
-//    @UiField
-//    HeadingElement title;
     @UiField
     Button okButton;
     @UiField
@@ -81,17 +79,17 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
         setOkButtonState();
     }
 
-    public void apply(FormSection formSection) {
-        apply(formSection, new Element[0]);
-    }
-
     public void apply(FormSection formSection, Element... mirrorElements) {
         setFormSection(formSection);
+        setMirrorElements(mirrorElements);
+        apply();
+    }
+
+    public void setMirrorElements(Element... mirrorElements) {
         getMirrorElements().clear();
         if (mirrorElements != null) {
             getMirrorElements().addAll(Arrays.asList(mirrorElements));
         }
-        apply();
     }
 
     public void setFormSection(FormSection formSection) {
@@ -106,11 +104,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
         okButton.setEnabled(formSection != null && !formSection.getLabel().getValue().equals(sectionLabel.getValue()));
     }
 
-
-//    public void setPanelTitle(String title) {
-//        this.title.setInnerHTML(title);
-//    }
-
     public Button getOkButton() {
         return okButton;
     }
@@ -123,11 +116,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
     public void onOk(ClickEvent event) {
         hide();
     }
-
-//    @UiHandler("closeButton")
-//    public void onClose(ClickEvent event) {
-//        hide();
-//    }
 
     @UiHandler("cancelButton")
     public void cancelButton(ClickEvent event) {
