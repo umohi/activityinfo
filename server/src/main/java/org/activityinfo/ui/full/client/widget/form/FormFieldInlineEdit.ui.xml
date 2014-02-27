@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget.form">
+
+  <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
+  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='style' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
+
+  <g:HTMLPanel addStyleNames="bs">
+    <g:HTMLPanel>
+
+      <ui:text from='{res.fieldLabel}'/>
+      <g:TextBox addStyleNames="form-control" width="100%" ui:field="label"/>
+      <ui:text from='{res.fieldType}'/>
+      <g:ListBox  ui:field="type"/>
+      <ui:text from='{res.fieldDescription}'/>
+      <g:TextBox addStyleNames="form-control" width="100%" ui:field="description"/>
+      <ui:text from='{res.fieldUnit}'/>
+      <g:TextBox addStyleNames="form-control" width="100%" ui:field="unit"/>
+
+      <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
+      <g:Button addStyleNames="btn btn-default" text="Cancel" ui:field="cancelButton"/>
+    </g:HTMLPanel>
+  </g:HTMLPanel>
+</ui:UiBinder>

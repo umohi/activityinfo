@@ -62,6 +62,10 @@ public class FormFieldRow extends Composite {
     DivElement rowContainer;
     @UiField
     FormSectionInlineEdit addSectionPanel;
+    @UiField
+    FormFieldInlineEdit editFieldPanel;
+    @UiField
+    FormFieldInlineEdit addFieldPanel;
 
     private FormField formField;
     private IsWidget formFieldWidget;
@@ -80,7 +84,7 @@ public class FormFieldRow extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 addSectionPanel.getFormSection().setLabel(new LocalizedString(addSectionPanel.getSectionLabel().getValue()));
-                final int rowIndexOnPanel = node.getContentPanel().getWidgetIndex(FormFieldRow.this) ;
+                final int rowIndexOnPanel = node.getContentPanel().getWidgetIndex(FormFieldRow.this);
                 node.addSection(addSectionPanel.getFormSection(), rowIndexOnPanel);
             }
         });

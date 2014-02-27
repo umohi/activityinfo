@@ -3262,4 +3262,20 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Unknown Group")
     @Key("unknownGroup")
     String unknownGroup();
+
+    @DefaultStringValue("Label")
+    @Key("fieldLabel")
+    String fieldLabel();
+
+    @DefaultStringValue("Type")
+    @Key("fieldType")
+    String fieldType();
+
+    @DefaultStringValue("Description")
+    @Key("fieldDescription")
+    String fieldDescription();
+
+    @DefaultStringValue("Unit")
+    @Key("fieldUnit")
+    String fieldUnit();
 }
