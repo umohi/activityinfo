@@ -1,6 +1,7 @@
 package org.activityinfo.ui.full.client.style;
 
 import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.TextResource;
 
 /**
@@ -8,6 +9,20 @@ import com.google.gwt.resources.client.TextResource;
  * a Bootstrapped-based site
  */
 public interface TransitionBundle extends ClientBundle {
+
+    public interface NewUiStyle extends CssResource {
+
+        @ClassName("gwt-PopupPanelGlass")
+        String gwtPopupPanelGlass();
+
+        String ai();
+
+        @ClassName("gwt-PopupPanel")
+        String gwtPopupPanel();
+
+        @ClassName("section-margin-left")
+        String sectionMarginLeft();
+    }
 
     /**
      * The Bootstrap styles have been enclosed in this style
@@ -22,5 +37,5 @@ public interface TransitionBundle extends ClientBundle {
     TextResource gwtStyle();
 
     @Source("newui-transition.css")
-    TextResource newUiStyle();
+    NewUiStyle newUiStyle();
 }

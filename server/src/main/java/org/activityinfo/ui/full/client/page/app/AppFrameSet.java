@@ -22,8 +22,10 @@ package org.activityinfo.ui.full.client.page.app;
  * #L%
  */
 
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
@@ -33,17 +35,19 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.ui.full.client.local.ui.SyncStatusBar;
 import org.activityinfo.ui.full.client.page.*;
 import org.activityinfo.ui.full.client.page.config.DbListPageState;
 import org.activityinfo.ui.full.client.page.dashboard.DashboardPlace;
+import org.activityinfo.ui.full.client.page.entry.FormPanelPage;
 import org.activityinfo.ui.full.client.page.entry.place.DataEntryPlace;
 import org.activityinfo.ui.full.client.page.report.ReportsPlace;
 import org.activityinfo.ui.full.client.page.search.SearchPageState;
+import org.activityinfo.ui.full.client.util.FeatureSwitch;
 import org.activityinfo.ui.full.client.widget.LoadingPlaceHolder;
 
 @Singleton
@@ -145,6 +149,16 @@ public class AppFrameSet implements Frame {
 
         if (activeWidget != null) {
             viewport.remove(activeWidget);
+        }
+
+        // ugly code : should be removed after we moved away from gxt (to natural layout)
+        // introduced as part of AI-482
+        if (FeatureSwitch.isNewFormEnabled() && widget instanceof FormPanelPage) {
+            final LayoutContainer widgetContainer = new LayoutContainer();
+            widgetContainer.setScrollMode(Style.Scroll.AUTOY);
+            widgetContainer.add(widget);
+
+            widget = widgetContainer;
         }
         viewport.add(widget, new BorderLayoutData(LayoutRegion.CENTER));
         activeWidget = widget;

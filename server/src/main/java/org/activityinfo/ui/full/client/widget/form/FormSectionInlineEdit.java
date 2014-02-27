@@ -32,6 +32,9 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api.client.KeyGenerator;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
@@ -50,8 +53,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
 
     private FormSection formSection;
 
-//    @UiField
-//    HeadingElement title;
     @UiField
     Button okButton;
     @UiField
@@ -60,6 +61,12 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
     public FormSectionInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public void applyNew(Element... mirrorElements) {
+        final Cuid newCuid = CuidAdapter.cuid('x', new KeyGenerator().generateInt());
+        final FormSection newSection = new FormSection(newCuid);
+        apply(newSection, mirrorElements);
     }
 
     public void apply() {
@@ -72,17 +79,17 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
         setOkButtonState();
     }
 
-    public void apply(FormSection formSection) {
-        apply(formSection, new Element[0]);
-    }
-
     public void apply(FormSection formSection, Element... mirrorElements) {
         setFormSection(formSection);
+        setMirrorElements(mirrorElements);
+        apply();
+    }
+
+    public void setMirrorElements(Element... mirrorElements) {
         getMirrorElements().clear();
         if (mirrorElements != null) {
             getMirrorElements().addAll(Arrays.asList(mirrorElements));
         }
-        apply();
     }
 
     public void setFormSection(FormSection formSection) {
@@ -97,11 +104,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
         okButton.setEnabled(formSection != null && !formSection.getLabel().getValue().equals(sectionLabel.getValue()));
     }
 
-
-//    public void setPanelTitle(String title) {
-//        this.title.setInnerHTML(title);
-//    }
-
     public Button getOkButton() {
         return okButton;
     }
@@ -114,11 +116,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
     public void onOk(ClickEvent event) {
         hide();
     }
-
-//    @UiHandler("closeButton")
-//    public void onClose(ClickEvent event) {
-//        hide();
-//    }
 
     @UiHandler("cancelButton")
     public void cancelButton(ClickEvent event) {

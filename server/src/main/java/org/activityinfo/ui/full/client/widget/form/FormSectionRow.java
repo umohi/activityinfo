@@ -33,8 +33,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api.client.KeyGenerator;
-import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
@@ -152,9 +150,7 @@ public class FormSectionRow extends Composite {
     }
 
     private void addNewSection() {
-        final Cuid newCuid = CuidAdapter.cuid('x', new KeyGenerator().generateInt());
-        final FormSection newSection = new FormSection(newCuid);
-        addPanel.apply(newSection, toolbar.getElement());
+        addPanel.applyNew(toolbar.getElement());
         addPanel.setVisible(true);
     }
 
@@ -189,7 +185,9 @@ public class FormSectionRow extends Composite {
         addPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                getNode().addSection(addPanel.getFormSection(), node.getContentPanel().getWidgetIndex(FormSectionRow.this));
+                addPanel.getFormSection().setLabel(new LocalizedString(addPanel.getSectionLabel().getValue()));
+                int rowIndexOnPanel = parentNode.getContentPanel().getWidgetIndex(FormSectionRow.this);
+                parentNode.addSection(addPanel.getFormSection(), rowIndexOnPanel);
             }
         });
     }

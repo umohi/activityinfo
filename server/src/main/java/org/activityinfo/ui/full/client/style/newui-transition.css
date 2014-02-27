@@ -16,3 +16,7 @@
     opacity: 0.3;
     filter: alpha(opacity=30);
 }
+
+.section-margin-left {
+    margin-left: 20px;
+}

@@ -167,9 +167,8 @@ public class ElementNode {
     }
 
     public void addSection(final FormSection section, int rowIndexOnPanel) {
-        final int index = rowIndexOnPanel != -1 ? rowIndexOnPanel : 0;
-        final FormSectionRow row = new FormSectionRow(section, formPanel, parentNode);
-        final FormInstance formInstance = formPanel.getValue();
+        final int index = rowIndexOnPanel > 0 ? rowIndexOnPanel : 0;
+        final FormSectionRow row = new FormSectionRow(section, formPanel, this);
 
         contentPanel.insert(row, index);
         sectionMap.put(section.getId(), row);
