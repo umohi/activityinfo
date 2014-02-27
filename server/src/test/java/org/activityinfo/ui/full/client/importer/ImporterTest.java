@@ -29,8 +29,7 @@ import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.data.PastedTable;
 import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.match.*;
-import org.activityinfo.ui.full.client.importer.model.ColumnAction;
-import org.activityinfo.ui.full.client.importer.model.ImportExistingAction;
+import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.ui.Importer;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplatesStub;
@@ -104,9 +103,12 @@ public class ImporterTest extends CommandTestCase2 {
         importModel.setColumnBinding(field("Upzilla.District.Name"), columnIndex("district"));
         importModel.setColumnBinding(field("Upzilla.Name"), columnIndex("upazila"));
 
+
         // Step 3: Match Instances
         // For each row object field, we need to determine the range of possible/probably values
         Importer importer = new Importer(scheduler, resourceLocator, importModel);
+
+        importer.updateBindings();
         runScheduledAndAssertResolves(importer.matchReferences());
 
         // Step 4: Validate
@@ -220,7 +222,7 @@ public class ImporterTest extends CommandTestCase2 {
         return "?";
     }
 
-    private ColumnAction field(String debugFieldPath) {
+    private ColumnTarget field(String debugFieldPath) {
         List<FieldPath> fieldsToMatch = importModel.getFormTree().search(FormTree.SearchOrder.BREADTH_FIRST,
                 Predicates.alwaysTrue(), Predicates.alwaysTrue());
 
@@ -228,7 +230,7 @@ public class ImporterTest extends CommandTestCase2 {
         for(FieldPath path : fieldsToMatch) {
             String debugPath = importModel.getFormTree().getNodeByPath(path).debugPath();
             if(debugPath.equals(debugFieldPath)) {
-                return new ImportExistingAction(debugPath, path);
+                return ColumnTarget.mapped(path);
             }
             fieldsWeHave.add(debugPath);
         }

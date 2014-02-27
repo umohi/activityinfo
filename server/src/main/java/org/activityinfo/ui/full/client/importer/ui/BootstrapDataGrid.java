@@ -20,7 +20,6 @@ public class BootstrapDataGrid<T> extends DataGrid<T> {
         bodyTable.addClassName("table");
         bodyTable.addClassName("table-bordered");
         bodyTable.addClassName("table-condensed");
-
     }
 
 

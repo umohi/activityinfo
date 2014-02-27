@@ -1,5 +1,6 @@
 package org.activityinfo.ui.full.client.importer.ui;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -8,21 +9,15 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
+import org.activityinfo.ui.full.client.importer.ui.mapping.ColumnOptionsFactory;
 import org.activityinfo.ui.full.client.importer.ui.source.ChooseSourcePage;
 import org.activityinfo.ui.full.client.importer.ui.mapping.ColumnMappingPage;
 import org.activityinfo.ui.full.client.importer.ui.validation.ValidationPage;
 import org.activityinfo.ui.full.client.widget.FullScreenOverlay;
 
-public class ImportPresenter<T> {
+public class ImportPresenter {
 
     private EventBus eventBus = GWT.create(SimpleEventBus.class);
-
-    private ImportDialog dialogBox = new ImportDialog();
-    private FullScreenOverlay overlay = new FullScreenOverlay();
-
-    private ChooseSourcePage chooseSourcePage;
-    private ColumnMappingPage<T> matchingPage;
-    private ValidationPage<T> validationPage;
 
     private enum Step {
         CHOOSE_SOURCE,
@@ -30,19 +25,29 @@ public class ImportPresenter<T> {
         VALIDATION
     }
 
+
+    private final ImportModel importModel;
+    private final Importer importer;
+
+
+    private ImportDialog dialogBox = new ImportDialog();
+    private FullScreenOverlay overlay = new FullScreenOverlay();
+
+    private ChooseSourcePage chooseSourcePage;
+    private ColumnMappingPage matchingPage;
+    private ValidationPage validationPage;
+
+
     private Step currentStep;
 
-    private ImportModel<T> importModel;
-
-    private ResourceLocator dispatcher;
 
     public ImportPresenter(ResourceLocator dispatcher, FormTree formTree) {
-        this.dispatcher = dispatcher;
-        this.importModel = new ImportModel<T>(formTree);
+        this.importModel = new ImportModel(formTree);
+        this.importer = new Importer(Scheduler.get(), dispatcher, importModel);
 
         chooseSourcePage = new ChooseSourcePage(eventBus);
-        matchingPage = new ColumnMappingPage<T>(importModel);
-        validationPage = new ValidationPage<T>(importModel);
+        matchingPage = new ColumnMappingPage(importModel, new ColumnOptionsFactory(importModel));
+        validationPage = new ValidationPage(importer);
 
 
         dialogBox.getNextButton().addClickHandler(new ClickHandler() {
@@ -74,6 +79,8 @@ public class ImportPresenter<T> {
 
         dialogBox.getFinishButton().setEnabled(false);
         dialogBox.setStatusText("Importing...");
+
+
 
 //        BatchCommand batch = new BatchCommand();
 //        for (DraftModel draftModel : importer.getDraftModels()) {

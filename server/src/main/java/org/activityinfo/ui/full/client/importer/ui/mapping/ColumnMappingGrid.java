@@ -13,8 +13,7 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.model.ColumnAction;
+import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
@@ -24,16 +23,16 @@ import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
  * and focuses on helping the user select columns as a whole and map them
  * to existing properties.
  */
-public class ColumnMappingGrid<T> extends ResizeComposite {
+public class ColumnMappingGrid extends ResizeComposite {
 
 
     private DataGrid<SourceRow> dataGrid;
 
-    private final ImportModel<T> mapping;
+    private final ImportModel model;
 
-    public ColumnMappingGrid(ImportModel<T> mapping) {
+    public ColumnMappingGrid(ImportModel model) {
 
-        this.mapping = mapping;
+        this.model = model;
 
         dataGrid = new BootstrapDataGrid<SourceRow>(100);
         dataGrid.setWidth("100%");
@@ -57,11 +56,11 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
         for (int i = 0; i != dataGrid.getColumnCount(); ++i) {
             dataGrid.removeColumn(i);
         }
-        for (org.activityinfo.ui.full.client.importer.data.SourceColumn column : mapping.getSource().getColumns()) {
+        for (org.activityinfo.ui.full.client.importer.data.SourceColumn column : model.getSource().getColumns()) {
             dataGrid.addColumn(new SourceCellColumn(column.getIndex()),
                     new ImportColumnHeader(column.getIndex()));
         }
-        dataGrid.setRowData(mapping.getSource().getRows());
+        dataGrid.setRowData(model.getSource().getRows());
     }
 
     public void refreshMappings() {
@@ -88,13 +87,13 @@ public class ColumnMappingGrid<T> extends ResizeComposite {
 
         @Override
         public void render(Context context, Integer columnIndex, SafeHtmlBuilder sb) {
-            String header = mapping.getSource().getColumnHeader(columnIndex);
-            ColumnAction binding = mapping.getColumnBindings().get(columnIndex);
+            String header = model.getSource().getColumnHeader(columnIndex);
+            ColumnTarget binding = model.getColumnBinding(columnIndex);
 
-            if (binding == null) {
-                sb.append(TEMPLATES.ignoredColumn(header));
+            if (binding.isMapped()) {
+                sb.append(TEMPLATES.boundColumn(header, binding.getFieldPath().toString()));
             } else {
-                sb.append(TEMPLATES.boundColumn(header, binding.getLabel()));
+                sb.append(TEMPLATES.ignoredColumn(header));
             }
         }
     }

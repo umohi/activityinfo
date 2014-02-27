@@ -14,6 +14,11 @@ public class FieldPath {
 
     private final List<Cuid> path;
 
+    /**
+     * The name of the field component
+     */
+    private String component;
+
     public FieldPath(List<FormField> prefix, FormField field) {
         path = Lists.newArrayList();
         for(FormField prefixField : prefix) {
@@ -98,17 +103,18 @@ public class FieldPath {
         return path.get(0);
     }
 
-    public String getLabel() {
-        // TODO: remove this method
-        return this.toString();
-    }
-
     public boolean isDescendantOf(Cuid fieldId) {
         return path.get(0).equals(fieldId);
     }
 
     public FieldPath child(FormField field) {
         return new FieldPath(this, field);
+    }
+
+    public FieldPath component(String componentName) {
+        FieldPath path = new FieldPath(this.path);
+        path.component = componentName;
+        return path;
     }
 
     @Override
