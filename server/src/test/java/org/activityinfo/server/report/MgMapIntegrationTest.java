@@ -15,8 +15,6 @@ import org.activityinfo.reports.shared.model.layers.MapLayer;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.TestDatabaseModule;
-import org.activityinfo.server.report.ReportModule;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +24,7 @@ import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(InjectionSupport.class)
@@ -91,9 +90,9 @@ public class MgMapIntegrationTest extends CommandTestCase2 {
 
         generateMap(layer, "mg-icons-auto.png");
 
-        MapMarker marker = getMarkerForSite(1336279918);
-        assertThat(marker.getX(), equalTo(262));
-        assertThat(marker.getY(), equalTo(113));
+        assertTrue(content.getMarkers().size() > 0);
+        assertTrue(content.getUnmappedSites().isEmpty());
+
     }
 
     @Test
@@ -150,5 +149,4 @@ public class MgMapIntegrationTest extends CommandTestCase2 {
         ImageMapRenderer renderer = new ImageMapRenderer(null, "src/main/webapp/mapicons");
         renderer.renderToFile(map, new File(outFolder, fileName));
     }
-
 }
