@@ -30,20 +30,34 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.*;
+import org.activityinfo.api2.shared.LocalizedString;
+import org.activityinfo.api2.shared.form.FormClass;
+import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
-import org.activityinfo.ui.full.client.widget.undo.*;
+import org.activityinfo.ui.full.client.util.GwtUtil;
+import org.activityinfo.ui.full.client.widget.undo.UndoListener;
+import org.activityinfo.ui.full.client.widget.undo.UndoManager;
+import org.activityinfo.ui.full.client.widget.undo.UndoableCreatedEvent;
+import org.activityinfo.ui.full.client.widget.undo.UndoableExecutedEvent;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Panel to render FormClass definition.
@@ -87,12 +101,19 @@ public class FormPanel extends Composite {
     Button undoButton;
     @UiField
     Button redoButton;
+    @UiField
+    Button addSectionButton;
+    @UiField
+    Button addFieldButton;
+    @UiField
+    FormSectionInlineEdit addSectionPanel;
 
     public FormPanel(ResourceLocator resourceLocator) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         this.resourceLocator = resourceLocator;
         initUndo();
+        initPanels();
     }
 
     public FormPanel(FormClass formClass, ResourceLocator resourceLocator) {
@@ -168,6 +189,26 @@ public class FormPanel extends Composite {
         undoManager.redo();
     }
 
+    private void initPanels() {
+        addSectionPanel.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addSectionPanel.getFormSection().setLabel(new LocalizedString(addSectionPanel.getSectionLabel().getValue()));
+                elementNode.addSection(addSectionPanel.getFormSection(), 0);
+            }
+        });
+    }
+
+    @UiHandler("addSectionButton")
+    public void onAddSection(ClickEvent event) {
+        addSectionPanel.applyNew();
+        addSectionPanel.setVisible(true);
+    }
+
+    @UiHandler("addFieldButton")
+    public void onAddField(ClickEvent event) {
+    }
+
     /**
      * Resets only form instance values.
      */
@@ -206,6 +247,7 @@ public class FormPanel extends Composite {
 
     public void setDesignEnabled(boolean designEnabled) {
         this.designEnabled = designEnabled;
+        GwtUtil.setVisibleInline(designEnabled, addSectionButton.getElement(), addFieldButton.getElement());
     }
 
     public boolean isDesignEnabled() {
@@ -225,7 +267,7 @@ public class FormPanel extends Composite {
 
     private void applyValue(@Nonnull FormInstance formInstance) {
         Preconditions.checkNotNull(formInstance);
-        final BiMap<Cuid,FormFieldRow> allFieldMap = elementNode.getOwnAndChildFieldMap();
+        final BiMap<Cuid, FormFieldRow> allFieldMap = elementNode.getOwnAndChildFieldMap();
         for (Map.Entry<Cuid, Object> entry : formInstance.getValueMap().entrySet()) {
             final FormFieldRow fieldRow = allFieldMap.get(entry.getKey());
             if (fieldRow != null) {

@@ -22,6 +22,9 @@ public interface TransitionBundle extends ClientBundle {
 
         @ClassName("section-margin-left")
         String sectionMarginLeft();
+
+        @ClassName("show-inline")
+        String showInline();
     }
 
     /**

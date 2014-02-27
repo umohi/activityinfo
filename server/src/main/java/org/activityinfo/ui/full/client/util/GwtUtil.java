@@ -34,6 +34,20 @@ public class GwtUtil {
     private GwtUtil() {
     }
 
+    public static void setVisibleInline(boolean visible, Element... elements) {
+        if (elements != null) {
+            for (Element element : elements) {
+                if (visible) {
+                    element.removeClassName("hidden");
+                    element.addClassName("show-inline");
+                } else {
+                    element.removeClassName("show-inline");
+                    element.addClassName("hidden");
+                }
+            }
+        }
+    }
+
     public static void setVisible(Element element, boolean visible) {
         if (element != null) {
             if (visible) {
