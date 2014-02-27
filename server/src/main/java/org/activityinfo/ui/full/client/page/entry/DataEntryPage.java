@@ -38,6 +38,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api.shared.command.DeleteSite;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.FilterUrlSerializer;
@@ -47,13 +48,17 @@ import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 import org.activityinfo.api.client.KeyGenerator;
+import org.activityinfo.ui.full.client.importer.ui.ImportDialog;
+import org.activityinfo.ui.full.client.importer.ui.ImportPresenter;
 import org.activityinfo.ui.full.client.page.*;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
@@ -200,7 +205,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
 
         toolBar.add(new SeparatorToolItem());
 
-        //toolBar.addImportButton();
+        toolBar.addImportButton();
         toolBar.addExcelExportButton();
 
         toolBar.addPrintButton();
@@ -435,26 +440,26 @@ public class DataEntryPage extends LayoutContainer implements Page,
     protected void doImport() {
         final int activityId = currentPlace.getFilter().getRestrictedCategory(
                 DimensionType.Activity);
-        dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
 
+
+        final ResourceLocatorAdaptor resourceLocator = new ResourceLocatorAdaptor(dispatcher);
+        AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(resourceLocator);
+
+        treeBuilder.apply(CuidAdapter.activityFormClass(activityId), new AsyncCallback<FormTree>() {
             @Override
             public void onFailure(Throwable caught) {
-                // TODO Auto-generated method stub
-
+                MessageBox.alert("Failure", caught.getMessage(), null);
             }
 
             @Override
-            public void onSuccess(SchemaDTO result) {
-//                Wizard wizard = new SiteImporterWizard(dispatcher, result.getActivityById(activityId));
-//                WizardDialog dialog = new WizardDialog(wizard);
-//                dialog.show(new WizardCallback() {
-//                    
-//                    
-//                });
+            public void onSuccess(FormTree result) {
+                ImportPresenter presenter = new ImportPresenter(
+                        resourceLocator,
+                        result);
+
+                presenter.show();
             }
-
         });
-
     }
 
     private void delete() {

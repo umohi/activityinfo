@@ -7,7 +7,7 @@ import org.activityinfo.api2.shared.form.QuantityFormatterFactory;
 import java.text.NumberFormat;
 
 /**
- * Created by alex on 2/19/14.
+ * Creates a formatter for a field using the standard Java API
  */
 public class JavaTextQuantityFormatterFactory implements QuantityFormatterFactory {
     @Override

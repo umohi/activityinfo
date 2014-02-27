@@ -108,6 +108,29 @@ public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
     }
 
     /**
+     * Provides state updates to the given monitor.
+     * @return {@code this}, for method chaining
+     */
+    public Promise<T> withMonitor(final PromiseMonitor monitor) {
+        monitor.onPromiseStateChanged(state);
+        if(state == State.PENDING) {
+            then(new AsyncCallback<T>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    monitor.onPromiseStateChanged(State.REJECTED);
+                }
+
+                @Override
+                public void onSuccess(T result) {
+                    monitor.onPromiseStateChanged(State.FULFILLED);
+                }
+            });
+        }
+        return this;
+    }
+
+
+    /**
      *
      * @param function
      * @param <R>

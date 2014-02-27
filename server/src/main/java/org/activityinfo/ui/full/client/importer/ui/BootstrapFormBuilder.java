@@ -45,17 +45,6 @@ public class BootstrapFormBuilder {
 
     }
 
-    public RadioButton addRadioButton(String groupName, SafeHtml label) {
-
-        String id = HTMLPanel.createUniqueId();
-        formBody.append(TEMPLATES.radio(groupName, id, label));
-
-        RadioButton button = new RadioButton(groupName);
-        toBind.add(new FormWidget(id, button));
-
-        return button;
-    }
-
     public HTMLPanel buildForm() {
         HTMLPanel panel = new HTMLPanel("form", formBody.toSafeHtml().asString());
         for (FormWidget formWidget : toBind) {

@@ -9,8 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.model.ColumnAction;
+import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.ui.mapping.ColumnSelectionChangedEvent.Handler;
 
@@ -18,7 +17,7 @@ import org.activityinfo.ui.full.client.importer.ui.mapping.ColumnSelectionChange
  * Page that allows the user to match columns in an imported table to
  * an existing structure.
  */
-public class ColumnMappingPage<T> extends ResizeComposite {
+public class ColumnMappingPage extends ResizeComposite {
 
     public static int nextUniqueGroupNum = 1;
 
@@ -26,7 +25,7 @@ public class ColumnMappingPage<T> extends ResizeComposite {
             .create(ColumnMatchingPanelUiBinder.class);
 
     interface ColumnMatchingPanelUiBinder extends
-            UiBinder<Widget, ColumnMappingPage<?>> {
+            UiBinder<Widget, ColumnMappingPage> {
     }
 
     interface Style extends CssResource {
@@ -37,22 +36,24 @@ public class ColumnMappingPage<T> extends ResizeComposite {
     Style style;
 
     @UiField(provided = true)
-    ColumnMappingGrid<T> dataGrid;
+    ColumnMappingGrid dataGrid;
 
     @UiField
     HeadingElement columnChooserHeader;
     @UiField(provided = true)
     ColumnActionChooser actionChooser;
 
-    private final ImportModel<T> importModel;
+    private final ImportModel importModel;
+    private ColumnOptionsFactory optionsFactory;
 
     private int selectedColumnIndex;
 
-    public ColumnMappingPage(ImportModel<T> importModel) {
+    public ColumnMappingPage(ImportModel importModel, ColumnOptionsFactory optionsFactory) {
         this.importModel = importModel;
+        this.optionsFactory = optionsFactory;
 
-        dataGrid = new ColumnMappingGrid<T>(importModel);
-        actionChooser = new ColumnActionChooser(importModel.getColumnActions());
+        dataGrid = new ColumnMappingGrid(importModel);
+        actionChooser = new ColumnActionChooser(optionsFactory.getOptions());
 
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -64,10 +65,10 @@ public class ColumnMappingPage<T> extends ResizeComposite {
             }
         });
 
-        actionChooser.addValueChangeHandler(new ValueChangeHandler<ColumnAction>() {
+        actionChooser.addValueChangeHandler(new ValueChangeHandler<ColumnTarget>() {
 
             @Override
-            public void onValueChange(ValueChangeEvent<ColumnAction> event) {
+            public void onValueChange(ValueChangeEvent<ColumnTarget> event) {
                 updateColumnMapping(event.getValue());
             }
         });
@@ -83,11 +84,9 @@ public class ColumnMappingPage<T> extends ResizeComposite {
         columnChooserHeader.setInnerText(importModel.getSource().getColumnHeader(selectedColumnIndex));
     }
 
-    private void updateColumnMapping(ColumnAction action) {
-
+    private void updateColumnMapping(ColumnTarget action) {
 
         importModel.setColumnBinding(action, selectedColumnIndex);
-
         dataGrid.refreshMappings();
     }
 }

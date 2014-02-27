@@ -4,16 +4,12 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.activityinfo.api2.client.CuidGenerator;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.api2.shared.model.CoordinateAxis;
-import org.activityinfo.ui.full.client.importer.binding.*;
 import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.data.SourceTable;
 import org.activityinfo.api2.shared.form.tree.FormTree.SearchOrder;
@@ -22,9 +18,9 @@ import java.util.*;
 
 /**
  * A model which defines the mapping from an {@code SourceTable}
- * to a list of models of class {@code T}
+ * to a FormClass
  */
-public class ImportModel<T> {
+public class ImportModel {
 
     private SourceTable source;
     private FormTree formTree;
@@ -33,7 +29,7 @@ public class ImportModel<T> {
     /**
      * Defines the binding of property path
      */
-    private Map<Integer, ColumnAction> columnBindings = Maps.newHashMap();
+    private Map<Integer, ColumnTarget> columnBindings = Maps.newHashMap();
     private Map<FieldPath, Object> providedValues = Maps.newHashMap();
 
 
@@ -57,17 +53,17 @@ public class ImportModel<T> {
         return getFormTree().getRootFormClass();
     }
 
-    public Set<ColumnAction> getMappedFieldPaths() {
+    public Set<ColumnTarget> getMappedFieldPaths() {
         return Sets.newHashSet(columnBindings.values());
     }
 
-    public Map<Integer, ColumnAction> getColumnBindings() {
+    public Map<Integer, ColumnTarget> getColumnBindings() {
         return columnBindings;
     }
 
-    public void setColumnBinding(ColumnAction action, Integer columnIndex) {
+    public void setColumnBinding(ColumnTarget action, Integer columnIndex) {
 
-        Iterator<Map.Entry<Integer, ColumnAction>> it = columnBindings.entrySet().iterator();
+        Iterator<Map.Entry<Integer, ColumnTarget>> it = columnBindings.entrySet().iterator();
         while (it.hasNext()) {
             if (it.next().getValue().equals(action)) {
                 it.remove();
@@ -76,114 +72,41 @@ public class ImportModel<T> {
         columnBindings.put(columnIndex, action);
     }
 
-
-    public void clearColumnBinding(Integer columnIndex) {
-        columnBindings.remove(columnIndex);
-    }
-
-    private Set<FieldPath> mappedFields() {
+    /**
+     *
+     * @return all Fields that have been mapped to a column to import
+     */
+    public Set<FieldPath> getMappedFields() {
         Set<FieldPath> paths = Sets.newHashSet();
 
-        for(ColumnAction action : columnBindings.values()) {
-            if(action instanceof ImportExistingAction) {
-                FieldPath path = ((ImportExistingAction) action).getFieldPath();
-                paths.add(path);
+        for(ColumnTarget action : columnBindings.values()) {
+            if(action.isMapped()) {
+                paths.add(action.getFieldPath());
             }
         }
         return paths;
     }
 
-    private Set<FieldPath> mappedReferenceFields() {
+    public Set<Cuid> getMappedRootFields() {
+        Set<Cuid> mappedRootFields = Sets.newHashSet();
+        for(FieldPath mappedPath : getMappedFields()) {
+            mappedRootFields.add(mappedPath.getRoot());
+        }
+        return mappedRootFields;
+    }
+
+    /**
+     *
+     * @return all reference Fields that have been mapped to a column to import
+     */
+    public Set<FieldPath> getMappedReferenceFields() {
         Set<FieldPath> referenceFields = Sets.newHashSet();
-        for(FieldPath path : mappedFields()) {
+        for(FieldPath path : getMappedFields()) {
             if(path.isNested()) {
                 referenceFields.add(new FieldPath(path.getRoot()));
             }
         }
         return referenceFields;
-    }
-
-
-    public List<FieldBinding> createFieldBindings() {
-        List<FieldBinding> fieldImporters = Lists.newArrayList();
-
-        // Add Reference fields that have been mapped
-        for(FieldPath referenceFieldPath : mappedReferenceFields()) {
-            fieldImporters.add(new MappedReferenceFieldBinding(
-                    formTree.getNodeByPath(referenceFieldPath),
-                    getColumnBindings()));
-        }
-
-        // Add simple data fields that have been mapped, along with new fields
-        for(Map.Entry<Integer, ColumnAction> binding : getColumnBindings().entrySet()) {
-            if(binding.getValue() instanceof ImportExistingAction) {
-                ImportExistingAction action = (ImportExistingAction) binding.getValue();
-                if(!action.getFieldPath().isNested()) {
-                    FormTree.Node fieldNode = formTree.getNodeByPath(action.getFieldPath());
-                    fieldImporters.add(new MappedDataFieldBinding(fieldNode.getField(), binding.getKey()));
-                }
-            } else if(binding.getValue() instanceof ImportNewAction) {
-                // create a new field
-                SourceColumn column = source.getColumns().get(binding.getKey());
-                FormField field = createNewField((ImportNewAction) binding.getValue(), column);
-                MappedDataFieldBinding fieldBinding = new MappedDataFieldBinding(field, binding.getKey());
-                fieldBinding.setNewField(true);
-                fieldImporters.add(fieldBinding);
-            }
-        }
-
-        // Finally add any missing fields
-        Set<Cuid> mappedRootFields = Sets.newHashSet();
-        for(FieldPath mappedPath : mappedFields()) {
-            mappedRootFields.add(mappedPath.getRoot());
-        }
-
-        for(FormTree.Node node : formTree.getRoot().getChildren()) {
-            if(!mappedRootFields.contains(node.getFieldId()) && node.getField().isRequired()) {
-                fieldImporters.add(new MissingFieldBinding(node));
-            }
-        }
-
-        return fieldImporters;
-    }
-
-    private FormField createNewField(ImportNewAction action, SourceColumn column) {
-        CuidGenerator generator = new CuidGenerator();
-        FormField field = new FormField(generator.nextCuid());
-        field.setLabel(new LocalizedString(column.getHeader()));
-        field.setRequired(false);
-        field.setType(FormFieldType.FREE_TEXT);
-        field.setVisible(true);
-        return field;
-    }
-
-    /**
-     *
-     * @return a list of possible column actions for this particular FormClass
-     */
-    public List<ColumnAction> getColumnActions() {
-        List<ColumnAction> actions = Lists.newArrayList();
-
-
-        // ignore is always an option...
-        actions.add(new IgnoreAction());
-
-        // add existing options
-        List<FieldPath> paths = getFieldsToMatch();
-        for(FieldPath path : paths) {
-            FormTree.Node node = formTree.getNodeByPath(path);
-            if(node.getFieldType() == FormFieldType.GEOGRAPHIC_POINT) {
-                actions.add(new ImportExistingCoordinateAction(node.getPath(), CoordinateAxis.LATITUDE));
-                actions.add(new ImportExistingCoordinateAction(node.getPath(), CoordinateAxis.LONGITUDE));
-            } else {
-                actions.add(new ImportExistingAction(composeLabel(node), path));
-            }
-        }
-
-        // and new fields can be added on the fly
-        actions.add(new ImportNewAction());
-
-        return actions;
     }
 
     private String composeLabel(FormTree.Node node) {
@@ -211,4 +134,15 @@ public class ImportModel<T> {
         return formTree;
     }
 
+    public ColumnTarget getColumnBinding(int columnIndex) {
+        ColumnTarget columnTarget = columnBindings.get(columnIndex);
+        if(columnTarget == null) {
+            return ColumnTarget.ignored();
+        }
+        return columnTarget;
+    }
+
+    public SourceColumn getSourceColumn(int columnIndex) {
+        return source.getColumns().get(columnIndex);
+    }
 }
