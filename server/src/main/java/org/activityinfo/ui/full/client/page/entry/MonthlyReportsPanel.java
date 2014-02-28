@@ -87,7 +87,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
         loader = new BaseListLoader<MonthlyReportResult>(proxy);
         store = new GroupingStore<IndicatorRowDTO>(loader);
         store.setMonitorChanges(true);
-        store.groupBy("category");
+        store.groupBy("activityName");
         store.addListener(Store.Update, new Listener<BaseEvent>() {
             @Override
             public void handleEvent(BaseEvent be) {

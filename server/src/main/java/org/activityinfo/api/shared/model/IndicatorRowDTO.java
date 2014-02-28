@@ -98,6 +98,20 @@ public final class IndicatorRowDTO extends BaseModelData implements DTO {
     public void setCategory(String category) {
         set("category", category);
     }
+    
+    /**
+     * @return this Indicator's activity name
+     */
+    public String getActivityName() {
+        return get("activityName");
+    }
+    
+    /**
+     * Sets this Indicator's activity name
+     */
+    public void setActivityName(String name) {
+        set("activityName", name);
+    }
 
     /**
      * The value of the Indicator for the
