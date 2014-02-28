@@ -14,6 +14,7 @@
       <g:TextBox addStyleNames="form-control" width="100%" ui:field="label"/>
       <ui:text from='{res.fieldType}'/>
       <g:ListBox  ui:field="type"/>
+      <br/>
       <ui:text from='{res.fieldDescription}'/>
       <g:TextBox addStyleNames="form-control" width="100%" ui:field="description"/>
       <ui:text from='{res.fieldUnit}'/>
