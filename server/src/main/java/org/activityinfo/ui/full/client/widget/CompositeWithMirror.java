@@ -26,6 +26,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Composite;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,5 +46,12 @@ public class CompositeWithMirror extends Composite {
 
     public List<Element> getMirrorElements() {
         return mirrorElements;
+    }
+
+    public void setMirrorElements(Element... mirrorElements) {
+        getMirrorElements().clear();
+        if (mirrorElements != null) {
+            getMirrorElements().addAll(Arrays.asList(mirrorElements));
+        }
     }
 }

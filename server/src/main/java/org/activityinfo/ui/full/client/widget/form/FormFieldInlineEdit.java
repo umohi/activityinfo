@@ -22,13 +22,17 @@ package org.activityinfo.ui.full.client.widget.form;
  */
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
 
@@ -69,6 +73,23 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     public void hide() {
         setVisible(false);
+    }
+
+    public void applyNew(Element... mirrorElements) {
+        final Cuid newCuid = CuidAdapter.newFormField();
+        final FormField newFormField = new FormField(newCuid);
+        newFormField.setType(FormFieldType.FREE_TEXT);
+        apply(newFormField, mirrorElements);
+    }
+
+    public void apply(FormField formField, Element... mirrorElements) {
+        setFormField(formField);
+        setMirrorElements(mirrorElements);
+        apply();
+    }
+
+    private void apply() {
+
     }
 
     public FormField getFormField() {

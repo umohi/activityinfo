@@ -104,13 +104,15 @@ public class FormFieldRow extends Composite {
         toolbar.getEditButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // todo
+                editFieldPanel.apply(formField, getElement());
+                editFieldPanel.setVisible(true);
             }
         });
         toolbar.getAddButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // todo
+                addFieldPanel.applyNew(getElement());
+                addFieldPanel.setVisible(true);
             }
         });
         toolbar.getAddSectionButton().addClickHandler(new ClickHandler() {

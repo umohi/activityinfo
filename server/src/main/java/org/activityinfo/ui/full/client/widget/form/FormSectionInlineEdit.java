@@ -32,14 +32,11 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
-
-import java.util.Arrays;
 
 /**
  * @author yuriyz on 2/25/14.
@@ -64,7 +61,7 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
     }
 
     public void applyNew(Element... mirrorElements) {
-        final Cuid newCuid = CuidAdapter.cuid('x', new KeyGenerator().generateInt());
+        final Cuid newCuid = CuidAdapter.newSectionField();
         final FormSection newSection = new FormSection(newCuid);
         apply(newSection, mirrorElements);
     }
@@ -83,13 +80,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
         setFormSection(formSection);
         setMirrorElements(mirrorElements);
         apply();
-    }
-
-    public void setMirrorElements(Element... mirrorElements) {
-        getMirrorElements().clear();
-        if (mirrorElements != null) {
-            getMirrorElements().addAll(Arrays.asList(mirrorElements));
-        }
     }
 
     public void setFormSection(FormSection formSection) {
