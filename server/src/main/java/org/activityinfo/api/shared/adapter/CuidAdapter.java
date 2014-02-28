@@ -1,5 +1,6 @@
 package org.activityinfo.api.shared.adapter;
 
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.AttributeGroupDTO;
 import org.activityinfo.api.shared.model.EntityDTO;
@@ -62,6 +63,16 @@ public class CuidAdapter {
      * Avoid instance creation.
      */
     private CuidAdapter() {
+    }
+
+    // todo yuriyz -> alex : please check it
+    public static Cuid newSectionField() {
+        return CuidAdapter.cuid('x', new KeyGenerator().generateInt());
+    }
+
+    // todo yuriyz -> alex : please check it
+    public static Cuid newFormField() {
+        return CuidAdapter.cuid('x', new KeyGenerator().generateInt());
     }
 
     public static Cuid getFormInstanceLabelCuid(FormInstance formInstance) {

@@ -1,19 +1,21 @@
 package org.activityinfo.ui.full.client.importer.ui.mapping;
 
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Column;
+import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 
-public class SourceCellColumn extends Column<SourceRow, String> {
-    private int columnIndex;
+class GridColumn extends Column<SourceRow, String> {
+    private SourceColumn column;
 
-    public SourceCellColumn(int columnIndex) {
+    public GridColumn(SourceColumn column) {
         super(new TextCell());
-        this.columnIndex = columnIndex;
+        this.column = column;
     }
 
     @Override
     public String getValue(SourceRow row) {
-        return row.getColumnValue(columnIndex);
+        return row.getColumnValue(column.getIndex());
     }
 }

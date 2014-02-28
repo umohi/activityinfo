@@ -31,7 +31,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -62,6 +61,10 @@ public class FormFieldRow extends Composite {
     DivElement rowContainer;
     @UiField
     FormSectionInlineEdit addSectionPanel;
+    @UiField
+    FormFieldInlineEdit editFieldPanel;
+    @UiField
+    FormFieldInlineEdit addFieldPanel;
 
     private FormField formField;
     private IsWidget formFieldWidget;
@@ -79,8 +82,8 @@ public class FormFieldRow extends Composite {
         this.addSectionPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                addSectionPanel.getFormSection().setLabel(new LocalizedString(addSectionPanel.getSectionLabel().getValue()));
-                final int rowIndexOnPanel = node.getContentPanel().getWidgetIndex(FormFieldRow.this) ;
+                addSectionPanel.updateModel();
+                final int rowIndexOnPanel = node.getContentPanel().getWidgetIndex(FormFieldRow.this);
                 node.addSection(addSectionPanel.getFormSection(), rowIndexOnPanel);
             }
         });
@@ -100,13 +103,15 @@ public class FormFieldRow extends Composite {
         toolbar.getEditButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // todo
+                editFieldPanel.apply(formField, rowContainer);
+                editFieldPanel.setVisible(true);
             }
         });
         toolbar.getAddButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // todo
+                addFieldPanel.applyNew();
+                addFieldPanel.setVisible(true);
             }
         });
         toolbar.getAddSectionButton().addClickHandler(new ClickHandler() {

@@ -22,34 +22,57 @@ package org.activityinfo.ui.full.client.i18n;
  * #L%
  */
 
+import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.ui.full.client.Log;
 
 public class FromEntities {
+
+    public static final UIConstants CONSTANTS = I18N.CONSTANTS;
 
     public String getDimensionTypePluralName(DimensionType dimension) {
         switch (dimension) {
             case Activity:
-                return removeSpaces(I18N.CONSTANTS.activities());
+                return removeSpaces(CONSTANTS.activities());
             case AdminLevel:
-                return removeSpaces(I18N.CONSTANTS.adminEntities());
+                return removeSpaces(CONSTANTS.adminEntities());
             case Partner:
-                return removeSpaces(I18N.CONSTANTS.partners().trim());
+                return removeSpaces(CONSTANTS.partners().trim());
             case Project:
-                return removeSpaces(I18N.CONSTANTS.projects());
+                return removeSpaces(CONSTANTS.projects());
             case AttributeGroup:
-                return removeSpaces(I18N.CONSTANTS.attributeTypes());
+                return removeSpaces(CONSTANTS.attributeTypes());
             case Indicator:
-                return removeSpaces(I18N.CONSTANTS.indicators());
+                return removeSpaces(CONSTANTS.indicators());
             case Target:
-                return removeSpaces(I18N.CONSTANTS.targets());
+                return removeSpaces(CONSTANTS.targets());
             case Site:
-                return removeSpaces(I18N.CONSTANTS.sites());
+                return removeSpaces(CONSTANTS.sites());
             case Database:
-                return removeSpaces(I18N.CONSTANTS.databases());
+                return removeSpaces(CONSTANTS.databases());
             case Location:
-                return removeSpaces(I18N.CONSTANTS.locations());
+                return removeSpaces(CONSTANTS.locations());
         }
         return "No pluralized string definition for " + dimension.toString();
+    }
+
+    public String getFormFieldType(FormFieldType type) {
+        switch (type) {
+            case REFERENCE:
+                return CONSTANTS.fieldTypeReference();
+            case QUANTITY:
+                return CONSTANTS.fieldTypeQuantity();
+            case LOCAL_DATE:
+                return CONSTANTS.fieldTypeDate();
+            case FREE_TEXT:
+                return CONSTANTS.fieldTypeText();
+            case GEOGRAPHIC_POINT:
+                return CONSTANTS.fieldTypeGeographicPoint();
+            case NARRATIVE:
+                return CONSTANTS.fieldTypeBigText();
+        }
+        Log.warn("No translation for " + type);
+        return type.name().toLowerCase();
     }
 
     private static String removeSpaces(String stringWithSpaces) {

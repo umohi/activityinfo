@@ -1,5 +1,6 @@
 package org.activityinfo.ui.full.client.widget;
 
+import com.google.gwt.aria.client.Roles;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -36,6 +37,7 @@ public class FullScreenOverlay {
     public FullScreenOverlay() {
         TransitionUtil.ensureBootstrapInjected();
         BUNDLE.style().ensureInjected();
+
     }
 
     public void show(IsWidget widget) {
@@ -51,6 +53,8 @@ public class FullScreenOverlay {
         popupPanel.setPopupPosition(LEFT_MARGIN, 0);
         popupPanel.setWidget(container);
         popupPanel.show();
+
+        Roles.getDialogRole().set(popupPanel.getElement());
 
         Window.addResizeHandler(new ResizeHandler() {
 

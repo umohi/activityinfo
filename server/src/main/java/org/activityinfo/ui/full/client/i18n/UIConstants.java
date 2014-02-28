@@ -439,6 +439,10 @@ public interface UIConstants extends Constants {
     @Key("busySearching")
     String busySearching();
 
+    @DefaultStringValue("OK")
+    @Key("ok")
+    String ok();
+
     /**
      * Translated "Cancel".
      *
@@ -1214,9 +1218,9 @@ public interface UIConstants extends Constants {
     String filterByProject();
     
     /**
-     * Translated "Filter by project".
+     * Translated "Filter by location".
      *
-     * @return translated "Filter by project"
+     * @return translated "Filter by location"
      */
     @DefaultStringValue("Filter by location")
     @Key("filterByLocation")
@@ -3240,6 +3244,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Ignore this column")
     String ignoreColumnAction();
 
+    @DefaultStringValue("Choose Field")
+    String chooseFieldHeading();
+
+    @DefaultStringValue("Ignored")
+    String ignored();
+
     @DefaultStringValue("Import this column as a new field")
     String importNewColumnAction();
 
@@ -3262,4 +3272,55 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Unknown Group")
     @Key("unknownGroup")
     String unknownGroup();
+
+    @DefaultStringValue("Label")
+    @Key("fieldLabel")
+    String fieldLabel();
+
+    @DefaultStringValue("Type")
+    @Key("fieldType")
+    String fieldType();
+
+    @DefaultStringValue("Description")
+    @Key("fieldDescription")
+    String fieldDescription();
+
+    @DefaultStringValue("Unit")
+    @Key("fieldUnit")
+    String fieldUnit();
+
+    @DefaultStringValue("Reference")
+    @Key("fieldTypeReference")
+    String fieldTypeReference();
+
+    @DefaultStringValue("Quantity")
+    @Key("fieldTypeQuantity")
+    String fieldTypeQuantity();
+
+    @DefaultStringValue("Date")
+    @Key("fieldTypeDate")
+    String fieldTypeDate();
+
+    @DefaultStringValue("Text")
+    @Key("fieldTypeText")
+    String fieldTypeText();
+
+    @DefaultStringValue("Location")
+    @Key("fieldTypeGeographicPoint")
+    String fieldTypeGeographicPoint();
+
+    @DefaultStringValue("Big text")
+    @Key("fieldTypeBigText")
+    String fieldTypeBigText();
+
+    @DefaultStringValue("To begin, select the table you want to import in Excel, copy it to the clipboard, and " +
+            "then paste here")
+    String pasteSpreadsheetInstructions();
+
+    @DefaultStringValue("Paste your spreadsheet data here by right-clicking then choosing \"Paste\"")
+    String pastePlaceholder();
+
+    @DefaultStringValue("Choose the destination field.")
+    String chooseDestinationField();
+
 }

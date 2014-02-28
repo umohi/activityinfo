@@ -17,6 +17,13 @@
     filter: alpha(opacity=30);
 }
 
+.ai .gwt-TextBox .gwt-SuggestBox .gwt-DateBox .gwt-TextArea {
+}
+
 .section-margin-left {
     margin-left: 20px;
+}
+
+.show-inline {
+    display: inline !important
 }

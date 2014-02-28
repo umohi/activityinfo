@@ -3,7 +3,6 @@ package org.activityinfo.ui.full.client.importer.binding;
 import com.google.common.collect.Lists;
 import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Pair;
 import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormField;
@@ -12,8 +11,7 @@ import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.converter.StringConverter;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.match.TextScorerer;
-import org.activityinfo.ui.full.client.importer.model.ColumnAction;
-import org.activityinfo.ui.full.client.importer.model.ImportExistingAction;
+import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 
 import java.util.List;
 import java.util.Map;
@@ -31,23 +29,22 @@ public class MappedReferenceFieldBinding implements FieldBinding {
 
     private final MatchTable matchTable;
 
-    public MappedReferenceFieldBinding(FormTree.Node node, Map<Integer, ColumnAction> columnBindings) {
+    public MappedReferenceFieldBinding(FormTree.Node node, Map<Integer, ColumnTarget> columnBindings) {
         this.fieldNode = node;
         this.fieldId = node.getFieldId();
 
         this.range = ClassCriteria.union(fieldNode.getField().getRange());
 
         int matchIndex = 0;
-        for(Map.Entry<Integer, ColumnAction> binding : columnBindings.entrySet()) {
-            if(binding.getValue() instanceof ImportExistingAction) {
-                ImportExistingAction action = (ImportExistingAction) binding.getValue();
-                if(action.getFieldPath().isDescendantOf(fieldId)) {
+        for(Map.Entry<Integer, ColumnTarget> binding : columnBindings.entrySet()) {
+            if(binding.getValue().isMapped()) {
+                if(binding.getValue().getFieldPath().isDescendantOf(fieldId)) {
 
                     // the column index of this field's value in the source
                     int sourceColumn = binding.getKey();
 
                     // get the path of the nested field relative to the referenced instance
-                    FieldPath relativePath = action.getFieldPath().relativeTo(fieldId);
+                    FieldPath relativePath = binding.getValue().getFieldPath().relativeTo(fieldId);
 
                     matchFields.add(new MatchFieldBinding(matchIndex++,
                             node.findDescendant(relativePath),

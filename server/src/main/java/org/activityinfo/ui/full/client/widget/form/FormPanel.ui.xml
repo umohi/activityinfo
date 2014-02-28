@@ -1,19 +1,27 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget.form">
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='style' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
   <g:HTMLPanel addStyleNames="bs">
     <div class="container">
       <br/>
-      <div class="pull-left">
+      <div class="pull-left" style="width: 200px">
         <g:Button addStyleNames="btn btn-default" ui:field="undoButton" title="{res.undo}">
           <img src="{img.undo.getSafeUri}" alt="{res.undo}"/>
         </g:Button>
         <g:Button addStyleNames="btn btn-default" ui:field="redoButton" title="{res.redo}">
           <img src="{img.redo.getSafeUri}" alt="{res.redo}"/>
+        </g:Button>
+        <g:Button addStyleNames="btn btn-success hidden" ui:field="addSectionButton" title="{res.addSection}">
+          <img src="{img.addFolder.getSafeUri}" alt="{res.add}"/>
+        </g:Button>
+        <g:Button addStyleNames="btn btn-success hidden" ui:field="addFieldButton" title="{res.addField}">
+          <img src="{img.add.getSafeUri}" alt="{res.add}"/>
         </g:Button>
       </div>
       <div class="pull-right">
@@ -29,6 +37,7 @@
       </div>
       <br/>
       <g:FlowPanel ui:field="contentPanel" width="100%">
+        <ai:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{style.newUiStyle.sectionMarginLeft} hidden"/>
       </g:FlowPanel>
     </div>
   </g:HTMLPanel>

@@ -22,6 +22,21 @@ public interface TransitionBundle extends ClientBundle {
 
         @ClassName("section-margin-left")
         String sectionMarginLeft();
+
+        @ClassName("show-inline")
+        String showInline();
+
+        @ClassName("gwt-TextBox")
+        String gwtTextBox();
+
+        @ClassName("gwt-SuggestBox")
+        String gwtSuggestBox();
+
+        @ClassName("gwt-DateBox")
+        String gwtDateBox();
+
+        @ClassName("gwt-TextArea")
+        String gwtTextArea();
     }
 
     /**

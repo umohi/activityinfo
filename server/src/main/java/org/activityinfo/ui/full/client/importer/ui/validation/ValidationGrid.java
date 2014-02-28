@@ -1,14 +1,15 @@
 package org.activityinfo.ui.full.client.importer.ui.validation;
 
-import com.google.common.collect.Maps;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import org.activityinfo.api2.client.form.GwtQuantityFormatterFactory;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
-import org.activityinfo.ui.full.client.importer.ui.validation.cells.UpdateCommandFactory;
+import org.activityinfo.ui.full.client.widget.bootstrap.BootstrapDataGrid;
+import org.activityinfo.ui.full.client.importer.ui.Importer;
+import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplates;
+import org.activityinfo.ui.full.client.importer.ui.validation.columns.ColumnFactory;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ImportColumn;
 
 import java.util.Map;
@@ -17,15 +18,22 @@ import java.util.Map;
  * A second DataGrid that allows the user to the resolve
  * any problems before import
  */
-public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandFactory<T> {
+public class ValidationGrid extends ResizeComposite {
+
+    private Importer importer;
+    private ColumnFactory columnFactory;
 
     private DataGrid<SourceRow> dataGrid;
-    private ImportModel<T> importModel;
-    private Map<FieldPath, ImportColumn<?>> columns;
+    private Map<FieldPath, ImportColumn> columns;
 
-    public ValidationGrid(ImportModel<T> importModel) {
-        this.importModel = importModel;
-        this.dataGrid = new BootstrapDataGrid<SourceRow>(100);
+    public ValidationGrid(Importer importer) {
+        this.importer = importer;
+        this.columnFactory = new ColumnFactory(
+                new GwtQuantityFormatterFactory(),
+                ValidationCellTemplates.INSTANCE,
+                importer.getFormTree());
+
+        this.dataGrid = new BootstrapDataGrid<>(100);
 
         syncColumns();
 
@@ -36,37 +44,13 @@ public class ValidationGrid<T> extends ResizeComposite implements UpdateCommandF
         while (dataGrid.getColumnCount() > 0) {
             dataGrid.removeColumn(0);
         }
-        columns = Maps.newHashMap();
-//
-//        for (FieldPath property : importer.getPropertiesToValidate()) {
-//            ImportColumn<?> column = createColumn(property);
-//
-//            columns.put(property, column);
-//            dataGrid.addColumn(column, property.getLabel());
-//        }
-    }
-
-
-    private ImportColumn<?> createColumn(FieldPath path) {
-        throw new UnsupportedOperationException();
+        for(ImportColumn<?> column : columnFactory.create(importer.getBindings())) {
+            dataGrid.addColumn(column, new TextHeader(column.getHeader()));
+        }
     }
 
     public void refreshRows() {
         syncColumns();
-        //dataGrid.setRowData(importer.getDraftModels());
-    }
-
-    @Override
-    public ScheduledCommand setColumnValue(final FieldPath property, final String value) {
-        return new ScheduledCommand() {
-
-            @Override
-            public void execute() {
-//                for (DraftModel draftModel : importer.getDraftModels()) {
-//                    draftModel.setValue(property.getKey(), value);
-//                }
-                dataGrid.redraw();
-            }
-        };
+        dataGrid.setRowData(importer.getRows());
     }
 }

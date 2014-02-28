@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import org.activityinfo.ui.full.client.widget.bootstrap.ModalTitle;
 
 /**
  * Dialog box that contains the steps of the import process
@@ -18,12 +19,17 @@ public class ImportDialog extends ResizeComposite {
     interface ImportDialogUiBinder extends UiBinder<Widget, ImportDialog> {
     }
 
+    @UiField
+    ModalTitle titleWidget;
 
     @UiField
     Button cancelButton;
 
     @UiField
     Button nextButton;
+
+    @UiField
+    Button prevButton;
 
     @UiField
     Button finishButton;
@@ -46,6 +52,8 @@ public class ImportDialog extends ResizeComposite {
         return finishButton;
     }
 
+    public Button getPreviousButton() { return prevButton; }
+
     public HasClickHandlers getCancelButton() {
         return cancelButton;
     }
@@ -56,5 +64,9 @@ public class ImportDialog extends ResizeComposite {
 
     public void setStatusText(String text) {
         statusText.setInnerText(text);
+    }
+
+    public HasText getTitleWidget() {
+        return titleWidget;
     }
 }
