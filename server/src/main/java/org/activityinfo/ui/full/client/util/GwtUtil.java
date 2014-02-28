@@ -22,6 +22,7 @@ package org.activityinfo.ui.full.client.util;
  */
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.ui.UIObject;
 
 /**
  * @author yuriyz on 1/27/14.
@@ -32,6 +33,11 @@ public class GwtUtil {
      * Avoid instance creation.
      */
     private GwtUtil() {
+    }
+
+    public static void setFormControlStyles(UIObject uiObject) {
+        uiObject.setStyleName("ai");
+        uiObject.addStyleName("form-control");
     }
 
     public static void setVisibleInline(boolean visible, Element... elements) {

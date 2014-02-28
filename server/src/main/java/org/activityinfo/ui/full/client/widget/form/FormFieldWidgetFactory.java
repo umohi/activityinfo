@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
 
 /**
@@ -63,33 +64,33 @@ public class FormFieldWidgetFactory {
 
     private static TextArea createTextArea() {
         final TextArea textBox = new TextArea();
-        textBox.addStyleName("form-control");
+        GwtUtil.setFormControlStyles(textBox);
         return textBox;
     }
 
     public static TextBox createTextBox() {
         final TextBox textBox = new TextBox();
-        textBox.addStyleName("form-control");
+        GwtUtil.setFormControlStyles(textBox);
         return textBox;
     }
 
     public static DoubleBox createDoubleBox() {
         final DoubleBox doubleBox = new DoubleBox();
-        doubleBox.addStyleName("form-control");
+        GwtUtil.setFormControlStyles(doubleBox);
         doubleBox.getElement().setPropertyString("type", "number");
         return doubleBox;
     }
 
     public static DateBoxWithReadOnly createDateTextBox() {
         final DateBoxWithReadOnly dateBox = new DateBoxWithReadOnly();
-        dateBox.getTextBox().addStyleName("form-control");
+        GwtUtil.setFormControlStyles(dateBox.getTextBox());
         dateBox.setFormat(new DateBoxWithReadOnly.DefaultFormat(DATE_TIME_FORMAT));
         return dateBox;
     }
 
     public static SuggestBox createSuggestBox(SuggestOracle oracle) {
         final SuggestBox suggestBox = new SuggestBox(oracle);
-        suggestBox.getValueBox().addStyleName("form-control");
+        GwtUtil.setFormControlStyles(suggestBox.getValueBox());
         return suggestBox;
     }
 }

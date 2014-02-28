@@ -3,15 +3,22 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget.form">
 
+  <ui:style>
+    .field-row {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  </ui:style>
+
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
-  <ui:with field='style' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
+  <ui:with field='aiStyle' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <ai:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{style.newUiStyle.sectionMarginLeft} hidden"/>
+    <ai:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{aiStyle.newUiStyle.sectionMarginLeft} hidden"/>
     <ai:FormFieldInlineEdit ui:field="editFieldPanel" addStyleNames="hidden"/>
     <ai:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="hidden"/>
-    <div class="row userform-field" ui:field="rowContainer">
+    <div class="row {style.field-row}" ui:field="rowContainer">
       <div class="col-sm-2">
         <p class="edit">
           <div ui:field="label"/>

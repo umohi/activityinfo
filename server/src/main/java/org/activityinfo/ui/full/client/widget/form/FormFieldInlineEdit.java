@@ -29,12 +29,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.i18n.I18N;
@@ -65,6 +63,8 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     TextBox unit;
     @UiField
     ListBox type;
+    @UiField
+    CheckBox required;
 
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
@@ -113,10 +113,15 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         description.setValue(formField.getLabel().getValue());
         unit.setValue(formField.getUnit().getValue());
         type.setSelectedIndex(typeIndexMap.inverse().get(formField.getType()));
+        required.setValue(formField.isRequired());
     }
 
     public void updateModel() {
-        // todo
+        formField.setLabel(new LocalizedString(label.getValue()));
+        formField.setType(typeIndexMap.get(type.getSelectedIndex()));
+        formField.setDescription(new LocalizedString(description.getValue()));
+        formField.setUnit(new LocalizedString(unit.getValue()));
+        formField.setRequired(required.getValue());
     }
 
     public FormField getFormField() {
