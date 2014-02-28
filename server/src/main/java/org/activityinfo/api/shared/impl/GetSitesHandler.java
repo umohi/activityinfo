@@ -415,6 +415,10 @@ public class GetSitesHandler implements
                             query.onlyWhere("EXISTS (" + attributefilter.sql() + ") ");
                             query.appendParameter(attribute);
                         }
+                        
+                    } else if(type == DimensionType.Location) {
+                        query.onlyWhere("location.locationId").in(
+                                filter.getRestrictions(type));
                     }
 
                     if (isQueryableType(type) && isFirst) {
@@ -444,7 +448,9 @@ public class GetSitesHandler implements
                 type == DimensionType.Partner ||
                 type == DimensionType.Project ||
                 type == DimensionType.AdminLevel ||
-                type == DimensionType.Attribute || type == DimensionType.Site);
+                type == DimensionType.Attribute ||
+                type == DimensionType.Site ||
+                type == DimensionType.Location);
     }
 
     private void addJoint(SqlQuery query, boolean lenient, boolean first) {
