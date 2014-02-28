@@ -136,9 +136,9 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
             IndicatorFolder indicatorFolder = new IndicatorFolder(
                     messages.indicators());
             treeStore.add(activityNode, indicatorFolder, false);
-
-            for (int i = activity.getIndicators().size()-1; i>=0; i--) {
-                IndicatorDTO indicatorNode = new IndicatorDTO(activity.getIndicators().get(i));
+            
+            for (IndicatorDTO indicator : activity.getIndicators()) {
+                IndicatorDTO indicatorNode = new IndicatorDTO(indicator);
                 treeStore.add(indicatorFolder, indicatorNode, false);
             }
         }
@@ -254,8 +254,6 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
 
                                 if (parent == null) {
                                     treeStore.add(newEntity, false);
-                                } else if(newEntity instanceof IndicatorDTO){
-                                    treeStore.insert(parent, newEntity, 0, false);
                                 } else {
                                     treeStore.add(parent, newEntity, false);
                                 }
