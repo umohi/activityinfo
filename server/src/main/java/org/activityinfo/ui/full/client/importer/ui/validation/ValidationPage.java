@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.PromiseMonitor;
+import org.activityinfo.ui.full.client.importer.ui.ImportPage;
 import org.activityinfo.ui.full.client.importer.ui.Importer;
 
 import javax.annotation.Nullable;
@@ -19,7 +20,7 @@ import javax.annotation.Nullable;
  * and opportunity to resolve conversion problems or ambiguities
  * in reference instances.
  */
-public class ValidationPage extends Composite implements PromiseMonitor {
+public class ValidationPage extends Composite implements PromiseMonitor, ImportPage {
 
     private static ValidationPageUiBinder uiBinder = GWT
             .create(ValidationPageUiBinder.class);
@@ -46,19 +47,22 @@ public class ValidationPage extends Composite implements PromiseMonitor {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public void refresh() {
+
+    @Override
+    public void start() {
         importer.updateBindings();
         importer.matchReferences()
-            .withMonitor(this)
-            .then(new Function<Void, Void>() {
-             @Nullable
-                @Override
-                public Void apply(@Nullable Void input) {
-                    dataGrid.refreshRows();
-                    return null;
-                }
-            });
+                .withMonitor(this)
+                .then(new Function<Void, Void>() {
+                    @Nullable
+                    @Override
+                    public Void apply(@Nullable Void input) {
+                        dataGrid.refreshRows();
+                        return null;
+                    }
+                });
     }
+
 
     @Override
     public void onPromiseStateChanged(Promise.State state) {
@@ -66,6 +70,31 @@ public class ValidationPage extends Composite implements PromiseMonitor {
                 Style.Display.BLOCK : Style.Display.NONE );
         this.loadingErrorElement.getStyle().setDisplay(  state == Promise.State.REJECTED ?
                 Style.Display.BLOCK : Style.Display.NONE );
+    }
+
+    @Override
+    public boolean isValid() {
+        return false;
+    }
+
+    @Override
+    public boolean hasNextStep() {
+        return false;
+    }
+
+    @Override
+    public boolean hasPreviousStep() {
+        return false;
+    }
+
+    @Override
+    public void nextStep() {
+
+    }
+
+    @Override
+    public void previousStep() {
+
     }
 
 }

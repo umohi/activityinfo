@@ -9,4 +9,23 @@ public interface ImportPage extends IsWidget {
 
     boolean isValid();
 
+    /**
+     *
+     * @return true if this page has a next step
+     */
+    boolean hasNextStep();
+
+    /**
+     *
+     * @return true if this page has an (internal) previous step
+     */
+    boolean hasPreviousStep();
+
+    void start();
+
+    void nextStep();
+
+    void previousStep();
+
+
 }

@@ -1,71 +1,69 @@
 package org.activityinfo.ui.full.client.importer.ui.mapping;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
+import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
-import org.activityinfo.ui.full.client.importer.ui.mapping.ColumnSelectionChangedEvent.Handler;
+import org.activityinfo.ui.full.client.importer.ui.ImportPage;
+import org.activityinfo.ui.full.client.widget.bootstrap.Panel;
 
 /**
  * Page that allows the user to match columns in an imported table to
- * an existing structure.
+ * {@code FormField}s in an existing {@code FormClass}
  */
-public class ColumnMappingPage extends ResizeComposite {
-
-    public static int nextUniqueGroupNum = 1;
+public class ColumnMappingPage extends ResizeComposite implements ImportPage {
 
     private static ColumnMatchingPanelUiBinder uiBinder = GWT
             .create(ColumnMatchingPanelUiBinder.class);
+
 
     interface ColumnMatchingPanelUiBinder extends
             UiBinder<Widget, ColumnMappingPage> {
     }
 
-    interface Style extends CssResource {
-        String selectedColumn();
-    }
-
-    @UiField
-    Style style;
 
     @UiField(provided = true)
     ColumnMappingGrid dataGrid;
 
-    @UiField
-    HeadingElement columnChooserHeader;
     @UiField(provided = true)
-    ColumnActionChooser actionChooser;
+    FieldSelector fieldSelector;
+
+    @UiField
+    Label fieldSelectorHeading;
+
+    @UiField
+    Panel fieldSelectorPanel;
 
     private final ImportModel importModel;
-    private ColumnOptionsFactory optionsFactory;
+    private final SingleSelectionModel<SourceColumn> columnSelectionModel;
 
-    private int selectedColumnIndex;
-
-    public ColumnMappingPage(ImportModel importModel, ColumnOptionsFactory optionsFactory) {
+    public ColumnMappingPage(ImportModel importModel, FieldChoicePresenter optionsFactory) {
         this.importModel = importModel;
-        this.optionsFactory = optionsFactory;
 
-        dataGrid = new ColumnMappingGrid(importModel);
-        actionChooser = new ColumnActionChooser(optionsFactory.getOptions());
+        columnSelectionModel = new SingleSelectionModel<>();
+
+        dataGrid = new ColumnMappingGrid(importModel, optionsFactory, columnSelectionModel);
+        fieldSelector = new FieldSelector(optionsFactory.getOptions());
 
         initWidget(uiBinder.createAndBindUi(this));
 
-        dataGrid.addColumnSelectionChangedHandler(new Handler() {
-
+        columnSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
-            public void onColumnSelectionChanged(ColumnSelectionChangedEvent e) {
-                onColumnChanged(e);
+            public void onSelectionChange(SelectionChangeEvent event) {
+                onColumnChanged(columnSelectionModel.getSelectedObject());
             }
         });
 
-        actionChooser.addValueChangeHandler(new ValueChangeHandler<ColumnTarget>() {
+        fieldSelector.addValueChangeHandler(new ValueChangeHandler<ColumnTarget>() {
 
             @Override
             public void onValueChange(ValueChangeEvent<ColumnTarget> event) {
@@ -74,19 +72,70 @@ public class ColumnMappingPage extends ResizeComposite {
         });
     }
 
-    public void refresh() {
-        dataGrid.refresh();
+    private void onColumnChanged(SourceColumn column) {
+        fieldSelectorPanel.removeStyleName(ColumnMappingStyles.INSTANCE.incomplete());
+        fieldSelectorHeading.setText(column.getHeader());
+        fieldSelector.setValue(importModel.getColumnBindings().get(column.getIndex()), false);
     }
 
-    private void onColumnChanged(ColumnSelectionChangedEvent e) {
-        selectedColumnIndex = e.getSelectedColumnIndex();
-        actionChooser.setValue(importModel.getColumnBindings().get(selectedColumnIndex), false);
-        columnChooserHeader.setInnerText(importModel.getSource().getColumnHeader(selectedColumnIndex));
+    private SourceColumn getSelectedColumn() {
+        return columnSelectionModel.getSelectedObject();
     }
 
     private void updateColumnMapping(ColumnTarget action) {
+        importModel.setColumnBinding(action, getSelectedColumn().getIndex());
+        dataGrid.refreshColumnStyles(getSelectedColumn().getIndex());
+    }
 
-        importModel.setColumnBinding(action, selectedColumnIndex);
-        dataGrid.refreshMappings();
+    @Override
+    public void onResize() {
+        super.onResize();
+    }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
+    @Override
+    public boolean hasNextStep() {
+        return getSelectedColumn().getIndex() + 1 < importModel.getSource().getColumns().size();
+    }
+
+    @Override
+    public boolean hasPreviousStep() {
+        return getSelectedColumn().getIndex() > 0;
+    }
+
+    @Override
+    public void start() {
+        dataGrid.refresh();
+        if(columnSelectionModel.getSelectedSet().isEmpty() ||
+                columnSelectionModel.getSelectedObject().getIndex() != 0) {
+            columnSelectionModel.setSelected(importModel.getSourceColumn(0), true);
+        }
+        onNextPage();
+    }
+
+    @Override
+    public void nextStep() {
+        if(importModel.getColumnBinding(getSelectedColumn().getIndex()) != null) {
+            SourceColumn nextColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() + 1);
+            columnSelectionModel.setSelected(nextColumn, true);
+            onNextPage();
+
+        } else {
+            fieldSelectorPanel.addStyleName(ColumnMappingStyles.INSTANCE.incomplete());
+        }
+    }
+
+    private void onNextPage() {
+        fieldSelector.setFocus();
+    }
+
+    @Override
+    public void previousStep() {
+        SourceColumn prevColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() - 1);
+        columnSelectionModel.setSelected(prevColumn, true);
     }
 }

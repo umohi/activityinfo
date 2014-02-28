@@ -342,7 +342,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
 
         // also embedding is only implemented for one activity
         toolBar.setActionEnabled("EMBED", activities.size() == 1);
-        toolBar.setActionEnabled("IMPORT", activities.size() == 1);
+        toolBar.setActionEnabled(UIActions.IMPORT, activities.size() == 1);
 
 
         // adding is also only enabled for one activity, but we have to
@@ -431,7 +431,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
             EmbedDialog dialog = new EmbedDialog(dispatcher);
             dialog.show(currentPlace);
 
-        } else if ("IMPORT".equals(actionId)) {
+        } else if (UIActions.IMPORT.equals(actionId)) {
             doImport();
 
         }

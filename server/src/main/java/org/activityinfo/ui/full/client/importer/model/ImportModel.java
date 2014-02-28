@@ -1,15 +1,12 @@
 package org.activityinfo.ui.full.client.importer.model;
 
 import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
-import org.activityinfo.api2.shared.model.CoordinateAxis;
 import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.data.SourceTable;
 import org.activityinfo.api2.shared.form.tree.FormTree.SearchOrder;
@@ -135,14 +132,14 @@ public class ImportModel {
     }
 
     public ColumnTarget getColumnBinding(int columnIndex) {
-        ColumnTarget columnTarget = columnBindings.get(columnIndex);
-        if(columnTarget == null) {
-            return ColumnTarget.ignored();
-        }
-        return columnTarget;
+        return columnBindings.get(columnIndex);
     }
 
     public SourceColumn getSourceColumn(int columnIndex) {
         return source.getColumns().get(columnIndex);
+    }
+
+    public ColumnTarget getColumnBinding(SourceColumn column) {
+        return getColumnBinding(column.getIndex());
     }
 }

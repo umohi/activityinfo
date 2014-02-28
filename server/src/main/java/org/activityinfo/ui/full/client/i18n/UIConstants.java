@@ -3244,6 +3244,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Ignore this column")
     String ignoreColumnAction();
 
+    @DefaultStringValue("Choose Field")
+    String chooseFieldHeading();
+
+    @DefaultStringValue("Ignored")
+    String ignored();
+
     @DefaultStringValue("Import this column as a new field")
     String importNewColumnAction();
 
@@ -3306,4 +3312,15 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Big text")
     @Key("fieldTypeBigText")
     String fieldTypeBigText();
+
+    @DefaultStringValue("To begin, select the table you want to import in Excel, copy it to the clipboard, and " +
+            "then paste here")
+    String pasteSpreadsheetInstructions();
+
+    @DefaultStringValue("Paste your spreadsheet data here by right-clicking then choosing \"Paste\"")
+    String pastePlaceholder();
+
+    @DefaultStringValue("Choose the destination field.")
+    String chooseDestinationField();
+
 }

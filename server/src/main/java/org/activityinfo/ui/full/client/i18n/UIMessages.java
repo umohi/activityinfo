@@ -22,6 +22,8 @@ package org.activityinfo.ui.full.client.i18n;
  * #L%
  */
 
+import com.google.gwt.safehtml.shared.SafeHtml;
+
 import java.util.Date;
 
 /**
@@ -294,4 +296,7 @@ public interface UIMessages extends com.google.gwt.i18n.client.Messages {
     
     @DefaultMessage("Select a site above.")
     String SelectSiteAbove();
+
+    @DefaultMessage("Choose the destination field for the source column \"<i>{0}</i>\".")
+    SafeHtml columnMatchPrompt(String columnName);
 }

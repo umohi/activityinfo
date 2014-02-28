@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.gwt.core.client.Scheduler;
 import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
@@ -44,7 +43,7 @@ import static com.google.common.collect.Iterables.filter;
 public class Importer {
 
     private final ResourceLocator resourceLocator;
-    private List<FieldBinding> bindings;
+    private List<FieldBinding> bindings = Lists.newArrayList();
     private Scheduler scheduler;
     private Resources resources;
     private ImportModel importModel;

@@ -1,22 +1,25 @@
 package org.activityinfo.ui.full.client.importer.ui.mapping;
 
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.BrowserEvents;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
+import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
+import org.activityinfo.ui.full.client.widget.bootstrap.BootstrapDataGrid;
+
+import java.util.List;
 
 /**
  * A DataGrid that shows the original columns in the imported table
@@ -25,90 +28,139 @@ import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
  */
 public class ColumnMappingGrid extends ResizeComposite {
 
-
-    private DataGrid<SourceRow> dataGrid;
+    public static final int SOURCE_COLUMN_HEADER_ROW = 0;
+    public static final int MAPPING_HEADER_ROW = 1;
+    private BootstrapDataGrid<SourceRow> dataGrid;
 
     private final ImportModel model;
 
-    public ColumnMappingGrid(ImportModel model) {
+    private SingleSelectionModel<SourceColumn> columnSelectionModel;
+    private List<SourceColumn> sourceColumns;
 
+    private final GridHeaderCell headerCell;
+
+    private int lastSelectedColumn = -1;
+
+    public ColumnMappingGrid(ImportModel model, FieldChoicePresenter options,
+                             SingleSelectionModel<SourceColumn> columnSelectionModel) {
         this.model = model;
+        this.columnSelectionModel = columnSelectionModel;
 
-        dataGrid = new BootstrapDataGrid<SourceRow>(100);
+        headerCell = new GridHeaderCell(model, options);
+
+        dataGrid = new BootstrapDataGrid<>(100);
+        dataGrid.addStyleName(ColumnMappingStyles.INSTANCE.grid());
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
         dataGrid.setSelectionModel(new NullRowSelectionModel());
         dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
+        dataGrid.setHeaderBuilder(new GridHeaderBuilder(dataGrid));
+        dataGrid.setSkipRowHoverCheck(true);
         dataGrid.addCellPreviewHandler(new Handler<SourceRow>() {
 
             @Override
             public void onCellPreview(CellPreviewEvent<SourceRow> event) {
                 if (BrowserEvents.CLICK.equals(event.getNativeEvent().getType())) {
-                    fireEvent(new ColumnSelectionChangedEvent(event.getColumn()));
+                    SourceColumn sourceColumn = sourceColumns.get(event.getColumn());
+                    ColumnMappingGrid.this.columnSelectionModel.setSelected(sourceColumn, true);
                 }
+            }
+        });
+
+        this.columnSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        onColumnSelectionChanged();
+                    }
+                });
             }
         });
 
         initWidget(dataGrid);
     }
 
+    private void onColumnSelectionChanged() {
+
+        // ensure the column is scrolled into view
+        int newColumnIndex = columnSelectionModel.getSelectedObject().getIndex();
+        scrollColumnIntoView(newColumnIndex);
+
+        // clear the selection styles from the old column
+        if(lastSelectedColumn != -1) {
+            removeHeaderStyleName(lastSelectedColumn, ColumnMappingStyles.INSTANCE.selected());
+            dataGrid.removeColumnStyleName(lastSelectedColumn, ColumnMappingStyles.INSTANCE.selected());
+        }
+
+        // add the bg to the new selection
+        addHeaderStyleName(newColumnIndex, ColumnMappingStyles.INSTANCE.selected());
+        dataGrid.addColumnStyleName(newColumnIndex, ColumnMappingStyles.INSTANCE.selected());
+
+        lastSelectedColumn = newColumnIndex;
+    }
+
+    /**
+     * Updates the column styles to match the column's current binding
+     */
+    public void refreshColumnStyles(int columnIndex) {
+        // update the column styles
+        ColumnTarget binding = model.getColumnBinding(columnIndex);
+
+        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateIgnored(), binding != null && !binding.isImported());
+        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateBound(), binding != null && binding.isImported());
+
+        // update the mapping description
+        Cell.Context context = new Cell.Context(MAPPING_HEADER_ROW, columnIndex, null);
+        SafeHtmlBuilder html = new SafeHtmlBuilder();
+        headerCell.render(context, model.getSourceColumn(columnIndex), html);
+
+        getTableHead(MAPPING_HEADER_ROW, columnIndex).setInnerSafeHtml(html.toSafeHtml());
+    }
+
+    private void scrollColumnIntoView(int selectedColumnIndex) {
+        Element td = dataGrid.getRowElement(0).getChild(selectedColumnIndex).cast();
+        td.scrollIntoView();
+    }
+
+    private void addHeaderStyleName(int columnIndex, String className) {
+        getTableHead(SOURCE_COLUMN_HEADER_ROW, columnIndex).addClassName(className);
+        getTableHead(MAPPING_HEADER_ROW, columnIndex).addClassName(className);
+    }
+
+    private void removeHeaderStyleName(int columnIndex, String className) {
+        getTableHead(SOURCE_COLUMN_HEADER_ROW, columnIndex).removeClassName(className);
+        getTableHead(MAPPING_HEADER_ROW, columnIndex).removeClassName(className);
+    }
+
+    private Element getTableHead(int rowIndex, int columnIndex) {
+        return dataGrid.getTableHeadElement().getRows().getItem(rowIndex).getChild(columnIndex).cast();
+    }
+
+    private void toggleColumnStyle(int index, String className, boolean enabled) {
+        if(enabled) {
+            dataGrid.addColumnStyleName(index, className);
+            addHeaderStyleName(index, className);
+
+        } else {
+            dataGrid.removeColumnStyleName(index, className);
+            removeHeaderStyleName(index, className);
+        }
+    }
+
     public void refresh() {
-        for (int i = 0; i != dataGrid.getColumnCount(); ++i) {
-            dataGrid.removeColumn(i);
+        while(dataGrid.getColumnCount() > 0) {
+            dataGrid.removeColumn(0);
         }
-        for (org.activityinfo.ui.full.client.importer.data.SourceColumn column : model.getSource().getColumns()) {
-            dataGrid.addColumn(new SourceCellColumn(column.getIndex()),
-                    new ImportColumnHeader(column.getIndex()));
+        sourceColumns = model.getSource().getColumns();
+        for (SourceColumn sourceColumn : sourceColumns) {
+            GridColumn gridColumn = new GridColumn(sourceColumn);
+            GridHeader gridHeader = new GridHeader(sourceColumn, headerCell, columnSelectionModel);
+            dataGrid.addColumn(gridColumn, gridHeader);
+            dataGrid.setColumnWidth(gridColumn, 10, Style.Unit.EM);
         }
-        dataGrid.setRowData(model.getSource().getRows());
-    }
-
-    public void refreshMappings() {
         dataGrid.redrawHeaders();
-    }
-
-    public HandlerRegistration addColumnSelectionChangedHandler(ColumnSelectionChangedEvent.Handler handler) {
-        return addHandler(handler, ColumnSelectionChangedEvent.TYPE);
-    }
-
-    public interface CellTemplates extends SafeHtmlTemplates {
-
-        @Template("<span style=\"text-decoration: line-through\">{0}</span>")
-        SafeHtml ignoredColumn(String heading);
-
-        @Template("{0} » {1}")
-        SafeHtml boundColumn(String heading, String mapping);
-
-    }
-
-    private static final CellTemplates TEMPLATES = GWT.create(CellTemplates.class);
-
-    private class ImportColumnHeaderCell extends AbstractCell<Integer> {
-
-        @Override
-        public void render(Context context, Integer columnIndex, SafeHtmlBuilder sb) {
-            String header = model.getSource().getColumnHeader(columnIndex);
-            ColumnTarget binding = model.getColumnBinding(columnIndex);
-
-            if (binding.isMapped()) {
-                sb.append(TEMPLATES.boundColumn(header, binding.getFieldPath().toString()));
-            } else {
-                sb.append(TEMPLATES.ignoredColumn(header));
-            }
-        }
-    }
-
-    private class ImportColumnHeader extends Header<Integer> {
-        private int index;
-
-        public ImportColumnHeader(int index) {
-            super(new ImportColumnHeaderCell());
-            this.index = index;
-        }
-
-        @Override
-        public Integer getValue() {
-            return index;
-        }
+        dataGrid.setRowData(model.getSource().getRows());
     }
 }

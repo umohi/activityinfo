@@ -1,22 +1,17 @@
 package org.activityinfo.ui.full.client.importer.ui.validation;
 
-import com.google.common.collect.Maps;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import org.activityinfo.api2.client.form.GwtQuantityFormatterFactory;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.importer.ui.BootstrapDataGrid;
+import org.activityinfo.ui.full.client.widget.bootstrap.BootstrapDataGrid;
 import org.activityinfo.ui.full.client.importer.ui.Importer;
-import org.activityinfo.ui.full.client.importer.ui.mapping.ColumnOptionsFactory;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplates;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ColumnFactory;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ImportColumn;
 
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -4,18 +4,18 @@ import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 
 /**
- * Represents a choice a user can make for a given field
+ * A "view model" of a {@code FormField} that can be matched against
  */
-public class ColumnOption {
+public class FieldModel {
     private String label;
     private ColumnTarget target;
 
-    public ColumnOption(String label, ColumnTarget target) {
+    public FieldModel(String label, ColumnTarget target) {
         this.label = label;
         this.target = target;
     }
 
-    public ColumnOption(String label, FieldPath path) {
+    public FieldModel(String label, FieldPath path) {
         this.label = label;
         this.target = ColumnTarget.mapped(path);
     }

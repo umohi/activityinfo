@@ -45,6 +45,7 @@ public class ActivityInfoEntryPoint implements EntryPoint {
         Log.info("Application: onModuleLoad starting");
         Log.info("Application Permutation: " + GWT.getPermutationStrongName());
 
+
         try {
             new ClientSideAuthProvider().get();
         } catch (Exception e) {
