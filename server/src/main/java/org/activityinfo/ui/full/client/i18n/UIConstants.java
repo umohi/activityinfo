@@ -1218,9 +1218,9 @@ public interface UIConstants extends Constants {
     String filterByProject();
     
     /**
-     * Translated "Filter by project".
+     * Translated "Filter by location".
      *
-     * @return translated "Filter by project"
+     * @return translated "Filter by location"
      */
     @DefaultStringValue("Filter by location")
     @Key("filterByLocation")
