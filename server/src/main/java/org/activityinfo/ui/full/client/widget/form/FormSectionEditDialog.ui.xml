@@ -18,8 +18,8 @@
               <g:TextBox addStyleNames="form-control" width="90%" ui:field="sectionLabel"/>
             </div>
             <div class="modal-footer">
-              <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
-              <g:Button addStyleNames="btn btn-default" text="Cancel" ui:field="cancelButton"/>
+              <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
+              <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
             </div>
           </div>
         </div>

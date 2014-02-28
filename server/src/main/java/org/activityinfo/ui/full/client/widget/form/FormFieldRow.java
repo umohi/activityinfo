@@ -31,7 +31,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -83,7 +82,7 @@ public class FormFieldRow extends Composite {
         this.addSectionPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                addSectionPanel.getFormSection().setLabel(new LocalizedString(addSectionPanel.getSectionLabel().getValue()));
+                addSectionPanel.updateModel();
                 final int rowIndexOnPanel = node.getContentPanel().getWidgetIndex(FormFieldRow.this);
                 node.addSection(addSectionPanel.getFormSection(), rowIndexOnPanel);
             }

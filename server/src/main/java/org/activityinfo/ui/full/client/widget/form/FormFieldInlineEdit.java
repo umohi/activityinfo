@@ -21,20 +21,27 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author yuriyz on 2/26/14.
@@ -47,18 +54,31 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     interface FormFieldInlineEditBinder extends UiBinder<Widget, FormFieldInlineEdit> {
     }
 
+    private final BiMap<Integer,FormFieldType> typeIndexMap = HashBiMap.create();
     private FormField formField;
 
     @UiField
     TextBox label;
     @UiField
-    TextBox description;
+    TextArea description;
     @UiField
     TextBox unit;
+    @UiField
+    ListBox type;
 
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+        initTypeControl();
+    }
+
+    private void initTypeControl() {
+        int index = 0;
+        for (FormFieldType fieldType : FormFieldType.values()) {
+            type.insertItem(I18N.FROM_ENTITIES.getFormFieldType(fieldType), fieldType.name(), index);
+            typeIndexMap.put(index, fieldType);
+            index++;
+        }
     }
 
     @UiHandler("okButton")
@@ -82,14 +102,21 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         apply(newFormField, mirrorElements);
     }
 
-    public void apply(FormField formField, Element... mirrorElements) {
+    public void apply(@Nonnull FormField formField, Element... mirrorElements) {
         setFormField(formField);
         setMirrorElements(mirrorElements);
         apply();
     }
 
     private void apply() {
+        label.setValue(formField.getLabel().getValue());
+        description.setValue(formField.getLabel().getValue());
+        unit.setValue(formField.getUnit().getValue());
+        type.setSelectedIndex(typeIndexMap.inverse().get(formField.getType()));
+    }
 
+    public void updateModel() {
+        // todo
     }
 
     public FormField getFormField() {

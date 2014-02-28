@@ -41,7 +41,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormInstance;
@@ -193,7 +192,7 @@ public class FormPanel extends Composite {
         addSectionPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                addSectionPanel.getFormSection().setLabel(new LocalizedString(addSectionPanel.getSectionLabel().getValue()));
+                addSectionPanel.updateModel();
                 elementNode.addSection(addSectionPanel.getFormSection(), 0);
             }
         });

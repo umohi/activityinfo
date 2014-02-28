@@ -164,7 +164,8 @@ public class FormSectionRow extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 final LocalizedString oldLabel = formSection.getLabel();
-                final LocalizedString newLabel = new LocalizedString(editPanel.getSectionLabel().getValue(), oldLabel.getLocale());
+                editPanel.updateModel();
+                final LocalizedString newLabel = formSection.getLabel();
                 formSection.setLabel(newLabel);
                 setLabelText();
                 getFormPanel().getUndoManager().addUndoable(new IsUndoable() {
@@ -185,7 +186,7 @@ public class FormSectionRow extends Composite {
         addPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                addPanel.getFormSection().setLabel(new LocalizedString(addPanel.getSectionLabel().getValue()));
+                addPanel.updateModel();
                 int rowIndexOnPanel = parentNode.getContentPanel().getWidgetIndex(FormSectionRow.this);
                 parentNode.addSection(addPanel.getFormSection(), rowIndexOnPanel);
             }

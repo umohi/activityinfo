@@ -10,8 +10,10 @@
       <!--<h4 class="modal-title" ui:field="title"/>-->
       <!--<ui:text from='{res.sectionLabel}'/>-->
       <g:TextBox addStyleNames="form-control" width="100%" ui:field="sectionLabel"/>
-      <g:Button addStyleNames="btn btn-primary" text="OK" ui:field="okButton"/>
-      <g:Button addStyleNames="btn btn-default" text="Cancel" ui:field="cancelButton"/>
+      <br/>
+
+      <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
+      <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
     </g:HTMLPanel>
   </g:HTMLPanel>
 </ui:UiBinder>

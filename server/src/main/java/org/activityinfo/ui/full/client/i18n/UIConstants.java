@@ -439,6 +439,10 @@ public interface UIConstants extends Constants {
     @Key("busySearching")
     String busySearching();
 
+    @DefaultStringValue("OK")
+    @Key("ok")
+    String ok();
+
     /**
      * Translated "Cancel".
      *
@@ -3278,4 +3282,28 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Unit")
     @Key("fieldUnit")
     String fieldUnit();
+
+    @DefaultStringValue("Reference")
+    @Key("fieldTypeReference")
+    String fieldTypeReference();
+
+    @DefaultStringValue("Quantity")
+    @Key("fieldTypeQuantity")
+    String fieldTypeQuantity();
+
+    @DefaultStringValue("Date")
+    @Key("fieldTypeDate")
+    String fieldTypeDate();
+
+    @DefaultStringValue("Text")
+    @Key("fieldTypeText")
+    String fieldTypeText();
+
+    @DefaultStringValue("Location")
+    @Key("fieldTypeGeographicPoint")
+    String fieldTypeGeographicPoint();
+
+    @DefaultStringValue("Big text")
+    @Key("fieldTypeBigText")
+    String fieldTypeBigText();
 }
