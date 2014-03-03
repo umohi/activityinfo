@@ -106,6 +106,8 @@ public class FormPanel extends Composite {
     Button addFieldButton;
     @UiField
     FormSectionInlineEdit addSectionPanel;
+    @UiField
+    FormFieldInlineEdit addFieldPanel;
 
     public FormPanel(ResourceLocator resourceLocator) {
         TransitionUtil.ensureBootstrapInjected();
@@ -206,6 +208,8 @@ public class FormPanel extends Composite {
 
     @UiHandler("addFieldButton")
     public void onAddField(ClickEvent event) {
+        addFieldPanel.applyNew();
+        addFieldPanel.setVisible(true);
     }
 
     /**

@@ -67,6 +67,8 @@ public class FormSectionRow extends Composite {
     FormSectionInlineEdit addPanel;
     @UiField
     DivElement sectionRowContainer;
+    @UiField
+    FormFieldInlineEdit addFieldPanel;
 
     public FormSectionRow(FormSection formSection, FormPanel formPanel, ElementNode parentNode) {
         TransitionUtil.ensureBootstrapInjected();
@@ -146,7 +148,8 @@ public class FormSectionRow extends Composite {
     }
 
     private void addNewField() {
-        // todo
+        addFieldPanel.applyNew(toolbar.getElement());
+        addFieldPanel.setVisible(true);
     }
 
     private void addNewSection() {
@@ -189,6 +192,14 @@ public class FormSectionRow extends Composite {
                 addPanel.updateModel();
                 int rowIndexOnPanel = parentNode.getContentPanel().getWidgetIndex(FormSectionRow.this);
                 parentNode.addSection(addPanel.getFormSection(), rowIndexOnPanel);
+            }
+        });
+        addFieldPanel.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addFieldPanel.updateModel();
+                int rowIndexOnPanel = parentNode.getContentPanel().getWidgetIndex(FormSectionRow.this);
+                parentNode.addField(addFieldPanel.getFormField(), rowIndexOnPanel);
             }
         });
     }
