@@ -24,16 +24,17 @@ package org.activityinfo.api2.shared.form;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import org.activityinfo.api.shared.model.DTO;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.model.AiLatLng;
 
 import javax.annotation.Nonnull;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
-import java.util.*;
 
 /**
  * @author yuriyz on 1/29/14.
@@ -78,6 +79,13 @@ public class FormInstance implements Resource {
 
     public void set(@NotNull Cuid fieldId, Object fieldValue) {
         Preconditions.checkNotNull(fieldId);
+        if (fieldValue instanceof LocalDate) {
+            throw new IllegalArgumentException("Please use java.util.Date instead of LocalDate class");
+        }
+        if (fieldValue instanceof DTO) {
+            throw new IllegalArgumentException("Please use cuid reference instead of legacy class.");
+        }
+
         valueMap.put(fieldId, fieldValue);
     }
 

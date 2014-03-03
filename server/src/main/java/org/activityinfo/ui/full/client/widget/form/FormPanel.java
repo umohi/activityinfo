@@ -272,12 +272,16 @@ public class FormPanel extends Composite {
         Preconditions.checkNotNull(formInstance);
         final BiMap<Cuid, FormFieldRow> allFieldMap = elementNode.getOwnAndChildFieldMap();
         for (Map.Entry<Cuid, Object> entry : formInstance.getValueMap().entrySet()) {
-            final FormFieldRow fieldRow = allFieldMap.get(entry.getKey());
-            if (fieldRow != null) {
-                fieldRow.setValue(entry.getValue());
-            } else {
-                Log.error("Form instance contains data which are not declared by form definition. formInstanceId =" +
-                        formInstance.getId());
+            try {
+                final FormFieldRow fieldRow = allFieldMap.get(entry.getKey());
+                if (fieldRow != null) {
+                    fieldRow.setValue(entry.getValue());
+                } else {
+                    Log.error("Form instance contains data which are not declared by form definition. formInstanceId =" +
+                            formInstance.getId());
+                }
+            } catch (Exception e) {
+                Log.error(e.getMessage(), e);
             }
         }
     }
