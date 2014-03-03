@@ -1,6 +1,7 @@
 package org.activityinfo.api.shared.adapter.bindings;
 
 import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api.shared.model.DTO;
 import org.activityinfo.api.shared.model.EntityDTO;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
@@ -25,9 +26,9 @@ public class NestedFieldBinding implements FieldBinding<EntityDTO> {
 
     @Override
     public void updateInstanceFromModel(FormInstance instance, EntityDTO model) {
-        EntityDTO value = model.get(propertyName);
-        if(value != null) {
-            instance.set(fieldId, CuidAdapter.cuid(domain, value.getId()));
+        DTO value = model.get(propertyName);
+        if(value instanceof EntityDTO) {
+            instance.set(fieldId, CuidAdapter.cuid(domain, ((EntityDTO)value).getId()));
         }
     }
 
