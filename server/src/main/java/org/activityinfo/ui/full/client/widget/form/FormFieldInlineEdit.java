@@ -65,6 +65,10 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     ListBox type;
     @UiField
     CheckBox required;
+    @UiField
+    Button okButton;
+    @UiField
+    Button cancelButton;
 
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
@@ -130,5 +134,13 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     public void setFormField(FormField formField) {
         this.formField = formField;
+    }
+
+    public Button getOkButton() {
+        return okButton;
+    }
+
+    public Button getCancelButton() {
+        return cancelButton;
     }
 }

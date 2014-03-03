@@ -166,6 +166,10 @@ public class ElementNode {
         }
     }
 
+    public void addField(FormField formField, int rowIndexOnPanel) {
+        // todo impl + undo/redo
+    }
+
     public void addSection(final FormSection section, int rowIndexOnPanel) {
         final int index = rowIndexOnPanel > 0 ? rowIndexOnPanel : 0;
         final FormSectionRow row = new FormSectionRow(section, formPanel, this);

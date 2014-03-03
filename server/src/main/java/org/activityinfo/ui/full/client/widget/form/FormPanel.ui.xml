@@ -38,6 +38,7 @@
       <br/>
       <g:FlowPanel ui:field="contentPanel" width="100%">
         <ai:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{style.newUiStyle.sectionMarginLeft} hidden"/>
+        <ai:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="{style.newUiStyle.sectionMarginLeft} hidden"/>
       </g:FlowPanel>
     </div>
   </g:HTMLPanel>
