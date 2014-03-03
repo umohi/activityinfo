@@ -8,8 +8,6 @@ import org.activityinfo.api2.shared.Namespace;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
-import java.util.List;
-
 /**
  * Adapts a Legacy "Activity" model to a FormClass
  */
@@ -34,6 +32,7 @@ public class ActivityUserFormBuilder {
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
         partnerField.setRange(CuidAdapter.partnerFormClass(activity.getDatabase().getId()).asIri());
         partnerField.setType(FormFieldType.REFERENCE);
+        partnerField.setCardinality(FormFieldCardinality.SINGLE);
         partnerField.setRequired(true);
         siteForm.addElement(partnerField);
 
@@ -41,6 +40,7 @@ public class ActivityUserFormBuilder {
         projectField.setLabel(new LocalizedString(I18N.CONSTANTS.project()));
         projectField.setRange(CuidAdapter.projectFormClass(activity.getDatabase().getId()).asIri());
         projectField.setType(FormFieldType.REFERENCE);
+        projectField.setCardinality(FormFieldCardinality.SINGLE);
         siteForm.addElement(projectField);
 
         FormField dateField = new FormField(CuidAdapter.field(classId, CuidAdapter.DATE_FIELD));
@@ -54,6 +54,7 @@ public class ActivityUserFormBuilder {
         locationField.setRange(locationClass(activity.getLocationType()).asIri());
         locationField.setType(FormFieldType.REFERENCE);
         locationField.setRequired(true);
+        locationField.setCardinality(FormFieldCardinality.SINGLE);
         siteForm.addElement(locationField);
 
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
