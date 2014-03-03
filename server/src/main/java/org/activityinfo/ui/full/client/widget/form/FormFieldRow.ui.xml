@@ -16,7 +16,7 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <ai:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{aiStyle.newUiStyle.sectionMarginLeft} hidden"/>
-    <ai:FormFieldInlineEdit ui:field="editFieldPanel" addStyleNames="hidden"/>
+    <ai:FormFieldInlineEdit ui:field="editFieldPanel" addStyleNames="hidden" editMode="true"/>
     <ai:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="hidden"/>
     <div class="row {style.field-row}" ui:field="rowContainer">
       <div class="col-sm-2">

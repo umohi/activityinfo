@@ -54,6 +54,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     private final BiMap<Integer,FormFieldType> typeIndexMap = HashBiMap.create();
     private FormField formField;
+    private boolean editMode = false;
 
     @UiField
     TextBox label;
@@ -69,6 +70,8 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     Button okButton;
     @UiField
     Button cancelButton;
+    @UiField
+    Button changeButton;
 
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
@@ -142,5 +145,14 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     public Button getCancelButton() {
         return cancelButton;
+    }
+
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public void setEditMode(boolean editMode) {
+        this.editMode = editMode;
+        this.type.setEnabled(false);
     }
 }

@@ -24,6 +24,7 @@
       <div class="{style.row}">
         <ui:text from='{res.fieldType}'/>
         <g:ListBox addStyleNames="form-control" ui:field="type" multipleSelect="false"/>
+        <g:Button addStyleNames="btn btn-default hidden" text="{res.change}" ui:field="changeButton"/>
       </div>
 
       <div class="{style.row}">
