@@ -195,4 +195,11 @@ public class FormFieldRow extends Composite {
     public void setFormField(FormField formField) {
         this.formField = formField;
     }
+
+    @Override
+    public String toString() {
+        return "FormFieldRow{" +
+                "formField=" + formField +
+                '}';
+    }
 }
