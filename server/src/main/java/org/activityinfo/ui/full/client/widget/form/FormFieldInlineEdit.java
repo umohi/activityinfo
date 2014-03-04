@@ -118,7 +118,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     private void apply() {
         label.setValue(formField.getLabel().getValue());
-        description.setValue(formField.getLabel().getValue());
+        description.setValue(formField.getDescription().getValue());
         unit.setValue(formField.getUnit().getValue());
         type.setSelectedIndex(typeIndexMap.inverse().get(formField.getType()));
         required.setValue(formField.isRequired());
