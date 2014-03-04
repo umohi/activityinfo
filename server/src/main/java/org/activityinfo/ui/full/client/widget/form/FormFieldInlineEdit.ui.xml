@@ -42,7 +42,7 @@
       <g:TextArea addStyleNames="form-control" visibleLines="3" width="100%" ui:field="description" styleName="ai"/>
     </div>
 
-    <div class="{style.row}">
+    <div class="{style.row} hidden" ui:field="unitContainer">
       <ui:text from='{res.fieldUnit}'/>
       <g:TextBox addStyleNames="form-control" width="100%" ui:field="unit" styleName="ai"/>
     </div>

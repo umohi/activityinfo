@@ -24,6 +24,7 @@ package org.activityinfo.ui.full.client.widget.form;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -73,11 +74,20 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     Button cancelButton;
     @UiField
     Button changeButton;
+    @UiField
+    DivElement unitContainer;
 
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         initTypeControl();
+        setUnitControlState();
+    }
+
+    public void setUnitControlState() {
+        final FormFieldType selectedType = typeIndexMap.get(type.getSelectedIndex());
+        final boolean isUnitVisible = selectedType == FormFieldType.QUANTITY;
+        GwtUtil.setVisible(unitContainer, isUnitVisible);
     }
 
     private void initTypeControl() {
@@ -122,6 +132,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         unit.setValue(formField.getUnit().getValue());
         type.setSelectedIndex(typeIndexMap.inverse().get(formField.getType()));
         required.setValue(formField.isRequired());
+        setUnitControlState();
     }
 
     public void updateModel() {
