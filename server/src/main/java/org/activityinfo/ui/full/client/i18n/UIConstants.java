@@ -3305,7 +3305,7 @@ public interface UIConstants extends Constants {
     @Key("fieldTypeText")
     String fieldTypeText();
 
-    @DefaultStringValue("Location")
+    @DefaultStringValue("Geographic point")
     @Key("fieldTypeGeographicPoint")
     String fieldTypeGeographicPoint();
 
@@ -3323,4 +3323,7 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Choose the destination field.")
     String chooseDestinationField();
 
+    @DefaultStringValue("Change")
+    @Key("change")
+    String change();
 }

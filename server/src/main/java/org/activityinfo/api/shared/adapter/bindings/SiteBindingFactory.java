@@ -7,9 +7,7 @@ import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.function.BiFunction;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Set;
 
@@ -101,7 +99,8 @@ public class SiteBindingFactory implements Function<SchemaDTO, SiteBinding> {
         @Override
         public void updateInstanceFromModel(FormInstance instance, SiteDTO model) {
             LocationDTO dummyLocation = model.getLocation();
-            instance.set(locationField(activityId), dummyLocation.getAdminEntity(levelId));
+            final AdminEntityDTO adminEntity = dummyLocation.getAdminEntity(levelId);
+            instance.set(locationField(activityId), Sets.newHashSet(adminEntityInstanceId(adminEntity.getId())));
         }
 
         @Override
