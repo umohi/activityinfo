@@ -21,12 +21,11 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -36,10 +35,11 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
+import org.activityinfo.ui.full.client.widget.FormFieldTypeCombobox;
+import org.activityinfo.ui.full.client.widget.dialog.ChangeFormFieldTypeDialog;
 
 import javax.annotation.Nonnull;
 
@@ -54,7 +54,6 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     interface FormFieldInlineEditBinder extends UiBinder<Widget, FormFieldInlineEdit> {
     }
 
-    private final BiMap<Integer,FormFieldType> typeIndexMap = HashBiMap.create();
     private FormField formField;
     private boolean editMode = false;
 
@@ -65,7 +64,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     @UiField
     TextBox unit;
     @UiField
-    ListBox type;
+    FormFieldTypeCombobox type;
     @UiField
     CheckBox required;
     @UiField
@@ -80,23 +79,12 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
-        initTypeControl();
         setUnitControlState();
     }
 
     public void setUnitControlState() {
-        final FormFieldType selectedType = typeIndexMap.get(type.getSelectedIndex());
-        final boolean isUnitVisible = selectedType == FormFieldType.QUANTITY;
+        final boolean isUnitVisible = type.getSelectedType() == FormFieldType.QUANTITY;
         GwtUtil.setVisible(unitContainer, isUnitVisible);
-    }
-
-    private void initTypeControl() {
-        int index = 0;
-        for (FormFieldType fieldType : FormFieldType.values()) {
-            type.insertItem(I18N.FROM_ENTITIES.getFormFieldType(fieldType), fieldType.name(), index);
-            typeIndexMap.put(index, fieldType);
-            index++;
-        }
     }
 
     @UiHandler("okButton")
@@ -107,6 +95,18 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     @UiHandler("cancelButton")
     public void cancelButton(ClickEvent event) {
         hide();
+    }
+
+    @UiHandler("changeButton")
+    public void changeButton(ClickEvent event) {
+        final ChangeFormFieldTypeDialog dialog = new ChangeFormFieldTypeDialog(formField);
+        dialog.show();
+        dialog.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                FormFieldInlineEdit.this.type.setSelectedType(dialog.getType().getSelectedType());
+            }
+        });
     }
 
     public void hide() {
@@ -130,14 +130,15 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         label.setValue(formField.getLabel().getValue());
         description.setValue(formField.getDescription().getValue());
         unit.setValue(formField.getUnit().getValue());
-        type.setSelectedIndex(typeIndexMap.inverse().get(formField.getType()));
+        type.setSelectedType(formField.getType());
         required.setValue(formField.isRequired());
         setUnitControlState();
+        setChangeButtonState();
     }
 
     public void updateModel() {
         formField.setLabel(new LocalizedString(label.getValue()));
-        formField.setType(typeIndexMap.get(type.getSelectedIndex()));
+        formField.setType(type.getSelectedType());
         formField.setDescription(new LocalizedString(description.getValue()));
         formField.setUnit(new LocalizedString(unit.getValue()));
         formField.setRequired(required.getValue());
@@ -167,5 +168,10 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         this.editMode = editMode;
         this.type.setEnabled(!editMode);
         GwtUtil.setVisibleInline(editMode, changeButton.getElement());
+        setChangeButtonState();
+    }
+
+    private void setChangeButtonState() {
+        changeButton.setEnabled(formField != null && !formField.getType().getAllowedConvertTo().isEmpty());
     }
 }

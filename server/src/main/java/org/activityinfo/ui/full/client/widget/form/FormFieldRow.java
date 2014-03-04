@@ -117,6 +117,15 @@ public class FormFieldRow extends Composite {
                 final LocalizedString newUnit = formField.getUnit();
                 final boolean newRequired = formField.isRequired();
 
+                final FlowPanel widgetContainer = FormFieldRow.this.control;
+                final IsWidget oldWidget = FormFieldRow.this.formFieldWidget;
+                final boolean isTypeChanged = oldType != newType;
+                if (isTypeChanged) {
+                    widgetContainer.remove(oldWidget);
+                    FormFieldRow.this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
+                    widgetContainer.add(FormFieldRow.this.formFieldWidget);
+                }
+
                 updateUI();
                 formPanel.getUndoManager().addUndoable(new IsUndoable() {
                     @Override
@@ -126,6 +135,12 @@ public class FormFieldRow extends Composite {
                         formField.setType(oldType);
                         formField.setUnit(oldUnit);
                         formField.setRequired(oldRequired);
+
+                        if (isTypeChanged) {
+                            widgetContainer.remove(FormFieldRow.this.formFieldWidget);
+                            widgetContainer.add(oldWidget);
+                            FormFieldRow.this.formFieldWidget = oldWidget;
+                        }
 
                         updateUI();
                     }
@@ -137,6 +152,12 @@ public class FormFieldRow extends Composite {
                         formField.setType(newType);
                         formField.setUnit(newUnit);
                         formField.setRequired(newRequired);
+
+                        if (isTypeChanged) {
+                            widgetContainer.remove(oldWidget);
+                            FormFieldRow.this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
+                            widgetContainer.add(FormFieldRow.this.formFieldWidget);
+                        }
 
                         updateUI();
                     }

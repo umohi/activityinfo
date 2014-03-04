@@ -22,21 +22,10 @@ package org.activityinfo.ui.full.client.page.entry;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.Style.LayoutRegion;
-import com.extjs.gxt.ui.client.event.*;
-import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.*;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
+import java.util.Set;
+
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.api.shared.command.DeleteSite;
@@ -56,10 +45,13 @@ import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
-import org.activityinfo.api.client.KeyGenerator;
-import org.activityinfo.ui.full.client.importer.ui.ImportDialog;
 import org.activityinfo.ui.full.client.importer.ui.ImportPresenter;
-import org.activityinfo.ui.full.client.page.*;
+import org.activityinfo.ui.full.client.page.NavigationCallback;
+import org.activityinfo.ui.full.client.page.NavigationEvent;
+import org.activityinfo.ui.full.client.page.NavigationHandler;
+import org.activityinfo.ui.full.client.page.Page;
+import org.activityinfo.ui.full.client.page.PageId;
+import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
@@ -73,7 +65,28 @@ import org.activityinfo.ui.full.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.full.client.page.entry.sitehistory.SiteHistoryTab;
 import org.activityinfo.ui.full.client.util.FeatureSwitch;
 
-import java.util.Set;
+import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MessageBoxEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.Dialog;
+import com.extjs.gxt.ui.client.widget.Label;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.extjs.gxt.ui.client.widget.TabItem;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
 
 /**
  * This is the container for the DataEntry page.

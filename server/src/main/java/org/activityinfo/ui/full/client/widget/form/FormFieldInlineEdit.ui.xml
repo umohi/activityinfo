@@ -1,6 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget"
+        >
 
   <ui:style>
     .row {
@@ -33,7 +35,7 @@
       <div class="{style.show-block}">
         <ui:text from='{res.fieldType}'/>
       </div>
-      <g:ListBox addStyleNames="{style.show-inline} form-control" width="92%" ui:field="type" multipleSelect="false"/>
+      <ai:FormFieldTypeCombobox addStyleNames="{style.show-inline} form-control" width="92%" ui:field="type" multipleSelect="false"/>
       <g:Button addStyleNames="btn btn-default hidden" text="{res.change}" ui:field="changeButton"/>
     </div>
 
