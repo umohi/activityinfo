@@ -37,6 +37,7 @@ import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
 
 import javax.annotation.Nonnull;
@@ -153,6 +154,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
-        this.type.setEnabled(false);
+        this.type.setEnabled(!editMode);
+        GwtUtil.setVisibleInline(editMode, changeButton.getElement());
     }
 }

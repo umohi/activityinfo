@@ -31,10 +31,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
+import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
 /**
  * @author yuriyz on 1/28/14.
@@ -69,6 +72,7 @@ public class FormFieldRow extends Composite {
     private FormField formField;
     private IsWidget formFieldWidget;
     private final ElementNode node;
+    private final FormPanel formPanel;
 
     public FormFieldRow(FormField formField, FormPanel formPanel, final ElementNode node) {
         TransitionUtil.ensureBootstrapInjected();
@@ -76,6 +80,7 @@ public class FormFieldRow extends Composite {
 
         this.formField = formField;
         this.node = node;
+        this.formPanel = formPanel;
         this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
         this.toolbar.attach(this);
         this.toolbar.setFormPanel(formPanel);
@@ -88,15 +93,70 @@ public class FormFieldRow extends Composite {
             }
         });
 
+        initPanels();
         addHandlers();
-        render();
+        updateUI();
+        control.add(formFieldWidget);
     }
 
-    private void render() {
+    private void initPanels() {
+        editFieldPanel.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                final LocalizedString oldLabel = formField.getLabel();
+                final LocalizedString oldDescription = formField.getDescription();
+                final FormFieldType oldType = formField.getType();
+                final LocalizedString oldUnit = formField.getUnit();
+                final boolean oldRequired = formField.isRequired();
+
+                editFieldPanel.updateModel();
+
+                final LocalizedString newLabel = formField.getLabel();
+                final LocalizedString newDescription = formField.getDescription();
+                final FormFieldType newType = formField.getType();
+                final LocalizedString newUnit = formField.getUnit();
+                final boolean newRequired = formField.isRequired();
+
+                updateUI();
+                formPanel.getUndoManager().addUndoable(new IsUndoable() {
+                    @Override
+                    public void undo() {
+                        formField.setLabel(oldLabel);
+                        formField.setDescription(oldDescription);
+                        formField.setType(oldType);
+                        formField.setUnit(oldUnit);
+                        formField.setRequired(oldRequired);
+
+                        updateUI();
+                    }
+
+                    @Override
+                    public void redo() {
+                        formField.setLabel(newLabel);
+                        formField.setDescription(newDescription);
+                        formField.setType(newType);
+                        formField.setUnit(newUnit);
+                        formField.setRequired(newRequired);
+
+                        updateUI();
+                    }
+                });
+            }
+        });
+        addFieldPanel.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addFieldPanel.updateModel();
+                int rowIndexOnPanel = node.getContentPanel().getWidgetIndex(FormFieldRow.this);
+                node.addField(addFieldPanel.getFormField(), rowIndexOnPanel);
+            }
+        });
+    }
+
+    private void updateUI() {
         label.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getLabel().getValue()));
         description.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getDescription().getValue()));
         unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
-        control.add(formFieldWidget);
     }
 
     private void addHandlers() {
