@@ -10,7 +10,7 @@ import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.converter.StringConverter;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.importer.match.TextScorerer;
+import org.activityinfo.ui.full.client.importer.match.names.LatinPlaceNameScorer;
 import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class MappedReferenceFieldBinding implements FieldBinding {
                     matchFields.add(new MatchFieldBinding(matchIndex++,
                             node.findDescendant(relativePath),
                             relativePath, sourceColumn,
-                            new StringConverter(), new TextScorerer()));
+                            new StringConverter(), new LatinPlaceNameScorer()));
                 }
             }
         }
