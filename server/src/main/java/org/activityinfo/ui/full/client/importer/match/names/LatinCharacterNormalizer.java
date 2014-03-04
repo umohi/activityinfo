@@ -1,6 +1,6 @@
 package org.activityinfo.ui.full.client.importer.match.names;
 
-import com.google.appengine.repackaged.com.google.common.collect.Maps;
+import com.google.common.collect.Maps;
 
 import java.util.Map;
 
