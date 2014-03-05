@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
+        >
+
+  <!--<ui:style>-->
+  <!--</ui:style>-->
+
+  <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
+  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='aiStyle' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
+
+  <g:HTMLPanel addStyleNames="bs">
+    <!--<ui:text from='{res.mandatory}'/><br/>-->
+
+    <cell:CellTable ui:field="table" tableLayoutFixed="true" width="50%" autoHeaderRefreshDisabled="true"
+                    autoFooterRefreshDisabled="true" rowCount="10" />
+    <br/>
+  </g:HTMLPanel>
+</ui:UiBinder>

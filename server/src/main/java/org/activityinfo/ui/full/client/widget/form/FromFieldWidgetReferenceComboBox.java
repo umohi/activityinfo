@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
+import org.activityinfo.api2.shared.form.has.HasInstances;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 
 import java.util.List;
@@ -42,15 +43,17 @@ import java.util.Set;
 /**
  * @author yuriyz on 2/10/14.
  */
-public class FromFieldWidgetReferenceComboBox extends Composite implements FormFieldWidget<Set<Cuid>> {
+public class FromFieldWidgetReferenceComboBox extends Composite implements FormFieldWidget<Set<Cuid>>, HasInstances {
 
     private final ListBox dropBox = new ListBox(false);
-
     private final Map<Integer, Cuid> dropdownIndexToCuidMap = Maps.newHashMap();
+    private final List<FormInstance> instances;
 
     public FromFieldWidgetReferenceComboBox(List<FormInstance> instances) {
         initWidget(dropBox);
         GwtUtil.setFormControlStyles(dropBox);
+        this.instances = instances;
+
         for (FormInstance instance : instances) {
             dropBox.addItem(FormInstanceLabeler.getLabel(instance), instance.getId().asString());
         }
@@ -113,5 +116,9 @@ public class FromFieldWidgetReferenceComboBox extends Composite implements FormF
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Set<Cuid>> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
+    }
+
+    public List<FormInstance> getInstances() {
+        return instances;
     }
 }

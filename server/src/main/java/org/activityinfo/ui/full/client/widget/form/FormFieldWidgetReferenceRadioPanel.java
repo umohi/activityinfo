@@ -33,10 +33,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
-import org.activityinfo.api.client.KeyGenerator;
+import org.activityinfo.api2.shared.form.has.HasInstances;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
@@ -46,7 +47,7 @@ import java.util.Set;
 /**
  * @author yuriyz on 2/7/14.
  */
-public class FormFieldWidgetReferenceRadioPanel extends Composite implements FormFieldWidget<Set<Cuid>> {
+public class FormFieldWidgetReferenceRadioPanel extends Composite implements FormFieldWidget<Set<Cuid>>, HasInstances {
 
     private static FormFieldWidgetReferenceRadioPanelUiBinder uiBinder = GWT
             .create(FormFieldWidgetReferenceRadioPanelUiBinder.class);

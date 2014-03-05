@@ -100,6 +100,9 @@ public class FormFieldRow extends Composite {
     }
 
     private void initPanels() {
+        editFieldPanel.setRow(this);
+        addFieldPanel.setRow(this);
+
         editFieldPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

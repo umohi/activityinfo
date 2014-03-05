@@ -3330,4 +3330,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Change type")
     @Key("changeType")
     String changeType();
+
+    @DefaultStringValue("Type change leads to conversion of all existing data.")
+    @Key("changeTypeWarning")
+    String changeTypeWarning();
+
+    @DefaultStringValue("Label")
+    @Key("label")
+    String label();
 }

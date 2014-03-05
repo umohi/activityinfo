@@ -56,6 +56,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     private FormField formField;
     private boolean editMode = false;
+    private FormFieldRow row;
 
     @UiField
     TextBox label;
@@ -75,16 +76,27 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     Button changeButton;
     @UiField
     DivElement unitContainer;
+    @UiField
+    FormFieldInlineReferenceEdit referencePanel;
+    @UiField
+    DivElement referenceContainer;
 
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         setUnitControlState();
+        setReferencePanelState();
+        referencePanel.setContainer(this);
     }
 
     public void setUnitControlState() {
         final boolean isUnitVisible = type.getSelectedType() == FormFieldType.QUANTITY;
         GwtUtil.setVisible(unitContainer, isUnitVisible);
+    }
+
+    public void setReferencePanelState() {
+        GwtUtil.setVisible(referenceContainer, type.getSelectedType() == FormFieldType.REFERENCE);
+        referencePanel.apply();
     }
 
     @UiHandler("okButton")
@@ -134,6 +146,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         required.setValue(formField.isRequired());
         setUnitControlState();
         setChangeButtonState();
+        setReferencePanelState();
     }
 
     public void updateModel() {
@@ -173,5 +186,13 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     private void setChangeButtonState() {
         changeButton.setEnabled(formField != null && !formField.getType().getAllowedConvertTo().isEmpty());
+    }
+
+    public FormFieldRow getRow() {
+        return row;
+    }
+
+    public void setRow(FormFieldRow row) {
+        this.row = row;
     }
 }

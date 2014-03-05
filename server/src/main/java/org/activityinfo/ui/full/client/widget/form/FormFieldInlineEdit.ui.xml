@@ -2,6 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget"
+             xmlns:form="urn:import:org.activityinfo.ui.full.client.widget.form"
         >
 
   <ui:style>
@@ -53,6 +54,10 @@
       <g:CheckBox ui:field="required">
         <ui:text from='{res.mandatory}'/>
       </g:CheckBox>
+    </div>
+
+    <div class="{style.row} hidden" ui:field="referenceContainer">
+      <form:FormFieldInlineReferenceEdit ui:field="referencePanel"/>
     </div>
 
     <div class="{style.row}">

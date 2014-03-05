@@ -21,6 +21,8 @@ package org.activityinfo.ui.full.client.widget.dialog;
  * #L%
  */
 
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.ui.HTML;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.widget.FormFieldTypeCombobox;
@@ -40,6 +42,7 @@ public class ChangeFormFieldTypeDialog extends ModalDialog {
         setOkButtonState();
         type.setTypes(formField.getType().getAllowedConvertTo());
         getModalBody().appendChild(type.getElement());
+        getModalBody().appendChild(new HTML(SafeHtmlUtils.fromString(I18N.CONSTANTS.changeTypeWarning())).getElement());
     }
 
     public FormFieldTypeCombobox getType() {

@@ -37,6 +37,7 @@ import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.has.HasInstances;
 import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
@@ -46,7 +47,7 @@ import java.util.Set;
 /**
  * @author yuriyz on 2/7/14.
  */
-public class FormFieldWidgetReference extends Composite implements FormFieldWidget<Set<Cuid>> {
+public class FormFieldWidgetReference extends Composite implements FormFieldWidget<Set<Cuid>>, HasInstances {
 
     /**
      * Based on this numbers FormField Widget generates different widgets and layouts:
@@ -194,5 +195,13 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     @Override
     public Widget asWidget() {
         return panel;
+    }
+
+    @Override
+    public List<FormInstance> getInstances() {
+        if (widget instanceof HasInstances) {
+            return ((HasInstances) widget).getInstances();
+        }
+        return Lists.newArrayList();
     }
 }
