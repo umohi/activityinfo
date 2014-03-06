@@ -42,7 +42,7 @@ public class AdminLevelClassAdapter implements Function<SchemaDTO, FormClass> {
             AdminLevelDTO parentLevel = schema.getAdminLevelById(adminLevel.getParentLevelId());
             FormField parentField = new FormField(CuidAdapter.field(classId, CuidAdapter.ADMIN_PARENT_FIELD));
             parentField.setLabel(new LocalizedString(parentLevel.getName()));
-            parentField.setRange(adminLevelFormClass(adminLevel.getParentLevelId()).asIri());
+            parentField.setRange(adminLevelFormClass(adminLevel.getParentLevelId()));
             parentField.setType(FormFieldType.REFERENCE);
             parentField.setRequired(true);
             formClass.addElement(parentField);
