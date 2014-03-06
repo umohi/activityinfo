@@ -22,7 +22,7 @@ public class FormField implements FormElement {
     private LocalizedString description;
     private LocalizedString unit;
     private FormFieldType type;
-    private Set<Iri> range;
+    private Set<Cuid> range;
     private String calculation;
     private boolean readOnly;
     private boolean visible = true;
@@ -94,15 +94,15 @@ public class FormField implements FormElement {
      *
      * @return
      */
-    public Set<Iri> getRange() {
+    public Set<Cuid> getRange() {
         return range;
     }
 
-    public void setRange(Set<Iri> range) {
+    public void setRange(Set<Cuid> range) {
         this.range = range;
     }
 
-    public void setRange(Iri range) {
+    public void setRange(Cuid range) {
         this.range = Collections.singleton(range);
     }
 

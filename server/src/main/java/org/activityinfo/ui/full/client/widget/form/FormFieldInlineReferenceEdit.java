@@ -21,22 +21,35 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.Sets;
+import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.FormInstanceLabeler;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.api2.shared.form.has.HasInstances;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author yuriyz on 3/5/14.
@@ -49,11 +62,22 @@ public class FormFieldInlineReferenceEdit extends Composite {
     interface FormFieldInlineReferenceEditBinder extends UiBinder<Widget, FormFieldInlineReferenceEdit> {
     }
 
-    private FormFieldInlineEdit container;
     private final ListDataProvider<FormInstance> tableDataProvider = new ListDataProvider<>();
+    private final MultiSelectionModel<FormInstance> selectionModel = new MultiSelectionModel<>(
+            FormInstanceKeyProvider.getInstance());
+
+    private FormFieldInlineEdit container;
 
     @UiField
     CellTable<FormInstance> table;
+    @UiField
+    Button addButton;
+    @UiField
+    Button removeButton;
+    @UiField
+    RadioButton multipleChoice;
+    @UiField
+    RadioButton singleChoice;
 
     public FormFieldInlineReferenceEdit() {
         TransitionUtil.ensureBootstrapInjected();
@@ -62,6 +86,16 @@ public class FormFieldInlineReferenceEdit extends Composite {
     }
 
     private void initTable() {
+        removeButton.setEnabled(false);
+        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                removeButton.setEnabled(!selectionModel.getSelectedSet().isEmpty());
+            }
+        });
+
+        table.setSelectionModel(selectionModel, DefaultSelectionEventManager.<FormInstance>createCheckboxManager());
+        //table.setSelectionEnabled(true) to enable
 
         // Create a Pager to control the table.
         final SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -69,6 +103,15 @@ public class FormFieldInlineReferenceEdit extends Composite {
         tablePager.setDisplay(table);
 
         // create columns
+
+        final Column<FormInstance, Boolean> checkColumn = new Column<FormInstance, Boolean>(
+                new CheckboxCell(true, false)) {
+            @Override
+            public Boolean getValue(FormInstance object) {
+                return selectionModel.isSelected(object);
+            }
+        };
+
         final Column<FormInstance, String> labelColumn = new Column<FormInstance, String>(
                 new EditTextCell()) {
             @Override
@@ -86,23 +129,77 @@ public class FormFieldInlineReferenceEdit extends Composite {
             }
         });
 
+        table.addColumn(checkColumn);
         table.addColumn(labelColumn);
-        table.setColumnWidth(labelColumn, 50, Style.Unit.PCT);
+        table.setColumnWidth(checkColumn, 40, Style.Unit.PX);
+        table.setColumnWidth(labelColumn, 300, Style.Unit.PX);
 
         tableDataProvider.addDataDisplay(table);
     }
 
+    public void onOkClick() {
+        final FormField formField = getFormField();
+        if (formField != null) {
+            formField.setCardinality(singleChoice.getValue() ? FormFieldCardinality.SINGLE : FormFieldCardinality.MULTIPLE);
+        }
+
+        final Set<Cuid> newRange = Sets.newHashSet();
+        final List<FormInstance> instaces = tableDataProvider.getList();
+        for (FormInstance instance : instaces) {
+            newRange.add(instance.getId());
+        }
+        formField.setRange(newRange);
+        // todo - instance handling
+    }
+
+    @UiHandler("addButton")
+    public void onAddButton(ClickEvent event) {
+        final FormField formField = getFormField();
+        if (formField != null) {
+            final Cuid newCuid = CuidAdapter.newFormInstance();
+            final FormInstance newFormInstance = new FormInstance(newCuid, getContainer().getRow().getFormPanel().getFormClass().getId());
+            FormInstanceLabeler.setLabel(newFormInstance, "New"); // todo
+            tableDataProvider.getList().add(newFormInstance);
+            tableDataProvider.refresh();
+        }
+    }
+
+    @UiHandler("removeButton")
+    public void onRemoveButton(ClickEvent event) {
+        final Set<FormInstance> selectedSet = selectionModel.getSelectedSet();
+        tableDataProvider.getList().removeAll(selectedSet);
+        tableDataProvider.refresh();
+    }
+
     public void apply() {
         final HasInstances hasInstances = getHasInstances();
+        final FormField formField = getFormField();
         if (hasInstances != null) {
             tableDataProvider.setList(hasInstances.getInstances());
             tableDataProvider.refresh();
+        }
+        if (formField != null && formField.getCardinality() != null) {
+            switch (formField.getCardinality()) {
+                case SINGLE:
+                    singleChoice.setValue(true);
+                    break;
+                case MULTIPLE:
+                    multipleChoice.setValue(true);
+                    break;
+            }
         }
     }
 
     public HasInstances getHasInstances() {
         if (container != null && container.getRow() != null && container.getRow().getFormFieldWidget() instanceof HasInstances) {
             return (HasInstances) container.getRow().getFormFieldWidget();
+        }
+        return null;
+    }
+
+    public FormField getFormField() {
+        if (container != null) {
+            return container.getFormField();
         }
         return null;
     }

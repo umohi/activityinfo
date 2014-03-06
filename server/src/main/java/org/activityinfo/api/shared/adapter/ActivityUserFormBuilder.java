@@ -37,7 +37,7 @@ public class ActivityUserFormBuilder {
 
         FormField partnerField = new FormField(CuidAdapter.field(classId, CuidAdapter.PARTNER_FIELD));
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
-        partnerField.setRange(CuidAdapter.partnerFormClass(activity.getDatabase().getId()).asIri());
+        partnerField.setRange(CuidAdapter.partnerFormClass(activity.getDatabase().getId()));
         partnerField.setType(FormFieldType.REFERENCE);
         partnerField.setCardinality(FormFieldCardinality.SINGLE);
         partnerField.setRequired(true);
@@ -45,7 +45,7 @@ public class ActivityUserFormBuilder {
 
         FormField projectField = new FormField(CuidAdapter.field(classId, CuidAdapter.PROJECT_FIELD));
         projectField.setLabel(new LocalizedString(I18N.CONSTANTS.project()));
-        projectField.setRange(CuidAdapter.projectFormClass(activity.getDatabase().getId()).asIri());
+        projectField.setRange(CuidAdapter.projectFormClass(activity.getDatabase().getId()));
         projectField.setType(FormFieldType.REFERENCE);
         projectField.setCardinality(FormFieldCardinality.SINGLE);
         siteForm.addElement(projectField);
@@ -58,7 +58,7 @@ public class ActivityUserFormBuilder {
 
         FormField locationField = new FormField(CuidAdapter.locationField(activity.getId()));
         locationField.setLabel(new LocalizedString(activity.getLocationType().getName()));
-        locationField.setRange(locationClass(activity.getLocationType()).asIri());
+        locationField.setRange(locationClass(activity.getLocationType()));
         locationField.setType(FormFieldType.REFERENCE);
         locationField.setRequired(true);
         locationField.setCardinality(FormFieldCardinality.SINGLE);
@@ -67,7 +67,7 @@ public class ActivityUserFormBuilder {
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
             FormField attributeField = new FormField(CuidAdapter.attributeGroupField(activity, group));
             attributeField.setLabel(new LocalizedString(group.getName()));
-            attributeField.setRange(CuidAdapter.attributeGroupFormClass(group).asIri());
+            attributeField.setRange(CuidAdapter.attributeGroupFormClass(group));
             attributeField.setType(FormFieldType.REFERENCE);
             attributeField.setRequired(group.isMandatory());
             if (group.isMultipleAllowed()) {

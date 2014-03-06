@@ -9,6 +9,8 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.Resource;
+import org.activityinfo.api2.shared.form.has.HasHashCode;
+import org.activityinfo.api2.shared.hash.HashCode;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.Set;
  * <p>UserForms are a superset of an OWL class. The user can define them as subclasses or superclasses of
  * another FormClass or RDFS class.</p>
  */
-public class FormClass implements Resource, FormElementContainer {
+public class FormClass implements Resource, FormElementContainer, HasHashCode {
 
     @NotNull
     private Cuid id;
@@ -32,7 +34,7 @@ public class FormClass implements Resource, FormElementContainer {
     private Set<Iri> superClasses = Sets.newHashSet();
     private Set<Iri> subClasses = Sets.newHashSet();
     private List<FormElement> elements = Lists.newArrayList();
-
+    private HashCode hashCode;
 
     public FormClass(Cuid id) {
         Preconditions.checkNotNull(id);
@@ -152,5 +154,13 @@ public class FormClass implements Resource, FormElementContainer {
 
     public void addElement(FormElement element) {
         elements.add(element);
+    }
+
+    public HashCode getHashCode() {
+        return hashCode;
+    }
+
+    public void setHashCode(HashCode hashCode) {
+        this.hashCode = hashCode;
     }
 }

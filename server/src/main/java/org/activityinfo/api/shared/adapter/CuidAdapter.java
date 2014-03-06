@@ -78,6 +78,11 @@ public class CuidAdapter {
         return CuidAdapter.cuid('x', new KeyGenerator().generateInt());
     }
 
+    // todo yuriyz -> alex : please check it, right now used to add new form instance to form field
+    public static Cuid newFormInstance() {
+        return attributeId(new KeyGenerator().generateInt());
+    }
+
     public static Cuid getFormInstanceLabelCuid(FormInstance formInstance) {
         return CuidAdapter.field(formInstance.getClassId(), NAME_FIELD);
     }

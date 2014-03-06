@@ -46,7 +46,7 @@ public abstract class ModelBinding<T extends EntityDTO>  {
     }
 
     public FormInstance newInstance(T entity) {
-        FormInstance instance = new FormInstance(classId, CuidAdapter.cuid(instanceDomain, entity.getId()));
+        FormInstance instance = new FormInstance(CuidAdapter.cuid(instanceDomain, entity.getId()), classId);
         for(FieldBinding<? super T> binding : fieldBindings) {
             binding.updateInstanceFromModel(instance, entity);
         }

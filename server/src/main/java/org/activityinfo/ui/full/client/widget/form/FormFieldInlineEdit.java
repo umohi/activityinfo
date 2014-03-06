@@ -102,6 +102,9 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     @UiHandler("okButton")
     public void onOk(ClickEvent event) {
         hide();
+        if (type.getSelectedType() == FormFieldType.REFERENCE) {
+            referencePanel.onOkClick();
+        }
     }
 
     @UiHandler("cancelButton")

@@ -69,9 +69,9 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
         formClass.addElement(axeField);
 
         // the range for the location object is any AdminLevel in this country
-        Set<Iri> adminRange = Sets.newHashSet();
+        Set<Cuid> adminRange = Sets.newHashSet();
         for(AdminLevelDTO level : country.getAdminLevels()) {
-            adminRange.add(adminLevelFormClass(level.getId()).asIri());
+            adminRange.add(adminLevelFormClass(level.getId()));
         }
 
         FormField adminField = new FormField(getAdminFieldId(classId));

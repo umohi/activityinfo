@@ -129,42 +129,42 @@ public class DevUtils {
     private static List<FormField> createReferenceFields() {
         final FormField singleSmallField = new FormField(randomIri());
         singleSmallField.setType(FormFieldType.REFERENCE);
-        singleSmallField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_SMALL_ID).asIri());
+        singleSmallField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_SMALL_ID));
         singleSmallField.setDescription(new LocalizedString("Single small description"));
         singleSmallField.setLabel(new LocalizedString("Single small"));
         singleSmallField.setCardinality(FormFieldCardinality.SINGLE);
 
         final FormField singleMediumField = new FormField(randomIri());
         singleMediumField.setType(FormFieldType.REFERENCE);
-        singleMediumField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_MEDIUM_ID).asIri());
+        singleMediumField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_MEDIUM_ID));
         singleMediumField.setDescription(new LocalizedString("Single medium description"));
         singleMediumField.setLabel(new LocalizedString("Single medium"));
         singleMediumField.setCardinality(FormFieldCardinality.SINGLE);
 
         final FormField singleUnboundField = new FormField(randomIri());
         singleUnboundField.setType(FormFieldType.REFERENCE);
-        singleUnboundField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_UNBOUND_ID).asIri());
+        singleUnboundField.setRange(CuidAdapter.attributeGroupFormClass(SINGLE_UNBOUND_ID));
         singleUnboundField.setDescription(new LocalizedString("Single unbound description"));
         singleUnboundField.setLabel(new LocalizedString("Single unbound"));
         singleUnboundField.setCardinality(FormFieldCardinality.SINGLE);
 
         final FormField multipleSmallField = new FormField(randomIri());
         multipleSmallField.setType(FormFieldType.REFERENCE);
-        multipleSmallField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_SMALL_ID).asIri());
+        multipleSmallField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_SMALL_ID));
         multipleSmallField.setDescription(new LocalizedString("Multiple small description"));
         multipleSmallField.setLabel(new LocalizedString("Multiple small"));
         multipleSmallField.setCardinality(FormFieldCardinality.MULTIPLE);
 
         final FormField multipleMediumField = new FormField(randomIri());
         multipleMediumField.setType(FormFieldType.REFERENCE);
-        multipleMediumField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_MEDIUM_ID).asIri());
+        multipleMediumField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_MEDIUM_ID));
         multipleMediumField.setDescription(new LocalizedString("Multiple medium description"));
         multipleMediumField.setLabel(new LocalizedString("Multiple medium"));
         multipleMediumField.setCardinality(FormFieldCardinality.MULTIPLE);
 
         final FormField multipleUnboundField = new FormField(randomIri());
         multipleUnboundField.setType(FormFieldType.REFERENCE);
-        multipleUnboundField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_UNBOUND_ID).asIri());
+        multipleUnboundField.setRange(CuidAdapter.attributeGroupFormClass(MULTIPLE_UNBOUND_ID));
         multipleUnboundField.setDescription(new LocalizedString("Multiple unbound description"));
         multipleUnboundField.setLabel(new LocalizedString("Multiple unbound"));
         multipleUnboundField.setCardinality(FormFieldCardinality.MULTIPLE);

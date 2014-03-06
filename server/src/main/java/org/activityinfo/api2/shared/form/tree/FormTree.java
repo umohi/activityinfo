@@ -6,7 +6,6 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
@@ -72,7 +71,7 @@ public class FormTree {
             return field.getId();
         }
 
-        public Set<Iri> getRange() {
+        public Set<Cuid> getRange() {
             return field.getRange();
         }
 

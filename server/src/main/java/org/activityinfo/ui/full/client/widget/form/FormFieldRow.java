@@ -280,6 +280,14 @@ public class FormFieldRow extends Composite {
         this.formField = formField;
     }
 
+    public FormPanel getFormPanel() {
+        return formPanel;
+    }
+
+    public ElementNode getNode() {
+        return node;
+    }
+
     @Override
     public String toString() {
         return "FormFieldRow{" +
