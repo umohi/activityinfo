@@ -8,6 +8,8 @@ import org.activityinfo.api2.shared.Namespace;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
+import static org.activityinfo.api.shared.adapter.CuidAdapter.activityCategoryFolderId;
+
 /**
  * Adapts a Legacy "Activity" model to a FormClass
  */
@@ -27,6 +29,13 @@ public class ActivityUserFormBuilder {
         Cuid classId = CuidAdapter.activityFormClass(activity.getId());
 
         siteForm = new FormClass(classId);
+
+        if(!Strings.isNullOrEmpty(activity.getCategory())) {
+            siteForm.setParentId(activityCategoryFolderId(activity.getDatabase(), activity.getCategory()));
+        } else {
+            siteForm.setParentId(CuidAdapter.databaseId(activity.getDatabase()));
+        }
+
         FormField partnerField = new FormField(CuidAdapter.field(classId, CuidAdapter.PARTNER_FIELD));
         partnerField.addSuperProperty(Namespace.REPORTED_BY);
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));

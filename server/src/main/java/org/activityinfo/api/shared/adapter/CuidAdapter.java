@@ -4,6 +4,7 @@ import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.AttributeGroupDTO;
 import org.activityinfo.api.shared.model.EntityDTO;
+import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.api2.client.CuidGenerator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
@@ -46,6 +47,8 @@ public class CuidAdapter {
     public static final char PROJECT_CLASS_DOMAIN = 'R';
 
     public static final char PROJECT_DOMAIN = 'r';
+
+    public static final char ACTIVITY_CATEGORY_DOMAIN = 'g';
 
     public static final int NAME_FIELD = 1;
     public static final int ADMIN_PARENT_FIELD = 2;
@@ -201,6 +204,11 @@ public class CuidAdapter {
                 Integer.toString(group.getId(), Cuids.RADIX));
     }
 
+
+    public static Cuid activityCategoryFolderId(UserDatabaseDTO db, String category) {
+        return new Cuid(ACTIVITY_CATEGORY_DOMAIN + block(db.getId()) + block(category.hashCode()));
+    }
+
     /**
      * @return the {@code FormClass} Cuid for a given AttributeGroup
      */
@@ -252,4 +260,7 @@ public class CuidAdapter {
         return cuid(domain, entityDTO.getId());
     }
 
+    public static Cuid databaseId(UserDatabaseDTO database) {
+        return cuid(DATABASE_DOMAIN, database);
+    }
 }

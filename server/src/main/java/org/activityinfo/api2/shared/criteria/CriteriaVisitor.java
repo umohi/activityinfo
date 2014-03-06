@@ -24,6 +24,9 @@ public abstract class CriteriaVisitor {
 
     public void visitInstanceIdCriteria(IdCriteria criteria) {
 
+    }
+
+    public void visitParentCriteria(ParentCriteria criteria) {
 
     }
 }

@@ -1,8 +1,8 @@
 package org.activityinfo.ui.full.client.importer.match.names;
 
 
-import com.google.appengine.repackaged.com.google.common.base.Strings;
-import com.google.appengine.repackaged.com.google.common.collect.Lists;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.base.Charsets;
 import org.junit.Before;
 import org.junit.Ignore;

@@ -22,7 +22,7 @@ package org.activityinfo.reports.server.renderer.excel;
  * #L%
  */
 
-import com.google.appengine.repackaged.com.google.common.collect.Maps;
+import com.google.common.collect.Maps;
 import org.activityinfo.reports.shared.content.FilterDescription;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.PivotTableReportElement;

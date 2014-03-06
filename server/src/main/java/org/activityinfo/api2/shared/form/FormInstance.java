@@ -44,6 +44,7 @@ public class FormInstance implements Resource {
     private Cuid id;
     private Cuid classId;
     private final Map<Cuid, Object> valueMap = Maps.newHashMap();
+    private Cuid parentId;
 
     /**
      * Constructs a new FormInstance. To obtain an id for a new instance
@@ -65,6 +66,14 @@ public class FormInstance implements Resource {
 
     public Cuid getClassId() {
         return classId;
+    }
+
+    public void setParentId(Cuid parentId) {
+        this.parentId = parentId;
+    }
+
+    public Cuid getParentId() {
+        return parentId;
     }
 
     public Map<Cuid, Object> getValueMap() {
@@ -158,6 +167,5 @@ public class FormInstance implements Resource {
                 ", valueMap=" + valueMap +
                 '}';
     }
-
 
 }
