@@ -1,8 +1,8 @@
 package org.activityinfo.ui.full.client.importer.match.names;
 
-import com.google.appengine.repackaged.com.google.common.collect.Lists;
-import com.google.appengine.repackaged.com.google.common.io.Files;
-import com.google.appengine.repackaged.com.google.common.io.LineProcessor;
+import com.google.common.collect.Lists;
+import com.google.common.io.Files;
+import com.google.common.io.LineProcessor;
 import com.google.common.base.Charsets;
 import org.activityinfo.ui.full.client.importer.match.names.LatinPlaceNameScorer;
 import org.activityinfo.ui.full.client.importer.match.names.PartialPermutations;

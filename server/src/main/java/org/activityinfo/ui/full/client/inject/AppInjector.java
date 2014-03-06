@@ -41,6 +41,7 @@ import org.activityinfo.ui.full.client.page.dashboard.DashboardLoader;
 import org.activityinfo.ui.full.client.page.entry.DataEntryLoader;
 import org.activityinfo.ui.full.client.page.entry.EntryModule;
 import org.activityinfo.ui.full.client.page.entry.FormPanelPageLoader;
+import org.activityinfo.ui.full.client.page.home.PageContainerLoader;
 import org.activityinfo.ui.full.client.page.report.ReportLoader;
 import org.activityinfo.ui.full.client.page.report.ReportModule;
 import org.activityinfo.ui.full.client.page.search.SearchLoader;
@@ -49,7 +50,7 @@ import org.activityinfo.ui.full.client.report.editor.map.MapModule;
 
 /**
  * GIN injector.
- * <p/>
+ * <p/>                                     ap
  * TODO: having this number of explicit entries is probably not ideal, try to
  * make better use of injection and injecting Provider<>s
  */
@@ -82,6 +83,8 @@ public interface AppInjector extends Ginjector {
     DashboardLoader createDashboardLoader();
 
     FormPanelPageLoader createSiteFormLoader();
+
+    PageContainerLoader createFolderPageLoader();
 
     SchemaCache createSchemaCache();
 

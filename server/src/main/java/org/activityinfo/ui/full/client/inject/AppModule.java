@@ -66,6 +66,7 @@ public class AppModule extends AbstractGinModule {
         bind(StateProvider.class).to(GxtStateProvider.class);
         bind(Frame.class).annotatedWith(Root.class).to(AppFrameSet.class);
         bind(GalleryView.class).to(GalleryPage.class);
+
     }
 
     @Provides

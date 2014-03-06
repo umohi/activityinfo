@@ -37,7 +37,12 @@ import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.criteria.ClassCriteria;
+import org.activityinfo.api2.shared.criteria.CriteriaIntersection;
+import org.activityinfo.api2.shared.criteria.ParentCriteria;
 import org.activityinfo.api2.shared.form.FormClass;
+import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.system.FolderClass;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
@@ -53,8 +58,10 @@ import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
+import static org.activityinfo.api2.client.PromiseMatchers.assertResolves;
 import static org.activityinfo.api2.client.PromiseMatchers.resolvesTo;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -292,6 +299,22 @@ public class GetSchemaTest extends CommandTestCase2 {
         Promise<FormClass> userForm = locator.getFormClass(CuidAdapter.activityFormClass(1));
 
         assertThat(userForm, resolvesTo(CoreMatchers.<FormClass>notNullValue()));
+    }
+
+    @Test
+    public void folderTest() {
+        ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
+        List<FormInstance> folders = assertResolves(locator.queryInstances(
+                new CriteriaIntersection(
+                    new ParentCriteria(),
+                    new ClassCriteria(FolderClass.FORM_CLASS))));
+
+        for(FormInstance folder : folders) {
+            System.out.println(folder.getId() + " " + folder.getString(FolderClass.LABEL_FIELD_ID));
+        }
+
+        assertThat(folders.size(), equalTo(3));
+
     }
 
 

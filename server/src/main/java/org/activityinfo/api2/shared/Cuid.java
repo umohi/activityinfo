@@ -12,6 +12,7 @@ public final class Cuid {
     private final String value;
 
     public Cuid(String value) {
+        assert value != null;
         this.value = value;
     }
 

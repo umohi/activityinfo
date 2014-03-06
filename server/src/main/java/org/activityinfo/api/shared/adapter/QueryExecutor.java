@@ -14,6 +14,7 @@ import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.criteria.*;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.form.system.FolderClass;
 import org.activityinfo.api2.shared.function.ConcatList;
 
 import java.util.Collection;
@@ -79,8 +80,6 @@ public class QueryExecutor  {
         });
     }
 
-
-
     public Promise<List<FormInstance>> execute() {
         if(classCriteria.size() > 1) {
             // a single instance cannot (at this time) be a member of more than one
@@ -126,6 +125,12 @@ public class QueryExecutor  {
         }
 
         Cuid formClassId = new Cuid(classIri.getSchemeSpecificPart());
+
+        if(formClassId.equals(FolderClass.FORM_CLASS)) {
+            return dispatcher.execute(new GetSchema())
+                    .then(new FolderListAdapter(criteria));
+        }
+
         switch(formClassId.getDomain()) {
             case ATTRIBUTE_GROUP_DOMAIN:
                 return dispatcher.execute(new GetSchema())

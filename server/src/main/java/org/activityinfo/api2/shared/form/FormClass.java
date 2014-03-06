@@ -26,10 +26,13 @@ public class FormClass implements Resource, FormElementContainer {
 
     @NotNull
     private Cuid id;
+    private Cuid parentId;
+
     private LocalizedString label;
     private Set<Iri> superClasses = Sets.newHashSet();
     private Set<Iri> subClasses = Sets.newHashSet();
     private List<FormElement> elements = Lists.newArrayList();
+
 
     public FormClass(Cuid id) {
         Preconditions.checkNotNull(id);
@@ -43,6 +46,14 @@ public class FormClass implements Resource, FormElementContainer {
         copy.getSuperClasses().addAll(this.getSuperClasses());
         copy.setLabel(this.getLabel());
         return copy;
+    }
+
+    public Cuid getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Cuid parentId) {
+        this.parentId = parentId;
     }
 
     public FormElementContainer getParent(FormElement childElement) {
