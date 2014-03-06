@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
+import org.activityinfo.api2.shared.form.has.HasInstances;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
@@ -45,7 +46,7 @@ import java.util.Set;
 /**
  * @author yuriyz on 2/11/14.
  */
-public class FormFieldWidgetReferenceCheckBoxPanel extends Composite implements FormFieldWidget<Set<Cuid>> {
+public class FormFieldWidgetReferenceCheckBoxPanel extends Composite implements FormFieldWidget<Set<Cuid>>, HasInstances {
 
     private static FromFieldWidgetReferenceCheckBoxPanelUiBinder uiBinder = GWT
             .create(FromFieldWidgetReferenceCheckBoxPanelUiBinder.class);

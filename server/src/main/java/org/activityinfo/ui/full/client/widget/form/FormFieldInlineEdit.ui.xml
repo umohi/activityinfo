@@ -1,12 +1,24 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget"
+             xmlns:form="urn:import:org.activityinfo.ui.full.client.widget.form"
+        >
 
   <ui:style>
     .row {
       margin-top: 5px;
       margin-bottom: 5px;
     }
+
+    .show-inline {
+      display: inline !important
+    }
+
+    .show-block {
+      display: block !important
+    }
+
   </ui:style>
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
@@ -14,40 +26,44 @@
   <ui:with field='aiStyle' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <g:HTMLPanel>
 
-      <div class="{style.row}">
-        <ui:text from='{res.fieldLabel}'/>
-        <g:TextBox addStyleNames="form-control" width="100%" ui:field="label" styleName="ai"/>
-      </div>
+    <div class="{style.row}">
+      <ui:text from='{res.fieldLabel}'/>
+      <g:TextBox addStyleNames="form-control" width="100%" ui:field="label" styleName="ai"/>
+    </div>
 
-      <div class="{style.row}">
+    <div class="{style.row}">
+      <div class="{style.show-block}">
         <ui:text from='{res.fieldType}'/>
-        <g:ListBox addStyleNames="form-control" ui:field="type" multipleSelect="false"/>
-        <g:Button addStyleNames="btn btn-default hidden" text="{res.change}" ui:field="changeButton"/>
       </div>
+      <ai:FormFieldTypeCombobox addStyleNames="{style.show-inline} form-control" width="92%" ui:field="type" multipleSelect="false"/>
+      <g:Button addStyleNames="btn btn-default hidden" text="{res.change}" ui:field="changeButton"/>
+    </div>
 
-      <div class="{style.row}">
-        <ui:text from='{res.fieldDescription}'/>
-        <g:TextArea addStyleNames="form-control" visibleLines="3" width="100%" ui:field="description" styleName="ai"/>
-      </div>
+    <div class="{style.row}">
+      <ui:text from='{res.fieldDescription}'/>
+      <g:TextArea addStyleNames="form-control" visibleLines="3" width="100%" ui:field="description" styleName="ai"/>
+    </div>
 
-      <div class="{style.row}">
-        <ui:text from='{res.fieldUnit}'/>
-        <g:TextBox addStyleNames="form-control" width="100%" ui:field="unit" styleName="ai"/>
-      </div>
+    <div class="{style.row} hidden" ui:field="unitContainer">
+      <ui:text from='{res.fieldUnit}'/>
+      <g:TextBox addStyleNames="form-control" width="100%" ui:field="unit" styleName="ai"/>
+    </div>
 
-      <div class="{style.row}">
-        <g:CheckBox ui:field="required">
-          <ui:text from='{res.mandatory}'/>
-        </g:CheckBox>
-      </div>
+    <div class="{style.row}">
+      <g:CheckBox ui:field="required">
+        <ui:text from='{res.mandatory}'/>
+      </g:CheckBox>
+    </div>
 
-      <div class="{style.row}">
-        <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
-        <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
-      </div>
-      <br/>
-    </g:HTMLPanel>
+    <div class="{style.row} hidden" ui:field="referenceContainer">
+      <form:FormFieldInlineReferenceEdit ui:field="referencePanel"/>
+    </div>
+
+    <div class="{style.row}">
+      <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
+      <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
+    </div>
+    <br/>
   </g:HTMLPanel>
 </ui:UiBinder>

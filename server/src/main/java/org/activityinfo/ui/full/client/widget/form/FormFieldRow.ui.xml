@@ -31,21 +31,10 @@
         <div ui:field="unit"/>
       </div>
       <div class="col-sm-3">
-        <p class="text-muted edit">
-          <div ui:field="description"/>
-        </p>
+        <div ui:field="description"/>
       </div>
       <div class="col-sm-3">
         <ai:RowToolbar ui:field="toolbar"/>
-        <!--<div>-->
-        <!--<i title="Map this indicator" class="fa fa-map-marker"/>-->
-        <!--<i title="Create a table" class="fa fa-table"/>-->
-        <!--<i title="Create a chart of this indicator" class="glyphicon glyphicon-stats"/>-->
-        <!--</div>-->
-        <!--<div>-->
-        <!--<i title="Edit this field" class="fa fa-pencil"/>-->
-        <!--<i title="Delete this field" class="fa fa-trash-o"/>-->
-        <!--</div>-->
       </div>
     </div>
   </g:HTMLPanel>

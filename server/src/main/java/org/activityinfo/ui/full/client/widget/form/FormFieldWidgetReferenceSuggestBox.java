@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
+import org.activityinfo.api2.shared.form.has.HasInstances;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -43,7 +44,7 @@ import java.util.Set;
 /**
  * @author yuriyz on 2/10/14.
  */
-public class FormFieldWidgetReferenceSuggestBox extends Composite implements FormFieldWidget<Set<Cuid>> {
+public class FormFieldWidgetReferenceSuggestBox extends Composite implements FormFieldWidget<Set<Cuid>>, HasInstances {
 
     private final SuggestBox suggestBox;
     private final List<FormInstance> instances;
@@ -119,5 +120,9 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Set<Cuid>> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
+    }
+
+    public List<FormInstance> getInstances() {
+        return instances;
     }
 }

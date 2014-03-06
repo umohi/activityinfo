@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
+import org.activityinfo.api2.shared.form.has.HasInstances;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
@@ -45,7 +46,7 @@ import java.util.Set;
 /**
  * @author yuriyz on 2/11/14.
  */
-public class FormFieldWidgetReferenceListPanel extends Composite implements FormFieldWidget<Set<Cuid>> {
+public class FormFieldWidgetReferenceListPanel extends Composite implements FormFieldWidget<Set<Cuid>>, HasInstances {
 
     private static FormFieldWidgetReferenceListPanelUiBinder uiBinder = GWT
             .create(FormFieldWidgetReferenceListPanelUiBinder.class);
