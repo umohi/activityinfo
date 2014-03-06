@@ -1,6 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:boot="urn:import:org.activityinfo.ui.full.client.widget.bootstrap"
+        >
 
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
   <ui:with field='style' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
@@ -10,7 +12,7 @@
       <!--<g:Button addStyleNames="close" ui:field="closeButton" text="×"/>-->
       <!--<h4 class="modal-title" ui:field="title"/>-->
       <!--<ui:text from='{res.sectionLabel}'/>-->
-      <g:TextBox addStyleNames="form-control" width="100%" ui:field="sectionLabel" styleName="ai"/>
+      <boot:TextBox width="100%" ui:field="sectionLabel" placeholder="{res.sectionLabel}" />
       <div style="margin-top: 5px; margin-bottom: 5px;">
         <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
         <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
