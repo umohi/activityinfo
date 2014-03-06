@@ -87,9 +87,10 @@ public class AsyncFormTreeBuilder extends AsyncFunction<Cuid, FormTree> {
             node.addChildren(formClass);
             for(FormTree.Node child : node.getChildren()) {
                 if(child.isReference()) {
-                    for(Iri rangeClass : child.getRange()) {
-                        if(rangeClass.getScheme().equals(Cuids.SCHEME)) {
-                            requestFormClassForNode(child, new Cuid(rangeClass.getSchemeSpecificPart()));
+                    for(Cuid rangeClass : child.getRange()) {
+                        final Iri iri = rangeClass.asIri();
+                        if(iri.getScheme().equals(Cuids.SCHEME)) {
+                            requestFormClassForNode(child, new Cuid(iri.getSchemeSpecificPart()));
                         }
                     }
                 }

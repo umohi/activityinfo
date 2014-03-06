@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget.bootstrap"
+             xmlns:boot="urn:import:org.activityinfo.ui.full.client.widget.bootstrap"
         >
 
   <ui:style>
@@ -17,38 +17,42 @@
   <ui:with field='aiStyle' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="form-group">
+      <label class="col-sm-1 control-label">
         <ui:text from='{res.cardinality}'/>
-      </div>
-      <div class="panel-body">
-        <ai:RadioButton name="cardinality" ui:field="singleChoice" formValue="true">
+      </label>
+      <div class="col-sm-11">
+        <boot:RadioButton name="cardinality" ui:field="singleChoice" formValue="true">
           <ui:text from='{res.singleChoice}'/>
-        </ai:RadioButton>
-        <ai:RadioButton name="cardinality" ui:field="multipleChoice">
+        </boot:RadioButton>
+        <boot:RadioButton name="cardinality" ui:field="multipleChoice">
           <ui:text from='{res.multipleChoice}'/>
-        </ai:RadioButton>
+        </boot:RadioButton>
         <br/>
       </div>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="form-group">
+      <label class="col-sm-1 control-label">
         <ui:text from='{res.values}'/>
-      </div>
-      <div class="panel-body">
-        <g:HorizontalPanel>
-          <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
-                          autoFooterRefreshDisabled="true" rowCount="10" addStyleNames="table table-bordered"/>
-          <g:VerticalPanel>
-            <g:Button ui:field="addButton" addStyleNames="btn btn-default {style.btn-custom}">
-              <img src="{img.add.getSafeUri}" alt="Add"/>
-            </g:Button>
-            <g:Button ui:field="removeButton" addStyleNames="btn btn-default {style.btn-custom}">
-              <img src="{img.delete.getSafeUri}" alt="Remove"/>
-            </g:Button>
-          </g:VerticalPanel>
-        </g:HorizontalPanel>
+      </label>
+      <div class="col-sm-11">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <g:HorizontalPanel>
+              <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
+                              autoFooterRefreshDisabled="true" rowCount="10"/>
+              <g:VerticalPanel>
+                <g:Button ui:field="addButton" addStyleNames="btn btn-default {style.btn-custom}">
+                  <img src="{img.add.getSafeUri}" alt="Add"/>
+                </g:Button>
+                <g:Button ui:field="removeButton" addStyleNames="btn btn-default {style.btn-custom}">
+                  <img src="{img.delete.getSafeUri}" alt="Remove"/>
+                </g:Button>
+              </g:VerticalPanel>
+            </g:HorizontalPanel>
+          </div>
+        </div>
       </div>
     </div>
   </g:HTMLPanel>

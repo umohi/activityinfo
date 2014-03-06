@@ -9,9 +9,6 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <g:HTMLPanel>
-      <!--<g:Button addStyleNames="close" ui:field="closeButton" text="×"/>-->
-      <!--<h4 class="modal-title" ui:field="title"/>-->
-      <!--<ui:text from='{res.sectionLabel}'/>-->
       <boot:TextBox width="100%" ui:field="sectionLabel" placeholder="{res.sectionLabel}" />
       <div style="margin-top: 5px; margin-bottom: 5px;">
         <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>

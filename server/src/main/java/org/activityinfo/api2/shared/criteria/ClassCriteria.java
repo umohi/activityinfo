@@ -40,13 +40,13 @@ public class ClassCriteria implements Criteria {
         return classIri.equals(input.getClassId().asIri());
     }
 
-    public static Criteria union(Set<Iri> range) {
+    public static Criteria union(Set<Cuid> range) {
         if(range.size() == 1) {
             return new ClassCriteria(range.iterator().next());
         } else {
             List<ClassCriteria> criteriaList = Lists.newArrayList();
-            for(Iri classIri : range) {
-                criteriaList.add(new ClassCriteria(classIri));
+            for(Cuid classCuid : range) {
+                criteriaList.add(new ClassCriteria(classCuid));
             }
             return new CriteriaUnion(criteriaList);
         }
