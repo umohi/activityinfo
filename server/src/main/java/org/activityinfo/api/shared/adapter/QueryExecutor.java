@@ -39,6 +39,10 @@ public class QueryExecutor  {
      */
     private final Set<Iri> classCriteria = Sets.newHashSet();
 
+    private final Set<Cuid> parentCriteria = Sets.newHashSet();
+
+    private boolean rootOnly = false;
+
 
     /**
      * Must be one of these ids
@@ -66,6 +70,15 @@ public class QueryExecutor  {
             }
 
             @Override
+            public void visitParentCriteria(ParentCriteria criteria) {
+                if(criteria.selectsRoot()) {
+                    rootOnly = true;
+                } else {
+                    parentCriteria.add(criteria.getParentId());
+                }
+            }
+
+            @Override
             public void visitIntersection(CriteriaIntersection intersection) {
                 // A ∩ (B ∩ C) = A ∩ B ∩ C
                 for (Criteria criteria : intersection) {
@@ -87,16 +100,37 @@ public class QueryExecutor  {
             return emptySet();
         }
 
+        if(parentCriteria.size() > 1 ||
+                (rootOnly && !parentCriteria.isEmpty())) {
+            // likewise, a single instance cannot be a child of multiple parents, so
+            // the result of this query is logically the empty set
+            return emptySet();
+        }
+
         if(classCriteria.size() == 1) {
             return queryByClassId();
-        } else {
+
+        } else if(ids.size() > 0) {
             List<Promise<List<FormInstance>>> resultSets = Lists.newArrayList();
             for(Character domain : ids.keySet()) {
                 resultSets.add(queryByIds(domain, ids.get(domain)));
             }
             return Promise.foldLeft(Collections.<FormInstance>emptyList(), new ConcatList<FormInstance>(), resultSets);
+
+        } else if(rootOnly || !parentCriteria.isEmpty()) {
+            Cuid parentId = parentCriteria.iterator().next();
+            List<Promise<List<FormInstance>>> lists = Lists.newArrayList();
+
+            if(parentId.getDomain() == DATABASE_DOMAIN || parentId.getDomain() == ACTIVITY_CATEGORY_DOMAIN) {
+                return folders();
+            } else {
+                throw new UnsupportedOperationException("parentID " + parentId);
+            }
+        } else {
+            throw new UnsupportedOperationException("queries must have either class criteria or parent criteria");
         }
     }
+
 
     private Promise<List<FormInstance>> queryByIds(char domain, Collection<Integer> ids) {
         switch(domain) {
@@ -110,6 +144,9 @@ public class QueryExecutor  {
             case LOCATION_DOMAIN:
                 return dispatcher.execute(new GetLocations(Lists.newArrayList(ids)))
                         .then(new ListResultAdapter<>(new LocationInstanceAdapter()));
+
+            case DATABASE_DOMAIN:
+                return folders();
         }
         throw new UnsupportedOperationException("unrecognized domain: " + domain);
     }
@@ -127,8 +164,7 @@ public class QueryExecutor  {
         Cuid formClassId = new Cuid(classIri.getSchemeSpecificPart());
 
         if(formClassId.equals(FolderClass.FORM_CLASS)) {
-            return dispatcher.execute(new GetSchema())
-                    .then(new FolderListAdapter(criteria));
+            return folders();
         }
 
         switch(formClassId.getDomain()) {
@@ -153,6 +189,11 @@ public class QueryExecutor  {
                 return Promise.rejected(new UnsupportedOperationException(
                         "domain not yet implemented: " + formClassId.getDomain()));
         }
+    }
+
+    private Promise<List<FormInstance>> folders() {
+        return dispatcher.execute(new GetSchema())
+                .then(new FolderListAdapter(criteria));
     }
 
     private GetLocations composeLocationQuery(Cuid formClassId) {

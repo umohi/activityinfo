@@ -57,8 +57,14 @@ public class Projection {
         return null;
     }
 
+
+    public String getStringValue(Cuid rootFieldId) {
+        return getStringValue(new FieldPath(rootFieldId));
+    }
+
     @Override
     public String toString() {
         return "[" + Joiner.on(", ").withKeyValueSeparator("=").join(values) + "]";
     }
+
 }

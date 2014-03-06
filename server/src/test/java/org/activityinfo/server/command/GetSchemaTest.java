@@ -35,8 +35,11 @@ import org.activityinfo.api.shared.command.CreateEntity;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
+import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.Projection;
+import org.activityinfo.api2.shared.Properties;
 import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.CriteriaIntersection;
 import org.activityinfo.api2.shared.criteria.ParentCriteria;
@@ -306,7 +309,7 @@ public class GetSchemaTest extends CommandTestCase2 {
         ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
         List<FormInstance> folders = assertResolves(locator.queryInstances(
                 new CriteriaIntersection(
-                    new ParentCriteria(),
+                    ParentCriteria.isRoot(),
                     new ClassCriteria(FolderClass.FORM_CLASS))));
 
         for(FormInstance folder : folders) {
@@ -314,8 +317,29 @@ public class GetSchemaTest extends CommandTestCase2 {
         }
 
         assertThat(folders.size(), equalTo(3));
+    }
+
+    @Test
+    public void childFolderTest() {
+        ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
+
+
+        InstanceQuery query = InstanceQuery
+                .select(Properties.LABEL_PROPERTY, Properties.DESCRIPTION_PROPERTY, Properties.CLASS_PROPERTY)
+                .where(ParentCriteria.isChildOf(CuidAdapter.cuid(CuidAdapter.DATABASE_DOMAIN, 1)))
+                .build();
+
+        List<Projection> children = assertResolves(locator.query(query));
+
+        System.out.println("Results: ");
+        for(Projection child : children) {
+            System.out.println(child.getStringValue(Properties.LABEL_PROPERTY));
+        }
+
+        assertThat(children.size(), equalTo(500));
 
     }
+
 
 
 }

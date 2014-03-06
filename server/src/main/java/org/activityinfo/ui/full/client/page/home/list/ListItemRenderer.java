@@ -7,7 +7,7 @@ import com.google.gwt.uibinder.client.UiRenderer;
 /**
  * Created by alex on 3/4/14.
  */
-public interface ItemRenderer extends UiRenderer {
+public interface ListItemRenderer extends UiRenderer {
 
     void render(SafeHtmlBuilder sb, String label, String description, String link);
 

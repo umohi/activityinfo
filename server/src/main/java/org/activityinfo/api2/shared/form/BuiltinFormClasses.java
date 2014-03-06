@@ -9,6 +9,6 @@ import org.activityinfo.api2.shared.Cuid;
  */
 public class BuiltinFormClasses {
 
-
+    public static final Cuid FOLDER_CLASS_ID = new Cuid("a0001");
 
 }

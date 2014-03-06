@@ -1,42 +1,43 @@
-package org.activityinfo.ui.full.client.page.home;
+package org.activityinfo.ui.full.client.page.instance;
 
 import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.PageStateParser;
+import org.activityinfo.ui.full.client.page.PageStateSerializer;
 import org.activityinfo.ui.full.client.page.app.Section;
 
 import java.util.List;
 
 /**
- *
+ * Place corresponding to the view of a instance.
  */
-public class FolderPlace implements PageState {
+public class InstancePlace implements PageState {
 
-    private final Cuid folderId;
+    private Cuid instanceId;
 
-    public FolderPlace(Cuid folderId) {
-        this.folderId = folderId;
-    }
-
-    public Cuid getFolderId() {
-        return folderId;
+    public InstancePlace(Cuid instanceId) {
+        this.instanceId = instanceId;
     }
 
     @Override
     public String serializeAsHistoryToken() {
-        return folderId.asString();
+        return instanceId.asString();
     }
 
     @Override
     public PageId getPageId() {
-        return PageContainer.PAGE_ID;
+        return InstancePage.PAGE_ID;
+    }
+
+    public Cuid getInstanceId() {
+        return instanceId;
     }
 
     @Override
     public List<PageId> getEnclosingFrames() {
-        return Lists.newArrayList(PageContainer.PAGE_ID);
+        return Lists.newArrayList(InstancePage.PAGE_ID);
     }
 
     @Override
@@ -48,10 +49,8 @@ public class FolderPlace implements PageState {
 
         @Override
         public PageState parse(String token) {
-            if(token == null) {
-                return new FolderPlace(null);
-            }
-            return new FolderPlace(new Cuid(token));
+            return new InstancePlace(new Cuid(token));
         }
     }
+
 }

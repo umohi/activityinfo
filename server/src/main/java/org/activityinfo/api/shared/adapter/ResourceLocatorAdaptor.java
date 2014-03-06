@@ -30,36 +30,16 @@ import static org.activityinfo.api.shared.adapter.CuidAdapter.*;
 public class ResourceLocatorAdaptor implements ResourceLocator {
 
     private final Dispatcher dispatcher;
+    private final ClassProvider classProvider;
 
     public ResourceLocatorAdaptor(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
+        this.classProvider = new ClassProvider(dispatcher);
     }
 
     @Override
-    public Promise<FormClass> getFormClass(Cuid formId) {
-        switch (formId.getDomain()) {
-            case ACTIVITY_DOMAIN:
-                int activityId = getLegacyIdFromCuid(formId);
-                return dispatcher.execute(new GetSchema()).then(new ActivityAdapter(activityId));
-
-            case PARTNER_FORM_CLASS_DOMAIN:
-                return Promise.resolved(PartnerClassAdapter.create(getLegacyIdFromCuid(formId)));
-
-            case PROJECT_CLASS_DOMAIN:
-                return Promise.resolved(BuiltinFormClasses.projectFormClass(getLegacyIdFromCuid(formId)));
-
-            case ATTRIBUTE_GROUP_DOMAIN:
-                return dispatcher.execute(new GetSchema()).then(new AttributeClassAdapter(getLegacyIdFromCuid(formId)));
-
-            case ADMIN_LEVEL_DOMAIN:
-                return dispatcher.execute(new GetSchema()).then(new AdminLevelClassAdapter(getLegacyIdFromCuid(formId)));
-
-            case LOCATION_TYPE_DOMAIN:
-                return dispatcher.execute(new GetSchema()).then(new LocationClassAdapter(getLegacyIdFromCuid(formId)));
-
-            default:
-                return Promise.rejected(new NotFoundException(formId.asIri()));
-        }
+    public Promise<FormClass> getFormClass(Cuid classId) {
+        return classProvider.get(classId);
     }
 
     @Override

@@ -30,4 +30,5 @@ public class Cuids {
     public static Cuid toIri(char cuidDomain, int id) {
         return new Cuid(cuidDomain + Integer.toString(id, RADIX));
     }
+
 }

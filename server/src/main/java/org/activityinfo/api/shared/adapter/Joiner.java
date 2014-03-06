@@ -1,18 +1,20 @@
 package org.activityinfo.api.shared.adapter;
 
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api2.client.InstanceQuery;
-import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.criteria.IdCriteria;
+import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import com.google.common.base.Function;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -27,9 +29,11 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
 
     private final Criteria criteria;
+    private final ClassProvider classProvider;
     private Set<FieldPath> fields;
     private List<FieldPath> joinFields;
     private Dispatcher dispatcher;
+    private Map<Cuid, FormClass> classMap = Maps.newHashMap();
 
     public Joiner(Dispatcher dispatcher, List<FieldPath> fields, Criteria criteria) {
         this.dispatcher = dispatcher;
@@ -44,6 +48,8 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         this.fields.addAll(joinFields);
 
         this.criteria = criteria;
+
+        this.classProvider = new ClassProvider(dispatcher);
     }
 
     private List<FieldPath> joinFields(List<FieldPath> paths) {
@@ -85,6 +91,7 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
         Promise<List<Projection>> results =
                 query(criteria)
+                .join(new FetchClassDefinitions())
                 .then(concatMap(new ProjectFunction(null)));
 
         // now schedule the joins
@@ -110,7 +117,7 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
         @Nullable
         @Override
-        public Projection apply(@Nullable FormInstance input) {
+        public Projection apply(FormInstance input) {
             Projection projection = new Projection(input.getId());
             for(Map.Entry<Cuid, Object> entry : input.getValueMap().entrySet()) {
                 FieldPath path = new FieldPath(prefix, entry.getKey());
@@ -119,6 +126,45 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
                 }
             }
             return projection;
+        }
+    }
+
+    private class FetchClassDefinitions implements Function<List<FormInstance>, Promise<List<FormInstance>>> {
+
+        @Override
+        public Promise<List<FormInstance>> apply(final List<FormInstance> formInstances) {
+
+            Set<Cuid> classesToFetch = Sets.newHashSet();
+            for(FormInstance instance : formInstances) {
+                if(!classMap.containsKey(instance.getClassId())) {
+                    classesToFetch.add(instance.getClassId());
+                }
+            }
+
+            Promise<Void> promise = Promise.resolved(null);
+            for(final Cuid classToFetch : classesToFetch) {
+
+                promise = promise.join(new Function<Void, Promise<Void>>() {
+
+                    @Nullable
+                    @Override
+                    public Promise<Void> apply(@Nullable Void input) {
+                        return classProvider.get(classToFetch).then(new IndexClassDefinition());
+                    }
+                });
+            }
+
+            return promise.then(Functions.constant(formInstances));
+        }
+    }
+
+    private class IndexClassDefinition implements Function<FormClass, Void> {
+
+        @Nullable
+        @Override
+        public Void apply(FormClass input) {
+            classMap.put(input.getId(), input);
+            return null;
         }
     }
 

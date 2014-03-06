@@ -17,7 +17,6 @@ public class ActivityUserFormBuilder {
 
 
     private final ActivityDTO activity;
-//    private List<FormElement> siteElements = Lists.newArrayList();
 
     private FormClass siteForm;
 
@@ -37,7 +36,6 @@ public class ActivityUserFormBuilder {
         }
 
         FormField partnerField = new FormField(CuidAdapter.field(classId, CuidAdapter.PARTNER_FIELD));
-        partnerField.addSuperProperty(Namespace.REPORTED_BY);
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
         partnerField.setRange(CuidAdapter.partnerFormClass(activity.getDatabase().getId()).asIri());
         partnerField.setType(FormFieldType.REFERENCE);

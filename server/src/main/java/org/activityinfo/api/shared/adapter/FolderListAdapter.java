@@ -6,6 +6,7 @@ import com.google.common.base.Function;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.api2.shared.Properties;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.system.FolderClass;
@@ -40,8 +41,20 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
             Set<String> categories = new HashSet<>();
 
             for(ActivityDTO activity : db.getActivities()) {
+
+                FormInstance activityClass = new FormInstance(activityFormClass(activity.getId()), Properties.FORM_CLASS);
+
                 if(!Strings.isNullOrEmpty(activity.getCategory())) {
                     categories.add(activity.getCategory());
+                    activityClass.setParentId(activityCategoryFolderId(db, activity.getCategory()));
+                } else {
+                    activityClass.setParentId(databaseId(db));
+                }
+
+                activityClass.set(Properties.LABEL_PROPERTY, activity.getName());
+
+                if(criteria.apply(activityClass)) {
+                    instances.add(activityClass);
                 }
             }
 
@@ -49,7 +62,7 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
                 FormInstance categoryFolder = new FormInstance(
                         activityCategoryFolderId(db, category), FolderClass.FORM_CLASS);
                 categoryFolder.setParentId(dbFolder.getId());
-                categoryFolder.set(FolderClass.LABEL_FIELD_ID, category);
+                categoryFolder.set(Properties.LABEL_PROPERTY, category);
 
                 if(criteria.apply(categoryFolder)) {
                     instances.add(categoryFolder);
