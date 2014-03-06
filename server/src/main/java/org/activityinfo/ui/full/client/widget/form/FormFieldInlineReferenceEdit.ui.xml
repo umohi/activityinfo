@@ -4,18 +4,51 @@
              xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
         >
 
-  <!--<ui:style>-->
-  <!--</ui:style>-->
+  <ui:style>
+    .btn-custom {
+      margin: 3px 3px 3px 3px;
+      height: 34px;
+    }
+  </ui:style>
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
   <ui:with field='aiStyle' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <!--<ui:text from='{res.mandatory}'/><br/>-->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <ui:text from='{res.cardinality}'/>
+      </div>
+      <div class="panel-body">
+        <g:RadioButton name="cardinality" ui:field="singleChoice" formValue="true">
+          <ui:text from='{res.singleChoice}'/>
+        </g:RadioButton>
+        <g:RadioButton name="cardinality" ui:field="multipleChoice">
+          <ui:text from='{res.multipleChoice}'/>
+        </g:RadioButton>
+        <br/>
+      </div>
+    </div>
 
-    <cell:CellTable ui:field="table" tableLayoutFixed="true" width="50%" autoHeaderRefreshDisabled="true"
-                    autoFooterRefreshDisabled="true" rowCount="10" />
-    <br/>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <ui:text from='{res.values}'/>
+      </div>
+      <div class="panel-body">
+        <g:HorizontalPanel>
+          <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
+                          autoFooterRefreshDisabled="true" rowCount="10" addStyleNames="table table-bordered"/>
+          <g:VerticalPanel>
+            <g:Button ui:field="addButton" addStyleNames="btn btn-default {style.btn-custom}">
+              <img src="{img.add.getSafeUri}" alt="Add"/>
+            </g:Button>
+            <g:Button ui:field="removeButton" addStyleNames="btn btn-default {style.btn-custom}">
+              <img src="{img.delete.getSafeUri}" alt="Remove"/>
+            </g:Button>
+          </g:VerticalPanel>
+        </g:HorizontalPanel>
+      </div>
+    </div>
   </g:HTMLPanel>
 </ui:UiBinder>

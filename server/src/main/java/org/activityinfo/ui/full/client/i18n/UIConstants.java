@@ -3338,4 +3338,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Label")
     @Key("label")
     String label();
+
+    @DefaultStringValue("Cardinality")
+    @Key("cardinality")
+    String cardinality();
+
+    @DefaultStringValue("Values")
+    @Key("values")
+    String values();
 }
