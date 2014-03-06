@@ -2,6 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget.bootstrap"
         >
 
   <ui:style>
@@ -21,12 +22,12 @@
         <ui:text from='{res.cardinality}'/>
       </div>
       <div class="panel-body">
-        <g:RadioButton name="cardinality" ui:field="singleChoice" formValue="true">
+        <ai:RadioButton name="cardinality" ui:field="singleChoice" formValue="true">
           <ui:text from='{res.singleChoice}'/>
-        </g:RadioButton>
-        <g:RadioButton name="cardinality" ui:field="multipleChoice">
+        </ai:RadioButton>
+        <ai:RadioButton name="cardinality" ui:field="multipleChoice">
           <ui:text from='{res.multipleChoice}'/>
-        </g:RadioButton>
+        </ai:RadioButton>
         <br/>
       </div>
     </div>

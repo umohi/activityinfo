@@ -3,6 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget"
              xmlns:form="urn:import:org.activityinfo.ui.full.client.widget.form"
+             xmlns:boot="urn:import:org.activityinfo.ui.full.client.widget.bootstrap"
         >
 
   <ui:style>
@@ -51,9 +52,9 @@
     </div>
 
     <div class="{style.row}">
-      <g:CheckBox ui:field="required">
+      <boot:CheckBox ui:field="required">
         <ui:text from='{res.mandatory}'/>
-      </g:CheckBox>
+      </boot:CheckBox>
     </div>
 
     <div class="{style.row} hidden" ui:field="referenceContainer">
