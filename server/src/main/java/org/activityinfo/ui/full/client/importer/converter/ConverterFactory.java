@@ -17,7 +17,7 @@ public class ConverterFactory {
             case REFERENCE:
                 throw new IllegalArgumentException("Reference fields are handled elsewhere");
             case LOCAL_DATE:
-                return new StringToLocalDateConverter();
+                return new StringToDateConverter();
             case GEOGRAPHIC_POINT:
         }
         throw new UnsupportedOperationException(fieldType.name());
