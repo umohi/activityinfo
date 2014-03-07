@@ -3346,4 +3346,8 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Values")
     @Key("values")
     String values();
+
+    @DefaultStringValue("A value with this name already exists.")
+    @Key("duplicateValues")
+    String duplicateValues();
 }

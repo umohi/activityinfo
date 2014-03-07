@@ -27,8 +27,12 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -43,10 +47,12 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.api2.shared.form.has.HasInstances;
+import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
@@ -62,6 +68,9 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
 
     interface FormFieldInlineReferenceEditBinder extends UiBinder<Widget, FormFieldInlineReferenceEdit> {
     }
+
+    public static final int MAX_INSTANCE_COUNT = 1000;
+    public static final String NEW_NAME_PREFIX = "New";
 
     private final ListDataProvider<FormInstance> tableDataProvider = new ListDataProvider<>();
     private final MultiSelectionModel<FormInstance> selectionModel = new MultiSelectionModel<>(
@@ -79,6 +88,8 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     RadioButton multipleChoice;
     @UiField
     RadioButton singleChoice;
+    @UiField
+    DivElement errorContainer;
 
     public FormFieldInlineReferenceEdit() {
         TransitionUtil.ensureBootstrapInjected();
@@ -127,6 +138,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
                 // Called when the user changes the value.
                 FormInstanceLabeler.setLabel(object, value);
                 tableDataProvider.refresh();
+                validate();
             }
         });
 
@@ -159,10 +171,55 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         if (formField != null) {
             final Cuid newCuid = CuidAdapter.newFormInstance();
             final FormInstance newFormInstance = new FormInstance(newCuid, getContainer().getRow().getFormPanel().getFormClass().getId());
-            FormInstanceLabeler.setLabel(newFormInstance, "New"); // todo
+            FormInstanceLabeler.setLabel(newFormInstance, newName());
             tableDataProvider.getList().add(newFormInstance);
             tableDataProvider.refresh();
         }
+    }
+
+    private void validate() {
+        clearError();
+        validateInstanceNames();
+        container.fireState();
+    }
+
+    public boolean isInValidState() {
+        final Set<String> duplications = FormInstanceLabeler.getDuplicatedInstanceLabels(tableDataProvider.getList());
+        return duplications.isEmpty();
+    }
+
+    private void validateInstanceNames() {
+        final Set<String> duplications = FormInstanceLabeler.getDuplicatedInstanceLabels(tableDataProvider.getList());
+
+        if (!duplications.isEmpty()) {
+            showError(I18N.CONSTANTS.duplicateValues());
+
+            for (FormInstance instance : tableDataProvider.getList()) {
+                if (duplications.contains(FormInstanceLabeler.getLabel(instance))) {
+                    markInstanceCell(instance);
+                }
+            }
+        }
+    }
+
+    private void markInstanceCell(FormInstance instance) {
+        final int index = tableDataProvider.getList().indexOf(instance);
+        final NodeList<TableCellElement> cells = table.getRowElement(index).getCells();
+        for (int i = 0; i < cells.getLength(); i++) {
+            final TableCellElement cellElement = cells.getItem(i);
+            cellElement.getStyle().setColor("#a94442");
+        }
+    }
+
+    private String newName() {
+        final List<String> existingNames = FormInstanceLabeler.getLabels(tableDataProvider.getList());
+        for (int i = 0; i < MAX_INSTANCE_COUNT; i++) {
+            final String newName = NEW_NAME_PREFIX + i;
+            if (!existingNames.contains(newName)) {
+                return newName;
+            }
+        }
+        return Integer.toString(new KeyGenerator().generateInt());
     }
 
     @UiHandler("removeButton")
@@ -208,6 +265,14 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
             return container.getFormField();
         }
         return null;
+    }
+
+    public void showError(String errorMessage) {
+        errorContainer.setInnerSafeHtml(SafeHtmlUtils.fromSafeConstant(errorMessage));
+    }
+
+    public void clearError() {
+        errorContainer.setInnerHTML("");
     }
 
     public FormFieldInlineEdit getContainer() {

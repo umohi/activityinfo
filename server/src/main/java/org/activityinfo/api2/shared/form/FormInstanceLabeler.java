@@ -22,7 +22,12 @@ package org.activityinfo.api2.shared.form;
  */
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author yuriyz on 2/11/14.
@@ -38,5 +43,27 @@ public class FormInstanceLabeler {
 
     public static void setLabel(FormInstance instance, String label) {
         instance.set(CuidAdapter.getFormInstanceLabelCuid(instance), label);
+    }
+
+    public static List<String> getLabels(List<FormInstance> list) {
+        final List<String> labels = Lists.newArrayList();
+        if (list != null && !list.isEmpty()) {
+            for (FormInstance instance : list) {
+                labels.add(getLabel(instance));
+            }
+        }
+        return labels;
+    }
+
+    public static Set<String> getDuplicatedInstanceLabels(List<FormInstance> list) {
+        final List<String> existingNames = FormInstanceLabeler.getLabels(list);
+        final Set<String> duplicates = Sets.newHashSet();
+        final Set<String> temp = Sets.newHashSet();
+        for (String name : existingNames) {
+            if (!temp.add(name)) {
+                duplicates.add(name);
+            }
+        }
+        return duplicates;
     }
 }

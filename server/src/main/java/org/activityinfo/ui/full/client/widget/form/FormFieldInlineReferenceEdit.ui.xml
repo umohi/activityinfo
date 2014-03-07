@@ -40,8 +40,8 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <g:HorizontalPanel>
-              <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
-                              autoFooterRefreshDisabled="true" rowCount="10"/>
+                <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
+                                autoFooterRefreshDisabled="true" rowCount="10"/>
               <g:VerticalPanel>
                 <g:Button ui:field="addButton" addStyleNames="btn btn-default {style.btn-custom}">
                   <img src="{img.add.getSafeUri}" alt="Add"/>
@@ -51,6 +51,10 @@
                 </g:Button>
               </g:VerticalPanel>
             </g:HorizontalPanel>
+            <br/>
+            <div class="has-error">
+              <div class="help-block" ui:field="errorContainer"/>
+            </div>
           </div>
         </div>
       </div>

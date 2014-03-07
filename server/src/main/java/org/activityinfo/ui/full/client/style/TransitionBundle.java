@@ -37,6 +37,9 @@ public interface TransitionBundle extends ClientBundle {
 
         @ClassName("gwt-TextArea")
         String gwtTextArea();
+
+        @ClassName("error-cell")
+        String errorCell();
     }
 
     /**

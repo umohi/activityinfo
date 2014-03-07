@@ -192,6 +192,14 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         changeButton.setEnabled(formField != null && !formField.getType().getAllowedConvertTo().isEmpty());
     }
 
+    public void fireState() {
+        setOkButtonState();
+    }
+
+    private void setOkButtonState() {
+        okButton.setEnabled(referencePanel.isInValidState());
+    }
+
     public FormFieldInlineReferenceEdit getReferencePanel() {
         return referencePanel;
     }
