@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.page.home.list;
+package org.activityinfo.ui.full.client.page.instance.widgets;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;

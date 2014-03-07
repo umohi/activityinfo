@@ -12,7 +12,7 @@ import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
-import org.activityinfo.ui.full.client.page.home.list.ListItemRenderer;
+import org.activityinfo.ui.full.client.page.instance.widgets.ListItemRenderer;
 
 import java.util.List;
 
