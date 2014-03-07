@@ -2,7 +2,6 @@ package org.activityinfo.ui.full.client.importer.ui.validation.columns;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
@@ -14,7 +13,8 @@ import org.activityinfo.ui.full.client.importer.ui.validation.cells.LocalDateRen
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.QuantityRenderer;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplates;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.google.common.base.Predicates.alwaysTrue;
 
@@ -29,7 +29,6 @@ public class ColumnFactory implements FieldBindingColumnVisitor {
     private FormTree tree;
 
     private LinkedList<ImportColumn<?>> columns = Lists.newLinkedList();
-;
 
     public ColumnFactory(
             QuantityFormatterFactory formatterFactory,
@@ -103,7 +102,7 @@ public class ColumnFactory implements FieldBindingColumnVisitor {
             case NARRATIVE:
                 return Functions.toStringFunction();
             case QUANTITY:
-                return new QuantityRenderer(formatterFactory.create(field));
+                return new QuantityRenderer(formatterFactory.create());
             case LOCAL_DATE:
                 return new LocalDateRenderer();
         }

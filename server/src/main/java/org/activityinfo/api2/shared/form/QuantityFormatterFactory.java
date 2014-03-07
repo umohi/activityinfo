@@ -8,7 +8,7 @@ package org.activityinfo.api2.shared.form;
  */
 public interface QuantityFormatterFactory {
 
-    QuantityFormatter create(FormField field);
+    QuantityFormatter create();
 
 }
 

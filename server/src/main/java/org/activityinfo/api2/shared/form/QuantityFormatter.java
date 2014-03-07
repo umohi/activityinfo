@@ -6,4 +6,6 @@ package org.activityinfo.api2.shared.form;
 public interface QuantityFormatter {
 
     String format(double value);
+
+    double parse(String valueAsString);
 }
