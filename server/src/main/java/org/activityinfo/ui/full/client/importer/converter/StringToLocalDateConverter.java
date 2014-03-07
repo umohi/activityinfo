@@ -8,7 +8,7 @@ import java.util.Arrays;
 /**
  * Parses strings to local dates
  */
-public class LocalDateConverter implements Converter {
+public class StringToLocalDateConverter implements StringConverter<LocalDate> {
 
     private static final String SEPARATORS = "-/\\, \t.";
     public static final int NUM_COMPONENTS = 3;
@@ -34,7 +34,7 @@ public class LocalDateConverter implements Converter {
 
     @Nonnull
     @Override
-    public LocalDate convertString(@Nonnull String string) {
+    public LocalDate convert(@Nonnull String string) {
         // basically we expect three components, in SOME format
         // that are separated by something normal
 

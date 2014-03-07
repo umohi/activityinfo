@@ -1,18 +1,13 @@
 package org.activityinfo.importer.shared.converter;
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
-import com.google.common.collect.Lists;
-import org.activityinfo.ui.full.client.importer.converter.LocalDateConverter;
+import org.activityinfo.ui.full.client.importer.converter.StringToLocalDateConverter;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -25,11 +20,11 @@ public class LocalDateConverterTest {
     @Test
     public void simpleTests() {
 
-        LocalDateConverter converter = new LocalDateConverter();
+        StringToLocalDateConverter converter = new StringToLocalDateConverter();
 
-        assertThat(converter.convertString("2011-01-15"), equalTo(ymd(2011,1,15)));
-        assertThat(converter.convertString("15 May 2049"), equalTo(ymd(2049,5,15)));
-        assertThat(converter.convertString("4/30/07"), equalTo(ymd(2007,4,30)));
+        assertThat(converter.convert("2011-01-15"), equalTo(ymd(2011,1,15)));
+        assertThat(converter.convert("15 May 2049"), equalTo(ymd(2049,5,15)));
+        assertThat(converter.convert("4/30/07"), equalTo(ymd(2007,4,30)));
     }
 
     @Test
@@ -44,7 +39,7 @@ public class LocalDateConverterTest {
 
 
     private LocalDate convertString(String string) {
-        return new LocalDateConverter().convertString(string);
+        return new StringToLocalDateConverter().convert(string);
     }
 
     private LocalDate ymd(int year, int month, int day) {
@@ -69,7 +64,7 @@ public class LocalDateConverterTest {
 
 
     private void testFormat(String language, DateFormat format) {
-        LocalDateConverter converter = new LocalDateConverter();
+        StringToLocalDateConverter converter = new StringToLocalDateConverter();
 
         for(int year=1950;year<2050;++year) {
             for(int month=1;month<=12;++month) {
@@ -85,7 +80,7 @@ public class LocalDateConverterTest {
 
                     String string = format.format(date);
                     try {
-                        LocalDate converted = converter.convertString(string);
+                        LocalDate converted = converter.convert(string);
 
                         if(!converted.equals(localDate)) {
                             System.out.println("[" + language +"] " + string + " => " + converted +

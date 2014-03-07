@@ -38,7 +38,7 @@ public class MatchFieldBinding {
     }
 
     public Object getImportedValue(SourceRow row) {
-        return converter.convertString(row.getColumnValue(sourceColumn));
+        return converter.convert(row.getColumnValue(sourceColumn));
     }
 
     public int getSourceColumn() {

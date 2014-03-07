@@ -7,17 +7,17 @@ import org.activityinfo.api2.shared.form.FormFieldType;
  */
 public class ConverterFactory {
 
-    public static Converter create(FormFieldType fieldType) {
+    public static StringConverter create(FormFieldType fieldType) {
         switch(fieldType) {
             case QUANTITY:
-                return new QuantityConverter();
+                return new StringToQuantityConverter();
             case NARRATIVE:
             case FREE_TEXT:
-                return new StringConverter();
+                return new StringToStringConverter();
             case REFERENCE:
                 throw new IllegalArgumentException("Reference fields are handled elsewhere");
             case LOCAL_DATE:
-                return new LocalDateConverter();
+                return new StringToLocalDateConverter();
             case GEOGRAPHIC_POINT:
         }
         throw new UnsupportedOperationException(fieldType.name());

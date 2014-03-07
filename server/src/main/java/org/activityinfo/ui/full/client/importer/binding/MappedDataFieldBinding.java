@@ -2,7 +2,6 @@ package org.activityinfo.ui.full.client.importer.binding;
 
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.converter.Converter;
 import org.activityinfo.ui.full.client.importer.converter.ConverterFactory;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
@@ -44,7 +43,7 @@ public class MappedDataFieldBinding implements FieldBinding {
             return null;
         } else {
             try {
-                return converter.convertString(importedValue);
+                return converter.convert(importedValue);
             } catch(Exception e) {
                 return null;
             }
@@ -69,6 +68,6 @@ public class MappedDataFieldBinding implements FieldBinding {
     }
 
     public Object convert(String importedValue) {
-        return converter.convertString(importedValue);
+        return converter.convert(importedValue);
     }
 }
