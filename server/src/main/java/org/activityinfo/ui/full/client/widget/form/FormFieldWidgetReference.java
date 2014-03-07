@@ -200,7 +200,7 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
 
     @Override
     public Widget asWidget() {
-        return panel;
+        return this;
     }
 
     @Override

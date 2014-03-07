@@ -130,11 +130,11 @@ public class FormFieldRow extends Composite {
                 final Set<Cuid> newRange = formField.getRange();
 
                 final FlowPanel widgetContainer = FormFieldRow.this.control;
-                final IsWidget oldWidget = FormFieldRow.this.formFieldWidget;
                 final boolean isRangeEqual = oldRange != null && newRange != null &&
                         oldRange.containsAll(newRange) && newRange.containsAll(oldRange);
                 final boolean isReferenceChange = oldCardinality != newCardinality || !isRangeEqual;
                 final boolean isTypeChanged = oldType != newType;
+                final IsWidget oldWidget = FormFieldRow.this.formFieldWidget;
 
                 if (isTypeChanged || isReferenceChange) {
                     widgetContainer.remove(oldWidget);
@@ -148,6 +148,7 @@ public class FormFieldRow extends Composite {
 
                     widgetContainer.add(FormFieldRow.this.formFieldWidget);
                 }
+                final IsWidget newWidget = FormFieldRow.this.formFieldWidget;
 
                 updateUI();
                 updateValue(oldType, newType);
@@ -164,7 +165,7 @@ public class FormFieldRow extends Composite {
                         formField.setRange(oldRange);
 
                         if (isTypeChanged || isReferenceChange) {
-                            widgetContainer.remove(FormFieldRow.this.formFieldWidget);
+                            widgetContainer.remove(newWidget);
                             widgetContainer.add(oldWidget);
                             FormFieldRow.this.formFieldWidget = oldWidget;
                         }
@@ -185,15 +186,8 @@ public class FormFieldRow extends Composite {
 
                         if (isTypeChanged || isReferenceChange) {
                             widgetContainer.remove(oldWidget);
-
-                            if (isReferenceChange) {
-                                final List<FormInstance> currentInstances = editFieldPanel.getReferencePanel().getInstances();
-                                FormFieldRow.this.formFieldWidget = new FormFieldWidgetReference(formField, currentInstances);
-                            } else {
-                                FormFieldRow.this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
-                            }
-
-                            widgetContainer.add(FormFieldRow.this.formFieldWidget);
+                            widgetContainer.add(newWidget);
+                            FormFieldRow.this.formFieldWidget = newWidget;
                         }
 
                         updateUI();
