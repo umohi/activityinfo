@@ -49,6 +49,11 @@ public class Projection {
         }
     }
 
+
+    public Set<Cuid> getReferenceValue(Cuid fieldId) {
+        return getReferenceValue(new FieldPath(fieldId));
+    }
+
     public String getStringValue(FieldPath fieldPath) {
         Object value = values.get(fieldPath);
         if(value instanceof String) {

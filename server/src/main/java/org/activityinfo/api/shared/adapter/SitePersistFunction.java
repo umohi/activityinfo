@@ -71,7 +71,7 @@ public class SitePersistFunction extends BiFunction<SiteBinding, FormInstance, P
             Promise<List<AdminEntityDTO>> parents = entity
                     .join(new FetchParentsFunction());
 
-            return Promise.concatenate(entity, parents);
+            return Promise.prepend(entity, parents);
         }
     }
 

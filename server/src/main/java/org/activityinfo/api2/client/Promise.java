@@ -274,9 +274,13 @@ public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
     /**
      * Convenience function for concatenating a promised item with a promised list of items of the same type
      */
-    public static <T> Promise<List<T>> concatenate(Promise<T> a, Promise<List<T>> b) {
+    public static <T> Promise<List<T>> prepend(Promise<T> a, Promise<List<T>> b) {
         Promise<List<T>> aList = a.then(ListMonad.<T>unit());
         return fmap(new ConcatList<T>()).apply(aList, b);
+    }
+
+    public static <T> Promise<List<T>> concatenate(Promise<List<T>> a, Promise<List<T>> b) {
+        return fmap(new ConcatList<T>()).apply(a, b);
     }
 
     public static <T, R> Promise<List<R>> map(Iterable<T> items, Function<T, Promise<R>> function) {

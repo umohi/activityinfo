@@ -14,6 +14,8 @@ public class ApplicationProperties {
      */
     public static final Cuid LABEL_PROPERTY = new Cuid("_label");
 
+    public static final Cuid PARENT_PROPERTY = new Cuid("_parent");
+
     /**
      * Application-defined property that provides an extended human-readable description
      * for a given form instance.

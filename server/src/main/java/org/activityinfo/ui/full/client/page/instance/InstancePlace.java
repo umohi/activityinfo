@@ -1,6 +1,8 @@
 package org.activityinfo.ui.full.client.page.instance;
 
 import com.google.common.collect.Lists;
+import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.safehtml.shared.UriUtils;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
@@ -53,4 +55,8 @@ public class InstancePlace implements PageState {
         }
     }
 
+
+    public static SafeUri safeUri(Cuid instanceId) {
+        return UriUtils.fromTrustedString("#i/" + instanceId.asString());
+    }
 }

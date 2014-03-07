@@ -1,21 +1,25 @@
 package org.activityinfo.ui.full.client.page.instance;
 
-import com.google.common.base.Function;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.PromiseMonitor;
 import org.activityinfo.api2.client.ResourceLocator;
+import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.criteria.IdCriteria;
+import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.application.FolderClass;
+import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.instance.views.FolderView;
+import org.activityinfo.ui.full.client.page.instance.views.FormView;
+import org.activityinfo.ui.full.client.page.instance.views.InstanceView;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -24,11 +28,12 @@ import java.util.List;
 public class InstancePage implements Page, PromiseMonitor {
     public static final PageId PAGE_ID = new PageId("i");
 
-    public SimpleLayoutPanel panel;
-    private ResourceLocator locator;
+    private SimpleLayoutPanel panel;
+    private final ResourceLocator resourceLocator;
 
-    public InstancePage(ResourceLocator locator) {
-        this.locator = locator;
+
+    public InstancePage(ResourceLocator resourceLocator) {
+        this.resourceLocator = resourceLocator;
         this.panel = new SimpleLayoutPanel();
         this.panel.addStyleName("bs");
     }
@@ -56,17 +61,20 @@ public class InstancePage implements Page, PromiseMonitor {
     @Override
     public boolean navigate(PageState place) {
         InstancePlace instancePlace = (InstancePlace) place;
-        locator.queryInstances(new IdCriteria(instancePlace.getInstanceId()))
-            .then(new Function<List<FormInstance>, Void>() {
-                @Nullable
+        resourceLocator.queryInstances(new IdCriteria(instancePlace.getInstanceId()))
+            .then(new AsyncCallback<List<FormInstance>>() {
                 @Override
-                public Void apply(List<FormInstance> formInstances) {
-                    if(formInstances.size() == 0) {
+                public void onFailure(Throwable caught) {
+                    Log.debug("Navigation failed", caught);
+                }
+
+                @Override
+                public void onSuccess(List<FormInstance> formInstances) {
+                    if (formInstances.size() == 0) {
                         panel.setWidget(new HTML("Not found"));
                     } else {
                         loadView(formInstances.get(0));
                     }
-                    return null;
                 }
             });
         return true;
@@ -78,10 +86,19 @@ public class InstancePage implements Page, PromiseMonitor {
     }
 
     private void loadView(FormInstance instance) {
-        if(instance.getClassId().equals(FolderClass.CLASS_ID)) {
-            FolderView folderView = new FolderView(locator);
-            folderView.show(instance);
-            panel.setWidget(folderView);
+        InstanceView view = createView(instance);
+        view.show(instance);
+        panel.setWidget(view);
+    }
+
+    private InstanceView createView(FormInstance instance) {
+        Cuid classId = instance.getClassId();
+        if(classId.equals(FolderClass.CLASS_ID)) {
+            return new FolderView(resourceLocator);
+        } else if(classId.equals(FormClass.CLASS_ID)) {
+            return new FormView(resourceLocator);
+        } else {
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -96,4 +113,5 @@ public class InstancePage implements Page, PromiseMonitor {
                 break;
         }
     }
+
 }
