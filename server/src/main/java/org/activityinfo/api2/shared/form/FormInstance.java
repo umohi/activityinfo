@@ -92,7 +92,9 @@ public class FormInstance implements Resource, HasHashCode {
     public void set(@NotNull Cuid fieldId, Object fieldValue) {
         Preconditions.checkNotNull(fieldId);
         if (fieldValue instanceof LocalDate) {
-            throw new IllegalArgumentException("Please use java.util.Date instead of LocalDate class");
+            // not sure if we want to use LocalDate or Date here -- may only matter at the moment
+            // of serialization
+            fieldValue = ((LocalDate) fieldValue).atMidnightInMyTimezone();
         }
         if (fieldValue instanceof DTO) {
             throw new IllegalArgumentException("Please use cuid reference instead of legacy class.");

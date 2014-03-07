@@ -1,13 +1,9 @@
 package org.activityinfo.api2.client;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api2.client.promises.AsyncConsumer;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.function.Consumer;
 import com.google.common.base.Function;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**

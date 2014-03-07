@@ -27,7 +27,7 @@ public class FormField implements FormElement {
     private boolean readOnly;
     private boolean visible = true;
     private List<Iri> dimensions;
-    private Set<Iri> superProperties = Sets.newHashSet();
+    private Set<Cuid> superProperties = Sets.newHashSet();
     private boolean required;
     private FormFieldCardinality cardinality;
 
@@ -186,15 +186,19 @@ public class FormField implements FormElement {
                 '}';
     }
 
-    public Set<Iri> getSuperProperties() {
+    public Set<Cuid> getSuperProperties() {
         return superProperties;
     }
 
-    public void addSuperProperty(Iri iri) {
-        superProperties.add(iri);
+    public void addSuperProperty(Cuid propertyId) {
+        superProperties.add(propertyId);
     }
 
-    public void setSuperProperties(Set<Iri> superProperties) {
+    public void setSuperProperties(Set<Cuid> superProperties) {
         this.superProperties = superProperties;
+    }
+
+    public void setSuperProperty(Cuid superProperty) {
+        this.superProperties = Collections.singleton(superProperty);
     }
 }

@@ -22,6 +22,10 @@ public class IdCriteria implements Criteria {
         this.instanceIds = instanceIds;
     }
 
+    public IdCriteria(Iterable<Cuid> instanceIds) {
+        this.instanceIds = Sets.newHashSet(instanceIds);
+    }
+
     public Set<Cuid> getInstanceIds() {
         return instanceIds;
     }
