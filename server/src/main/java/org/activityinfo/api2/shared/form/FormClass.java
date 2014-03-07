@@ -26,6 +26,20 @@ import java.util.Set;
  */
 public class FormClass implements Resource, FormElementContainer, HasHashCode {
 
+
+    /**
+     * Because FormClasses are themselves FormInstances, they have a class id of their own
+     */
+    public static final Cuid CLASS_ID = new Cuid("_class");
+
+    /**
+     * Instances of FormClass have one FormField: a label, which has its own
+     * FormField id. It is defined at the application level to be a subproperty of
+     * {@code _label}
+     */
+    public static final Cuid LABEL_FIELD_ID = new Cuid("_class_label");
+
+
     @NotNull
     private Cuid id;
     private Cuid parentId;

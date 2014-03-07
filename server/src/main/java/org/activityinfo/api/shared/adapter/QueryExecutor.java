@@ -14,7 +14,7 @@ import org.activityinfo.api2.shared.Cuids;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.criteria.*;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.system.FolderClass;
+import org.activityinfo.api2.shared.application.FolderClass;
 import org.activityinfo.api2.shared.function.ConcatList;
 
 import java.util.Collection;
@@ -163,7 +163,7 @@ public class QueryExecutor  {
 
         Cuid formClassId = new Cuid(classIri.getSchemeSpecificPart());
 
-        if(formClassId.equals(FolderClass.FORM_CLASS)) {
+        if(formClassId.equals(FolderClass.CLASS_ID)) {
             return folders();
         }
 

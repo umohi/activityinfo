@@ -10,7 +10,7 @@ import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.CriteriaIntersection;
 import org.activityinfo.api2.shared.criteria.ParentCriteria;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.system.FolderClass;
+import org.activityinfo.api2.shared.application.FolderClass;
 import org.activityinfo.ui.full.client.page.*;
 import org.activityinfo.ui.full.client.page.instance.InstancePage;
 import org.activityinfo.ui.full.client.page.instance.InstancePlace;
@@ -68,7 +68,7 @@ public class PageLoader implements org.activityinfo.ui.full.client.page.PageLoad
 
     private void loadHomePage(AsyncCallback<Page> callback) {
         CriteriaIntersection criteria = new CriteriaIntersection(
-                new ClassCriteria(FolderClass.FORM_CLASS),
+                new ClassCriteria(FolderClass.CLASS_ID),
                 ParentCriteria.isRoot());
 
         resourceLocator.queryInstances(criteria)

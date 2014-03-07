@@ -21,7 +21,6 @@ import org.activityinfo.api2.shared.form.FormInstance;
 
 import java.util.List;
 
-import static org.activityinfo.api.shared.adapter.BuiltinFormClasses.ActivityAdapter;
 import static org.activityinfo.api.shared.adapter.CuidAdapter.*;
 
 /**
@@ -39,7 +38,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Promise<FormClass> getFormClass(Cuid classId) {
-        return classProvider.get(classId);
+        return classProvider.apply(classId);
     }
 
     @Override

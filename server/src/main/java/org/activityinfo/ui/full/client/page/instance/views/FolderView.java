@@ -8,15 +8,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api2.client.InstanceQuery;
-import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.criteria.Criteria;
-import org.activityinfo.api2.shared.criteria.ParentCriteria;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.system.FolderClass;
-
-import java.util.List;
+import org.activityinfo.api2.shared.application.FolderClass;
 
 /**
  * View for Folder instances

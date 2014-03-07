@@ -6,10 +6,11 @@ import com.google.common.base.Function;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.api2.shared.Properties;
+import org.activityinfo.api2.shared.application.ApplicationProperties;
 import org.activityinfo.api2.shared.criteria.Criteria;
+import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.system.FolderClass;
+import org.activityinfo.api2.shared.application.FolderClass;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -42,7 +43,8 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
 
             for(ActivityDTO activity : db.getActivities()) {
 
-                FormInstance activityClass = new FormInstance(activityFormClass(activity.getId()), Properties.FORM_CLASS);
+                FormInstance activityClass = new FormInstance(activityFormClass(activity.getId()),
+                        FormClass.CLASS_ID);
 
                 if(!Strings.isNullOrEmpty(activity.getCategory())) {
                     categories.add(activity.getCategory());
@@ -51,7 +53,7 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
                     activityClass.setParentId(databaseId(db));
                 }
 
-                activityClass.set(Properties.LABEL_PROPERTY, activity.getName());
+                activityClass.set(FormClass.LABEL_FIELD_ID, activity.getName());
 
                 if(criteria.apply(activityClass)) {
                     instances.add(activityClass);
@@ -60,9 +62,9 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
 
             for(String category : categories) {
                 FormInstance categoryFolder = new FormInstance(
-                        activityCategoryFolderId(db, category), FolderClass.FORM_CLASS);
+                        activityCategoryFolderId(db, category), FolderClass.CLASS_ID);
                 categoryFolder.setParentId(dbFolder.getId());
-                categoryFolder.set(Properties.LABEL_PROPERTY, category);
+                categoryFolder.set(FolderClass.LABEL_FIELD_ID, category);
 
                 if(criteria.apply(categoryFolder)) {
                     instances.add(categoryFolder);
@@ -74,7 +76,7 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
 
     private FormInstance newFolder(UserDatabaseDTO db) {
         FormInstance folder = new FormInstance(cuid(DATABASE_DOMAIN, db.getId()),
-                FolderClass.FORM_CLASS);
+                FolderClass.CLASS_ID);
         folder.set(FolderClass.LABEL_FIELD_ID, db.getName());
         folder.set(FolderClass.DESCRIPTION_FIELD_ID, db.getFullName());
         return folder;

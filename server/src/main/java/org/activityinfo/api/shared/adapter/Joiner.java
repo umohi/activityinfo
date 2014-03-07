@@ -2,19 +2,22 @@ package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Projection;
+import org.activityinfo.api2.shared.application.ApplicationProperties;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.criteria.IdCriteria;
 import org.activityinfo.api2.shared.form.FormClass;
+import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.api2.shared.function.BiFunction;
+import org.activityinfo.api2.shared.function.ConcatMapFunction;
+import org.activityinfo.server.database.hibernate.entity.Project;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -33,7 +36,6 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
     private Set<FieldPath> fields;
     private List<FieldPath> joinFields;
     private Dispatcher dispatcher;
-    private Map<Cuid, FormClass> classMap = Maps.newHashMap();
 
     public Joiner(Dispatcher dispatcher, List<FieldPath> fields, Criteria criteria) {
         this.dispatcher = dispatcher;
@@ -89,10 +91,11 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
     @Override
     public Promise<List<Projection>> apply(InstanceQuery instanceQuery) {
 
-        Promise<List<Projection>> results =
-                query(criteria)
-                .join(new FetchClassDefinitions())
-                .then(concatMap(new ProjectFunction(null)));
+
+        Promise<List<FormInstance>> instances = query(criteria);
+        Promise<List<FormClass>> classes = instances.join(new FetchFormClasses());
+
+        Promise<List<Projection>> results = Promise.fmap(new ProjectFunction(null)).apply(classes, instances);
 
         // now schedule the joins
         for(FieldPath fieldToJoin : joinFields) {
@@ -107,7 +110,7 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
     }
 
 
-    private class ProjectFunction implements Function<FormInstance, Projection> {
+    private class ProjectFunction extends BiFunction<List<FormClass>,List<FormInstance>,List<Projection>> {
 
         private FieldPath prefix;
 
@@ -115,56 +118,67 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
             this.prefix = prefix;
         }
 
-        @Nullable
         @Override
-        public Projection apply(FormInstance input) {
-            Projection projection = new Projection(input.getId());
-            for(Map.Entry<Cuid, Object> entry : input.getValueMap().entrySet()) {
-                FieldPath path = new FieldPath(prefix, entry.getKey());
-                if(fields.contains(path)) {
-                    projection.setValue(path, entry.getValue());
-                }
-            }
-            return projection;
-        }
-    }
+        public List<Projection> apply(List<FormClass> formClasses, List<FormInstance> instances) {
 
-    private class FetchClassDefinitions implements Function<List<FormInstance>, Promise<List<FormInstance>>> {
-
-        @Override
-        public Promise<List<FormInstance>> apply(final List<FormInstance> formInstances) {
-
-            Set<Cuid> classesToFetch = Sets.newHashSet();
-            for(FormInstance instance : formInstances) {
-                if(!classMap.containsKey(instance.getClassId())) {
-                    classesToFetch.add(instance.getClassId());
-                }
+            if(prefix != null) {
+                throw new UnsupportedOperationException();
             }
 
-            Promise<Void> promise = Promise.resolved(null);
-            for(final Cuid classToFetch : classesToFetch) {
+            // build a map from property id -> projected field path
+            Multimap<Cuid, FieldPath> map = HashMultimap.create();
+            for(FieldPath path : fields) {
+                map.put(path.getRoot(), new FieldPath(path.getRoot()));
+            }
 
-                promise = promise.join(new Function<Void, Promise<Void>>() {
+            // our map now contains
+            // _label -> c00001._label
+            // c23424 -> c00001.c23434
 
-                    @Nullable
-                    @Override
-                    public Promise<Void> apply(@Nullable Void input) {
-                        return classProvider.get(classToFetch).then(new IndexClassDefinition());
+            // we now look at super properties to
+            // additional bindings
+
+            for(FormClass formClass : formClasses) {
+                for(FormField field : formClass.getFields()) {
+                    for(Cuid superPropertyId : field.getSuperProperties()) {
+                        if(map.containsKey(superPropertyId)) {
+                            map.putAll(field.getId(), map.get(superPropertyId));
+                        }
                     }
-                });
+                }
             }
 
-            return promise.then(Functions.constant(formInstances));
+            // now create our projections based on these mappings
+            List<Projection> projections = Lists.newArrayList();
+            for(FormInstance instance : instances) {
+
+                Projection projection = new Projection(instance.getId());
+
+                for(FieldPath classPath : map.get(ApplicationProperties.CLASS_PROPERTY)) {
+                    projection.setValue(classPath, instance.getClassId());
+                }
+
+                for(Map.Entry<Cuid, Object> entry : instance.getValueMap().entrySet()) {
+                    for(FieldPath targetPath : map.get(entry.getKey())) {
+                        projection.setValue(targetPath, entry.getValue());
+                    }
+                }
+                projections.add(projection);
+            }
+            return projections;
         }
     }
 
-    private class IndexClassDefinition implements Function<FormClass, Void> {
+    private class FetchFormClasses implements Function<List<FormInstance>, Promise<List<FormClass>>> {
 
-        @Nullable
         @Override
-        public Void apply(FormClass input) {
-            classMap.put(input.getId(), input);
-            return null;
+        public Promise<List<FormClass>> apply(List<FormInstance> instances) {
+            Set<Cuid> classIds = Sets.newHashSet();
+            for(FormInstance instance : instances) {
+                classIds.add(instance.getClassId());
+            }
+
+            return Promise.map(classIds, classProvider);
         }
     }
 

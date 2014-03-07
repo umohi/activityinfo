@@ -1,6 +1,7 @@
 package org.activityinfo.api2.shared.monad;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.function.ConcatMapFunction;
 
 import javax.annotation.Nullable;

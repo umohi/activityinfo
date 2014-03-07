@@ -7,6 +7,7 @@ import org.activityinfo.api.shared.model.CountryDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api2.shared.*;
+import org.activityinfo.api2.shared.application.ApplicationProperties;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldCardinality;
@@ -60,7 +61,7 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
         nameField.setLabel(new LocalizedString(I18N.CONSTANTS.name()));
         nameField.setType(FormFieldType.FREE_TEXT);
         nameField.setRequired(true);
-        nameField.setSuperProperty(Properties.LABEL_PROPERTY);
+        nameField.setSuperProperty(ApplicationProperties.LABEL_PROPERTY);
         formClass.addElement(nameField);
 
         FormField axeField = new FormField(getAxeFieldId(classId));

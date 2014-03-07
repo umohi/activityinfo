@@ -2,18 +2,17 @@ package org.activityinfo.api2.client;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api2.shared.function.BiFunction;
-import org.activityinfo.api2.shared.function.BiFunctions;
-import org.activityinfo.api2.shared.function.BinaryOperator;
-import org.activityinfo.api2.shared.function.ConcatList;
+import org.activityinfo.api2.shared.function.*;
 import org.activityinfo.api2.shared.monad.ListMonad;
 import org.activityinfo.api2.shared.monad.MonadicValue;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -241,6 +240,16 @@ public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
         };
     }
 
+    private static <T, R, Q> Function<T, Promise<Q>> join(final Function<T, Promise<R>> f, final Function<R, Q> g) {
+        return new Function<T, Promise<Q>>() {
+            @Nullable
+            @Override
+            public Promise<Q> apply(@Nullable T t) {
+                return f.apply(t).then(g);
+            }
+        };
+    }
+
     /**
      * Convenience function for applying an asynchronous consumer to all elements of a list in sequence.
      * Equivalent to {@code fmap(foldLeft) ( unit(null), void operator, transform(items, consumer) ) }
@@ -270,6 +279,20 @@ public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
         return fmap(new ConcatList<T>()).apply(aList, b);
     }
 
+    public static <T, R> Promise<List<R>> map(Iterable<T> items, Function<T, Promise<R>> function) {
+
+        List<Promise<List<R>>> promisedItems = Lists.newArrayList();
+        for(T item : items) {
+            promisedItems.add(function.apply(item).then(ListMonad.<R>unit()));
+        }
+
+        // we need a concat function that will take two [ Promise<List<R>> Promise<List<R>> -> Promise<List<R>> ]\
+        BiFunction<Promise<List<R>>, Promise<List<R>>, Promise<List<R>>> concatOp = fmap(new ConcatList<R>());
+        Promise<List<R>> initialValue = Promise.<List<R>>resolved(new ArrayList<R>());
+
+
+        return BiFunctions.foldLeft(initialValue, concatOp, promisedItems);
+    }
 
     @Override
     public String toString() {

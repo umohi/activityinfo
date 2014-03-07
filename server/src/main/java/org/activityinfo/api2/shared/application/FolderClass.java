@@ -1,7 +1,6 @@
-package org.activityinfo.api2.shared.form.system;
+package org.activityinfo.api2.shared.application;
 
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Properties;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
 
@@ -10,7 +9,7 @@ import org.activityinfo.api2.shared.form.FormField;
  */
 public class FolderClass {
 
-    public static final Cuid FORM_CLASS = new Cuid("_folder");
+    public static final Cuid CLASS_ID = new Cuid("_folder");
 
     public static final Cuid LABEL_FIELD_ID = new Cuid("_folder_label");
 
@@ -19,12 +18,12 @@ public class FolderClass {
     public static final FormClass get() {
 
         FormField labelField = new FormField(LABEL_FIELD_ID);
-        labelField.setSuperProperty(Properties.LABEL_PROPERTY);
+        labelField.setSuperProperty(ApplicationProperties.LABEL_PROPERTY);
 
         FormField descriptionField = new FormField(DESCRIPTION_FIELD_ID);
-        descriptionField.setSuperProperty(Properties.DESCRIPTION_PROPERTY);
+        descriptionField.setSuperProperty(ApplicationProperties.DESCRIPTION_PROPERTY);
 
-        FormClass formClass = new FormClass(FORM_CLASS);
+        FormClass formClass = new FormClass(CLASS_ID);
         formClass.addElement(labelField);
         formClass.addElement(descriptionField);
 

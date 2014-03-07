@@ -7,10 +7,8 @@ import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.PromiseMonitor;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.criteria.IdCriteria;
-import org.activityinfo.api2.shared.form.BuiltinFormClasses;
-import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.system.FolderClass;
+import org.activityinfo.api2.shared.application.FolderClass;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
@@ -80,7 +78,7 @@ public class InstancePage implements Page, PromiseMonitor {
     }
 
     private void loadView(FormInstance instance) {
-        if(instance.getClassId().equals(FolderClass.FORM_CLASS)) {
+        if(instance.getClassId().equals(FolderClass.CLASS_ID)) {
             FolderView folderView = new FolderView(locator);
             folderView.show(instance);
             panel.setWidget(folderView);

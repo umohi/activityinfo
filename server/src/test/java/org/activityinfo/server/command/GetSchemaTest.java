@@ -39,13 +39,13 @@ import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.Properties;
+import org.activityinfo.api2.shared.application.ApplicationProperties;
 import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.CriteriaIntersection;
 import org.activityinfo.api2.shared.criteria.ParentCriteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.system.FolderClass;
+import org.activityinfo.api2.shared.application.FolderClass;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
@@ -310,7 +310,7 @@ public class GetSchemaTest extends CommandTestCase2 {
         List<FormInstance> folders = assertResolves(locator.queryInstances(
                 new CriteriaIntersection(
                     ParentCriteria.isRoot(),
-                    new ClassCriteria(FolderClass.FORM_CLASS))));
+                    new ClassCriteria(FolderClass.CLASS_ID))));
 
         for(FormInstance folder : folders) {
             System.out.println(folder.getId() + " " + folder.getString(FolderClass.LABEL_FIELD_ID));
@@ -323,9 +323,10 @@ public class GetSchemaTest extends CommandTestCase2 {
     public void childFolderTest() {
         ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
 
-
         InstanceQuery query = InstanceQuery
-                .select(Properties.LABEL_PROPERTY, Properties.DESCRIPTION_PROPERTY, Properties.CLASS_PROPERTY)
+                .select(ApplicationProperties.LABEL_PROPERTY,
+                        ApplicationProperties.DESCRIPTION_PROPERTY,
+                        ApplicationProperties.CLASS_PROPERTY)
                 .where(ParentCriteria.isChildOf(CuidAdapter.cuid(CuidAdapter.DATABASE_DOMAIN, 1)))
                 .build();
 
@@ -333,13 +334,9 @@ public class GetSchemaTest extends CommandTestCase2 {
 
         System.out.println("Results: ");
         for(Projection child : children) {
-            System.out.println(child.getStringValue(Properties.LABEL_PROPERTY));
+            System.out.println(child.getStringValue(ApplicationProperties.LABEL_PROPERTY));
         }
 
-        assertThat(children.size(), equalTo(500));
-
+        assertThat(children.size(), equalTo(2));
     }
-
-
-
 }
