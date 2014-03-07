@@ -31,7 +31,12 @@ import java.util.Date;
  */
 public class StringToDateConverter implements StringConverter<Date> {
 
-    private static final StringToLocalDateConverter LOCAL_DATE_CONVERTER = new StringToLocalDateConverter();
+    public static final StringToDateConverter INSTANCE = new StringToDateConverter();
+
+    private final StringToLocalDateConverter LOCAL_DATE_CONVERTER = new StringToLocalDateConverter();
+
+    private StringToDateConverter() {
+    }
 
     @Nonnull
     @Override

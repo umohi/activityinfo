@@ -5,11 +5,12 @@ import javax.annotation.Nonnull;
 /**
  * Converts an imported value to String
  */
-public class StringToStringConverter implements StringConverter<String>  {
+public enum FakeConverter implements Converter  {
+    INSTANCE;
 
     @Nonnull
     @Override
-    public String convert(@Nonnull String value) {
+    public Object convert(@Nonnull Object value) {
         return value;
     }
 }

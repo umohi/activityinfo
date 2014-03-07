@@ -19,7 +19,7 @@ public class MappedDataFieldBinding implements FieldBinding {
     public MappedDataFieldBinding(FormField field, int sourceColumn) {
         this.field = field;
         this.sourceColumn = sourceColumn;
-        this.converter = ConverterFactory.create(field.getType());
+        this.converter = ConverterFactory.createStringConverter(field.getType());
     }
 
     @Override

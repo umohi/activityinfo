@@ -31,7 +31,12 @@ import javax.annotation.Nonnull;
  */
 public class QuantityToStringConverter implements QuantityConverter<String> {
 
+    public final static QuantityToStringConverter INSTANCE = new QuantityToStringConverter();
+
     private final static QuantityFormatter FORMATTER = new GwtQuantityFormatterFactory().create();
+
+    private QuantityToStringConverter() {
+    }
 
     @Nonnull
     @Override
