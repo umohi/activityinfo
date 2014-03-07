@@ -21,6 +21,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
@@ -54,7 +55,7 @@ import java.util.Set;
 /**
  * @author yuriyz on 3/5/14.
  */
-public class FormFieldInlineReferenceEdit extends Composite {
+public class FormFieldInlineReferenceEdit extends Composite implements HasInstances {
 
     private static FormFieldInlineReferenceEditBinder uiBinder = GWT
             .create(FormFieldInlineReferenceEditBinder.class);
@@ -137,19 +138,19 @@ public class FormFieldInlineReferenceEdit extends Composite {
         tableDataProvider.addDataDisplay(table);
     }
 
-    public void onOkClick() {
+    public void updateModel() {
         final FormField formField = getFormField();
         if (formField != null) {
             formField.setCardinality(singleChoice.getValue() ? FormFieldCardinality.SINGLE : FormFieldCardinality.MULTIPLE);
-        }
 
-        final Set<Cuid> newRange = Sets.newHashSet();
-        final List<FormInstance> instaces = tableDataProvider.getList();
-        for (FormInstance instance : instaces) {
-            newRange.add(instance.getId());
+            // update range
+            final Set<Cuid> newRange = Sets.newHashSet();
+            final List<FormInstance> instances = tableDataProvider.getList();
+            for (FormInstance instance : instances) {
+                newRange.add(instance.getId());
+            }
+            formField.setRange(newRange);
         }
-        formField.setRange(newRange);
-        // todo - instance handling
     }
 
     @UiHandler("addButton")
@@ -195,6 +196,11 @@ public class FormFieldInlineReferenceEdit extends Composite {
             return (HasInstances) container.getRow().getFormFieldWidget();
         }
         return null;
+    }
+
+    @Override
+    public List<FormInstance> getInstances() {
+        return Lists.newArrayList(tableDataProvider.getList());
     }
 
     public FormField getFormField() {

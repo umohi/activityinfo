@@ -33,11 +33,16 @@ import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
 import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author yuriyz on 1/28/14.
@@ -111,6 +116,8 @@ public class FormFieldRow extends Composite {
                 final FormFieldType oldType = formField.getType();
                 final LocalizedString oldUnit = formField.getUnit();
                 final boolean oldRequired = formField.isRequired();
+                final FormFieldCardinality oldCardinality = formField.getCardinality();
+                final Set<Cuid> oldRange = formField.getRange();
 
                 editFieldPanel.updateModel();
 
@@ -119,17 +126,32 @@ public class FormFieldRow extends Composite {
                 final FormFieldType newType = formField.getType();
                 final LocalizedString newUnit = formField.getUnit();
                 final boolean newRequired = formField.isRequired();
+                final FormFieldCardinality newCardinality = formField.getCardinality();
+                final Set<Cuid> newRange = formField.getRange();
 
                 final FlowPanel widgetContainer = FormFieldRow.this.control;
                 final IsWidget oldWidget = FormFieldRow.this.formFieldWidget;
+                final boolean isRangeEqual = oldRange != null && newRange != null &&
+                        oldRange.containsAll(newRange) && newRange.containsAll(oldRange);
+                final boolean isReferenceChange = oldCardinality != newCardinality || !isRangeEqual;
                 final boolean isTypeChanged = oldType != newType;
-                if (isTypeChanged) {
+
+                if (isTypeChanged || isReferenceChange) {
                     widgetContainer.remove(oldWidget);
-                    FormFieldRow.this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
+
+                    if (isReferenceChange) {
+                        final List<FormInstance> currentInstances = editFieldPanel.getReferencePanel().getInstances();
+                        FormFieldRow.this.formFieldWidget = new FormFieldWidgetReference(formField, currentInstances);
+                    } else {
+                        FormFieldRow.this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
+                    }
+
                     widgetContainer.add(FormFieldRow.this.formFieldWidget);
                 }
 
                 updateUI();
+                updateValue(oldType, newType);
+
                 formPanel.getUndoManager().addUndoable(new IsUndoable() {
                     @Override
                     public void undo() {
@@ -138,14 +160,17 @@ public class FormFieldRow extends Composite {
                         formField.setType(oldType);
                         formField.setUnit(oldUnit);
                         formField.setRequired(oldRequired);
+                        formField.setCardinality(oldCardinality);
+                        formField.setRange(oldRange);
 
-                        if (isTypeChanged) {
+                        if (isTypeChanged || isReferenceChange) {
                             widgetContainer.remove(FormFieldRow.this.formFieldWidget);
                             widgetContainer.add(oldWidget);
                             FormFieldRow.this.formFieldWidget = oldWidget;
                         }
 
                         updateUI();
+                        updateValue(newType, oldType);
                     }
 
                     @Override
@@ -155,14 +180,24 @@ public class FormFieldRow extends Composite {
                         formField.setType(newType);
                         formField.setUnit(newUnit);
                         formField.setRequired(newRequired);
+                        formField.setCardinality(newCardinality);
+                        formField.setRange(newRange);
 
-                        if (isTypeChanged) {
+                        if (isTypeChanged || isReferenceChange) {
                             widgetContainer.remove(oldWidget);
-                            FormFieldRow.this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
+
+                            if (isReferenceChange) {
+                                final List<FormInstance> currentInstances = editFieldPanel.getReferencePanel().getInstances();
+                                FormFieldRow.this.formFieldWidget = new FormFieldWidgetReference(formField, currentInstances);
+                            } else {
+                                FormFieldRow.this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
+                            }
+
                             widgetContainer.add(FormFieldRow.this.formFieldWidget);
                         }
 
                         updateUI();
+                        updateValue(oldType, newType);
                     }
                 });
             }
@@ -175,6 +210,21 @@ public class FormFieldRow extends Composite {
                 node.addField(addFieldPanel.getFormField(), rowIndexOnPanel);
             }
         });
+    }
+
+    private void updateValue(FormFieldType oldType, FormFieldType newType) {
+
+        if (FormFieldRow.this.formFieldWidget instanceof HasValue) {
+            final HasValue widget = (HasValue) FormFieldRow.this.formFieldWidget;
+            final Object value = getFormPanel().getValue().get(formField.getId());
+
+            // reference type -> value Set<Cuid>
+            if (oldType == newType && newType == FormFieldType.REFERENCE) {
+                if (value instanceof Set) {
+                    widget.setValue(value);
+                }
+            }
+        }
     }
 
     private void updateUI() {

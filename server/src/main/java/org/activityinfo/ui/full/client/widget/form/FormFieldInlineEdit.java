@@ -102,9 +102,6 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     @UiHandler("okButton")
     public void onOk(ClickEvent event) {
         hide();
-        if (type.getSelectedType() == FormFieldType.REFERENCE) {
-            referencePanel.onOkClick();
-        }
     }
 
     @UiHandler("cancelButton")
@@ -158,6 +155,10 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         formField.setDescription(new LocalizedString(description.getValue()));
         formField.setUnit(new LocalizedString(unit.getValue()));
         formField.setRequired(required.getValue());
+
+        if (type.getSelectedType() == FormFieldType.REFERENCE) {
+            referencePanel.updateModel();
+        }
     }
 
     public FormField getFormField() {
@@ -189,6 +190,10 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     private void setChangeButtonState() {
         changeButton.setEnabled(formField != null && !formField.getType().getAllowedConvertTo().isEmpty());
+    }
+
+    public FormFieldInlineReferenceEdit getReferencePanel() {
+        return referencePanel;
     }
 
     public FormFieldRow getRow() {

@@ -75,31 +75,37 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
     @UiField
     FlowPanel panel;
 
-    private ResourceLocator resourceLocator;
     private FormField formField;
     private FormFieldWidget<Set<Cuid>> widget;
     private Set<Cuid> value = Sets.newHashSet();
 
     public FormFieldWidgetReference(final FormField formField, final ResourceLocator resourceLocator) {
         this.formField = formField;
-        this.resourceLocator = resourceLocator;
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
-        loadFormInstances(formField);
+
+        resourceLocator.queryInstances(ClassCriteria.union(formField.getRange())).then(new SuccessCallback<List<FormInstance>>() {
+            @Override
+            public void onSuccess(List<FormInstance> result) {
+                createAndAddWidget(result);
+            }
+        });
+    }
+
+    public FormFieldWidgetReference(final FormField formField, final List<FormInstance> instances) {
+        this.formField = formField;
+        TransitionUtil.ensureBootstrapInjected();
+        initWidget(uiBinder.createAndBindUi(this));
+        createAndAddWidget(instances);
+    }
+
+    private void createAndAddWidget(final List<FormInstance> instances) {
+        FormFieldWidgetReference.this.widget = createWidget(instances);
+        addWidget();
     }
 
     public FlowPanel getPanel() {
         return panel;
-    }
-
-    private void loadFormInstances(final FormField formField) {
-        resourceLocator.queryInstances(ClassCriteria.union(formField.getRange())).then(new SuccessCallback<List<FormInstance>>() {
-            @Override
-            public void onSuccess(List<FormInstance> result) {
-                FormFieldWidgetReference.this.widget = createWidget(result);
-                addWidget();
-            }
-        });
     }
 
     private void addWidget() {
