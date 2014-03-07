@@ -3,14 +3,13 @@ package org.activityinfo.api.shared.adapter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.base.Function;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.shared.application.ApplicationProperties;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.application.FolderClass;
+import org.activityinfo.server.database.hibernate.entity.LocationType;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -71,6 +70,23 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
                 }
             }
         }
+
+        // Add LocationTypes which have been assigned to a database
+        for(CountryDTO country : schemaDTO.getCountries()) {
+            for(LocationTypeDTO locationType : country.getLocationTypes()) {
+                if(!locationType.isAdminLevel() && locationType.getDatabaseId() != null) {
+                    FormInstance instance = new FormInstance(CuidAdapter.locationFormClass(locationType.getId()),
+                            FormClass.CLASS_ID);
+                    instance.set(FormClass.LABEL_FIELD_ID, locationType.getName());
+                    instance.setParentId(CuidAdapter.cuid(DATABASE_DOMAIN, locationType.getDatabaseId()));
+
+                    if(criteria.apply(instance)) {
+                        instances.add(instance);
+                    }
+                }
+            }
+        }
+
         return instances;
     }
 

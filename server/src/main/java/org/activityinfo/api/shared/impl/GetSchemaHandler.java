@@ -90,7 +90,7 @@ public class GetSchemaHandler implements
 
         public void loadLocationTypes() {
             SqlQuery.select("locationTypeId", "name", "boundAdminLevelId",
-                    "countryId", "workflowId").from("locationtype")
+                    "countryId", "workflowId", "databaseId").from("locationtype")
                     .execute(tx, new RowHandler() {
 
                         @Override
@@ -99,6 +99,10 @@ public class GetSchemaHandler implements
                             type.setId(row.getInt("locationTypeId"));
                             type.setName(row.getString("name"));
                             type.setWorkflowId(row.getString("workflowId"));
+
+                            if(!row.isNull("databaseId")) {
+                                type.setDatabaseId(row.getInt("databaseId"));
+                            }
 
                             if (!row.isNull("boundAdminLevelId")) {
                                 type.setBoundAdminLevelId(row

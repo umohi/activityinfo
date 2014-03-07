@@ -148,6 +148,7 @@ public class QueryExecutor  {
             case DATABASE_DOMAIN:
             case ACTIVITY_CATEGORY_DOMAIN:
             case ACTIVITY_DOMAIN:
+            case LOCATION_TYPE_DOMAIN:
                 return folders();
         }
         throw new UnsupportedOperationException("unrecognized domain: " + domain);

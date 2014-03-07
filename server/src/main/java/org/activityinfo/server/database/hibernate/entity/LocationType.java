@@ -46,6 +46,8 @@ public class LocationType implements Serializable {
     private Set<Activity> activities = new HashSet<Activity>(0);
     private String workflowId;
 
+    private UserDatabase database;
+
     private AdminLevel boundAdminLevel;
 
     public LocationType() {
@@ -90,6 +92,12 @@ public class LocationType implements Serializable {
     public void setCountry(Country country) {
         this.country = country;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DatabaseId", nullable = false)
+    public UserDatabase getDatabase() { return this.database; }
+
+    public void setDatabase(UserDatabase database) { this.database = database; }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "locationType")
     public Set<Location> getLocations() {

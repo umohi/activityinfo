@@ -1,50 +1,35 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:list='urn:import:org.activityinfo.ui.full.client.page.home.list'>
-    <g:HTMLPanel>
+             xmlns:list='urn:import:org.activityinfo.ui.full.client.page.home.list'
+             xmlns:ai='urn:import:org.activityinfo.ui.full.client.widget'>
+    <g:HeaderPanel styleName="container">
 
-        <div class="container">
+        <!-- Header -->
+        <g:HTMLPanel>
 
-            <div class="row">
+            <h1 ui:field="nameElement"/>
 
-                <h1 ui:field="nameElement"/>
+            <div ui:field="breadCrumbElement"/>
 
-                <div ui:field="breadCrumbElement"/>
-            </div>
+        </g:HTMLPanel>
 
-            <div class="row">
+        <!-- Main -->
+        <g:DockLayoutPanel unit="EM" width="100%" height="100%">
+            <g:center>
+                <ai:AsyncPanel ui:field="contentPanel" width="100%" height="100%"/>
+            </g:center>
 
-                <div class="col-md-4">
+            <g:east size="20" >
+                <g:HTMLPanel>
 
-                    <ul>
-                        <li>Submit new form</li>
-
-                    </ul>
-
-
-                </div>
-                <div class="col-md-4">
-
-                    <h2>Recent Activity</h2>
-
-
-                </div>
-                <div class="col-md-4">
-                    <h2>Help</h2>
-
-                    <p>Welcome to ActivityInfo! This is some helpful help text to
-                        get you started with using ActivityInfo.</p>
-
-                    <h2>Common Tasks</h2>
-                    <ul>
-                        <li><a href="#">Getting started with entering data</a></li>
-                        <li><a href="#">Export data to Excel</a></li>
-                        <li><a href="#">Create a map from your data</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-    </g:HTMLPanel>
+                <h2>Common Tasks</h2>
+                <ul>
+                    <li><a href="#">Getting started with entering data</a></li>
+                    <li><a href="#">Export data to Excel</a></li>
+                    <li><a href="#">Create a map from your data</a></li>
+                </ul>
+                </g:HTMLPanel>
+            </g:east>
+        </g:DockLayoutPanel>
+    </g:HeaderPanel>
 </ui:UiBinder>

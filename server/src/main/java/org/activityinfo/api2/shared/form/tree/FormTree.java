@@ -32,6 +32,7 @@ public class FormTree {
         private FormField field;
 
         private FieldPath path;
+        private FormClass formClass;
         private List<Node> children = Lists.newArrayList();
 
         public boolean isRoot() {
@@ -50,6 +51,7 @@ public class FormTree {
                 childNode.parent = this;
                 childNode.field = property;
                 childNode.path = new FieldPath(this.path, property);
+                childNode.formClass = formClass;
                 children.add(childNode);
                 nodeMap.put(childNode.path, childNode);
             }
@@ -66,6 +68,8 @@ public class FormTree {
         public FormField getField() {
             return field;
         }
+
+        public FormClass getFormClass() { return formClass; }
 
         public Cuid getFieldId() {
             return field.getId();

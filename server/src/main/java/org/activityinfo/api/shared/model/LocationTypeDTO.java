@@ -38,6 +38,8 @@ import org.codehaus.jackson.map.annotate.JsonView;
 @JsonAutoDetect(JsonMethod.NONE)
 public final class LocationTypeDTO extends BaseModelData implements DTO {
 
+    private Integer databaseId;
+
     public LocationTypeDTO() {
     }
 
@@ -86,5 +88,13 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
 
     public String getWorkflowId() {
         return get("workflowId");
+    }
+
+    public Integer getDatabaseId() {
+        return databaseId;
+    }
+
+    public void setDatabaseId(Integer databaseId) {
+        this.databaseId = databaseId;
     }
 }

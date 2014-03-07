@@ -37,4 +37,13 @@
       <column name="workflowStatusId" type="varchar(50)" defaultValue="validated"/>
     </addColumn>
   </changeSet>
+
+  <changeSet author="alex" id="020-02">
+    <addColumn tableName="locationtype">
+      <column name="databaseId" type="integer">
+          <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
 </databaseChangeLog>

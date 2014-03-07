@@ -1,11 +1,13 @@
 package org.activityinfo.ui.full.client.page.instance.views;
 
+import com.extjs.gxt.ui.client.widget.ScrollContainer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.Promise;
@@ -35,6 +37,7 @@ public class FolderView implements InstanceView {
     private static FolderViewUiBinder ourUiBinder = GWT.create(FolderViewUiBinder.class);
 
     private final HTMLPanel rootElement;
+    private final ScrollPanel scrollPanel;
 
     @UiField
     HeadingElement folderNameElement;
@@ -53,6 +56,7 @@ public class FolderView implements InstanceView {
     public FolderView(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
         rootElement = ourUiBinder.createAndBindUi(this);
+        scrollPanel = new ScrollPanel(rootElement);
         breadCrumb = new BreadCrumbBuilder(resourceLocator, breadCrumbElement);
     }
 
@@ -74,7 +78,7 @@ public class FolderView implements InstanceView {
 
     @Override
     public Widget asWidget() {
-        return rootElement;
+        return scrollPanel;
     }
 
 }
