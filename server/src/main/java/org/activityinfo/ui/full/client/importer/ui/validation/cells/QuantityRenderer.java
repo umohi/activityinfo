@@ -1,8 +1,7 @@
 package org.activityinfo.ui.full.client.importer.ui.validation.cells;
 
 import com.google.common.base.Function;
-import com.google.gwt.i18n.client.NumberFormat;
-import org.activityinfo.api2.shared.form.QuantityFormatter;
+import org.activityinfo.api2.shared.formatter.QuantityFormatter;
 
 import javax.annotation.Nullable;
 

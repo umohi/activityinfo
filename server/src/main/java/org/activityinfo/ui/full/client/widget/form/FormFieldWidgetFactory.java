@@ -21,7 +21,6 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
@@ -33,8 +32,6 @@ import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;
  * @author yuriyz on 1/28/14.
  */
 public class FormFieldWidgetFactory {
-
-    public static final DateTimeFormat DATE_TIME_FORMAT = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL);
 
     private FormFieldWidgetFactory() {
     }
@@ -84,7 +81,6 @@ public class FormFieldWidgetFactory {
     public static DateBoxWithReadOnly createDateTextBox() {
         final DateBoxWithReadOnly dateBox = new DateBoxWithReadOnly();
         GwtUtil.setFormControlStyles(dateBox.getTextBox());
-        dateBox.setFormat(new DateBoxWithReadOnly.DefaultFormat(DATE_TIME_FORMAT));
         return dateBox;
     }
 

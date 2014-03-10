@@ -21,8 +21,10 @@ package org.activityinfo.ui.full.client.widget;
  * #L%
  */
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DatePicker;
+import org.activityinfo.api2.shared.formatter.DateFormatterFactory;
 
 import java.util.Date;
 
@@ -50,10 +52,15 @@ import java.util.Date;
 public class DateBoxWithReadOnly extends DateBox implements HasReadOnly {
 
     public DateBoxWithReadOnly() {
+        setFormat(createFormat());
     }
 
     public DateBoxWithReadOnly(DatePicker picker, Date date, Format format) {
-        super(picker, date, format);
+        super(picker, date, createFormat());
+    }
+
+    public static Format createFormat() {
+        return new DefaultFormat(DateTimeFormat.getFormat(DateFormatterFactory.FORMAT));
     }
 
     @Override

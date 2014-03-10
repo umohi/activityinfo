@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.importer.converter;
+package org.activityinfo.api2.client.formatter;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,27 +21,31 @@ package org.activityinfo.ui.full.client.importer.converter;
  * #L%
  */
 
-import org.activityinfo.api2.client.formatter.GwtDateFormatterFactory;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import org.activityinfo.api2.shared.formatter.DateFormatter;
+import org.activityinfo.api2.shared.formatter.DateFormatterFactory;
 
-import javax.annotation.Nonnull;
 import java.util.Date;
 
 /**
- * @author yuriyz on 3/7/14.
+ * @author yuriyz on 3/10/14.
  */
-public class StringToDateConverter implements StringConverter<Date> {
+public class GwtDateFormatterFactory implements DateFormatterFactory {
 
-    public static final StringToDateConverter INSTANCE = new StringToDateConverter();
+    public static final DateTimeFormat GWT_FORMAT = DateTimeFormat.getFormat(FORMAT);
 
-    private final static DateFormatter FORMATTER = new GwtDateFormatterFactory().create();
-
-    private StringToDateConverter() {
-    }
-
-    @Nonnull
     @Override
-    public Date convert(@Nonnull String value) {
-        return FORMATTER.parse(value);
+    public DateFormatter create() {
+        return new DateFormatter() {
+            @Override
+            public String format(Date value) {
+                return GWT_FORMAT.format(value);
+            }
+
+            @Override
+            public Date parse(String valueAsString) {
+                return GWT_FORMAT.parse(valueAsString);
+            }
+        };
     }
 }

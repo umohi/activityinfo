@@ -1,7 +1,7 @@
-package org.activityinfo.api2.server.form;
+package org.activityinfo.api2.server.formatter;
 
-import org.activityinfo.api2.shared.form.QuantityFormatter;
-import org.activityinfo.api2.shared.form.QuantityFormatterFactory;
+import org.activityinfo.api2.shared.formatter.QuantityFormatter;
+import org.activityinfo.api2.shared.formatter.QuantityFormatterFactory;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -15,17 +15,17 @@ public class JavaTextQuantityFormatterFactory implements QuantityFormatterFactor
         final NumberFormat format = NumberFormat.getNumberInstance();
         return new QuantityFormatter() {
             @Override
-            public String format(double value) {
+            public String format(Double value) {
                 return format.format(value);
             }
 
             @Override
-            public double parse(String valueAsString) {
+            public Double parse(String valueAsString) {
                 try {
                     return format.parse(valueAsString).doubleValue();
                 } catch (ParseException e) {
                     e.printStackTrace(); // todo log exception
-                    return -1;
+                    return null;
                 }
             }
         };

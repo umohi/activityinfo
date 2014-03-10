@@ -27,7 +27,7 @@ public enum FormFieldType {
     NARRATIVE {
         @Override
         public Set<FormFieldType> getAllowedConvertTo() {
-            return Sets.newHashSet();
+            return Sets.newHashSet(FREE_TEXT, QUANTITY, LOCAL_DATE);
         }
     },
 
@@ -37,7 +37,7 @@ public enum FormFieldType {
     FREE_TEXT {
         @Override
         public Set<FormFieldType> getAllowedConvertTo() {
-            return Sets.newHashSet(NARRATIVE);
+            return Sets.newHashSet(QUANTITY, LOCAL_DATE, NARRATIVE);
         }
     },
 

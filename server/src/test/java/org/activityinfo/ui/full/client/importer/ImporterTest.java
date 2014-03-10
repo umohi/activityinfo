@@ -17,7 +17,7 @@ import org.activityinfo.api.shared.command.result.SiteResult;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
-import org.activityinfo.api2.server.form.JavaTextQuantityFormatterFactory;
+import org.activityinfo.api2.server.formatter.JavaTextQuantityFormatterFactory;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;

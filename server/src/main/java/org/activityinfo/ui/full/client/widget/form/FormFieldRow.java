@@ -37,6 +37,8 @@ import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.ui.full.client.importer.converter.Converter;
+import org.activityinfo.ui.full.client.importer.converter.ConverterFactory;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
 import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
@@ -132,7 +134,8 @@ public class FormFieldRow extends Composite {
                 final FlowPanel widgetContainer = FormFieldRow.this.control;
                 final boolean isRangeEqual = oldRange != null && newRange != null &&
                         oldRange.containsAll(newRange) && newRange.containsAll(oldRange);
-                final boolean isReferenceChange = oldCardinality != newCardinality || !isRangeEqual;
+                final boolean isReferenceChange = (newType == FormFieldType.REFERENCE) &&
+                        (oldCardinality != newCardinality || !isRangeEqual);
                 final boolean isTypeChanged = oldType != newType;
                 final IsWidget oldWidget = FormFieldRow.this.formFieldWidget;
 
@@ -151,7 +154,7 @@ public class FormFieldRow extends Composite {
                 final IsWidget newWidget = FormFieldRow.this.formFieldWidget;
 
                 updateUI();
-                updateValue(oldType, newType);
+                updateValue(oldType, newType, newWidget);
 
                 formPanel.getUndoManager().addUndoable(new IsUndoable() {
                     @Override
@@ -171,7 +174,7 @@ public class FormFieldRow extends Composite {
                         }
 
                         updateUI();
-                        updateValue(newType, oldType);
+                        updateValue(newType, oldType, oldWidget);
                     }
 
                     @Override
@@ -191,7 +194,7 @@ public class FormFieldRow extends Composite {
                         }
 
                         updateUI();
-                        updateValue(oldType, newType);
+                        updateValue(oldType, newType, newWidget);
                     }
                 });
             }
@@ -206,17 +209,30 @@ public class FormFieldRow extends Composite {
         });
     }
 
-    private void updateValue(FormFieldType oldType, FormFieldType newType) {
-
-        if (FormFieldRow.this.formFieldWidget instanceof HasValue) {
-            final HasValue widget = (HasValue) FormFieldRow.this.formFieldWidget;
-            final Object value = getFormPanel().getValue().get(formField.getId());
+    private void updateValue(FormFieldType oldType, FormFieldType newType, IsWidget widgetToUpdate) {
+        final Object value = getFormPanel().getValue().get(formField.getId());
+        if (widgetToUpdate instanceof HasValue && value != null) {
+            final HasValue widget = (HasValue) widgetToUpdate;
 
             // reference type -> value Set<Cuid>
-            if (oldType == newType && newType == FormFieldType.REFERENCE) {
-                if (value instanceof Set) {
+            if (newType == FormFieldType.REFERENCE) {
+                if (oldType == newType && (value instanceof Set || value instanceof Cuid)) {
                     widget.setValue(value);
                 }
+            } else { // newType != REFERENCE
+                Object convertedValue = null;
+                final Converter converter = ConverterFactory.createSilently(oldType, newType);
+                if (converter != null) {
+                    try {
+                        convertedValue = converter.convert(value);
+                        if (convertedValue != null) {
+                            widget.setValue(convertedValue);
+                        }
+                    } catch (Exception e) {
+                        Log.error(e.getMessage(), e);
+                    }
+                }
+                getFormPanel().getValue().set(formField.getId(), convertedValue);
             }
         }
     }

@@ -1,4 +1,4 @@
-package org.activityinfo.api2.shared.form;
+package org.activityinfo.api2.shared.formatter;
 
 /**
  * Creates a {@code QuantityFormatter} for a given FormField.

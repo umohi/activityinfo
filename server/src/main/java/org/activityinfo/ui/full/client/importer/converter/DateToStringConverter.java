@@ -21,6 +21,9 @@ package org.activityinfo.ui.full.client.importer.converter;
  * #L%
  */
 
+import org.activityinfo.api2.client.formatter.GwtDateFormatterFactory;
+import org.activityinfo.api2.shared.formatter.DateFormatter;
+
 import javax.annotation.Nonnull;
 import java.util.Date;
 
@@ -28,9 +31,17 @@ import java.util.Date;
  * @author yuriyz on 3/7/14.
  */
 public class DateToStringConverter implements DateConverter<String> {
+
+    public final static DateToStringConverter INSTANCE = new DateToStringConverter();
+
+    private final static DateFormatter FORMATTER = new GwtDateFormatterFactory().create();
+
+    private DateToStringConverter() {
+    }
+
     @Nonnull
     @Override
     public String convert(@Nonnull Date value) {
-        return null; // todo
+        return FORMATTER.format(value);
     }
 }
