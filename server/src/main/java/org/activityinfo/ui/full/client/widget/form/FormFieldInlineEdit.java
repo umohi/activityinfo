@@ -26,6 +26,7 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -57,6 +58,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     private FormField formField;
     private boolean editMode = false;
     private FormFieldRow row;
+    private FormPanel formPanel;
 
     @UiField
     TextBox label;
@@ -80,13 +82,25 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     FormFieldInlineReferenceEdit referencePanel;
     @UiField
     DivElement referenceContainer;
+    @UiField
+    DivElement errorContainer;
 
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+        setState();
+        referencePanel.setContainer(this);
+        type.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                fireState();
+            }
+        });
+    }
+
+    public void setState() {
         setUnitControlState();
         setReferencePanelState();
-        referencePanel.setContainer(this);
     }
 
     public void setUnitControlState() {
@@ -144,9 +158,8 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         unit.setValue(formField.getUnit().getValue());
         type.setSelectedType(formField.getType());
         required.setValue(formField.isRequired());
-        setUnitControlState();
         setChangeButtonState();
-        setReferencePanelState();
+        setState();
     }
 
     public void updateModel() {
@@ -193,6 +206,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     }
 
     public void fireState() {
+        setState();
         setOkButtonState();
     }
 
@@ -210,5 +224,24 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
 
     public void setRow(FormFieldRow row) {
         this.row = row;
+        if (formPanel == null && row != null) {
+            formPanel = row.getFormPanel();
+        }
+    }
+
+    public void showError(String errorMessage) {
+        errorContainer.setInnerSafeHtml(SafeHtmlUtils.fromSafeConstant(errorMessage));
+    }
+
+    public void clearError() {
+        errorContainer.setInnerHTML("");
+    }
+
+    public FormPanel getFormPanel() {
+        return formPanel;
+    }
+
+    public void setFormPanel(FormPanel formPanel) {
+        this.formPanel = formPanel;
     }
 }

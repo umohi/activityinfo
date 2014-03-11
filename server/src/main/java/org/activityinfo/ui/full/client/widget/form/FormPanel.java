@@ -191,11 +191,20 @@ public class FormPanel extends Composite {
     }
 
     private void initPanels() {
+        addFieldPanel.setFormPanel(this);
+
         addSectionPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 addSectionPanel.updateModel();
                 elementNode.addSection(addSectionPanel.getFormSection(), 0);
+            }
+        });
+        addFieldPanel.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addFieldPanel.updateModel();
+                elementNode.addField(addFieldPanel.getFormField(), 0);
             }
         });
     }

@@ -87,5 +87,8 @@
       </div>
     </form>
     <br/>
+    <div class="has-error">
+      <div class="help-block" ui:field="errorContainer"/>
+    </div>
   </g:HTMLPanel>
 </ui:UiBinder>

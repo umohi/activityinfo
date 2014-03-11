@@ -194,12 +194,13 @@ public class FormSectionRow extends Composite {
                 parentNode.addSection(addPanel.getFormSection(), rowIndexOnPanel);
             }
         });
+
+        addFieldPanel.setFormPanel(formPanel);
         addFieldPanel.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 addFieldPanel.updateModel();
-                int rowIndexOnPanel = parentNode.getContentPanel().getWidgetIndex(FormSectionRow.this);
-                parentNode.addField(addFieldPanel.getFormField(), rowIndexOnPanel);
+                node.addField(addFieldPanel.getFormField(), 0);
             }
         });
     }

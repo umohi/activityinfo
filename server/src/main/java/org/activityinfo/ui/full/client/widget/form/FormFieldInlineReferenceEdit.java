@@ -70,7 +70,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     }
 
     public static final int MAX_INSTANCE_COUNT = 1000;
-    public static final String NEW_NAME_PREFIX = "New";
+    public static final String NEW_NAME_PREFIX = I18N.CONSTANTS.newInstancePrefix();
 
     private final ListDataProvider<FormInstance> tableDataProvider = new ListDataProvider<>();
     private final MultiSelectionModel<FormInstance> selectionModel = new MultiSelectionModel<>(
@@ -95,6 +95,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         initTable();
+        singleChoice.setValue(true);
     }
 
     private void initTable() {
@@ -170,7 +171,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         final FormField formField = getFormField();
         if (formField != null) {
             final Cuid newCuid = CuidAdapter.newFormInstance();
-            final FormInstance newFormInstance = new FormInstance(newCuid, getContainer().getRow().getFormPanel().getFormClass().getId());
+            final FormInstance newFormInstance = new FormInstance(newCuid, getContainer().getFormPanel().getFormClass().getId());
             FormInstanceLabeler.setLabel(newFormInstance, newName());
             tableDataProvider.getList().add(newFormInstance);
             tableDataProvider.refresh();
