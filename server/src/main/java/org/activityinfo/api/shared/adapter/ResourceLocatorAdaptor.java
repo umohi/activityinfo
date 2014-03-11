@@ -14,7 +14,7 @@ import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.Resource;
+import org.activityinfo.api2.shared.Instance;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
@@ -61,7 +61,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<Void> persist(Resource resource) {
+    public Promise<Void> persist(Instance resource) {
         if(resource instanceof FormInstance) {
             FormInstance instance = (FormInstance) resource;
             if(instance.getId().getDomain() == CuidAdapter.SITE_DOMAIN) {

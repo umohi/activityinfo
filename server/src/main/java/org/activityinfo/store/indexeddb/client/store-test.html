@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>IndexedDB Store</title>
+
+<script src="store.js">
+</script>
+<script type="text/javascript">
+
+  var store = new IndexedDbStore("test");
+  store.init();
+
+  function doPersist() {
+    var json = document.getElementById("instanceTextArea").value;
+    var obj = JSON.parse(json);
+   
+    store.persist(obj);
+   
+  }
+
+</script>
+</head>
+<body>
+
+<h1>Test</h1>
+
+
+<h2>Persist an instance</h2>
+
+<textarea id="instanceTextArea" rows="5" columns="80">
+</textarea>
+
+<button onclick="doPersist();">Persist</button>
+
+<h2>Retrieve an instance</h2>
+
+
+
+
+</body>
+</html>
+
+
+

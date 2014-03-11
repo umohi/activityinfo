@@ -3,7 +3,6 @@ package org.activityinfo.api2.shared.form;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
 
 import javax.validation.constraints.NotNull;
@@ -14,6 +13,7 @@ import java.util.List;
  */
 public class FormSection implements FormElement, FormElementContainer {
 
+    public static final Cuid CLASS_ID = new Cuid("_form_section");
 
     private final Cuid id;
     private LocalizedString label;
@@ -26,6 +26,11 @@ public class FormSection implements FormElement, FormElementContainer {
 
     public Cuid getId() {
         return id;
+    }
+
+    @Override
+    public Cuid getClassId() {
+        return CLASS_ID;
     }
 
     @NotNull

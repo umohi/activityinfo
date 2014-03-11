@@ -17,6 +17,8 @@ import java.util.Set;
  */
 public class FormField implements FormElement {
 
+    public static final Cuid CLASS_ID = new Cuid("_form_field");
+
     private final Cuid id;
     private LocalizedString label;
     private LocalizedString description;
@@ -26,7 +28,6 @@ public class FormField implements FormElement {
     private String calculation;
     private boolean readOnly;
     private boolean visible = true;
-    private List<Iri> dimensions;
     private Set<Cuid> superProperties = Sets.newHashSet();
     private boolean required;
     private FormFieldCardinality cardinality;
@@ -46,6 +47,11 @@ public class FormField implements FormElement {
 
     public Cuid getId() {
         return id;
+    }
+
+    @Override
+    public Cuid getClassId() {
+        return CLASS_ID;
     }
 
     @NotNull
@@ -150,14 +156,6 @@ public class FormField implements FormElement {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    public List<Iri> getDimensions() {
-        return dimensions;
-    }
-
-    public void setDimensions(List<Iri> dimensions) {
-        this.dimensions = dimensions;
     }
 
     @Override

@@ -364,6 +364,11 @@
       <version>2.1.2.Final</version>
     </dependency>
     <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-smile</artifactId>
+      <version>1.9.13</version>
+    </dependency>
+    <dependency>
       <groupId>com.bedatadriven</groupId>
       <artifactId>jackson-geojson</artifactId>
       <version>0.7</version>

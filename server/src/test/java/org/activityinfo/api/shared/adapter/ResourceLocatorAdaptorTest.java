@@ -4,6 +4,7 @@ package org.activityinfo.api.shared.adapter;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.activityinfo.api2.client.InstanceQuery;
+import org.activityinfo.api2.client.form.InstanceSerializer;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.shared.Cuid;
@@ -66,6 +67,15 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
     @Test
     public void simpleLocationQuery() {
         assertThat(queryByClass(locationFormClass(HEALTH_CENTER_LOCATION_TYPE)), Matchers.hasSize(4));
+    }
+
+    @Test
+    public void siteQuery() {
+        FormInstance formInstance = assertResolves(resourceLocator.getFormInstance(CuidAdapter.cuid(SITE_DOMAIN, 1)));
+
+        System.out.println(InstanceSerializer.toJson(formInstance).toString());
+
+
     }
 
     @Test

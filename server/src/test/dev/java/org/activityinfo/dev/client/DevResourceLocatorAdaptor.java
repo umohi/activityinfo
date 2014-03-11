@@ -26,9 +26,9 @@ import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Instance;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
@@ -52,7 +52,7 @@ public class DevResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<Void> persist(Resource resource) {
+    public Promise<Void> persist(Instance instance) {
         return null;
     }
 

@@ -22,6 +22,9 @@ package org.activityinfo.api2.shared.model;
  * #L%
  */
 
+import org.activityinfo.api2.shared.values.Composite;
+import org.activityinfo.api2.shared.values.CompositeField;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import java.io.Serializable;
 
@@ -32,6 +35,7 @@ import java.io.Serializable;
  *
  * @author Alex Bertram
  */
+@Composite(tag = "_point")
 public class AiLatLng implements Serializable {
     public AiLatLng() {
         lat = 0;
@@ -51,6 +55,7 @@ public class AiLatLng implements Serializable {
      * @return The latitude of the point (y-axis)
      */
     @XmlAttribute(name = "y")
+    @CompositeField(id = "_point_y")
     public double getLat() {
         return lat;
     }
@@ -77,6 +82,7 @@ public class AiLatLng implements Serializable {
      * @return The longitude of the point (x-axis)
      */
     @XmlAttribute(name = "x")
+    @CompositeField(id = "_point_x")
     public double getLng() {
         return lng;
     }

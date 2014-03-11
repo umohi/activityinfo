@@ -8,7 +8,7 @@ import com.google.common.collect.Sets;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Iri;
 import org.activityinfo.api2.shared.LocalizedString;
-import org.activityinfo.api2.shared.Resource;
+import org.activityinfo.api2.shared.Instance;
 import org.activityinfo.api2.shared.form.has.HasHashCode;
 import org.activityinfo.api2.shared.hash.HashCode;
 
@@ -24,20 +24,22 @@ import java.util.Set;
  * <p>UserForms are a superset of an OWL class. The user can define them as subclasses or superclasses of
  * another FormClass or RDFS class.</p>
  */
-public class FormClass implements Resource, FormElementContainer, HasHashCode {
+public class FormClass implements Instance, FormElementContainer, HasHashCode {
 
 
     /**
      * Because FormClasses are themselves FormInstances, they have a class id of their own
      */
-    public static final Cuid CLASS_ID = new Cuid("_class");
+    public static final Cuid CLASS_ID = new Cuid("_form");
 
     /**
      * Instances of FormClass have one FormField: a label, which has its own
      * FormField id. It is defined at the application level to be a subproperty of
      * {@code _label}
      */
-    public static final Cuid LABEL_FIELD_ID = new Cuid("_class_label");
+    public static final Cuid LABEL_FIELD_ID = new Cuid("_form_label");
+
+    public static final Cuid ELEMENTS_FIELD_ID = new Cuid("_form_elements");
 
 
     @NotNull
@@ -70,6 +72,11 @@ public class FormClass implements Resource, FormElementContainer, HasHashCode {
 
     public void setParentId(Cuid parentId) {
         this.parentId = parentId;
+    }
+
+    @Override
+    public Cuid getClassId() {
+        return CLASS_ID;
     }
 
     public FormElementContainer getParent(FormElement childElement) {
@@ -177,4 +184,5 @@ public class FormClass implements Resource, FormElementContainer, HasHashCode {
     public void setHashCode(HashCode hashCode) {
         this.hashCode = hashCode;
     }
+
 }

@@ -2,12 +2,11 @@ package org.activityinfo.api2.client;
 
 
 import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.Instance;
 import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
 
 import java.util.List;
 
@@ -26,11 +25,11 @@ public interface ResourceLocator {
     /**
      * Persists a resource to the server, creating or updating as necessary.
      *
-     * @param resource the resource to persist.
+     * @param instance the resource to persist.
      * @return a Promise that resolves when the persistance operation completes
      * successfully.
      */
-    Promise<Void> persist(Resource resource);
+    Promise<Void> persist(Instance instance);
 
 
     /**

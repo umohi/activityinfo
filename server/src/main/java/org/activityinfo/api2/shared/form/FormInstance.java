@@ -24,12 +24,18 @@ package org.activityinfo.api2.shared.form;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import com.google.storage.onestore.v3.OnestoreEntity;
 import org.activityinfo.api.shared.model.DTO;
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Resource;
+import org.activityinfo.api2.shared.Instance;
 import org.activityinfo.api2.shared.form.has.HasHashCode;
 import org.activityinfo.api2.shared.hash.HashCode;
 import org.activityinfo.api2.shared.model.AiLatLng;
+import org.activityinfo.api2.shared.types.FieldValue;
+import org.activityinfo.api2.shared.types.RealValue;
+import org.activityinfo.api2.shared.types.ReferenceValue;
+import org.activityinfo.api2.shared.types.TextValue;
+import org.activityinfo.api2.shared.types.temporal.LocalDateValue;
 
 import javax.annotation.Nonnull;
 import javax.validation.constraints.NotNull;
@@ -41,11 +47,11 @@ import java.util.Set;
 /**
  * @author yuriyz on 1/29/14.
  */
-public class FormInstance implements Resource, HasHashCode {
+public class FormInstance implements Instance, HasHashCode {
 
     private Cuid id;
     private Cuid classId;
-    private final Map<Cuid, Object> valueMap = Maps.newHashMap();
+    private final Map<Cuid, FieldValue> valueMap = Maps.newHashMap();
     private Cuid parentId;
     private HashCode hashCode;
 
@@ -79,7 +85,7 @@ public class FormInstance implements Resource, HasHashCode {
         return parentId;
     }
 
-    public Map<Cuid, Object> getValueMap() {
+    public Map<Cuid, FieldValue> getValueMap() {
         return valueMap;
     }
 
@@ -89,18 +95,36 @@ public class FormInstance implements Resource, HasHashCode {
         }
     }
 
+    public void set(@NotNull Cuid fieldId, FieldValue value) {
+        Preconditions.checkNotNull(fieldId);
+        valueMap.put(fieldId, value);
+    }
+
     public void set(@NotNull Cuid fieldId, Object fieldValue) {
         Preconditions.checkNotNull(fieldId);
         if (fieldValue instanceof LocalDate) {
-            // not sure if we want to use LocalDate or Date here -- may only matter at the moment
-            // of serialization
-            fieldValue = ((LocalDate) fieldValue).atMidnightInMyTimezone();
+            set(fieldId, LocalDateValue.valueOf((LocalDate) fieldValue));
         }
+
+        if (fieldValue instanceof Date) {
+            set(fieldId, LocalDateValue.valueOf((Date)fieldValue));
+        }
+
         if (fieldValue instanceof DTO) {
             throw new IllegalArgumentException("Please use cuid reference instead of legacy class.");
         }
 
-        valueMap.put(fieldId, fieldValue);
+        if (fieldValue instanceof String) {
+            set(fieldId, TextValue.valueOf((String)fieldValue));
+        }
+
+        if (fieldValue instanceof Number) {
+            set(fieldId, RealValue.valueOf((Number)fieldValue));
+        }
+
+        if (fieldValue instanceof Cuid) {
+            set(fieldId, new ReferenceValue((Cuid)fieldValue));
+        }
     }
 
     public Object get(Cuid fieldId) {
@@ -171,6 +195,7 @@ public class FormInstance implements Resource, HasHashCode {
     public void setHashCode(HashCode hashCode) {
         this.hashCode = hashCode;
     }
+
 
     @Override
     public String toString() {
