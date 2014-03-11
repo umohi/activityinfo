@@ -38,7 +38,6 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 import org.activityinfo.api2.shared.form.has.HasInstances;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -69,7 +68,6 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
 
     public FormFieldWidgetReferenceListPanel() {
         suggestBox = FormFieldWidgetFactory.createSuggestBox(oracle);
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         setRemoveButtonState();
     }

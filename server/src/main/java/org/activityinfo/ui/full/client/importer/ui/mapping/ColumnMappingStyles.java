@@ -1,30 +1,47 @@
 package org.activityinfo.ui.full.client.importer.ui.mapping;
 
+import com.bedatadriven.rebar.style.client.Source;
+import com.bedatadriven.rebar.style.client.Stylesheet;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.CssResource;
+
+import static com.google.gwt.resources.client.CssResource.ClassName;
+
 /**
  * Placeholder until we have a better way to integrate LESS and gwt styles
  */
-public class ColumnMappingStyles {
+@Source("ColumnMapping.less")
+public interface ColumnMappingStyles extends Stylesheet {
 
-    public static final ColumnMappingStyles INSTANCE = new ColumnMappingStyles();
+    public static final ColumnMappingStyles INSTANCE = GWT.create(ColumnMappingStyles.class);
 
+    @ClassName("cm-page")
+    String page();
 
-    public String page() { return "cm-page"; }
+    @ClassName("cm-datagrid")
+    String grid();
 
-    public String grid() { return "cm-datagrid"; }
+    @ClassName("source-column")
+    String sourceColumnHeader();
 
-    public String sourceColumnHeader() { return "source-column"; }
+    @ClassName("mapping")
+    String mappingHeader();
 
-    public String mappingHeader() { return "mapping"; }
+    @ClassName("state-ignored")
+    String stateIgnored();
 
-    public String stateIgnored() { return "col-ignored"; }
+    @ClassName("state-bound")
+    String stateBound();
 
-    public String stateBound() {  return "col-bound"; }
+    @ClassName("state-unset")
+    String stateUnset();
 
-    public String stateUnset() { return "col-unset"; }
+    @ClassName("selected")
+    String selected();
 
-    public String selected() {return "col-selected"; }
+    @ClassName("cm-field-selector")
+    String fieldSelector();
 
-    public String fieldSelector() { return "cm-field-selector"; }
-
-    public String incomplete() { return "incomplete";  }
+    @ClassName("incomplete")
+    String incomplete();
 }

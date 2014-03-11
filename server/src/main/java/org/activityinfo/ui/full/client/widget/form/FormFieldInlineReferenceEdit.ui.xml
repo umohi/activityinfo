@@ -2,8 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:boot="urn:import:org.activityinfo.ui.full.client.widget.bootstrap"
-        >
+             xmlns:a="urn:import:org.activityinfo.ui.full.client.widget">
 
   <ui:style>
     .btn-custom {
@@ -14,20 +13,19 @@
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
-  <ui:with field='aiStyle' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
-  <g:HTMLPanel addStyleNames="bs">
+  <g:HTMLPanel>
     <div class="form-group">
       <label class="col-sm-1 control-label">
         <ui:text from='{res.cardinality}'/>
       </label>
       <div class="col-sm-11">
-        <boot:RadioButton name="cardinality" ui:field="singleChoice" formValue="true">
+        <a:RadioButton name="cardinality" ui:field="singleChoice" formValue="true">
           <ui:text from='{res.singleChoice}'/>
-        </boot:RadioButton>
-        <boot:RadioButton name="cardinality" ui:field="multipleChoice">
+        </a:RadioButton>
+        <a:RadioButton name="cardinality" ui:field="multipleChoice">
           <ui:text from='{res.multipleChoice}'/>
-        </boot:RadioButton>
+        </a:RadioButton>
         <br/>
       </div>
     </div>
@@ -43,12 +41,12 @@
                 <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
                                 autoFooterRefreshDisabled="true" rowCount="10"/>
               <g:VerticalPanel>
-                <g:Button ui:field="addButton" addStyleNames="btn btn-default {style.btn-custom}">
+                <a:Button ui:field="addButton" style="DEFAULT" addStyleNames="{style.btn-custom}">
                   <img src="{img.add.getSafeUri}" alt="Add"/>
-                </g:Button>
-                <g:Button ui:field="removeButton" addStyleNames="btn btn-default {style.btn-custom}">
+                </a:Button>
+                <a:Button ui:field="removeButton" style="DEFAULT" addStyleNames="{style.btn-custom}">
                   <img src="{img.delete.getSafeUri}" alt="Remove"/>
-                </g:Button>
+                </a:Button>
               </g:VerticalPanel>
             </g:HorizontalPanel>
             <br/>

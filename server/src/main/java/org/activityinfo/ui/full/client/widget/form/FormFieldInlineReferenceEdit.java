@@ -53,7 +53,6 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.api2.shared.form.has.HasInstances;
 import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -92,7 +91,6 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     DivElement errorContainer;
 
     public FormFieldInlineReferenceEdit() {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         initTable();
         singleChoice.setValue(true);

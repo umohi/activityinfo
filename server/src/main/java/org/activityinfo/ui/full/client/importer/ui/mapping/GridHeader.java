@@ -33,4 +33,6 @@ class GridHeader extends Header<SourceColumn> {
     public void onBrowserEvent(Cell.Context context, Element elem, NativeEvent event) {
         columnSelectionModel.setSelected(column, true);
     }
+
+
 }

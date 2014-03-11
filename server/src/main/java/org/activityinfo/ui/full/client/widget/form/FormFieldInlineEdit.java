@@ -42,10 +42,8 @@ import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.api2.shared.validation.*;
 import org.activityinfo.api2.shared.validation.widget.NotEmptyStringValidator;
 import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
-import org.activityinfo.ui.full.client.widget.FormFieldTypeCombobox;
 import org.activityinfo.ui.full.client.widget.dialog.ChangeFormFieldTypeDialog;
 
 import javax.annotation.Nonnull;
@@ -95,7 +93,6 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     DivElement errorContainer;
 
     public FormFieldInlineEdit() {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         referencePanel.setContainer(this);

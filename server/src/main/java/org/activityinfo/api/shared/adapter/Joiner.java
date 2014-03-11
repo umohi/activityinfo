@@ -109,7 +109,6 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         return new QueryExecutor(dispatcher, criteria).execute();
     }
 
-
     private class ProjectFunction extends BiFunction<List<FormClass>,List<FormInstance>,List<Projection>> {
 
         private FieldPath prefix;

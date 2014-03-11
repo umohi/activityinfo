@@ -32,7 +32,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 
 /**
@@ -64,9 +63,7 @@ public class RowToolbar extends Composite {
     private FormPanel formPanel;
 
     public RowToolbar() {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
-
     }
 
     /**

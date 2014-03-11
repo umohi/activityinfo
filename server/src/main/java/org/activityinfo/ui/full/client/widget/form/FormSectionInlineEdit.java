@@ -40,7 +40,6 @@ import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.api2.shared.validation.*;
 import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
 
 import java.util.List;
@@ -66,7 +65,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
     DivElement errorContainer;
 
     public FormSectionInlineEdit() {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         validator = ValidatorBuilder.instance().
                 addNotEmptyString(sectionLabel, I18N.CONSTANTS.sectionLabel()).

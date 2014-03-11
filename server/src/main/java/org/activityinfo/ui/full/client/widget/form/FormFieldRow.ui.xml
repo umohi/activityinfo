@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget.form">
+             xmlns:form="urn:import:org.activityinfo.ui.full.client.widget.form">
 
   <ui:style>
     .field-row {
@@ -15,9 +15,9 @@
   <ui:with field='aiStyle' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <ai:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{aiStyle.newUiStyle.sectionMarginLeft} hidden"/>
-    <ai:FormFieldInlineEdit ui:field="editFieldPanel" addStyleNames="hidden" editMode="true"/>
-    <ai:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="hidden"/>
+    <form:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{aiStyle.newUiStyle.sectionMarginLeft} hidden"/>
+    <form:FormFieldInlineEdit ui:field="editFieldPanel" addStyleNames="hidden" editMode="true"/>
+    <form:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="hidden"/>
     <div class="row {style.field-row}" ui:field="rowContainer">
       <div class="col-sm-2">
         <p class="edit">
@@ -34,7 +34,7 @@
         <div ui:field="description"/>
       </div>
       <div class="col-sm-3">
-        <ai:RowToolbar ui:field="toolbar"/>
+        <form:RowToolbar ui:field="toolbar"/>
       </div>
     </div>
   </g:HTMLPanel>

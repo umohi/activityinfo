@@ -53,7 +53,7 @@ public class GwtCoordinateField extends DoubleBox {
     /**
      * Sets the bounds for this field
      *
-     * @param name     the name of the bounds to present to users in the event of
+     * @param name     the name of the bounds <></>o present to users in the event of
      *                 violation, (e.g. "Kapisa Province Boundary"
      * @param minValue minimum allowed value for this field
      * @param maxValue maximum allowed value for this field

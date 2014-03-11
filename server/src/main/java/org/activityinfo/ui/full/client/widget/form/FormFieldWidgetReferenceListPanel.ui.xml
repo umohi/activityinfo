@@ -10,7 +10,7 @@
   </ui:style>
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
 
-  <g:HTMLPanel addStyleNames="ai bs">
+  <g:HTMLPanel>
     <g:HorizontalPanel width="100%">
       <g:VerticalPanel width="100%">
         <g:SuggestBox ui:field="suggestBox" width="100%" addStyleNames="form-control"/>

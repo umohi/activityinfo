@@ -52,7 +52,7 @@
       margin-top: 10px;
       margin-bottom: 25px;
       width: 650px;
-      overflow: hidden;
+      overfloa: hidden;
       clear: both;
       border: 1px solid transparent;
       cursor: pointer;
@@ -87,7 +87,7 @@
     }
 
     .content {
-      overflow: hidden;
+      overfloa: hidden;
     }
 
   </ui:style>

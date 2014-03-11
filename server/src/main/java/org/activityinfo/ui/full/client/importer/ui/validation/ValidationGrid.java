@@ -6,11 +6,11 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import org.activityinfo.api2.client.formatter.GwtQuantityFormatterFactory;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.widget.bootstrap.BootstrapDataGrid;
 import org.activityinfo.ui.full.client.importer.ui.Importer;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplates;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ColumnFactory;
 import org.activityinfo.ui.full.client.importer.ui.validation.columns.ImportColumn;
+import org.activityinfo.ui.full.client.style.DataGridResources;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class ValidationGrid extends ResizeComposite {
                 ValidationCellTemplates.INSTANCE,
                 importer.getFormTree());
 
-        this.dataGrid = new BootstrapDataGrid<>(100);
+        this.dataGrid = new DataGrid<>(100, DataGridResources.INSTANCE);
 
         syncColumns();
 

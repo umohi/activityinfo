@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -17,7 +18,8 @@ import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.widget.bootstrap.BootstrapDataGrid;
+import org.activityinfo.ui.full.client.style.DataGridResources;
+
 
 import java.util.List;
 
@@ -26,11 +28,10 @@ import java.util.List;
  * and focuses on helping the user select columns as a whole and map them
  * to existing properties.
  */
-public class ColumnMappingGrid extends ResizeComposite {
+public class ColumnMappingGrid extends DataGrid<SourceRow> {
 
     public static final int SOURCE_COLUMN_HEADER_ROW = 0;
     public static final int MAPPING_HEADER_ROW = 1;
-    private BootstrapDataGrid<SourceRow> dataGrid;
 
     private final ImportModel model;
 
@@ -43,20 +44,25 @@ public class ColumnMappingGrid extends ResizeComposite {
 
     public ColumnMappingGrid(ImportModel model, FieldChoicePresenter options,
                              SingleSelectionModel<SourceColumn> columnSelectionModel) {
+    
+        super(50, DataGridResources.INSTANCE);
+        
+        ColumnMappingStyles.INSTANCE.ensureInjected();
+        DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
+
         this.model = model;
         this.columnSelectionModel = columnSelectionModel;
 
         headerCell = new GridHeaderCell(model, options);
 
-        dataGrid = new BootstrapDataGrid<>(100);
-        dataGrid.addStyleName(ColumnMappingStyles.INSTANCE.grid());
-        dataGrid.setWidth("100%");
-        dataGrid.setHeight("100%");
-        dataGrid.setSelectionModel(new NullRowSelectionModel());
-        dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
-        dataGrid.setHeaderBuilder(new GridHeaderBuilder(dataGrid));
-        dataGrid.setSkipRowHoverCheck(true);
-        dataGrid.addCellPreviewHandler(new Handler<SourceRow>() {
+        this.addStyleName(ColumnMappingStyles.INSTANCE.grid());
+        this.setWidth("100%");
+        this.setHeight("100%");
+        this.setSelectionModel(new NullRowSelectionModel());
+        this.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
+        this.setHeaderBuilder(new GridHeaderBuilder(this));
+        this.setSkipRowHoverCheck(true);
+        this.addCellPreviewHandler(new Handler<SourceRow>() {
 
             @Override
             public void onCellPreview(CellPreviewEvent<SourceRow> event) {
@@ -79,7 +85,6 @@ public class ColumnMappingGrid extends ResizeComposite {
             }
         });
 
-        initWidget(dataGrid);
     }
 
     private void onColumnSelectionChanged() {
@@ -91,12 +96,12 @@ public class ColumnMappingGrid extends ResizeComposite {
         // clear the selection styles from the old column
         if(lastSelectedColumn != -1) {
             removeHeaderStyleName(lastSelectedColumn, ColumnMappingStyles.INSTANCE.selected());
-            dataGrid.removeColumnStyleName(lastSelectedColumn, ColumnMappingStyles.INSTANCE.selected());
+            this.removeColumnStyleName(lastSelectedColumn, ColumnMappingStyles.INSTANCE.selected());
         }
 
         // add the bg to the new selection
-        addHeaderStyleName(newColumnIndex, ColumnMappingStyles.INSTANCE.selected());
-        dataGrid.addColumnStyleName(newColumnIndex, ColumnMappingStyles.INSTANCE.selected());
+        this.getHeader(newColumnIndex).setHeaderStyleNames(ColumnMappingStyles.INSTANCE.selected());
+        this.addColumnStyleName(newColumnIndex, ColumnMappingStyles.INSTANCE.selected());
 
         lastSelectedColumn = newColumnIndex;
     }
@@ -110,6 +115,7 @@ public class ColumnMappingGrid extends ResizeComposite {
 
         toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateIgnored(), binding != null && !binding.isImported());
         toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateBound(), binding != null && binding.isImported());
+        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateUnset(), binding == null);
 
         // update the mapping description
         Cell.Context context = new Cell.Context(MAPPING_HEADER_ROW, columnIndex, null);
@@ -120,7 +126,7 @@ public class ColumnMappingGrid extends ResizeComposite {
     }
 
     private void scrollColumnIntoView(int selectedColumnIndex) {
-        Element td = dataGrid.getRowElement(0).getChild(selectedColumnIndex).cast();
+        Element td = this.getRowElement(0).getChild(selectedColumnIndex).cast();
         td.scrollIntoView();
     }
 
@@ -135,32 +141,32 @@ public class ColumnMappingGrid extends ResizeComposite {
     }
 
     private Element getTableHead(int rowIndex, int columnIndex) {
-        return dataGrid.getTableHeadElement().getRows().getItem(rowIndex).getChild(columnIndex).cast();
+        return getTableHeadElement().getRows().getItem(rowIndex).getChild(columnIndex).cast();
     }
 
     private void toggleColumnStyle(int index, String className, boolean enabled) {
         if(enabled) {
-            dataGrid.addColumnStyleName(index, className);
+            this.addColumnStyleName(index, className);
             addHeaderStyleName(index, className);
 
         } else {
-            dataGrid.removeColumnStyleName(index, className);
+            this.removeColumnStyleName(index, className);
             removeHeaderStyleName(index, className);
         }
     }
 
     public void refresh() {
-        while(dataGrid.getColumnCount() > 0) {
-            dataGrid.removeColumn(0);
+        while(this.getColumnCount() > 0) {
+            this.removeColumn(0);
         }
         sourceColumns = model.getSource().getColumns();
         for (SourceColumn sourceColumn : sourceColumns) {
             GridColumn gridColumn = new GridColumn(sourceColumn);
             GridHeader gridHeader = new GridHeader(sourceColumn, headerCell, columnSelectionModel);
-            dataGrid.addColumn(gridColumn, gridHeader);
-            dataGrid.setColumnWidth(gridColumn, 10, Style.Unit.EM);
+            this.addColumn(gridColumn, gridHeader);
+            this.setColumnWidth(gridColumn, 10, com.google.gwt.dom.client.Style.Unit.EM);
         }
-        dataGrid.redrawHeaders();
-        dataGrid.setRowData(model.getSource().getRows());
+        this.redrawHeaders();
+        this.setRowData(model.getSource().getRows());
     }
 }

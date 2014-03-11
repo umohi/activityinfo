@@ -40,7 +40,7 @@ import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.full.client.page.entry.place.UserFormPlaceParser;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.style.BaseStylesheet;
 import org.activityinfo.ui.full.client.widget.form.FormPanel;
 
 /**
@@ -65,7 +65,7 @@ public class FormPanelPage extends Composite implements Page {
     public FormPanelPage(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
 
-        TransitionUtil.ensureBootstrapInjected();
+        BaseStylesheet.INSTANCE.ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         userFormPlace = UserFormPlaceParser.parseToken(History.getToken());

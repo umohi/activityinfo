@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:b="urn:import:org.activityinfo.ui.full.client.widget.bootstrap">
+             xmlns:a="urn:import:org.activityinfo.ui.full.client.widget">
   <ui:style>
 
   </ui:style>
@@ -13,7 +13,7 @@
       <p class="lead"><ui:text from="{i18n.pasteSpreadsheetInstructions}"/></p>
     </g:HTMLPanel>
 
-    <b:TextArea ui:field="textArea" width="100%" height="100%"/>
+    <a:TextArea ui:field="textArea" width="100%" height="100%"/>
 
   </g:HeaderPanel>
 </ui:UiBinder> 

@@ -29,7 +29,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import org.activityinfo.ui.full.client.widget.bootstrap.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,7 +36,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 import org.activityinfo.api2.shared.form.has.HasInstances;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.CheckBox;
 
 import java.util.List;
 import java.util.Map;
@@ -61,7 +60,6 @@ public class FormFieldWidgetReferenceCheckBoxPanel extends Composite implements 
     private List<FormInstance> instances;
 
     public FormFieldWidgetReferenceCheckBoxPanel() {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -73,7 +71,7 @@ public class FormFieldWidgetReferenceCheckBoxPanel extends Composite implements 
     public void init(List<FormInstance> instances) {
         this.instances = instances;
         for (final FormInstance formInstance : instances) {
-            final CheckBox checkBox = new CheckBox(FormInstanceLabeler.getLabel(formInstance), false);
+            final CheckBox checkBox = new CheckBox(FormInstanceLabeler.getLabel(formInstance));
             checkBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
                 @Override
                 public void onValueChange(ValueChangeEvent<Boolean> event) {

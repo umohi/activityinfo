@@ -39,7 +39,6 @@ import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.has.HasInstances;
 import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -81,7 +80,6 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
 
     public FormFieldWidgetReference(final FormField formField, final ResourceLocator resourceLocator) {
         this.formField = formField;
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         resourceLocator.queryInstances(ClassCriteria.union(formField.getRange())).then(new SuccessCallback<List<FormInstance>>() {
@@ -94,7 +92,6 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
 
     public FormFieldWidgetReference(final FormField formField, final List<FormInstance> instances) {
         this.formField = formField;
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         createAndAddWidget(instances);
     }

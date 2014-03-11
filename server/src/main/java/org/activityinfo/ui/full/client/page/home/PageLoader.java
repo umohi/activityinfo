@@ -14,7 +14,7 @@ import org.activityinfo.api2.shared.application.FolderClass;
 import org.activityinfo.ui.full.client.page.*;
 import org.activityinfo.ui.full.client.page.instance.InstancePage;
 import org.activityinfo.ui.full.client.page.instance.InstancePlace;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.style.BaseStylesheet;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -44,7 +44,7 @@ public class PageLoader implements org.activityinfo.ui.full.client.page.PageLoad
     public void load(final PageId pageId, final PageState pageState,
                      final AsyncCallback<Page> callback) {
 
-        TransitionUtil.ensureBootstrapInjected();
+        BaseStylesheet.INSTANCE.ensureInjected();
 
         GWT.runAsync(new RunAsyncCallback() {
             @Override

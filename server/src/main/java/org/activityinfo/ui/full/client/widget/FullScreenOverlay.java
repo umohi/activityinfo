@@ -10,8 +10,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.ui.full.client.style.TransitionBundle;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.style.BaseStylesheet;
 
 /**
  * ActivityInfo (will ultimately be) use a responsive, grid-based
@@ -35,7 +34,7 @@ public class FullScreenOverlay {
     private Widget widget;
 
     public FullScreenOverlay() {
-        TransitionUtil.ensureBootstrapInjected();
+        BaseStylesheet.INSTANCE.ensureInjected();
         BUNDLE.style().ensureInjected();
 
     }
@@ -44,7 +43,7 @@ public class FullScreenOverlay {
         this.widget = widget.asWidget();
 
         container = new AbsolutePanel();
-        container.addStyleName(TransitionBundle.CONTAINER_STYLE);
+        container.addStyleName(BaseStylesheet.CONTAINER_STYLE);
         container.addStyleName(BUNDLE.style().container());
         container.add(widget);
         sizeContainer();

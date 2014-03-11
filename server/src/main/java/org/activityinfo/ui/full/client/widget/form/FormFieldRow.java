@@ -39,7 +39,6 @@ import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.importer.converter.Converter;
 import org.activityinfo.ui.full.client.importer.converter.ConverterFactory;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
 import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
@@ -86,7 +85,6 @@ public class FormFieldRow extends Composite {
     }
 
     public FormFieldRow(FormField formField, FormPanel formPanel, final ElementNode node, IsWidget formFieldWidget) {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         this.formField = formField;

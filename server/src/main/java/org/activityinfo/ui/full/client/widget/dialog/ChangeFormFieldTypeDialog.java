@@ -25,7 +25,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.HTML;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.widget.FormFieldTypeCombobox;
+import org.activityinfo.ui.full.client.widget.ModalDialog;
+import org.activityinfo.ui.full.client.widget.form.FormFieldTypeCombobox;
 
 /**
  * @author yuriyz on 3/4/14.

@@ -22,10 +22,12 @@ package org.activityinfo.api.shared.command;
  * #L%
  */
 
+import com.google.common.collect.Sets;
 import org.activityinfo.api.shared.command.result.AdminEntityResult;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Retrieves a list of admin entities from the server.
@@ -37,7 +39,7 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
     private Collection<Integer> countryIds;
     private Integer levelId;
     private Integer parentId;
-    private Integer entityId;
+    private Set<Integer> entityIds;
     private Filter filter;
 
     public GetAdminEntities() {
@@ -91,12 +93,16 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
         this.countryIds = Arrays.asList(countryId);
     }
 
-    public Integer getEntityId() {
-        return entityId;
+    public Set<Integer> getEntityIds() {
+        return entityIds;
+    }
+
+    public void setEntityIds(Iterable<Integer> entityIds) {
+        this.entityIds = Sets.newHashSet(entityIds);
     }
 
     public GetAdminEntities setEntityId(Integer entityId) {
-        this.entityId = entityId;
+        this.entityIds = Sets.newHashSet(entityId);
         return this;
     }
 
