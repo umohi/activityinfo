@@ -52,7 +52,7 @@ public class ElementNode {
     private final BiMap<Cuid, FormFieldRow> fieldMap = HashBiMap.create();
     private final BiMap<Cuid, FormSectionRow> sectionMap = HashBiMap.create();
 
-    // contains all field rows within the form tree down in hierarchy (all minus field rows of the parents)
+    // contains all field rows within the form tree down in hierarchy
     private final BiMap<Cuid, FormFieldRow> ownAndChildFieldMap = HashBiMap.create();
 
     private final FormPanel formPanel;
@@ -166,8 +166,32 @@ public class ElementNode {
         }
     }
 
-    public void addField(FormField formField, int rowIndexOnPanel) {
-        // todo impl + undo/redo
+    public void addField(final FormField formField, int rowIndexOnPanel) {
+        final int index = rowIndexOnPanel > 0 ? rowIndexOnPanel : 0;
+        final FormFieldRow row = new FormFieldRow(formField, formPanel, this);
+
+        contentPanel.insert(row, index);
+        fieldMap.put(formField.getId(), row);
+        ownAndChildFieldMap.put(formField.getId(), row);
+        formElementContainer.getElements().add(index, formField);
+
+        formPanel.getUndoManager().addUndoable(new IsUndoable() {
+            @Override
+            public void undo() {
+                contentPanel.remove(index);
+                fieldMap.remove(formField.getId());
+                ownAndChildFieldMap.remove(formField.getId());
+                formElementContainer.getElements().remove(index);
+            }
+
+            @Override
+            public void redo() {
+                contentPanel.insert(row, index);
+                fieldMap.put(formField.getId(), row);
+                ownAndChildFieldMap.put(formField.getId(), row);
+                formElementContainer.getElements().add(index, formField);
+            }
+        });
     }
 
     public void addSection(final FormSection section, int rowIndexOnPanel) {

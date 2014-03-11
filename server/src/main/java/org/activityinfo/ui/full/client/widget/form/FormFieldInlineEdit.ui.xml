@@ -52,7 +52,7 @@
           <ui:text from='{res.fieldDescription}'/>
         </label>
         <div class="col-sm-11">
-          <boot:TextArea visibleLines="3" width="100%" ui:field="description"/>
+          <boot:TextArea visibleLines="3" width="100%" ui:field="description"  placeholder="{res.fieldDescription}"/>
         </div>
       </div>
 
