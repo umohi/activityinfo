@@ -1,32 +1,20 @@
 package org.activityinfo.api2.shared.form;
 
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.api2.shared.validation.ValidationMessage;
 
 /**
- * Validation Error
+ * Validation Error bound to form field.
  */
-public class ValidationError {
+public class ValidationError extends ValidationMessage {
 
     private Cuid fieldId;
-    private boolean fatal;
-    private String message;
 
-    public ValidationError(Cuid fieldId, boolean fatal, String message) {
+    public ValidationError(Cuid fieldId) {
         this.fieldId = fieldId;
-        this.fatal = fatal;
-        this.message = message;
     }
 
     public Cuid getFieldId() {
         return fieldId;
-    }
-
-    public boolean isFatal() {
-        return fatal;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }

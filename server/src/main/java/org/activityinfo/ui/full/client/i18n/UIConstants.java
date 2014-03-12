@@ -3358,4 +3358,8 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("New")
     @Key("newInstancePrefix")
     String newInstancePrefix();
+
+    @DefaultStringValue("Control is empty")
+    @Key("validationControlIsEmpty")
+    String validationControlIsEmpty();
 }

@@ -26,6 +26,8 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -36,6 +38,12 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.api2.shared.validation.ValidationFailure;
+import org.activityinfo.api2.shared.validation.ValidationUtils;
+import org.activityinfo.api2.shared.validation.Validator;
+import org.activityinfo.api2.shared.validation.ValidatorBuilder;
+import org.activityinfo.api2.shared.validation.widget.NotEmptyStringValidator;
+import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
@@ -43,6 +51,8 @@ import org.activityinfo.ui.full.client.widget.FormFieldTypeCombobox;
 import org.activityinfo.ui.full.client.widget.dialog.ChangeFormFieldTypeDialog;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author yuriyz on 2/26/14.
@@ -59,6 +69,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     private boolean editMode = false;
     private FormFieldRow row;
     private FormPanel formPanel;
+    private Validator validator;
 
     @UiField
     TextBox label;
@@ -88,7 +99,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     public FormFieldInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
-        setState();
+
         referencePanel.setContainer(this);
         type.addClickHandler(new ClickHandler() {
             @Override
@@ -96,19 +107,43 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
                 fireState();
             }
         });
+        validator = ValidatorBuilder.instance().
+                addNotEmptyString(label, I18N.CONSTANTS.fieldLabel()).
+                addValidator(createUnitValidator()).
+                build();
+        label.addKeyUpHandler(new KeyUpHandler() {
+            public void onKeyUp(KeyUpEvent event) {
+                fireState();
+            }
+        });
+        unit.addKeyUpHandler(new KeyUpHandler() {
+            public void onKeyUp(KeyUpEvent event) {
+                fireState();
+            }
+        });
+
+        fireState();
     }
 
-    public void setState() {
-        setUnitControlState();
-        setReferencePanelState();
+    private Validator createUnitValidator() {
+        return new Validator() {
+            @Override
+            public List<ValidationFailure> validate() {
+                if (type.getSelectedType() == FormFieldType.QUANTITY) {
+                    final NotEmptyStringValidator emptyStringValidator = new NotEmptyStringValidator(unit, I18N.CONSTANTS.fieldUnit());
+                    return emptyStringValidator.validate();
+                }
+                return Collections.emptyList();
+            }
+        };
     }
 
-    public void setUnitControlState() {
+    private void setUnitControlState() {
         final boolean isUnitVisible = type.getSelectedType() == FormFieldType.QUANTITY;
         GwtUtil.setVisible(unitContainer, isUnitVisible);
     }
 
-    public void setReferencePanelState() {
+    private void setReferencePanelState() {
         GwtUtil.setVisible(referenceContainer, type.getSelectedType() == FormFieldType.REFERENCE);
         referencePanel.apply();
     }
@@ -159,7 +194,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         type.setSelectedType(formField.getType());
         required.setValue(formField.isRequired());
         setChangeButtonState();
-        setState();
+        fireState();
     }
 
     public void updateModel() {
@@ -206,12 +241,13 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     }
 
     public void fireState() {
-        setState();
-        setOkButtonState();
-    }
+        final List<ValidationFailure> failureList = validator.validate();
+        ValidationUtils.show(failureList, errorContainer);
 
-    private void setOkButtonState() {
-        okButton.setEnabled(referencePanel.isInValidState());
+        setUnitControlState();
+        setReferencePanelState();
+
+        okButton.setEnabled(failureList.isEmpty() && referencePanel.isInValidState());
     }
 
     public FormFieldInlineReferenceEdit getReferencePanel() {
