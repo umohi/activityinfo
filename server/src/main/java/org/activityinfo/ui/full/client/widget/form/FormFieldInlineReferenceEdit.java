@@ -175,6 +175,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
             FormInstanceLabeler.setLabel(newFormInstance, newName());
             tableDataProvider.getList().add(newFormInstance);
             tableDataProvider.refresh();
+            getContainer().fireState();
         }
     }
 
@@ -228,6 +229,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         final Set<FormInstance> selectedSet = selectionModel.getSelectedSet();
         tableDataProvider.getList().removeAll(selectedSet);
         tableDataProvider.refresh();
+        getContainer().fireState();
     }
 
     public void apply() {

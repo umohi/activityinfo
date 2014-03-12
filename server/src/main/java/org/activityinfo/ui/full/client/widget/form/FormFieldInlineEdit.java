@@ -21,6 +21,7 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -38,10 +39,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
-import org.activityinfo.api2.shared.validation.ValidationFailure;
-import org.activityinfo.api2.shared.validation.ValidationUtils;
-import org.activityinfo.api2.shared.validation.Validator;
-import org.activityinfo.api2.shared.validation.ValidatorBuilder;
+import org.activityinfo.api2.shared.validation.*;
 import org.activityinfo.api2.shared.validation.widget.NotEmptyStringValidator;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
@@ -110,6 +108,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         validator = ValidatorBuilder.instance().
                 addNotEmptyString(label, I18N.CONSTANTS.fieldLabel()).
                 addValidator(createUnitValidator()).
+                addValidator(createReferenceValidator()).
                 build();
         label.addKeyUpHandler(new KeyUpHandler() {
             public void onKeyUp(KeyUpEvent event) {
@@ -123,6 +122,20 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         });
 
         fireState();
+    }
+
+    private Validator createReferenceValidator() {
+        return new Validator() {
+            @Override
+            public List<ValidationFailure> validate() {
+                final List<ValidationFailure> failures = Lists.newArrayList();
+                if (type.getSelectedType() == FormFieldType.REFERENCE && getReferencePanel().getInstances().isEmpty()) {
+                    final String message = ValidationUtils.format(I18N.CONSTANTS.values(), I18N.CONSTANTS.validationControlIsEmpty());
+                    failures.add(new ValidationFailure(new ValidationMessage(message)));
+                }
+                return failures;
+            }
+        };
     }
 
     private Validator createUnitValidator() {

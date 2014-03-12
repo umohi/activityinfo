@@ -8,12 +8,14 @@
   <ui:with field='style' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <g:HTMLPanel>
-      <boot:TextBox width="100%" ui:field="sectionLabel" placeholder="{res.sectionLabel}" />
-      <div style="margin-top: 5px; margin-bottom: 5px;">
-        <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
-        <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
-      </div>
-    </g:HTMLPanel>
+    <boot:TextBox width="100%" ui:field="sectionLabel" placeholder="{res.sectionLabel}"/>
+    <div style="margin-top: 5px; margin-bottom: 5px;">
+      <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
+      <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
+    </div>
+    <br/>
+    <div class="has-error">
+      <div class="help-block" ui:field="errorContainer"/>
+    </div>
   </g:HTMLPanel>
 </ui:UiBinder>

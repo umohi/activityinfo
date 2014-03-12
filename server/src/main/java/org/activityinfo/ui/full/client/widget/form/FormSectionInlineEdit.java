@@ -21,7 +21,9 @@ package org.activityinfo.ui.full.client.widget.form;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -36,8 +38,12 @@ import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
+import org.activityinfo.api2.shared.validation.*;
+import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
+
+import java.util.List;
 
 /**
  * @author yuriyz on 2/25/14.
@@ -50,15 +56,43 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
     }
 
     private FormSection formSection;
+    private Validator validator;
 
     @UiField
     Button okButton;
     @UiField
     TextBox sectionLabel;
+    @UiField
+    DivElement errorContainer;
 
     public FormSectionInlineEdit() {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
+        validator = ValidatorBuilder.instance().
+                addNotEmptyString(sectionLabel, I18N.CONSTANTS.sectionLabel()).
+                addValidator(new Validator() {
+                    @Override
+                    public List<ValidationFailure> validate() {
+                        final List<ValidationFailure> failures = Lists.newArrayList();
+                        if (formSection != null && formSection.getLabel().getValue().equals(sectionLabel.getValue())) {
+                            final String message = ValidationUtils.format(I18N.CONSTANTS.sectionLabel(), I18N.CONSTANTS.valueNotChanged());
+                            failures.add(new ValidationFailure(new ValidationMessage(message)));
+                        }
+                        return failures;
+                    }
+                }).
+                build();
+        sectionLabel.addKeyUpHandler(new KeyUpHandler() {
+            public void onKeyUp(KeyUpEvent event) {
+                fireState();
+            }
+        });
+    }
+
+    private void fireState() {
+        final List<ValidationFailure> failures = validator.validate();
+        ValidationUtils.show(failures, errorContainer);
+        okButton.setEnabled(failures.isEmpty());
     }
 
     public void applyNew(Element... mirrorElements) {
@@ -69,12 +103,7 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
 
     public void apply() {
         this.sectionLabel.setValue(formSection != null ? formSection.getLabel().getValue() : "");
-        this.sectionLabel.addKeyUpHandler(new KeyUpHandler() {
-            public void onKeyUp(KeyUpEvent event) {
-                setOkButtonState();
-            }
-        });
-        setOkButtonState();
+        fireState();
     }
 
     public void apply(FormSection formSection, Element... mirrorElements) {
@@ -89,10 +118,6 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
 
     public FormSection getFormSection() {
         return formSection;
-    }
-
-    private void setOkButtonState() {
-        okButton.setEnabled(formSection != null && !formSection.getLabel().getValue().equals(sectionLabel.getValue()));
     }
 
     public void updateModel() {

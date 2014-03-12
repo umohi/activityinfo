@@ -1,6 +1,7 @@
 package org.activityinfo.ui.full.client.i18n;
 
 import com.google.gwt.i18n.client.Constants;
+import org.activityinfo.api2.shared.LocalizedString;
 
 /**
  *
@@ -3362,4 +3363,8 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Control is empty")
     @Key("validationControlIsEmpty")
     String validationControlIsEmpty();
+
+    @DefaultStringValue("Value was not changed")
+    @Key("valueNotChanged")
+    String valueNotChanged();
 }
