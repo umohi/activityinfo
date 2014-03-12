@@ -1,16 +1,15 @@
-package org.activityinfo.api2.shared.form;
+package org.activityinfo.api2.shared.validation;
 
 import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.validation.ValidationMessage;
 
 /**
  * Validation Error bound to form field.
  */
-public class ValidationError extends ValidationMessage {
+public class FormFieldValidationMessage extends ValidationMessage {
 
     private Cuid fieldId;
 
-    public ValidationError(Cuid fieldId) {
+    public FormFieldValidationMessage(Cuid fieldId) {
         this.fieldId = fieldId;
     }
 
