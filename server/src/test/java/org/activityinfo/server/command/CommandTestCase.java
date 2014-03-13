@@ -34,7 +34,6 @@ import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.endpoint.gwtrpc.CommandServlet;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
 import org.activityinfo.server.util.TemplateModule;
-import org.activityinfo.server.util.beanMapping.BeanMappingModule;
 import org.activityinfo.server.util.locale.LocaleModule;
 import org.junit.Before;
 
@@ -46,7 +45,6 @@ import java.util.Locale;
 @Modules({
         MockHibernateModule.class,
         TemplateModule.class,
-        BeanMappingModule.class,
         GwtRpcModule.class,
         AuthenticationModuleStub.class,
         LocaleModule.class

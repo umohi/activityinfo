@@ -23,13 +23,13 @@ package org.activityinfo.server.authentication;
  */
 
 import com.google.common.base.Charsets;
+import com.google.common.io.BaseEncoding;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.entity.Authentication;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.apache.commons.codec.binary.Base64;
 
 import javax.persistence.NoResultException;
 import java.io.IOException;
@@ -89,15 +89,13 @@ public class BasicAuthentication {
             return null;
         }
         // Get encoded user and password, comes after "BASIC "
-        String emailpassEncoded = auth.substring(6);
+        String emailPasswordEncoded = auth.substring(6);
 
         // Decode it, using any base 64 decoder
 
-        byte[] emailpassDecodedBytes = Base64.decodeBase64(emailpassEncoded
-                .getBytes());
-        String emailpassDecoded = new String(emailpassDecodedBytes,
-                Charsets.UTF_8);
-        String[] emailPass = emailpassDecoded.split(":");
+        byte[] emailPassDecodedBytes = BaseEncoding.base64().decode(emailPasswordEncoded);
+        String emailPassDecoded = new String(emailPassDecodedBytes, Charsets.UTF_8);
+        String[] emailPass = emailPassDecoded.split(":");
 
         if (emailPass.length != 2) {
             return null;

@@ -38,7 +38,6 @@ import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.Location;
 import org.activityinfo.server.database.hibernate.entity.LocationType;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
-import org.activityinfo.server.util.beanMapping.BeanMappingModule;
 import org.activityinfo.server.util.logging.LoggingModule;
 import org.activityinfo.legacy.client.KeyGenerator;
 import org.junit.Before;
@@ -58,7 +57,6 @@ import static org.junit.Assert.*;
 @RunWith(InjectionSupport.class)
 @Modules({
         MockHibernateModule.class,
-        BeanMappingModule.class,
         GwtRpcModule.class,
         LoggingModule.class
 })

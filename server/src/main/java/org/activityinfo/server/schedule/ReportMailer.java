@@ -35,7 +35,6 @@ import org.activityinfo.server.mail.Message;
 import org.activityinfo.server.report.ReportParserJaxb;
 import org.activityinfo.server.report.generator.ReportGenerator;
 import org.activityinfo.server.report.renderer.itext.RtfReportRenderer;
-import org.apache.commons.lang.LocaleUtils;
 import org.xml.sax.SAXException;
 
 import javax.mail.MessagingException;
@@ -135,7 +134,7 @@ public class ReportMailer {
         LOGGER.log(Level.INFO, "Sending email to " + sub.getUser().getEmail());
 
         DateFormat reportDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM,
-                LocaleUtils.toLocale(sub.getUser().getLocale()));
+                sub.getUser().getLocaleObject());
 
 
         Message email = new Message();

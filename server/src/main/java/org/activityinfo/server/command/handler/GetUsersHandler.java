@@ -29,11 +29,11 @@ import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.command.result.UserResult;
 import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.legacy.shared.exception.IllegalAccessCommandException;
+import org.activityinfo.legacy.shared.model.PartnerDTO;
 import org.activityinfo.legacy.shared.model.UserPermissionDTO;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.database.hibernate.entity.UserPermission;
-import org.dozer.Mapper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -47,12 +47,10 @@ import java.util.List;
 public class GetUsersHandler implements CommandHandler<GetUsers> {
 
     private EntityManager em;
-    private Mapper mapper;
 
     @Inject
-    public GetUsersHandler(EntityManager em, Mapper mapper) {
+    public GetUsersHandler(EntityManager em) {
         this.em = em;
-        this.mapper = mapper;
     }
 
     @Override
@@ -89,7 +87,20 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
 
         List<UserPermissionDTO> models = new ArrayList<>();
         for (UserPermission perm : query.getResultList()) {
-            models.add(mapper.map(perm, UserPermissionDTO.class));
+            UserPermissionDTO dto = new UserPermissionDTO();
+            dto.setEmail(perm.getUser().getEmail());
+            dto.setName(perm.getUser().getName());
+            dto.setOrganization(perm.getUser().getOrganization());
+            dto.setJobtitle(perm.getUser().getJobtitle());
+            dto.setAllowDesign(perm.isAllowDesign());
+            dto.setAllowView(perm.isAllowView());
+            dto.setAllowViewAll(perm.isAllowViewAll());
+            dto.setAllowEdit(perm.isAllowEdit());
+            dto.setAllowEditAll(perm.isAllowEditAll());
+            dto.setAllowManageUsers(perm.isAllowManageUsers());
+            dto.setAllowManageAllUsers(perm.isAllowManageAllUsers());
+            dto.setPartner(new PartnerDTO(perm.getPartner().getId(), perm.getPartner().getName()));
+            models.add(dto);
         }
 
         return new UserResult(models, cmd.getOffset(),

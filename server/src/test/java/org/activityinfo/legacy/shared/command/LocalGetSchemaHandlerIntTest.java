@@ -32,7 +32,6 @@ import org.activityinfo.fixtures.MockHibernateModule;
 import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
-import org.activityinfo.server.util.beanMapping.BeanMappingModule;
 import org.activityinfo.server.util.logging.LoggingModule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +42,6 @@ import static org.junit.Assert.assertThat;
 @RunWith(InjectionSupport.class)
 @Modules({
         MockHibernateModule.class,
-        BeanMappingModule.class,
         GwtRpcModule.class,
         LoggingModule.class
 })

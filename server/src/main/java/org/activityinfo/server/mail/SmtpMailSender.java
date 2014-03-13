@@ -22,11 +22,11 @@ package org.activityinfo.server.mail;
  * #L%
  */
 
+import com.google.common.base.Charsets;
 import com.google.inject.Inject;
 import freemarker.template.Configuration;
 import org.activityinfo.server.util.config.DeploymentConfiguration;
 import org.activityinfo.server.util.logging.LogException;
-import org.apache.commons.codec.Charsets;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -51,8 +51,7 @@ public class SmtpMailSender extends MailSender {
     private final DeploymentConfiguration configuration;
 
     @Inject
-    public SmtpMailSender(DeploymentConfiguration configuration,
-                          Configuration templateCfg) {
+    public SmtpMailSender(DeploymentConfiguration configuration, Configuration templateCfg) {
         super(templateCfg);
         this.configuration = configuration;
     }
@@ -65,10 +64,8 @@ public class SmtpMailSender extends MailSender {
             Session session = Session.getDefaultInstance(props, null);
             MimeMessage mimeMessage = new MimeMessage(session);
             mimeMessage.setSubject(message.getSubject(), Charsets.UTF_8.name());
-            mimeMessage.addRecipients(RecipientType.TO,
-                    toArray(message.getTo()));
-            mimeMessage.addRecipients(RecipientType.BCC,
-                    toArray(message.getBcc()));
+            mimeMessage.addRecipients(RecipientType.TO, toArray(message.getTo()));
+            mimeMessage.addRecipients(RecipientType.BCC, toArray(message.getBcc()));
             mimeMessage.setFrom(new InternetAddress(
                     configuration.getProperty("smtp.from", "activityinfo@configure-me.com"),
                     configuration.getProperty("smtp.from.name", "ActivityInfo")));
@@ -103,9 +100,7 @@ public class SmtpMailSender extends MailSender {
             mimeMessage.saveChanges();
 
             Transport.send(mimeMessage);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }

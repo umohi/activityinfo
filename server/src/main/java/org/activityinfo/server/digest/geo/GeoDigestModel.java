@@ -1,12 +1,12 @@
 package org.activityinfo.server.digest.geo;
 
+import com.google.common.base.Strings;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.reports.content.MapContent;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.digest.DigestModel;
 import org.activityinfo.server.util.date.DateCalc;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Collection;
 import java.util.Date;
@@ -118,7 +118,7 @@ public class GeoDigestModel implements DigestModel {
         }
 
         public boolean isRenderable() {
-            return content != null && !content.getMarkers().isEmpty() && StringUtils.isNotBlank(url);
+            return content != null && !content.getMarkers().isEmpty() && !Strings.isNullOrEmpty(url);
         }
 
         public boolean isEmpty() {

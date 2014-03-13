@@ -31,7 +31,6 @@ import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.server.database.hibernate.dao.CountryDAO;
 import org.activityinfo.server.database.hibernate.entity.Country;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.dozer.Mapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,26 +42,26 @@ public class GetCountriesHandler implements CommandHandler<GetCountries> {
             .getLogger(GetCountriesHandler.class.getName());
 
     private final CountryDAO countryDAO;
-    private final Mapper mapper;
 
     @Inject
-    public GetCountriesHandler(CountryDAO countryDAO, Mapper mapper) {
+    public GetCountriesHandler(CountryDAO countryDAO) {
         this.countryDAO = countryDAO;
-        this.mapper = mapper;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public CommandResult execute(GetCountries cmd, User user)
             throws CommandException {
-        return new CountryResult(
-                mapToDtos(countryDAO.queryAllCountriesAlphabetically()));
+        return new CountryResult(mapToDtos(countryDAO.queryAllCountriesAlphabetically()));
     }
 
     private ArrayList<CountryDTO> mapToDtos(List<Country> countries) {
         ArrayList<CountryDTO> dtos = new ArrayList<CountryDTO>();
         for (Country country : countries) {
-            dtos.add(mapper.map(country, CountryDTO.class, "countryNameOnly"));
+            CountryDTO dto = new CountryDTO();
+            country.setId(country.getId());
+            country.setName(country.getName());
+            dtos.add(dto);
         }
         return dtos;
     }

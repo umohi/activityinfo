@@ -22,6 +22,7 @@ package org.activityinfo.server.event.sitehistory;
  * #L%
  */
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.activityinfo.legacy.shared.command.Command;
@@ -34,7 +35,6 @@ import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.Site;
 import org.activityinfo.server.database.hibernate.entity.SiteHistory;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -113,7 +113,7 @@ public class SiteHistoryProcessor {
             json = JSON_DELETE;
         }
 
-        if (StringUtils.isNotBlank(json)) {
+        if (!Strings.isNullOrEmpty(json)) {
             persistHistory(site, user, type, json);
         }
     }
