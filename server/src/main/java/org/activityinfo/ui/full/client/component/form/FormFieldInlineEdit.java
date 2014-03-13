@@ -41,10 +41,10 @@ import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.api2.shared.function.SimplePredicate;
 import org.activityinfo.api2.shared.validation.*;
 import org.activityinfo.api2.shared.validation.widget.NotEmptyValidator;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.ui.full.client.component.form.dialog.ChangeFormFieldTypeDialog;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
-import org.activityinfo.ui.full.client.component.form.dialog.ChangeFormFieldTypeDialog;
 
 import javax.annotation.Nonnull;
 import java.util.List;

@@ -22,15 +22,18 @@ package org.activityinfo.ui.full.client.page.config;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.extjs.gxt.ui.client.event.*;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.grid.*;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.google.inject.Inject;
 import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
@@ -40,20 +43,8 @@ import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
 import org.activityinfo.ui.full.client.util.state.StateProvider;
 
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.GridEvent;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedListener;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnData;
-import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DbListPage extends ContentPanel implements DbListPresenter.View,
         Page {

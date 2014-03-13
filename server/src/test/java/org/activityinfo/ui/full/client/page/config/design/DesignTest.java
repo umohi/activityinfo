@@ -34,9 +34,9 @@ import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.DTOs;
 import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.full.client.MockEventBus;
 import org.activityinfo.ui.full.client.dispatch.DispatcherStub;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.mock.StateManagerStub;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.common.grid.ConfirmCallback;
@@ -71,7 +71,7 @@ public class DesignTest {
         replay(view);
 
         // Localisation resources
-        UIConstants constants = createNiceMock(UIConstants.class);
+        UiConstants constants = createNiceMock(UiConstants.class);
         replay(constants);
 
         DesignPresenter designer = new DesignPresenter(eventBus, service,
@@ -116,7 +116,7 @@ public class DesignTest {
         replay(view);
 
         // Collaborator
-        UIConstants constants = createNiceMock(UIConstants.class);
+        UiConstants constants = createNiceMock(UiConstants.class);
         replay(constants);
 
         DesignPresenter designer = new DesignPresenter(eventBus, service,
@@ -174,7 +174,7 @@ public class DesignTest {
         replay(view);
 
         // Collaborator
-        UIConstants constants = createNiceMock(UIConstants.class);
+        UiConstants constants = createNiceMock(UiConstants.class);
         replay(constants);
 
         DesignPresenter designer = new DesignPresenter(new MockEventBus(),
@@ -210,7 +210,7 @@ public class DesignTest {
         replay(view);
 
         // Collaborator
-        UIConstants constants = createNiceMock(UIConstants.class);
+        UiConstants constants = createNiceMock(UiConstants.class);
         replay(constants);
 
         DesignPresenter designer = new DesignPresenter(new MockEventBus(),
@@ -260,7 +260,7 @@ public class DesignTest {
         MockDesignTree view = new MockDesignTree();
 
         // Constants
-        UIConstants constants = createNiceMock(UIConstants.class);
+        UiConstants constants = createNiceMock(UiConstants.class);
         replay(constants);
 
         // Class under test

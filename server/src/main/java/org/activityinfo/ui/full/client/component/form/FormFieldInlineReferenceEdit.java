@@ -52,7 +52,7 @@ import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.*;
 import org.activityinfo.api2.shared.form.has.HasInstances;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 
 import java.util.List;
 import java.util.Set;

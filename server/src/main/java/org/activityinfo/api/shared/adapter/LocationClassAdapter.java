@@ -6,13 +6,14 @@ import org.activityinfo.api.shared.model.AdminLevelDTO;
 import org.activityinfo.api.shared.model.CountryDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.api2.shared.*;
+import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.application.ApplicationProperties;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormFieldType;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 
 import javax.annotation.Nullable;
 import java.util.Set;

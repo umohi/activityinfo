@@ -35,8 +35,8 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
 
 public abstract class AbstractGridView<M extends ModelData, P extends GridPresenter<M>>

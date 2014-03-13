@@ -27,12 +27,12 @@ import com.bedatadriven.rebar.sql.client.query.SqlDialect;
 import com.bedatadriven.rebar.sql.client.query.SqliteDialect;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.MockEventBus;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.Remote;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.local.command.HandlerRegistry;
 
 import java.lang.reflect.InvocationHandler;
@@ -64,9 +64,9 @@ public class LocalModuleStub extends AbstractModule {
     }
 
     @Provides
-    public UIConstants provideConstants() {
-        return (UIConstants) Proxy.newProxyInstance(this.getClass()
-                .getClassLoader(), new Class[]{UIConstants.class},
+    public UiConstants provideConstants() {
+        return (UiConstants) Proxy.newProxyInstance(this.getClass()
+                .getClassLoader(), new Class[]{UiConstants.class},
                 new InvocationHandler() {
 
                     @Override

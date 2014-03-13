@@ -26,6 +26,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.exception.CommandException;
@@ -37,18 +38,13 @@ import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.endpoint.gwtrpc.CommandServlet2;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
 import org.activityinfo.server.endpoint.gwtrpc.RemoteExecutionContext;
-import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.util.TemplateModule;
 import org.activityinfo.server.util.blob.BlobServiceModuleStub;
 import org.activityinfo.server.util.config.ConfigModuleStub;
 import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
 import org.junit.Before;
-import org.activityinfo.api.client.AsyncMonitor;
-import org.activityinfo.api.client.Dispatcher;
 
 import javax.persistence.EntityManager;
-import java.io.IOException;
-import java.util.logging.LogManager;
 
 /**
  * Test fixture for running hibernate-free commands.
@@ -98,7 +94,7 @@ public class CommandTestCase2 {
         }
 
         assert user != null;
-        LocaleProxy.setLocale(LocaleHelper.getLocaleObject(user));
+        LocaleProxy.setLocale(user.getLocaleObject());
 
         RemoteExecutionContext context = new RemoteExecutionContext(injector);
         T result = context.startExecute(command);

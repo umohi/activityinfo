@@ -26,8 +26,8 @@ import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.widget.Html;
 import org.activityinfo.api.shared.command.result.LocationResult;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.entry.form.resources.SiteFormResources;
 
 public class SearchStatusView extends Html {

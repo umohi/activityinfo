@@ -32,13 +32,13 @@ import com.google.inject.Singleton;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
 import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.database.hibernate.entity.Authentication;
-import org.activityinfo.server.i18n.LocaleHelper;
 
 import javax.persistence.EntityManager;
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -53,8 +53,7 @@ import java.util.logging.Logger;
 @Singleton
 public class AuthenticationFilter implements Filter {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(AuthenticationFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
 
     private final Provider<HttpServletRequest> request;
     private final Provider<EntityManager> entityManager;
@@ -90,8 +89,7 @@ public class AuthenticationFilter implements Filter {
 
         authProvider.clear();
 
-        String authToken = ((HttpServletRequest) request)
-                .getHeader("Authorization");
+        String authToken = ((HttpServletRequest) request).getHeader("Authorization");
         if (Strings.isNullOrEmpty(authToken)) {
             authToken = authTokenFromCookie();
         }
@@ -99,8 +97,8 @@ public class AuthenticationFilter implements Filter {
             try {
                 AuthenticatedUser currentUser = authTokenCache.get(authToken);
                 authProvider.set(currentUser);
-                LocaleProxy
-                        .setLocale(LocaleHelper.getLocaleObject(currentUser));
+
+                LocaleProxy.setLocale(Locale.forLanguageTag(currentUser.getUserLocale()));
 
                 LOGGER.info("Setting locale to " + currentUser.getUserLocale());
 
@@ -139,13 +137,11 @@ public class AuthenticationFilter implements Filter {
         Cookie[] cookies = request.get().getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName()
-                        .equals(AuthenticatedUser.AUTH_TOKEN_COOKIE)) {
+                if (cookie.getName().equals(AuthenticatedUser.AUTH_TOKEN_COOKIE)) {
                     return cookie.getValue();
                 }
             }
         }
         return null;
     }
-
 }

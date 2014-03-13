@@ -31,8 +31,8 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.inject.Inject;
 import org.activityinfo.api.shared.model.ProjectDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 import org.activityinfo.ui.full.client.page.common.dialog.FormDialogCallback;
 import org.activityinfo.ui.full.client.page.common.dialog.FormDialogImpl;
@@ -47,13 +47,13 @@ import java.util.List;
 public class DbProjectGrid extends
         AbstractGridView<ProjectDTO, DbProjectEditor> implements
         DbProjectEditor.View {
-    private final UIConstants messages;
+    private final UiConstants messages;
     private final IconImageBundle icons;
 
     private Grid<ProjectDTO> grid;
 
     @Inject
-    public DbProjectGrid(UIConstants messages, IconImageBundle icons) {
+    public DbProjectGrid(UiConstants messages, IconImageBundle icons) {
         this.messages = messages;
         this.icons = icons;
     }

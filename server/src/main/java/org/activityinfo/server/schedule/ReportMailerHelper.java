@@ -25,7 +25,6 @@ package org.activityinfo.server.schedule;
 import org.activityinfo.reports.shared.model.EmailDelivery;
 import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.server.database.hibernate.entity.ReportSubscription;
-import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.util.html.HtmlWriter;
 
 import java.text.MessageFormat;
@@ -79,7 +78,7 @@ public class ReportMailerHelper {
         ResourceBundle mailMessages =
                 ResourceBundle.getBundle(
                         "org.activityinfo.server.mail.MailMessages",
-                        LocaleHelper.getLocaleObject(sub.getUser()));
+                        sub.getUser().getLocaleObject());
 
         StringBuilder sb = new StringBuilder();
 
@@ -114,7 +113,7 @@ public class ReportMailerHelper {
         ResourceBundle mailMessages =
                 ResourceBundle.getBundle(
                         "org.activityinfo.server.mail.MailMessages",
-                        LocaleHelper.getLocaleObject(sub.getUser()));
+                        sub.getUser().getLocaleObject());
 
         HtmlWriter htmlWriter = new HtmlWriter();
 

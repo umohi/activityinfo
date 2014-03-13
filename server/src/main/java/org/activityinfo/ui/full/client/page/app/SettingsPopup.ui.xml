@@ -60,7 +60,7 @@
       display: inline;
     }
   </ui:style>
-  <ui:with field="constants" type="org.activityinfo.ui.full.client.i18n.UIConstants"/>
+  <ui:with field="constants" type="org.activityinfo.i18n.shared.UiConstants"/>
 
   <g:HTMLPanel styleName="{style.panel}">
     <div class="{style.group}">

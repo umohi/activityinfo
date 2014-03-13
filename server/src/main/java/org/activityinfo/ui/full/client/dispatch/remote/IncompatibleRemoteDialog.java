@@ -34,7 +34,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Singleton;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 
 @Singleton
 public class IncompatibleRemoteDialog extends Dialog implements

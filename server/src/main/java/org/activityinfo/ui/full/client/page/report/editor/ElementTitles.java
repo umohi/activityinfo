@@ -22,11 +22,11 @@ package org.activityinfo.ui.full.client.page.report.editor;
  * #L%
  */
 
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.MapReportElement;
 import org.activityinfo.reports.shared.model.PivotChartReportElement;
 import org.activityinfo.reports.shared.model.PivotTableReportElement;
 import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 public final class ElementTitles {
 

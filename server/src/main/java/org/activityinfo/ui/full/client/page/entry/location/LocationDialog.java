@@ -33,12 +33,12 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.model.CountryDTO;
 import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api2.shared.workflow.Workflow;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 import org.activityinfo.ui.full.client.page.entry.form.resources.SiteFormResources;
 

@@ -32,7 +32,7 @@ import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import org.activityinfo.api.client.AsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 
 /**

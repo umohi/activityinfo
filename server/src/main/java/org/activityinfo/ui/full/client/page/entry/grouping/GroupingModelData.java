@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.page.entry.grouping;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 
 class GroupingModelData extends BaseModelData {
     private GroupingModel model;

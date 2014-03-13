@@ -26,6 +26,7 @@ import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetLocations;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.command.GetSiteHistory;
@@ -35,8 +36,7 @@ import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api.shared.model.SiteHistoryDTO;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 
 import java.util.List;
 

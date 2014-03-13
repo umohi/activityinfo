@@ -1,11 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:a="urn:import:org.activityinfo.ui.full.client.widget"
              xmlns:form="urn:import:org.activityinfo.ui.full.client.component.form">
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
-  <ui:with field='i18n' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
   <ui:with field='style' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
   <g:HTMLPanel addStyleNames="{style.newUiStyle.sectionMarginLeft}">

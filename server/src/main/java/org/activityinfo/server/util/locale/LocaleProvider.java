@@ -1,4 +1,4 @@
-package org.activityinfo.server.i18n;
+package org.activityinfo.server.util.locale;
 
 /*
  * #%L
@@ -23,15 +23,18 @@ package org.activityinfo.server.i18n;
  */
 
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.activityinfo.api.shared.auth.AuthenticatedUser;
 
+import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
+/**
+ * Provides
+ */
 @Singleton
 public class LocaleProvider implements Provider<Locale> {
 
@@ -82,7 +85,6 @@ public class LocaleProvider implements Provider<Locale> {
                 return "fr";
             }
         }
-
         return null;
     }
 }

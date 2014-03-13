@@ -23,14 +23,13 @@ package org.activityinfo.reports.server.generator;
  */
 
 import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.reports.shared.content.PivotContent;
 import org.activityinfo.reports.shared.content.PivotTableData;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.PivotTableReportElement;
-import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.i18n.LocaleHelper;
 
 public class PivotTableGenerator extends
         PivotGenerator<PivotTableReportElement> {
@@ -50,7 +49,7 @@ public class PivotTableGenerator extends
                 inheritedFilter, filter);
 
         PivotTableData data = generateData(user.getId(),
-                LocaleHelper.getLocaleObject(user), element, effectiveFilter,
+                user.getLocaleObject(), element, effectiveFilter,
                 element.getRowDimensions(), element.getColumnDimensions());
 
         PivotContent content = new PivotContent();

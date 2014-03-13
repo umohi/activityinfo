@@ -31,7 +31,7 @@ import com.google.gwt.core.client.GWT;
 import org.activityinfo.api.shared.model.PartnerDTO;
 import org.activityinfo.api.shared.model.ProjectDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.full.client.widget.MappingComboBox;
 import org.activityinfo.ui.full.client.widget.MappingComboBoxBinding;
 
@@ -44,7 +44,7 @@ public class TargetForm extends FormPanel {
 
         binding = new FormBinding(this);
 
-        UIConstants constants = GWT.create(UIConstants.class);
+        UiConstants constants = GWT.create(UiConstants.class);
 
         TextField<String> nameField = new TextField<String>();
         nameField.setFieldLabel(constants.name());

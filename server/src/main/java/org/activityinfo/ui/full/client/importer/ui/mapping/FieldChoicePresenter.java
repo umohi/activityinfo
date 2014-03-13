@@ -4,8 +4,7 @@ import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.form.tree.FieldComponent;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 
 import java.util.List;

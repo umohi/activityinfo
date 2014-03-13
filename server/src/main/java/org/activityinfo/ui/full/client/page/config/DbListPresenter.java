@@ -22,9 +22,13 @@ package org.activityinfo.ui.full.client.page.config;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.extjs.gxt.ui.client.data.*;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MessageBoxEvent;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
 import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.CreateEntity;
@@ -34,12 +38,12 @@ import org.activityinfo.api.shared.command.UpdateEntity;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.AppEvents;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.dispatch.callback.Created;
 import org.activityinfo.ui.full.client.dispatch.callback.Deleted;
 import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.NavigationEvent;
 import org.activityinfo.ui.full.client.page.NavigationHandler;
 import org.activityinfo.ui.full.client.page.PageId;
@@ -50,17 +54,8 @@ import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
 import org.activityinfo.ui.full.client.page.config.form.DatabaseForm;
 
-import com.extjs.gxt.ui.client.data.BaseListLoadResult;
-import com.extjs.gxt.ui.client.data.BaseListLoader;
-import com.extjs.gxt.ui.client.data.DataProxy;
-import com.extjs.gxt.ui.client.data.DataReader;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.MessageBoxEvent;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DbListPresenter implements ActionListener {
     public static final PageId PAGE_ID = new PageId("dblist");

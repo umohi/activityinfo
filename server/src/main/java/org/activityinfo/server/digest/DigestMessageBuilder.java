@@ -23,12 +23,11 @@ package org.activityinfo.server.digest;
  */
 
 import com.teklabs.gwt.i18n.server.LocaleProxy;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.mail.Message;
 import org.activityinfo.server.util.html.HtmlTag;
 import org.activityinfo.server.util.html.HtmlWriter;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -67,7 +66,7 @@ public class DigestMessageBuilder {
 
     public Message build() throws IOException, MessagingException {
         // set the locale of the messages
-        LocaleProxy.setLocale(LocaleHelper.getLocaleObject(user));
+        LocaleProxy.setLocale(user.getLocaleObject());
 
         DigestModel model = digestModelBuilder.createModel(user, date, days);
 

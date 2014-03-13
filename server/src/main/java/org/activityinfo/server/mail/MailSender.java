@@ -25,7 +25,6 @@ package org.activityinfo.server.mail;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.util.logging.LogException;
 
 import javax.mail.MessagingException;
@@ -77,7 +76,7 @@ public abstract class MailSender {
 
         StringWriter writer = new StringWriter();
         Template template = templateCfg.getTemplate(model.getTemplateName(),
-                LocaleHelper.getLocaleObject(model.getRecipient()));
+                model.getRecipient().getLocaleObject());
         template.process(model, writer);
         return writer.toString();
     }
@@ -95,6 +94,6 @@ public abstract class MailSender {
     private ResourceBundle getResourceBundle(MessageModel message) {
         return ResourceBundle.getBundle(
                 "org.activityinfo.server.mail.MailMessages",
-                LocaleHelper.getLocaleObject(message.getRecipient()));
+                message.getRecipient().getLocaleObject());
     }
 }

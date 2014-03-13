@@ -30,8 +30,8 @@ import com.bedatadriven.rebar.async.AsyncCommand;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 import java.util.logging.Logger;
 

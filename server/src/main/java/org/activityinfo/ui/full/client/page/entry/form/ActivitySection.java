@@ -28,7 +28,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.Validator;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.page.entry.LockedPeriodSet;
 import org.activityinfo.ui.full.client.page.entry.form.field.PartnerComboBox;
 import org.activityinfo.ui.full.client.page.entry.form.field.ProjectComboBox;

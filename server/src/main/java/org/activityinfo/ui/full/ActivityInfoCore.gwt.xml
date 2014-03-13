@@ -43,11 +43,10 @@
   <inherits name="com.bedatadriven.rebar.appcache.AppCache"/>
   <inherits name="com.bedatadriven.rebar.Time"/>
 
-  <inherits name="com.teklabs.gwt.i18n.GwtI18nServer"/>
-
+  <inherits name="org.activityinfo.i18n.I18n"/>
   <inherits name="org.activityinfo.api.Api"/>
   <inherits name="org.activityinfo.reports.Reports"/>
-    <inherits name="com.bedatadriven.rebar.style.Style"/>
+  <inherits name="com.bedatadriven.rebar.style.Style"/>
 
 
     <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
@@ -55,10 +54,8 @@
 
   <!-- Configure deferred binding for offline module depending on browser capability -->
 
-  <replace-with
-      class="org.activityinfo.ui.full.client.local.capability.IECapabilityProfile">
-    <when-type-is
-        class="org.activityinfo.ui.full.client.local.capability.LocalCapabilityProfile"/>
+  <replace-with class="org.activityinfo.ui.full.client.local.capability.IECapabilityProfile">
+    <when-type-is class="org.activityinfo.ui.full.client.local.capability.LocalCapabilityProfile"/>
     <any>
       <when-property-is name="user.agent" value="ie6"/>
       <when-property-is name="user.agent" value="ie8"/>
@@ -67,19 +64,15 @@
     </any>
   </replace-with>
 
-  <replace-with
-      class="org.activityinfo.ui.full.client.local.capability.FFCapabilityProfile">
-    <when-type-is
-        class="org.activityinfo.ui.full.client.local.capability.LocalCapabilityProfile"/>
+  <replace-with class="org.activityinfo.ui.full.client.local.capability.FFCapabilityProfile">
+    <when-type-is class="org.activityinfo.ui.full.client.local.capability.LocalCapabilityProfile"/>
     <any>
       <when-property-is name="user.agent" value="gecko1_8"/>
     </any>
   </replace-with>
 
-  <replace-with
-      class="org.activityinfo.ui.full.client.local.capability.WebKitCapabilityProfile">
-    <when-type-is
-        class="org.activityinfo.ui.full.client.local.capability.LocalCapabilityProfile"/>
+  <replace-with class="org.activityinfo.ui.full.client.local.capability.WebKitCapabilityProfile">
+    <when-type-is class="org.activityinfo.ui.full.client.local.capability.LocalCapabilityProfile"/>
     <any>
       <when-property-is name="user.agent" value="safari"/>
       <!-- Have to double check but think opera is pretty consistent with webkit -->
@@ -91,30 +84,17 @@
   <source path='client'/>
   <source path="shared"/>
 
-
-  <!-- Enable other locales -->
-  <extend-property name="locale" values="en"/>
-  <set-property-fallback name="locale" value="en"/>
   <super-source path="emul"/>
 
   <!-- Blacklist classes that are never serialized but get pulled in by
      interfaces on RPCable types -->
-  <extend-configuration-property name="rpc.blacklist"
-                                 value="java.util.LinkedList"/>
-  <extend-configuration-property name="rpc.blacklist"
-                                 value="java.util.Stack"/>
-  <extend-configuration-property name="rpc.blacklist"
-                                 value="java.util.TreeMap"/>
-  <extend-configuration-property name="rpc.blacklist"
-                                 value="java.util.TreeSet"/>
-  <extend-configuration-property name="rpc.blacklist"
-                                 value="java.util.Vector"/>
-  <extend-configuration-property name="rpc.blacklist"
-                                 value="com.google.collect.ImmutableMultimap"/>
-  <extend-configuration-property name="rpc.blacklist"
-                                 value="com.google.collect.ImmutableMultiset"/>
-  <extend-configuration-property name="rpc.blacklist"
-                                 value="com.google.collect.EmptyImmutableMultiset"/>
-
+  <extend-configuration-property name="rpc.blacklist" value="java.util.LinkedList"/>
+  <extend-configuration-property name="rpc.blacklist" value="java.util.Stack"/>
+  <extend-configuration-property name="rpc.blacklist" value="java.util.TreeMap"/>
+  <extend-configuration-property name="rpc.blacklist" value="java.util.TreeSet"/>
+  <extend-configuration-property name="rpc.blacklist" value="java.util.Vector"/>
+  <extend-configuration-property name="rpc.blacklist" value="com.google.collect.ImmutableMultimap"/>
+  <extend-configuration-property name="rpc.blacklist" value="com.google.collect.ImmutableMultiset"/>
+  <extend-configuration-property name="rpc.blacklist" value="com.google.collect.EmptyImmutableMultiset"/>
 
 </module>

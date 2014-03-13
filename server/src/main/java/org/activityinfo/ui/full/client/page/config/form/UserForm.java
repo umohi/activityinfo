@@ -34,7 +34,7 @@ import com.google.gwt.core.client.GWT;
 import org.activityinfo.api.shared.model.PartnerDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
 import org.activityinfo.api.shared.model.UserPermissionDTO;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
+import org.activityinfo.i18n.shared.UiConstants;
 
 public class UserForm extends FormPanel {
 
@@ -46,7 +46,7 @@ public class UserForm extends FormPanel {
     public UserForm(UserDatabaseDTO database) {
         this.database = database;
 
-        UIConstants constants = GWT.create(UIConstants.class);
+        UiConstants constants = GWT.create(UiConstants.class);
 
         FormLayout layout = new FormLayout();
         layout.setLabelWidth(90);

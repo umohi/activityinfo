@@ -23,12 +23,12 @@ package org.activityinfo.ui.full.client.page.report.template;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.DateDimension;
 import org.activityinfo.reports.shared.model.DateUnit;
 import org.activityinfo.reports.shared.model.PivotChartReportElement;
 import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 public class ChartTemplate extends ReportElementTemplate {
 

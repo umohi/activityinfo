@@ -26,6 +26,7 @@ import org.mindrot.bcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Describes a user
@@ -129,6 +130,11 @@ public class User implements java.io.Serializable {
     @Column(name = "Locale", nullable = false, length = 10)
     public String getLocale() {
         return this.locale;
+    }
+
+    @Transient
+    public Locale getLocaleObject() {
+        return Locale.forLanguageTag(this.locale);
     }
 
     public void setLocale(String locale) {

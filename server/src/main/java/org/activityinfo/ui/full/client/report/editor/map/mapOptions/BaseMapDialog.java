@@ -33,14 +33,14 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.content.GoogleBaseMap;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetBaseMaps;
 import org.activityinfo.api.shared.command.result.BaseMapResult;
 import org.activityinfo.api.shared.model.BaseMap;
 import org.activityinfo.api.shared.model.TileBaseMap;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.reports.shared.content.GoogleBaseMap;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.report.editor.map.MapResources;
 
 import java.util.ArrayList;
@@ -152,8 +152,7 @@ public class BaseMapDialog extends Dialog {
         add(labelFailLoading);
     }
 
-    private ModelData googleThumb(GoogleBaseMap baseMap,
-                                  String name) {
+    private ModelData googleThumb(GoogleBaseMap baseMap, String name) {
         BaseModelData thumb = new BaseModelData();
         thumb.set("id", baseMap.getId());
         thumb.set("name", name);

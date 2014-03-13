@@ -8,13 +8,14 @@ import com.google.gwt.user.client.ui.HTML;
 import org.activityinfo.api2.client.Promise;
 import org.activityinfo.api2.client.PromiseMonitor;
 import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.page.instance.InstancePlace;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static org.activityinfo.api2.shared.application.ApplicationProperties.*;
+import static org.activityinfo.api2.shared.application.ApplicationProperties.DESCRIPTION_PROPERTY;
+import static org.activityinfo.api2.shared.application.ApplicationProperties.LABEL_PROPERTY;
 
 /**
  * Displays a list of instances

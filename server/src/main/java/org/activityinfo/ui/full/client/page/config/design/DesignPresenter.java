@@ -31,14 +31,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.ImplementedBy;
 import com.google.inject.Inject;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.*;
 import org.activityinfo.api.shared.command.result.CreateResult;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.*;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.full.client.AppEvents;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.common.dialog.FormDialogCallback;
@@ -60,8 +60,7 @@ import java.util.List;
  *
  * @author Alex Bertram
  */
-public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
-        implements DbPage {
+public class DesignPresenter extends AbstractEditorGridPresenter<ModelData> implements DbPage {
     public static final PageId PAGE_ID = new PageId("design");
 
     @ImplementedBy(DesignView.class)
@@ -76,7 +75,7 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
     private final EventBus eventBus;
     private final Dispatcher service;
     private final View view;
-    private final UIConstants messages;
+    private final UiConstants messages;
 
     private UserDatabaseDTO db;
     private TreeStore<ModelData> treeStore;
@@ -84,7 +83,7 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
     @Inject
     public DesignPresenter(EventBus eventBus, Dispatcher service,
                            StateProvider stateMgr,
-                           View view, UIConstants messages) {
+                           View view, UiConstants messages) {
         super(eventBus, service, stateMgr, view);
         this.eventBus = eventBus;
         this.service = service;
@@ -111,7 +110,7 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData>
 
     }
 
-    private void fillStore(UIConstants messages) {
+    private void fillStore(UiConstants messages) {
 
         for (ActivityDTO activity : db.getActivities()) {
             ActivityDTO activityNode = new ActivityDTO(activity);

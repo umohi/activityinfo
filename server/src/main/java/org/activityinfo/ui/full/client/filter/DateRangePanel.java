@@ -30,11 +30,11 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasValue;
 import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterEvent;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterHandler;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterEvent;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.RemoveFilterHandler;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 
 import java.util.Date;

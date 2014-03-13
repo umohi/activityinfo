@@ -1,12 +1,11 @@
-package org.activityinfo.ui.full.client.i18n;
+package org.activityinfo.i18n.shared;
 
 import com.google.gwt.i18n.client.Constants;
-import org.activityinfo.api2.shared.LocalizedString;
 
 /**
  *
  */
-public interface UIConstants extends Constants {
+public interface UiConstants extends Constants {
 
     /**
      * Translated "Copy addresses to clipboard ".

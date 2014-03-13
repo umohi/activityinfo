@@ -23,12 +23,12 @@ package org.activityinfo.ui.full.client.filter;
  */
 
 import com.google.gwt.user.client.Event;
-import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.model.AttributeDTO;
 import org.activityinfo.api.shared.model.AttributeGroupDTO;
 import org.activityinfo.api.shared.util.CollectionUtil;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.reports.shared.model.DimensionType;
 
 import java.util.*;
 

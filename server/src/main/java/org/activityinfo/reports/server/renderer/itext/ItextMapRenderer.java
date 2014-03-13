@@ -26,6 +26,8 @@ import com.google.code.appengine.awt.Color;
 import com.google.code.appengine.awt.Graphics2D;
 import com.google.inject.Inject;
 import com.lowagie.text.*;
+import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.server.generator.MapIconPath;
 import org.activityinfo.reports.server.renderer.image.*;
 import org.activityinfo.reports.server.util.ColorUtil;
@@ -34,9 +36,7 @@ import org.activityinfo.reports.shared.model.MapReportElement;
 import org.activityinfo.reports.shared.model.layers.MapLayer;
 import org.activityinfo.reports.shared.model.layers.PiechartMapLayer;
 import org.activityinfo.reports.shared.model.layers.PiechartMapLayer.Slice;
-import org.activityinfo.api.shared.model.IndicatorDTO;
 import org.activityinfo.server.geo.AdminGeometryProvider;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 import java.io.File;
 import java.io.IOException;

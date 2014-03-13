@@ -22,24 +22,6 @@ package org.activityinfo.ui.full.client.page.entry;
  * #L%
  */
 
-import java.util.ArrayList;
-
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.GetMonthlyReports;
-import org.activityinfo.api.shared.command.Month;
-import org.activityinfo.api.shared.command.UpdateMonthlyReports;
-import org.activityinfo.api.shared.command.result.MonthlyReportResult;
-import org.activityinfo.api.shared.command.result.VoidResult;
-import org.activityinfo.api.shared.model.IndicatorRowDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.icon.IconImageBundle;
-import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
-import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
-import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
-import org.activityinfo.ui.full.client.widget.MappingComboBox;
-
 import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.data.ListLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
@@ -57,6 +39,23 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.command.GetMonthlyReports;
+import org.activityinfo.api.shared.command.Month;
+import org.activityinfo.api.shared.command.UpdateMonthlyReports;
+import org.activityinfo.api.shared.command.result.MonthlyReportResult;
+import org.activityinfo.api.shared.command.result.VoidResult;
+import org.activityinfo.api.shared.model.IndicatorRowDTO;
+import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
+import org.activityinfo.ui.full.client.icon.IconImageBundle;
+import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
+import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
+import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
+import org.activityinfo.ui.full.client.widget.MappingComboBox;
+
+import java.util.ArrayList;
 
 public class MonthlyReportsPanel extends ContentPanel implements ActionListener {
     private final Dispatcher service;

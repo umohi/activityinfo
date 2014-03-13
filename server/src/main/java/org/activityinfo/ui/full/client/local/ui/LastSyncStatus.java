@@ -32,8 +32,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.user.client.Event;
 import com.google.inject.Inject;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.local.sync.SyncCompleteEvent;
 import org.activityinfo.ui.full.client.local.sync.SyncRequestEvent;
 

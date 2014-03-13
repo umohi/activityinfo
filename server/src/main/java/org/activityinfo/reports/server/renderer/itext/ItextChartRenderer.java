@@ -24,11 +24,11 @@ package org.activityinfo.reports.server.renderer.itext;
 
 import com.google.code.appengine.awt.Color;
 import com.lowagie.text.*;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.server.renderer.ChartRendererJC;
 import org.activityinfo.reports.server.renderer.image.ImageCreator;
 import org.activityinfo.reports.server.renderer.image.ItextGraphic;
 import org.activityinfo.reports.shared.model.PivotChartReportElement;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 public class ItextChartRenderer implements
         ItextRenderer<PivotChartReportElement> {

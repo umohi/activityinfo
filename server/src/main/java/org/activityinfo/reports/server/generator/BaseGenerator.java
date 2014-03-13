@@ -23,16 +23,15 @@ package org.activityinfo.reports.server.generator;
  */
 
 import com.google.inject.Inject;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.api.shared.command.GetDimensionLabels;
+import org.activityinfo.api.shared.command.GetDimensionLabels.DimensionLabels;
 import org.activityinfo.reports.shared.content.FilterDescription;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetDimensionLabels;
-import org.activityinfo.api.shared.command.GetDimensionLabels.DimensionLabels;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.server.i18n.LocaleHelper;
 import org.activityinfo.server.util.date.DateFormatter;
 
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public abstract class BaseGenerator<T extends ReportElement> implements
     protected String resolveTemplate(String template, DateRange range, User user) {
         if (template.indexOf("${DATE_RANGE}") != -1) {
             DateFormatter format = new DateFormatter(
-                    LocaleHelper.getLocaleObject(user));
+                    user.getLocaleObject());
             String rangeText = format.format(range);
 
             return template.replace("${DATE_RANGE}", rangeText);

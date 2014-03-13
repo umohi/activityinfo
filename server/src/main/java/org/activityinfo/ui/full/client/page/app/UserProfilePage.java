@@ -12,15 +12,15 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.auth.AuthenticatedUser;
 import org.activityinfo.api.shared.command.GetUserProfile;
 import org.activityinfo.api.shared.command.UpdateUserProfile;
 import org.activityinfo.api.shared.command.result.VoidResult;
 import org.activityinfo.api.shared.model.UserProfileDTO;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.authentication.ClientSideAuthProvider;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.*;
 
 import java.util.Arrays;

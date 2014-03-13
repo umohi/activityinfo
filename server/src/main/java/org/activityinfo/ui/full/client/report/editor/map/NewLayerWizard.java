@@ -25,10 +25,10 @@ package org.activityinfo.ui.full.client.report.editor.map;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.layers.MapLayer;
 import org.activityinfo.reports.shared.model.layers.PolygonMapLayer;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.widget.wizard.Wizard;
 import org.activityinfo.ui.full.client.widget.wizard.WizardPage;
 

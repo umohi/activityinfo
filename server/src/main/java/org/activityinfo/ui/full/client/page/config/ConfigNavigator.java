@@ -25,13 +25,13 @@ package org.activityinfo.ui.full.client.page.config;
 import com.extjs.gxt.ui.client.data.DataReader;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.full.client.dispatch.callback.Got;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 import org.activityinfo.ui.full.client.page.common.nav.Link;
 import org.activityinfo.ui.full.client.page.common.nav.Navigator;
@@ -47,11 +47,11 @@ import java.util.List;
 public class ConfigNavigator implements Navigator {
 
     private final Dispatcher service;
-    private final UIConstants messages;
+    private final UiConstants messages;
     private final IconImageBundle icons;
 
     @Inject
-    public ConfigNavigator(Dispatcher service, UIConstants messages,
+    public ConfigNavigator(Dispatcher service, UiConstants messages,
                            IconImageBundle icons) {
         this.service = service;
         this.messages = messages;

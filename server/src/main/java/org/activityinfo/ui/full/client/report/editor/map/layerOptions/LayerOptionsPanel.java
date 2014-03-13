@@ -40,12 +40,12 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.clustering.Clustering;
 import org.activityinfo.reports.shared.model.layers.*;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.report.editor.map.MapResources;
 
 public final class LayerOptionsPanel extends LayoutContainer implements

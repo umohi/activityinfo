@@ -32,8 +32,8 @@ import com.google.common.base.Objects;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.layers.PolygonMapLayer;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 public class PolygonLayerOptions extends LayoutContainer implements
         LayerOptionsWidget<PolygonMapLayer> {

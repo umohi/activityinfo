@@ -29,14 +29,14 @@ import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetPartnersDimension;
 import org.activityinfo.api.shared.command.result.PartnerResult;
 import org.activityinfo.api.shared.model.PartnerDTO;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.filter.SelectionCallback;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 
 import java.util.HashSet;

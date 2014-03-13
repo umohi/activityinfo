@@ -12,7 +12,7 @@
   </ui:style>
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
-  <ui:with field='i18n' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
 
   <g:HTMLPanel>
     <div class="form-group">

@@ -25,8 +25,8 @@ package org.activityinfo.ui.full.client.page.entry;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.filter.*;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 public class FilterPane extends ContentPanel {
 

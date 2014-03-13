@@ -39,12 +39,12 @@ import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayoutData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
-import org.activityinfo.reports.shared.model.ReportElement;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.RenderElement;
 import org.activityinfo.api.shared.command.RenderElement.Format;
 import org.activityinfo.api.shared.command.result.UrlResult;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.reports.shared.model.ReportElement;
 
 public class ExportDialog extends Dialog {
 

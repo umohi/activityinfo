@@ -33,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.local.capability.PermissionRefusedException;
 
 public class FFPermissionsDialog extends Window {

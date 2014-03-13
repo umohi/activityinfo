@@ -62,7 +62,7 @@
     }
 
   </ui:style>
-  <ui:with field="constants" type="org.activityinfo.ui.full.client.i18n.UIConstants"/>
+  <ui:with field="constants" type="org.activityinfo.i18n.shared.UiConstants"/>
 
   <div class="{style.sections}" ui:field="sectionDiv">
     <div class="{style.section} {style.activeSection}">

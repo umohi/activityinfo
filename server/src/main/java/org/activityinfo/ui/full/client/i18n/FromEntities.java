@@ -26,9 +26,11 @@ import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.Log;
 
+import static org.activityinfo.i18n.shared.I18N.CONSTANTS;
+
 public class FromEntities {
 
-    public static final UIConstants CONSTANTS = I18N.CONSTANTS;
+    public static final FromEntities INSTANCE = new FromEntities();
 
     public String getDimensionTypePluralName(DimensionType dimension) {
         switch (dimension) {

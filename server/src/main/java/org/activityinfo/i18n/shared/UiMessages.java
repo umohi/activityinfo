@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.i18n;
+package org.activityinfo.i18n.shared;
 
 /*
  * #%L
@@ -28,12 +28,21 @@ import java.util.Date;
 
 /**
  * Messages for the application.
- * <p/>
- * <p/>
- * Note that this file is no longer generated, it should be edited directly here
- * instead of editing UIMessages.properties (removed).
  */
-public interface UIMessages extends com.google.gwt.i18n.client.Messages {
+public interface UiMessages extends com.google.gwt.i18n.client.Messages {
+
+    /*
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+     * ================================================================================================
+     *
+     * IMPORTANT
+     *
+     * (1) Do not use this class for text that takes no parameters: place those in UiConstants
+     * (2) The message format requires apostrophes to be doubled: ''
+     *
+     * ================================================================================================
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     */
 
     /**
      * Translated "Are you sure you want to delete the database <b>{0}</b>? <br>

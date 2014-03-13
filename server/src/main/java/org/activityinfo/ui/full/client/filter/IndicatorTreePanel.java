@@ -40,13 +40,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.model.*;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.callback.SuccessCallback;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 
 import java.util.ArrayList;

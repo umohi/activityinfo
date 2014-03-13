@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.i18n;
+package org.activityinfo.i18n.shared;
 
 /*
  * #%L
@@ -26,27 +26,25 @@ import com.google.gwt.core.shared.GWT;
 import com.teklabs.gwt.i18n.client.LocaleFactory;
 
 /**
- * Contains global instances of UIConstants and UIMessages
+ * Contains global instances of UiConstants and UiMessages
  */
 public final class I18N {
 
     private I18N() {
     }
 
-    public static final UIConstants CONSTANTS;
-    public static final UIMessages MESSAGES;
-    public static final FromEntities FROM_ENTITIES;
+    public static final UiConstants CONSTANTS;
+    public static final UiMessages MESSAGES;
 
     static {
         if (GWT.isClient()) {
-            CONSTANTS = GWT.create(UIConstants.class);
-            MESSAGES = GWT.create(UIMessages.class);
+            CONSTANTS = GWT.create(UiConstants.class);
+            MESSAGES = GWT.create(UiMessages.class);
         } else {
             // on the server side: LocaleProxy is initialized in LocaleModule
             // locale is set for each request in CommandServlet
-            CONSTANTS = LocaleFactory.get(UIConstants.class);
-            MESSAGES = LocaleFactory.get(UIMessages.class);
+            CONSTANTS = LocaleFactory.get(UiConstants.class);
+            MESSAGES = LocaleFactory.get(UiMessages.class);
         }
-        FROM_ENTITIES = new FromEntities();
     }
 }

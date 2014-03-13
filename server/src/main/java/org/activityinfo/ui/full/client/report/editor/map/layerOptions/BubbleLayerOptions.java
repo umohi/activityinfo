@@ -34,8 +34,8 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.layers.BubbleMapLayer;
-import org.activityinfo.ui.full.client.i18n.I18N;
 
 /*
  * Displays a list of options the user can choose to configure a BubbleMapLayer

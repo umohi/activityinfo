@@ -34,12 +34,12 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.LockedPeriodDTO;
 import org.activityinfo.api.shared.model.ProjectDTO;
 import org.activityinfo.api.shared.model.UserDatabaseDTO;
-import org.activityinfo.api.client.AsyncMonitor;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.page.config.LockedPeriodsPresenter.AddLockedPeriodView;
 
 public class AddLockedPeriodDialog extends FormPanel implements

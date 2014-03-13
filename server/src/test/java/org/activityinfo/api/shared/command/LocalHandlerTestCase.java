@@ -30,16 +30,16 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.command.result.SyncRegionUpdate;
-import org.activityinfo.fixtures.Modules;
-import org.activityinfo.server.authentication.AuthenticationModuleStub;
 import org.activityinfo.api.shared.util.Collector;
+import org.activityinfo.fixtures.Modules;
+import org.activityinfo.i18n.shared.UiConstants;
+import org.activityinfo.i18n.shared.UiMessages;
+import org.activityinfo.server.authentication.AuthenticationModuleStub;
 import org.activityinfo.server.endpoint.gwtrpc.CommandServlet;
-import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
-import org.activityinfo.ui.full.client.i18n.UIMessages;
 import org.activityinfo.ui.full.client.local.LocalModuleStub;
 import org.activityinfo.ui.full.client.local.command.CommandQueue;
 import org.activityinfo.ui.full.client.local.command.LocalDispatcher;
@@ -79,8 +79,8 @@ public abstract class LocalHandlerTestCase {
 
     protected CommandQueue commandQueue;
 
-    private UIConstants uiConstants;
-    private UIMessages uiMessages;
+    private UiConstants uiConstants;
+    private UiMessages uiMessages;
     protected Connection localConnection;
 
     private String databaseName = "target/localdbtest"
@@ -99,8 +99,8 @@ public abstract class LocalHandlerTestCase {
 
         setUser(1); // default is db owner
 
-        uiConstants = createNiceMock(UIConstants.class);
-        uiMessages = createNiceMock(UIMessages.class);
+        uiConstants = createNiceMock(UiConstants.class);
+        uiMessages = createNiceMock(UiMessages.class);
         replay(uiConstants, uiMessages);
 
     }

@@ -4,7 +4,7 @@
              xmlns:m="urn:import:org.activityinfo.ui.full.client.importer.ui.mapping"
              xmlns:a="urn:import:org.activityinfo.ui.full.client.widget">
 
-  <ui:with field="i18n" type="org.activityinfo.ui.full.client.i18n.UIConstants"/>
+  <ui:with field="i18n" type="org.activityinfo.i18n.shared.UiConstants"/>
   <ui:with field="style" type="org.activityinfo.ui.full.client.importer.ui.mapping.ColumnMappingStyles"/>
 
   <g:HeaderPanel styleName="{style.page}">

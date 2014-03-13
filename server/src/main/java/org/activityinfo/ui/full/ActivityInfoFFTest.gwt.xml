@@ -21,12 +21,6 @@
   -->
 
 
-<!-- This is a drop-in replacement for the ApplicationModule that
-     can be used to quickly test a compilation on FireFox
-
-     e.g.:  mvn gwt:compile -P fftest    
-     
-     -->
 
 <module rename-to="ActivityInfo">
 
@@ -37,11 +31,8 @@
 
   <set-property name="gwt.logging.logLevel" value="FINEST"/>
   <set-property name="compiler.stackMode" value="emulated"/>
-  <set-configuration-property name="compiler.emulatedStack.recordLineNumbers"
-                              value="true"/>
-  <set-configuration-property name="compiler.emulatedStack.recordFileNames"
-                              value="true"/>
-
+  <set-configuration-property name="compiler.emulatedStack.recordLineNumbers" value="true"/>
+  <set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true"/>
 
   <entry-point class="org.activityinfo.ui.full.client.ActivityInfoEntryPoint"/>
 

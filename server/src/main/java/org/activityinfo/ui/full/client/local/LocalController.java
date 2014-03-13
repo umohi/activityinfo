@@ -35,13 +35,13 @@ import com.google.inject.Singleton;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.full.client.AppEvents;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.authentication.ClientSideAuthProvider;
 import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.Remote;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
 import org.activityinfo.ui.full.client.local.LocalStateChangeEvent.State;
 import org.activityinfo.ui.full.client.local.capability.LocalCapabilityProfile;
 import org.activityinfo.ui.full.client.local.capability.PermissionRefusedException;
@@ -68,7 +68,7 @@ public class LocalController extends AbstractDispatcher {
 
     private final EventBus eventBus;
     private final Provider<Synchronizer> synchronizerProvider;
-    private UIConstants uiConstants;
+    private UiConstants uiConstants;
     private final Dispatcher remoteDispatcher;
     private final LocalCapabilityProfile capabilityProfile;
     private final Provider<SyncHistoryTable> historyTable;
@@ -81,7 +81,7 @@ public class LocalController extends AbstractDispatcher {
                            @Remote Dispatcher remoteDispatcher,
                            Provider<Synchronizer> gateway,
                            LocalCapabilityProfile capabilityProfile,
-                           UIConstants uiConstants,
+                           UiConstants uiConstants,
                            Provider<SyncHistoryTable> historyTable) {
         this.eventBus = eventBus;
         this.remoteDispatcher = remoteDispatcher;

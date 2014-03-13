@@ -22,7 +22,7 @@ package org.activityinfo.reports.shared.content;
  * #L%
  */
 
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 
 public class WeekCategory implements DimensionCategory {
 

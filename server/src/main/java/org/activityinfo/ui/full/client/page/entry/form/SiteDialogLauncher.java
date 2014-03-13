@@ -24,17 +24,17 @@ package org.activityinfo.ui.full.client.page.entry.form;
 
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.model.ActivityDTO;
 import org.activityinfo.api.shared.model.LocationDTO;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.ui.full.client.page.entry.LockedPeriodSet;
 import org.activityinfo.ui.full.client.page.entry.location.LocationDialog;
 

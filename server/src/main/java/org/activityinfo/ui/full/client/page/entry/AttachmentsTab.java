@@ -35,13 +35,13 @@ import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetSiteAttachments;
 import org.activityinfo.api.shared.command.result.SiteAttachmentResult;
 import org.activityinfo.api.shared.model.SiteAttachmentDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.full.client.page.common.toolbar.UIActions;
 

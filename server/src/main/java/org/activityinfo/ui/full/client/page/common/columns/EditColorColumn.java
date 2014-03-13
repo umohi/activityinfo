@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.common.columns;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.*;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.report.editor.map.layerOptions.PiechartLayerOptions;
 import org.activityinfo.ui.full.client.report.editor.map.layerOptions.PiechartLayerOptions.NamedSlice;
 import org.activityinfo.ui.full.client.widget.ColorField;

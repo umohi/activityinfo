@@ -2,12 +2,11 @@ package org.activityinfo.ui.full.client.widget;
 
 import com.google.common.base.Function;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import org.activityinfo.api2.client.Promise;
-import org.activityinfo.ui.full.client.i18n.I18N;
+import org.activityinfo.i18n.shared.I18N;
 
 /**
  * SimpleLayoutPanel for widgets that need to be asynchronously

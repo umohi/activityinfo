@@ -1,4 +1,4 @@
-package org.activityinfo.server.i18n;
+package org.activityinfo.server.util.locale;
 
 /*
  * #%L
@@ -27,8 +27,8 @@ import com.google.inject.Provider;
 import com.teklabs.gwt.i18n.client.LocaleFactory;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
 
-public class LocalizableResourceProvider<T extends LocalizableResource>
-        implements Provider<T> {
+
+public class LocalizableResourceProvider<T extends LocalizableResource> implements Provider<T> {
 
     private Class<T> clazz;
 

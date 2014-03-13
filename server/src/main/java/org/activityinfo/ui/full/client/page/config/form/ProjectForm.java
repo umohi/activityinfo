@@ -28,7 +28,7 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
-import org.activityinfo.ui.full.client.i18n.UIConstants;
+import org.activityinfo.i18n.shared.UiConstants;
 
 public class ProjectForm extends FormPanel {
 
@@ -39,7 +39,7 @@ public class ProjectForm extends FormPanel {
 
         binding = new FormBinding(this);
 
-        UIConstants constants = GWT.create(UIConstants.class);
+        UiConstants constants = GWT.create(UiConstants.class);
 
         TextField<String> nameField = new TextField<String>();
         nameField.setFieldLabel(constants.name());

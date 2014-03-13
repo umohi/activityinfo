@@ -26,13 +26,12 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-
-import org.activityinfo.reports.shared.model.PivotReportElement;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.reports.shared.model.PivotReportElement;
+import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.filter.*;
-import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.page.report.HasReportElement;
 import org.activityinfo.ui.full.client.page.report.ReportChangeHandler;
 import org.activityinfo.ui.full.client.page.report.ReportEventBus;

@@ -33,9 +33,9 @@ import org.activityinfo.server.authentication.AuthenticationModuleStub;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.endpoint.gwtrpc.CommandServlet;
 import org.activityinfo.server.endpoint.gwtrpc.GwtRpcModule;
-import org.activityinfo.server.i18n.LocaleModule;
 import org.activityinfo.server.util.TemplateModule;
 import org.activityinfo.server.util.beanMapping.BeanMappingModule;
+import org.activityinfo.server.util.locale.LocaleModule;
 import org.junit.Before;
 
 import javax.persistence.EntityManager;
