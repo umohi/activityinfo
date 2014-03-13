@@ -175,14 +175,14 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
             FormInstanceLabeler.setLabel(newFormInstance, newName());
             tableDataProvider.getList().add(newFormInstance);
             tableDataProvider.refresh();
-            getContainer().fireState();
+            getContainer().fireState(false);
         }
     }
 
     private void validate() {
         clearError();
         validateInstanceNames();
-        container.fireState();
+        container.fireState(false);
     }
 
     public boolean isInValidState() {
@@ -229,16 +229,14 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         final Set<FormInstance> selectedSet = selectionModel.getSelectedSet();
         tableDataProvider.getList().removeAll(selectedSet);
         tableDataProvider.refresh();
-        getContainer().fireState();
+        getContainer().fireState(false);
     }
 
     public void apply() {
         final HasInstances hasInstances = getHasInstances();
         final FormField formField = getFormField();
-        if (hasInstances != null) {
-            tableDataProvider.setList(hasInstances.getInstances());
-            tableDataProvider.refresh();
-        }
+        tableDataProvider.setList(hasInstances != null ? hasInstances.getInstances() : Lists.<FormInstance>newArrayList());
+        tableDataProvider.refresh();
         if (formField != null && formField.getCardinality() != null) {
             switch (formField.getCardinality()) {
                 case SINGLE:

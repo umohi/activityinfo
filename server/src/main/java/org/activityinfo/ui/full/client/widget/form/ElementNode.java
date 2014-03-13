@@ -52,9 +52,6 @@ public class ElementNode {
     private final BiMap<Cuid, FormFieldRow> fieldMap = HashBiMap.create();
     private final BiMap<Cuid, FormSectionRow> sectionMap = HashBiMap.create();
 
-    // contains all field rows within the form tree down in hierarchy
-    private final BiMap<Cuid, FormFieldRow> ownAndChildFieldMap = HashBiMap.create();
-
     private final FormPanel formPanel;
     private final FlowPanel contentPanel;
     private final ElementNode parentNode;
@@ -87,25 +84,17 @@ public class ElementNode {
                     final FormFieldRow fieldRow = new FormFieldRow((FormField) element, formPanel, this);
                     contentPanel.add(fieldRow);
                     fieldMap.put(element.getId(), fieldRow);
-                    ownAndChildFieldMap.put(element.getId(), fieldRow);
                     addValueChangeHandler(fieldRow);
                 } else if (element instanceof FormSection) {
                     final FormSection section = (FormSection) element;
                     final FormSectionRow sectionWidget = new FormSectionRow(section, formPanel, this);
                     contentPanel.add(sectionWidget);
                     sectionMap.put(element.getId(), sectionWidget);
-                    sectionWidget.putFormFieldRows(ownAndChildFieldMap);
                 }
             }
         }
     }
 
-    public void putFormFieldRows(BiMap<Cuid, FormFieldRow> ownAndChildFieldMap) {
-        ownAndChildFieldMap.putAll(fieldMap);
-        for (FormSectionRow sectionRow : sectionMap.values()) {
-            sectionRow.putFormFieldRows(ownAndChildFieldMap);
-        }
-    }
 
     private void addValueChangeHandler(final FormFieldRow fieldRow) {
         final IsWidget widget = fieldRow.getFormFieldWidget();
@@ -166,13 +155,12 @@ public class ElementNode {
         }
     }
 
-    public void addField(final FormField formField, int rowIndexOnPanel) {
+    public void addField(final FormFieldRow row, int rowIndexOnPanel) {
         final int index = rowIndexOnPanel > 0 ? rowIndexOnPanel : 0;
-        final FormFieldRow row = new FormFieldRow(formField, formPanel, this);
+        final FormField formField = row.getFormField();
 
         contentPanel.insert(row, index);
         fieldMap.put(formField.getId(), row);
-        ownAndChildFieldMap.put(formField.getId(), row);
         formElementContainer.getElements().add(index, formField);
 
         formPanel.getUndoManager().addUndoable(new IsUndoable() {
@@ -180,7 +168,6 @@ public class ElementNode {
             public void undo() {
                 contentPanel.remove(index);
                 fieldMap.remove(formField.getId());
-                ownAndChildFieldMap.remove(formField.getId());
                 formElementContainer.getElements().remove(index);
             }
 
@@ -188,7 +175,6 @@ public class ElementNode {
             public void redo() {
                 contentPanel.insert(row, index);
                 fieldMap.put(formField.getId(), row);
-                ownAndChildFieldMap.put(formField.getId(), row);
                 formElementContainer.getElements().add(index, formField);
             }
         });
@@ -232,7 +218,7 @@ public class ElementNode {
             final Set<Cuid> allFieldIds = formSectionRow.getNode().getOwnAndChildFieldMap().keySet();
 
             final FormInstance formInstance = formPanel.getValue();
-            final Map<Cuid,Object> removedValues = Maps.filterKeys(formInstance.getValueMap(), new Predicate<Cuid>() {
+            final Map<Cuid, Object> removedValues = Maps.filterKeys(formInstance.getValueMap(), new Predicate<Cuid>() {
                 @Override
                 public boolean apply(@Nullable Cuid input) {
                     return allFieldIds.contains(input);
@@ -324,7 +310,16 @@ public class ElementNode {
     }
 
     public BiMap<Cuid, FormFieldRow> getOwnAndChildFieldMap() {
+        final BiMap<Cuid, FormFieldRow> ownAndChildFieldMap = HashBiMap.create();
+        fillOwnAndChildFieldMap(ownAndChildFieldMap);
         return ownAndChildFieldMap;
+    }
+
+    public void fillOwnAndChildFieldMap(BiMap<Cuid, FormFieldRow> ownAndChildFieldMap) {
+        ownAndChildFieldMap.putAll(fieldMap);
+        for (FormSectionRow sectionRow : sectionMap.values()) {
+            sectionRow.fillOwnAndChildFieldMap(ownAndChildFieldMap);
+        }
     }
 
     public ElementNode getParentNode() {

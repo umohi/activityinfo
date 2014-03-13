@@ -102,7 +102,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         type.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                fireState();
+                fireState(true);
             }
         });
         validator = ValidatorBuilder.instance().
@@ -112,16 +112,16 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
                 build();
         label.addKeyUpHandler(new KeyUpHandler() {
             public void onKeyUp(KeyUpEvent event) {
-                fireState();
+                fireState(false);
             }
         });
         unit.addKeyUpHandler(new KeyUpHandler() {
             public void onKeyUp(KeyUpEvent event) {
-                fireState();
+                fireState(false);
             }
         });
 
-        fireState();
+        fireState(true);
     }
 
     private Validator createReferenceValidator() {
@@ -207,7 +207,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         type.setSelectedType(formField.getType());
         required.setValue(formField.isRequired());
         setChangeButtonState();
-        fireState();
+        fireState(true);
     }
 
     public void updateModel() {
@@ -253,18 +253,27 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         changeButton.setEnabled(formField != null && !formField.getType().getAllowedConvertTo().isEmpty());
     }
 
-    public void fireState() {
+    public void fireState(boolean fireReferencePanel) {
         final List<ValidationFailure> failureList = validator.validate();
         ValidationUtils.show(failureList, errorContainer);
 
         setUnitControlState();
-        setReferencePanelState();
+        if (fireReferencePanel) {
+            setReferencePanelState();
+        }
 
         okButton.setEnabled(failureList.isEmpty() && referencePanel.isInValidState());
     }
 
     public FormFieldInlineReferenceEdit getReferencePanel() {
         return referencePanel;
+    }
+
+    public FormFieldRow createNewRow(ElementNode node) {
+        if (formField.getType() == FormFieldType.REFERENCE) {
+            return new FormFieldRow(formField, formPanel, node, new FormFieldWidgetReference(formField, getReferencePanel().getInstances()));
+        }
+        return new FormFieldRow(formField, formPanel, node);
     }
 
     public FormFieldRow getRow() {

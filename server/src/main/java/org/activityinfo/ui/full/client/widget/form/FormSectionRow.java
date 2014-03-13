@@ -87,8 +87,8 @@ public class FormSectionRow extends Composite {
         configurePanels();
     }
 
-    public void putFormFieldRows(BiMap<Cuid, FormFieldRow> ownAndChildFieldMap) {
-        node.putFormFieldRows(ownAndChildFieldMap);
+    public void fillOwnAndChildFieldMap(BiMap<Cuid, FormFieldRow> ownAndChildFieldMap) {
+        node.fillOwnAndChildFieldMap(ownAndChildFieldMap);
     }
 
     public void setLabelText() {
@@ -200,7 +200,7 @@ public class FormSectionRow extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 addFieldPanel.updateModel();
-                node.addField(addFieldPanel.getFormField(), 0);
+                node.addField(addFieldPanel.createNewRow(node), 0);
             }
         });
     }

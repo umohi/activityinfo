@@ -82,13 +82,17 @@ public class FormFieldRow extends Composite {
     private final FormPanel formPanel;
 
     public FormFieldRow(FormField formField, FormPanel formPanel, final ElementNode node) {
+        this(formField, formPanel, node, FormFieldWidgetFactory.create(formField, formPanel));
+    }
+
+    public FormFieldRow(FormField formField, FormPanel formPanel, final ElementNode node, IsWidget formFieldWidget) {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         this.formField = formField;
         this.node = node;
         this.formPanel = formPanel;
-        this.formFieldWidget = FormFieldWidgetFactory.create(formField, formPanel);
+        this.formFieldWidget = formFieldWidget;
         this.toolbar.attach(this);
         this.toolbar.setFormPanel(formPanel);
         this.addSectionPanel.getOkButton().addClickHandler(new ClickHandler() {
@@ -105,6 +109,7 @@ public class FormFieldRow extends Composite {
         updateUI();
         control.add(formFieldWidget);
     }
+
 
     private void initPanels() {
         editFieldPanel.setRow(this);
@@ -204,7 +209,7 @@ public class FormFieldRow extends Composite {
             public void onClick(ClickEvent event) {
                 addFieldPanel.updateModel();
                 int rowIndexOnPanel = node.getContentPanel().getWidgetIndex(FormFieldRow.this);
-                node.addField(addFieldPanel.getFormField(), rowIndexOnPanel);
+                node.addField(addFieldPanel.createNewRow(node), rowIndexOnPanel);
             }
         });
     }

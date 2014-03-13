@@ -204,7 +204,7 @@ public class FormPanel extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 addFieldPanel.updateModel();
-                elementNode.addField(addFieldPanel.getFormField(), 0);
+                elementNode.addField(addFieldPanel.createNewRow(elementNode), 0);
             }
         });
     }
