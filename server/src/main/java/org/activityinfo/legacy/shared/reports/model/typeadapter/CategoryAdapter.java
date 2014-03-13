@@ -22,6 +22,7 @@ package org.activityinfo.legacy.shared.reports.model.typeadapter;
  * #L%
  */
 
+import com.google.gwt.core.shared.GwtIncompatible;
 import org.activityinfo.legacy.shared.reports.content.DimensionCategory;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
 
