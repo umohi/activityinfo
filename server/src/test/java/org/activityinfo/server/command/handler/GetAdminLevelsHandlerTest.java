@@ -23,8 +23,8 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.common.collect.Sets;
-import org.activityinfo.api.shared.command.GetAdminLevels;
-import org.activityinfo.api.shared.command.result.AdminLevelResult;
+import org.activityinfo.legacy.shared.command.GetAdminLevels;
+import org.activityinfo.legacy.shared.command.result.AdminLevelResult;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;

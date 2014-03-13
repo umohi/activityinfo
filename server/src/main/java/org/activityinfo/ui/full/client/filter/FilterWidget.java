@@ -32,7 +32,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 public abstract class FilterWidget extends Widget implements FilterPanel {
 

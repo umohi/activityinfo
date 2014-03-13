@@ -1,9 +1,9 @@
 package org.activityinfo.server.event.sitehistory;
 
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.CreateSite;
-import org.activityinfo.api.shared.command.DeleteSite;
-import org.activityinfo.api.shared.command.UpdateSite;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.CreateSite;
+import org.activityinfo.legacy.shared.command.DeleteSite;
+import org.activityinfo.legacy.shared.command.UpdateSite;
 import org.activityinfo.server.event.CommandEvent;
 
 public enum ChangeType {

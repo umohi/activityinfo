@@ -2,11 +2,11 @@ package org.activityinfo.server.command;
 
 import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.api.shared.command.*;
-import org.activityinfo.api.shared.command.PivotSites.PivotResult;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.model.ProjectDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.command.*;
+import org.activityinfo.legacy.shared.command.PivotSites.PivotResult;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.model.ProjectDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;

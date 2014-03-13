@@ -22,12 +22,12 @@ package org.activityinfo.ui.full.client.dispatch;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.legacy.shared.command.Command;
 import org.activityinfo.ui.full.client.dispatch.remote.cache.CacheResult;
 
 /**
  * Interface to a class which is capable of handling
- * {@link org.activityinfo.api.shared.command.Command}s locally, before they are
+ * {@link org.activityinfo.legacy.shared.command.Command}s locally, before they are
  * sent to the server.
  *
  * @param <T>

@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.page.entry;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import org.activityinfo.api.shared.model.*;
+import org.activityinfo.legacy.shared.model.*;
 
 import java.util.Collection;
 import java.util.Date;

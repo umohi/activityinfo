@@ -24,10 +24,10 @@ package org.activityinfo.ui.full.client.report.editor.map.layerOptions;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.filter.FilterResources;

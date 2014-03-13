@@ -22,9 +22,9 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetSiteHistory;
-import org.activityinfo.api.shared.command.GetSiteHistory.GetSiteHistoryResult;
-import org.activityinfo.api.shared.model.SiteHistoryDTO;
+import org.activityinfo.legacy.shared.command.GetSiteHistory;
+import org.activityinfo.legacy.shared.command.GetSiteHistory.GetSiteHistoryResult;
+import org.activityinfo.legacy.shared.model.SiteHistoryDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Test;

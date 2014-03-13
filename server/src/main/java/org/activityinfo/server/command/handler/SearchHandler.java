@@ -29,16 +29,16 @@ import org.activityinfo.reports.shared.content.PivotContent;
 import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.PivotTableReportElement;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GenerateElement;
-import org.activityinfo.api.shared.command.GetSites;
-import org.activityinfo.api.shared.command.Search;
-import org.activityinfo.api.shared.command.result.SearchResult;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.impl.CommandHandlerAsync;
-import org.activityinfo.api.shared.impl.ExecutionContext;
-import org.activityinfo.api.shared.impl.search.AllSearcher;
-import org.activityinfo.api.shared.impl.search.QueryParser;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GenerateElement;
+import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.shared.command.Search;
+import org.activityinfo.legacy.shared.command.result.SearchResult;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
+import org.activityinfo.legacy.shared.impl.ExecutionContext;
+import org.activityinfo.legacy.shared.impl.search.AllSearcher;
+import org.activityinfo.legacy.shared.impl.search.QueryParser;
 
 import java.util.List;
 

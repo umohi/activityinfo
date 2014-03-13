@@ -23,9 +23,9 @@ package org.activityinfo.server.command;
  */
 
 import com.google.inject.ImplementedBy;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 
 @ImplementedBy(DispatcherSyncImpl.class)
 public interface DispatcherSync {

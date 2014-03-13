@@ -23,9 +23,9 @@ package org.activityinfo.ui.full.client.page.entry.place;
  */
 
 import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.app.Section;
 import org.activityinfo.ui.full.client.page.common.grid.AbstractPagingGridPageState;

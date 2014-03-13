@@ -24,7 +24,7 @@ package org.activityinfo.api2.shared.form;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import org.activityinfo.api.shared.model.DTO;
+import org.activityinfo.legacy.shared.model.DTO;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.form.has.HasHashCode;

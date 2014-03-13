@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.report.editor;
 
 import com.extjs.gxt.ui.client.widget.Component;
 import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.api.shared.command.RenderElement;
+import org.activityinfo.legacy.shared.command.RenderElement;
 import org.activityinfo.ui.full.client.page.report.HasReportElement;
 
 import java.util.List;

@@ -23,13 +23,13 @@ package org.activityinfo.server.command;
  */
 
 import com.google.common.collect.Maps;
-import org.activityinfo.api.shared.command.GetSites;
-import org.activityinfo.api.shared.command.UpdateEntity;
-import org.activityinfo.api.shared.command.UpdateSite;
-import org.activityinfo.api.shared.command.result.ListResult;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.shared.command.UpdateEntity;
+import org.activityinfo.legacy.shared.command.UpdateSite;
+import org.activityinfo.legacy.shared.command.result.ListResult;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.hibernate.entity.LockedPeriod;

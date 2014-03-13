@@ -23,8 +23,8 @@ package org.activityinfo.ui.full.client.dispatch.remote;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.MutatingCommand;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.MutatingCommand;
 import org.activityinfo.ui.full.client.Log;
 
 import java.util.ArrayList;

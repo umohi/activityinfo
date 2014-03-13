@@ -2,7 +2,7 @@ package org.activityinfo.server.endpoint.odk;
 
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
-import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.GetSchema;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

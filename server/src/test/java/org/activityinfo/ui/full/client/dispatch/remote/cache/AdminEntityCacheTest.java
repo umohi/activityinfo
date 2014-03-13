@@ -22,10 +22,10 @@ package org.activityinfo.ui.full.client.dispatch.remote.cache;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetAdminEntities;
-import org.activityinfo.api.shared.command.result.ListResult;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.api.shared.model.DTOs;
+import org.activityinfo.legacy.shared.command.GetAdminEntities;
+import org.activityinfo.legacy.shared.command.result.ListResult;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.DTOs;
 import org.activityinfo.ui.full.client.MockEventBus;
 import org.junit.Assert;
 import org.junit.Test;

@@ -28,8 +28,8 @@ import com.bedatadriven.rebar.async.AsyncFunction;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.full.client.local.command.CommandQueue;
 import org.activityinfo.ui.full.client.local.command.CommandQueue.QueueEntry;
 

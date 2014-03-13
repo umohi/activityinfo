@@ -24,7 +24,7 @@ package org.activityinfo.ui.embed.client;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 
 @GinModules({EmbedModule.class})
 public interface EmbedInjector extends Ginjector {

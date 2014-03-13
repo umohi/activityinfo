@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.page.common.toolbar;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.RenderElement;
+import org.activityinfo.legacy.shared.command.RenderElement;
 
 /**
  * Callback to t

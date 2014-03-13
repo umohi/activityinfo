@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.page.report.template;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.Report;
 

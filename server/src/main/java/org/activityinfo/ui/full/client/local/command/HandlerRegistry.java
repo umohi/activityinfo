@@ -23,9 +23,9 @@ package org.activityinfo.ui.full.client.local.command;
  */
 
 import com.google.inject.Singleton;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.impl.CommandHandlerAsync;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
 
 import java.util.HashMap;
 import java.util.Map;

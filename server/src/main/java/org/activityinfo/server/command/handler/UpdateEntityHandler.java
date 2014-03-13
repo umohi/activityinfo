@@ -24,10 +24,10 @@ package org.activityinfo.server.command.handler;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.activityinfo.api.shared.command.UpdateEntity;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
+import org.activityinfo.legacy.shared.command.UpdateEntity;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.server.command.handler.crud.ActivityPolicy;
 import org.activityinfo.server.command.handler.crud.PropertyMap;
 import org.activityinfo.server.command.handler.crud.UserDatabasePolicy;
@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.UpdateEntity
+ * @see org.activityinfo.legacy.shared.command.UpdateEntity
  */
 public class UpdateEntityHandler extends BaseEntityHandler implements
         CommandHandler<UpdateEntity> {

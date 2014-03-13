@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.page;
  * #L%
  */
 
-import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.legacy.client.AsyncMonitor;
 
 /**
  * Page which encloses or decorates another Page

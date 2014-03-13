@@ -35,7 +35,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.ReportElement;
 import org.activityinfo.reports.shared.model.TextReportElement;

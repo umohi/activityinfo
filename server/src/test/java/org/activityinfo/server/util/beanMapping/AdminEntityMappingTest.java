@@ -24,7 +24,7 @@ package org.activityinfo.server.util.beanMapping;
 
 import com.google.inject.Inject;
 import junit.framework.Assert;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;

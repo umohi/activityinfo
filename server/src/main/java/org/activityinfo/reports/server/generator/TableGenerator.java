@@ -31,10 +31,10 @@ import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.TableColumn;
 import org.activityinfo.reports.shared.model.TableElement;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetSites;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.User;
 

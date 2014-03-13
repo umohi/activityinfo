@@ -33,10 +33,10 @@ import com.extjs.gxt.ui.client.widget.layout.TableData;
 import com.extjs.gxt.ui.client.widget.layout.TableLayout;
 import com.extjs.gxt.ui.client.widget.tips.ToolTipConfig;
 import com.google.common.collect.Lists;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.IndicatorDTO;
-import org.activityinfo.api.shared.model.IndicatorGroup;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.IndicatorGroup;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.ui.full.client.util.IndicatorNumberFormat;
 
 import java.util.List;

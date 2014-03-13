@@ -33,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 

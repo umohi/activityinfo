@@ -22,9 +22,9 @@ package org.activityinfo.ui.full.client.mvp;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.DTO;
+import org.activityinfo.legacy.shared.model.DTO;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 
 /*
  * Base class to reduce code in presenter classes and to provide a template

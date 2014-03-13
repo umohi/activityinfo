@@ -1,7 +1,7 @@
 package org.activityinfo.server.endpoint.jsonrpc;
 
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.GetSchema;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.DeserializationContext;

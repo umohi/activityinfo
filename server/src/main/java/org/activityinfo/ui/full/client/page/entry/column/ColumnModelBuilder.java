@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.treegrid.TreeGridCellRenderer;
 import com.google.common.collect.Lists;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import org.activityinfo.api.shared.model.*;
+import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.page.common.columns.EditableLocalDateColumn;
 import org.activityinfo.ui.full.client.page.common.columns.ReadTextColumn;

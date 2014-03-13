@@ -26,10 +26,10 @@ import com.google.common.collect.Lists;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.clustering.AdministrativeLevelClustering;
 import org.activityinfo.reports.shared.model.layers.PointMapLayer;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetSites;
-import org.activityinfo.api.shared.model.IndicatorDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 

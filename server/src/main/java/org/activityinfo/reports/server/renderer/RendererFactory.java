@@ -31,7 +31,7 @@ import org.activityinfo.reports.server.renderer.itext.HtmlReportRenderer;
 import org.activityinfo.reports.server.renderer.itext.PdfReportRenderer;
 import org.activityinfo.reports.server.renderer.itext.RtfReportRenderer;
 import org.activityinfo.reports.server.renderer.ppt.PPTRenderer;
-import org.activityinfo.api.shared.command.RenderElement;
+import org.activityinfo.legacy.shared.command.RenderElement;
 
 /**
  * Creates a {@code Renderer} for a given file format

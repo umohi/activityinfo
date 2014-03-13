@@ -22,7 +22,7 @@ package org.activityinfo.reports.shared.content;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 import java.util.ArrayList;
 import java.util.List;

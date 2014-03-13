@@ -34,7 +34,7 @@ import org.activityinfo.reports.shared.model.TableElement;
 import org.activityinfo.reports.shared.model.labeling.ArabicNumberSequence;
 import org.activityinfo.reports.shared.model.layers.BubbleMapLayer;
 import org.activityinfo.reports.shared.model.layers.ScalingType;
-import org.activityinfo.api.shared.command.RenderElement;
+import org.activityinfo.legacy.shared.command.RenderElement;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.MockHibernateModule;
 import org.activityinfo.fixtures.Modules;

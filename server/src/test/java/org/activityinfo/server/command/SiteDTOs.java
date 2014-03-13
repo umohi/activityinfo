@@ -22,10 +22,10 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.PartnerDTO;
-import org.activityinfo.api.shared.model.ProjectDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.api.client.KeyGenerator;
+import org.activityinfo.legacy.shared.model.PartnerDTO;
+import org.activityinfo.legacy.shared.model.ProjectDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.junit.Assert;
 
 import java.util.GregorianCalendar;

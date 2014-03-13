@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.mvp;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.DTO;
+import org.activityinfo.legacy.shared.model.DTO;
 
 @Deprecated
 public interface AddCreateView<M extends DTO>

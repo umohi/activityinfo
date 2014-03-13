@@ -26,7 +26,7 @@ import com.google.code.appengine.awt.Color;
 import com.google.code.appengine.awt.Graphics2D;
 import com.google.inject.Inject;
 import com.lowagie.text.*;
-import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.server.generator.MapIconPath;
 import org.activityinfo.reports.server.renderer.image.*;

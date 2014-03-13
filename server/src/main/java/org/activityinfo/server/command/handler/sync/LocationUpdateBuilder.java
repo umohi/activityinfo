@@ -24,9 +24,9 @@ package org.activityinfo.server.command.handler.sync;
 
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.GetSyncRegionUpdates;
-import org.activityinfo.api.shared.command.result.SyncRegionUpdate;
-import org.activityinfo.api.shared.impl.Tables;
+import org.activityinfo.legacy.shared.command.GetSyncRegionUpdates;
+import org.activityinfo.legacy.shared.command.result.SyncRegionUpdate;
+import org.activityinfo.legacy.shared.impl.Tables;
 import org.activityinfo.server.database.hibernate.entity.Location;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.json.JSONException;

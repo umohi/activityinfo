@@ -39,10 +39,10 @@ import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayoutData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.RenderElement;
-import org.activityinfo.api.shared.command.RenderElement.Format;
-import org.activityinfo.api.shared.command.result.UrlResult;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.RenderElement;
+import org.activityinfo.legacy.shared.command.RenderElement.Format;
+import org.activityinfo.legacy.shared.command.result.UrlResult;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.ReportElement;
 

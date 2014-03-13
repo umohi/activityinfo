@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.filter;
  */
 
 import com.google.gwt.user.client.ui.HasValue;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 public interface FilterPanel extends HasValue<Filter> {
 

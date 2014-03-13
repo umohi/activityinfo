@@ -22,11 +22,11 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetMonthlyReports;
-import org.activityinfo.api.shared.command.Month;
-import org.activityinfo.api.shared.command.UpdateMonthlyReports;
-import org.activityinfo.api.shared.command.result.MonthlyReportResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.GetMonthlyReports;
+import org.activityinfo.legacy.shared.command.Month;
+import org.activityinfo.legacy.shared.command.UpdateMonthlyReports;
+import org.activityinfo.legacy.shared.command.result.MonthlyReportResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Assert;

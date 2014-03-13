@@ -28,7 +28,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.legacy.shared.command.Command;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.local.command.LocalDispatcher;

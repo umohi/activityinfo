@@ -23,10 +23,10 @@ package org.activityinfo.ui.full.client.page.entry.sitehistory;
  */
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
-import org.activityinfo.api.shared.model.LocationDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.api.shared.model.SiteHistoryDTO;
+import org.activityinfo.legacy.shared.model.LocationDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteHistoryDTO;
 import org.activityinfo.i18n.shared.I18N;
 
 import java.util.ArrayList;

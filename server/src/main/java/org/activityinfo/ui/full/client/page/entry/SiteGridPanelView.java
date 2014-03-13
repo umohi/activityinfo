@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.entry;
 
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.widget.Component;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 interface SiteGridPanelView {
 

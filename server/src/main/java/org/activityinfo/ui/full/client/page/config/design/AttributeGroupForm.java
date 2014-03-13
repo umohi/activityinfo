@@ -27,7 +27,7 @@ import com.extjs.gxt.ui.client.binding.FormBinding;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.widget.MappingComboBox;
 import org.activityinfo.ui.full.client.widget.MappingComboBoxBinding;

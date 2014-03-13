@@ -22,12 +22,12 @@ package org.activityinfo.server.servlet;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.DTOs;
-import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.DTOs;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;

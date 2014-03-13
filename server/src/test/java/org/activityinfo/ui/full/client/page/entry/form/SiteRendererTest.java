@@ -1,9 +1,9 @@
 package org.activityinfo.ui.full.client.page.entry.form;
 
 import com.teklabs.gwt.i18n.server.LocaleProxy;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.IndicatorDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.endpoint.kml.JreIndicatorValueFormatter;
 import org.junit.Before;
 import org.junit.Test;

@@ -24,11 +24,11 @@ package org.activityinfo.ui.full.client.dispatch.remote;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.auth.AuthenticatedUser;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.RemoteCommandServiceAsync;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.RemoteCommandServiceAsync;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.ui.full.client.EventBus;
 
 import java.util.Collections;

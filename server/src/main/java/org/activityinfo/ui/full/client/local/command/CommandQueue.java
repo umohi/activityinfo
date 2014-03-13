@@ -33,8 +33,8 @@ import com.google.gson.JsonObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.activityinfo.api.shared.command.*;
-import org.activityinfo.api.shared.util.JsonUtil;
+import org.activityinfo.legacy.shared.command.*;
+import org.activityinfo.legacy.shared.util.JsonUtil;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.local.sync.SyncRequestEvent;
 

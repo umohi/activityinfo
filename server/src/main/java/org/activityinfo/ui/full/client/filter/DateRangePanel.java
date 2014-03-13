@@ -29,7 +29,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasValue;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterEvent;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterHandler;
@@ -41,7 +41,7 @@ import java.util.Date;
 
 /**
  * UI Component for selecting a range of dates to be used with a
- * {@link org.activityinfo.api.shared.command.Filter}
+ * {@link org.activityinfo.legacy.shared.command.Filter}
  *
  * @author Alex Bertram
  */

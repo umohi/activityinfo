@@ -80,7 +80,7 @@ public class MailingListClient {
     }
 
 
-    // Holds a subscriber's merge_vars info (see http://apidocs.mailchimp.com/api/1.3/listsubscribe.func.php )
+    // Holds a subscriber's merge_vars info (see http://apidocs.mailchimp.com/legacy/1.3/listsubscribe.func.php )
     public static class MergeVars {
 
         @JsonProperty("EMAIL")

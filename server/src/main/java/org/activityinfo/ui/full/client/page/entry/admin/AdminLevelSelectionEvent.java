@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.entry.admin;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.EventType;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 
 /**
  * An event that signals that the current selection within

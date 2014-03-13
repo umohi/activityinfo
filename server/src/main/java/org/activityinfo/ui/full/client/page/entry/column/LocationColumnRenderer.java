@@ -27,7 +27,7 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 public class LocationColumnRenderer implements GridCellRenderer<ModelData> {
 

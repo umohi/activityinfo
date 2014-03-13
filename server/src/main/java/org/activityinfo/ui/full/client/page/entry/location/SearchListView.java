@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.page.entry.location;
 import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.google.gwt.user.client.Element;
-import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.page.entry.form.resources.SiteFormResources;
 

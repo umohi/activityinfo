@@ -25,8 +25,8 @@ package org.activityinfo.ui.full.client.authentication;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Cookies;
 import com.google.inject.Provider;
-import org.activityinfo.api.shared.auth.AuthenticatedUser;
-import org.activityinfo.api.shared.exception.InvalidAuthTokenException;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
+import org.activityinfo.legacy.shared.exception.InvalidAuthTokenException;
 
 import java.util.Date;
 

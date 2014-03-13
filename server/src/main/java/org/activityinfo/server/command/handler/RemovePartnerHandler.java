@@ -23,11 +23,11 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.RemovePartner;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.RemoveFailedResult;
-import org.activityinfo.api.shared.command.result.RemoveResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.RemovePartner;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.RemoveFailedResult;
+import org.activityinfo.legacy.shared.command.result.RemoveResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.entity.Partner;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
@@ -37,7 +37,7 @@ import java.util.Date;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.RemovePartner
+ * @see org.activityinfo.legacy.shared.command.RemovePartner
  */
 public class RemovePartnerHandler implements CommandHandler<RemovePartner> {
 

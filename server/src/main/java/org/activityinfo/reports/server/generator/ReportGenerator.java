@@ -27,7 +27,7 @@ import org.activityinfo.reports.shared.content.Content;
 import org.activityinfo.reports.shared.content.NullContent;
 import org.activityinfo.reports.shared.content.ReportContent;
 import org.activityinfo.reports.shared.model.*;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.User;
 

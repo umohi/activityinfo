@@ -24,11 +24,11 @@ package org.activityinfo.server.endpoint.rest;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.activityinfo.api.shared.command.GetCountries;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.model.CountryDTO;
-import org.activityinfo.api.shared.model.DTOViews;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.legacy.shared.command.GetCountries;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.model.CountryDTO;
+import org.activityinfo.legacy.shared.model.DTOViews;
+import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.AdminLevel;

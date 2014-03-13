@@ -23,9 +23,9 @@ package org.activityinfo.ui.full.client.page.entry.form;
  */
 
 import com.google.common.collect.Lists;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.ui.full.client.page.entry.form.field.AttributeCheckBoxGroup;
 import org.activityinfo.ui.full.client.page.entry.form.field.AttributeCombo;
 import org.activityinfo.ui.full.client.page.entry.form.field.AttributeField;

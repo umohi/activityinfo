@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import org.activityinfo.reports.shared.model.Report;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 
 public abstract class ReportTemplate extends BaseModelData {
 

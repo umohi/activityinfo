@@ -23,9 +23,9 @@ package org.activityinfo.server.command.authorization;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.CreateLocation;
-import org.activityinfo.api.shared.impl.AuthorizationHandler;
-import org.activityinfo.api.shared.impl.ExecutionContext;
+import org.activityinfo.legacy.shared.command.CreateLocation;
+import org.activityinfo.legacy.shared.impl.AuthorizationHandler;
+import org.activityinfo.legacy.shared.impl.ExecutionContext;
 
 public class CreateLocationAuthorizationHandler implements
         AuthorizationHandler<CreateLocation> {

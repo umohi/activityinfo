@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.filter;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 public class NullFilterPanel implements FilterPanel {
 

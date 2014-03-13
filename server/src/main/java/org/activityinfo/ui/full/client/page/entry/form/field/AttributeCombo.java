@@ -25,9 +25,9 @@ package org.activityinfo.ui.full.client.page.entry.form.field;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Format;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
-import org.activityinfo.api.shared.model.AttributeDTO;
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.AttributeDTO;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 public class AttributeCombo extends ComboBox<AttributeDTO> implements
         AttributeField {

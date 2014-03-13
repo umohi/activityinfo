@@ -22,7 +22,7 @@ package org.activityinfo.api2.shared.expr;
  */
 
 import junit.framework.Assert;
-import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.junit.Test;
 

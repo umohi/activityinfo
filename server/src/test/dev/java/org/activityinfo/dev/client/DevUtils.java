@@ -24,7 +24,7 @@ package org.activityinfo.dev.client;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.Random;
-import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.*;

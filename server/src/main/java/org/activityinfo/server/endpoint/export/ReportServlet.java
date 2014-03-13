@@ -30,7 +30,7 @@ import org.activityinfo.reports.server.renderer.Renderer;
 import org.activityinfo.reports.server.renderer.RendererFactory;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.Report;
-import org.activityinfo.api.shared.command.RenderElement;
+import org.activityinfo.legacy.shared.command.RenderElement;
 import org.activityinfo.server.database.hibernate.dao.AuthenticationDAO;
 import org.activityinfo.server.database.hibernate.entity.Authentication;
 import org.activityinfo.server.database.hibernate.entity.DomainFilters;

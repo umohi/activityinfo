@@ -22,7 +22,7 @@ package org.activityinfo.server.endpoint.export;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.UserPermissionDTO;
+import org.activityinfo.legacy.shared.model.UserPermissionDTO;
 import org.activityinfo.i18n.shared.I18N;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.CellStyle;

@@ -24,12 +24,12 @@ package org.activityinfo.server.event.sitehistory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.GetSites;
-import org.activityinfo.api.shared.command.SiteCommand;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.api.shared.util.JsonUtil;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.shared.command.SiteCommand;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.util.JsonUtil;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.Site;
 import org.activityinfo.server.database.hibernate.entity.SiteHistory;

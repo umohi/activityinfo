@@ -23,8 +23,8 @@ package org.activityinfo.ui.full.client.page.entry.form;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.model.LocationDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.LocationDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 public interface LocationFormSection extends FormSection<SiteDTO> {
 

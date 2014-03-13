@@ -24,7 +24,7 @@ package org.activityinfo.server.database.hibernate.dao;
 
 import com.google.inject.Inject;
 import junit.framework.Assert;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.fixtures.AssertUtils;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.MockHibernateModule;

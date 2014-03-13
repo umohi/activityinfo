@@ -27,11 +27,11 @@ import org.activityinfo.reports.server.generator.ReportGenerator;
 import org.activityinfo.reports.server.renderer.Renderer;
 import org.activityinfo.reports.server.renderer.RendererFactory;
 import org.activityinfo.reports.shared.model.DateRange;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.RenderElement;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.UrlResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.RenderElement;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.UrlResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.report.output.StorageProvider;
 import org.activityinfo.server.report.output.TempStorage;
@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.RenderElement
+ * @see org.activityinfo.legacy.shared.command.RenderElement
  */
 public class RenderElementHandler implements CommandHandler<RenderElement> {
 

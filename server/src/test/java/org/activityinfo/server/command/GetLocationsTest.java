@@ -22,8 +22,8 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetLocations;
-import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.legacy.shared.command.GetLocations;
+import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Test;

@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.page.common.dialog;
  * #L%
  */
 
-import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.legacy.client.AsyncMonitor;
 
 /**
  * @author Alex Bertram (akbertram@gmail.com)

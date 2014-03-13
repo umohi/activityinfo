@@ -23,8 +23,8 @@ package org.activityinfo.reports.shared.model;
  */
 
 import org.activityinfo.reports.shared.content.TreeNode;
-import org.activityinfo.api.shared.model.AdminLevelDTO;
-import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.AdminLevelDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

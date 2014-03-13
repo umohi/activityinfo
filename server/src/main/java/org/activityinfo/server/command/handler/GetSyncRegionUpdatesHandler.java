@@ -24,9 +24,9 @@ package org.activityinfo.server.command.handler;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.activityinfo.api.shared.command.GetSyncRegionUpdates;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.GetSyncRegionUpdates;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.command.handler.sync.*;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.ui.full.client.Log;

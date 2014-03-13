@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.map;
  */
 
 import org.activityinfo.reports.shared.util.mapping.Extents;
-import org.activityinfo.api.shared.model.*;
+import org.activityinfo.legacy.shared.model.*;
 
 import java.util.Collection;
 
@@ -45,8 +45,8 @@ public final class AdminBoundsHelper {
      * For example, if a site is marked as being within Country A, the Province
      * B and Health Zone C, the method will return the intersection of the
      * bounds for A, B, and C, which are provided by
-     * {@link org.activityinfo.api.shared.model.AdminEntityDTO#getBounds()} and
-     * {@link org.activityinfo.api.shared.model.CountryDTO#getBounds()}
+     * {@link org.activityinfo.legacy.shared.model.AdminEntityDTO#getBounds()} and
+     * {@link org.activityinfo.legacy.shared.model.CountryDTO#getBounds()}
      *
      * @param activity
      * @param site
@@ -68,8 +68,8 @@ public final class AdminBoundsHelper {
      * For example, if a site is marked as being within Country A, the Province
      * B and Health Zone C, the method will return the intersection of the
      * bounds for A, B, and C, which are provided by
-     * {@link org.activityinfo.api.shared.model.AdminEntityDTO#getBounds()} and
-     * {@link org.activityinfo.api.shared.model.CountryDTO#getBounds()}
+     * {@link org.activityinfo.legacy.shared.model.AdminEntityDTO#getBounds()} and
+     * {@link org.activityinfo.legacy.shared.model.CountryDTO#getBounds()}
      *
      * @param activity
      * @param entityAccessor an adapter class that provides AdminEntity membership for some
@@ -89,8 +89,8 @@ public final class AdminBoundsHelper {
      * For example, if a site is marked as being within Country A, the Province
      * B and Health Zone C, the method will return the intersection of the
      * bounds for A, B, and C, which are provided by
-     * {@link org.activityinfo.api.shared.model.AdminEntityDTO#getBounds()} and
-     * {@link org.activityinfo.api.shared.model.CountryDTO#getBounds()}
+     * {@link org.activityinfo.legacy.shared.model.AdminEntityDTO#getBounds()} and
+     * {@link org.activityinfo.legacy.shared.model.CountryDTO#getBounds()}
      *
      * @param country        TODO
      * @param entityAccessor an adapter class that provides AdminEntity membership for some

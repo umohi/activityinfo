@@ -35,16 +35,16 @@ import org.activityinfo.reports.shared.model.DateDimension;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.DateUnit;
 import org.activityinfo.reports.shared.model.Dimension;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetSites;
-import org.activityinfo.api.shared.command.PivotSites;
-import org.activityinfo.api.shared.command.PivotSites.PivotResult;
-import org.activityinfo.api.shared.command.PivotSites.ValueType;
-import org.activityinfo.api.shared.command.result.Bucket;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.shared.command.PivotSites;
+import org.activityinfo.legacy.shared.command.PivotSites.PivotResult;
+import org.activityinfo.legacy.shared.command.PivotSites.ValueType;
+import org.activityinfo.legacy.shared.command.result.Bucket;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.ui.full.client.data.proxy.SafeRpcProxy;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 
 import java.util.List;
 

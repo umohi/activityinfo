@@ -23,11 +23,11 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.GetCountries;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.CountryResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.model.CountryDTO;
+import org.activityinfo.legacy.shared.command.GetCountries;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.CountryResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.server.database.hibernate.dao.CountryDAO;
 import org.activityinfo.server.database.hibernate.entity.Country;
 import org.activityinfo.server.database.hibernate.entity.User;

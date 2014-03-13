@@ -23,12 +23,12 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.GetMonthlyReports;
-import org.activityinfo.api.shared.command.Month;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.MonthlyReportResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.model.IndicatorRowDTO;
+import org.activityinfo.legacy.shared.command.GetMonthlyReports;
+import org.activityinfo.legacy.shared.command.Month;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.MonthlyReportResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.model.IndicatorRowDTO;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 import org.activityinfo.server.database.hibernate.entity.IndicatorValue;
 import org.activityinfo.server.database.hibernate.entity.ReportingPeriod;

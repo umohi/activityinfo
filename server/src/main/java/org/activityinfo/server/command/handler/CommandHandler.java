@@ -22,9 +22,9 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.entity.User;
 
 /**
@@ -49,7 +49,7 @@ public interface CommandHandler<CommandT extends Command> {
      * @param cmd Command received from the server
      * @return The result of command if successful. If the command is not
      * successful, an exception should be thrown.
-     * @throws org.activityinfo.api.shared.exception.CommandException
+     * @throws org.activityinfo.legacy.shared.exception.CommandException
      */
     public CommandResult execute(CommandT cmd, User user)
             throws CommandException;

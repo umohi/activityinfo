@@ -23,16 +23,16 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.GetReportDef;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.XmlResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.GetReportDef;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.XmlResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.dao.ReportDefinitionDAO;
 import org.activityinfo.server.database.hibernate.entity.User;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.GetReportDef
+ * @see org.activityinfo.legacy.shared.command.GetReportDef
  */
 public class GetReportDefHandler implements CommandHandler<GetReportDef> {
 

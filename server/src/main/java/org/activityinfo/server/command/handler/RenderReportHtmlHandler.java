@@ -27,11 +27,11 @@ import org.activityinfo.reports.server.generator.ReportGenerator;
 import org.activityinfo.reports.server.renderer.itext.HtmlReportRenderer;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.RenderReportHtml;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.HtmlResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.RenderReportHtml;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.HtmlResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.util.logging.LogException;
 
@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.RenderReportHtml
+ * @see org.activityinfo.legacy.shared.command.RenderReportHtml
  */
 public class RenderReportHtmlHandler implements
         CommandHandler<RenderReportHtml> {

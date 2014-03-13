@@ -30,18 +30,18 @@ import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.reports.shared.model.EmailDelivery;
-import org.activityinfo.api.shared.command.GetReports;
-import org.activityinfo.api.shared.command.result.ReportsResult;
-import org.activityinfo.api.shared.impl.CommandHandlerAsync;
-import org.activityinfo.api.shared.impl.ExecutionContext;
-import org.activityinfo.api.shared.impl.Tables;
-import org.activityinfo.api.shared.model.ReportMetadataDTO;
+import org.activityinfo.legacy.shared.command.GetReports;
+import org.activityinfo.legacy.shared.command.result.ReportsResult;
+import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
+import org.activityinfo.legacy.shared.impl.ExecutionContext;
+import org.activityinfo.legacy.shared.impl.Tables;
+import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
 
 import java.util.List;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.GetReports
+ * @see org.activityinfo.legacy.shared.command.GetReports
  */
 public class GetReportsHandler implements
         CommandHandlerAsync<GetReports, ReportsResult> {

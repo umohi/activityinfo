@@ -26,7 +26,7 @@ import org.activityinfo.reports.shared.content.FilterDescription;
 import org.activityinfo.reports.shared.content.TableData;
 import org.activityinfo.reports.shared.model.TableColumn;
 import org.activityinfo.reports.shared.model.TableElement;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;

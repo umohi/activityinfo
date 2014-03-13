@@ -1,11 +1,11 @@
 package org.activityinfo.server.endpoint.odk;
 
 import com.sun.jersey.api.view.Viewable;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.PartnerDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.PartnerDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.server.database.hibernate.entity.Partner;
 import org.activityinfo.server.database.hibernate.entity.UserPermission;
 

@@ -27,7 +27,7 @@
 
   <mapping wildcard="true">
     <class-a>org.activityinfo.server.database.hibernate.entity.UserDatabase</class-a>
-    <class-b>org.activityinfo.api.shared.model.UserDatabaseDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.UserDatabaseDTO</class-b>
 
     <field>
       <a>owner.name</a>
@@ -44,7 +44,7 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.Activity</class-a>
-    <class-b>org.activityinfo.api.shared.model.ActivityDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.ActivityDTO</class-b>
 
     <field-exclude>
       <a>database</a>
@@ -62,21 +62,21 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.AttributeGroup</class-a>
-    <class-b>org.activityinfo.api.shared.model.AttributeGroupDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.AttributeGroupDTO</class-b>
 
   </mapping>
 
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.Attribute</class-a>
-    <class-b>org.activityinfo.api.shared.model.AttributeDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.AttributeDTO</class-b>
 
   </mapping>
 
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.AdminLevel</class-a>
-    <class-b>org.activityinfo.api.shared.model.AdminLevelDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.AdminLevelDTO</class-b>
 
     <field>
       <a>country.id</a>
@@ -89,7 +89,7 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.UserPermission</class-a>
-    <class-b>org.activityinfo.api.shared.model.UserPermissionDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.UserPermissionDTO</class-b>
 
     <field>
       <a>user.name</a>
@@ -115,7 +115,7 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.Indicator</class-a>
-    <class-b>org.activityinfo.api.shared.model.IndicatorDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.IndicatorDTO</class-b>
 
     <field type="one-way">
       <a>id</a>

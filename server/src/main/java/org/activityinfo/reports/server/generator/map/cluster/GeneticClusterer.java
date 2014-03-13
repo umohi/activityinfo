@@ -30,7 +30,7 @@ import org.activityinfo.reports.server.generator.map.cluster.genetic.MarkerGraph
 import org.activityinfo.reports.server.generator.map.cluster.genetic.MarkerGraph.IntersectionCalculator;
 import org.activityinfo.reports.server.generator.map.cluster.genetic.UpperBoundsCalculator;
 import org.activityinfo.reports.shared.model.PointValue;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.util.List;
 

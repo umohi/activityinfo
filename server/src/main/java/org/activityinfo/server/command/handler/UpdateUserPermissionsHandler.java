@@ -23,11 +23,11 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.UpdateUserPermissions;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
-import org.activityinfo.api.shared.model.UserPermissionDTO;
+import org.activityinfo.legacy.shared.command.UpdateUserPermissions;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.exception.IllegalAccessCommandException;
+import org.activityinfo.legacy.shared.model.UserPermissionDTO;
 import org.activityinfo.server.database.hibernate.dao.*;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
@@ -36,15 +36,13 @@ import org.activityinfo.server.mail.InvitationMessage;
 import org.activityinfo.server.mail.MailSender;
 import org.activityinfo.server.mail.Message;
 
-import javax.persistence.EntityManager;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.UpdateUserPermissions
+ * @see org.activityinfo.legacy.shared.command.UpdateUserPermissions
  */
 public class UpdateUserPermissionsHandler implements
         CommandHandler<UpdateUserPermissions> {

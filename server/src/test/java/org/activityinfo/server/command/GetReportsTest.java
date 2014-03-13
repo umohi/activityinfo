@@ -22,8 +22,8 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetReports;
-import org.activityinfo.api.shared.command.result.ReportsResult;
+import org.activityinfo.legacy.shared.command.GetReports;
+import org.activityinfo.legacy.shared.command.result.ReportsResult;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Test;

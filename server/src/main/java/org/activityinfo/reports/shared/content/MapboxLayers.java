@@ -1,7 +1,7 @@
 package org.activityinfo.reports.shared.content;
 
-import org.activityinfo.api.shared.model.BaseMap;
-import org.activityinfo.api.shared.model.TileBaseMap;
+import org.activityinfo.legacy.shared.model.BaseMap;
+import org.activityinfo.legacy.shared.model.TileBaseMap;
 
 public class MapboxLayers {
 

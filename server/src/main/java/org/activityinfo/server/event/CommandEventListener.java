@@ -23,7 +23,7 @@ package org.activityinfo.server.event;
  */
 
 import com.google.common.eventbus.Subscribe;
-import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.legacy.shared.command.Command;
 
 import java.util.logging.Logger;
 

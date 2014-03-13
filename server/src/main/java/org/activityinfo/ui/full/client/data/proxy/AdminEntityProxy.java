@@ -24,11 +24,11 @@ package org.activityinfo.ui.full.client.data.proxy;
 
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.GetAdminEntities;
-import org.activityinfo.api.shared.command.result.AdminEntityResult;
-import org.activityinfo.api.shared.command.result.ListResult;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.GetAdminEntities;
+import org.activityinfo.legacy.shared.command.result.AdminEntityResult;
+import org.activityinfo.legacy.shared.command.result.ListResult;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.client.Dispatcher;
 
 public class AdminEntityProxy extends RpcProxy<ListResult<AdminEntityDTO>> {
 

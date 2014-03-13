@@ -31,7 +31,7 @@ import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.Point;
 import org.activityinfo.reports.shared.model.MapSymbol;
 import org.activityinfo.reports.shared.model.PointValue;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.junit.Assert;
 import org.junit.Test;
 

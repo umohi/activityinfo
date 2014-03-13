@@ -29,8 +29,8 @@ import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.Point;
 import org.activityinfo.reports.shared.model.PointValue;
 import org.activityinfo.reports.shared.model.clustering.AdministrativeLevelClustering;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;

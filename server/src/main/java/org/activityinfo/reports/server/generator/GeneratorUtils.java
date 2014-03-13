@@ -24,7 +24,7 @@ package org.activityinfo.reports.server.generator;
 
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 public class GeneratorUtils {
 

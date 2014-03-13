@@ -24,9 +24,9 @@ package org.activityinfo.server.command;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.fixtures.MockHibernateModule;
 import org.activityinfo.fixtures.Modules;
 import org.activityinfo.server.authentication.AuthenticationModuleStub;

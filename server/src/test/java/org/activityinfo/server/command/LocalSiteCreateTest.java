@@ -22,13 +22,13 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.*;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.model.LocationDTO;
-import org.activityinfo.api.shared.model.PartnerDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.command.*;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.model.LocationDTO;
+import org.activityinfo.legacy.shared.model.PartnerDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.MockHibernateModule;
 import org.activityinfo.fixtures.Modules;

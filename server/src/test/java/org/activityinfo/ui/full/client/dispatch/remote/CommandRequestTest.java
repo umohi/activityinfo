@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.dispatch.remote;
  */
 
 import com.bedatadriven.rebar.async.NullCallback;
-import org.activityinfo.api.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.GetSchema;
 import org.junit.Test;
 
 import java.util.Collection;

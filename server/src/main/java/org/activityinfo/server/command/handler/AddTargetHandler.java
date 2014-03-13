@@ -23,11 +23,11 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.AddTarget;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.model.TargetDTO;
+import org.activityinfo.legacy.shared.command.AddTarget;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.model.TargetDTO;
 import org.activityinfo.server.database.hibernate.entity.*;
 
 import javax.persistence.EntityManager;

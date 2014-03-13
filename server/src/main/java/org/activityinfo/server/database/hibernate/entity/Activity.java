@@ -22,7 +22,7 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.Published;
+import org.activityinfo.legacy.shared.model.Published;
 
 import javax.persistence.*;
 import java.io.Serializable;

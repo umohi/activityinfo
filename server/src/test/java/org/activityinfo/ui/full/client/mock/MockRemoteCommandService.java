@@ -23,12 +23,12 @@ package org.activityinfo.ui.full.client.mock;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.command.RemoteCommandServiceAsync;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.RemoteCommandServiceAsync;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;

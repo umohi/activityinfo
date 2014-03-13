@@ -23,11 +23,11 @@ package org.activityinfo.ui.full.client.page.entry.form;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.CreateLocation;
-import org.activityinfo.api.shared.command.result.VoidResult;
-import org.activityinfo.api.shared.model.*;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.client.KeyGenerator;
+import org.activityinfo.legacy.shared.command.CreateLocation;
+import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.model.*;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.ui.full.client.page.entry.admin.AdminComboBox;
 import org.activityinfo.ui.full.client.page.entry.admin.AdminComboBoxSet;
 import org.activityinfo.ui.full.client.page.entry.admin.AdminFieldSetPresenter;

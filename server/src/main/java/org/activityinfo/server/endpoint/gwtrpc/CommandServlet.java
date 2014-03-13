@@ -27,13 +27,13 @@ import com.google.gwt.user.server.rpc.SerializationPolicy;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import org.activityinfo.api.shared.auth.AnonymousUser;
-import org.activityinfo.api.shared.auth.AuthenticatedUser;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.RemoteCommandService;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.exception.InvalidAuthTokenException;
+import org.activityinfo.legacy.shared.auth.AnonymousUser;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.RemoteCommandService;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.exception.InvalidAuthTokenException;
 import org.activityinfo.server.authentication.ServerSideAuthProvider;
 import org.activityinfo.server.database.hibernate.entity.DomainFilters;
 import org.activityinfo.server.database.hibernate.entity.User;
@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  * This servlet is at the heart of the command execution pipeline, but delegates
  * all logic processing to the
  * {@link org.activityinfo.server.command.handler.CommandHandler} corresponding
- * to the given {@link org.activityinfo.api.shared.command.Command}s.
+ * to the given {@link org.activityinfo.legacy.shared.command.Command}s.
  * <p/>
  * CommandHandlers are loaded based on name from the
  * org.activityinfo.server.command.handler package.

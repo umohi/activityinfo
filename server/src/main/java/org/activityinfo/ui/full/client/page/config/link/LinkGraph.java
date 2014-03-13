@@ -23,9 +23,9 @@ package org.activityinfo.ui.full.client.page.config.link;
  */
 
 import com.google.common.collect.Sets;
-import org.activityinfo.api.shared.command.result.IndicatorLink;
-import org.activityinfo.api.shared.model.IndicatorDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.legacy.shared.command.result.IndicatorLink;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 
 import java.util.Collections;
 import java.util.List;

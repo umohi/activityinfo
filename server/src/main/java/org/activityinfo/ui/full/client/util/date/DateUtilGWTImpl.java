@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.util.DateWrapper;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.DateUnit;
 import org.activityinfo.reports.shared.util.DateUtil;
-import org.activityinfo.api.shared.command.Month;
+import org.activityinfo.legacy.shared.command.Month;
 
 import java.util.Date;
 

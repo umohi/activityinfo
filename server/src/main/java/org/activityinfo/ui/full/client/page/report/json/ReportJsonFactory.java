@@ -30,7 +30,7 @@ import org.activityinfo.reports.shared.model.clustering.AutomaticClustering;
 import org.activityinfo.reports.shared.model.clustering.NoClustering;
 import org.activityinfo.reports.shared.model.layers.*;
 import org.activityinfo.reports.shared.model.layers.PiechartMapLayer.Slice;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 import java.util.*;
 import java.util.Map.Entry;

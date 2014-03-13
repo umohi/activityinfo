@@ -29,7 +29,7 @@ import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
-import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.full.client.widget.MappingComboBox;
 import org.activityinfo.ui.full.client.widget.MappingComboBoxBinding;

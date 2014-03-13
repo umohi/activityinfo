@@ -31,7 +31,7 @@ import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.inject.Inject;
 import org.activityinfo.reports.shared.model.TextReportElement;
-import org.activityinfo.api.shared.command.RenderElement.Format;
+import org.activityinfo.legacy.shared.command.RenderElement.Format;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.page.report.ReportChangeHandler;
 import org.activityinfo.ui.full.client.page.report.ReportEventBus;

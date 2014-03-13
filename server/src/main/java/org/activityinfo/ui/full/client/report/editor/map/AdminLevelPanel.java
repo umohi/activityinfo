@@ -33,10 +33,10 @@ import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.FlowData;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.GetAdminLevels;
-import org.activityinfo.api.shared.command.result.AdminLevelResult;
-import org.activityinfo.api.shared.model.AdminLevelDTO;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.GetAdminLevels;
+import org.activityinfo.legacy.shared.command.result.AdminLevelResult;
+import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.i18n.shared.I18N;
 
 import java.util.Collection;

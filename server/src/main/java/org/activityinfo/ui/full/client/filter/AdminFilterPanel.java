@@ -34,9 +34,9 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.inject.Inject;
-import org.activityinfo.api.client.Dispatcher;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.filter.FilterToolBar.ApplyFilterEvent;
@@ -50,7 +50,7 @@ import java.util.List;
 
 /**
  * UI Component for editing Admin restrictions on a
- * {@link org.activityinfo.api.shared.command.Filter}
+ * {@link org.activityinfo.legacy.shared.command.Filter}
  *
  * @author Alex Bertram
  */

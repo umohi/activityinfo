@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Simple servlet to allow AppEngine administrators to define the configuration
  * properties for this instance. This makes it possible to set config params,
- * like api keys, etc, seperately from the (public) source code.
+ * like legacy keys, etc, seperately from the (public) source code.
  * <p/>
  * <p/>
  * This servlet stores the text of a properties file to the Datastore

@@ -25,7 +25,7 @@ package org.activityinfo.reports.server.util;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.DateUnit;
 import org.activityinfo.reports.shared.util.DateUtil;
-import org.activityinfo.api.shared.command.Month;
+import org.activityinfo.legacy.shared.command.Month;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.entry.column;
 
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.ui.full.client.page.entry.grouping.GroupingModel;
 
 public interface ColumnModelProvider {

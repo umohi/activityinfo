@@ -23,7 +23,7 @@ package org.activityinfo.reports.shared.content;
  */
 
 import org.activityinfo.reports.shared.model.TableColumn;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.io.Serializable;
 import java.util.List;

@@ -22,9 +22,9 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetUsers;
-import org.activityinfo.api.shared.command.result.UserResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.GetUsers;
+import org.activityinfo.legacy.shared.command.result.UserResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Assert;

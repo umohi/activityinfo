@@ -34,7 +34,7 @@ import org.activityinfo.reports.shared.model.PointValue;
 import org.activityinfo.reports.shared.model.layers.BubbleMapLayer;
 import org.activityinfo.reports.shared.model.layers.ScalingType;
 import org.activityinfo.reports.shared.util.mapping.Extents;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 
 import java.util.*;

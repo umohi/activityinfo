@@ -22,7 +22,7 @@ package org.activityinfo.server.authentication;
  * #L%
  */
 
-import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.database.hibernate.entity.Authentication;
 
 import javax.ws.rs.core.NewCookie;

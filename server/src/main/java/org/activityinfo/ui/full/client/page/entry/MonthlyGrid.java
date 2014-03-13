@@ -30,8 +30,8 @@ import com.extjs.gxt.ui.client.util.DateWrapper;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.grid.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import org.activityinfo.api.shared.command.Month;
-import org.activityinfo.api.shared.model.IndicatorRowDTO;
+import org.activityinfo.legacy.shared.command.Month;
+import org.activityinfo.legacy.shared.model.IndicatorRowDTO;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.util.IndicatorNumberFormat;
 

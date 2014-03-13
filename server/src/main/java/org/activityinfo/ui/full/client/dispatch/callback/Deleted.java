@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.dispatch.callback;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.command.result.VoidResult;
 
 /**
  * Convenience call back for Delete command calls.

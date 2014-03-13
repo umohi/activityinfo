@@ -23,9 +23,9 @@ package org.activityinfo.reports.server.generator;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetDimensionLabels;
-import org.activityinfo.api.shared.command.GetDimensionLabels.DimensionLabels;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetDimensionLabels;
+import org.activityinfo.legacy.shared.command.GetDimensionLabels.DimensionLabels;
 import org.activityinfo.reports.shared.content.FilterDescription;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.DimensionType;

@@ -32,7 +32,7 @@ import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.reports.shared.model.PivotChartReportElement;

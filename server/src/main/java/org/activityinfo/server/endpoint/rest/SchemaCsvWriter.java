@@ -1,7 +1,7 @@
 package org.activityinfo.server.endpoint.rest;
 
 
-import org.activityinfo.api.shared.model.*;
+import org.activityinfo.legacy.shared.model.*;
 
 public class SchemaCsvWriter {
 

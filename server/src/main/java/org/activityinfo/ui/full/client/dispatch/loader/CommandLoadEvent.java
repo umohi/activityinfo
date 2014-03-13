@@ -24,8 +24,8 @@ package org.activityinfo.ui.full.client.dispatch.loader;
 
 import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.Loader;
-import org.activityinfo.api.shared.command.BatchCommand;
-import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.legacy.shared.command.BatchCommand;
+import org.activityinfo.legacy.shared.command.Command;
 
 /**
  * Subclass of GXT LoadEvent that allows listeners to piggy-back on a load

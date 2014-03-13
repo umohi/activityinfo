@@ -22,7 +22,7 @@ package org.activityinfo.reports.shared.content;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
 
 /**
  * @author Alex Bertram (akbertram@gmail.com)

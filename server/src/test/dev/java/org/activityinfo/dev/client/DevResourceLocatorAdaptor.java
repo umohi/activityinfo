@@ -21,7 +21,7 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
-import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;

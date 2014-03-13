@@ -22,12 +22,12 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.AddPartner;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.shared.command.result.DuplicateCreateResult;
-import org.activityinfo.api.shared.model.PartnerDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.command.AddPartner;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.command.result.DuplicateCreateResult;
+import org.activityinfo.legacy.shared.model.PartnerDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Assert;

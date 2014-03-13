@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.dispatch;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.legacy.shared.command.Command;
 
 /**
  * Interface to a class that which emits Dispatch-related events.
@@ -37,7 +37,7 @@ public interface DispatchEventSource {
      * @param commandClass The class of Command for which to listen
      * @param listener
      * @param <T>          A Command class implementing
-     *                     {@link org.activityinfo.api.shared.command.Command}
+     *                     {@link org.activityinfo.legacy.shared.command.Command}
      */
     <T extends Command> void registerListener(Class<T> commandClass,
                                               DispatchListener<T> listener);
@@ -49,7 +49,7 @@ public interface DispatchEventSource {
      * @param commandClass The class of Command for which to proxy
      * @param proxy
      * @param <T>          A Command class implementing
-     *                     {@link org.activityinfo.api.shared.command.Command}
+     *                     {@link org.activityinfo.legacy.shared.command.Command}
      */
     <T extends Command> void registerProxy(Class<T> commandClass,
                                            CommandCache<T> proxy);

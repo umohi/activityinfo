@@ -26,7 +26,7 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
-import org.activityinfo.api.shared.model.LocationTypeDTO;
+import org.activityinfo.legacy.shared.model.LocationTypeDTO;
 import org.activityinfo.server.command.handler.PermissionOracle;
 import org.activityinfo.server.database.hibernate.dao.ActivityDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;

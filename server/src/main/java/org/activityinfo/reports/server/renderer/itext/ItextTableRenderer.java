@@ -27,7 +27,7 @@ import com.lowagie.text.*;
 import org.activityinfo.reports.shared.content.TableData;
 import org.activityinfo.reports.shared.model.TableColumn;
 import org.activityinfo.reports.shared.model.TableElement;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;

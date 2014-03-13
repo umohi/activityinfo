@@ -1,10 +1,10 @@
 package org.activityinfo.server.command.handler;
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.RequestChange;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.VoidResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.RequestChange;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.entity.change.ChangeHandler;
 import org.activityinfo.server.entity.change.ChangeRequestBuilder;

@@ -22,7 +22,7 @@ package org.activityinfo.reports.shared.model.layers;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;

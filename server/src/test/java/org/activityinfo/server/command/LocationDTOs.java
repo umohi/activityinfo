@@ -22,8 +22,8 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.LocationDTO;
-import org.activityinfo.api.client.KeyGenerator;
+import org.activityinfo.legacy.shared.model.LocationDTO;
+import org.activityinfo.legacy.client.KeyGenerator;
 
 public class LocationDTOs {
     public static LocationDTO newLocation() {

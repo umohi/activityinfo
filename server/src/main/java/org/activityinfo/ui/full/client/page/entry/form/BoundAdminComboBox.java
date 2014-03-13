@@ -27,8 +27,8 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.api.shared.model.AdminLevelDTO;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.ui.full.client.page.entry.admin.AdminComboBox;
 import org.activityinfo.ui.full.client.page.entry.admin.AdminComboBoxSet.ComboBoxFactory;
 

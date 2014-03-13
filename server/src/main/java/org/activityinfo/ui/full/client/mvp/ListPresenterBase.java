@@ -22,9 +22,9 @@ package org.activityinfo.ui.full.client.mvp;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.DTO;
+import org.activityinfo.legacy.shared.model.DTO;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.full.client.mvp.CanCreate.*;
 import org.activityinfo.ui.full.client.mvp.CanDelete.*;
 import org.activityinfo.ui.full.client.mvp.CanFilter.FilterEvent;

@@ -29,9 +29,9 @@ import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.Validator;
 import com.google.common.collect.Lists;
-import org.activityinfo.api.shared.model.AttributeDTO;
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.AttributeDTO;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.util.List;
 

@@ -22,13 +22,13 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.CreateEntity;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.command.UpdateEntity;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.command.CreateEntity;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.UpdateEntity;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Assert;

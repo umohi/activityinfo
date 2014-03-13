@@ -1,10 +1,10 @@
 package org.activityinfo.server.endpoint.export;
 
 import com.teklabs.gwt.i18n.server.LocaleProxy;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.GetSites;
-import org.activityinfo.api.shared.command.result.SiteResult;
-import org.activityinfo.api.shared.model.*;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.server.command.DispatcherSync;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Test;

@@ -24,7 +24,7 @@ package org.activityinfo.reports.shared.model;
 
 import com.google.common.collect.Sets;
 import org.activityinfo.reports.shared.content.ReportContent;
-import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;

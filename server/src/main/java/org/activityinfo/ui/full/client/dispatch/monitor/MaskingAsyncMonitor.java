@@ -28,7 +28,7 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Container;
 import com.extjs.gxt.ui.client.widget.MessageBox;
-import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.i18n.shared.I18N;
 
 /**

@@ -28,11 +28,11 @@ import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlInsert;
 import com.bedatadriven.rebar.sql.client.query.SqlUpdate;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.UpdateReportSubscription;
-import org.activityinfo.api.shared.command.result.VoidResult;
-import org.activityinfo.api.shared.impl.CommandHandlerAsync;
-import org.activityinfo.api.shared.impl.ExecutionContext;
-import org.activityinfo.api.shared.impl.Tables;
+import org.activityinfo.legacy.shared.command.UpdateReportSubscription;
+import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
+import org.activityinfo.legacy.shared.impl.ExecutionContext;
+import org.activityinfo.legacy.shared.impl.Tables;
 
 public class UpdateReportSubscriptionHandler implements
         CommandHandlerAsync<UpdateReportSubscription, VoidResult> {

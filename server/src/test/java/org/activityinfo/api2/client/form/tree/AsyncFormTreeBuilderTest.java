@@ -1,7 +1,7 @@
 package org.activityinfo.api2.client.form.tree;
 
-import org.activityinfo.api.shared.adapter.CuidAdapter;
-import org.activityinfo.api.shared.adapter.ResourceLocatorAdaptor;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
+import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.form.tree.FormTree;

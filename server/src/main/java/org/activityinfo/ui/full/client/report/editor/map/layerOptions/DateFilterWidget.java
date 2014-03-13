@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.report.editor.map.layerOptions;
  */
 
 import com.google.gwt.user.client.Event;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.ui.full.client.filter.FilterResources;

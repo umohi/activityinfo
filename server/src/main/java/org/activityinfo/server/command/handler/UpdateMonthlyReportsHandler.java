@@ -24,17 +24,17 @@ package org.activityinfo.server.command.handler;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.Month;
-import org.activityinfo.api.shared.command.UpdateMonthlyReports;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.VoidResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
-import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.command.Month;
+import org.activityinfo.legacy.shared.command.UpdateMonthlyReports;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.exception.IllegalAccessCommandException;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.server.database.hibernate.entity.*;
 import org.activityinfo.server.event.sitehistory.ChangeType;
 import org.activityinfo.server.event.sitehistory.SiteHistoryProcessor;
-import org.activityinfo.api.client.KeyGenerator;
+import org.activityinfo.legacy.client.KeyGenerator;
 
 import javax.persistence.EntityManager;
 import java.util.Calendar;
@@ -43,7 +43,7 @@ import java.util.Map;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.UpdateMonthlyReports
+ * @see org.activityinfo.legacy.shared.command.UpdateMonthlyReports
  */
 public class UpdateMonthlyReportsHandler implements
         CommandHandler<UpdateMonthlyReports> {

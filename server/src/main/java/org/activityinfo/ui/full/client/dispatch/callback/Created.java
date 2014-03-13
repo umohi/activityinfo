@@ -23,8 +23,8 @@ package org.activityinfo.ui.full.client.dispatch.callback;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.client.AsyncMonitor;
 
 /**
  * Convenience callback for commands that return CreateResult

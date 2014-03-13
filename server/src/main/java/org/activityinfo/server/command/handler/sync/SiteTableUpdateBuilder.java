@@ -23,8 +23,8 @@ package org.activityinfo.server.command.handler.sync;
  */
 
 import com.bedatadriven.rebar.sync.server.JpaUpdateBuilder;
-import org.activityinfo.api.shared.command.GetSyncRegionUpdates;
-import org.activityinfo.api.shared.command.result.SyncRegionUpdate;
+import org.activityinfo.legacy.shared.command.GetSyncRegionUpdates;
+import org.activityinfo.legacy.shared.command.result.SyncRegionUpdate;
 import org.activityinfo.server.database.hibernate.entity.ReportingPeriod;
 import org.activityinfo.server.database.hibernate.entity.Site;
 import org.activityinfo.server.database.hibernate.entity.User;

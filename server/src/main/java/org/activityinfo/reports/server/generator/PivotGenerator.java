@@ -25,10 +25,10 @@ package org.activityinfo.reports.server.generator;
 import org.activityinfo.reports.shared.content.PivotTableData;
 import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.reports.shared.model.PivotReportElement;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.PivotSites;
-import org.activityinfo.api.shared.command.PivotSites.PivotResult;
-import org.activityinfo.api.shared.impl.pivot.PivotTableDataBuilder;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.PivotSites;
+import org.activityinfo.legacy.shared.command.PivotSites.PivotResult;
+import org.activityinfo.legacy.shared.impl.pivot.PivotTableDataBuilder;
 import org.activityinfo.server.command.DispatcherSync;
 
 import java.util.List;

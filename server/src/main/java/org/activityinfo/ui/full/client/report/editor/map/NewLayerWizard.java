@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.report.editor.map;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.layers.MapLayer;
 import org.activityinfo.reports.shared.model.layers.PolygonMapLayer;

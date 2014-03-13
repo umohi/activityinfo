@@ -23,8 +23,8 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.Delete;
-import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.Delete;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.server.database.hibernate.entity.*;
 
 import javax.persistence.EntityManager;

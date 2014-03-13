@@ -13,7 +13,6 @@
 
   <inherits name='com.google.gwt.user.User'/>
   <inherits name="com.google.common.collect.Collect"/>
-  <inherits name="org.activityinfo.api.Api"/>
   <inherits name="org.activityinfo.fp.FunctionalProgramming"/>
 
   <source path='client'/>

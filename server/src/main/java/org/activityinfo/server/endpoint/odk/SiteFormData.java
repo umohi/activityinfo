@@ -1,7 +1,7 @@
 package org.activityinfo.server.endpoint.odk;
 
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
-import org.activityinfo.api.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
 
 import java.util.ArrayList;
 import java.util.Date;

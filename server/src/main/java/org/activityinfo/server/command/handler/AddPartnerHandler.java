@@ -23,11 +23,11 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.AddPartner;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.shared.command.result.DuplicateCreateResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.AddPartner;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.command.result.DuplicateCreateResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.database.hibernate.entity.Partner;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
@@ -39,7 +39,7 @@ import java.util.Set;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.AddPartner
+ * @see org.activityinfo.legacy.shared.command.AddPartner
  */
 public class AddPartnerHandler implements CommandHandler<AddPartner> {
 

@@ -25,7 +25,7 @@ package org.activityinfo.server.authentication;
 import com.google.common.base.Charsets;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.database.hibernate.dao.UserDAO;
 import org.activityinfo.server.database.hibernate.entity.Authentication;
 import org.activityinfo.server.database.hibernate.entity.User;

@@ -24,7 +24,7 @@ package org.activityinfo.reports.shared.model.typeadapter;
 
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

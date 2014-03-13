@@ -24,8 +24,8 @@ package org.activityinfo.ui.full.client.local;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.activityinfo.api.shared.command.*;
-import org.activityinfo.api.shared.impl.*;
+import org.activityinfo.legacy.shared.command.*;
+import org.activityinfo.legacy.shared.impl.*;
 import org.activityinfo.ui.full.client.local.command.HandlerRegistry;
 
 public class HandlerRegistryProvider implements Provider<HandlerRegistry> {

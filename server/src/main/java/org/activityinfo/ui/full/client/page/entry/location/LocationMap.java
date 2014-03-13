@@ -33,7 +33,7 @@ import com.google.gwt.resources.client.ImageResource;
 import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.content.MapboxLayers;
 import org.activityinfo.reports.shared.util.mapping.Extents;
-import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.page.entry.form.resources.SiteFormResources;
 import org.activityinfo.ui.full.client.util.LeafletUtil;

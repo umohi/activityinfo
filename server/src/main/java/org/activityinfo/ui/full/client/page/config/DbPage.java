@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.page.config;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.full.client.page.Page;
 
 public interface DbPage extends Page {

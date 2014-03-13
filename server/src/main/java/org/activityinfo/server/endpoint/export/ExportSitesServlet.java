@@ -25,12 +25,12 @@ package org.activityinfo.server.endpoint.export;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.command.FilterUrlSerializer;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
-import org.activityinfo.api.shared.model.UserDatabaseDTO;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.FilterUrlSerializer;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.server.command.DispatcherSync;
 
 import javax.servlet.ServletException;

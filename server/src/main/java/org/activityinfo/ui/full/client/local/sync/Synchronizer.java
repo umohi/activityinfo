@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.local.sync;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.Command;
+import org.activityinfo.legacy.shared.command.Command;
 
 import java.util.Date;
 

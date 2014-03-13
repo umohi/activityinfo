@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.page.entry.form;
  */
 
 import com.google.common.base.Strings;
-import org.activityinfo.api.shared.model.*;
+import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.i18n.shared.I18N;
 
 import java.util.List;

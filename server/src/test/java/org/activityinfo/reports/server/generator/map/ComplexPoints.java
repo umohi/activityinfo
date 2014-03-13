@@ -27,7 +27,7 @@ import org.activityinfo.api2.shared.model.AiLatLng;
 import org.activityinfo.reports.shared.model.PointValue;
 import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.reports.shared.util.mapping.TileMath;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.io.BufferedReader;
 import java.io.IOException;

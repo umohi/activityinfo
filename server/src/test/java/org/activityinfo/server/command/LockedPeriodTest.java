@@ -24,11 +24,11 @@ package org.activityinfo.server.command;
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.collect.Maps;
-import org.activityinfo.api.shared.command.CreateLockedPeriod;
-import org.activityinfo.api.shared.command.UpdateEntity;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.model.LockedPeriodDTO;
+import org.activityinfo.legacy.shared.command.CreateLockedPeriod;
+import org.activityinfo.legacy.shared.command.UpdateEntity;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.model.LockedPeriodDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Test;

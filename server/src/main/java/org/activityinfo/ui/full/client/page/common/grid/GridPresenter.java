@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.common.grid;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.Record;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.ui.full.client.page.common.toolbar.ActionListener;
 
 public interface GridPresenter<T extends ModelData> extends ActionListener {

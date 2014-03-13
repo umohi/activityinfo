@@ -25,11 +25,11 @@ package org.activityinfo.server.command.handler;
 import com.bedatadriven.rebar.sql.client.query.SqlUpdate;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.DeleteSiteAttachment;
-import org.activityinfo.api.shared.command.result.VoidResult;
-import org.activityinfo.api.shared.impl.CommandHandlerAsync;
-import org.activityinfo.api.shared.impl.ExecutionContext;
-import org.activityinfo.api.shared.impl.Tables;
+import org.activityinfo.legacy.shared.command.DeleteSiteAttachment;
+import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
+import org.activityinfo.legacy.shared.impl.ExecutionContext;
+import org.activityinfo.legacy.shared.impl.Tables;
 import org.activityinfo.server.attachment.AttachmentService;
 
 public class DeleteSiteAttachmentHandler implements

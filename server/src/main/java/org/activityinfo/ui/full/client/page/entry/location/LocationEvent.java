@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.entry.location;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.EventType;
-import org.activityinfo.api.shared.model.LocationDTO;
+import org.activityinfo.legacy.shared.model.LocationDTO;
 
 public class LocationEvent extends BaseEvent {
 

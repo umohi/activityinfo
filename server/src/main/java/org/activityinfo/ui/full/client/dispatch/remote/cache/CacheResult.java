@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.dispatch.remote.cache;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
 
 /**
  * Encapsulates the return value of call to a
@@ -40,7 +40,7 @@ public class CacheResult<T extends CommandResult> {
     /**
      * The result of the local execution. N.B.: <code>null</code> is a
      * legitimate return value of a
-     * {@link org.activityinfo.api.shared.command.Command} so be sure to check the
+     * {@link org.activityinfo.legacy.shared.command.Command} so be sure to check the
      * value of <code>couldExecute</code>
      */
     private final T result;

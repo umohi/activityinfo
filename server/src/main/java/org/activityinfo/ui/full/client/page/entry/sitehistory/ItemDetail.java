@@ -22,10 +22,10 @@ package org.activityinfo.ui.full.client.page.entry.sitehistory;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Month;
-import org.activityinfo.api.shared.model.AttributeDTO;
-import org.activityinfo.api.shared.model.IndicatorDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.command.Month;
+import org.activityinfo.legacy.shared.model.AttributeDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.i18n.shared.I18N;
 
 import java.util.Map;

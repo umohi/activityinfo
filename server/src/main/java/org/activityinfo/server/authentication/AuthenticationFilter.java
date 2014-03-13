@@ -30,7 +30,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.teklabs.gwt.i18n.server.LocaleProxy;
-import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.database.hibernate.entity.Authentication;
 
 import javax.persistence.EntityManager;

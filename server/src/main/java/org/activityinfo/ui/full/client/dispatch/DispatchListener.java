@@ -22,8 +22,8 @@ package org.activityinfo.ui.full.client.dispatch;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
 
 /**
  * Provides an interface through which caches can monitor the execution of

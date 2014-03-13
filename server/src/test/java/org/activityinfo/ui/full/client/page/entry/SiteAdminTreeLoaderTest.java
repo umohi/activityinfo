@@ -24,9 +24,9 @@ package org.activityinfo.ui.full.client.page.entry;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.TreeStore;
-import org.activityinfo.api.shared.command.GetAdminEntities;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.model.DTOs;
+import org.activityinfo.legacy.shared.command.GetAdminEntities;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.model.DTOs;
 import org.activityinfo.ui.full.client.dispatch.DispatcherStub;
 import org.activityinfo.ui.full.client.page.entry.grouping.AdminGroupingModel;
 import org.junit.Test;

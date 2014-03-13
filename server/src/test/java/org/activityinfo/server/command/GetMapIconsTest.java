@@ -22,8 +22,8 @@ package org.activityinfo.server.command;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetMapIcons;
-import org.activityinfo.api.shared.command.result.MapIconResult;
+import org.activityinfo.legacy.shared.command.GetMapIcons;
+import org.activityinfo.legacy.shared.command.result.MapIconResult;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.handler.GetMapIconsHandler;
 import org.activityinfo.server.database.hibernate.entity.User;

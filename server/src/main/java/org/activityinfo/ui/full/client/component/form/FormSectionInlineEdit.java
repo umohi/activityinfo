@@ -34,7 +34,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;

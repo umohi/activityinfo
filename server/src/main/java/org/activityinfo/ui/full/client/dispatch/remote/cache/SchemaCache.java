@@ -24,9 +24,9 @@ package org.activityinfo.ui.full.client.dispatch.remote.cache;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.command.*;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.command.*;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.ui.full.client.dispatch.CommandCache;
 import org.activityinfo.ui.full.client.dispatch.DispatchEventSource;
 import org.activityinfo.ui.full.client.dispatch.DispatchListener;

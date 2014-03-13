@@ -33,7 +33,7 @@ import org.activityinfo.reports.shared.model.CategoryProperties;
 import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.reports.shared.model.PivotChartReportElement;
 import org.activityinfo.reports.shared.model.PivotChartReportElement.Type;
-import org.activityinfo.api.shared.exception.ReportModelException;
+import org.activityinfo.legacy.shared.exception.ReportModelException;
 import org.activityinfo.server.report.output.StorageProvider;
 import org.activityinfo.server.report.output.TempStorage;
 import org.krysalis.jcharts.Chart;

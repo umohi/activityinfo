@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.mvp;
 
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.user.client.ui.IsWidget;
-import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.legacy.client.AsyncMonitor;
 
 /*
  * The view always has a primary domain object to display. The view receives calls 

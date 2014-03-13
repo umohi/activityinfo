@@ -28,7 +28,7 @@ import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.ui.full.client.page.*;
 import org.activityinfo.ui.full.client.page.common.nav.NavigationPanel;
 import org.activityinfo.ui.full.client.widget.LoadingPlaceHolder;

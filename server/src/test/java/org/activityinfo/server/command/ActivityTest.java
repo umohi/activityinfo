@@ -23,13 +23,13 @@ package org.activityinfo.server.command;
  */
 
 import junit.framework.Assert;
-import org.activityinfo.api.shared.command.BatchCommand;
-import org.activityinfo.api.shared.command.CreateEntity;
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.command.UpdateEntity;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.shared.exception.CommandException;
-import org.activityinfo.api.shared.model.*;
+import org.activityinfo.legacy.shared.command.BatchCommand;
+import org.activityinfo.legacy.shared.command.CreateEntity;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.UpdateEntity;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Before;

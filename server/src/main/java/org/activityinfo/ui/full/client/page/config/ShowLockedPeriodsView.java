@@ -23,8 +23,8 @@ package org.activityinfo.ui.full.client.page.config;
  */
 
 import com.google.gwt.user.client.ui.HasValue;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.LockedPeriodDTO;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.LockedPeriodDTO;
 
 import java.util.List;
 

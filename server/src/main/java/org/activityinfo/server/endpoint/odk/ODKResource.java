@@ -1,7 +1,7 @@
 package org.activityinfo.server.endpoint.odk;
 
 import com.google.inject.Inject;
-import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.authentication.ServerSideAuthProvider;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.dao.UserPermissionDAO;

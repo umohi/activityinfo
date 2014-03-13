@@ -27,7 +27,7 @@ import org.activityinfo.reports.shared.content.MonthCategory;
 import org.activityinfo.reports.shared.content.YearCategory;
 import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.reports.shared.model.DateUnit;
-import org.activityinfo.api.shared.command.Month;
+import org.activityinfo.legacy.shared.command.Month;
 
 import java.util.Date;
 

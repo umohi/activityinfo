@@ -29,7 +29,7 @@
        name of the Country object, leaving other fields blanks -->
   <mapping wildcard="false" map-id="countryNameOnly">
     <class-a>org.activityinfo.server.database.hibernate.entity.Country</class-a>
-    <class-b>org.activityinfo.api.shared.model.CountryDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.CountryDTO</class-b>
     <field>
       <a>id</a>
       <b>id</b>
@@ -48,7 +48,7 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.AdminLevel</class-a>
-    <class-b>org.activityinfo.api.shared.model.AdminLevelDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.AdminLevelDTO</class-b>
 
     <field>
       <a>parent.id</a>
@@ -59,7 +59,7 @@
   <mapping wildcard="true">
 
     <class-a>org.activityinfo.server.database.hibernate.entity.AdminEntity</class-a>
-    <class-b>org.activityinfo.api.shared.model.AdminEntityDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.AdminEntityDTO</class-b>
 
     <field>
       <a>level.id</a>
@@ -74,7 +74,7 @@
 
   <mapping wildcard="true">
     <class-a>org.activityinfo.server.database.hibernate.entity.LocationType</class-a>
-    <class-b>org.activityinfo.api.shared.model.LocationTypeDTO</class-b>
+    <class-b>org.activityinfo.legacy.shared.model.LocationTypeDTO</class-b>
 
     <field>
       <a>boundAdminLevel.id</a>

@@ -29,7 +29,7 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.google.inject.Inject;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;

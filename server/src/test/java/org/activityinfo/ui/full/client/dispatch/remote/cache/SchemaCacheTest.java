@@ -22,9 +22,9 @@ package org.activityinfo.ui.full.client.dispatch.remote.cache;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.GetSchema;
-import org.activityinfo.api.shared.model.DTOs;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.model.DTOs;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.ui.full.client.MockEventBus;
 import org.junit.Assert;
 import org.junit.Test;

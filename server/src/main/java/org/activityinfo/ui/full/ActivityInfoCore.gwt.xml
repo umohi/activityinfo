@@ -44,12 +44,12 @@
   <inherits name="com.bedatadriven.rebar.Time"/>
 
   <inherits name="org.activityinfo.i18n.I18n"/>
-  <inherits name="org.activityinfo.api.Api"/>
+  <inherits name="org.activityinfo.legacy.Legacy"/>
   <inherits name="org.activityinfo.reports.Reports"/>
   <inherits name="com.bedatadriven.rebar.style.Style"/>
 
 
-    <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
+  <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
 
 
   <!-- Configure deferred binding for offline module depending on browser capability -->
@@ -84,7 +84,6 @@
   <source path='client'/>
   <source path="shared"/>
 
-  <super-source path="emul"/>
 
   <!-- Blacklist classes that are never serialized but get pulled in by
      interfaces on RPCable types -->

@@ -24,7 +24,7 @@ package org.activityinfo.reports.server.generator.map.cluster;
 
 import org.activityinfo.reports.server.generator.map.TiledMap;
 import org.activityinfo.reports.shared.model.PointValue;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.util.List;
 

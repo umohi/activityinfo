@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.binding.FieldBinding;
 import com.extjs.gxt.ui.client.binding.FormBinding;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import org.activityinfo.api.shared.model.AttributeDTO;
+import org.activityinfo.legacy.shared.model.AttributeDTO;
 import org.activityinfo.i18n.shared.I18N;
 
 class AttributeForm extends AbstractDesignForm {

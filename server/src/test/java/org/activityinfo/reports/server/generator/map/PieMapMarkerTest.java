@@ -31,7 +31,7 @@ import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.reports.shared.model.MapReportElement;
 import org.activityinfo.reports.shared.model.layers.PiechartMapLayer;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 import org.junit.Test;
 

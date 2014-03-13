@@ -27,8 +27,8 @@ import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.google.common.collect.Maps;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.api.shared.model.AdminLevelDTO;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 
 import java.util.Iterator;
 import java.util.Map;

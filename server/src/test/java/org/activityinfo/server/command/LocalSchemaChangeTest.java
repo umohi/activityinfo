@@ -23,11 +23,11 @@ package org.activityinfo.server.command;
  */
 
 import com.google.common.collect.Maps;
-import org.activityinfo.api.shared.command.*;
-import org.activityinfo.api.shared.command.result.CreateResult;
-import org.activityinfo.api.shared.model.ActivityDTO;
-import org.activityinfo.api.shared.model.IndicatorDTO;
-import org.activityinfo.api.shared.model.SchemaDTO;
+import org.activityinfo.legacy.shared.command.*;
+import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.MockHibernateModule;
 import org.activityinfo.fixtures.Modules;

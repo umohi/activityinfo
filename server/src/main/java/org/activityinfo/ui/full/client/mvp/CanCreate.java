@@ -25,8 +25,8 @@ package org.activityinfo.ui.full.client.mvp;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import org.activityinfo.api.shared.model.DTO;
-import org.activityinfo.api.client.AsyncMonitor;
+import org.activityinfo.legacy.shared.model.DTO;
+import org.activityinfo.legacy.client.AsyncMonitor;
 
 @Deprecated
 public interface CanCreate<M extends DTO> {

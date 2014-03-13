@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import org.activityinfo.reports.shared.content.EntityCategory;
 import org.activityinfo.reports.shared.content.PivotTableData.Axis;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 import org.activityinfo.ui.full.client.page.PageStateSerializer;
 import org.activityinfo.ui.full.client.page.entry.place.DataEntryPlace;

@@ -28,11 +28,11 @@ import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
 import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.CreateSite;
-import org.activityinfo.api.shared.command.exception.NotAuthorizedException;
-import org.activityinfo.api.shared.impl.AuthorizationHandler;
-import org.activityinfo.api.shared.impl.ExecutionContext;
-import org.activityinfo.api.shared.impl.Tables;
+import org.activityinfo.legacy.shared.command.CreateSite;
+import org.activityinfo.legacy.shared.command.exception.NotAuthorizedException;
+import org.activityinfo.legacy.shared.impl.AuthorizationHandler;
+import org.activityinfo.legacy.shared.impl.ExecutionContext;
+import org.activityinfo.legacy.shared.impl.Tables;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -25,7 +25,7 @@ package org.activityinfo.server.attachment;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import org.activityinfo.api.shared.command.CreateSiteAttachment;
+import org.activityinfo.legacy.shared.command.CreateSiteAttachment;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.SiteAttachment;
 import org.apache.commons.fileupload.FileItem;

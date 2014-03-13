@@ -1,6 +1,6 @@
 /**
  * Client-side services class that support the dispatch, caching, and monitoring of
- * {@link org.activityinfo.api.shared.command.Command}
+ * {@link org.activityinfo.legacy.shared.command.Command}
  */
 package org.activityinfo.ui.full.client.dispatch;
 

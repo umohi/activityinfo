@@ -32,7 +32,7 @@ import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayout;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayoutData;
-import org.activityinfo.api.shared.command.result.SitePointList;
+import org.activityinfo.legacy.shared.command.result.SitePointList;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.page.search.SearchPresenter.RecentSiteModel;
 

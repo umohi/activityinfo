@@ -23,7 +23,7 @@ package org.activityinfo.reports.shared.content;
  */
 
 import org.activityinfo.reports.shared.util.mapping.Extents;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 
 import java.io.Serializable;
 

@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.entry.place;
 
 import com.google.common.collect.Sets;
 import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.ui.full.client.page.PageStateParser;
 import org.activityinfo.ui.full.client.page.entry.grouping.AdminGroupingModel;
 import org.activityinfo.ui.full.client.page.entry.grouping.GroupingModel;

@@ -22,7 +22,7 @@ package org.activityinfo.reports.shared.content;
  * #L%
  */
 
-import org.activityinfo.api.shared.model.BaseMap;
+import org.activityinfo.legacy.shared.model.BaseMap;
 
 /**
  * BaseMap provided through the Google Maps API

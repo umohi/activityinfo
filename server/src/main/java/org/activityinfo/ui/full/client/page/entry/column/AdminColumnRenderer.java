@@ -29,10 +29,10 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.google.common.collect.Sets;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.api.shared.model.AdminLevelDTO;
-import org.activityinfo.api.shared.model.AdminLevelPredicates;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminLevelDTO;
+import org.activityinfo.legacy.shared.model.AdminLevelPredicates;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.util.List;
 import java.util.Set;

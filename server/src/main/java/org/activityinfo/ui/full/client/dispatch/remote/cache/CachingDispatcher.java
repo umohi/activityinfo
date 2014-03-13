@@ -23,9 +23,9 @@ package org.activityinfo.ui.full.client.dispatch.remote.cache;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
 
 public class CachingDispatcher extends AbstractDispatcher {

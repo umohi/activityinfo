@@ -24,12 +24,12 @@ package org.activityinfo.server.command.handler;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api.shared.command.BatchCommand;
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.result.BatchResult;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.impl.CommandHandlerAsync;
-import org.activityinfo.api.shared.impl.ExecutionContext;
+import org.activityinfo.legacy.shared.command.BatchCommand;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.result.BatchResult;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
+import org.activityinfo.legacy.shared.impl.ExecutionContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 
 /**
  * @author Alex Bertram
- * @see org.activityinfo.api.shared.command.BatchCommand
+ * @see org.activityinfo.legacy.shared.command.BatchCommand
  */
 public class BatchCommandHandler implements
         CommandHandlerAsync<BatchCommand, BatchResult> {

@@ -24,10 +24,10 @@ package org.activityinfo.server.command.handler;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.activityinfo.api.shared.command.UpdateTargetValue;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.command.result.VoidResult;
-import org.activityinfo.api.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.command.UpdateTargetValue;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.command.handler.crud.PropertyMap;
 import org.activityinfo.server.database.hibernate.entity.*;
 

@@ -22,11 +22,11 @@ package org.activityinfo.server.command.handler;
  * #L%
  */
 
-import org.activityinfo.api.shared.command.Command;
-import org.activityinfo.api.shared.command.Month;
-import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api.shared.impl.AuthorizationHandler;
-import org.activityinfo.api.shared.impl.CommandHandlerAsync;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.Month;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.impl.AuthorizationHandler;
+import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -58,7 +58,7 @@ public final class HandlerUtil {
                 cmd.getClass().getPackage().getName().length() + 1);
         String sharedHandlerName = null;
 
-        sharedHandlerName = "org.activityinfo.api.shared.impl." +
+        sharedHandlerName = "org.activityinfo.legacy.shared.impl." +
                 commandName + "Handler";
 
         try {

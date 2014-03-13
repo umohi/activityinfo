@@ -28,7 +28,7 @@ import org.activityinfo.reports.shared.content.MapContent;
 import org.activityinfo.reports.shared.content.PieMapMarker;
 import org.activityinfo.reports.shared.model.clustering.NoClustering;
 import org.activityinfo.reports.shared.model.layers.PiechartMapLayer;
-import org.activityinfo.api.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 import org.junit.Test;
 

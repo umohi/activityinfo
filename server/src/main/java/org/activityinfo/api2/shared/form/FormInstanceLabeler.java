@@ -24,7 +24,7 @@ package org.activityinfo.api2.shared.form;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.activityinfo.api.shared.adapter.CuidAdapter;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 
 import java.util.List;
 import java.util.Set;

@@ -26,8 +26,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import org.activityinfo.api.shared.command.RemoteCommandService;
-import org.activityinfo.api.shared.command.RemoteCommandServiceAsync;
+import org.activityinfo.legacy.shared.command.RemoteCommandService;
+import org.activityinfo.legacy.shared.command.RemoteCommandServiceAsync;
 
 /**
  * Configures and provides the RemoteCommandServiceAsync instance

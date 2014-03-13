@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.page.entry.admin;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 
 public interface AdminComboBox {
 

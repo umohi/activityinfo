@@ -24,8 +24,8 @@ package org.activityinfo.server.endpoint.export;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.activityinfo.api.shared.command.GetUsers;
-import org.activityinfo.api.shared.command.result.UserResult;
+import org.activityinfo.legacy.shared.command.GetUsers;
+import org.activityinfo.legacy.shared.command.result.UserResult;
 import org.activityinfo.server.command.DispatcherSync;
 
 import javax.servlet.ServletException;

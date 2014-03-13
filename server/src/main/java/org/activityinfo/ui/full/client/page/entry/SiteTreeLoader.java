@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.page.entry;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelKeyProvider;
 import com.extjs.gxt.ui.client.data.TreeLoader;
-import org.activityinfo.api.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.Filter;
 
 public interface SiteTreeLoader extends TreeLoader<ModelData>,
         ModelKeyProvider<ModelData> {

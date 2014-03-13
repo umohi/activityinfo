@@ -24,7 +24,7 @@ package org.activityinfo.server.command.handler;
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.inject.util.Providers;
-import org.activityinfo.api.shared.exception.IllegalAccessCommandException;
+import org.activityinfo.legacy.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.server.database.hibernate.entity.*;
 
 import javax.persistence.EntityManager;

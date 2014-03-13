@@ -24,16 +24,16 @@ package org.activityinfo.ui.full.client.dispatch.remote.cache;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.activityinfo.api.shared.command.GetAdminEntities;
-import org.activityinfo.api.shared.command.result.AdminEntityResult;
-import org.activityinfo.api.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.command.GetAdminEntities;
+import org.activityinfo.legacy.shared.command.result.AdminEntityResult;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.ui.full.client.dispatch.CommandCache;
 import org.activityinfo.ui.full.client.dispatch.DispatchEventSource;
 import org.activityinfo.ui.full.client.dispatch.DispatchListener;
 
 /**
  * Caches the results of
- * {@link org.activityinfo.api.shared.command.GetAdminEntities}
+ * {@link org.activityinfo.legacy.shared.command.GetAdminEntities}
  */
 @Singleton
 public class AdminEntityCache extends AbstractCache implements

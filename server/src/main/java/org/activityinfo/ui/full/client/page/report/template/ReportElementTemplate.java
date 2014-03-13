@@ -25,7 +25,7 @@ package org.activityinfo.ui.full.client.page.report.template;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 
 public abstract class ReportElementTemplate extends ReportTemplate {
 

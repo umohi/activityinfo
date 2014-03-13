@@ -24,8 +24,8 @@ package org.activityinfo.server.command.handler.sync;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.activityinfo.api.shared.command.GetSyncRegionUpdates;
-import org.activityinfo.api.shared.command.result.SyncRegionUpdate;
+import org.activityinfo.legacy.shared.command.GetSyncRegionUpdates;
+import org.activityinfo.legacy.shared.command.result.SyncRegionUpdate;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.MockHibernateModule;
 import org.activityinfo.fixtures.Modules;

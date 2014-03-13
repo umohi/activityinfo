@@ -32,13 +32,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import org.activityinfo.reports.shared.util.mapping.Extents;
-import org.activityinfo.api.shared.model.AdminEntityDTO;
-import org.activityinfo.api.shared.model.AdminLevelDTO;
-import org.activityinfo.api.shared.model.CountryDTO;
-import org.activityinfo.api.shared.model.HasAdminEntityValues;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminLevelDTO;
+import org.activityinfo.legacy.shared.model.CountryDTO;
+import org.activityinfo.legacy.shared.model.HasAdminEntityValues;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.data.proxy.AdminEntityProxy;
-import org.activityinfo.api.client.Dispatcher;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.full.client.map.AdminBoundsHelper;
 
 import java.util.ArrayList;

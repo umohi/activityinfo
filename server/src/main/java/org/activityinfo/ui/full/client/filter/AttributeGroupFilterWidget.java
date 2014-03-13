@@ -23,10 +23,10 @@ package org.activityinfo.ui.full.client.filter;
  */
 
 import com.google.gwt.user.client.Event;
-import org.activityinfo.api.shared.command.Filter;
-import org.activityinfo.api.shared.model.AttributeDTO;
-import org.activityinfo.api.shared.model.AttributeGroupDTO;
-import org.activityinfo.api.shared.util.CollectionUtil;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.model.AttributeDTO;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
+import org.activityinfo.legacy.shared.util.CollectionUtil;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.reports.shared.model.DimensionType;
 

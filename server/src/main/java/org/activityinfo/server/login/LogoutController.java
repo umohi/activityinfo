@@ -22,7 +22,7 @@ package org.activityinfo.server.login;
  * #L%
  */
 
-import org.activityinfo.api.shared.auth.AuthenticatedUser;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 
 import javax.servlet.ServletException;
 import javax.ws.rs.GET;
