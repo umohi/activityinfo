@@ -10,9 +10,9 @@ import org.activityinfo.api.shared.command.result.CommandResult;
 import org.activityinfo.api.shared.model.AdminEntityDTO;
 import org.activityinfo.api.shared.model.AdminLevelDTO;
 import org.activityinfo.api.shared.model.LocationTypeDTO;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.function.BiFunction;
+import org.activityinfo.fp.shared.BiFunction;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

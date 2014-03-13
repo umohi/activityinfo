@@ -1,8 +1,9 @@
 package org.activityinfo.api2.client.form.tree;
 
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api2.client.AsyncFunction;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Cuids;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
 /**
  * Builds a {@link FormTree}
  */
-public class AsyncFormTreeBuilder extends AsyncFunction<Cuid, FormTree> {
+public class AsyncFormTreeBuilder implements Function<Cuid, Promise<FormTree>> {
 
     private static final Logger LOGGER = Logger.getLogger(AsyncFormTreeBuilder.class.getName());
 
@@ -27,8 +28,10 @@ public class AsyncFormTreeBuilder extends AsyncFunction<Cuid, FormTree> {
     }
 
     @Override
-    public void apply(Cuid formClassId, AsyncCallback<FormTree> callback) {
-        new Resolver(formClassId, callback);
+    public Promise<FormTree> apply(Cuid formClassId) {
+        Promise<FormTree> result = new Promise<>();
+        new Resolver(formClassId, result);
+        return result;
     }
 
     public class Resolver {

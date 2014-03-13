@@ -36,7 +36,7 @@ import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api.shared.exception.CommandException;
 import org.activityinfo.api.shared.model.*;
 import org.activityinfo.api2.client.InstanceQuery;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.shared.application.ApplicationProperties;

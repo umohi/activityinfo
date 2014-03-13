@@ -5,7 +5,7 @@ import org.activityinfo.api.shared.adapter.bindings.SiteBindingFactory;
 import org.activityinfo.api.shared.model.SchemaDTO;
 import org.activityinfo.api.shared.model.SiteDTO;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.function.BiFunction;
+import org.activityinfo.fp.shared.BiFunction;
 
 
 public class SiteInstanceAdapter extends BiFunction<SchemaDTO, SiteDTO, FormInstance> {

@@ -8,8 +8,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api2.client.Promise;
-import org.activityinfo.api2.client.PromiseMonitor;
+import org.activityinfo.fp.client.Promise;
+import org.activityinfo.fp.client.PromiseMonitor;
 import org.activityinfo.ui.full.client.importer.ui.ImportPage;
 import org.activityinfo.ui.full.client.importer.ui.Importer;
 

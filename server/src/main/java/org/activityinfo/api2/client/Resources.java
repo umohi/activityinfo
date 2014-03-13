@@ -3,6 +3,7 @@ package org.activityinfo.api2.client;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.shared.form.FormInstance;
 import com.google.common.base.Function;
+import org.activityinfo.fp.client.Promise;
 
 import java.util.List;
 

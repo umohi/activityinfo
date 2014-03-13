@@ -38,7 +38,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
-import org.activityinfo.api2.shared.function.SimplePredicate;
+import org.activityinfo.api2.shared.validation.SimplePredicate;
 import org.activityinfo.api2.shared.validation.*;
 import org.activityinfo.api2.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.i18n.shared.I18N;

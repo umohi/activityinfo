@@ -15,7 +15,7 @@ import org.activityinfo.api.shared.command.Filter;
 import org.activityinfo.api.shared.command.GetSites;
 import org.activityinfo.api.shared.command.result.SiteResult;
 import org.activityinfo.api.shared.model.SiteDTO;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.api2.server.formatter.JavaTextQuantityFormatterFactory;
 import org.activityinfo.api2.shared.Cuid;

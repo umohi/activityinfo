@@ -1,4 +1,4 @@
-package org.activityinfo.api2.client;
+package org.activityinfo.fp.client;
 
 /**
  * Interface for a generally UI component that is listening for

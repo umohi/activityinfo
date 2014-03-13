@@ -1,6 +1,7 @@
 package org.activityinfo.api2.client;
 
 import com.google.common.base.Function;
+import org.activityinfo.fp.client.Promise;
 import org.junit.Test;
 
 import javax.annotation.Nullable;

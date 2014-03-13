@@ -7,7 +7,7 @@ import org.activityinfo.api2.shared.Resource;
 import org.activityinfo.api2.shared.criteria.Criteria;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.fp.client.Promise;
 
 import java.util.List;
 

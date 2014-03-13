@@ -2,7 +2,7 @@ package org.activityinfo.ui.full.client.importer.process;
 
 import com.google.common.collect.Lists;
 import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.function.BiFunction;
+import org.activityinfo.fp.shared.BiFunction;
 import org.activityinfo.ui.full.client.importer.binding.MatchFieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.match.ScoredReference;

@@ -1,4 +1,4 @@
-package org.activityinfo.api2.shared.function;
+package org.activityinfo.fp.shared;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;

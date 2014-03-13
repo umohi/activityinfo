@@ -1,11 +1,11 @@
-package org.activityinfo.api2.shared.function;
+package org.activityinfo.fp.shared;
 
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
 /**
- * Binary operator which concatenates two
+ * Binary operator which concatenates two Lists
  */
 public class ConcatList<T> extends BiFunction<List<T>, List<T>, List<T>>
 {

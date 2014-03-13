@@ -22,7 +22,6 @@ package org.activityinfo.api2.shared.validation;
  */
 
 import com.google.common.collect.Lists;
-import org.activityinfo.api2.shared.function.SimplePredicate;
 
 import javax.annotation.Nonnull;
 import java.util.List;

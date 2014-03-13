@@ -30,7 +30,7 @@ import com.google.common.base.Function;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 
 /**
  * Executes {@link org.activityinfo.api.shared.command.Command}s on behalf of client

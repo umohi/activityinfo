@@ -1,6 +1,7 @@
 package org.activityinfo.api2.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.fp.client.Promise;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

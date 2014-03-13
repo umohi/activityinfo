@@ -445,7 +445,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
         final ResourceLocatorAdaptor resourceLocator = new ResourceLocatorAdaptor(dispatcher);
         AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(resourceLocator);
 
-        treeBuilder.apply(CuidAdapter.activityFormClass(activityId), new AsyncCallback<FormTree>() {
+        treeBuilder.apply(CuidAdapter.activityFormClass(activityId)).then(new AsyncCallback<FormTree>() {
             @Override
             public void onFailure(Throwable caught) {
                 MessageBox.alert("Failure", caught.getMessage(), null);

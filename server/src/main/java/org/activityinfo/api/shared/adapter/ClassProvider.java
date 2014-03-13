@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.GetSchema;
 import org.activityinfo.api2.client.NotFoundException;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.application.ApplicationClassProvider;
 import org.activityinfo.api2.shared.form.FormClass;

@@ -18,8 +18,6 @@ import java.util.Set;
 
 /**
  * Contains a tree of fields based on references to other {@code FormClasses}
- *
- *
  */
 public class FormTree {
 

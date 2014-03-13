@@ -27,10 +27,8 @@ import org.activityinfo.api.client.AsyncMonitor;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api.shared.command.Command;
 import org.activityinfo.api.shared.command.result.CommandResult;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.ui.full.client.dispatch.monitor.MonitoringCallback;
-
-import javax.annotation.Nullable;
 
 public abstract class AbstractDispatcher implements Dispatcher {
 

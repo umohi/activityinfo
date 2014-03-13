@@ -2,7 +2,7 @@ package org.activityinfo.api.shared.adapter.bindings;
 
 import org.activityinfo.api.shared.model.EntityDTO;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.function.BiFunction;
+import org.activityinfo.fp.shared.BiFunction;
 
 /**
  * Creates a FormInstance from a ModelBinding and a legacy Model

@@ -1,4 +1,4 @@
-package org.activityinfo.api2.shared.function;
+package org.activityinfo.api2.shared.validation;
 /*
  * #%L
  * ActivityInfo Server

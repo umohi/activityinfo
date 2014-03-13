@@ -1,11 +1,11 @@
-package org.activityinfo.api2.shared.function;
+package org.activityinfo.fp.shared;
 
 import com.google.common.base.Function;
 
 import java.util.List;
 
 /**
- * Static utility methods pertaining to {@code Function} instances.
+ * Static utility methods pertaining to {@code BiFunction} instances.
  *
  */
 public class BiFunctions {

@@ -1,15 +1,12 @@
-package org.activityinfo.api2.client;
+package org.activityinfo.fp.client;
 
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.api2.shared.function.*;
-import org.activityinfo.api2.shared.monad.ListMonad;
-import org.activityinfo.api2.shared.monad.MonadicValue;
+import org.activityinfo.fp.shared.*;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -24,8 +21,7 @@ import java.util.List;
  *
  * @param <T> the type of the promised value
  */
-public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
-
+public final class Promise<T> implements AsyncCallback<T> {
 
 
     public enum State {
@@ -135,7 +131,6 @@ public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
      * @param <R>
      * @return
      */
-    @Override
     public <R> Promise<R> then(final Function<? super T, R> function) {
         final Promise<R> chained = new Promise<R>();
         then(new AsyncCallback<T>() {
@@ -275,7 +270,7 @@ public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
      * Convenience function for concatenating a promised item with a promised list of items of the same type
      */
     public static <T> Promise<List<T>> prepend(Promise<T> a, Promise<List<T>> b) {
-        Promise<List<T>> aList = a.then(ListMonad.<T>unit());
+        Promise<List<T>> aList = a.then(Functions2.<T>singletonList());
         return fmap(new ConcatList<T>()).apply(aList, b);
     }
 
@@ -287,7 +282,7 @@ public final class Promise<T> implements AsyncCallback<T>, MonadicValue<T> {
 
         List<Promise<List<R>>> promisedItems = Lists.newArrayList();
         for(T item : items) {
-            promisedItems.add(function.apply(item).then(ListMonad.<R>unit()));
+            promisedItems.add(function.apply(item).then(Functions2.<R>singletonList()));
         }
 
         // we need a concat function that will take two [ Promise<List<R>> Promise<List<R>> -> Promise<List<R>> ]\

@@ -1,6 +1,4 @@
-package org.activityinfo.api2.shared.function;
-
-import javax.annotation.Nullable;
+package org.activityinfo.fp.shared;
 
 /**
  * Takes a binary operator, a starting value (usually some kind of ‘zero’),

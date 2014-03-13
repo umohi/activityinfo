@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.MultiSelectionModel;
 import org.activityinfo.api2.client.InstanceQuery;
 import org.activityinfo.api2.client.ProjectionKeyProvider;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.api2.shared.Cuid;
@@ -18,7 +18,7 @@ import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.shared.criteria.ClassCriteria;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.api2.shared.form.tree.FormTree;
-import org.activityinfo.api2.shared.function.Functions2;
+import org.activityinfo.fp.shared.Functions2;
 import org.activityinfo.ui.full.client.style.DataGridResources;
 
 import java.util.List;

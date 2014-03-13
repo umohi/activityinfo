@@ -8,7 +8,7 @@ import com.google.gwt.core.client.Scheduler;
 import org.activityinfo.api.client.KeyGenerator;
 import org.activityinfo.api.shared.adapter.CuidAdapter;
 import org.activityinfo.api2.client.CuidGenerator;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.client.ResourceLocator;
 import org.activityinfo.api2.client.Resources;
 import org.activityinfo.api2.shared.Cuid;

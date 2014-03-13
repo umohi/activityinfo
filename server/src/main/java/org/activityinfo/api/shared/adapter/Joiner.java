@@ -1,11 +1,10 @@
 package org.activityinfo.api.shared.adapter;
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.google.common.collect.*;
 import org.activityinfo.api.client.Dispatcher;
 import org.activityinfo.api2.client.InstanceQuery;
-import org.activityinfo.api2.client.Promise;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.Projection;
 import org.activityinfo.api2.shared.application.ApplicationProperties;
@@ -15,14 +14,9 @@ import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.api2.shared.function.BiFunction;
-import org.activityinfo.api2.shared.function.ConcatMapFunction;
-import org.activityinfo.server.database.hibernate.entity.Project;
+import org.activityinfo.fp.shared.BiFunction;
 
-import javax.annotation.Nullable;
 import java.util.*;
-
-import static org.activityinfo.api2.shared.function.BiFunctions.concatMap;
 
 /**
  * Naive implementation that joins and projects a multi-level
