@@ -13,27 +13,27 @@
   </ui:style>
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
-  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='i18n' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
     <div ui:field="toolbar" class="hidden {style.toobar}">
       <g:Button ui:field="editButton" addStyleNames="btn btn-primary btn-xs">
-        <img src="{img.edit.getSafeUri}" alt="{res.edit}" title="{res.edit}"/>
+        <img src="{img.edit.getSafeUri}" alt="{i18n.edit}" title="{i18n.edit}"/>
       </g:Button>
       <g:Button ui:field="addSectionButton" addStyleNames="btn btn-success btn-xs">
-        <img src="{img.addFolder.getSafeUri}" alt="{res.addSection}" title="{res.addSection}"/>
+        <img src="{img.addFolder.getSafeUri}" alt="{i18n.addSection}" title="{i18n.addSection}"/>
       </g:Button>
       <g:Button ui:field="addButton" addStyleNames="btn btn-success btn-xs">
-        <img src="{img.add.getSafeUri}" alt="{res.addField}" title="{res.addField}"/>
+        <img src="{img.add.getSafeUri}" alt="{i18n.addField}" title="{i18n.addField}"/>
       </g:Button>
       <g:Button ui:field="removeButton" addStyleNames="btn btn-danger btn-xs">
-        <img src="{img.delete.getSafeUri}" alt="{res.remove}" title="{res.remove}"/>
+        <img src="{img.delete.getSafeUri}" alt="{i18n.remove}" title="{i18n.remove}"/>
       </g:Button>
       <g:Button ui:field="upButton" addStyleNames="btn btn-default btn-xs">
-        <img src="{img.up.getSafeUri}" alt="{res.moveUp}" title="{res.moveUp}"/>
+        <img src="{img.up.getSafeUri}" alt="{i18n.moveUp}" title="{i18n.moveUp}"/>
       </g:Button>
       <g:Button ui:field="downButton" addStyleNames="btn btn-default btn-xs">
-        <img src="{img.down.getSafeUri}" alt="{res.moveDown}" title="{res.moveDown}"/>
+        <img src="{img.down.getSafeUri}" alt="{i18n.moveDown}" title="{i18n.moveDown}"/>
       </g:Button>
     </div>
   </g:HTMLPanel>

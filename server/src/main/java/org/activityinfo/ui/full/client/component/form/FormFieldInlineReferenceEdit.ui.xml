@@ -12,19 +12,19 @@
   </ui:style>
 
   <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
-  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='i18n' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel>
     <div class="form-group">
       <label class="col-sm-1 control-label">
-        <ui:text from='{res.cardinality}'/>
+        <ui:text from='{i18n.cardinality}'/>
       </label>
       <div class="col-sm-11">
         <a:RadioButton name="cardinality" ui:field="singleChoice" formValue="true">
-          <ui:text from='{res.singleChoice}'/>
+          <ui:text from='{i18n.singleChoice}'/>
         </a:RadioButton>
         <a:RadioButton name="cardinality" ui:field="multipleChoice">
-          <ui:text from='{res.multipleChoice}'/>
+          <ui:text from='{i18n.multipleChoice}'/>
         </a:RadioButton>
         <br/>
       </div>
@@ -32,7 +32,7 @@
 
     <div class="form-group">
       <label class="col-sm-1 control-label">
-        <ui:text from='{res.values}'/>
+        <ui:text from='{i18n.values}'/>
       </label>
       <div class="col-sm-11">
         <div class="panel panel-default">
