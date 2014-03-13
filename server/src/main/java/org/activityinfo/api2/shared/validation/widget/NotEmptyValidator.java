@@ -31,31 +31,45 @@ import org.activityinfo.api2.shared.validation.ValidationUtils;
 import org.activityinfo.api2.shared.validation.Validator;
 import org.activityinfo.ui.full.client.i18n.I18N;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * @author yuriyz on 3/11/14.
+ * @author yuriyz on 3/13/14.
  */
-public class NotEmptyStringValidator implements Validator {
+public class NotEmptyValidator implements Validator {
 
-    private HasValue<String> control;
+    private HasValue control;
     private String controlName;
 
-    public NotEmptyStringValidator(HasValue<String> control, String controlName) {
+    public NotEmptyValidator(HasValue control, String controlName) {
         this.control = control;
         this.controlName = controlName;
     }
 
     @Override
     public List<ValidationFailure> validate() {
-        if (control != null && Strings.isNullOrEmpty(control.getValue())) {
-            final ValidationFailure failure = new ValidationFailure();
-            final String message = Strings.isNullOrEmpty(controlName) ? I18N.CONSTANTS.validationControlIsEmpty() :
-                    ValidationUtils.format(controlName, I18N.CONSTANTS.validationControlIsEmpty());
-            failure.setMessage(new ValidationMessage(new LocalizedString(message)));
-            failure.setControl(control);
-            return Lists.newArrayList(failure);
+        if (control != null) {
+            final Object value = control.getValue();
+
+            boolean hasFailure = false;
+            if (value == null) {
+                hasFailure = true;
+            } else if (value instanceof String && Strings.isNullOrEmpty((String) value)) {
+                hasFailure = true;
+            } else if (value instanceof Collection && ((Collection) value).isEmpty()) {
+                hasFailure = true;
+            }
+
+            if (hasFailure) {
+                final ValidationFailure failure = new ValidationFailure();
+                final String message = Strings.isNullOrEmpty(controlName) ? I18N.CONSTANTS.validationControlIsEmpty() :
+                        ValidationUtils.format(controlName, I18N.CONSTANTS.validationControlIsEmpty());
+                failure.setMessage(new ValidationMessage(new LocalizedString(message)));
+                failure.setControl(control);
+                return Lists.newArrayList(failure);
+            }
         }
         return Collections.emptyList();
     }

@@ -69,7 +69,7 @@ public class FormSectionInlineEdit extends CompositeWithMirror {
         TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         validator = ValidatorBuilder.instance().
-                addNotEmptyString(sectionLabel, I18N.CONSTANTS.sectionLabel()).
+                addNotEmpty(sectionLabel, I18N.CONSTANTS.sectionLabel()).
                 addValidator(new Validator() {
                     @Override
                     public List<ValidationFailure> validate() {

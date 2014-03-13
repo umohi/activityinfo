@@ -21,34 +21,32 @@ package org.activityinfo.api2.shared.validation;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.HasValue;
-import org.activityinfo.api2.shared.validation.widget.NotEmptyValidator;
+import com.google.common.collect.Lists;
+import org.activityinfo.api2.shared.function.SimplePredicate;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
- * @author yuriyz on 3/11/14.
+ * Validator with predicate. If predicate returns false then no failures are returned.
+ *
+ * @author yuriyz on 3/13/14.
  */
-public class ValidatorBuilder {
+public class ValidatorWithPredicate implements Validator {
 
-    private final ValidatorList validators = new ValidatorList();
+    private final Validator validator;
+    private final SimplePredicate predicate;
 
-    private ValidatorBuilder() {
+    public ValidatorWithPredicate(@Nonnull Validator validator, @Nonnull SimplePredicate predicate) {
+        this.validator = validator;
+        this.predicate = predicate;
     }
 
-    public static ValidatorBuilder instance() {
-        return new ValidatorBuilder();
-    }
-
-    public ValidatorBuilder addNotEmpty(HasValue control, String controlName) {
-        addValidator(new NotEmptyValidator(control, controlName));
-        return this;
-    }
-
-    public ValidatorBuilder addValidator(Validator validator) {
-        validators.getValidators().add(validator);
-        return this;
-    }
-
-    public Validator build() {
-        return validators;
+    @Override
+    public List<ValidationFailure> validate() {
+        if (predicate.apply()) {
+            return validator.validate();
+        }
+        return Lists.newArrayList();
     }
 }

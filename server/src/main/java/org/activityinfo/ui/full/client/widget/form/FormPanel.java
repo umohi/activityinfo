@@ -31,6 +31,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -47,6 +49,7 @@ import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
+import org.activityinfo.ui.full.client.widget.form.event.UpdateStateEvent;
 import org.activityinfo.ui.full.client.widget.undo.UndoListener;
 import org.activityinfo.ui.full.client.widget.undo.UndoManager;
 import org.activityinfo.ui.full.client.widget.undo.UndoableCreatedEvent;
@@ -83,6 +86,7 @@ public class FormPanel extends Composite {
     private boolean readOnly = false;
     private boolean designEnabled = false;
     private ElementNode elementNode;
+    private final EventBus eventBus = new SimpleEventBus();
     private final List<Handler> handlerList = Lists.newArrayList();
     private final UndoManager undoManager = new UndoManager();
 
@@ -115,6 +119,7 @@ public class FormPanel extends Composite {
         this.resourceLocator = resourceLocator;
         initUndo();
         initPanels();
+        initEventBusHandlers();
     }
 
     public FormPanel(FormClass formClass, ResourceLocator resourceLocator) {
@@ -158,6 +163,24 @@ public class FormPanel extends Composite {
 
     public void addHandler(Handler handler) {
         handlerList.add(handler);
+    }
+
+    private void initEventBusHandlers() {
+        eventBus.addHandler(UpdateStateEvent.TYPE, new UpdateStateEvent.Handler() {
+            @Override
+            public void update(UpdateStateEvent p_event) {
+                fireState();
+            }
+        });
+    }
+
+
+    public void fireState() {
+        final BiMap<Cuid, FormFieldRow> ownAndChildFieldMap = elementNode.getOwnAndChildFieldMap();
+        final Set<FormFieldRow> formFieldRows = ownAndChildFieldMap.values();
+        for (FormFieldRow row : formFieldRows) {
+            //todo
+        }
     }
 
     @UiHandler("saveButton")
@@ -328,5 +351,9 @@ public class FormPanel extends Composite {
 
     public void setInitialFormInstance(FormInstance initialFormInstance) {
         this.initialFormInstance = initialFormInstance;
+    }
+
+    public EventBus getEventBus() {
+        return eventBus;
     }
 }

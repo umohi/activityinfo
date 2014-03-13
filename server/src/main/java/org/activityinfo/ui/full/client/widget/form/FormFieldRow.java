@@ -36,6 +36,10 @@ import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldCardinality;
 import org.activityinfo.api2.shared.form.FormFieldType;
 import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.api2.shared.validation.HasValidator;
+import org.activityinfo.api2.shared.validation.Validator;
+import org.activityinfo.api2.shared.validation.ValidatorBuilder;
+import org.activityinfo.api2.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.importer.converter.Converter;
 import org.activityinfo.ui.full.client.importer.converter.ConverterFactory;
@@ -49,7 +53,7 @@ import java.util.Set;
 /**
  * @author yuriyz on 1/28/14.
  */
-public class FormFieldRow extends Composite {
+public class FormFieldRow extends Composite implements HasValidator {
 
     private static FormFieldWidgetUiBinder uiBinder = GWT
             .create(FormFieldWidgetUiBinder.class);
@@ -80,6 +84,7 @@ public class FormFieldRow extends Composite {
     private IsWidget formFieldWidget;
     private final ElementNode node;
     private final FormPanel formPanel;
+    private final Validator validator = createValidator();
 
     public FormFieldRow(FormField formField, FormPanel formPanel, final ElementNode node) {
         this(formField, formPanel, node, FormFieldWidgetFactory.create(formField, formPanel));
@@ -110,6 +115,13 @@ public class FormFieldRow extends Composite {
         control.add(formFieldWidget);
     }
 
+    private Validator createValidator() {
+        final ValidatorBuilder validatorBuilder = ValidatorBuilder.instance();
+        if (formFieldWidget instanceof HasValue) {
+            validatorBuilder.addValidator(new NotEmptyValidator((HasValue) formFieldWidget, formField.getLabel().getValue()));
+        }
+        return validatorBuilder.build();
+    }
 
     private void initPanels() {
         editFieldPanel.setRow(this);
@@ -327,6 +339,11 @@ public class FormFieldRow extends Composite {
             assert true;
             return false;
         }
+    }
+
+    @Override
+    public Validator getValidator() {
+        return validator;
     }
 
     public IsWidget getFormFieldWidget() {

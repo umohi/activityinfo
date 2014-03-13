@@ -29,7 +29,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -39,8 +38,9 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.api2.shared.function.SimplePredicate;
 import org.activityinfo.api2.shared.validation.*;
-import org.activityinfo.api2.shared.validation.widget.NotEmptyStringValidator;
+import org.activityinfo.api2.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
@@ -49,13 +49,12 @@ import org.activityinfo.ui.full.client.widget.FormFieldTypeCombobox;
 import org.activityinfo.ui.full.client.widget.dialog.ChangeFormFieldTypeDialog;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * @author yuriyz on 2/26/14.
  */
-public class FormFieldInlineEdit extends CompositeWithMirror {
+public class FormFieldInlineEdit extends CompositeWithMirror implements HasValidator {
 
     private static FormFieldInlineEditBinder uiBinder = GWT
             .create(FormFieldInlineEditBinder.class);
@@ -106,7 +105,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
             }
         });
         validator = ValidatorBuilder.instance().
-                addNotEmptyString(label, I18N.CONSTANTS.fieldLabel()).
+                addNotEmpty(label, I18N.CONSTANTS.fieldLabel()).
                 addValidator(createUnitValidator()).
                 addValidator(createReferenceValidator()).
                 build();
@@ -139,16 +138,12 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
     }
 
     private Validator createUnitValidator() {
-        return new Validator() {
+        return new ValidatorWithPredicate(new NotEmptyValidator(unit, I18N.CONSTANTS.fieldUnit()), new SimplePredicate() {
             @Override
-            public List<ValidationFailure> validate() {
-                if (type.getSelectedType() == FormFieldType.QUANTITY) {
-                    final NotEmptyStringValidator emptyStringValidator = new NotEmptyStringValidator(unit, I18N.CONSTANTS.fieldUnit());
-                    return emptyStringValidator.validate();
-                }
-                return Collections.emptyList();
+            public boolean apply() {
+                return type.getSelectedType() == FormFieldType.QUANTITY;
             }
-        };
+        });
     }
 
     private void setUnitControlState() {
@@ -287,12 +282,9 @@ public class FormFieldInlineEdit extends CompositeWithMirror {
         }
     }
 
-    public void showError(String errorMessage) {
-        errorContainer.setInnerSafeHtml(SafeHtmlUtils.fromSafeConstant(errorMessage));
-    }
-
-    public void clearError() {
-        errorContainer.setInnerHTML("");
+    @Override
+    public Validator getValidator() {
+        return validator;
     }
 
     public FormPanel getFormPanel() {

@@ -21,34 +21,9 @@ package org.activityinfo.api2.shared.validation;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.HasValue;
-import org.activityinfo.api2.shared.validation.widget.NotEmptyValidator;
-
 /**
- * @author yuriyz on 3/11/14.
+ * @author yuriyz on 3/13/14.
  */
-public class ValidatorBuilder {
-
-    private final ValidatorList validators = new ValidatorList();
-
-    private ValidatorBuilder() {
-    }
-
-    public static ValidatorBuilder instance() {
-        return new ValidatorBuilder();
-    }
-
-    public ValidatorBuilder addNotEmpty(HasValue control, String controlName) {
-        addValidator(new NotEmptyValidator(control, controlName));
-        return this;
-    }
-
-    public ValidatorBuilder addValidator(Validator validator) {
-        validators.getValidators().add(validator);
-        return this;
-    }
-
-    public Validator build() {
-        return validators;
-    }
+public interface HasValidator {
+    public Validator getValidator();
 }
