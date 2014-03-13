@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.widget.form;
+package org.activityinfo.ui.full.client.component.form;
 /*
  * #%L
  * ActivityInfo Server
@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.util.GwtUtil;
-import org.activityinfo.ui.full.client.widget.dialog.ActionType;
+import org.activityinfo.ui.full.client.component.form.dialog.ActionType;
 
 import javax.annotation.Nonnull;
 

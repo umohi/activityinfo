@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.widget.form;
+package org.activityinfo.ui.full.client.component.form;
 /*
  * #%L
  * ActivityInfo Server
@@ -44,7 +44,7 @@ import org.activityinfo.api2.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
-import org.activityinfo.ui.full.client.widget.dialog.ChangeFormFieldTypeDialog;
+import org.activityinfo.ui.full.client.component.form.dialog.ChangeFormFieldTypeDialog;
 
 import javax.annotation.Nonnull;
 import java.util.List;

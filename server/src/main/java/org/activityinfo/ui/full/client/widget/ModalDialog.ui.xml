@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:a="urn:import:org.activityinfo.ui.full.client.widget">
 
-  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='i18n' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
     <g:PopupPanel autoHideEnabled="false" modal="true" ui:field="dialog" styleName="ai">
@@ -17,8 +17,8 @@
             <div class="modal-body" ui:field="modalBody">
             </div>
             <div class="modal-footer" ui:field="modalFooter">
-              <a:Button style="PRIMARY" text="{res.ok}" ui:field="okButton"/>
-              <a:Button style="DEFAULT" text="{res.cancel}" ui:field="cancelButton"/>
+              <a:Button style="PRIMARY" text="{i18n.ok}" ui:field="okButton"/>
+              <a:Button style="DEFAULT" text="{i18n.cancel}" ui:field="cancelButton"/>
             </div>
           </div>
         </div>

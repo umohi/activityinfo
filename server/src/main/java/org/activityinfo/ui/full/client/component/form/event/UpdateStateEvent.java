@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.widget.form.event;
+package org.activityinfo.ui.full.client.component.form.event;
 /*
  * #%L
  * ActivityInfo Server

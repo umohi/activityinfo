@@ -1,4 +1,4 @@
-package org.activityinfo.ui.full.client.widget.form;
+package org.activityinfo.ui.full.client.component.form;
 
 /*
  * #%L
@@ -48,7 +48,7 @@ import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.util.GwtUtil;
-import org.activityinfo.ui.full.client.widget.form.event.UpdateStateEvent;
+import org.activityinfo.ui.full.client.component.form.event.UpdateStateEvent;
 import org.activityinfo.ui.full.client.widget.undo.UndoListener;
 import org.activityinfo.ui.full.client.widget.undo.UndoManager;
 import org.activityinfo.ui.full.client.widget.undo.UndoableCreatedEvent;

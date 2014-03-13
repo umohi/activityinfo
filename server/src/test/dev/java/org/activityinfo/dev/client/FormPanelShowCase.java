@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.ui.full.client.widget.form.FormPanel;
+import org.activityinfo.ui.full.client.component.form.FormPanel;
 
 /**
  * @author yuriyz on 1/31/14.
