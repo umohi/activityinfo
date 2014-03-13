@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.component.form.dialog;
 
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.HTML;
-import org.activityinfo.api2.shared.form.FormField;
+import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.component.form.FormFieldTypeCombobox;
 import org.activityinfo.ui.full.client.widget.ModalDialog;

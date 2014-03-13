@@ -4,26 +4,26 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Cuids;
+import org.activityinfo.core.shared.Iri;
+import org.activityinfo.core.shared.application.FolderClass;
+import org.activityinfo.core.shared.criteria.*;
+import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.fp.client.Promise;
+import org.activityinfo.fp.shared.ConcatList;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.GetAdminEntities;
 import org.activityinfo.legacy.shared.command.GetLocations;
 import org.activityinfo.legacy.shared.command.GetSchema;
-import org.activityinfo.fp.client.Promise;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Cuids;
-import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.criteria.*;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.application.FolderClass;
-import org.activityinfo.fp.shared.ConcatList;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 import static org.activityinfo.fp.shared.BiFunctions.concatMap;
+import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 
 /**
  * Given an intersection of Criteria, fetch the corresponding entities

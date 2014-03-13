@@ -2,7 +2,7 @@ package org.activityinfo.ui.full.client.importer.ui.validation.columns;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.user.cellview.client.Column;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.match.ValueStatus;
 

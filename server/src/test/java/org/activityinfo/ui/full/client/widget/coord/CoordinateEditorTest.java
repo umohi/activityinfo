@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.widget.coord;
  */
 
 import com.teklabs.gwt.i18n.server.LocaleProxy;
-import org.activityinfo.api2.shared.model.CoordinateAxis;
+import org.activityinfo.core.shared.model.CoordinateAxis;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,15 +1,15 @@
 package org.activityinfo.legacy.shared.adapter;
 
+import org.activityinfo.core.client.CuidGenerator;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Cuids;
+import org.activityinfo.core.shared.Iri;
+import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
 import org.activityinfo.legacy.shared.model.EntityDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.api2.client.CuidGenerator;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Cuids;
-import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
 

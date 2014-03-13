@@ -34,10 +34,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.FormInstanceLabeler;
-import org.activityinfo.api2.shared.form.has.HasInstances;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.form.FormInstanceLabeler;
+import org.activityinfo.core.shared.form.has.HasInstances;
 
 import java.util.List;
 import java.util.Set;

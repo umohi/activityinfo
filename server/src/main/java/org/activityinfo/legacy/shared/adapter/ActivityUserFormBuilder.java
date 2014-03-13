@@ -1,11 +1,11 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Strings;
-import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
-import org.activityinfo.api2.shared.form.*;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.LocalizedString;
+import org.activityinfo.core.shared.form.*;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.shared.model.*;
 
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.activityCategoryFolderId;
 

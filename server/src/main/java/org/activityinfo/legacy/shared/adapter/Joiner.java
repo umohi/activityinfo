@@ -2,19 +2,19 @@ package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
 import com.google.common.collect.*;
-import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.api2.client.InstanceQuery;
+import org.activityinfo.core.client.InstanceQuery;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.application.ApplicationProperties;
+import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.IdCriteria;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormField;
+import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.fp.client.Promise;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.application.ApplicationProperties;
-import org.activityinfo.api2.shared.criteria.Criteria;
-import org.activityinfo.api2.shared.criteria.IdCriteria;
-import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
 import org.activityinfo.fp.shared.BiFunction;
+import org.activityinfo.legacy.client.Dispatcher;
 
 import java.util.*;
 

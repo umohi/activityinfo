@@ -1,9 +1,9 @@
 package org.activityinfo.ui.full.client.importer.ui.mapping;
 
 import com.google.common.collect.Lists;
-import org.activityinfo.api2.shared.form.tree.FieldComponent;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.form.tree.FieldComponent;
+import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 

@@ -1,9 +1,9 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormInstance;
 
 /**
 * Converts an AdminEntityDTO to a FormInstance

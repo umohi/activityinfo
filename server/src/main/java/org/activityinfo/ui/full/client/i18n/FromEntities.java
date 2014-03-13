@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.i18n;
  * #L%
  */
 
-import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.ui.full.client.Log;
 

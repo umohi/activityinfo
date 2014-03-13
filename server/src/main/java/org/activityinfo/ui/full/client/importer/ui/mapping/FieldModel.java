@@ -1,6 +1,6 @@
 package org.activityinfo.ui.full.client.importer.ui.mapping;
 
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 
 /**

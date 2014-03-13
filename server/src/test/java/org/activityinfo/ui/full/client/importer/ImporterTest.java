@@ -12,11 +12,11 @@ import com.google.gwt.core.client.testing.StubScheduler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import org.activityinfo.api2.client.form.tree.AsyncFormTreeBuilder;
-import org.activityinfo.api2.server.formatter.JavaTextQuantityFormatterFactory;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.core.client.form.tree.AsyncFormTreeBuilder;
+import org.activityinfo.core.server.formatter.JavaTextQuantityFormatterFactory;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
@@ -47,7 +47,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.google.common.io.Resources.getResource;
-import static org.activityinfo.api2.client.PromiseMatchers.assertResolves;
+import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 

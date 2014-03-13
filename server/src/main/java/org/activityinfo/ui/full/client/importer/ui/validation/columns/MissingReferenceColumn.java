@@ -2,8 +2,7 @@ package org.activityinfo.ui.full.client.importer.ui.validation.columns;
 
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.TextCell;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.MissingFieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 

@@ -1,9 +1,9 @@
 package org.activityinfo.ui.full.client.importer.process;
 
 import com.google.common.base.Function;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.importer.binding.FieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 

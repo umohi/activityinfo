@@ -1,11 +1,10 @@
 package org.activityinfo.ui.full.client.component.table;
 
 import com.google.common.collect.Lists;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Column;
-import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 
 import java.util.List;
 

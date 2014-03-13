@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.component.form;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.shared.HasHandlers;
-import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.core.shared.Cuid;
 
 import java.util.Set;
 

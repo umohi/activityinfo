@@ -25,8 +25,8 @@ package org.activityinfo.legacy.shared.model;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.google.common.collect.Maps;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.api2.shared.Cuid;
 
 import java.util.*;
 

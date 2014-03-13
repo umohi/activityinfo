@@ -21,7 +21,7 @@ package org.activityinfo.ui.full.client.page.entry.place;
  * #L%
  */
 
-import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.app.Section;

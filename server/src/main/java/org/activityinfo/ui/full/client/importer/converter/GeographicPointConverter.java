@@ -21,7 +21,7 @@ package org.activityinfo.ui.full.client.importer.converter;
  * #L%
  */
 
-import org.activityinfo.api2.shared.model.AiLatLng;
+import org.activityinfo.core.shared.model.AiLatLng;
 
 /**
  * @author yuriyz on 3/7/14.

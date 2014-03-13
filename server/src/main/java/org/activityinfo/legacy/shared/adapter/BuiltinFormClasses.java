@@ -1,14 +1,14 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.LocalizedString;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormField;
+import org.activityinfo.core.shared.form.FormFieldType;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
-import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.FormFieldType;
-import org.activityinfo.i18n.shared.I18N;
 
 import javax.annotation.Nullable;
 

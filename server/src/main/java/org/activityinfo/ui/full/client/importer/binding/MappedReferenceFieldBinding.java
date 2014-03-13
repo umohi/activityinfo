@@ -1,13 +1,13 @@
 package org.activityinfo.ui.full.client.importer.binding;
 
 import com.google.common.collect.Lists;
-import org.activityinfo.api2.client.InstanceQuery;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.criteria.ClassCriteria;
-import org.activityinfo.api2.shared.criteria.Criteria;
-import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.core.client.InstanceQuery;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.form.FormField;
+import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.converter.FakeConverter;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.match.names.LatinPlaceNameScorer;

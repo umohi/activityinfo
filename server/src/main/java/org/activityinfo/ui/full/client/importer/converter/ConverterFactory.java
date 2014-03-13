@@ -1,6 +1,6 @@
 package org.activityinfo.ui.full.client.importer.converter;
 
-import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.Log;
 
 /**

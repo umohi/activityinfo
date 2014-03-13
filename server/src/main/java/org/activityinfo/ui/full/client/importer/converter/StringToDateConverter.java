@@ -21,8 +21,8 @@ package org.activityinfo.ui.full.client.importer.converter;
  * #L%
  */
 
-import org.activityinfo.api2.client.formatter.GwtDateFormatterFactory;
-import org.activityinfo.api2.shared.formatter.DateFormatter;
+import org.activityinfo.core.client.formatter.GwtDateFormatterFactory;
+import org.activityinfo.core.shared.formatter.DateFormatter;
 
 import javax.annotation.Nonnull;
 import java.util.Date;

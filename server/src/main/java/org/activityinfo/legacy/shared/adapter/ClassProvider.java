@@ -1,13 +1,13 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
+import org.activityinfo.core.client.NotFoundException;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.application.ApplicationClassProvider;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.GetSchema;
-import org.activityinfo.api2.client.NotFoundException;
-import org.activityinfo.fp.client.Promise;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.application.ApplicationClassProvider;
-import org.activityinfo.api2.shared.form.FormClass;
 
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 

@@ -34,12 +34,12 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
-import org.activityinfo.api2.shared.form.FormSection;
-import org.activityinfo.api2.shared.validation.*;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.LocalizedString;
+import org.activityinfo.core.shared.form.FormSection;
+import org.activityinfo.core.shared.validation.*;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.full.client.widget.CompositeWithMirror;
 
 import java.util.List;

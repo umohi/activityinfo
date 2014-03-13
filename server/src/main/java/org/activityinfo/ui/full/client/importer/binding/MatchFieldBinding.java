@@ -1,8 +1,8 @@
 package org.activityinfo.ui.full.client.importer.binding;
 
-import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.converter.Converter;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 import org.activityinfo.ui.full.client.importer.match.FieldValueScorer;

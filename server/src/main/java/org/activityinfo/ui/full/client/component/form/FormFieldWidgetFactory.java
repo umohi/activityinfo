@@ -22,8 +22,8 @@ package org.activityinfo.ui.full.client.component.form;
  */
 
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.core.shared.form.FormField;
+import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.DateBoxWithReadOnly;

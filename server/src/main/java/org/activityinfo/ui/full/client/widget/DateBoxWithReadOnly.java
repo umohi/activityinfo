@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.widget;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DatePicker;
-import org.activityinfo.api2.shared.formatter.DateFormatterFactory;
+import org.activityinfo.core.shared.formatter.DateFormatterFactory;
 
 import java.util.Date;
 

@@ -25,9 +25,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.Random;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
-import org.activityinfo.api2.shared.form.*;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.LocalizedString;
+import org.activityinfo.core.shared.form.*;
 
 import java.util.Date;
 import java.util.List;

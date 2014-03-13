@@ -5,7 +5,7 @@ import com.google.gwt.cell.client.SafeHtmlCell;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.MappedReferenceFieldBinding;
 import org.activityinfo.ui.full.client.importer.binding.MatchFieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;

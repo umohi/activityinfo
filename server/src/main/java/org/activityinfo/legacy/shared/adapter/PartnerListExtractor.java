@@ -3,11 +3,11 @@ package org.activityinfo.legacy.shared.adapter;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.legacy.shared.model.PartnerDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.criteria.Criteria;
 
 import java.util.List;
 

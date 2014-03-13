@@ -25,7 +25,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.ui.ListBox;
-import org.activityinfo.api2.shared.form.FormFieldType;
+import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.ui.full.client.i18n.FromEntities;
 
 import java.util.Set;

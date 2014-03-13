@@ -33,10 +33,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.core.shared.workflow.Workflow;
 import org.activityinfo.legacy.shared.command.SearchLocations;
 import org.activityinfo.legacy.shared.command.result.LocationResult;
 import org.activityinfo.legacy.shared.model.LocationDTO;
-import org.activityinfo.api2.shared.workflow.Workflow;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package org.activityinfo.ui.full.client.importer.match;
 
-import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Projection;
 
 /**
  * Describes a potential match for a reference field

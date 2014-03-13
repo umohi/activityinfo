@@ -31,10 +31,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.FormInstanceLabeler;
-import org.activityinfo.api2.shared.form.has.HasInstances;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.form.FormInstanceLabeler;
+import org.activityinfo.core.shared.form.has.HasInstances;
 
 import javax.annotation.Nullable;
 import java.util.List;

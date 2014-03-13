@@ -21,8 +21,8 @@ package org.activityinfo.ui.full.client.importer.converter;
  * #L%
  */
 
-import org.activityinfo.api2.client.formatter.GwtQuantityFormatterFactory;
-import org.activityinfo.api2.shared.formatter.QuantityFormatter;
+import org.activityinfo.core.client.formatter.GwtQuantityFormatterFactory;
+import org.activityinfo.core.shared.formatter.QuantityFormatter;
 
 import javax.annotation.Nonnull;
 

@@ -2,11 +2,11 @@ package org.activityinfo.legacy.shared.adapter.bindings;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormInstance;
 
 import java.util.Map;
 import java.util.Set;

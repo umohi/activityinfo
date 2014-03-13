@@ -3,15 +3,18 @@ package org.activityinfo.ui.full.client.importer.model;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
-import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.form.tree.FormTree.SearchOrder;
 import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.data.SourceTable;
-import org.activityinfo.api2.shared.form.tree.FormTree.SearchOrder;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A model which defines the mapping from an {@code SourceTable}

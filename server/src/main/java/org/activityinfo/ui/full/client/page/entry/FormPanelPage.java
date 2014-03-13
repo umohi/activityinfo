@@ -30,10 +30,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.ui.full.client.component.form.FormPanel;
 import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
@@ -41,7 +42,6 @@ import org.activityinfo.ui.full.client.page.PageState;
 import org.activityinfo.ui.full.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.full.client.page.entry.place.UserFormPlaceParser;
 import org.activityinfo.ui.full.client.style.BaseStylesheet;
-import org.activityinfo.ui.full.client.component.form.FormPanel;
 
 /**
  * @author yuriyz on 1/31/14.

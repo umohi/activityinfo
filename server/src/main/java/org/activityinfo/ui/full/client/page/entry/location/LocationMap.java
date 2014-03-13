@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.google.common.collect.Lists;
 import com.google.gwt.resources.client.ImageResource;
-import org.activityinfo.api2.shared.model.AiLatLng;
+import org.activityinfo.core.shared.model.AiLatLng;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.reports.content.MapboxLayers;
 import org.activityinfo.legacy.shared.reports.util.mapping.Extents;

@@ -30,7 +30,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api2.shared.model.AiLatLng;
+import org.activityinfo.core.shared.model.AiLatLng;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
 import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
 import org.activityinfo.ui.full.client.widget.undo.UndoManager;

@@ -22,8 +22,8 @@ package org.activityinfo.ui.full.client.page.entry.place;
  */
 
 import com.google.common.base.Strings;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Cuids;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Cuids;
 import org.activityinfo.ui.full.client.page.PageStateParser;
 
 /**

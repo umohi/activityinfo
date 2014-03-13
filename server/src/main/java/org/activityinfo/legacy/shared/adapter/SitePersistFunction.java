@@ -2,6 +2,9 @@ package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.fp.client.Promise;
+import org.activityinfo.fp.shared.BiFunction;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.adapter.bindings.SiteBinding;
@@ -10,9 +13,6 @@ import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.legacy.shared.model.LocationTypeDTO;
-import org.activityinfo.fp.client.Promise;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.fp.shared.BiFunction;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

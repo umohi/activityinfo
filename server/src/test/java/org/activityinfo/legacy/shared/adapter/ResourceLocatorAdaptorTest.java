@@ -3,14 +3,14 @@ package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import org.activityinfo.api2.client.InstanceQuery;
-import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.fp.client.Promise;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.criteria.ClassCriteria;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.core.client.InstanceQuery;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.hamcrest.Matchers;
@@ -20,9 +20,8 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
-import static org.activityinfo.api2.client.PromiseMatchers.assertResolves;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)

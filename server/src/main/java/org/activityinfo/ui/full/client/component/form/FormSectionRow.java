@@ -33,9 +33,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.LocalizedString;
-import org.activityinfo.api2.shared.form.FormSection;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.LocalizedString;
+import org.activityinfo.core.shared.form.FormSection;
 import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
 /**

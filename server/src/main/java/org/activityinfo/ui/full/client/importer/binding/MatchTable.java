@@ -1,7 +1,7 @@
 package org.activityinfo.ui.full.client.importer.binding;
 
 import com.google.common.collect.Maps;
-import org.activityinfo.api2.shared.Cuid;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.ui.full.client.importer.match.ScoredReference;
 
 import java.util.Map;

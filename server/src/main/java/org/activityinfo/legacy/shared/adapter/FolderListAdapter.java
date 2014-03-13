@@ -1,13 +1,13 @@
 package org.activityinfo.legacy.shared.adapter;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.base.Function;
+import org.activityinfo.core.shared.application.FolderClass;
+import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.api2.shared.criteria.Criteria;
-import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormInstance;
-import org.activityinfo.api2.shared.application.FolderClass;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;

@@ -1,6 +1,6 @@
 package org.activityinfo.legacy.shared.adapter.bindings;
 
-import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.core.shared.form.FormInstance;
 
 import java.util.HashMap;
 import java.util.List;

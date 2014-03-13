@@ -1,7 +1,7 @@
 package org.activityinfo.ui.full.client.pageView;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.core.shared.form.FormInstance;
 
 /**
  * A UI component that renders a page for a given class of {@code FormInstance}

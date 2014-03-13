@@ -1,8 +1,6 @@
 package org.activityinfo.ui.full.client.importer.model;
 
-import org.activityinfo.api2.shared.form.tree.FieldPath;
-
-import javax.annotation.Nonnull;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 
 /**
  * Defines the target for an imported column

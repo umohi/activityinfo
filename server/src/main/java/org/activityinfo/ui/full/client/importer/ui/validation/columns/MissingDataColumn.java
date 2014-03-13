@@ -1,11 +1,8 @@
 package org.activityinfo.ui.full.client.importer.ui.validation.columns;
 
 import com.google.common.base.Function;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.EditTextCell;
-import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.text.shared.SafeHtmlRenderer;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.MissingFieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 

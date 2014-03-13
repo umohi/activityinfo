@@ -22,7 +22,7 @@ package org.activityinfo.legacy.shared.adapter;
  */
 
 import junit.framework.Assert;
-import org.activityinfo.api2.shared.Iri;
+import org.activityinfo.core.shared.Iri;
 import org.junit.Test;
 
 /**

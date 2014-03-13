@@ -4,9 +4,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Cuids;
-import org.activityinfo.api2.shared.criteria.*;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Cuids;
+import org.activityinfo.core.shared.criteria.*;
 
 import java.util.List;
 

@@ -22,17 +22,17 @@ package org.activityinfo.dev.client;
  */
 
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.api2.client.InstanceQuery;
+import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.fp.client.Promise;
-import org.activityinfo.api2.client.ResourceLocator;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.Iri;
-import org.activityinfo.api2.shared.Projection;
-import org.activityinfo.api2.shared.Resource;
-import org.activityinfo.api2.shared.criteria.ClassCriteria;
-import org.activityinfo.api2.shared.criteria.Criteria;
-import org.activityinfo.api2.shared.form.FormClass;
-import org.activityinfo.api2.shared.form.FormInstance;
+import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Iri;
+import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.Resource;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormInstance;
 
 import java.util.List;
 

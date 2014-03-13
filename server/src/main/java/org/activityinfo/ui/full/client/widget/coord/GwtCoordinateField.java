@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.widget.coord;
 
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.user.client.ui.DoubleBox;
-import org.activityinfo.api2.shared.model.CoordinateAxis;
+import org.activityinfo.core.shared.model.CoordinateAxis;
 import org.activityinfo.i18n.shared.I18N;
 
 /**

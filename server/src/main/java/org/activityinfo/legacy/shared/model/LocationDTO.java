@@ -26,7 +26,7 @@ import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import org.activityinfo.api2.shared.model.AiLatLng;
+import org.activityinfo.core.shared.model.AiLatLng;
 
 import java.util.List;
 

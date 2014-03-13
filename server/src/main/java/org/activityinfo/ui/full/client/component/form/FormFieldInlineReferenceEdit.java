@@ -47,12 +47,12 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.*;
+import org.activityinfo.core.shared.form.has.HasInstances;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.*;
-import org.activityinfo.api2.shared.form.has.HasInstances;
-import org.activityinfo.i18n.shared.I18N;
 
 import java.util.List;
 import java.util.Set;

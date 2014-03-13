@@ -1,16 +1,12 @@
 package org.activityinfo.ui.full.client.importer.ui.validation.columns;
 
 import com.google.common.base.Function;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.SafeHtmlCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.text.shared.SafeHtmlRenderer;
-import org.activityinfo.api2.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.full.client.importer.binding.MappedDataFieldBinding;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
-import org.activityinfo.ui.full.client.importer.ui.validation.cells.MappedDataCell;
 import org.activityinfo.ui.full.client.importer.ui.validation.cells.ValidationCellTemplates;
 
 /**

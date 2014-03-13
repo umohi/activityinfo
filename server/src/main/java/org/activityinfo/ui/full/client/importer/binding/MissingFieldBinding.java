@@ -1,8 +1,8 @@
 package org.activityinfo.ui.full.client.importer.binding;
 
-import org.activityinfo.api2.shared.Cuid;
-import org.activityinfo.api2.shared.form.FormField;
-import org.activityinfo.api2.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.form.FormField;
+import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.ui.full.client.importer.data.SourceRow;
 
 /**
