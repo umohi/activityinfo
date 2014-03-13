@@ -23,18 +23,18 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.reports.server.generator.ReportGenerator;
-import org.activityinfo.reports.server.renderer.Renderer;
-import org.activityinfo.reports.server.renderer.RendererFactory;
-import org.activityinfo.reports.shared.model.DateRange;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.RenderElement;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.command.result.UrlResult;
 import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
 import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.report.generator.ReportGenerator;
 import org.activityinfo.server.report.output.StorageProvider;
 import org.activityinfo.server.report.output.TempStorage;
+import org.activityinfo.server.report.renderer.Renderer;
+import org.activityinfo.server.report.renderer.RendererFactory;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

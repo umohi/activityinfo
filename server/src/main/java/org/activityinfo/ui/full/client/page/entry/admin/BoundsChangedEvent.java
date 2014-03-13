@@ -24,7 +24,7 @@ package org.activityinfo.ui.full.client.page.entry.admin;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.EventType;
-import org.activityinfo.reports.shared.util.mapping.Extents;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 
 /**
  * Signals that the geographic bounds of the selection in the

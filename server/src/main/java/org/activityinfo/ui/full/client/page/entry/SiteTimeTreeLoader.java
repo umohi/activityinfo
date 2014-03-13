@@ -29,12 +29,7 @@ import com.extjs.gxt.ui.client.data.SortInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.content.MonthCategory;
-import org.activityinfo.reports.shared.content.YearCategory;
-import org.activityinfo.reports.shared.model.DateDimension;
-import org.activityinfo.reports.shared.model.DateRange;
-import org.activityinfo.reports.shared.model.DateUnit;
-import org.activityinfo.reports.shared.model.Dimension;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSites;
 import org.activityinfo.legacy.shared.command.PivotSites;
@@ -43,8 +38,13 @@ import org.activityinfo.legacy.shared.command.PivotSites.ValueType;
 import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.command.result.SiteResult;
 import org.activityinfo.legacy.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.reports.content.MonthCategory;
+import org.activityinfo.legacy.shared.reports.content.YearCategory;
+import org.activityinfo.legacy.shared.reports.model.DateDimension;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.DateUnit;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
 import org.activityinfo.ui.full.client.data.proxy.SafeRpcProxy;
-import org.activityinfo.legacy.client.Dispatcher;
 
 import java.util.List;
 

@@ -30,13 +30,13 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
-import org.activityinfo.legacy.client.Dispatcher;
 
 import java.util.Collections;
 import java.util.List;

@@ -36,13 +36,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Image;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.GetBaseMaps;
 import org.activityinfo.legacy.shared.command.result.BaseMapResult;
 import org.activityinfo.legacy.shared.model.TileBaseMap;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.content.GoogleBaseMap;
-import org.activityinfo.reports.shared.model.MapReportElement;
+import org.activityinfo.legacy.shared.reports.content.GoogleBaseMap;
+import org.activityinfo.legacy.shared.reports.model.MapReportElement;
 import org.activityinfo.ui.full.client.report.editor.map.mapOptions.BaseMapDialog;
 import org.activityinfo.ui.full.client.report.editor.map.mapOptions.BaseMapDialog.Callback;
 

@@ -22,7 +22,8 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.*;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.reports.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 

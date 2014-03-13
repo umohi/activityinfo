@@ -28,9 +28,9 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.command.Filter;
 
 public class IndicatorFilterPanel extends IndicatorTreePanel implements FilterPanel {
 

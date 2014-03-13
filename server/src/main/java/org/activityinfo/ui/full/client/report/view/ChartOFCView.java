@@ -45,10 +45,10 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.Theme;
-import org.activityinfo.reports.shared.content.PivotChartContent;
-import org.activityinfo.reports.shared.content.PivotTableData;
-import org.activityinfo.reports.shared.model.PivotChartReportElement;
+import org.activityinfo.legacy.shared.reports.Theme;
+import org.activityinfo.legacy.shared.reports.content.PivotChartContent;
+import org.activityinfo.legacy.shared.reports.content.PivotTableData;
+import org.activityinfo.legacy.shared.reports.model.PivotChartReportElement;
 
 import java.util.Collections;
 import java.util.Comparator;

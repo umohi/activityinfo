@@ -22,9 +22,9 @@ package org.activityinfo.legacy.shared.command.result;
  * #L%
  */
 
-import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.legacy.shared.model.SitePointDTO;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 
 import java.util.ArrayList;
 import java.util.List;

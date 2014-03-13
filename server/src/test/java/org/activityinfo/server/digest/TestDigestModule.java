@@ -24,10 +24,10 @@ package org.activityinfo.server.digest;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import org.activityinfo.reports.server.renderer.image.ImageMapRenderer;
 import org.activityinfo.server.geo.TestGeometry;
 import org.activityinfo.server.report.output.LocalStorageProvider;
 import org.activityinfo.server.report.output.StorageProvider;
+import org.activityinfo.server.report.renderer.image.ImageMapRenderer;
 
 public class TestDigestModule extends AbstractModule {
 

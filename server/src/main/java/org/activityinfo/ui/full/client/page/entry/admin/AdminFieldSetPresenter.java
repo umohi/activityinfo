@@ -30,22 +30,17 @@ import com.extjs.gxt.ui.client.event.BaseObservable;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import org.activityinfo.reports.shared.util.mapping.Extents;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.legacy.shared.model.HasAdminEntityValues;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import org.activityinfo.ui.full.client.Log;
 import org.activityinfo.ui.full.client.data.proxy.AdminEntityProxy;
-import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.full.client.map.AdminBoundsHelper;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Presenter which drives the selection of a set of heirarchial admin levels.

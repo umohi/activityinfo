@@ -23,9 +23,8 @@ package org.activityinfo.legacy.shared.command;
  */
 
 import com.google.common.collect.Sets;
-import org.activityinfo.reports.shared.model.DateRange;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.model.typeadapter.FilterAdapter;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.typeadapter.FilterAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;

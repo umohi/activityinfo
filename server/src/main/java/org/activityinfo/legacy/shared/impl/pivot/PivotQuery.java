@@ -30,12 +30,13 @@ import com.bedatadriven.rebar.sql.client.query.SqlDialect;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.*;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.PivotSites;
 import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.impl.Tables;
 import org.activityinfo.legacy.shared.impl.pivot.bundler.*;
+import org.activityinfo.legacy.shared.reports.model.*;
 import org.activityinfo.ui.full.client.Log;
 
 import java.util.ArrayList;

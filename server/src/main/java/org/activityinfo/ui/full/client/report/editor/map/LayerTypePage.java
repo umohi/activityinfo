@@ -33,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.FlowData;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.layers.*;
+import org.activityinfo.legacy.shared.reports.model.layers.*;
 import org.activityinfo.ui.full.client.widget.wizard.WizardPage;
 
 public class LayerTypePage extends WizardPage {

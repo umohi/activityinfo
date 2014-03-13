@@ -22,8 +22,8 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.EmailDelivery;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
 
 /**
  * Updates the relationship between a user and a report

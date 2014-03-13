@@ -43,12 +43,12 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.layers.PiechartMapLayer;
-import org.activityinfo.reports.shared.model.layers.PiechartMapLayer.Slice;
+import org.activityinfo.legacy.shared.reports.model.layers.PiechartMapLayer;
+import org.activityinfo.legacy.shared.reports.model.layers.PiechartMapLayer.Slice;
 import org.activityinfo.ui.full.client.page.common.columns.EditColorColumn;
 import org.activityinfo.ui.full.client.page.common.columns.ReadTextColumn;
 

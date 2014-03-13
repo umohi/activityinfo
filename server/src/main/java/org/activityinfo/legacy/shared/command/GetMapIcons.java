@@ -26,7 +26,7 @@ import org.activityinfo.legacy.shared.command.result.MapIconResult;
 
 /**
  * Returns a list of available
- * {@link org.activityinfo.reports.shared.model.MapIcon}s on the server
+ * {@link org.activityinfo.legacy.shared.reports.model.MapIcon}s on the server
  *
  * @author Alex Bertram
  */

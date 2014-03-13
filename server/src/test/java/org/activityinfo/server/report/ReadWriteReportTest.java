@@ -22,11 +22,11 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.MapReportElement;
-import org.activityinfo.reports.shared.model.Report;
-import org.activityinfo.reports.shared.model.layers.BubbleMapLayer;
-import org.activityinfo.reports.shared.model.layers.PiechartMapLayer;
-import org.activityinfo.reports.shared.model.layers.PiechartMapLayer.Slice;
+import org.activityinfo.legacy.shared.reports.model.MapReportElement;
+import org.activityinfo.legacy.shared.reports.model.Report;
+import org.activityinfo.legacy.shared.reports.model.layers.BubbleMapLayer;
+import org.activityinfo.legacy.shared.reports.model.layers.PiechartMapLayer;
+import org.activityinfo.legacy.shared.reports.model.layers.PiechartMapLayer.Slice;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;

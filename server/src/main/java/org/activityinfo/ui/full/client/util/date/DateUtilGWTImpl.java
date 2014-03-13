@@ -23,16 +23,16 @@ package org.activityinfo.ui.full.client.util.date;
  */
 
 import com.extjs.gxt.ui.client.util.DateWrapper;
-import org.activityinfo.reports.shared.model.DateRange;
-import org.activityinfo.reports.shared.model.DateUnit;
-import org.activityinfo.reports.shared.util.DateUtil;
 import org.activityinfo.legacy.shared.command.Month;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.DateUnit;
+import org.activityinfo.legacy.shared.reports.util.DateUtil;
 
 import java.util.Date;
 
 /**
  * Client-side implementation of the
- * {@link org.activityinfo.reports.shared.util.DateUtil} interface.
+ * {@link org.activityinfo.legacy.shared.reports.util.DateUtil} interface.
  *
  * @author Alex Bertram
  */

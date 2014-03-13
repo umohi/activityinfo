@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.page.report.json;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.Report;
+import org.activityinfo.legacy.shared.reports.model.Report;
 
 public interface ReportSerializer {
 

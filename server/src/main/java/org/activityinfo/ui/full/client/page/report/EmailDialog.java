@@ -34,12 +34,12 @@ import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.UpdateReportSubscription;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.EmailDelivery;
+import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
 import org.activityinfo.ui.full.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.full.client.widget.MappingComboBox;
 

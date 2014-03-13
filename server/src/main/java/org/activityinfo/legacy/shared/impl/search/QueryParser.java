@@ -23,9 +23,9 @@ package org.activityinfo.legacy.shared.impl.search;
  */
 
 import com.google.common.collect.Maps;
-import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.command.Filter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

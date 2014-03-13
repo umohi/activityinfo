@@ -23,11 +23,11 @@ package org.activityinfo.ui.full.client.page.report.template;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.MapReportElement;
-import org.activityinfo.reports.shared.model.ReportElement;
-import org.activityinfo.reports.shared.model.layers.MapLayer;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.reports.model.MapReportElement;
+import org.activityinfo.legacy.shared.reports.model.ReportElement;
+import org.activityinfo.legacy.shared.reports.model.layers.MapLayer;
 import org.activityinfo.ui.full.client.report.editor.map.NewLayerWizard;
 import org.activityinfo.ui.full.client.widget.wizard.WizardCallback;
 import org.activityinfo.ui.full.client.widget.wizard.WizardDialog;

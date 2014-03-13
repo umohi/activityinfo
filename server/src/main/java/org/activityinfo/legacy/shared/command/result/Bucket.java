@@ -23,9 +23,9 @@ package org.activityinfo.legacy.shared.command.result;
  */
 
 import org.activityinfo.api2.shared.model.AiLatLng;
-import org.activityinfo.reports.shared.content.DimensionCategory;
-import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.reports.content.DimensionCategory;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
 
 import java.io.Serializable;
 import java.util.Collection;

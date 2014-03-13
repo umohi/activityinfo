@@ -22,7 +22,6 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.legacy.shared.command.GetDimensionLabels.DimensionLabels;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
 

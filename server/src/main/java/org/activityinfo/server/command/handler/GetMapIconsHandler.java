@@ -23,13 +23,13 @@ package org.activityinfo.server.command.handler;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.reports.server.generator.MapIconPath;
 import org.activityinfo.legacy.shared.command.GetMapIcons;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.command.result.MapIconResult;
 import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.legacy.shared.model.MapIconDTO;
 import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.report.generator.MapIconPath;
 
 import java.io.File;
 import java.util.ArrayList;

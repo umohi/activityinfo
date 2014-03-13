@@ -2,7 +2,7 @@ package org.activityinfo.server.endpoint.rest;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSites;
 import org.activityinfo.legacy.shared.model.AttributeDTO;

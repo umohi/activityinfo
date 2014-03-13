@@ -22,16 +22,15 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.content.BubbleMapMarker;
-import org.activityinfo.reports.shared.content.IconMapMarker;
-import org.activityinfo.reports.shared.content.MapContent;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.model.MapReportElement;
-import org.activityinfo.reports.shared.model.clustering.AdministrativeLevelClustering;
-import org.activityinfo.reports.shared.model.layers.BubbleMapLayer;
-import org.activityinfo.reports.shared.model.layers.IconMapLayer;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.Modules;
+import org.activityinfo.legacy.shared.reports.content.BubbleMapMarker;
+import org.activityinfo.legacy.shared.reports.content.IconMapMarker;
+import org.activityinfo.legacy.shared.reports.content.MapContent;
+import org.activityinfo.legacy.shared.reports.model.MapReportElement;
+import org.activityinfo.legacy.shared.reports.model.clustering.AdministrativeLevelClustering;
+import org.activityinfo.legacy.shared.reports.model.layers.BubbleMapLayer;
+import org.activityinfo.legacy.shared.reports.model.layers.IconMapLayer;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.TestDatabaseModule;

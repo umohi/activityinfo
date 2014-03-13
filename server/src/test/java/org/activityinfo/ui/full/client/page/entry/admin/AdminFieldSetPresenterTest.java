@@ -22,47 +22,28 @@ package org.activityinfo.ui.full.client.page.entry.admin;
  * #L%
  */
 
-import static org.activityinfo.legacy.shared.model.DTOs.BENI;
-import static org.activityinfo.legacy.shared.model.DTOs.MASISI;
-import static org.activityinfo.legacy.shared.model.DTOs.NORD_KIVU;
-import static org.activityinfo.legacy.shared.model.DTOs.NORD_KIVU_TERRITOIRES;
-import static org.activityinfo.legacy.shared.model.DTOs.PROVINCE;
-import static org.activityinfo.legacy.shared.model.DTOs.PROVINCES;
-import static org.activityinfo.legacy.shared.model.DTOs.RUIZI;
-import static org.activityinfo.legacy.shared.model.DTOs.SECTEUR;
-import static org.activityinfo.legacy.shared.model.DTOs.SUD_KIVU;
-import static org.activityinfo.legacy.shared.model.DTOs.SUD_KIVU_TERRITOIRES;
-import static org.activityinfo.legacy.shared.model.DTOs.TERRITOIRE;
-import static org.easymock.EasyMock.createNiceMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.resetToDefault;
-import static org.easymock.EasyMock.verify;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.store.ListStore;
 import org.activityinfo.legacy.shared.command.GetAdminEntities;
 import org.activityinfo.legacy.shared.command.result.AdminEntityResult;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.legacy.shared.model.CountryDTO;
-import org.activityinfo.legacy.shared.model.DTOs.PEAR;
-import org.activityinfo.reports.shared.util.mapping.Extents;
+import org.activityinfo.legacy.shared.model.DTOs.*;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import org.activityinfo.ui.full.client.dispatch.DispatcherStub;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.store.ListStore;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.activityinfo.legacy.shared.model.DTOs.*;
+import static org.easymock.EasyMock.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 public class AdminFieldSetPresenterTest {
 

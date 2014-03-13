@@ -22,19 +22,19 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.reports.server.generator.PivotChartGenerator;
-import org.activityinfo.reports.shared.model.DateRange;
-import org.activityinfo.reports.shared.model.Dimension;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.model.PivotChartReportElement;
-import org.activityinfo.reports.shared.model.PivotChartReportElement.Type;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetDimensionLabels;
 import org.activityinfo.legacy.shared.command.PivotSites;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
+import org.activityinfo.legacy.shared.reports.model.PivotChartReportElement;
+import org.activityinfo.legacy.shared.reports.model.PivotChartReportElement.Type;
 import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.dao.IndicatorDAO;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.report.generator.PivotChartGenerator;
 import org.junit.Test;
 
 import java.util.Collections;

@@ -28,11 +28,11 @@ import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
 import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.util.mapping.Extents;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.GetAdminEntities;
 import org.activityinfo.legacy.shared.command.result.AdminEntityResult;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import org.activityinfo.legacy.shared.util.CollectionUtil;
 
 import java.util.ArrayList;

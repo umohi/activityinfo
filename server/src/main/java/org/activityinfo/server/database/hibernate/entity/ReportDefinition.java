@@ -22,7 +22,7 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.EmailDelivery;
+import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,7 +33,7 @@ import java.util.Set;
 /**
  * Defines a Report and its subscriptions.
  *
- * @see org.activityinfo.reports.shared.model.Report
+ * @see org.activityinfo.legacy.shared.reports.model.Report
  */
 @Entity
 @Table(name = "ReportTemplate")

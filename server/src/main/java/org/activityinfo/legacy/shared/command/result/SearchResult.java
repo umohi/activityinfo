@@ -22,11 +22,11 @@ package org.activityinfo.legacy.shared.command.result;
  * #L%
  */
 
-import org.activityinfo.reports.shared.content.PivotContent;
 import org.activityinfo.legacy.shared.impl.search.Searcher;
 import org.activityinfo.legacy.shared.model.DTO;
 import org.activityinfo.legacy.shared.model.SearchHitDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.reports.content.PivotContent;
 
 import java.util.ArrayList;
 import java.util.List;

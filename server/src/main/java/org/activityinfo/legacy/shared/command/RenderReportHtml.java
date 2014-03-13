@@ -22,8 +22,8 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.ReportElement;
 import org.activityinfo.legacy.shared.command.result.HtmlResult;
+import org.activityinfo.legacy.shared.reports.model.ReportElement;
 
 public class RenderReportHtml implements Command<HtmlResult> {
 

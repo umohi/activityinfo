@@ -22,7 +22,7 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.EmailDelivery;
+import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
 
 import javax.persistence.*;
 import java.io.Serializable;

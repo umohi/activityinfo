@@ -23,9 +23,9 @@ package org.activityinfo.legacy.shared.impl.pivot;
  */
 
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
-import org.activityinfo.reports.shared.content.TargetCategory;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.PivotSites;
+import org.activityinfo.legacy.shared.reports.content.TargetCategory;
 
 /**
  * Defines a base table of values to be aggregated and collected by the

@@ -26,7 +26,8 @@ import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.DataReader;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetAdminEntities;
 import org.activityinfo.legacy.shared.command.GetSchema;
@@ -36,7 +37,6 @@ import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.util.CollectionUtil;
-import org.activityinfo.legacy.client.Dispatcher;
 
 import java.util.*;
 

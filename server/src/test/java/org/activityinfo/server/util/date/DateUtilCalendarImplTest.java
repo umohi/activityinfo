@@ -22,9 +22,9 @@ package org.activityinfo.server.util.date;
  * #L%
  */
 
-import org.activityinfo.reports.server.util.DateUtilCalendarImpl;
-import org.activityinfo.reports.shared.model.DateRange;
-import org.activityinfo.reports.shared.model.DateUnit;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.DateUnit;
+import org.activityinfo.server.report.util.DateUtilCalendarImpl;
 import org.junit.Test;
 
 import java.util.Calendar;

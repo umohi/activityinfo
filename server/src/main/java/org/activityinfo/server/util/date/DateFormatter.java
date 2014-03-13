@@ -22,7 +22,7 @@ package org.activityinfo.server.util.date;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

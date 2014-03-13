@@ -22,8 +22,9 @@ package org.activityinfo.server.report;
  * #L%
  */
 
-import org.activityinfo.reports.shared.content.*;
-import org.activityinfo.reports.shared.model.*;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.reports.content.*;
+import org.activityinfo.legacy.shared.reports.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

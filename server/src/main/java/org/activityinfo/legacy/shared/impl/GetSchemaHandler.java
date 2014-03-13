@@ -29,9 +29,9 @@ import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.bedatadriven.rebar.sql.client.util.RowHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.*;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import org.activityinfo.ui.full.client.Log;
 
 import java.util.ArrayList;

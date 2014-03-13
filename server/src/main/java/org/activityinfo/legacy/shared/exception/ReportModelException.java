@@ -22,7 +22,7 @@ package org.activityinfo.legacy.shared.exception;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.ReportElement;
+import org.activityinfo.legacy.shared.reports.model.ReportElement;
 
 /**
  * Exception relating to the (mal)definition of a report model

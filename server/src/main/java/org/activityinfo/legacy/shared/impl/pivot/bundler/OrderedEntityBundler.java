@@ -23,9 +23,9 @@ package org.activityinfo.legacy.shared.impl.pivot.bundler;
  */
 
 import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
-import org.activityinfo.reports.shared.content.EntityCategory;
-import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.legacy.shared.command.result.Bucket;
+import org.activityinfo.legacy.shared.reports.content.EntityCategory;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
 
 public class OrderedEntityBundler implements Bundler {
     private final Dimension dimension;

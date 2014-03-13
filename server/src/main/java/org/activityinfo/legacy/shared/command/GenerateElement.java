@@ -22,13 +22,13 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.content.Content;
-import org.activityinfo.reports.shared.model.ReportElement;
+import org.activityinfo.legacy.shared.reports.content.Content;
+import org.activityinfo.legacy.shared.reports.model.ReportElement;
 
 /**
  * Generates and returns to the client the content of an element.
  * <p/>
- * Returns: {@link org.activityinfo.reports.shared.content.Content}
+ * Returns: {@link org.activityinfo.legacy.shared.reports.content.Content}
  *
  * @author Alex Bertram (akbertram@gmail.com)
  */

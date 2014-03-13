@@ -23,9 +23,10 @@ package org.activityinfo.ui.full.client.page.report.template;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.*;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.reports.model.*;
 
 public class PivotTableTemplate extends ReportElementTemplate {
 

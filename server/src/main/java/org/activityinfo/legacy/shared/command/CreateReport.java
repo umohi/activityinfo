@@ -22,8 +22,8 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.legacy.shared.command.result.CreateResult;
+import org.activityinfo.legacy.shared.reports.model.Report;
 
 /**
  * Creates a new Report Definition

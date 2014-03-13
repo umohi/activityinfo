@@ -22,13 +22,12 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.AttributeGroupDimension;
-import org.activityinfo.reports.shared.model.Dimension;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.model.PivotTableReportElement;
-import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fixtures.Modules;
+import org.activityinfo.legacy.shared.exception.CommandException;
+import org.activityinfo.legacy.shared.reports.model.AttributeGroupDimension;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
+import org.activityinfo.legacy.shared.reports.model.PivotTableReportElement;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.database.TestDatabaseModule;

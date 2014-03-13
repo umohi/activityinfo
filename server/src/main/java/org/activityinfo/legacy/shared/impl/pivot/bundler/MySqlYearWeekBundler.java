@@ -23,9 +23,9 @@ package org.activityinfo.legacy.shared.impl.pivot.bundler;
  */
 
 import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
-import org.activityinfo.reports.shared.content.WeekCategory;
-import org.activityinfo.reports.shared.model.Dimension;
 import org.activityinfo.legacy.shared.command.result.Bucket;
+import org.activityinfo.legacy.shared.reports.content.WeekCategory;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
 
 public class MySqlYearWeekBundler implements Bundler {
 

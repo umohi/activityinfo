@@ -25,11 +25,11 @@ package org.activityinfo.ui.full.client.page.search;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.inject.ImplementedBy;
-import org.activityinfo.reports.shared.content.PivotContent;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.result.SearchResult;
 import org.activityinfo.legacy.shared.command.result.SitePointList;
 import org.activityinfo.legacy.shared.model.SearchHitDTO;
+import org.activityinfo.legacy.shared.reports.content.PivotContent;
 import org.activityinfo.ui.full.client.mvp.ListView;
 import org.activityinfo.ui.full.client.page.search.SearchPresenter.RecentSiteModel;
 

@@ -27,7 +27,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
-import org.activityinfo.reports.shared.model.ReportElement;
+import org.activityinfo.legacy.shared.reports.model.ReportElement;
 import org.activityinfo.ui.full.client.EventBus;
 import org.activityinfo.ui.full.client.page.report.HasReportElement;
 import org.activityinfo.ui.full.client.page.report.ReportChangeHandler;

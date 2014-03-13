@@ -23,14 +23,14 @@ package org.activityinfo.ui.full.client.report.view;
  */
 
 import com.extjs.gxt.ui.client.event.Listener;
-import org.activityinfo.reports.shared.content.EntityCategory;
-import org.activityinfo.reports.shared.content.PivotTableData;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.util.DateUtil;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.reports.content.EntityCategory;
+import org.activityinfo.legacy.shared.reports.content.PivotTableData;
+import org.activityinfo.legacy.shared.reports.util.DateUtil;
 import org.activityinfo.ui.full.client.AppEvents;
 import org.activityinfo.ui.full.client.EventBus;
-import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.full.client.page.common.Shutdownable;
 import org.activityinfo.ui.full.client.page.entry.SiteGridPanel;
 import org.activityinfo.ui.full.client.page.entry.grouping.NullGroupingModel;

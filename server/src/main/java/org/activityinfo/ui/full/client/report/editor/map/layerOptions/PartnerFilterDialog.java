@@ -29,13 +29,13 @@ import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetPartnersDimension;
 import org.activityinfo.legacy.shared.command.result.PartnerResult;
 import org.activityinfo.legacy.shared.model.PartnerDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.ui.full.client.filter.SelectionCallback;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 

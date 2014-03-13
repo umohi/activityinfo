@@ -34,10 +34,10 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.content.EntityCategory;
-import org.activityinfo.reports.shared.content.PivotTableData;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.model.PivotReportElement;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.reports.content.EntityCategory;
+import org.activityinfo.legacy.shared.reports.content.PivotTableData;
+import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
 import org.activityinfo.ui.full.client.util.IndicatorNumberFormat;
 
 import java.util.ArrayList;

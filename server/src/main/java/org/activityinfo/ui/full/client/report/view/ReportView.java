@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.report.view;
  */
 
 import com.extjs.gxt.ui.client.widget.Component;
-import org.activityinfo.reports.shared.model.ReportElement;
+import org.activityinfo.legacy.shared.reports.model.ReportElement;
 
 public interface ReportView<T extends ReportElement> {
 

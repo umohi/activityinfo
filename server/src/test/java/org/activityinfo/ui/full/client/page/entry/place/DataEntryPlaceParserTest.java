@@ -22,7 +22,7 @@ package org.activityinfo.ui.full.client.page.entry.place;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.ui.full.client.page.entry.grouping.AdminGroupingModel;
 import org.junit.Test;

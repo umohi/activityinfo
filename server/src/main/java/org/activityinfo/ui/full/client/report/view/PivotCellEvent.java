@@ -24,8 +24,8 @@ package org.activityinfo.ui.full.client.report.view;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.EventType;
-import org.activityinfo.reports.shared.content.PivotTableData;
-import org.activityinfo.reports.shared.model.PivotReportElement;
+import org.activityinfo.legacy.shared.reports.content.PivotTableData;
+import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
 
 /**
  * Event fired when a pivot cell is double-clicked. Other listening components
@@ -40,9 +40,9 @@ public class PivotCellEvent extends BaseEvent {
     /**
      * @param type
      * @param element the enclosing
-     *                {@link org.activityinfo.reports.shared.model.PivotTableReportElement}
+     *                {@link org.activityinfo.legacy.shared.reports.model.PivotTableReportElement}
      *                or
-     *                {@link org.activityinfo.reports.shared.model.PivotChartReportElement}
+     *                {@link org.activityinfo.legacy.shared.reports.model.PivotChartReportElement}
      * @param row     the clicked row
      * @param column  the clicked column
      */

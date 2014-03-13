@@ -24,13 +24,14 @@ package org.activityinfo.ui.full.client.page.report.json;
 
 import com.google.gson.*;
 import com.google.inject.Inject;
-import org.activityinfo.reports.shared.content.DimensionCategory;
-import org.activityinfo.reports.shared.model.*;
-import org.activityinfo.reports.shared.model.clustering.AutomaticClustering;
-import org.activityinfo.reports.shared.model.clustering.NoClustering;
-import org.activityinfo.reports.shared.model.layers.*;
-import org.activityinfo.reports.shared.model.layers.PiechartMapLayer.Slice;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.reports.content.DimensionCategory;
+import org.activityinfo.legacy.shared.reports.model.*;
+import org.activityinfo.legacy.shared.reports.model.clustering.AutomaticClustering;
+import org.activityinfo.legacy.shared.reports.model.clustering.NoClustering;
+import org.activityinfo.legacy.shared.reports.model.layers.*;
+import org.activityinfo.legacy.shared.reports.model.layers.PiechartMapLayer.Slice;
 
 import java.util.*;
 import java.util.Map.Entry;

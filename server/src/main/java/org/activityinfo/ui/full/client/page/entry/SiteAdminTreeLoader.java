@@ -29,15 +29,11 @@ import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.SortInfo;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.legacy.shared.command.Filter;
-import org.activityinfo.legacy.shared.command.GetAdminEntities;
-import org.activityinfo.legacy.shared.command.GetSchema;
-import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.*;
 import org.activityinfo.legacy.shared.command.result.AdminEntityResult;
 import org.activityinfo.legacy.shared.command.result.SiteResult;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.full.client.page.entry.grouping.AdminGroupingModel;
 
 import java.util.List;

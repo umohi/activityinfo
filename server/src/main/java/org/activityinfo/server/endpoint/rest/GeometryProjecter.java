@@ -5,9 +5,9 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.geom.util.GeometryTransformer;
-import org.activityinfo.reports.server.generator.map.TiledMap;
 import org.activityinfo.api2.shared.model.AiLatLng;
-import org.activityinfo.reports.shared.content.Point;
+import org.activityinfo.legacy.shared.reports.content.Point;
+import org.activityinfo.server.report.generator.map.TiledMap;
 
 import java.util.Arrays;
 

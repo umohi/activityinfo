@@ -23,7 +23,7 @@ package org.activityinfo.ui.full.client.report.editor.map.layerOptions;
  */
 
 import com.google.gwt.user.client.ui.HasValue;
-import org.activityinfo.reports.shared.model.layers.MapLayer;
+import org.activityinfo.legacy.shared.reports.model.layers.MapLayer;
 
 public interface LayerOptionsWidget<T extends MapLayer> extends HasValue<T> {
 }

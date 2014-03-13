@@ -23,8 +23,8 @@ package org.activityinfo.ui.full.client.page.entry;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import org.activityinfo.reports.shared.content.YearCategory;
-import org.activityinfo.reports.shared.model.DateRange;
+import org.activityinfo.legacy.shared.reports.content.YearCategory;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
 import org.activityinfo.ui.full.client.util.date.DateUtilGWTImpl;
 
 final class YearModel extends BaseModelData {

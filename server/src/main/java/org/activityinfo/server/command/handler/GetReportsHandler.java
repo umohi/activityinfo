@@ -29,13 +29,13 @@ import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.EmailDelivery;
 import org.activityinfo.legacy.shared.command.GetReports;
 import org.activityinfo.legacy.shared.command.result.ReportsResult;
 import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
 import org.activityinfo.legacy.shared.impl.ExecutionContext;
 import org.activityinfo.legacy.shared.impl.Tables;
 import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
+import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
 
 import java.util.List;
 

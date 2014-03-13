@@ -23,8 +23,7 @@ package org.activityinfo.legacy.shared.impl;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.util.mapping.Extents;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSitePoints;
 import org.activityinfo.legacy.shared.command.GetSites;
@@ -32,6 +31,7 @@ import org.activityinfo.legacy.shared.command.result.SitePointList;
 import org.activityinfo.legacy.shared.command.result.SiteResult;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.legacy.shared.model.SitePointDTO;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 
 import java.util.ArrayList;
 import java.util.List;

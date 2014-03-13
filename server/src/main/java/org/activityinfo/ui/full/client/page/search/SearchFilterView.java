@@ -41,7 +41,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.Image;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.ui.full.client.i18n.FromEntities;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 

@@ -22,11 +22,11 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.ReportElement;
 import org.activityinfo.legacy.shared.command.result.UrlResult;
+import org.activityinfo.legacy.shared.reports.model.ReportElement;
 
 /**
- * Renders a {@link org.activityinfo.reports.shared.model.ReportElement} in the
+ * Renders a {@link org.activityinfo.legacy.shared.reports.model.ReportElement} in the
  * specified format, saves the file to the server, and returns the name of the
  * temporary file that can be used to initiate a download.
  *

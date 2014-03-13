@@ -22,12 +22,11 @@ package org.activityinfo.legacy.shared.command;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.legacy.shared.command.result.SearchResult;
 import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.legacy.shared.impl.search.AllSearcher;
 import org.activityinfo.legacy.shared.impl.search.Searcher;
-import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.junit.Ignore;

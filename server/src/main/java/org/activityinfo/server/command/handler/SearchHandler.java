@@ -25,20 +25,16 @@ package org.activityinfo.server.command.handler;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.SortInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.content.PivotContent;
-import org.activityinfo.reports.shared.model.Dimension;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.model.PivotTableReportElement;
-import org.activityinfo.legacy.shared.command.Filter;
-import org.activityinfo.legacy.shared.command.GenerateElement;
-import org.activityinfo.legacy.shared.command.GetSites;
-import org.activityinfo.legacy.shared.command.Search;
+import org.activityinfo.legacy.shared.command.*;
 import org.activityinfo.legacy.shared.command.result.SearchResult;
 import org.activityinfo.legacy.shared.command.result.SiteResult;
 import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
 import org.activityinfo.legacy.shared.impl.ExecutionContext;
 import org.activityinfo.legacy.shared.impl.search.AllSearcher;
 import org.activityinfo.legacy.shared.impl.search.QueryParser;
+import org.activityinfo.legacy.shared.reports.content.PivotContent;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
+import org.activityinfo.legacy.shared.reports.model.PivotTableReportElement;
 
 import java.util.List;
 

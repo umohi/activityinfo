@@ -22,8 +22,8 @@ package org.activityinfo.ui.full.client.map;
  * #L%
  */
 
-import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.legacy.shared.model.*;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 
 import java.util.Collection;
 

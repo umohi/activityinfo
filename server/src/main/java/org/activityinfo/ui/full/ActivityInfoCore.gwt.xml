@@ -42,11 +42,10 @@
   <inherits name="com.bedatadriven.rebar.sql.Sql"/>
   <inherits name="com.bedatadriven.rebar.appcache.AppCache"/>
   <inherits name="com.bedatadriven.rebar.Time"/>
+  <inherits name="com.bedatadriven.rebar.style.Style"/>
 
   <inherits name="org.activityinfo.i18n.I18n"/>
   <inherits name="org.activityinfo.legacy.Legacy"/>
-  <inherits name="org.activityinfo.reports.Reports"/>
-  <inherits name="com.bedatadriven.rebar.style.Style"/>
 
 
   <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
@@ -85,15 +84,6 @@
   <source path="shared"/>
 
 
-  <!-- Blacklist classes that are never serialized but get pulled in by
-     interfaces on RPCable types -->
-  <extend-configuration-property name="rpc.blacklist" value="java.util.LinkedList"/>
-  <extend-configuration-property name="rpc.blacklist" value="java.util.Stack"/>
-  <extend-configuration-property name="rpc.blacklist" value="java.util.TreeMap"/>
-  <extend-configuration-property name="rpc.blacklist" value="java.util.TreeSet"/>
-  <extend-configuration-property name="rpc.blacklist" value="java.util.Vector"/>
-  <extend-configuration-property name="rpc.blacklist" value="com.google.collect.ImmutableMultimap"/>
-  <extend-configuration-property name="rpc.blacklist" value="com.google.collect.ImmutableMultiset"/>
-  <extend-configuration-property name="rpc.blacklist" value="com.google.collect.EmptyImmutableMultiset"/>
+
 
 </module>

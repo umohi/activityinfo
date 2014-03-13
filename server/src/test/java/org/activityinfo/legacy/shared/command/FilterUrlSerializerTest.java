@@ -24,7 +24,6 @@ package org.activityinfo.legacy.shared.command;
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.collect.Sets;
-import org.activityinfo.reports.shared.model.DimensionType;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

@@ -30,8 +30,6 @@ import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
-import org.activityinfo.reports.shared.model.EmailDelivery;
-import org.activityinfo.reports.shared.model.Report;
 import org.activityinfo.legacy.shared.command.GetReportModel;
 import org.activityinfo.legacy.shared.exception.UnexpectedCommandException;
 import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
@@ -39,6 +37,8 @@ import org.activityinfo.legacy.shared.impl.ExecutionContext;
 import org.activityinfo.legacy.shared.impl.Tables;
 import org.activityinfo.legacy.shared.model.ReportDTO;
 import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
+import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
+import org.activityinfo.legacy.shared.reports.model.Report;
 import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
 import org.activityinfo.server.report.ReportParserJaxb;
 

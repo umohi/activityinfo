@@ -23,11 +23,10 @@ package org.activityinfo.legacy.shared.command;
  */
 
 import com.google.common.collect.Sets;
-import org.activityinfo.reports.shared.model.Dimension;
-import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.legacy.shared.command.PivotSites.PivotResult;
 import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
 
 import java.util.List;
 import java.util.Set;

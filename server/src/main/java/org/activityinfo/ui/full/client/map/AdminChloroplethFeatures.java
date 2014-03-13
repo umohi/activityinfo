@@ -1,7 +1,7 @@
 package org.activityinfo.ui.full.client.map;
 
-import org.activityinfo.reports.shared.content.AdminMarker;
-import org.activityinfo.reports.shared.content.AdminOverlay;
+import org.activityinfo.legacy.shared.reports.content.AdminMarker;
+import org.activityinfo.legacy.shared.reports.content.AdminOverlay;
 import org.activityinfo.ui.full.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.jsobject.JSObject;
 import org.discotools.gwt.leaflet.client.layers.others.GeoJSONFeatures;

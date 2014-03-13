@@ -23,7 +23,7 @@ package org.activityinfo.legacy.shared.model;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import org.activityinfo.reports.shared.model.EmailDelivery;
+import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
 
 import java.util.List;
 

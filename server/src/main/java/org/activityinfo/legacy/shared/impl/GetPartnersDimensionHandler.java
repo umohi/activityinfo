@@ -23,15 +23,15 @@ package org.activityinfo.legacy.shared.impl;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.reports.shared.content.EntityCategory;
-import org.activityinfo.reports.shared.model.Dimension;
-import org.activityinfo.reports.shared.model.DimensionType;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.GetPartnersDimension;
 import org.activityinfo.legacy.shared.command.PivotSites;
 import org.activityinfo.legacy.shared.command.PivotSites.ValueType;
 import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.command.result.PartnerResult;
 import org.activityinfo.legacy.shared.model.PartnerDTO;
+import org.activityinfo.legacy.shared.reports.content.EntityCategory;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
 import org.activityinfo.ui.full.client.Log;
 
 import java.util.*;

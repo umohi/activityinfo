@@ -22,12 +22,12 @@ package org.activityinfo.ui.full.client.report.editor.pivotTable;
  * #L%
  */
 
-import org.activityinfo.reports.shared.model.AttributeGroupDimension;
-import org.activityinfo.reports.shared.model.Dimension;
-import org.activityinfo.reports.shared.model.DimensionType;
-import org.activityinfo.reports.shared.model.PivotTableReportElement;
+import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.*;
+import org.activityinfo.legacy.shared.reports.model.AttributeGroupDimension;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
+import org.activityinfo.legacy.shared.reports.model.PivotTableReportElement;
 import org.activityinfo.ui.full.client.MockEventBus;
 import org.activityinfo.ui.full.client.dispatch.DispatcherStub;
 import org.activityinfo.ui.full.client.page.report.ReportChangeEvent;

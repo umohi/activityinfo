@@ -27,9 +27,9 @@ import com.extjs.gxt.ui.client.event.BaseObservable;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Listener;
 import org.activityinfo.api2.shared.model.AiLatLng;
-import org.activityinfo.reports.shared.util.mapping.Extents;
 import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 
 public class NewLocationPresenter extends BaseObservable {
 

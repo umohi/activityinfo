@@ -22,14 +22,14 @@ package org.activityinfo.legacy.shared.impl.pivot;
  * #L%
  */
 
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.impl.pivot.order.CategoryComparator;
 import org.activityinfo.legacy.shared.impl.pivot.order.DefinedCategoryComparator;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.content.DimensionCategory;
-import org.activityinfo.reports.shared.content.PivotTableData;
-import org.activityinfo.reports.shared.model.Dimension;
-import org.activityinfo.reports.shared.model.PivotReportElement;
+import org.activityinfo.legacy.shared.reports.content.DimensionCategory;
+import org.activityinfo.legacy.shared.reports.content.PivotTableData;
+import org.activityinfo.legacy.shared.reports.model.Dimension;
+import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
 
 import java.util.*;
 

@@ -23,7 +23,6 @@ package org.activityinfo.legacy.shared.command;
  */
 
 import com.google.common.collect.Sets;
-import org.activityinfo.reports.shared.model.DimensionType;
 import org.activityinfo.legacy.shared.command.result.SiteResult;
 
 import java.util.Collection;

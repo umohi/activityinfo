@@ -28,7 +28,7 @@ import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
 import org.activityinfo.ui.full.client.filter.SelectionCallback;
 
 public class DateRangeDialog extends Dialog {

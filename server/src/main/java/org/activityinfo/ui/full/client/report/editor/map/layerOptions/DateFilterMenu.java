@@ -29,7 +29,7 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.reports.shared.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
 import org.activityinfo.ui.full.client.filter.SelectionCallback;
 import org.activityinfo.ui.full.client.icon.IconImageBundle;
 
