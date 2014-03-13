@@ -32,7 +32,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.api2.shared.form.FormSection;
 import org.activityinfo.ui.full.client.i18n.I18N;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.dialog.ActionType;
 
@@ -62,7 +61,6 @@ public class FormSectionEditDialog extends Composite {
     PopupPanel dialog;
 
     public FormSectionEditDialog(FormSection formSection, @Nonnull ActionType actionType) {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         this.formSection = formSection;

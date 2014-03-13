@@ -1,9 +1,9 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:ai="urn:import:org.activityinfo.ui.full.client.widget"
+             xmlns:a="urn:import:org.activityinfo.ui.full.client.widget"
              xmlns:form="urn:import:org.activityinfo.ui.full.client.widget.form"
-             xmlns:boot="urn:import:org.activityinfo.ui.full.client.widget.bootstrap"
+
         >
 
   <ui:style>
@@ -22,7 +22,7 @@
   <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
   <ui:with field='aiStyle' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
-  <g:HTMLPanel addStyleNames="bs">
+  <g:HTMLPanel>
 
     <form class="form-horizontal" role="form">
 
@@ -31,7 +31,7 @@
           <ui:text from='{res.fieldLabel}'/>
         </label>
         <div class="col-sm-11">
-          <boot:TextBox width="100%" ui:field="label" placeholder="{res.fieldLabel}"/>
+          <a:TextBox width="100%" ui:field="label" placeholder="{res.fieldLabel}"/>
         </div>
       </div>
 
@@ -41,9 +41,9 @@
         </label>
 
         <div class="col-sm-11">
-          <ai:FormFieldTypeCombobox addStyleNames="{style.show-inline} form-control" width="92%" ui:field="type"
+          <form:FormFieldTypeCombobox addStyleNames="{style.show-inline} form-control" width="92%" ui:field="type"
                                     multipleSelect="false"/>
-          <g:Button addStyleNames="btn btn-default hidden" text="{res.change}" ui:field="changeButton"/>
+          <a:Button style="DEFAULT" visible="false" text="{res.change}" ui:field="changeButton"/>
         </div>
       </div>
 
@@ -52,7 +52,7 @@
           <ui:text from='{res.fieldDescription}'/>
         </label>
         <div class="col-sm-11">
-          <boot:TextArea visibleLines="3" width="100%" ui:field="description"  placeholder="{res.fieldDescription}"/>
+          <a:TextArea visibleLines="3" width="100%" ui:field="description"  placeholder="{res.fieldDescription}"/>
         </div>
       </div>
 
@@ -61,7 +61,7 @@
           <ui:text from='{res.fieldUnit}'/>
         </label>
         <div class="col-sm-11">
-          <boot:TextBox width="100%" ui:field="unit"/>
+          <a:TextBox width="100%" ui:field="unit"/>
         </div>
       </div>
 
@@ -70,7 +70,7 @@
           <ui:text from='{res.mandatory}'/>
         </label>
         <div class="col-sm-11">
-          <boot:CheckBox ui:field="required"/>
+          <a:CheckBox ui:field="required"/>
         </div>
       </div>
 
@@ -81,8 +81,8 @@
       <div class="form-group">
         <label class="col-sm-1 control-label"/>
         <div class="col-sm-11">
-          <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
-          <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
+          <a:Button style="PRIMARY" text="{res.ok}" ui:field="okButton"/>
+          <a:Button style="DEFAULT" text="{res.cancel}" ui:field="cancelButton"/>
         </div>
       </div>
     </form>

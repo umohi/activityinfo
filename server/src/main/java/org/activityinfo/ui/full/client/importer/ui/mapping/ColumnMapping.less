@@ -1,0 +1,82 @@
+
+// Styles for the column mapping grid
+
+@import (reference) "../../../style/bootstrap/variables.less";
+@import (reference) "../../../style/bootstrap/mixins.less";
+@import (reference) "../../../style/bootstrap/tables.less";
+@import (reference) "../../../style/datagrid.less";
+
+@cm-accent-color: @brand-primary;
+@cm-accent-text-color: #fff;
+
+.cm-datagrid {
+
+  td {
+    cursor: pointe
+  }
+
+  // Table Headers
+  th {
+    white-space: nowrap;
+    overflow: hidden;
+
+    // The first row header shows the
+    // original column header
+    &.source-column {
+      background-color: @table-bg-accent;
+      font-weight: bold;
+
+      &.state-ignored { text-decoration: line-through; }
+    }
+
+    // The second row header shows the
+    // binding to the destination field
+    &.mapping {
+      background-color: lighter(@table-bg-accent, 25%);
+      font-style: italic;
+      color: @input-color-placeholder;
+
+      &.state-ignored { color: @state-danger-text; }
+      &.state-unset { font-style: italic; color: @input-color-placeholder; }
+      &.state-bound { background-color: @state-success-bg; }
+      &.selected { background-color: white; }
+    }
+  }
+
+  // Body Columns
+  col {
+    &.state-bound { background-color: @state-success-bg; }
+    &.selected { background-color: @table-bg-active; }
+  }
+
+}
+
+.cm-field-selector {
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  // to match table
+  margin-left: 1.5em;
+
+  font-size: @datagrid-font-size;
+
+  .radio.state-ignored {
+    margin-bottom: 1.5em;
+  }
+
+  .radio.state-ignored label {
+    color: @brand-danger;
+  }
+
+  .panel-heading {
+    padding: 5px;
+  }
+
+  &.incomplete .panel-heading {
+    background-color: @panel-danger-heading-bg;
+    color: @panel-danger-text;
+  }
+
+}

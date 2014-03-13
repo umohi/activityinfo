@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.*;
 import org.activityinfo.ui.full.client.importer.data.PastedTable;
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.ProgressListener;
 import org.activityinfo.ui.full.client.page.config.design.importer.SchemaImporter.Warning;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.style.BaseStylesheet;
 
 public class ImportSchemaDialog {
 
@@ -80,11 +80,10 @@ public class ImportSchemaDialog {
     public ImportSchemaDialog(SchemaImporter importer) {
         this.importer = importer;
 
-        TransitionUtil.ensureBootstrapInjected();
+        BaseStylesheet.INSTANCE.ensureInjected();
 
         Widget content = uiBinder.createAndBindUi(this);
-
-
+    
         showPage(currentPage);
 
         popupPanel = new PopupPanel(true);

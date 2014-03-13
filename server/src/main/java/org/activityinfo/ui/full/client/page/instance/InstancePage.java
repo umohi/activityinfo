@@ -16,14 +16,14 @@ import org.activityinfo.ui.full.client.page.NavigationCallback;
 import org.activityinfo.ui.full.client.page.Page;
 import org.activityinfo.ui.full.client.page.PageId;
 import org.activityinfo.ui.full.client.page.PageState;
-import org.activityinfo.ui.full.client.page.instance.views.FolderView;
-import org.activityinfo.ui.full.client.page.instance.views.FormView;
-import org.activityinfo.ui.full.client.page.instance.views.InstanceView;
+import org.activityinfo.ui.full.client.pageView.InstancePageView;
+import org.activityinfo.ui.full.client.pageView.folder.FolderPageView;
+import org.activityinfo.ui.full.client.pageView.formClass.FormClassPageView;
 
 import java.util.List;
 
 /**
- * Container that hosts a view of a given instance.
+ * Adapter that hosts a view of a given instance.
  */
 public class InstancePage implements Page, PromiseMonitor {
     public static final PageId PAGE_ID = new PageId("i");
@@ -86,17 +86,17 @@ public class InstancePage implements Page, PromiseMonitor {
     }
 
     private void loadView(FormInstance instance) {
-        InstanceView view = createView(instance);
+        InstancePageView view = createView(instance);
         view.show(instance);
         panel.setWidget(view);
     }
 
-    private InstanceView createView(FormInstance instance) {
+    private InstancePageView createView(FormInstance instance) {
         Cuid classId = instance.getClassId();
         if(classId.equals(FolderClass.CLASS_ID)) {
-            return new FolderView(resourceLocator);
+            return new FolderPageView(resourceLocator);
         } else if(classId.equals(FormClass.CLASS_ID)) {
-            return new FormView(resourceLocator);
+            return new FormClassPageView(resourceLocator);
         } else {
             throw new UnsupportedOperationException();
         }

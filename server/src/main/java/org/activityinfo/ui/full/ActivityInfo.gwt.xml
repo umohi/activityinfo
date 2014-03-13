@@ -26,5 +26,6 @@
   <inherits name='org.activityinfo.ui.full.ActivityInfoCore'/>
 
   <inherits name="com.bedatadriven.rebar.appcache.AppCacheLinker"/>
+    <inherits name="com.bedatadriven.rebar.style.Style"/>
 
 </module>

@@ -36,7 +36,6 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.LocalizedString;
 import org.activityinfo.api2.shared.form.FormSection;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.undo.IsUndoable;
 
 /**
@@ -71,7 +70,6 @@ public class FormSectionRow extends Composite {
     FormFieldInlineEdit addFieldPanel;
 
     public FormSectionRow(FormSection formSection, FormPanel formPanel, ElementNode parentNode) {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         this.formSection = formSection;

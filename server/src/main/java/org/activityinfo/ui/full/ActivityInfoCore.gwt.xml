@@ -47,9 +47,10 @@
 
   <inherits name="org.activityinfo.api.Api"/>
   <inherits name="org.activityinfo.reports.Reports"/>
+    <inherits name="com.bedatadriven.rebar.style.Style"/>
 
 
-  <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
+    <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
 
 
   <!-- Configure deferred binding for offline module depending on browser capability -->

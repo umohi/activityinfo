@@ -1848,14 +1848,6 @@ public interface UIConstants extends Constants {
     @Key("newVersionPrompt")
     String newVersionPrompt();
 
-    /**
-     * Translated "Next &raquo;".
-     *
-     * @return translated "Next &raquo;"
-     */
-    @DefaultStringValue("Next &raquo;")
-    @Key("nextButton")
-    String nextButton();
 
     /**
      * Translated "No Data.".
@@ -3367,4 +3359,11 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Value was not changed")
     @Key("valueNotChanged")
     String valueNotChanged();
+
+    @DefaultStringValue("« Previous")
+    String previousButton();
+
+    @DefaultStringValue("Next »")
+    String nextButton();
+
 }

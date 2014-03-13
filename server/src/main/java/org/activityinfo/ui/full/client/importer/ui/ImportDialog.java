@@ -6,7 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.ui.full.client.widget.bootstrap.ModalTitle;
+import org.activityinfo.ui.full.client.widget.ModalTitle;
 
 /**
  * Dialog box that contains the steps of the import process

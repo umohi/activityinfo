@@ -14,7 +14,7 @@ import org.activityinfo.ui.full.client.importer.data.SourceColumn;
 import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.ui.ImportPage;
-import org.activityinfo.ui.full.client.widget.bootstrap.Panel;
+import org.activityinfo.ui.full.client.widget.Panel;
 
 /**
  * Page that allows the user to match columns in an imported table to

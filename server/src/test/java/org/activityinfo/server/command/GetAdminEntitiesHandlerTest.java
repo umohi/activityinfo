@@ -31,6 +31,8 @@ import org.activityinfo.server.database.OnDataSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -66,6 +68,18 @@ public class GetAdminEntitiesHandlerTest extends CommandTestCase2 {
         assertThat(kalehe.getBounds().getMinLat(), equalTo(-22d));
         assertThat(kalehe.getBounds().getMaxLon(), equalTo(33.5d));
         assertThat(kalehe.getBounds().getMaxLat(), equalTo(40d));
+    }
+
+    @Test
+    public void testIdQuery() {
+        GetAdminEntities cmd = new GetAdminEntities();
+        cmd.setEntityIds(Arrays.asList(10, 11));
+
+        AdminEntityResult result = execute(cmd);
+
+
+        assertThat(result.getData().size(), equalTo(2));
+
     }
 
     @Test

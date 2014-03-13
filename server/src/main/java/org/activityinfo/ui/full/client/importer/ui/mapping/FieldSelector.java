@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import org.activityinfo.ui.full.client.i18n.I18N;
 import org.activityinfo.ui.full.client.importer.model.ColumnTarget;
-import org.activityinfo.ui.full.client.widget.bootstrap.RadioButton;
+import org.activityinfo.ui.full.client.widget.RadioButton;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +34,7 @@ public class FieldSelector extends Composite implements HasValue<ColumnTarget> {
     public FieldSelector(List<FieldModel> options) {
 
         FlowPanel panel = new FlowPanel();
+
 
         ignoreButton = createRadioButton(I18N.CONSTANTS.ignoreColumnAction(), ColumnTarget.ignored());
         ignoreButton.addStyleName(ColumnMappingStyles.INSTANCE.stateIgnored());

@@ -217,6 +217,12 @@
       <artifactId>rebar-appcache</artifactId>
       <version>${rebarVersion}</version>
     </dependency>
+    <dependency>
+      <groupId>com.bedatadriven.rebar</groupId>
+      <artifactId>rebar-style</artifactId>
+      <version>${rebarVersion}</version>
+      <scope>provided</scope>
+    </dependency>
 
     <dependency>
       <groupId>com.bedatadriven.rebar</groupId>

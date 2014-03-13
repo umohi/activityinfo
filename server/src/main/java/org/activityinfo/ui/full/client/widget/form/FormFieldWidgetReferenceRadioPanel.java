@@ -30,7 +30,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import org.activityinfo.ui.full.client.widget.bootstrap.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api.client.KeyGenerator;
@@ -38,7 +37,7 @@ import org.activityinfo.api2.shared.Cuid;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.api2.shared.form.FormInstanceLabeler;
 import org.activityinfo.api2.shared.form.has.HasInstances;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
+import org.activityinfo.ui.full.client.widget.RadioButton;
 
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,6 @@ public class FormFieldWidgetReferenceRadioPanel extends Composite implements For
     private List<FormInstance> instances;
 
     public FormFieldWidgetReferenceRadioPanel() {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 

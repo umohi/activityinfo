@@ -31,7 +31,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.api2.shared.model.AiLatLng;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.widget.HasReadOnly;
 import org.activityinfo.ui.full.client.widget.coord.GwtCoordinateField;
 import org.activityinfo.ui.full.client.widget.undo.UndoManager;
@@ -53,7 +52,6 @@ public class GeographicTextBox extends Composite implements HasValue<AiLatLng>, 
     GwtCoordinateField longitude;
 
     public GeographicTextBox() {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 

@@ -176,7 +176,7 @@ public class QueryExecutor  {
                         .then(new AttributeInstanceListAdapter(criteria));
 
             case ADMIN_LEVEL_DOMAIN:
-                return dispatcher.execute(new GetAdminEntities(CuidAdapter.getLegacyIdFromCuid(formClassId)))
+                return dispatcher.execute(adminQuery(formClassId))
                         .then(new ListResultAdapter<>(new AdminEntityInstanceAdapter()));
 
             case LOCATION_TYPE_DOMAIN:
@@ -192,6 +192,15 @@ public class QueryExecutor  {
                 return Promise.rejected(new UnsupportedOperationException(
                         "domain not yet implemented: " + formClassId.getDomain()));
         }
+    }
+
+    private GetAdminEntities adminQuery(Cuid formClassId) {
+        GetAdminEntities query = new GetAdminEntities();
+        query.setLevelId(CuidAdapter.getLegacyIdFromCuid(formClassId));
+        if(!ids.get(ADMIN_ENTITY_DOMAIN).isEmpty()) {
+            query.setEntityIds(ids.get(ADMIN_ENTITY_DOMAIN));
+        }
+        return query;
     }
 
     private Promise<List<FormInstance>> folders() {

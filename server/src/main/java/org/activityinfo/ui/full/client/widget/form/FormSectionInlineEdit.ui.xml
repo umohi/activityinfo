@@ -1,17 +1,17 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:boot="urn:import:org.activityinfo.ui.full.client.widget.bootstrap"
+             xmlns:a="urn:import:org.activityinfo.ui.full.client.widget"
         >
 
-  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+  <ui:with field='i18n' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
   <ui:with field='style' type='org.activityinfo.ui.full.client.style.TransitionBundle'/>
 
-  <g:HTMLPanel addStyleNames="bs">
-    <boot:TextBox width="100%" ui:field="sectionLabel" placeholder="{res.sectionLabel}"/>
+  <g:HTMLPanel>
+    <a:TextBox width="100%" ui:field="sectionLabel" placeholder="{i18n.sectionLabel}"/>
     <div style="margin-top: 5px; margin-bottom: 5px;">
-      <g:Button addStyleNames="btn btn-primary" text="{res.ok}" ui:field="okButton"/>
-      <g:Button addStyleNames="btn btn-default" text="{res.cancel}" ui:field="cancelButton"/>
+      <a:Button style="PRIMARY" text="{i18n.ok}" ui:field="okButton"/>
+      <a:Button style="DEFAULT" text="{i18n.cancel}" ui:field="cancelButton"/>
     </div>
     <br/>
     <div class="has-error">

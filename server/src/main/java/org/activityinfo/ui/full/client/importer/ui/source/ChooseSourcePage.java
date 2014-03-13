@@ -9,13 +9,13 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.ui.full.client.importer.data.PastedTable;
 import org.activityinfo.ui.full.client.importer.data.SourceTable;
 import org.activityinfo.ui.full.client.importer.model.ImportModel;
 import org.activityinfo.ui.full.client.importer.ui.ImportPage;
 import org.activityinfo.ui.full.client.importer.ui.PageChangedEvent;
+import org.activityinfo.ui.full.client.widget.TextArea;
 
 /**
  * Start page for the table import process that prompts the user

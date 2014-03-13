@@ -1,33 +1,5 @@
-.ai {
-}
 
-.ai input, .ai select, .ai button {
-    margin: 3px 3px 3px 3px;
-}
-
-.ai .gwt-PopupPanel {
-    border: 0px;
-    padding: 0px;
-    background: none;
-}
-
-.ai .gwt-PopupPanelGlass {
-    background-color: #000;
-    opacity: 0.3;
-    filter: alpha(opacity=30);
-}
-
-.ai .gwt-TextBox .gwt-SuggestBox .gwt-DateBox .gwt-TextArea {
-}
 
 .section-margin-left {
     margin-left: 20px;
-}
-
-.show-inline {
-    display: inline !important
-}
-
-.error-cell {
-    color: #a94442
 }

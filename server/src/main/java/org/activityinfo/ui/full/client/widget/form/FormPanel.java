@@ -47,7 +47,6 @@ import org.activityinfo.api2.shared.form.FormClass;
 import org.activityinfo.api2.shared.form.FormField;
 import org.activityinfo.api2.shared.form.FormInstance;
 import org.activityinfo.ui.full.client.Log;
-import org.activityinfo.ui.full.client.style.TransitionUtil;
 import org.activityinfo.ui.full.client.util.GwtUtil;
 import org.activityinfo.ui.full.client.widget.form.event.UpdateStateEvent;
 import org.activityinfo.ui.full.client.widget.undo.UndoListener;
@@ -114,7 +113,6 @@ public class FormPanel extends Composite {
     FormFieldInlineEdit addFieldPanel;
 
     public FormPanel(ResourceLocator resourceLocator) {
-        TransitionUtil.ensureBootstrapInjected();
         initWidget(uiBinder.createAndBindUi(this));
         this.resourceLocator = resourceLocator;
         initUndo();

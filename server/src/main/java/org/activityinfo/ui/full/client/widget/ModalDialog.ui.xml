@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:a="urn:import:org.activityinfo.ui.full.client.widget">
+
+  <ui:with field='res' type='org.activityinfo.ui.full.client.i18n.UIConstants'/>
+
+  <g:HTMLPanel addStyleNames="bs">
+    <g:PopupPanel autoHideEnabled="false" modal="true" ui:field="dialog" styleName="ai">
+      <g:HTMLPanel>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <g:Button addStyleNames="close" ui:field="closeButton" text="×"/>
+              <h4 class="modal-title" ui:field="title"/>
+            </div>
+            <div class="modal-body" ui:field="modalBody">
+            </div>
+            <div class="modal-footer" ui:field="modalFooter">
+              <a:Button style="PRIMARY" text="{res.ok}" ui:field="okButton"/>
+              <a:Button style="DEFAULT" text="{res.cancel}" ui:field="cancelButton"/>
+            </div>
+          </div>
+        </div>
+      </g:HTMLPanel>
+    </g:PopupPanel>
+  </g:HTMLPanel>
+</ui:UiBinder>
