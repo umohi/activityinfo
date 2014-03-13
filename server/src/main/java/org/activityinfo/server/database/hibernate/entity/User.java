@@ -22,6 +22,8 @@ package org.activityinfo.server.database.hibernate.entity;
  * #L%
  */
 
+import com.google.common.base.Strings;
+import com.teklabs.gwt.i18n.server.LocaleProxy;
 import org.mindrot.bcrypt.BCrypt;
 
 import javax.persistence.*;
@@ -134,6 +136,9 @@ public class User implements java.io.Serializable {
 
     @Transient
     public Locale getLocaleObject() {
+        if(Strings.isNullOrEmpty(this.locale)) {
+            return Locale.ENGLISH;
+        }
         return Locale.forLanguageTag(this.locale);
     }
 
