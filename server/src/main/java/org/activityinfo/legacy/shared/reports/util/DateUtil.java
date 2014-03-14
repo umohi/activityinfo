@@ -37,7 +37,7 @@ import java.util.Date;
  * client-side usage.
  *
  * @author Alex Bertram
- * @see org.activityinfo.ui.client.util.date.DateUtilGWTImpl
+ * @see org.activityinfo.legacy.client.type.DateUtilGWTImpl
  * @see org.activityinfo.server.report.util.DateUtilCalendarImpl
  */
 public abstract class DateUtil {

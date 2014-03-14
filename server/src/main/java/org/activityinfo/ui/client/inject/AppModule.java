@@ -27,26 +27,26 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.legacy.client.DispatchEventSource;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.remote.MergingDispatcher;
+import org.activityinfo.legacy.client.remote.Remote;
+import org.activityinfo.legacy.client.remote.RemoteDispatcher;
+import org.activityinfo.legacy.client.remote.cache.CacheManager;
+import org.activityinfo.legacy.client.remote.cache.CachingDispatcher;
+import org.activityinfo.legacy.client.state.GxtStateProvider;
+import org.activityinfo.legacy.client.state.StateProvider;
 import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.legacy.shared.command.RemoteCommandServiceAsync;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.LoggingEventBus;
-import org.activityinfo.ui.client.authentication.ClientSideAuthProvider;
-import org.activityinfo.ui.client.dispatch.DispatchEventSource;
-import org.activityinfo.ui.client.dispatch.RemoteServiceProvider;
-import org.activityinfo.ui.client.dispatch.remote.*;
-import org.activityinfo.ui.client.dispatch.remote.cache.CacheManager;
-import org.activityinfo.ui.client.dispatch.remote.cache.CachingDispatcher;
 import org.activityinfo.ui.client.local.LocalController;
 import org.activityinfo.ui.client.page.Frame;
 import org.activityinfo.ui.client.page.PageStateSerializer;
 import org.activityinfo.ui.client.page.app.AppFrameSet;
 import org.activityinfo.ui.client.page.common.GalleryPage;
 import org.activityinfo.ui.client.page.common.GalleryView;
-import org.activityinfo.ui.client.util.state.GxtStateProvider;
-import org.activityinfo.ui.client.util.state.StateProvider;
 
 public class AppModule extends AbstractGinModule {
 
@@ -55,8 +55,6 @@ public class AppModule extends AbstractGinModule {
         bind(AuthenticatedUser.class).toProvider(ClientSideAuthProvider.class);
         bind(RemoteCommandServiceAsync.class).toProvider(
                 RemoteServiceProvider.class).in(Singleton.class);
-        bind(IncompatibleRemoteHandler.class)
-                .to(IncompatibleRemoteDialog.class);
         bind(Dispatcher.class).annotatedWith(Remote.class)
                 .to(RemoteDispatcher.class).in(Singleton.class);
         bind(DispatchEventSource.class).to(CacheManager.class);

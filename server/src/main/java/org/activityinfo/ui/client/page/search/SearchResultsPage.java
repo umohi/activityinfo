@@ -40,6 +40,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.TextBox;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.AsyncMonitor;
+import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.result.SearchResult;
 import org.activityinfo.legacy.shared.command.result.SitePointList;
@@ -48,7 +49,6 @@ import org.activityinfo.legacy.shared.impl.search.QueryFail;
 import org.activityinfo.legacy.shared.model.SearchHitDTO;
 import org.activityinfo.legacy.shared.reports.content.PivotContent;
 import org.activityinfo.legacy.shared.reports.content.PivotTableData.Axis;
-import org.activityinfo.ui.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.client.page.search.SearchPresenter.RecentSiteModel;
 
 import java.util.List;

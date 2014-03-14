@@ -31,7 +31,6 @@ import org.activityinfo.legacy.shared.exception.UnexpectedCommandException;
 import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.report.ReportParserJaxb;
-import org.activityinfo.ui.client.page.report.json.ReportJsonFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -41,13 +40,10 @@ public class UpdateReportModelHandler implements
         CommandHandler<UpdateReportModel> {
 
     private final EntityManager em;
-    private final ReportJsonFactory reportJsonFactory;
 
     @Inject
-    public UpdateReportModelHandler(final EntityManager em,
-                                    final ReportJsonFactory reportJsonFactory) {
+    public UpdateReportModelHandler(final EntityManager em) {
         this.em = em;
-        this.reportJsonFactory = reportJsonFactory;
     }
 
     @Override

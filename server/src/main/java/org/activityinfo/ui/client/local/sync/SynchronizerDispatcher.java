@@ -26,12 +26,12 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.InvocationException;
 import com.google.inject.Inject;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.remote.AbstractDispatcher;
+import org.activityinfo.legacy.client.remote.Remote;
 import org.activityinfo.legacy.shared.command.Command;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.ui.client.dispatch.remote.AbstractDispatcher;
-import org.activityinfo.ui.client.dispatch.remote.Remote;
 
 /**
  * Dispatcher implementation used by the synchronizer classes that executes

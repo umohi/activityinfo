@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.widget.HorizontalPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.form.LabelField;
 import com.google.gwt.user.client.ui.Image;
-import org.activityinfo.ui.client.icon.IconImageBundle;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 public class WarningBar extends LayoutContainer {
     private LabelField labelMessage;

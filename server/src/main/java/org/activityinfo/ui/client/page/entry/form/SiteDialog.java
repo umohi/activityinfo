@@ -36,6 +36,7 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.command.CreateSite;
@@ -46,9 +47,8 @@ import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.entry.form.resources.SiteFormResources;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.List;
 

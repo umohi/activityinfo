@@ -35,12 +35,12 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -27,13 +27,13 @@ import com.google.gwt.core.client.JavaScriptException;
 import com.google.gwt.gears.client.Factory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.activityinfo.legacy.client.DispatchEventSource;
+import org.activityinfo.legacy.client.remote.cache.DefaultDispatchListener;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.CreateEntity;
 import org.activityinfo.legacy.shared.command.Delete;
 import org.activityinfo.legacy.shared.command.UpdateEntity;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
-import org.activityinfo.ui.client.dispatch.DispatchEventSource;
-import org.activityinfo.ui.client.dispatch.remote.cache.DefaultDispatchListener;
 import org.activityinfo.ui.client.page.NavigationEvent;
 import org.activityinfo.ui.client.page.NavigationHandler;
 

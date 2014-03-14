@@ -51,16 +51,16 @@ import com.extjs.gxt.ui.client.widget.treegrid.TreeGrid;
 import com.extjs.gxt.ui.client.widget.treegrid.TreeGridCellRenderer;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.inject.Inject;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.common.dialog.FormDialogCallback;
 import org.activityinfo.ui.client.page.common.dialog.FormDialogImpl;
 import org.activityinfo.ui.client.page.common.dialog.FormDialogTether;
 import org.activityinfo.ui.client.page.common.grid.AbstractEditorTreeGridView;
 import org.activityinfo.ui.client.page.common.grid.ImprovedCellTreeGridSelectionModel;
 import org.activityinfo.ui.client.page.common.toolbar.UIActions;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.ArrayList;
 import java.util.List;

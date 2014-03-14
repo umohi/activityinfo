@@ -25,10 +25,10 @@ package org.activityinfo.ui.client.page.report.editor;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.activityinfo.legacy.shared.reports.model.*;
-import org.activityinfo.ui.client.report.editor.chart.ChartEditor;
-import org.activityinfo.ui.client.report.editor.map.MapEditor;
-import org.activityinfo.ui.client.report.editor.pivotTable.PivotTableEditor;
-import org.activityinfo.ui.client.report.editor.text.TextElementEditor;
+import org.activityinfo.ui.client.component.report.editor.chart.ChartEditor;
+import org.activityinfo.ui.client.component.report.editor.map.MapEditor;
+import org.activityinfo.ui.client.component.report.editor.pivotTable.PivotTableEditor;
+import org.activityinfo.ui.client.component.report.editor.text.TextElementEditor;
 
 public class EditorProvider {
 

@@ -41,20 +41,16 @@ import org.activityinfo.legacy.shared.reports.model.Report;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.page.NavigationEvent;
 import org.activityinfo.ui.client.page.NavigationHandler;
-import org.activityinfo.ui.client.page.report.json.ReportSerializer;
 import org.activityinfo.ui.client.page.report.template.*;
 
 public class NewReportPanel extends ContentPanel {
 
     private ListStore<ReportTemplate> store;
     private EventBus eventBus;
-    private ReportSerializer reportSerializer;
     private Dispatcher dispatcher;
 
-    public NewReportPanel(EventBus eventBus, Dispatcher dispatcher,
-                          ReportSerializer reportSerializer) {
+    public NewReportPanel(EventBus eventBus, Dispatcher dispatcher) {
         this.eventBus = eventBus;
-        this.reportSerializer = reportSerializer;
         this.dispatcher = dispatcher;
 
         setHeadingText(I18N.CONSTANTS.createNewReport());

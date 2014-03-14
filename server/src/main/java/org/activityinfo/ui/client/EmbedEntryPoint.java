@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.FilterUrlSerializer;
+import org.activityinfo.ui.client.inject.EmbedInjector;
 import org.activityinfo.ui.client.page.entry.SiteGridPanel;
 import org.activityinfo.ui.client.page.entry.grouping.NullGroupingModel;
 

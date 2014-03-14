@@ -23,12 +23,12 @@ package org.activityinfo.ui.client.page.config;
  */
 
 import com.google.inject.Inject;
-import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.FrameId;
 import org.activityinfo.ui.client.page.common.nav.NavigationPanel;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 public class ConfigFrameSet extends VSplitFrameSet {
 

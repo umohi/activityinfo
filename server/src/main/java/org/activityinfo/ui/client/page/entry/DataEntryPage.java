@@ -42,6 +42,7 @@ import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.KeyGenerator;
+import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.legacy.shared.command.*;
@@ -51,9 +52,8 @@ import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.ui.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.client.icon.IconImageBundle;
-import org.activityinfo.ui.client.importer.ui.ImportPresenter;
+import org.activityinfo.ui.client.FeatureSwitch;
+import org.activityinfo.ui.client.component.importDialog.ImportPresenter;
 import org.activityinfo.ui.client.page.*;
 import org.activityinfo.ui.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
@@ -66,7 +66,7 @@ import org.activityinfo.ui.client.page.entry.grouping.GroupingComboBox;
 import org.activityinfo.ui.client.page.entry.place.DataEntryPlace;
 import org.activityinfo.ui.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.client.page.entry.sitehistory.SiteHistoryTab;
-import org.activityinfo.ui.client.util.FeatureSwitch;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.Set;
 

@@ -39,8 +39,8 @@ import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.model.LocationTypeDTO;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.entry.form.resources.SiteFormResources;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 /**
  * Dialog that presents a choice to the user to select an existing location or

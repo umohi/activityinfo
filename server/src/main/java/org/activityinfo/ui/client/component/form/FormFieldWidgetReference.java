@@ -38,7 +38,7 @@ import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormFieldCardinality;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.has.HasInstances;
-import org.activityinfo.ui.client.dispatch.callback.SuccessCallback;
+import org.activityinfo.legacy.client.callback.SuccessCallback;
 
 import java.util.List;
 import java.util.Set;

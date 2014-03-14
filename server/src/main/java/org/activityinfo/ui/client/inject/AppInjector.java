@@ -27,13 +27,14 @@ package org.activityinfo.ui.client.inject;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import org.activityinfo.legacy.client.remote.cache.AdminEntityCache;
+import org.activityinfo.legacy.client.remote.cache.SchemaCache;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.ui.client.HistoryManager;
 import org.activityinfo.ui.client.UsageTracker;
-import org.activityinfo.ui.client.dispatch.remote.cache.AdminEntityCache;
-import org.activityinfo.ui.client.dispatch.remote.cache.SchemaCache;
+import org.activityinfo.ui.client.component.report.editor.map.MapModule;
 import org.activityinfo.ui.client.local.LocalController;
 import org.activityinfo.ui.client.local.LocalModule;
+import org.activityinfo.ui.client.page.HistoryManager;
 import org.activityinfo.ui.client.page.app.AppLoader;
 import org.activityinfo.ui.client.page.config.ConfigLoader;
 import org.activityinfo.ui.client.page.config.ConfigModule;
@@ -46,7 +47,6 @@ import org.activityinfo.ui.client.page.report.ReportLoader;
 import org.activityinfo.ui.client.page.report.ReportModule;
 import org.activityinfo.ui.client.page.search.SearchLoader;
 import org.activityinfo.ui.client.page.search.SearchModule;
-import org.activityinfo.ui.client.report.editor.map.MapModule;
 
 /**
  * GIN injector.

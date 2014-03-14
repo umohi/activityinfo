@@ -29,16 +29,16 @@ import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.SqlTransactionCallback;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.remote.AbstractDispatcher;
+import org.activityinfo.legacy.client.remote.Remote;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.legacy.shared.command.Command;
 import org.activityinfo.legacy.shared.command.MutatingCommand;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.util.Collector;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.legacy.shared.Log;
-import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.ui.client.dispatch.remote.AbstractDispatcher;
-import org.activityinfo.ui.client.dispatch.remote.Remote;
 import org.activityinfo.ui.client.local.sync.ServerStateChangeEvent;
 
 /**

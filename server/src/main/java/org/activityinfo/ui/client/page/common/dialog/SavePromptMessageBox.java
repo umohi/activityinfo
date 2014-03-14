@@ -31,9 +31,9 @@ import com.extjs.gxt.ui.client.widget.Status;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
-import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
+import org.activityinfo.legacy.client.AsyncMonitor;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 /**
  * @author Alex Bertram (akbertram@gmail.com)

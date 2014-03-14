@@ -27,10 +27,10 @@ import com.extjs.gxt.ui.client.state.StateManager;
 import com.extjs.gxt.ui.client.util.Theme;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import org.activityinfo.legacy.client.state.SafeStateProvider;
 import org.activityinfo.legacy.shared.Log;
-import org.activityinfo.ui.client.authentication.ClientSideAuthProvider;
 import org.activityinfo.ui.client.inject.AppInjector;
-import org.activityinfo.ui.client.util.state.SafeStateProvider;
+import org.activityinfo.ui.client.inject.ClientSideAuthProvider;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.

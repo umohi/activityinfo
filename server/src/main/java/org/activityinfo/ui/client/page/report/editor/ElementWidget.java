@@ -53,8 +53,8 @@ import org.activityinfo.legacy.shared.reports.content.Content;
 import org.activityinfo.legacy.shared.reports.model.PivotChartReportElement;
 import org.activityinfo.legacy.shared.reports.model.ReportElement;
 import org.activityinfo.legacy.shared.reports.model.TextReportElement;
+import org.activityinfo.ui.client.component.report.view.ChartOFCView;
 import org.activityinfo.ui.client.page.report.editor.ElementDialog.Callback;
-import org.activityinfo.ui.client.report.view.ChartOFCView;
 
 public class ElementWidget extends Composite {
 

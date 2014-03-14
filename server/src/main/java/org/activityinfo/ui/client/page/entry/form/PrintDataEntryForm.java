@@ -36,11 +36,11 @@ import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.resources.client.TextResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Frame;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.client.page.entry.form.resources.SiteFormResources;
 
 public class PrintDataEntryForm extends Window {

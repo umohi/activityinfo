@@ -38,7 +38,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
  * This implementation assures that the remote call is made each time the
  * trigger button is clicked. Caching is then done on the dispatch level, for
  * example, at
- * {@link org.activityinfo.ui.client.dispatch.remote.cache.AdminEntityCache}
+ * {@link org.activityinfo.legacy.client.remote.cache.AdminEntityCache}
  *
  * @author Alex Bertram
  */

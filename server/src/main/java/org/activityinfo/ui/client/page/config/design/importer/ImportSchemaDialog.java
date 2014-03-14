@@ -13,7 +13,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
-import org.activityinfo.ui.client.importer.data.PastedTable;
+import org.activityinfo.ui.client.component.importDialog.data.PastedTable;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter.ProgressListener;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter.Warning;
 import org.activityinfo.ui.client.style.BaseStylesheet;

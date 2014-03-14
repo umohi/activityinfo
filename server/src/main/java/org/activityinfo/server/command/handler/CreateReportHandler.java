@@ -32,22 +32,18 @@ import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.report.ReportParserJaxb;
-import org.activityinfo.ui.client.page.report.json.ReportJsonFactory;
 
 import javax.persistence.EntityManager;
 import javax.xml.bind.JAXBException;
 
 public class CreateReportHandler implements CommandHandler<CreateReport> {
     private EntityManager em;
-    private final ReportJsonFactory reportJsonFactory;
 
     private ReportDefinition reportDef;
 
     @Inject
-    public CreateReportHandler(EntityManager em,
-                               ReportJsonFactory reportJsonFactory) {
+    public CreateReportHandler(EntityManager em) {
         this.em = em;
-        this.reportJsonFactory = reportJsonFactory;
     }
 
     @Override

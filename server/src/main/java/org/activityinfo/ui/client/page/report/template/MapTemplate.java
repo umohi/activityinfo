@@ -28,7 +28,7 @@ import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.reports.model.MapReportElement;
 import org.activityinfo.legacy.shared.reports.model.ReportElement;
 import org.activityinfo.legacy.shared.reports.model.layers.MapLayer;
-import org.activityinfo.ui.client.report.editor.map.NewLayerWizard;
+import org.activityinfo.ui.client.component.report.editor.map.NewLayerWizard;
 import org.activityinfo.ui.client.widget.wizard.WizardCallback;
 import org.activityinfo.ui.client.widget.wizard.WizardDialog;
 

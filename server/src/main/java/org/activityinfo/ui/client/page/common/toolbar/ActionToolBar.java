@@ -33,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
-import org.activityinfo.ui.client.icon.IconImageBundle;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 /**
  * Convenience subclass for the GXT toolbar that directs all tool actions
@@ -67,7 +67,7 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
      *                 if the button is selected
      * @param text     Text of the button
      * @param icon     Icon of the button. See
-     *                 {@link org.activityinfo.ui.client.icon.IconImageBundle}
+     *                 {@link org.activityinfo.ui.client.style.legacy.icon.IconImageBundle}
      */
     public Button addButton(String actionId, String text,
                             AbstractImagePrototype icon) {

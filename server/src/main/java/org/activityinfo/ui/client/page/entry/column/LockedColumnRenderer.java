@@ -28,8 +28,8 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 public class LockedColumnRenderer implements
         GridCellRenderer<ModelData> {

@@ -31,12 +31,13 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.ImplementedBy;
 import com.google.inject.Inject;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.state.StateProvider;
 import org.activityinfo.legacy.shared.command.*;
 import org.activityinfo.legacy.shared.command.result.CreateResult;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.client.AppEvents;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.page.PageId;
@@ -50,7 +51,6 @@ import org.activityinfo.ui.client.page.config.DbPage;
 import org.activityinfo.ui.client.page.config.DbPageState;
 import org.activityinfo.ui.client.page.config.design.importer.ImportSchemaDialog;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter;
-import org.activityinfo.ui.client.util.state.StateProvider;
 
 import java.util.List;
 

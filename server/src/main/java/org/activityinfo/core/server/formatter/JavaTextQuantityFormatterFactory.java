@@ -1,7 +1,7 @@
 package org.activityinfo.core.server.formatter;
 
-import org.activityinfo.core.shared.formatter.QuantityFormatter;
-import org.activityinfo.core.shared.formatter.QuantityFormatterFactory;
+import org.activityinfo.core.shared.type.formatter.QuantityFormatter;
+import org.activityinfo.core.shared.type.formatter.QuantityFormatterFactory;
 
 import java.text.NumberFormat;
 import java.text.ParseException;

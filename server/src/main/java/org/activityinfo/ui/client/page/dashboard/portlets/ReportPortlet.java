@@ -43,14 +43,14 @@ import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
 import org.activityinfo.legacy.shared.reports.content.Content;
 import org.activityinfo.legacy.shared.reports.model.*;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.ui.client.icon.IconImageBundle;
+import org.activityinfo.ui.client.component.report.view.ChartOFCView;
+import org.activityinfo.ui.client.component.report.view.MapReportView;
+import org.activityinfo.ui.client.component.report.view.PivotGridPanel;
+import org.activityinfo.ui.client.component.report.view.ReportView;
 import org.activityinfo.ui.client.page.NavigationEvent;
 import org.activityinfo.ui.client.page.NavigationHandler;
 import org.activityinfo.ui.client.page.report.ReportDesignPageState;
-import org.activityinfo.ui.client.report.view.ChartOFCView;
-import org.activityinfo.ui.client.report.view.MapReportView;
-import org.activityinfo.ui.client.report.view.PivotGridPanel;
-import org.activityinfo.ui.client.report.view.ReportView;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 public class ReportPortlet extends Portlet {
 

@@ -36,11 +36,11 @@ import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.command.UpdateReportSubscription;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
 import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
-import org.activityinfo.ui.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.client.widget.MappingComboBox;
 
 /**

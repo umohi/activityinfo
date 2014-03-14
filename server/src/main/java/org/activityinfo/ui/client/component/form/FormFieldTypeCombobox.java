@@ -26,7 +26,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.ui.ListBox;
 import org.activityinfo.core.shared.form.FormFieldType;
-import org.activityinfo.ui.client.i18n.FromEntities;
+import org.activityinfo.core.shared.form.FormFieldTypeLables;
 
 import java.util.Set;
 
@@ -54,7 +54,7 @@ public class FormFieldTypeCombobox extends ListBox {
         typeIndexMap.clear();
         int index = 0;
         for (FormFieldType fieldType : types) {
-            insertItem(FromEntities.INSTANCE.getFormFieldType(fieldType), fieldType.name(), index);
+            insertItem(FormFieldTypeLables.getFormFieldType(fieldType), fieldType.name(), index);
             typeIndexMap.put(index, fieldType);
             index++;
         }

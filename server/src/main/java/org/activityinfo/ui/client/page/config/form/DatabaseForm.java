@@ -34,13 +34,13 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.command.GetCountries;
 import org.activityinfo.legacy.shared.command.result.CountryResult;
 import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.dispatch.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.client.widget.RemoteComboBox;
 
 public class DatabaseForm extends FormPanel {

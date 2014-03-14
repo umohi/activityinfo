@@ -34,12 +34,12 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.LockedPeriodDTO;
 import org.activityinfo.legacy.shared.model.ProjectDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.page.config.LockedPeriodsPresenter.AddLockedPeriodView;
 
 public class AddLockedPeriodDialog extends FormPanel implements
@@ -261,7 +261,7 @@ public class AddLockedPeriodDialog extends FormPanel implements
 
     @Override
     public HandlerRegistration addCreateHandler(
-            org.activityinfo.ui.client.mvp.CanCreate.CreateHandler handler) {
+            org.activityinfo.ui.client.page.config.mvp.CanCreate.CreateHandler handler) {
         return eventBus.addHandler(CreateEvent.TYPE, handler);
     }
 
@@ -275,13 +275,13 @@ public class AddLockedPeriodDialog extends FormPanel implements
 
     @Override
     public HandlerRegistration addCancelCreateHandler(
-            org.activityinfo.ui.client.mvp.CanCreate.CancelCreateHandler handler) {
+            org.activityinfo.ui.client.page.config.mvp.CanCreate.CancelCreateHandler handler) {
         return eventBus.addHandler(CancelCreateEvent.TYPE, handler);
     }
 
     @Override
     public HandlerRegistration addStartCreateHandler(
-            org.activityinfo.ui.client.mvp.CanCreate.StartCreateHandler handler) {
+            org.activityinfo.ui.client.page.config.mvp.CanCreate.StartCreateHandler handler) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -339,21 +339,21 @@ public class AddLockedPeriodDialog extends FormPanel implements
 
     @Override
     public HandlerRegistration addUpdateHandler(
-            org.activityinfo.ui.client.mvp.CanUpdate.UpdateHandler handler) {
+            org.activityinfo.ui.client.page.config.mvp.CanUpdate.UpdateHandler handler) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public HandlerRegistration addCancelUpdateHandler(
-            org.activityinfo.ui.client.mvp.CanUpdate.CancelUpdateHandler handler) {
+            org.activityinfo.ui.client.page.config.mvp.CanUpdate.CancelUpdateHandler handler) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public HandlerRegistration addRequestUpdateHandler(
-            org.activityinfo.ui.client.mvp.CanUpdate.RequestUpdateHandler handler) {
+            org.activityinfo.ui.client.page.config.mvp.CanUpdate.RequestUpdateHandler handler) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -32,9 +32,9 @@ import com.extjs.gxt.ui.client.widget.layout.HBoxLayout;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayout.HBoxLayoutAlign;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.common.toolbar.ExportMenuButton;
 import org.activityinfo.ui.client.page.report.resources.ReportResources;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 public class ReportBar extends LayoutContainer {
 

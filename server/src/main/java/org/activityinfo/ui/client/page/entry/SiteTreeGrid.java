@@ -35,13 +35,13 @@ import com.extjs.gxt.ui.client.widget.grid.EditorGrid.ClicksToEdit;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.treegrid.EditorTreeGrid;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.entry.grouping.AdminGroupingModel;
 import org.activityinfo.ui.client.page.entry.grouping.GroupingModel;
 import org.activityinfo.ui.client.page.entry.grouping.TimeGroupingModel;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 final class SiteTreeGrid extends EditorTreeGrid<ModelData> implements
         SiteGridPanelView {

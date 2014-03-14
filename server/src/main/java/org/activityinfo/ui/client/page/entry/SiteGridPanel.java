@@ -31,6 +31,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.callback.SuccessCallback;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSchema;
@@ -38,12 +39,11 @@ import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.client.dispatch.callback.SuccessCallback;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.entry.column.ColumnModelProvider;
 import org.activityinfo.ui.client.page.entry.column.DefaultColumnModelProvider;
 import org.activityinfo.ui.client.page.entry.grouping.GroupingModel;
 import org.activityinfo.ui.client.page.entry.grouping.NullGroupingModel;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 import org.activityinfo.ui.client.widget.LoadingPlaceHolder;
 
 /**

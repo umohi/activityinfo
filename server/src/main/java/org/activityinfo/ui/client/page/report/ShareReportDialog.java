@@ -35,14 +35,14 @@ import com.google.common.collect.Maps;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.command.*;
 import org.activityinfo.legacy.shared.command.result.BatchResult;
 import org.activityinfo.legacy.shared.command.result.ReportVisibilityResult;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.legacy.shared.reports.model.Report;
-import org.activityinfo.ui.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.client.icon.IconImageBundle;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.Arrays;
 import java.util.List;

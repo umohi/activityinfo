@@ -39,15 +39,15 @@ import com.extjs.gxt.ui.client.widget.treegrid.EditorTreeGrid;
 import com.extjs.gxt.ui.client.widget.treegrid.TreeGridCellRenderer;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.inject.Inject;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.TargetValueDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.common.grid.AbstractEditorTreeGridView;
 import org.activityinfo.ui.client.page.common.grid.ImprovedCellTreeGridSelectionModel;
 import org.activityinfo.ui.client.page.common.nav.Link;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.ArrayList;
 import java.util.List;

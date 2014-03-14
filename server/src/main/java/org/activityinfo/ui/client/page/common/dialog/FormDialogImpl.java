@@ -33,9 +33,9 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
+import org.activityinfo.legacy.client.AsyncMonitor;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 /*
  * Default implementation for a FormDialog that displays a FormPanel

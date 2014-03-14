@@ -10,7 +10,7 @@
     }
   </ui:style>
 
-  <ui:with field='img' type='org.activityinfo.ui.client.icon.ImageResources'/>
+  <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
   <ui:with field='aiStyle' type='org.activityinfo.ui.client.style.TransitionBundle'/>
 

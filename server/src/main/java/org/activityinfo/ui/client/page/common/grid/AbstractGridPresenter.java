@@ -27,12 +27,11 @@ import com.extjs.gxt.ui.client.data.*;
 import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.store.Store;
+import org.activityinfo.legacy.client.loader.CommandLoadEvent;
+import org.activityinfo.legacy.client.state.StateProvider;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.ui.client.dispatch.loader.CommandLoadEvent;
 import org.activityinfo.ui.client.page.*;
 import org.activityinfo.ui.client.page.common.toolbar.UIActions;
-import org.activityinfo.ui.client.util.SortInfoEqualityChecker;
-import org.activityinfo.ui.client.util.state.StateProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +48,17 @@ public abstract class AbstractGridPresenter<ModelT extends ModelData>
         this.eventBus = eventBus;
         this.stateMgr = stateMgr;
         this.view = view;
+    }
+
+    public static boolean equalSortInfo(SortInfo a, SortInfo b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.getSortField().equals(b.getSortField()) &&
+                a.getSortDir() == b.getSortDir();
     }
 
     @Override
@@ -203,7 +213,7 @@ public abstract class AbstractGridPresenter<ModelT extends ModelData>
 
         if (gridPlace.getSortInfo() != null
                 &&
-                !SortInfoEqualityChecker.equals(gridPlace.getSortInfo(),
+                !equalSortInfo(gridPlace.getSortInfo(),
                         new SortInfo(loader.getSortField(), loader.getSortDir()))) {
 
             loader.setSortField(gridPlace.getSortInfo().getSortField());

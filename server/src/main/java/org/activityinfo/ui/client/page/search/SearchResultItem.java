@@ -31,9 +31,9 @@ import com.google.gwt.user.client.ui.Image;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
 import org.activityinfo.legacy.shared.reports.content.PivotTableData.Axis;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.PageStateSerializer;
 import org.activityinfo.ui.client.page.entry.place.DataEntryPlace;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.List;
 

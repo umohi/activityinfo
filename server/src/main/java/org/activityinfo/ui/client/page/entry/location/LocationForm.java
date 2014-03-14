@@ -39,11 +39,11 @@ import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.model.LocationTypeDTO;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBox;
 import org.activityinfo.ui.client.page.entry.admin.AdminFieldSetPresenter;
 import org.activityinfo.ui.client.page.entry.admin.AdminSelectionChangedEvent;
 import org.activityinfo.ui.client.page.entry.admin.BoundsChangedEvent;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 import org.activityinfo.ui.client.widget.coord.CoordinateFields;
 
 public class LocationForm extends LayoutContainer {

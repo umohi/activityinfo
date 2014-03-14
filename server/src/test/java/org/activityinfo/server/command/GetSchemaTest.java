@@ -49,7 +49,7 @@ import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.server.endpoint.rest.SchemaCsvWriter;
-import org.activityinfo.ui.client.importer.data.PastedTable;
+import org.activityinfo.ui.client.component.importDialog.data.PastedTable;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter.ProgressListener;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter.Warning;

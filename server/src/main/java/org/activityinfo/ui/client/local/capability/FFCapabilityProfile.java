@@ -26,7 +26,6 @@ import com.bedatadriven.rebar.appcache.client.AppCache;
 import com.bedatadriven.rebar.appcache.client.AppCache.Status;
 import com.bedatadriven.rebar.appcache.client.AppCacheFactory;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.ui.client.offline.capability.FFPermissionsDialog;
 
 /**
  * FireFox offline capability profile.

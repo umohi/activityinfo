@@ -39,12 +39,12 @@ import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.reports.model.ReportElement;
 import org.activityinfo.legacy.shared.reports.model.TextReportElement;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.report.editor.ElementDialog.Callback;
 import org.activityinfo.ui.client.page.report.template.ChartTemplate;
 import org.activityinfo.ui.client.page.report.template.MapTemplate;
 import org.activityinfo.ui.client.page.report.template.PivotTableTemplate;
 import org.activityinfo.ui.client.page.report.template.ReportElementTemplate;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 public class AddElementPanel extends LayoutContainer {
 

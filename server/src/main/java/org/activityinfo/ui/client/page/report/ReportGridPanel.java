@@ -35,22 +35,22 @@ import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid.ClicksToEdit;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.command.DeleteReport;
 import org.activityinfo.legacy.shared.command.GetReports;
 import org.activityinfo.legacy.shared.command.UpdateReportSubscription;
 import org.activityinfo.legacy.shared.command.result.ReportsResult;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.ui.client.dispatch.monitor.MaskingAsyncMonitor;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.NavigationEvent;
 import org.activityinfo.ui.client.page.NavigationHandler;
 import org.activityinfo.ui.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.client.page.common.toolbar.UIActions;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.Arrays;
 

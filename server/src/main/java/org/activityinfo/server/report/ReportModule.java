@@ -30,8 +30,6 @@ import org.activityinfo.server.report.output.BlobServiceStorageProvider;
 import org.activityinfo.server.report.output.StorageProvider;
 import org.activityinfo.server.report.output.TempStorageServlet;
 import org.activityinfo.server.schedule.ReportMailerServlet;
-import org.activityinfo.ui.client.page.report.json.ReportJsonFactory;
-import org.activityinfo.ui.client.page.report.json.ReportSerializer;
 
 public class ReportModule extends ServletModule {
 
@@ -42,7 +40,6 @@ public class ReportModule extends ServletModule {
     @Override
     protected void configureServlets() {
 
-        bind(ReportSerializer.class).to(ReportJsonFactory.class);
         bind(StorageProvider.class).to(BlobServiceStorageProvider.class);
 
         bind(String.class)

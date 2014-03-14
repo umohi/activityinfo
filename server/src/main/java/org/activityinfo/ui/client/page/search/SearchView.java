@@ -30,7 +30,7 @@ import org.activityinfo.legacy.shared.command.result.SearchResult;
 import org.activityinfo.legacy.shared.command.result.SitePointList;
 import org.activityinfo.legacy.shared.model.SearchHitDTO;
 import org.activityinfo.legacy.shared.reports.content.PivotContent;
-import org.activityinfo.ui.client.mvp.ListView;
+import org.activityinfo.ui.client.page.config.mvp.ListView;
 import org.activityinfo.ui.client.page.search.SearchPresenter.RecentSiteModel;
 
 import java.util.List;

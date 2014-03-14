@@ -1,6 +1,6 @@
 package org.activityinfo.server.endpoint.kml;
 
-import org.activityinfo.ui.client.page.entry.form.IndicatorValueFormatter;
+import org.activityinfo.legacy.shared.type.IndicatorValueFormatter;
 
 import java.text.DecimalFormat;
 

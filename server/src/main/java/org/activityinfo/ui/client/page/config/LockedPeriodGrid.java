@@ -39,16 +39,12 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.AsyncMonitor;
+import org.activityinfo.legacy.client.monitor.NullAsyncMonitor;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.LockedPeriodDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.dispatch.monitor.NullAsyncMonitor;
-import org.activityinfo.ui.client.mvp.CanCreate;
-import org.activityinfo.ui.client.mvp.CanDelete;
-import org.activityinfo.ui.client.mvp.CanUpdate;
-import org.activityinfo.ui.client.mvp.Filter;
 import org.activityinfo.ui.client.page.common.columns.EditCheckColumnConfig;
 import org.activityinfo.ui.client.page.common.columns.EditableLocalDateColumn;
 import org.activityinfo.ui.client.page.common.columns.ReadLockedPeriodTypeColumn;
@@ -60,6 +56,9 @@ import org.activityinfo.ui.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.client.page.common.toolbar.UIActions;
 import org.activityinfo.ui.client.page.config.LockedPeriodsPresenter.LockedPeriodListEditor;
+import org.activityinfo.ui.client.page.config.mvp.CanCreate;
+import org.activityinfo.ui.client.page.config.mvp.CanDelete;
+import org.activityinfo.ui.client.page.config.mvp.CanUpdate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -451,22 +450,12 @@ public class LockedPeriodGrid extends ContentPanel implements
     }
 
     @Override
-    public void filter(Filter<LockedPeriodDTO> filter) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
     public void setMustConfirmDelete(boolean mustConfirmDelete) {
         // TODO Auto-generated method stub
     }
 
     @Override
     public void setRefreshEnabled(boolean canRefresh) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void removeFilter() {
         // TODO Auto-generated method stub
     }
 

@@ -26,13 +26,13 @@ import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.page.entry.form.SiteRenderer;
-import org.activityinfo.ui.client.util.IndicatorNumberFormat;
 
 public class DetailTab extends TabItem {
 

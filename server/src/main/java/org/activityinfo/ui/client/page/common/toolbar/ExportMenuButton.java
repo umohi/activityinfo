@@ -29,10 +29,10 @@ import com.extjs.gxt.ui.client.widget.button.SplitButton;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.command.RenderElement;
 import org.activityinfo.legacy.shared.command.RenderElement.Format;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.Collections;
 import java.util.List;

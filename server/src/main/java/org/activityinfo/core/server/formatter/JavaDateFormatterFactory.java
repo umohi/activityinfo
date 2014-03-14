@@ -21,8 +21,8 @@ package org.activityinfo.core.server.formatter;
  * #L%
  */
 
-import org.activityinfo.core.shared.formatter.DateFormatter;
-import org.activityinfo.core.shared.formatter.DateFormatterFactory;
+import org.activityinfo.core.shared.type.formatter.DateFormatter;
+import org.activityinfo.core.shared.type.formatter.DateFormatterFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

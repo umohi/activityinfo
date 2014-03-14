@@ -28,13 +28,12 @@ import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.google.inject.Inject;
-import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.page.NavigationCallback;
 import org.activityinfo.ui.client.page.Page;
 import org.activityinfo.ui.client.page.PageId;
 import org.activityinfo.ui.client.page.PageState;
-import org.activityinfo.ui.client.page.report.json.ReportSerializer;
 
 /**
  * Page which presents the list of reports visible to the user
@@ -45,8 +44,7 @@ public class ReportsPage extends LayoutContainer implements Page {
     public static final PageId PAGE_ID = new PageId("reports");
 
     @Inject
-    public ReportsPage(EventBus eventBus, Dispatcher dispatcher,
-                       ReportSerializer reportSerializer) {
+    public ReportsPage(EventBus eventBus, Dispatcher dispatcher) {
 
         setLayout(new BorderLayout());
 
@@ -55,7 +53,7 @@ public class ReportsPage extends LayoutContainer implements Page {
         newLayout.setMargins(new Margins(0, 5, 0, 0));
         newLayout.setSplit(true);
         newLayout.setCollapsible(true);
-        add(new NewReportPanel(eventBus, dispatcher, reportSerializer),
+        add(new NewReportPanel(eventBus, dispatcher),
                 newLayout);
 
         add(new ReportGridPanel(eventBus, dispatcher), new BorderLayoutData(

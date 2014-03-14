@@ -33,20 +33,20 @@ import com.extjs.gxt.ui.client.widget.layout.HBoxLayout.HBoxLayoutAlign;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.state.StateProvider;
 import org.activityinfo.legacy.shared.command.GetIndicatorLinks;
 import org.activityinfo.legacy.shared.command.LinkIndicators;
 import org.activityinfo.legacy.shared.command.result.IndicatorLinkResult;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.icon.IconImageBundle;
 import org.activityinfo.ui.client.page.NavigationCallback;
 import org.activityinfo.ui.client.page.Page;
 import org.activityinfo.ui.client.page.PageId;
 import org.activityinfo.ui.client.page.PageState;
-import org.activityinfo.ui.client.util.state.StateProvider;
+import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.Set;
 

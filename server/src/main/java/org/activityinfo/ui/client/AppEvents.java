@@ -31,10 +31,8 @@ public final class AppEvents {
 
     public static final EventType INIT = new EventBus.NamedEventType("Init");
 
-    public static final EventType SCHEMA_CHANGED = new EventBus.NamedEventType(
-            "SchemaChanged");
+    public static final EventType SCHEMA_CHANGED = new EventBus.NamedEventType("SchemaChanged");
 
-    public static final EventType DRILL_DOWN = new EventBus.NamedEventType(
-            "Drilldown");
+    public static final EventType DRILL_DOWN = new EventBus.NamedEventType("Drilldown");
 
 }

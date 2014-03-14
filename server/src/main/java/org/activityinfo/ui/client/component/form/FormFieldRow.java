@@ -36,13 +36,13 @@ import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormFieldCardinality;
 import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.type.converter.Converter;
+import org.activityinfo.core.shared.type.converter.ConverterFactory;
 import org.activityinfo.core.shared.validation.HasValidator;
 import org.activityinfo.core.shared.validation.Validator;
 import org.activityinfo.core.shared.validation.ValidatorBuilder;
 import org.activityinfo.core.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.legacy.shared.Log;
-import org.activityinfo.ui.client.importer.converter.Converter;
-import org.activityinfo.ui.client.importer.converter.ConverterFactory;
 import org.activityinfo.ui.client.widget.HasReadOnly;
 import org.activityinfo.ui.client.widget.undo.IsUndoable;
 

@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:form="urn:import:org.activityinfo.ui.client.component.form">
 
-  <ui:with field='img' type='org.activityinfo.ui.client.icon.ImageResources'/>
+  <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
   <ui:with field='style' type='org.activityinfo.ui.client.style.TransitionBundle'/>
 

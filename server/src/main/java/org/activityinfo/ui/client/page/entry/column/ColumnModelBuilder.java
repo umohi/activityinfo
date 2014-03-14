@@ -30,12 +30,12 @@ import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.treegrid.TreeGridCellRenderer;
 import com.google.common.collect.Lists;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
+import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.ui.client.page.common.columns.EditableLocalDateColumn;
 import org.activityinfo.ui.client.page.common.columns.ReadTextColumn;
 import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
-import org.activityinfo.ui.client.util.IndicatorNumberFormat;
 
 import java.util.List;
 
