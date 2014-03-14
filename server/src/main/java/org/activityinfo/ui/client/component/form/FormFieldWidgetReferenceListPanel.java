@@ -38,6 +38,7 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.FormInstanceLabeler;
 import org.activityinfo.core.shared.form.has.HasInstances;
+import org.activityinfo.ui.client.widget.SuggestBox;
 
 import java.util.List;
 import java.util.Set;
@@ -67,7 +68,7 @@ public class FormFieldWidgetReferenceListPanel extends Composite implements Form
     private List<FormInstance> instances;
 
     public FormFieldWidgetReferenceListPanel() {
-        suggestBox = FormFieldWidgetFactory.createSuggestBox(oracle);
+        suggestBox = new SuggestBox(oracle);
         initWidget(uiBinder.createAndBindUi(this));
         setRemoveButtonState();
     }

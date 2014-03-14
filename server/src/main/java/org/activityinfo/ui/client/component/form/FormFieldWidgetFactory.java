@@ -21,12 +21,19 @@ package org.activityinfo.ui.client.component.form;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.IsWidget;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormFieldType;
+import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.legacy.shared.Log;
-import org.activityinfo.ui.client.util.GwtUtil;
 import org.activityinfo.ui.client.widget.DateBoxWithReadOnly;
+import org.activityinfo.ui.client.widget.DoubleBox;
+import org.activityinfo.ui.client.widget.TextArea;
+import org.activityinfo.ui.client.widget.TextBox;
+import org.activityinfo.ui.client.widget.undo.UndoableCreator;
 
 /**
  * @author yuriyz on 1/28/14.
@@ -37,17 +44,39 @@ public class FormFieldWidgetFactory {
     }
 
     public static IsWidget create(FormField field, FormPanel formPanel) {
+        final IsWidget widget = createWidget(field, formPanel);
+        addValueChangeHandler(widget, field, formPanel);
+        return widget;
+    }
+
+    private static void addValueChangeHandler(IsWidget widget, final FormField formField, final FormPanel formPanel) {
+        if (widget instanceof HasValueChangeHandlers) {
+            final HasValueChangeHandlers hasValueChangeHandlers = (HasValueChangeHandlers) widget;
+            hasValueChangeHandlers.addValueChangeHandler(new ValueChangeHandler() {
+                @Override
+                public void onValueChange(ValueChangeEvent event) {
+                    final FormInstance formInstance = formPanel.getValue();
+                    final Object oldValue = formInstance.get(formField.getId());
+                    formPanel.getUndoManager().addUndoable(UndoableCreator.create(event, oldValue)); // push undoable
+                    formInstance.set(formField.getId(), event.getValue());
+                    formPanel.fireState();
+                }
+            });
+        }
+    }
+
+    private static IsWidget createWidget(FormField field, FormPanel formPanel) {
         final FormFieldType fieldType = field.getType();
         if (fieldType != null) {
             switch (fieldType) {
                 case QUANTITY:
-                    return createDoubleBox();
+                    return new DoubleBox();
                 case NARRATIVE:
-                    return createTextArea();
+                    return new TextArea();
                 case FREE_TEXT:
-                    return createTextBox();
+                    return new TextBox();
                 case LOCAL_DATE:
-                    return createDateTextBox();
+                    return new DateBoxWithReadOnly();
                 case GEOGRAPHIC_POINT:
                     return new GeographicTextBox();
                 case REFERENCE:
@@ -57,36 +86,5 @@ public class FormFieldWidgetFactory {
             }
         }
         return new FormFieldWidgetDummy();
-    }
-
-    private static TextArea createTextArea() {
-        final TextArea textBox = new TextArea();
-        GwtUtil.setFormControlStyles(textBox);
-        return textBox;
-    }
-
-    public static TextBox createTextBox() {
-        final TextBox textBox = new TextBox();
-        GwtUtil.setFormControlStyles(textBox);
-        return textBox;
-    }
-
-    public static DoubleBox createDoubleBox() {
-        final DoubleBox doubleBox = new DoubleBox();
-        GwtUtil.setFormControlStyles(doubleBox);
-        doubleBox.getElement().setPropertyString("type", "number");
-        return doubleBox;
-    }
-
-    public static DateBoxWithReadOnly createDateTextBox() {
-        final DateBoxWithReadOnly dateBox = new DateBoxWithReadOnly();
-        GwtUtil.setFormControlStyles(dateBox.getTextBox());
-        return dateBox;
-    }
-
-    public static SuggestBox createSuggestBox(SuggestOracle oracle) {
-        final SuggestBox suggestBox = new SuggestBox(oracle);
-        GwtUtil.setFormControlStyles(suggestBox.getValueBox());
-        return suggestBox;
     }
 }
