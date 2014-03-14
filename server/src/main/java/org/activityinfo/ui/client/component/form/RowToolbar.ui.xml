@@ -1,5 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:a="urn:import:org.activityinfo.ui.client.widget"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
@@ -8,24 +9,24 @@
 
   <g:HTMLPanel addStyleNames="bs">
     <div ui:field="toolbar" class="hidden {style.toolbar}">
-      <g:Button ui:field="editButton" addStyleNames="btn btn-primary btn-xs">
+      <a:ButtonWithSize ui:field="editButton" style="PRIMARY" size="EXTRA_SMALL">
         <img src="{img.edit.getSafeUri}" alt="{i18n.edit}" title="{i18n.edit}"/>
-      </g:Button>
-      <g:Button ui:field="addSectionButton" addStyleNames="btn btn-success btn-xs">
+      </a:ButtonWithSize>
+      <a:ButtonWithSize ui:field="addSectionButton" style="SUCCESS" size="EXTRA_SMALL">
         <img src="{img.addFolder.getSafeUri}" alt="{i18n.addSection}" title="{i18n.addSection}"/>
-      </g:Button>
-      <g:Button ui:field="addButton" addStyleNames="btn btn-success btn-xs">
+      </a:ButtonWithSize>
+      <a:ButtonWithSize ui:field="addButton" style="SUCCESS" size="EXTRA_SMALL">
         <img src="{img.add.getSafeUri}" alt="{i18n.addField}" title="{i18n.addField}"/>
-      </g:Button>
-      <g:Button ui:field="removeButton" addStyleNames="btn btn-danger btn-xs">
+      </a:ButtonWithSize>
+      <a:ButtonWithSize ui:field="removeButton" style="DANGER" size="EXTRA_SMALL">
         <img src="{img.delete.getSafeUri}" alt="{i18n.remove}" title="{i18n.remove}"/>
-      </g:Button>
-      <g:Button ui:field="upButton" addStyleNames="btn btn-default btn-xs">
+      </a:ButtonWithSize>
+      <a:ButtonWithSize ui:field="upButton" style="DEFAULT" size="EXTRA_SMALL">
         <img src="{img.up.getSafeUri}" alt="{i18n.moveUp}" title="{i18n.moveUp}"/>
-      </g:Button>
-      <g:Button ui:field="downButton" addStyleNames="btn btn-default btn-xs">
+      </a:ButtonWithSize>
+      <a:ButtonWithSize ui:field="downButton" style="DEFAULT" size="EXTRA_SMALL">
         <img src="{img.down.getSafeUri}" alt="{i18n.moveDown}" title="{i18n.moveDown}"/>
-      </g:Button>
+      </a:ButtonWithSize>
     </div>
   </g:HTMLPanel>
 </ui:UiBinder>
