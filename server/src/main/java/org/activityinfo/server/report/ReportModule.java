@@ -30,8 +30,8 @@ import org.activityinfo.server.report.output.BlobServiceStorageProvider;
 import org.activityinfo.server.report.output.StorageProvider;
 import org.activityinfo.server.report.output.TempStorageServlet;
 import org.activityinfo.server.schedule.ReportMailerServlet;
-import org.activityinfo.ui.full.client.page.report.json.ReportJsonFactory;
-import org.activityinfo.ui.full.client.page.report.json.ReportSerializer;
+import org.activityinfo.ui.client.page.report.json.ReportJsonFactory;
+import org.activityinfo.ui.client.page.report.json.ReportSerializer;
 
 public class ReportModule extends ServletModule {
 

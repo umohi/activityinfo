@@ -10,9 +10,6 @@ public abstract class CriteriaVisitor {
 
     }
 
-    public void visitFuzzyFieldCriteria(FuzzyFieldCriteria criteria) {
-
-    }
 
     public void visitIntersection(CriteriaIntersection intersection) {
 

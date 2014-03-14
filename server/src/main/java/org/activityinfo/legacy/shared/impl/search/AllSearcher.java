@@ -26,7 +26,7 @@ import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
-import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.legacy.shared.Log;
 
 import java.util.*;
 import java.util.Map.Entry;

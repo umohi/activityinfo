@@ -9,7 +9,7 @@
       /*padding: 3px;*/
     }
   </ui:style>
-  <ui:with field='img' type='org.activityinfo.ui.full.client.icon.ImageResources'/>
+  <ui:with field='img' type='org.activityinfo.ui.client.icon.ImageResources'/>
 
   <g:HTMLPanel addStyleNames="ai bs">
     <g:HorizontalPanel width="100%">

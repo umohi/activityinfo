@@ -32,7 +32,7 @@ import org.activityinfo.server.database.hibernate.entity.ReportDefinition;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.report.ReportParserJaxb;
-import org.activityinfo.ui.full.client.page.report.json.ReportJsonFactory;
+import org.activityinfo.ui.client.page.report.json.ReportJsonFactory;
 
 import javax.persistence.EntityManager;
 import javax.xml.bind.JAXBException;

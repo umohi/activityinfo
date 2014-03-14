@@ -513,7 +513,7 @@
               <logLevel>INFO</logLevel>
               <compileReport>true</compileReport>
               <modules>
-                <module>org.activityinfo.ui.full.ActivityInfoCI</module>
+                <module>org.activityinfo.ui.ActivityInfoCI</module>
                 <module>org.activityinfo.ui.embed.Embed</module>
               </modules>
             </configuration>
@@ -582,7 +582,7 @@
             <artifactId>gwt-maven-plugin</artifactId>
             <configuration>
               <modules>
-                <module>org.activityinfo.ui.full.ActivityInfoRelease</module>
+                <module>org.activityinfo.ui.ActivityInfoRelease</module>
                 <module>org.activityinfo.ui.embed.Embed</module>
               </modules>
             </configuration>

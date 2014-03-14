@@ -41,7 +41,7 @@ import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSites;
 import org.activityinfo.legacy.shared.command.result.SiteResult;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.legacy.shared.Log;
 
 import java.util.ArrayList;
 import java.util.List;

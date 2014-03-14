@@ -29,7 +29,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * Encapsulates user identity and their authorization to access the server.
  * <p/>
  * This is normally injected, see the default
- * {@link org.activityinfo.ui.full.client.authentication.ClientSideAuthProvider}
+ * {@link org.activityinfo.ui.client.authentication.ClientSideAuthProvider}
  */
 public class AuthenticatedUser implements IsSerializable {
     private String authToken;

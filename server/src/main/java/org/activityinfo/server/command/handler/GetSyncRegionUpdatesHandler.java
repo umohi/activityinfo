@@ -29,7 +29,7 @@ import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.command.handler.sync.*;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.legacy.shared.Log;
 
 import java.util.logging.Logger;
 

@@ -25,7 +25,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.ui.full.client.style.BaseStylesheet;
+import org.activityinfo.ui.client.style.BaseStylesheet;
 
 /**
  * @author yuriyz on 2/13/14.

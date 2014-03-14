@@ -51,11 +51,6 @@ public class CriteriaEvaluation {
         }
 
         @Override
-        public void visitFuzzyFieldCriteria(FuzzyFieldCriteria criteria) {
-            hasCriteriaIndependentOfClassId = true;
-        }
-
-        @Override
         public void visitIntersection(CriteriaIntersection intersection) {
             ClassIdEvaluator visitor = evaluateSet(intersection);
             if(visitor.hasCriteriaIndependentOfClassId) {

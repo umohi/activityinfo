@@ -30,7 +30,7 @@
 
 <module rename-to="ActivityInfo">
 
-  <inherits name="org.activityinfo.ui.full.ActivityInfo"/>
+  <inherits name="org.activityinfo.ui.ActivityInfo"/>
 
   <set-property name="user.agent" value="safari"/>
   <set-property name="locale" value="en"/>

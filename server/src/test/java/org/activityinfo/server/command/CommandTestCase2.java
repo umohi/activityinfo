@@ -41,7 +41,7 @@ import org.activityinfo.server.endpoint.gwtrpc.RemoteExecutionContext;
 import org.activityinfo.server.util.TemplateModule;
 import org.activityinfo.server.util.blob.BlobServiceModuleStub;
 import org.activityinfo.server.util.config.ConfigModuleStub;
-import org.activityinfo.ui.full.client.dispatch.remote.AbstractDispatcher;
+import org.activityinfo.ui.client.dispatch.remote.AbstractDispatcher;
 import org.junit.Before;
 
 import javax.persistence.EntityManager;

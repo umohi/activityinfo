@@ -38,7 +38,7 @@ import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.DomainFilters;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.endpoint.kml.xml.XmlBuilder;
-import org.activityinfo.ui.full.client.page.entry.form.SiteRenderer;
+import org.activityinfo.ui.client.page.entry.form.SiteRenderer;
 import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;

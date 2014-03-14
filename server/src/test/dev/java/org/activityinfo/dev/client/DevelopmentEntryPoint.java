@@ -24,7 +24,7 @@ package org.activityinfo.dev.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 import org.activityinfo.dev.client.styles.Binder;
-import org.activityinfo.ui.full.client.style.BaseStylesheet;
+import org.activityinfo.ui.client.style.BaseStylesheet;
 
 /**
  * Dev only entry point.

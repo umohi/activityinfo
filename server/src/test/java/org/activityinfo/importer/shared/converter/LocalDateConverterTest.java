@@ -1,7 +1,7 @@
 package org.activityinfo.importer.shared.converter;
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
-import org.activityinfo.ui.full.client.importer.converter.StringToLocalDateConverter;
+import org.activityinfo.ui.client.importer.converter.StringToLocalDateConverter;
 import org.junit.Ignore;
 import org.junit.Test;
 

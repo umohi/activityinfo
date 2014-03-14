@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:a="urn:import:org.activityinfo.ui.client.widget"
+        >
+
+  <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
+  <ui:with field='style' type='org.activityinfo.ui.client.style.TransitionBundle'/>
+
+  <g:HTMLPanel>
+    <a:TextBox width="100%" ui:field="sectionLabel" placeholder="{i18n.sectionLabel}"/>
+    <div style="margin-top: 5px; margin-bottom: 5px;">
+      <a:Button style="PRIMARY" text="{i18n.ok}" ui:field="okButton"/>
+      <a:Button style="DEFAULT" text="{i18n.cancel}" ui:field="cancelButton"/>
+    </div>
+    <br/>
+    <div class="has-error">
+      <div class="help-block" ui:field="errorContainer"/>
+    </div>
+  </g:HTMLPanel>
+</ui:UiBinder>

@@ -32,7 +32,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
-import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.legacy.shared.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;

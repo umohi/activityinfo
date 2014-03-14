@@ -32,7 +32,7 @@ import org.activityinfo.legacy.shared.command.result.PartnerResult;
 import org.activityinfo.legacy.shared.model.PartnerDTO;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
 import org.activityinfo.legacy.shared.reports.model.Dimension;
-import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.legacy.shared.Log;
 
 import java.util.*;
 

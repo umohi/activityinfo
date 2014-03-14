@@ -33,7 +33,7 @@ import org.activityinfo.legacy.shared.command.PivotSites.PivotResult;
 import org.activityinfo.legacy.shared.command.PivotSites.ValueType;
 import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.impl.pivot.*;
-import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.legacy.shared.Log;
 
 import java.util.List;
 import java.util.Set;

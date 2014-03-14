@@ -37,7 +37,7 @@ import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.impl.Tables;
 import org.activityinfo.legacy.shared.impl.pivot.bundler.*;
 import org.activityinfo.legacy.shared.reports.model.*;
-import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.legacy.shared.Log;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -26,7 +26,7 @@ import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.activityinfo.ui.full.client.Log;
+import org.activityinfo.legacy.shared.Log;
 
 import java.util.Date;
 import java.util.HashMap;
