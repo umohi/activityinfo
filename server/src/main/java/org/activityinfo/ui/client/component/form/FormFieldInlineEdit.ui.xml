@@ -6,21 +6,9 @@
 
         >
 
-  <ui:style>
-    .row {
-      margin-top: 5px;
-      margin-bottom: 5px;
-    }
-
-    .show-inline {
-      display: inline !important
-    }
-
-  </ui:style>
-
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
-  <ui:with field='aiStyle' type='org.activityinfo.ui.client.style.TransitionBundle'/>
+  <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
   <g:HTMLPanel>
 
@@ -41,8 +29,7 @@
         </label>
 
         <div class="col-sm-11">
-          <form:FormFieldTypeCombobox addStyleNames="{style.show-inline} form-control" width="92%" ui:field="type"
-                                    multipleSelect="false"/>
+          <form:FormFieldTypeCombobox addStyleNames="{style.showInline}" width="92%" ui:field="type" multipleSelect="false"/>
           <a:Button style="DEFAULT" visible="false" text="{i18n.change}" ui:field="changeButton"/>
         </div>
       </div>

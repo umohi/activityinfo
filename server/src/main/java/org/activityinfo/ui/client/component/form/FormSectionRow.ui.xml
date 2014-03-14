@@ -5,9 +5,9 @@
 
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
-  <ui:with field='style' type='org.activityinfo.ui.client.style.TransitionBundle'/>
+  <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
-  <g:HTMLPanel addStyleNames="{style.newUiStyle.sectionMarginLeft}">
+  <g:HTMLPanel addStyleNames="{style.sectionMarginLeft}">
     <form:FormSectionInlineEdit ui:field="editPanel" addStyleNames="hidden"/>
     <form:FormSectionInlineEdit ui:field="addPanel" addStyleNames="hidden"/>
     <div ui:field="sectionRowContainer">

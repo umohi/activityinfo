@@ -5,7 +5,7 @@
 
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
-  <ui:with field='style' type='org.activityinfo.ui.client.style.TransitionBundle'/>
+  <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
   <g:HTMLPanel addStyleNames="bs">
     <div class="container">
@@ -37,8 +37,8 @@
       </div>
       <br/>
       <g:FlowPanel ui:field="contentPanel" width="100%">
-        <form:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{style.newUiStyle.sectionMarginLeft} hidden"/>
-        <form:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="{style.newUiStyle.sectionMarginLeft} hidden"/>
+        <form:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{style.sectionMarginLeft} hidden"/>
+        <form:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="{style.sectionMarginLeft} hidden"/>
       </g:FlowPanel>
     </div>
   </g:HTMLPanel>

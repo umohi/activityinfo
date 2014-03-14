@@ -2,13 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-  <ui:style>
-    .btn-custom {
-      margin: 3px 3px 3px 3px;
-      height: 34px;
-    }
-  </ui:style>
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
+  <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
   <g:HTMLPanel>
     <g:HorizontalPanel width="100%">
@@ -17,10 +12,10 @@
         <g:ListBox multipleSelect="true" ui:field="selectedList" width="100%" addStyleNames="form-control"/>
       </g:VerticalPanel>
       <g:VerticalPanel>
-        <g:Button ui:field="addButton" addStyleNames="btn btn-default {style.btn-custom}">
+        <g:Button ui:field="addButton" addStyleNames="btn btn-default {style.referenceBtn}">
           <img src="{img.add.getSafeUri}" alt="Add"/>
         </g:Button>
-        <g:Button ui:field="removeButton" addStyleNames="btn btn-default {style.btn-custom}">
+        <g:Button ui:field="removeButton" addStyleNames="btn btn-default {style.referenceBtn}">
           <img src="{img.delete.getSafeUri}" alt="Remove"/>
         </g:Button>
       </g:VerticalPanel>

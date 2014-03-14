@@ -2,21 +2,12 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-  <ui:style>
-    .toobar {
-      position: absolute;
-      width: 300px;
-      /*border: dashed;*/
-      /*border-width: 2px;*/
-      /*border-color: #000810;*/
-    }
-  </ui:style>
-
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
+  <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <div ui:field="toolbar" class="hidden {style.toobar}">
+    <div ui:field="toolbar" class="hidden {style.toolbar}">
       <g:Button ui:field="editButton" addStyleNames="btn btn-primary btn-xs">
         <img src="{img.edit.getSafeUri}" alt="{i18n.edit}" title="{i18n.edit}"/>
       </g:Button>

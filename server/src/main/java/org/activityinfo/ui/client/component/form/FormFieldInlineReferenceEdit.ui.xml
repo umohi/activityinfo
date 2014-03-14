@@ -4,15 +4,9 @@
              xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
              xmlns:a="urn:import:org.activityinfo.ui.client.widget">
 
-  <ui:style>
-    .btn-custom {
-      margin: 3px 3px 3px 3px;
-      height: 34px;
-    }
-  </ui:style>
-
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
+  <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
   <g:HTMLPanel>
     <div class="form-group">
@@ -41,10 +35,10 @@
                 <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
                                 autoFooterRefreshDisabled="true" rowCount="10"/>
               <g:VerticalPanel>
-                <a:Button ui:field="addButton" style="DEFAULT" addStyleNames="{style.btn-custom}">
+                <a:Button ui:field="addButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">
                   <img src="{img.add.getSafeUri}" alt="Add"/>
                 </a:Button>
-                <a:Button ui:field="removeButton" style="DEFAULT" addStyleNames="{style.btn-custom}">
+                <a:Button ui:field="removeButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">
                   <img src="{img.delete.getSafeUri}" alt="Remove"/>
                 </a:Button>
               </g:VerticalPanel>

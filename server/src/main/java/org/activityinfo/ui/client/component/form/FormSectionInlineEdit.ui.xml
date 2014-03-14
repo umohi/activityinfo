@@ -5,7 +5,6 @@
         >
 
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
-  <ui:with field='style' type='org.activityinfo.ui.client.style.TransitionBundle'/>
 
   <g:HTMLPanel>
     <a:TextBox width="100%" ui:field="sectionLabel" placeholder="{i18n.sectionLabel}"/>
