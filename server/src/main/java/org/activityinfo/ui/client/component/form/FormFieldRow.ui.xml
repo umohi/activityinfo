@@ -12,10 +12,9 @@
     <form:FormFieldInlineEdit ui:field="editFieldPanel" addStyleNames="hidden" editMode="true"/>
     <form:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="hidden"/>
     <div class="row {style.fieldRow}" ui:field="rowContainer">
-      <div class="col-sm-2">
-        <p class="edit">
-          <div ui:field="label"/>
-        </p>
+      <div class="col-sm-2 has-error">
+        <div ui:field="label" style="display:inline;"/>
+        <div class="help-block hidden" ui:field="requiredMarker" style="display:inline;">*</div>
       </div>
       <div class="col-sm-3">
         <g:FlowPanel ui:field="control" width="100%"/>

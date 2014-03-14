@@ -113,6 +113,7 @@ public class FormPanel extends Composite {
     FormFieldInlineEdit addFieldPanel;
 
     public FormPanel(ResourceLocator resourceLocator) {
+        FormPanelStyles.INSTANCE.ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
         this.resourceLocator = resourceLocator;
         initUndo();
