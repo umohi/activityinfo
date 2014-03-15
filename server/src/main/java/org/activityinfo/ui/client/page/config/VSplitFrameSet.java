@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.ui.client.page.*;
 import org.activityinfo.ui.client.page.common.nav.NavigationPanel;
-import org.activityinfo.ui.client.widget.LoadingPlaceHolder;
+import org.activityinfo.ui.client.widget.legacy.LoadingPlaceHolder;
 
 /**
  * Standard 2-column split frame with a left-hand pane for navigation and the

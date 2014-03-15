@@ -3,6 +3,7 @@ package org.activityinfo.legacy.shared.adapter;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormInstance;
@@ -10,6 +11,7 @@ import org.activityinfo.legacy.shared.model.*;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Extracts a list of a {@code AttributeDTO}s from a SchemaDTO and converts them to
@@ -26,6 +28,7 @@ public class AttributeInstanceListAdapter implements Function<SchemaDTO, List<Fo
     @Nullable
     @Override
     public List<FormInstance> apply(SchemaDTO schema) {
+        Set<Integer> added = Sets.newHashSet();
         List<FormInstance> instances = Lists.newArrayList();
         for(UserDatabaseDTO db : schema.getDatabases()) {
             for(ActivityDTO activity : db.getActivities()) {
@@ -33,10 +36,13 @@ public class AttributeInstanceListAdapter implements Function<SchemaDTO, List<Fo
                     Cuid classId = CuidAdapter.attributeGroupFormClass(group.getId());
                     if(criteria.apply(classId)) {
                         for(AttributeDTO attribute : group.getAttributes()) {
-                            Cuid instanceId = CuidAdapter.attributeId(attribute.getId());
-                            FormInstance instance = new FormInstance(instanceId, classId);
-                            instance.set(CuidAdapter.getFormInstanceLabelCuid(instance), attribute.getName());
-                            instances.add(instance);
+                            if(!added.contains(attribute.getId())) {
+                                Cuid instanceId = CuidAdapter.attributeId(attribute.getId());
+                                FormInstance instance = new FormInstance(instanceId, classId);
+                                instance.set(CuidAdapter.getFormInstanceLabelCuid(instance), attribute.getName());
+                                instances.add(instance);
+                                added.add(attribute.getId());
+                            }
                         }
                     }
                 }

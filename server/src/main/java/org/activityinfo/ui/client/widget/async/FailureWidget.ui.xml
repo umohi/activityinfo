@@ -1,0 +1,26 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:a='urn:import:org.activityinfo.ui.client.widget'>
+
+  <ui:with field="icons" type="org.activityinfo.ui.client.style.Icons"/>
+  <ui:with field="style" type="org.activityinfo.ui.client.widget.async.AsyncStylesheet"/>
+  <ui:with field="i18n" type="org.activityinfo.i18n.shared.UiConstants"/>
+
+  <g:HTMLPanel addStyleNames="{style.asyncWidget}">
+
+    <div class="{style.outerBox}">
+
+      <div ui:field="icon"/>
+
+      <div class="{style.innerBox}">
+        <h3 ui:field="heading"/>
+
+        <p ui:field="explanation"/>
+
+        <a:Button ui:field="retryButton" style="DEFAULT" text="{i18n.retry}"/>
+      </div>
+
+    </div>
+
+  </g:HTMLPanel>
+</ui:UiBinder>

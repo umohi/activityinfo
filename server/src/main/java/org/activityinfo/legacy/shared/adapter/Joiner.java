@@ -15,6 +15,10 @@ import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.shared.BiFunction;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetLocations;
+import org.activityinfo.legacy.shared.command.GetSites;
 
 import java.util.*;
 
@@ -85,6 +89,15 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
     @Override
     public Promise<List<Projection>> apply(InstanceQuery instanceQuery) {
 
+        CriteriaAnalysis criteriaAnalysis = CriteriaAnalysis.analyze(instanceQuery.getCriteria());
+
+        if(isLocationQuery(criteriaAnalysis)) {
+            return projectLocations(criteriaAnalysis, instanceQuery.getFieldPaths());
+        }
+
+//        if(isSiteQuery(criteriaAnalysis)) {
+//            return projectSites(criteriaAnalysis, instanceQuery.getFieldPaths());
+//        }
 
         Promise<List<FormInstance>> instances = query(criteria);
         Promise<List<FormClass>> classes = instances.join(new FetchFormClasses());
@@ -97,6 +110,37 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         }
 
         return results;
+    }
+
+    private Promise<List<Projection>> projectSites(CriteriaAnalysis criteriaAnalysis, List<FieldPath> fieldPaths) {
+        Cuid activityClass = criteriaAnalysis.getClassRestriction();
+        int activityId = CuidAdapter.getLegacyIdFromCuid(activityClass);
+
+        Filter filter = new Filter();
+        filter.addRestriction(DimensionType.Activity, activityId);
+
+        GetSites query = new GetSites();
+        query.setFilter(filter);
+
+        throw new UnsupportedOperationException("todo");
+    }
+
+    private Promise<List<Projection>> projectLocations(CriteriaAnalysis criteriaAnalysis, List<FieldPath> fieldPaths) {
+        Cuid locationTypeClass = criteriaAnalysis.getClassRestriction();
+        int locationTypeId = CuidAdapter.getLegacyIdFromCuid(locationTypeClass);
+
+        GetLocations query = new GetLocations();
+        query.setLocationTypeId(locationTypeId);
+        query.setLocationIds(criteriaAnalysis.getIds(CuidAdapter.LOCATION_TYPE_DOMAIN));
+
+        return dispatcher.execute(query)
+                .then(new LocationProjector(fieldPaths));
+    }
+
+
+    private boolean isLocationQuery(CriteriaAnalysis criteria) {
+        return criteria.isRestrictedToSingleClass() &&
+                criteria.getClassRestriction().getDomain() == CuidAdapter.LOCATION_TYPE_DOMAIN;
     }
 
     private Promise<List<FormInstance>> query(Criteria criteria) {
@@ -145,7 +189,7 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
             List<Projection> projections = Lists.newArrayList();
             for(FormInstance instance : instances) {
 
-                Projection projection = new Projection(instance.getId());
+                Projection projection = new Projection(instance.getId(), instance.getClassId());
 
                 for(FieldPath classPath : map.get(ApplicationProperties.CLASS_PROPERTY)) {
                     projection.setValue(classPath, instance.getClassId());

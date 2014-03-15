@@ -48,7 +48,7 @@ import org.activityinfo.ui.client.page.entry.FormPanelPage;
 import org.activityinfo.ui.client.page.entry.place.DataEntryPlace;
 import org.activityinfo.ui.client.page.report.ReportsPlace;
 import org.activityinfo.ui.client.page.search.SearchPageState;
-import org.activityinfo.ui.client.widget.LoadingPlaceHolder;
+import org.activityinfo.ui.client.widget.legacy.LoadingPlaceHolder;
 
 @Singleton
 public class AppFrameSet implements Frame {

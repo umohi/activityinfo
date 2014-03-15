@@ -20,7 +20,11 @@
  * #L%
  */
 
-* {
+.loading-placeholder,
+.gallery,
+.details,
+.intro-para
+{
     font-family: Arial, Sans-serif;
 }
 

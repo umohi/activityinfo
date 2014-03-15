@@ -14,12 +14,13 @@ import java.util.List;
 public class FieldColumn extends Column<Projection, String> {
 
     private List<FieldPath> fieldPaths;
+    private String header;
 
-    public FieldColumn(FieldPath fieldPath) {
+    public FieldColumn(FieldPath fieldPath, String header) {
         super(new TextCell());
+        this.header = header;
         this.fieldPaths = Lists.newArrayList(fieldPath);
     }
-
 
     @Override
     public String getValue(Projection projection) {
@@ -38,5 +39,9 @@ public class FieldColumn extends Column<Projection, String> {
 
     public List<FieldPath> getFieldPaths() {
         return fieldPaths;
+    }
+
+    public String getHeader() {
+        return header;
     }
 }

@@ -1,17 +1,17 @@
 package org.activityinfo.ui.client.component.list;
 
-import com.google.common.base.Function;
+import com.bedatadriven.rebar.style.client.Source;
+import com.bedatadriven.rebar.style.client.Stylesheet;
 import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HTML;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.fp.client.Promise;
-import org.activityinfo.fp.client.PromiseMonitor;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.page.instance.InstancePlace;
+import org.activityinfo.ui.client.pageView.IconStyleProvider;
+import org.activityinfo.ui.client.widget.DisplayWidget;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static org.activityinfo.core.shared.application.ApplicationProperties.DESCRIPTION_PROPERTY;
@@ -20,42 +20,37 @@ import static org.activityinfo.core.shared.application.ApplicationProperties.LAB
 /**
  * Displays a list of instances
  */
-public class InstanceList extends HTML implements PromiseMonitor {
+public class InstanceList extends HTML implements DisplayWidget<List<Projection>> {
 
     private final ListItemRenderer renderer;
 
+    @Source("InstanceList.less")
+    public interface InstanceListStylesheet extends Stylesheet {
+
+    }
+
+    public static final InstanceListStylesheet STYLESHEET = GWT.create(InstanceListStylesheet.class);
+
     public InstanceList() {
+        STYLESHEET.ensureInjected();
         this.renderer = GWT.create(ListItemRenderer.class);
     }
 
-    public void show(Promise<List<Projection>> instances) {
-        instances.then(new Function<List<Projection>, Void>() {
-            @Nullable
-            @Override
-            public Void apply(@Nullable List<Projection> projections) {
-                SafeHtmlBuilder html = new SafeHtmlBuilder();
-                for(Projection projection : projections) {
-                    String label = projection.getStringValue(LABEL_PROPERTY);
-                    String description = Strings.nullToEmpty(projection.getStringValue(DESCRIPTION_PROPERTY));
-                    renderer.render(html, label, description,
-                            InstancePlace.safeUri(projection.getRootInstanceId()).asString());
-                }
-                setHTML(html.toSafeHtml());
-                return null;
-            }
-        })
-        .withMonitor(this);
-    }
+
 
     @Override
-    public void onPromiseStateChanged(Promise.State state) {
-        switch(state) {
-            case PENDING:
-                setText(I18N.CONSTANTS.loading());
-                break;
-            case REJECTED:
-                setText(I18N.CONSTANTS.error());
-                break;
+    public Promise<Void> show(List<Projection> projections) {
+        SafeHtmlBuilder html = new SafeHtmlBuilder();
+        for(Projection projection : projections) {
+            String label = projection.getStringValue(LABEL_PROPERTY);
+            String description = Strings.nullToEmpty(projection.getStringValue(DESCRIPTION_PROPERTY));
+            renderer.render(html,
+                    IconStyleProvider.getIconStyleForFormClass(projection.getRootClassId()),
+                    label, description,
+                    InstancePlace.safeUri(projection.getRootInstanceId()).asString());
         }
+        setHTML(html.toSafeHtml());
+        return Promise.nothing();
     }
+
 }

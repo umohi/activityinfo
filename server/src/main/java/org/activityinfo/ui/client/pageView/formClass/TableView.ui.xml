@@ -1,0 +1,17 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:table="urn:import:org.activityinfo.ui.client.component.table">
+  <g:HTMLPanel>
+
+    <!-- Use a div to measure the font size -->
+    <div ui:field="emRuler" style="position:absolute; width:100em;"/>
+
+    <!-- If we can display all the columns, inform the user -->
+    <div ui:field="columnAlert" class="alert">
+
+    </div>
+
+    <table:InstanceTable ui:field="table"/>
+
+  </g:HTMLPanel>
+</ui:UiBinder>

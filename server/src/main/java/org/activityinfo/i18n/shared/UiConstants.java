@@ -662,11 +662,24 @@ public interface UiConstants extends Constants {
     /**
      * Translated "Connection problem, will retry in a second".
      *
-     * @return translated "Connection problem, will retry in a second"
+     * @return translated "Connection problem
      */
-    @DefaultStringValue("Connection problem, will retry in a second")
+    @DefaultStringValue("Connection problem")
     @Key("connectionProblem")
     String connectionProblem();
+
+
+    @DefaultStringValue("We couldn't connect to the server, and an offline version is not available. " +
+            "Check your internet and retry.")
+    String connectionProblemText();
+
+    @DefaultStringValue("Oh no! Something went wrong...")
+    String unexpectedException();
+
+    @DefaultStringValue("Unfortunately things didn't go as planned and you've encountered a bug. We're going to try " +
+            "to send a report to the engineering team, but if you're really stuck and need a quick response, email " +
+            "help@activityinfo.org")
+    String unexpectedExceptionExplanation();
 
     /**
      * Translated "Enter the coordinates in any format, or drag the marker on the map".
@@ -2387,6 +2400,9 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Retry")
     @Key("retry")
     String retry();
+
+    @Constants.DefaultStringValue("Back to safety")
+    String backToSafety();
 
     /**
      * Translated "Retrying...".

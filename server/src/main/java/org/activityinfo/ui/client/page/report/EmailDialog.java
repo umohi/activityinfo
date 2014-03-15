@@ -41,7 +41,7 @@ import org.activityinfo.legacy.shared.command.UpdateReportSubscription;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
 import org.activityinfo.legacy.shared.reports.model.EmailDelivery;
-import org.activityinfo.ui.client.widget.MappingComboBox;
+import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
 
 /**
  * Allows users with design priviledges to share with other users who have

@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.widget;
+package org.activityinfo.ui.client.widget.legacy;
 
 /*
  * #%L

@@ -32,8 +32,8 @@ import org.activityinfo.legacy.shared.model.PartnerDTO;
 import org.activityinfo.legacy.shared.model.ProjectDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.i18n.shared.UiConstants;
-import org.activityinfo.ui.client.widget.MappingComboBox;
-import org.activityinfo.ui.client.widget.MappingComboBoxBinding;
+import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
+import org.activityinfo.ui.client.widget.legacy.MappingComboBoxBinding;
 
 public class TargetForm extends FormPanel {
 

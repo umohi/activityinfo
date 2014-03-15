@@ -21,6 +21,8 @@ import org.activityinfo.i18n.shared.I18N;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
+
 /**
  * Displays a set of parent links
  */
@@ -30,6 +32,9 @@ public class BreadCrumbBuilder {
 
         @Template("<a href=\"{0}\">{1}</a>")
         SafeHtml link(SafeUri link, String label);
+
+        @Template("<ol class='breadcrumb'>{0}</ol>")
+        SafeHtml container(SafeHtml listItems);
     }
 
     public static final LinkTemplates TEMPLATES = GWT.create(LinkTemplates.class);
@@ -54,15 +59,23 @@ public class BreadCrumbBuilder {
                 @Nullable
                 @Override
                 public Void apply(List<Projection> projections) {
-                    Projection parent = projections.get(0);
-                    element.setInnerSafeHtml(TEMPLATES.link(InstancePlace.safeUri(parent.getRootInstanceId()),
-                            parent.getStringValue(ApplicationProperties.LABEL_PROPERTY)));
-
-                    return null;
+                    return render(projections);
                 }
             });
         }
 
+    }
+
+    private Void render(List<Projection> parents) {
+        Projection parent = parents.get(0);
+
+        SafeHtml links = TEMPLATES.link(
+                InstancePlace.safeUri(parent.getRootInstanceId()),
+                parent.getStringValue(ApplicationProperties.LABEL_PROPERTY));
+
+        element.setInnerSafeHtml(links);
+
+        return null;
     }
 
     private Promise<List<Projection>> queryParent(Cuid parentId) {

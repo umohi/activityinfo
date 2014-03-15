@@ -31,8 +31,8 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
 import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.i18n.shared.UiConstants;
-import org.activityinfo.ui.client.widget.MappingComboBox;
-import org.activityinfo.ui.client.widget.MappingComboBoxBinding;
+import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
+import org.activityinfo.ui.client.widget.legacy.MappingComboBoxBinding;
 
 class IndicatorForm extends AbstractDesignForm {
 

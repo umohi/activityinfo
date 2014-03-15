@@ -24,6 +24,7 @@ import java.util.List;
 public final class Promise<T> implements AsyncCallback<T> {
 
 
+
     public enum State {
 
         /**
@@ -194,6 +195,9 @@ public final class Promise<T> implements AsyncCallback<T> {
         return promise;
     }
 
+    public static Promise<Void> nothing() {
+        return Promise.resolved(null);
+    }
 
     public static <X> Promise<X> rejected(Throwable exception) {
         Promise<X> promise = new Promise<X>();

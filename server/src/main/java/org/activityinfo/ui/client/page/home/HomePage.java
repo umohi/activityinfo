@@ -1,5 +1,6 @@
 package org.activityinfo.ui.client.page.home;
 
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -13,6 +14,7 @@ import org.activityinfo.ui.client.page.NavigationCallback;
 import org.activityinfo.ui.client.page.Page;
 import org.activityinfo.ui.client.page.PageId;
 import org.activityinfo.ui.client.page.PageState;
+import org.activityinfo.ui.client.pageView.IconStyleProvider;
 
 import java.util.List;
 
@@ -40,8 +42,10 @@ public class HomePage implements Page {
 
         SafeHtmlBuilder html = new SafeHtmlBuilder();
         for(FormInstance instance : rootItems) {
-           renderer.render(html, instance.getString(FolderClass.LABEL_FIELD_ID),
-                   instance.getString(FolderClass.DESCRIPTION_FIELD_ID),
+           renderer.render(html,
+                   IconStyleProvider.getIconStyleForFormClass(instance.getClassId()),
+                   instance.getString(FolderClass.LABEL_FIELD_ID),
+                   Strings.nullToEmpty(instance.getString(FolderClass.DESCRIPTION_FIELD_ID)),
                    "#i/" + instance.getId().asString());
         }
         folderListElement.setInnerSafeHtml(html.toSafeHtml());
