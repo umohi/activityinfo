@@ -25,17 +25,12 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.*;
 import org.activityinfo.ui.client.widget.undo.IsUndoable;
 import org.activityinfo.ui.client.widget.undo.UndoManager;
-import org.activityinfo.ui.client.widget.undo.UndoableCreator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -84,7 +79,6 @@ public class ElementNode {
                     final FormFieldRow fieldRow = new FormFieldRow((FormField) element, formPanel, this);
                     contentPanel.add(fieldRow);
                     fieldMap.put(element.getId(), fieldRow);
-                    addValueChangeHandler(fieldRow);
                 } else if (element instanceof FormSection) {
                     final FormSection section = (FormSection) element;
                     final FormSectionRow sectionWidget = new FormSectionRow(section, formPanel, this);
@@ -92,23 +86,6 @@ public class ElementNode {
                     sectionMap.put(element.getId(), sectionWidget);
                 }
             }
-        }
-    }
-
-
-    private void addValueChangeHandler(final FormFieldRow fieldRow) {
-        final IsWidget widget = fieldRow.getFormFieldWidget();
-        if (widget instanceof HasValueChangeHandlers) {
-            final HasValueChangeHandlers hasValueChangeHandlers = (HasValueChangeHandlers) widget;
-            hasValueChangeHandlers.addValueChangeHandler(new ValueChangeHandler() {
-                @Override
-                public void onValueChange(ValueChangeEvent event) {
-                    final FormInstance formInstance = formPanel.getValue();
-                    final Object oldValue = formInstance.get(fieldRow.getFormField().getId());
-                    formPanel.getUndoManager().addUndoable(UndoableCreator.create(event, oldValue)); // push undoable
-                    formInstance.set(fieldRow.getFormField().getId(), event.getValue());
-                }
-            });
         }
     }
 

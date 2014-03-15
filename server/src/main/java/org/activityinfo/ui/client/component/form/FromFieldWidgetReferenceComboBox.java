@@ -34,7 +34,6 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.FormInstanceLabeler;
 import org.activityinfo.core.shared.form.has.HasInstances;
-import org.activityinfo.ui.client.util.GwtUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class FromFieldWidgetReferenceComboBox extends Composite implements FormF
 
     public FromFieldWidgetReferenceComboBox(List<FormInstance> instances) {
         initWidget(dropBox);
-        GwtUtil.setFormControlStyles(dropBox);
+        addStyleName("form-control");
         this.instances = instances;
 
         for (FormInstance instance : instances) {

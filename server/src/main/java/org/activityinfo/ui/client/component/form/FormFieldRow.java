@@ -43,6 +43,7 @@ import org.activityinfo.core.shared.validation.Validator;
 import org.activityinfo.core.shared.validation.ValidatorBuilder;
 import org.activityinfo.core.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.ui.client.util.GwtUtil;
 import org.activityinfo.ui.client.widget.HasReadOnly;
 import org.activityinfo.ui.client.widget.undo.IsUndoable;
 
@@ -78,6 +79,8 @@ public class FormFieldRow extends Composite implements HasValidator {
     FormFieldInlineEdit editFieldPanel;
     @UiField
     FormFieldInlineEdit addFieldPanel;
+    @UiField
+    DivElement requiredMarker;
 
     private FormField formField;
     private IsWidget formFieldWidget;
@@ -256,6 +259,7 @@ public class FormFieldRow extends Composite implements HasValidator {
         label.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getLabel().getValue()));
         description.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getDescription().getValue()));
         unit.setInnerSafeHtml(SafeHtmlUtils.fromString(formField.getUnit().getValue()));
+        GwtUtil.setVisibleInline(formField.isRequired(), requiredMarker);
     }
 
     private void addHandlers() {

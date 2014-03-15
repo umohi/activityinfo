@@ -91,11 +91,13 @@ public class DevUtils {
         quantityField.setType(FormFieldType.QUANTITY);
         quantityField.setDescription(new LocalizedString("Quantity description"));
         quantityField.setLabel(new LocalizedString("Quantity label"));
+        quantityField.setRequired(true);
 
         final FormField freeTextField = new FormField(randomIri());
         freeTextField.setType(FormFieldType.FREE_TEXT);
         freeTextField.setDescription(new LocalizedString("Free text description"));
         freeTextField.setLabel(new LocalizedString("Free text"));
+        freeTextField.setRequired(true);
 
         final FormField localDateField = new FormField(randomIri());
         localDateField.setType(FormFieldType.LOCAL_DATE);

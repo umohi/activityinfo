@@ -52,11 +52,13 @@ import java.util.Date;
 public class DateBoxWithReadOnly extends DateBox implements HasReadOnly {
 
     public DateBoxWithReadOnly() {
-        setFormat(createFormat());
+        this(new DatePicker(), null, createFormat());
     }
 
     public DateBoxWithReadOnly(DatePicker picker, Date date, Format format) {
         super(picker, date, createFormat());
+        setStyleName("form-control");
+        getTextBox().setStyleName("form-control");
     }
 
     public static Format createFormat() {

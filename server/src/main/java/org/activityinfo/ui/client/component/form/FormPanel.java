@@ -113,6 +113,7 @@ public class FormPanel extends Composite {
     FormFieldInlineEdit addFieldPanel;
 
     public FormPanel(ResourceLocator resourceLocator) {
+        FormPanelStyles.INSTANCE.ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
         this.resourceLocator = resourceLocator;
         initUndo();
@@ -137,6 +138,7 @@ public class FormPanel extends Composite {
         this.initialFormClass = formClass.copy();
         this.elementNode = new ElementNode(this, contentPanel, null, formClass);
         elementNode.renderElements(this.formClass.getElements());
+        fireState();
     }
 
     private void initUndo() {
@@ -172,13 +174,17 @@ public class FormPanel extends Composite {
         });
     }
 
-
     public void fireState() {
+        saveButton.setEnabled(isInValidState());
+    }
+
+    public boolean isInValidState() {
         final BiMap<Cuid, FormFieldRow> ownAndChildFieldMap = elementNode.getOwnAndChildFieldMap();
         final Set<FormFieldRow> formFieldRows = ownAndChildFieldMap.values();
         for (FormFieldRow row : formFieldRows) {
             //todo
         }
+        return true;
     }
 
     @UiHandler("saveButton")

@@ -30,11 +30,11 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.SuggestBox;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.FormInstanceLabeler;
 import org.activityinfo.core.shared.form.has.HasInstances;
+import org.activityinfo.ui.client.widget.SuggestBox;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -63,7 +63,7 @@ public class FormFieldWidgetReferenceSuggestBox extends Composite implements For
             oracle.add(labelValue);
             labelToCuidMap.put(labelValue, instance.getId());
         }
-        final SuggestBox box = FormFieldWidgetFactory.createSuggestBox(oracle);
+        final SuggestBox box = new SuggestBox(oracle);
         box.addValueChangeHandler(new ValueChangeHandler<String>() {
             @Override
             public void onValueChange(ValueChangeEvent<String> event) {

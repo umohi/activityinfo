@@ -3,26 +3,18 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:form="urn:import:org.activityinfo.ui.client.component.form">
 
-  <ui:style>
-    .field-row {
-      margin-top: 5px;
-      margin-bottom: 5px;
-    }
-  </ui:style>
-
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
-  <ui:with field='aiStyle' type='org.activityinfo.ui.client.style.TransitionBundle'/>
+  <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <form:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{aiStyle.newUiStyle.sectionMarginLeft} hidden"/>
+    <form:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{style.fieldRow} hidden"/>
     <form:FormFieldInlineEdit ui:field="editFieldPanel" addStyleNames="hidden" editMode="true"/>
     <form:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="hidden"/>
-    <div class="row {style.field-row}" ui:field="rowContainer">
-      <div class="col-sm-2">
-        <p class="edit">
-          <div ui:field="label"/>
-        </p>
+    <div class="row {style.fieldRow}" ui:field="rowContainer">
+      <div class="col-sm-2 has-error">
+        <div ui:field="label" style="display:inline;"/>
+        <div class="help-block hidden" ui:field="requiredMarker" style="display:inline;">*</div>
       </div>
       <div class="col-sm-3">
         <g:FlowPanel ui:field="control" width="100%"/>
