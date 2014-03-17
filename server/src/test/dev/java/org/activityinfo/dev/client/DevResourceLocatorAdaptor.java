@@ -21,9 +21,7 @@ package org.activityinfo.dev.client;
  * #L%
  */
 
-import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.core.client.InstanceQuery;
-import org.activityinfo.fp.client.Promise;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Iri;
@@ -33,6 +31,8 @@ import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.fp.client.Promise;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 
 import java.util.List;
 
@@ -43,6 +43,11 @@ public class DevResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Promise<FormClass> getFormClass(Cuid formId) {
+        return null;
+    }
+
+    @Override
+    public Promise<List<FormClass>> getFormClass() {
         return null;
     }
 

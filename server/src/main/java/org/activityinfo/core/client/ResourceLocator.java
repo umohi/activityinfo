@@ -21,6 +21,13 @@ public interface ResourceLocator {
      */
     Promise<FormClass> getFormClass(Cuid formId);
 
+    /**
+     * Fetches all form classes.
+     *
+     * @return all form classes
+     */
+    Promise<List<FormClass>> getFormClass();
+
     Promise<FormInstance> getFormInstance(Cuid formId);
 
     /**

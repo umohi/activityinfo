@@ -2,7 +2,6 @@ package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Functions;
 import org.activityinfo.core.client.InstanceQuery;
-import org.activityinfo.core.client.NotFoundException;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
@@ -16,14 +15,8 @@ import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.adapter.bindings.SiteBinding;
 import org.activityinfo.legacy.shared.adapter.bindings.SiteBindingFactory;
 import org.activityinfo.legacy.shared.command.GetSchema;
-import org.activityinfo.legacy.shared.command.GetSites;
-import org.activityinfo.legacy.shared.model.SchemaDTO;
-import org.activityinfo.legacy.shared.model.SiteDTO;
 
 import java.util.List;
-
-import static org.activityinfo.legacy.shared.adapter.CuidAdapter.SITE_DOMAIN;
-import static org.activityinfo.legacy.shared.adapter.CuidAdapter.getLegacyIdFromCuid;
 
 /**
  * Exposes a legacy {@code Dispatcher} implementation as new {@code ResourceLocator}
@@ -32,15 +25,22 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     private final Dispatcher dispatcher;
     private final ClassProvider classProvider;
+    private final ClassListProvider classListProvider;
 
     public ResourceLocatorAdaptor(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
         this.classProvider = new ClassProvider(dispatcher);
+        this.classListProvider = new ClassListProvider(dispatcher);
     }
 
     @Override
     public Promise<FormClass> getFormClass(Cuid classId) {
         return classProvider.apply(classId);
+    }
+
+    @Override
+    public Promise<List<FormClass>> getFormClass() {
+        return classListProvider.apply(null);
     }
 
     @Override
