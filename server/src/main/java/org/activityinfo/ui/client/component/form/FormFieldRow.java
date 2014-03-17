@@ -38,10 +38,6 @@ import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.type.converter.Converter;
 import org.activityinfo.core.shared.type.converter.ConverterFactory;
-import org.activityinfo.core.shared.validation.HasValidator;
-import org.activityinfo.core.shared.validation.Validator;
-import org.activityinfo.core.shared.validation.ValidatorBuilder;
-import org.activityinfo.core.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.util.GwtUtil;
 import org.activityinfo.ui.client.widget.HasReadOnly;
@@ -53,7 +49,7 @@ import java.util.Set;
 /**
  * @author yuriyz on 1/28/14.
  */
-public class FormFieldRow extends Composite implements HasValidator {
+public class FormFieldRow extends Composite {
 
     private static FormFieldWidgetUiBinder uiBinder = GWT
             .create(FormFieldWidgetUiBinder.class);
@@ -86,7 +82,6 @@ public class FormFieldRow extends Composite implements HasValidator {
     private IsWidget formFieldWidget;
     private final ElementNode node;
     private final FormPanel formPanel;
-    private final Validator validator = createValidator();
 
     public FormFieldRow(FormField formField, FormPanel formPanel, final ElementNode node) {
         this(formField, formPanel, node, FormFieldWidgetFactory.create(formField, formPanel));
@@ -114,14 +109,6 @@ public class FormFieldRow extends Composite implements HasValidator {
         addHandlers();
         updateUI();
         control.add(formFieldWidget);
-    }
-
-    private Validator createValidator() {
-        final ValidatorBuilder validatorBuilder = ValidatorBuilder.instance();
-        if (formFieldWidget instanceof HasValue) {
-            validatorBuilder.addValidator(new NotEmptyValidator((HasValue) formFieldWidget, formField.getLabel().getValue()));
-        }
-        return validatorBuilder.build();
     }
 
     private void initPanels() {
@@ -341,11 +328,6 @@ public class FormFieldRow extends Composite implements HasValidator {
             assert true;
             return false;
         }
-    }
-
-    @Override
-    public Validator getValidator() {
-        return validator;
     }
 
     public IsWidget getFormFieldWidget() {

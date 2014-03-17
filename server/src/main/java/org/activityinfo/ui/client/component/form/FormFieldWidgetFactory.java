@@ -21,6 +21,9 @@ package org.activityinfo.ui.client.component.form;
  * #L%
  */
 
+import com.google.gwt.event.dom.client.HasKeyUpHandlers;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -46,6 +49,7 @@ public class FormFieldWidgetFactory {
     public static IsWidget create(FormField field, FormPanel formPanel) {
         final IsWidget widget = createWidget(field, formPanel);
         addValueChangeHandler(widget, field, formPanel);
+        addKeyUpHandlers(widget, formPanel);
         return widget;
     }
 
@@ -59,6 +63,18 @@ public class FormFieldWidgetFactory {
                     final Object oldValue = formInstance.get(formField.getId());
                     formPanel.getUndoManager().addUndoable(UndoableCreator.create(event, oldValue)); // push undoable
                     formInstance.set(formField.getId(), event.getValue());
+                    formPanel.fireState();
+                }
+            });
+        }
+    }
+
+    private static void addKeyUpHandlers(IsWidget widget, final FormPanel formPanel) {
+        if (widget instanceof HasKeyUpHandlers) {
+            final HasKeyUpHandlers hasKeyUpHandlers = (HasKeyUpHandlers) widget;
+            hasKeyUpHandlers.addKeyUpHandler(new KeyUpHandler() {
+                @Override
+                public void onKeyUp(KeyUpEvent event) {
                     formPanel.fireState();
                 }
             });

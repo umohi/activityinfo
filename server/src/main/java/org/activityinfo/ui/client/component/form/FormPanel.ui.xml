@@ -32,8 +32,9 @@
         <g:Button addStyleNames="btn btn-default" ui:field="resetButton" text="{i18n.reset}"/>
       </div>
       <br/>
+      <br/>
       <div class="has-error">
-        <div class="control-label" ui:field="errorContainer"/>
+        <div class="help-block" ui:field="errorContainer"/>
       </div>
       <br/>
       <g:FlowPanel ui:field="contentPanel" width="100%">

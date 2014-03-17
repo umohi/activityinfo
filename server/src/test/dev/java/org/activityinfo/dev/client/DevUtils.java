@@ -156,6 +156,7 @@ public class DevUtils {
         multipleSmallField.setDescription(new LocalizedString("Multiple small description"));
         multipleSmallField.setLabel(new LocalizedString("Multiple small"));
         multipleSmallField.setCardinality(FormFieldCardinality.MULTIPLE);
+        multipleSmallField.setRequired(true);
 
         final FormField multipleMediumField = new FormField(randomIri());
         multipleMediumField.setType(FormFieldType.REFERENCE);

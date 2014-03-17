@@ -37,15 +37,18 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.validation.ValidationFailure;
+import org.activityinfo.core.shared.validation.ValidationUtils;
+import org.activityinfo.core.shared.validation.Validator;
+import org.activityinfo.core.shared.validation.ValidatorBuilder;
+import org.activityinfo.core.shared.validation.widget.NotEmptyValidator;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.component.form.event.UpdateStateEvent;
 import org.activityinfo.ui.client.util.GwtUtil;
@@ -138,7 +141,6 @@ public class FormPanel extends Composite {
         this.initialFormClass = formClass.copy();
         this.elementNode = new ElementNode(this, contentPanel, null, formClass);
         elementNode.renderElements(this.formClass.getElements());
-        fireState();
     }
 
     private void initUndo() {
@@ -175,16 +177,28 @@ public class FormPanel extends Composite {
     }
 
     public void fireState() {
-        saveButton.setEnabled(isInValidState());
+        final Validator validator = createValidator();
+        final List<ValidationFailure> failures = validator.validate();
+        ValidationUtils.show(failures, errorContainer);
+        saveButton.setEnabled(failures.isEmpty());
     }
 
-    public boolean isInValidState() {
+    public Validator createValidator() {
         final BiMap<Cuid, FormFieldRow> ownAndChildFieldMap = elementNode.getOwnAndChildFieldMap();
         final Set<FormFieldRow> formFieldRows = ownAndChildFieldMap.values();
+
+        final ValidatorBuilder validatorBuilder = ValidatorBuilder.instance();
+
         for (FormFieldRow row : formFieldRows) {
-            //todo
+            if (row.getFormField().isRequired()) {
+                final IsWidget formFieldWidget = row.getFormFieldWidget();
+                if (formFieldWidget instanceof HasValue) {
+                    final String controlName = row.getFormField().getLabel().getValue() + " (" + I18N.CONSTANTS.mandatory() + ")";
+                    validatorBuilder.addValidator(new NotEmptyValidator((HasValue) formFieldWidget, controlName));
+                }
+            }
         }
-        return true;
+        return validatorBuilder.build();
     }
 
     @UiHandler("saveButton")
@@ -302,6 +316,7 @@ public class FormPanel extends Composite {
         this.initialFormInstance = formInstance.copy();
         this.formInstance = formInstance;
         applyValue(formInstance);
+        fireState();
     }
 
     private void applyValue(@Nonnull FormInstance formInstance) {
