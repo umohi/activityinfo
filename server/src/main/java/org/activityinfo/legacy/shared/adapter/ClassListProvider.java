@@ -27,6 +27,7 @@ import org.activityinfo.core.shared.application.ApplicationClassProvider;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.GetSchema;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -46,7 +47,6 @@ public class ClassListProvider implements Function<Cuid, Promise<List<FormClass>
     @Nullable
     @Override
     public Promise<List<FormClass>> apply(@Nullable Cuid input) {
-//        dispatcher.execute(new GetSchema()).then();
-        return null;
+        return dispatcher.execute(new GetSchema()).then(new AllClassesAdapter());
     }
 }

@@ -22,6 +22,7 @@ public interface ResourceLocator {
     Promise<FormClass> getFormClass(Cuid formId);
 
     /**
+     * todo yuriy->alex: please check it. Is it correct way to list all possible classes for range?
      * Fetches all form classes.
      *
      * @return all form classes
