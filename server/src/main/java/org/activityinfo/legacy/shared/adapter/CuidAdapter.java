@@ -54,13 +54,13 @@ public class CuidAdapter {
     public static final int ADMIN_PARENT_FIELD = 2;
     public static final int CODE_FIELD = 3;
     public static final int AXE_FIELD = 4;
-    public static final int GEOMETRY_FIELD = 4;
-    public static final int ADMIN_FIELD = 4;
-    public static final int PARTNER_FIELD = 5;
-    public static final int PROJECT_FIELD = 6;
-    public static final int DATE_FIELD = 7;
-    public static final int FULL_NAME_FIELD = 8;
-    public static final int LOCATION_FIELD = 9;
+    public static final int GEOMETRY_FIELD = 5;
+    public static final int ADMIN_FIELD = 6;
+    public static final int PARTNER_FIELD = 7;
+    public static final int PROJECT_FIELD = 8;
+    public static final int DATE_FIELD = 9;
+    public static final int FULL_NAME_FIELD = 10;
+    public static final int LOCATION_FIELD = 11;
 
     /**
      * Avoid instance creation.
@@ -100,7 +100,7 @@ public class CuidAdapter {
     }
 
     public static final Cuid cuid(char domain, int id) {
-        return new Cuid(domain + Integer.toString(id, Cuids.RADIX));
+        return new Cuid(domain + block(id));
     }
 
     public static final Iri iri(char domain, int id) {
@@ -255,6 +255,12 @@ public class CuidAdapter {
 
     private static String block(int id) {
         return CuidGenerator.pad(id);
+    }
+
+    public static int getBlock(Cuid cuid, int blockIndex) {
+        int startIndex = 1 + (blockIndex * CuidGenerator.BLOCK_SIZE);
+        String block = cuid.asString().substring(startIndex, startIndex+CuidGenerator.BLOCK_SIZE);
+        return Integer.parseInt(block, Cuids.RADIX);
     }
 
     private static String block(EntityDTO entity) {

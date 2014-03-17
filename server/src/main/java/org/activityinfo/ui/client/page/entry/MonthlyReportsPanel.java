@@ -53,7 +53,7 @@ import org.activityinfo.ui.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.client.page.common.toolbar.UIActions;
 import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
-import org.activityinfo.ui.client.widget.MappingComboBox;
+import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
 
 import java.util.ArrayList;
 

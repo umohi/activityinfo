@@ -37,8 +37,8 @@ import org.activityinfo.legacy.shared.model.LocationTypeDTO;
 import org.activityinfo.legacy.shared.model.Published;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.widget.MappingComboBox;
-import org.activityinfo.ui.client.widget.MappingComboBoxBinding;
+import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
+import org.activityinfo.ui.client.widget.legacy.MappingComboBoxBinding;
 
 /**
  * FormClass for editing ActivityDTO

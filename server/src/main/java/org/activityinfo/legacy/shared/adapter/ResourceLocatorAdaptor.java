@@ -8,6 +8,7 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.Resource;
 import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.IdCriteria;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
@@ -44,19 +45,21 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Promise<FormInstance> getFormInstance(Cuid instanceId) {
-        if (instanceId.getDomain() == SITE_DOMAIN) {
-            final int siteId = getLegacyIdFromCuid(instanceId);
-
-            Promise<SchemaDTO> schema = dispatcher
-                    .execute(new GetSchema());
-
-            Promise<SiteDTO> site = dispatcher
-                    .execute(GetSites.byId(siteId))
-                    .then(new SingleListResultAdapter<SiteDTO>());
-
-            return Promise.fmap(new SiteInstanceAdapter()).apply(schema, site);
-        }
-        return Promise.rejected(new NotFoundException(instanceId.asIri()));
+        return queryInstances(new IdCriteria(instanceId))
+               .then(new SelectSingle());
+//        if (instanceId.getDomain() == SITE_DOMAIN) {
+//            final int siteId = getLegacyIdFromCuid(instanceId);
+//
+//            Promise<SchemaDTO> schema = dispatcher
+//                    .execute(new GetSchema());
+//
+//            Promise<SiteDTO> site = dispatcher
+//                    .execute(GetSites.byId(siteId))
+//                    .then(new SingleListResultAdapter<SiteDTO>());
+//
+//            return Promise.fmap(new SiteInstanceAdapter()).apply(schema, site);
+//        }
+//        return Promise.rejected(new NotFoundException(instanceId.asIri()));
 
 
     }

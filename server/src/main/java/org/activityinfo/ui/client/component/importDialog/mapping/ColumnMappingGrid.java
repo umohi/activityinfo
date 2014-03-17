@@ -15,7 +15,7 @@ import org.activityinfo.core.shared.importing.model.ColumnTarget;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.ui.client.component.importDialog.data.SourceColumn;
 import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
-import org.activityinfo.ui.client.style.DataGridResources;
+import org.activityinfo.ui.client.style.table.DataGridResources;
 
 import java.util.List;
 
@@ -40,7 +40,8 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
 
     public ColumnMappingGrid(ImportModel model, FieldChoicePresenter options,
                              SingleSelectionModel<SourceColumn> columnSelectionModel) {
-    
+
+
         super(50, DataGridResources.INSTANCE);
         
         ColumnMappingStyles.INSTANCE.ensureInjected();

@@ -27,7 +27,7 @@ import com.extjs.gxt.ui.client.widget.grid.*;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.component.report.editor.map.layerOptions.PiechartLayerOptions;
 import org.activityinfo.ui.client.component.report.editor.map.layerOptions.PiechartLayerOptions.NamedSlice;
-import org.activityinfo.ui.client.widget.ColorField;
+import org.activityinfo.ui.client.widget.legacy.ColorField;
 
 public class EditColorColumn extends ColumnConfig {
 

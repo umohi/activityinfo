@@ -150,7 +150,6 @@ public class FormTree {
         return root;
     }
 
-
     public FormClass getRootFormClass() {
         return rootFormClass;
     }

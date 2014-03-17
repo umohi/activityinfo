@@ -4,40 +4,21 @@
 
     <ui:with field="icons" type="org.activityinfo.ui.client.style.Icons"/>
 
-    <g:HeaderPanel styleName="container">
+    <g:HTMLPanel>
 
-        <!-- Header -->
-        <g:HTMLPanel>
 
-            <h1 ui:field="nameElement"/>
+        <h1><span ui:field="pageIcon"/><span ui:field="nameElement"/></h1>
 
-            <div ui:field="breadCrumbElement"/>
+        <div ui:field="breadCrumbElement"/>
 
-        </g:HTMLPanel>
+        <ul class="nav nav-tabs">
+          <li><a href="#"><span class="{icons.overview}"/> Overview</a></li>
+          <li class="active"><a href="#"><span class="{icons.table}"/> Table</a></li>
+          <li><a href="#"><span class="{icons.map}"/> Map</a></li>
+        </ul>
 
-        <!-- Main -->
-        <g:DockLayoutPanel unit="EM" width="100%" height="100%">
-            <g:center>
-                <a:AsyncPanel ui:field="contentPanel" width="100%" height="100%"/>
-            </g:center>
+        <a:LoadingPanel ui:field="contentPanel"/>
 
-            <g:east size="20" >
-                <g:HTMLPanel>
 
-                <h2>Common Tasks</h2>
-
-                <a:ButtonWithIcon style="LINK" iconStyle="{icons.delete}" text="Add New"/>
-
-                <a:ButtonWithIcon style="LINK" iconStyle="{icons.editForm}" text="Open Form"/>
-
-                <a:ButtonWithIcon style="LINK" iconStyle="{icons.delete}" text="Deleted Selected"/>
-
-                <a:ButtonWithIcon style="LINK" iconStyle="{icons.importIcon}" text="Import"/>
-
-                <a:ButtonWithIcon style="LINK" iconStyle="{icons.excelFile}" text="Export the data to Excel"/>
-
-                </g:HTMLPanel>
-            </g:east>
-        </g:DockLayoutPanel>
-    </g:HeaderPanel>
+    </g:HTMLPanel>
 </ui:UiBinder>

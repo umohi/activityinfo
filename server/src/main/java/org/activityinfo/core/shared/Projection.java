@@ -16,13 +16,23 @@ public class Projection {
 
     private final Map<FieldPath, Object> values = Maps.newHashMap();
     private final Cuid rootInstanceId;
+    private final Cuid rootClassId;
 
-    public Projection(Cuid rootInstanceId) {
+    public Projection(Cuid rootInstanceId, Cuid rootClassId) {
+        assert rootInstanceId != null;
+        assert rootClassId != null;
+
         this.rootInstanceId = rootInstanceId;
+        this.rootClassId = rootClassId;
     }
 
     public Cuid getRootInstanceId() {
         return rootInstanceId;
+    }
+
+
+    public Cuid getRootClassId() {
+        return rootClassId;
     }
 
     public void setValue(FieldPath path, Object value) {

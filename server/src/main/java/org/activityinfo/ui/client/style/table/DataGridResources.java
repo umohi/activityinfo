@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.style;
+package org.activityinfo.ui.client.style.table;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;

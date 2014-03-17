@@ -54,10 +54,12 @@ public class AdminLevelClassAdapter implements Function<SchemaDTO, FormClass> {
         nameField.setRequired(true);
         formClass.addElement(nameField);
 
-        FormField codeField = new FormField(CuidAdapter.field(classId, CuidAdapter.CODE_FIELD));
-        codeField.setLabel(new LocalizedString(I18N.CONSTANTS.codeFieldLabel()));
-        codeField.setType(FormFieldType.FREE_TEXT);
-        formClass.addElement(codeField);
+
+//    Not currently exposed by the legacy api
+//        FormField codeField = new FormField(CuidAdapter.field(classId, CuidAdapter.CODE_FIELD));
+//        codeField.setLabel(new LocalizedString(I18N.CONSTANTS.codeFieldLabel()));
+//        codeField.setType(FormFieldType.FREE_TEXT);
+//        formClass.addElement(codeField);
 
         return formClass;
     }

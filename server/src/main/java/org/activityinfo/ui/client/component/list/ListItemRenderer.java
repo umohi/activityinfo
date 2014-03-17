@@ -8,6 +8,6 @@ import com.google.gwt.uibinder.client.UiRenderer;
  */
 public interface ListItemRenderer extends UiRenderer {
 
-    void render(SafeHtmlBuilder sb, String label, String description, String link);
+    void render(SafeHtmlBuilder sb, String iconClass, String label, String description, String link);
 
 }

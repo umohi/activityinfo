@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class CuidGenerator {
 
-    private static final int BLOCK_SIZE = 4;
+    public static final int BLOCK_SIZE = 4;
 
     private int c = 0;
     private int base = 36;

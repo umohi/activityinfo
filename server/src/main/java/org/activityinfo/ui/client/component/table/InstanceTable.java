@@ -1,127 +1,118 @@
 package org.activityinfo.ui.client.component.table;
 
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.common.collect.Sets;
+import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.RangeChangeEvent;
 import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.ProjectionKeyProvider;
 import org.activityinfo.core.client.ResourceLocator;
-import org.activityinfo.core.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
-import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
-import org.activityinfo.core.shared.form.tree.FormTree;
-import org.activityinfo.fp.client.Promise;
-import org.activityinfo.fp.shared.Functions2;
-import org.activityinfo.ui.client.style.DataGridResources;
+import org.activityinfo.ui.client.style.table.CellTableResources;
+import org.activityinfo.ui.client.widget.async.FailureWidget;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Reusable component to display Instances in a table
  */
 public class InstanceTable implements IsWidget {
 
-    private final FormTree formTree;
+    private static final Logger LOGGER = Logger.getLogger(InstanceTable.class.getName());
 
-    private final DataGrid<Projection> grid;
+    /**
+     * The default column width, in {@code em}
+     */
+    public static final int COLUMN_WIDTH = 10;
+
+
     private final ResourceLocator resourceLocator;
-    private Map<Cuid, FieldColumn> columns = Maps.newHashMap();
+    private final CellTable<Projection> table;
 
+    private Set<FieldPath> fields = Sets.newHashSet();
 
-    public InstanceTable(ResourceLocator resourceLocator, FormTree formTree) {
-        this.formTree = formTree;
-        this.grid = new DataGrid<>(50, DataGridResources.INSTANCE);
-        this.grid.setSkipRowHoverCheck(true);
-        this.grid.setSkipRowHoverFloatElementCheck(true);
+    private Criteria criteria;
 
-
-        MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
-
-        this.grid.setSelectionModel(selectionModel);
-
+    public InstanceTable(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
 
-        addColumns(formTree.getRoot());
+        CellTableResources.INSTANCE.cellTableStyle().ensureInjected();
 
-        fetchRows();
-    }
+        table = new CellTable<>(50, CellTableResources.INSTANCE);
+        table.setSkipRowHoverCheck(true);
+        table.setSkipRowHoverFloatElementCheck(true);
 
-    private void fetchRows() {
-        List<FieldPath> paths = Lists.newArrayList();
-        for(FieldColumn col : columns.values()) {
-            paths.addAll(col.getFieldPaths());
-        }
+        // Set the table to fixed width: we will provide explicit
+        // column widths
+        table.setWidth("100%", true);
 
-        resourceLocator
-        .query(new InstanceQuery(paths, new ClassCriteria(formTree.getRootFormClass().getId())))
-        .then(new AsyncCallback<List<Projection>>() {
+        MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
+        table.setSelectionModel(selectionModel);
+
+        table.addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
-            public void onFailure(Throwable caught) {
-                grid.setLoadingIndicator(new HTML("Error: " + caught));
-            }
-
-            @Override
-            public void onSuccess(List<Projection> result) {
-                grid.setRowData(result);
-                grid.setRowCount(result.size());
+            public void onRangeChange(RangeChangeEvent event) {
+                onRangeChanged(event);
             }
         });
     }
 
-    private void addColumns(FormTree.Node root) {
-        for(FormTree.Node child : root.getChildren()) {
-            if(child.isReference()) {
-                addColumns(child);
-            } else {
-                if(columns.containsKey(child.getFieldId())) {
-                    columns.get(child.getFieldId()).addFieldPath(child.getPath());
-                } else {
-                    FieldColumn col = new FieldColumn(child.getPath());
-                    columns.put(child.getFieldId(), col);
-                    grid.addColumn(col, header(child));
-                }
-            }
-        }
+    public void setCriteria(Criteria criteria) {
+        this.criteria = criteria;
     }
 
-    private String header(FormTree.Node child) {
-        if(child.getPath().isNested()) {
-            return child.getFormClass().getLabel().getValue() + " " + child.getField().getLabel().getValue();
-        } else {
-            return child.getField().getLabel().getValue();
+    public void setColumns(List<FieldColumn> columns) {
+        while(table.getColumnCount() > 0) {
+            table.removeColumn(0);
         }
+        for(FieldColumn column : columns) {
+            table.addColumn(column, column.getHeader());
+            fields.addAll(column.getFieldPaths());
+        }
+        loadData();
     }
 
     @Override
     public Widget asWidget() {
-        return grid;
+        return table;
     }
 
-    public static Function<FormTree, IsWidget> constructor(final ResourceLocator resourceLocator) {
-        return new Function<FormTree, IsWidget>() {
+    private void onRangeChanged(RangeChangeEvent event) {
+        LOGGER.log(Level.INFO, "Instance Table Range Change: " +
+                "start = " + event.getNewRange().getStart() +
+                "length = " + event.getNewRange().getLength());
+
+
+        loadData();
+
+    }
+
+    private void loadData() {
+        InstanceQuery query = new InstanceQuery(Lists.newArrayList(fields), criteria);
+        resourceLocator.query(query).then(new AsyncCallback<List<Projection>>() {
             @Override
-            public IsWidget apply(FormTree formTree) {
-                return new InstanceTable(resourceLocator, formTree);
+            public void onFailure(Throwable caught) {
+                LOGGER.log(Level.SEVERE, "Exception loading instance table", caught);
             }
-        };
+
+            @Override
+            public void onSuccess(List<Projection> result) {
+                table.setRowData(result);
+            }
+        });
     }
 
-    public static Function<Void, Promise<IsWidget>> creator(ResourceLocator resourceLocator, Cuid formClassId) {
-
-        Function<Cuid, Promise<FormTree>> fetch = new AsyncFormTreeBuilder(resourceLocator);
-        Function<Promise<FormTree>, Promise<IsWidget>> liftedConstructor = Promise.fmap(constructor(resourceLocator));
-
-        Function<Cuid, Promise<IsWidget>> composed = Functions.compose(liftedConstructor, fetch);
-        return Functions2.closeOver(composed, formClassId);
-    }
 }

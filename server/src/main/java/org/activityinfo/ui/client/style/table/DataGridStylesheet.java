@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.style;
+package org.activityinfo.ui.client.style.table;
 
 import com.bedatadriven.rebar.style.client.Source;
 import com.bedatadriven.rebar.style.client.Stylesheet;

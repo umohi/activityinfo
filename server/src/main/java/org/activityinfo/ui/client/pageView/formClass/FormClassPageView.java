@@ -5,16 +5,21 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.HeaderPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.client.form.tree.AsyncFormTreeBuilder;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
-import org.activityinfo.ui.client.component.table.InstanceTable;
+import org.activityinfo.core.shared.form.tree.FormTree;
+import org.activityinfo.fp.client.Promise;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.page.instance.BreadCrumbBuilder;
+import org.activityinfo.ui.client.pageView.IconStyleProvider;
 import org.activityinfo.ui.client.pageView.InstancePageView;
 import org.activityinfo.ui.client.style.Icons;
-import org.activityinfo.ui.client.widget.AsyncPanel;
+import org.activityinfo.ui.client.widget.LoadingPanel;
 
 /**
  * Provides a view for a FormClass instance
@@ -24,13 +29,16 @@ public class FormClassPageView implements InstancePageView {
     private final Widget rootElement;
     private final ResourceLocator resourceLocator;
 
-    interface FormViewUiBinder extends UiBinder<HeaderPanel, FormClassPageView> {
+    interface FormViewUiBinder extends UiBinder<HTMLPanel, FormClassPageView> {
     }
 
     private static FormViewUiBinder ourUiBinder = GWT.create(FormViewUiBinder.class);
 
     @UiField
-    HeadingElement nameElement;
+    Element nameElement;
+
+    @UiField
+    Element pageIcon;
 
     @UiField
     Element breadCrumbElement;
@@ -38,7 +46,7 @@ public class FormClassPageView implements InstancePageView {
     private BreadCrumbBuilder breadCrumb;
 
     @UiField
-    AsyncPanel contentPanel;
+    LoadingPanel<FormTree> contentPanel;
 
     public FormClassPageView(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
@@ -46,13 +54,18 @@ public class FormClassPageView implements InstancePageView {
         breadCrumb = new BreadCrumbBuilder(resourceLocator, breadCrumbElement);
 
         Icons.INSTANCE.ensureInjected();
-
     }
 
-    public void show(FormInstance instance) {
+    public Promise<Void> show(FormInstance instance) {
+        Cuid classId = instance.getId();
+
         nameElement.setInnerText(instance.getString(FormClass.LABEL_FIELD_ID));
+        pageIcon.setClassName(IconStyleProvider.getIconStyleForFormClass(instance.getId()));
+
         breadCrumb.show(instance);
-        contentPanel.setWidget(InstanceTable.creator(resourceLocator, instance.getId()));
+
+        contentPanel.setDisplayWidget(new TablePresenter(resourceLocator));
+        return contentPanel.show(new AsyncFormTreeBuilder(resourceLocator), classId);
     }
 
     @Override

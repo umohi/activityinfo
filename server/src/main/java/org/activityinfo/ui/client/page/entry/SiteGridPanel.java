@@ -44,7 +44,7 @@ import org.activityinfo.ui.client.page.entry.column.DefaultColumnModelProvider;
 import org.activityinfo.ui.client.page.entry.grouping.GroupingModel;
 import org.activityinfo.ui.client.page.entry.grouping.NullGroupingModel;
 import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
-import org.activityinfo.ui.client.widget.LoadingPlaceHolder;
+import org.activityinfo.ui.client.widget.legacy.LoadingPlaceHolder;
 
 /**
  * The SiteGridPanel contains the main toolbar for the Site Grid display, and

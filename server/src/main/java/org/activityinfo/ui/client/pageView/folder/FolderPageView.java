@@ -2,14 +2,13 @@ package org.activityinfo.ui.client.pageView.folder;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.client.Resources;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.application.ApplicationProperties;
 import org.activityinfo.core.shared.application.FolderClass;
@@ -18,7 +17,9 @@ import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.ui.client.component.list.InstanceList;
 import org.activityinfo.ui.client.page.instance.BreadCrumbBuilder;
+import org.activityinfo.ui.client.pageView.IconStyleProvider;
 import org.activityinfo.ui.client.pageView.InstancePageView;
+import org.activityinfo.ui.client.widget.LoadingPanel;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class FolderPageView implements InstancePageView {
 
 
     private FormInstance instance;
-    private ResourceLocator resourceLocator;
+    private Resources resources;
 
     interface FolderViewUiBinder extends UiBinder<HTMLPanel, FolderPageView> {
     }
@@ -37,10 +38,12 @@ public class FolderPageView implements InstancePageView {
     private static FolderViewUiBinder ourUiBinder = GWT.create(FolderViewUiBinder.class);
 
     private final HTMLPanel rootElement;
-    private final ScrollPanel scrollPanel;
 
     @UiField
-    HeadingElement folderNameElement;
+    Element folderNameElement;
+
+    @UiField
+    Element pageIcon;
 
     @UiField
     Element folderDescriptionElement;
@@ -49,36 +52,39 @@ public class FolderPageView implements InstancePageView {
     Element breadCrumbElement;
 
     @UiField
-    InstanceList instanceList;
+    LoadingPanel<List<Projection>> instanceList;
 
     private BreadCrumbBuilder breadCrumb;
 
     public FolderPageView(ResourceLocator resourceLocator) {
-        this.resourceLocator = resourceLocator;
+        this.resources = new Resources(resourceLocator);
         rootElement = ourUiBinder.createAndBindUi(this);
-        scrollPanel = new ScrollPanel(rootElement);
         breadCrumb = new BreadCrumbBuilder(resourceLocator, breadCrumbElement);
     }
 
-    public void show(FormInstance folderInstance) {
+    public Promise<Void> show(FormInstance folderInstance) {
         this.instance = folderInstance;
         folderNameElement.setInnerText(instance.getString(FolderClass.LABEL_FIELD_ID));
         folderDescriptionElement.setInnerText(instance.getString(FolderClass.DESCRIPTION_FIELD_ID));
-        instanceList.show(queryChildren());
+        pageIcon.setClassName(IconStyleProvider.getIconStyleForFormClass(instance.getClassId()));
+
         breadCrumb.show(folderInstance);
+
+        instanceList.setDisplayWidget(new InstanceList());
+        return instanceList.show(resources.query(), childrenQuery());
     }
 
-    private Promise<List<Projection>> queryChildren() {
-        return resourceLocator.query(InstanceQuery
+    private InstanceQuery childrenQuery() {
+        return InstanceQuery
             .select(
                     ApplicationProperties.LABEL_PROPERTY,
                     ApplicationProperties.DESCRIPTION_PROPERTY)
-            .where(ParentCriteria.isChildOf(instance.getId())).build());
+            .where(ParentCriteria.isChildOf(instance.getId())).build();
     }
 
     @Override
     public Widget asWidget() {
-        return scrollPanel;
+        return rootElement;
     }
 
 }

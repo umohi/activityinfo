@@ -22,6 +22,17 @@ package org.activityinfo.server.command;
  * #L%
  */
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import org.activityinfo.core.client.InstanceQuery;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.fp.client.Promise;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
+import org.activityinfo.legacy.shared.adapter.LocationClassAdapter;
+import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.legacy.shared.command.GetLocations;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.fixtures.InjectionSupport;
@@ -29,6 +40,13 @@ import org.activityinfo.server.database.OnDataSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
+import static org.activityinfo.legacy.shared.adapter.CuidAdapter.field;
+import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -47,7 +65,28 @@ public class GetLocationsTest extends CommandTestCase2 {
         assertThat(location.getAxe(), nullValue());
         assertThat(location.getAdminEntity(1).getName(), equalTo("Sud Kivu"));
         assertThat(location.getAdminEntity(2).getName(), equalTo("Shabunda"));
+    }
 
+    @Test
+    public void testLocationQuery() {
+
+        Cuid villageClassId = CuidAdapter.locationFormClass(1);
+        Cuid provinceClassId = CuidAdapter.adminLevelFormClass(1);
+
+
+        ResourceLocatorAdaptor adapter = new ResourceLocatorAdaptor(getDispatcher());
+        FieldPath villageName = new FieldPath(getNameFieldId(villageClassId));
+        FieldPath provinceName = new FieldPath(getAdminFieldId(villageClassId), field(provinceClassId, CuidAdapter.NAME_FIELD));
+
+        List<Projection> projections = assertResolves(adapter.query(
+                new InstanceQuery(
+                        Arrays.asList(villageName, provinceName),
+                        new ClassCriteria(villageClassId))));
+
+        System.out.println(Joiner.on("\n").join(projections));
+
+        assertThat(projections.size(), equalTo(4));
+        assertThat(projections.get(0).getStringValue(provinceName), equalTo("Sud Kivu"));
     }
 
 }

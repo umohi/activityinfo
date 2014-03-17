@@ -41,7 +41,7 @@ import org.activityinfo.legacy.shared.command.GetCountries;
 import org.activityinfo.legacy.shared.command.result.CountryResult;
 import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.ui.client.widget.RemoteComboBox;
+import org.activityinfo.ui.client.widget.legacy.RemoteComboBox;
 
 public class DatabaseForm extends FormPanel {
     private final FormBinding binding;

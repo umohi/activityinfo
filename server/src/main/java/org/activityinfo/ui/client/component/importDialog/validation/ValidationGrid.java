@@ -10,7 +10,7 @@ import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 import org.activityinfo.ui.client.component.importDialog.validation.cells.ValidationCellTemplates;
 import org.activityinfo.ui.client.component.importDialog.validation.columns.ColumnFactory;
 import org.activityinfo.ui.client.component.importDialog.validation.columns.ImportColumn;
-import org.activityinfo.ui.client.style.DataGridResources;
+import org.activityinfo.ui.client.style.table.DataGridResources;
 
 import java.util.Map;
 
