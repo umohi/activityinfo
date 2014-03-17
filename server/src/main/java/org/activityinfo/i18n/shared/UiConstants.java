@@ -3371,6 +3371,14 @@ public interface UiConstants extends Constants {
     @Key("validationControlIsEmpty")
     String validationControlIsEmpty();
 
+    @DefaultStringValue("Range")
+    @Key("range")
+    String range();
+
+    @DefaultStringValue("New form class")
+    @Key("newFormClass")
+    String newFormClass();
+
     @DefaultStringValue("Value was not changed")
     @Key("valueNotChanged")
     String valueNotChanged();

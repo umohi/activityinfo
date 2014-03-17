@@ -1,7 +1,9 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:form="urn:import:org.activityinfo.ui.client.component.form">
+             xmlns:a="urn:import:org.activityinfo.ui.client.widget"
+             xmlns:form="urn:import:org.activityinfo.ui.client.component.form"
+        >
 
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
@@ -28,8 +30,8 @@
         <div class="pull-left hidden" ui:field="progressDiv">
           <img src="{img.progress.getSafeUri}" alt="Progress"/>
         </div>
-        <g:Button addStyleNames="btn btn-primary" ui:field="saveButton" text="{i18n.save}"/>
-        <g:Button addStyleNames="btn btn-default" ui:field="resetButton" text="{i18n.reset}"/>
+        <a:Button style="PRIMARY" ui:field="saveButton" text="{i18n.save}"/>
+        <a:Button style="DEFAULT" ui:field="resetButton" text="{i18n.reset}"/>
       </div>
       <br/>
       <br/>

@@ -2,7 +2,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:a="urn:import:org.activityinfo.ui.client.widget">
+             xmlns:a="urn:import:org.activityinfo.ui.client.widget"
+             xmlns:form="urn:import:org.activityinfo.ui.client.component.form"
+        >
 
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
@@ -26,14 +28,27 @@
 
     <div class="form-group">
       <label class="col-sm-1 control-label">
+        <ui:text from='{i18n.range}'/>
+      </label>
+      <div class="col-sm-11">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form:FormFieldInlineRange ui:field="range"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-1 control-label">
         <ui:text from='{i18n.values}'/>
       </label>
       <div class="col-sm-11">
         <div class="panel panel-default">
           <div class="panel-body">
             <g:HorizontalPanel>
-                <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
-                                autoFooterRefreshDisabled="true" rowCount="10"/>
+              <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
+                              autoFooterRefreshDisabled="true" rowCount="10"/>
               <g:VerticalPanel>
                 <a:Button ui:field="addButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">
                   <img src="{img.add.getSafeUri}" alt="Add"/>
