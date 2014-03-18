@@ -3389,4 +3389,7 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Next »")
     String nextButton();
 
+    @DefaultStringValue("Reference values")
+    @Key("fieldTypeReferenceValues")
+    String fieldTypeReferenceValues();
 }
