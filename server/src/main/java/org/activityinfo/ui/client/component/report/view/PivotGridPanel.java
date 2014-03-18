@@ -22,6 +22,22 @@ package org.activityinfo.ui.client.component.report.view;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.type.DateUtilGWTImpl;
+import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.reports.content.EntityCategory;
+import org.activityinfo.legacy.shared.reports.content.PivotTableData;
+import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
+import org.activityinfo.ui.client.AppEvents;
+import org.activityinfo.ui.client.EventBus;
+
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BaseTreeModel;
 import com.extjs.gxt.ui.client.event.Events;
@@ -31,19 +47,14 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Format;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.grid.*;
+import com.extjs.gxt.ui.client.widget.grid.CellSelectionModel;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnData;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
+import com.extjs.gxt.ui.client.widget.grid.HeaderGroupConfig;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
-import org.activityinfo.legacy.shared.command.DimensionType;
-import org.activityinfo.legacy.shared.reports.content.EntityCategory;
-import org.activityinfo.legacy.shared.reports.content.PivotTableData;
-import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PivotGridPanel extends ContentPanel implements
         ReportView<PivotReportElement> {
@@ -57,8 +68,14 @@ public class PivotGridPanel extends ContentPanel implements
     private Map<Integer, PivotTableData.Axis> columnMap;
 
     private ColumnModel columnModel;
+    private EventBus eventBus;
+    private Dispatcher dispatcher;
+    private DrillDownEditor drillDownEditor;
 
-    public PivotGridPanel() {
+    public PivotGridPanel(EventBus eventBus, Dispatcher dispatcher) {
+    	this.eventBus = eventBus;
+    	this.dispatcher = dispatcher;
+    	this.drillDownEditor = new DrillDownEditor(eventBus, dispatcher, null, DateUtilGWTImpl.INSTANCE);
         setLayout(new FitLayout());
     }
 
@@ -115,11 +132,11 @@ public class PivotGridPanel extends ContentPanel implements
                     @Override
                     public void handleEvent(GridEvent<PivotTableRow> ge) {
                         if (ge.getColIndex() != 0) {
-                            // eventBus.fireEvent(new
-                            // PivotCellEvent(AppEvents.DRILL_DOWN,
-                            // element,
-                            // ge.getModel().getRowAxis(),
-                            // columnMap.get(ge.getColIndex())));
+                             eventBus.fireEvent(new
+                             PivotCellEvent(AppEvents.DRILL_DOWN,
+                             element,
+                             ge.getModel().getRowAxis(),
+                             columnMap.get(ge.getColIndex())));
                         }
                     }
                 });

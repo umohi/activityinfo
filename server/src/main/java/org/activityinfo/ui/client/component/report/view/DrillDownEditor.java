@@ -22,7 +22,7 @@ package org.activityinfo.ui.client.component.report.view;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.event.Listener;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.state.StateProvider;
 import org.activityinfo.legacy.shared.command.DimensionType;
@@ -36,12 +36,18 @@ import org.activityinfo.ui.client.page.common.Shutdownable;
 import org.activityinfo.ui.client.page.entry.SiteGridPanel;
 import org.activityinfo.ui.client.page.entry.grouping.NullGroupingModel;
 
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.Dialog;
+import com.extjs.gxt.ui.client.widget.layout.FillLayout;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+
 public class DrillDownEditor implements Shutdownable {
 
     private final EventBus eventBus;
     private final DateUtil dateUtil;
     private Listener<PivotCellEvent> eventListener;
     private SiteGridPanel gridPanel;
+    private Dialog dialog;
 
     public DrillDownEditor(EventBus eventBus, Dispatcher service,
                            StateProvider stateMgr, DateUtil dateUtil) {
@@ -49,7 +55,9 @@ public class DrillDownEditor implements Shutdownable {
         this.eventBus = eventBus;
         this.dateUtil = dateUtil;
         this.gridPanel = new SiteGridPanel(service);
-
+        
+        createDialog();
+        
         eventListener = new Listener<PivotCellEvent>() {
             @Override
             public void handleEvent(PivotCellEvent be) {
@@ -79,6 +87,8 @@ public class DrillDownEditor implements Shutdownable {
         effectiveFilter.clearRestrictions(DimensionType.Indicator);
 
         gridPanel.load(NullGroupingModel.INSTANCE, effectiveFilter);
+        dialog.show();
+        
     }
 
     private Filter filterFromAxis(PivotTableData.Axis axis) {
@@ -97,6 +107,19 @@ public class DrillDownEditor implements Shutdownable {
             axis = axis.getParent();
         }
         return filter;
+    }
+    
+    private void createDialog() {
+    	dialog = new Dialog();
+    	dialog.setHeadingText(I18N.CONSTANTS.sites());
+    	dialog.setButtons(Dialog.CLOSE);
+    	dialog.setLayout(new FitLayout());
+    	dialog.setSize(600, 500);
+    	
+    	gridPanel.setHeaderVisible(false);
+    	gridPanel.setLayout(new FillLayout());
+    	gridPanel.setBorders(false);
+        dialog.add(gridPanel);    	
     }
 
     public SiteGridPanel getGridPanel() {

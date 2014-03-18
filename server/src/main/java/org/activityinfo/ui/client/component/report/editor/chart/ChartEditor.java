@@ -22,15 +22,9 @@ package org.activityinfo.ui.client.component.report.editor.chart;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.Style;
-import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.Component;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
-import com.google.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
+
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.RenderElement.Format;
@@ -42,8 +36,15 @@ import org.activityinfo.ui.client.component.report.view.ReportViewBinder;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.client.page.report.editor.ReportElementEditor;
 
-import java.util.Arrays;
-import java.util.List;
+import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.Component;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
+import com.google.inject.Inject;
 
 public class ChartEditor extends LayoutContainer implements
         ReportElementEditor<PivotChartReportElement> {
@@ -125,7 +126,7 @@ public class ChartEditor extends LayoutContainer implements
         south.setSplit(true);
         south.setMargins(new Margins(5, 0, 0, 0));
 
-        gridPanel = new PivotGridPanel();
+        gridPanel = new PivotGridPanel(eventBus, dispatcher);
         gridPanel.setHeadingText("Table");
         chartView.bindTable(gridPanel);
 
