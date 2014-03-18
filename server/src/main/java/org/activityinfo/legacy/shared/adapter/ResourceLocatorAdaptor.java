@@ -25,23 +25,15 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     private final Dispatcher dispatcher;
     private final ClassProvider classProvider;
-    private final ClassListProvider classListProvider;
 
     public ResourceLocatorAdaptor(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
         this.classProvider = new ClassProvider(dispatcher);
-        this.classListProvider = new ClassListProvider(dispatcher);
     }
 
-    // todo yuriy->alex: please check it. Is it correct way to list all possible classes for range?
     @Override
     public Promise<FormClass> getFormClass(Cuid classId) {
         return classProvider.apply(classId);
-    }
-
-    @Override
-    public Promise<List<FormClass>> getFormClass() {
-        return classListProvider.apply(null);
     }
 
     @Override

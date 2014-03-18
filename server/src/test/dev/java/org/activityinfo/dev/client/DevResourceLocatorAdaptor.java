@@ -47,11 +47,6 @@ public class DevResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<List<FormClass>> getFormClass() {
-        return null;
-    }
-
-    @Override
     public Promise<FormInstance> getFormInstance(Cuid formId) {
         return null;
     }
