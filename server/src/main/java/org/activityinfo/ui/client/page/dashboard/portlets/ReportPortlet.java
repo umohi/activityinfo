@@ -188,7 +188,7 @@ public class ReportPortlet extends Portlet {
         if (element instanceof PivotChartReportElement) {
             return new ChartOFCView();
         } else if (element instanceof PivotTableReportElement) {
-            PivotGridPanel gridPanel = new PivotGridPanel();
+            PivotGridPanel gridPanel = new PivotGridPanel(eventBus, dispatcher);
             gridPanel.setHeaderVisible(false);
             return gridPanel;
         } else if (element instanceof MapReportElement) {
