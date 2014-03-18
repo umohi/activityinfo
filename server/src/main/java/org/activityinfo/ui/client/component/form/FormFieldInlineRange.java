@@ -23,15 +23,18 @@ package org.activityinfo.ui.client.component.form;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
-import org.activityinfo.core.shared.form.FormInstanceLabeler;
 import org.activityinfo.legacy.client.callback.SuccessCallback;
 import org.activityinfo.ui.client.widget.SuggestBox;
 
@@ -66,6 +69,17 @@ public class FormFieldInlineRange extends Composite {
     public FormFieldInlineRange() {
         suggestBox = new SuggestBox(oracle);
         initWidget(uiBinder.createAndBindUi(this));
+        setRemoveButtonState();
+        selectedList.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setRemoveButtonState();
+            }
+        });
+    }
+
+    private void setRemoveButtonState() {
+        removeButton.setEnabled(selectedList.getSelectedIndex() != -1);
     }
 
     public void init(FormPanel formPanel) {
@@ -82,9 +96,53 @@ public class FormFieldInlineRange extends Composite {
 
     public void initOracle(List<FormInstance> formClassess) {
         for (FormInstance formClass : formClassess) {
-            final String labelValue = FormInstanceLabeler.getLabel(formClass);
+            final String labelValue = formClass.getString(FormClass.LABEL_FIELD_ID);
             oracle.add(labelValue);
             labelToCuidBiMap.forcePut(labelValue, formClass.getId());
         }
+    }
+
+    @UiHandler("addButton")
+    public void onAddButton(ClickEvent event) {
+        final String label = suggestBox.getValue();
+        final Cuid cuid = labelToCuidBiMap.get(label);
+        if (cuid != null && !hasListValue(cuid)) {
+            selectedList.addItem(label, cuid.asString());
+            suggestBox.setValue(""); // clear box
+            fireState();
+        }
+    }
+
+    @UiHandler("removeButton")
+    public void onRemove(ClickEvent event) {
+        for (int i = 0; i < selectedList.getItemCount(); i++) {
+            if (selectedList.isItemSelected(i)) {
+                selectedList.removeItem(i);
+            }
+        }
+        fireState();
+    }
+
+    public List<Cuid> getSelectedFormClasses() {
+        final List<Cuid> selectedCuids = Lists.newArrayList();
+        for (int i = 0; i < selectedList.getItemCount(); i++) {
+            selectedCuids.add(new Cuid(selectedList.getValue(i)));
+        }
+        return selectedCuids;
+    }
+
+    public void fireState() {
+
+    }
+
+    private boolean hasListValue(Cuid cuid) {
+        final int itemCount = selectedList.getItemCount();
+        for (int i = 0; i < itemCount; i++) {
+            final String value = selectedList.getValue(i);
+            if (value.equals(cuid.asString())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

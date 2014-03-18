@@ -3392,4 +3392,8 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Reference values")
     @Key("fieldTypeReferenceValues")
     String fieldTypeReferenceValues();
+
+    @DefaultStringValue("Choose from another form")
+    @Key("chooseExistingFormClass")
+    String chooseExistingFormClass();
 }

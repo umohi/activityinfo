@@ -31,23 +31,25 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.*;
 import org.activityinfo.core.shared.form.has.HasInstances;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.KeyGenerator;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 
 import java.util.List;
 import java.util.Set;
@@ -74,10 +76,10 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
 
     @UiField
     CellTable<FormInstance> table;
-//    @UiField
-//    Button addButton;
-//    @UiField
-//    Button removeButton;
+    @UiField
+    Button addButton;
+    @UiField
+    Button removeButton;
     @UiField
     RadioButton multipleChoice;
     @UiField
@@ -85,7 +87,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     @UiField
     DivElement errorContainer;
     @UiField
-    FormFieldInlineRange range;
+    ListBox type;
 
     public FormFieldInlineReferenceEdit() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -94,13 +96,13 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     }
 
     private void initTable() {
-//        removeButton.setEnabled(false);
-//        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-//            @Override
-//            public void onSelectionChange(SelectionChangeEvent event) {
-//                removeButton.setEnabled(!selectionModel.getSelectedSet().isEmpty());
-//            }
-//        });
+        removeButton.setEnabled(false);
+        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                removeButton.setEnabled(!selectionModel.getSelectedSet().isEmpty());
+            }
+        });
 
         table.setSelectionModel(selectionModel, DefaultSelectionEventManager.<FormInstance>createCheckboxManager());
         //table.setSelectionEnabled(true) to enable
@@ -161,18 +163,18 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         }
     }
 
-//    @UiHandler("addButton")
-//    public void onAddButton(ClickEvent event) {
-//        final FormField formField = getFormField();
-//        if (formField != null) {
-//            final Cuid newCuid = CuidAdapter.newFormInstance();
-//            final FormInstance newFormInstance = new FormInstance(newCuid, getContainer().getFormPanel().getFormClass().getId());
-//            FormInstanceLabeler.setLabel(newFormInstance, newName());
-//            tableDataProvider.getList().add(newFormInstance);
-//            tableDataProvider.refresh();
-//            getContainer().fireState(false);
-//        }
-//    }
+    @UiHandler("addButton")
+    public void onAddButton(ClickEvent event) {
+        final FormField formField = getFormField();
+        if (formField != null) {
+            final Cuid newCuid = CuidAdapter.newFormInstance();
+            final FormInstance newFormInstance = new FormInstance(newCuid, getContainer().getFormPanel().getFormClass().getId());
+            FormInstanceLabeler.setLabel(newFormInstance, newName());
+            tableDataProvider.getList().add(newFormInstance);
+            tableDataProvider.refresh();
+            getContainer().fireState(false);
+        }
+    }
 
     private void validate() {
         clearError();
@@ -219,13 +221,13 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         return Integer.toString(new KeyGenerator().generateInt());
     }
 
-//    @UiHandler("removeButton")
-//    public void onRemoveButton(ClickEvent event) {
-//        final Set<FormInstance> selectedSet = selectionModel.getSelectedSet();
-//        tableDataProvider.getList().removeAll(selectedSet);
-//        tableDataProvider.refresh();
-//        getContainer().fireState(false);
-//    }
+    @UiHandler("removeButton")
+    public void onRemoveButton(ClickEvent event) {
+        final Set<FormInstance> selectedSet = selectionModel.getSelectedSet();
+        tableDataProvider.getList().removeAll(selectedSet);
+        tableDataProvider.refresh();
+        getContainer().fireState(false);
+    }
 
     public void apply() {
         final HasInstances hasInstances = getHasInstances();
@@ -277,6 +279,5 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
 
     public void setContainer(FormFieldInlineEdit editPanel) {
         this.container = editPanel;
-        range.init(editPanel.getFormPanel());
     }
 }

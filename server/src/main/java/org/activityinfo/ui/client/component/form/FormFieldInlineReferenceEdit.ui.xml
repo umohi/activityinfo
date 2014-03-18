@@ -3,7 +3,6 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
              xmlns:a="urn:import:org.activityinfo.ui.client.widget"
-             xmlns:form="urn:import:org.activityinfo.ui.client.component.form"
         >
 
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
@@ -28,20 +27,23 @@
 
     <div class="form-group">
       <label class="col-sm-1 control-label">
-        <ui:text from='{i18n.fieldTypeReference}'/>
+        <ui:text from='{i18n.type}'/>
       </label>
       <div class="col-sm-11">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <form:FormFieldInlineRange ui:field="range"/>
-          </div>
-        </div>
+        <g:ListBox ui:field="type" addStyleNames="form-control">
+          <g:item value='1'>
+            <ui:text from='{i18n.newFormClass}'/>
+          </g:item>
+          <g:item value='2'>
+            <ui:text from='{i18n.chooseExistingFormClass}'/>
+          </g:item>
+        </g:ListBox>
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-sm-1 control-label">
-        <ui:text from='{i18n.fieldTypeReferenceValues}'/>
+        <ui:text from='{i18n.values}'/>
       </label>
       <div class="col-sm-11">
         <div class="panel panel-default">
@@ -49,14 +51,14 @@
             <g:HorizontalPanel>
               <cell:CellTable ui:field="table" tableLayoutFixed="true" autoHeaderRefreshDisabled="true"
                               autoFooterRefreshDisabled="true" rowCount="10"/>
-              <!--<g:VerticalPanel>-->
-                <!--<a:Button ui:field="addButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">-->
-                  <!--<img src="{img.add.getSafeUri}" alt="Add"/>-->
-                <!--</a:Button>-->
-                <!--<a:Button ui:field="removeButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">-->
-                  <!--<img src="{img.delete.getSafeUri}" alt="Remove"/>-->
-                <!--</a:Button>-->
-              <!--</g:VerticalPanel>-->
+              <g:VerticalPanel>
+                <a:Button ui:field="addButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">
+                  <img src="{img.add.getSafeUri}" alt="Add"/>
+                </a:Button>
+                <a:Button ui:field="removeButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">
+                  <img src="{img.delete.getSafeUri}" alt="Remove"/>
+                </a:Button>
+              </g:VerticalPanel>
             </g:HorizontalPanel>
             <br/>
             <div class="has-error">
