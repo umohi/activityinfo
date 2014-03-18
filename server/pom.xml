@@ -545,7 +545,7 @@
             <goals>
               <goal>check</goal>
             </goals>
-            <phase>validate</phase>
+
             <configuration>
               <failOnError>false</failOnError>
             </configuration>

@@ -1,27 +1,24 @@
 package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
 import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.ProjectionKeyProvider;
 import org.activityinfo.core.client.ResourceLocator;
-import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.client.style.table.CellTableResources;
-import org.activityinfo.ui.client.widget.async.FailureWidget;
+import org.activityinfo.ui.client.widget.loading.LoadingState;
+import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +37,9 @@ public class InstanceTable implements IsWidget {
 
 
     private final ResourceLocator resourceLocator;
+
     private final CellTable<Projection> table;
+    private final TableLoadingIndicator loadingIndicator;
 
     private Set<FieldPath> fields = Sets.newHashSet();
 
@@ -68,7 +67,13 @@ public class InstanceTable implements IsWidget {
                 onRangeChanged(event);
             }
         });
+
+        // Create our loading indicator which can also show failure
+        loadingIndicator = new TableLoadingIndicator();
+        table.setLoadingIndicator(loadingIndicator.asWidget());
     }
+
+
 
     public void setCriteria(Criteria criteria) {
         this.criteria = criteria;
@@ -82,7 +87,27 @@ public class InstanceTable implements IsWidget {
             table.addColumn(column, column.getHeader());
             fields.addAll(column.getFieldPaths());
         }
-        loadData();
+
+        reload();
+    }
+
+    public void reload() {
+        loadingIndicator.onLoadingStateChanged(LoadingState.LOADING, null);
+
+        InstanceQuery query = new InstanceQuery(Lists.newArrayList(fields), criteria);
+        resourceLocator.query(query).then(new AsyncCallback<List<Projection>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                LOGGER.log(Level.SEVERE, "Failed to load instances. Criteria = " +
+                        criteria + ", fields = " + fields, caught);
+                loadingIndicator.onLoadingStateChanged(LoadingState.FAILED, caught);
+            }
+
+            @Override
+            public void onSuccess(List<Projection> result) {
+                table.setRowData(result);
+            }
+        });
     }
 
     @Override
@@ -96,23 +121,6 @@ public class InstanceTable implements IsWidget {
                 "length = " + event.getNewRange().getLength());
 
 
-        loadData();
-
+        reload();
     }
-
-    private void loadData() {
-        InstanceQuery query = new InstanceQuery(Lists.newArrayList(fields), criteria);
-        resourceLocator.query(query).then(new AsyncCallback<List<Projection>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                LOGGER.log(Level.SEVERE, "Exception loading instance table", caught);
-            }
-
-            @Override
-            public void onSuccess(List<Projection> result) {
-                table.setRowData(result);
-            }
-        });
-    }
-
 }

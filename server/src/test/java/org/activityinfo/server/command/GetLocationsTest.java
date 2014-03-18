@@ -67,26 +67,5 @@ public class GetLocationsTest extends CommandTestCase2 {
         assertThat(location.getAdminEntity(2).getName(), equalTo("Shabunda"));
     }
 
-    @Test
-    public void testLocationQuery() {
-
-        Cuid villageClassId = CuidAdapter.locationFormClass(1);
-        Cuid provinceClassId = CuidAdapter.adminLevelFormClass(1);
-
-
-        ResourceLocatorAdaptor adapter = new ResourceLocatorAdaptor(getDispatcher());
-        FieldPath villageName = new FieldPath(getNameFieldId(villageClassId));
-        FieldPath provinceName = new FieldPath(getAdminFieldId(villageClassId), field(provinceClassId, CuidAdapter.NAME_FIELD));
-
-        List<Projection> projections = assertResolves(adapter.query(
-                new InstanceQuery(
-                        Arrays.asList(villageName, provinceName),
-                        new ClassCriteria(villageClassId))));
-
-        System.out.println(Joiner.on("\n").join(projections));
-
-        assertThat(projections.size(), equalTo(4));
-        assertThat(projections.get(0).getStringValue(provinceName), equalTo("Sud Kivu"));
-    }
 
 }

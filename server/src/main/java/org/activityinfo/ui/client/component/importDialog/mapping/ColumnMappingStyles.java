@@ -12,9 +12,6 @@ public interface ColumnMappingStyles extends Stylesheet {
 
     public static final ColumnMappingStyles INSTANCE = GWT.create(ColumnMappingStyles.class);
 
-    @ClassName("cm-page")
-    String page();
-
     @ClassName("cm-datagrid")
     String grid();
 

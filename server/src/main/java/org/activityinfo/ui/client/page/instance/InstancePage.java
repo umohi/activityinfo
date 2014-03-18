@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.client.Resources;
 import org.activityinfo.core.shared.Cuid;
@@ -23,6 +24,7 @@ import org.activityinfo.ui.client.pageView.formClass.FormClassPageView;
 import org.activityinfo.ui.client.style.Icons;
 import org.activityinfo.ui.client.widget.DisplayWidget;
 import org.activityinfo.ui.client.widget.LoadingPanel;
+import org.activityinfo.ui.client.widget.loading.PageLoadingPanel;
 
 import java.util.List;
 
@@ -36,21 +38,22 @@ public class InstancePage implements Page {
     private final LoadingPanel<FormInstance> loadingPanel;
 
     private final Resources resources;
+    private final SimpleLayoutPanel outer;
 
 
     public InstancePage(ResourceLocator resourceLocator) {
         this.resources = new Resources(resourceLocator);
 
+        outer = new SimpleLayoutPanel();
+        outer.setStyleName("bs");
+
         Icons.INSTANCE.ensureInjected();
 
-        this.loadingPanel = new LoadingPanel<>();
-        this.loadingPanel.asWidget().addStyleName("bs");
-
-        // for now, the instance page will serve as our container
-        this.loadingPanel.asWidget().addStyleName("container");
+        this.loadingPanel = new LoadingPanel<>(new PageLoadingPanel());
         this.loadingPanel.setDisplayWidgetProvider(new InstancePageViewFactory(resourceLocator));
 
         this.scrollPanel = new ScrollPanel(loadingPanel.asWidget());
+        this.scrollPanel.addStyleName("container");
     }
 
     @Override

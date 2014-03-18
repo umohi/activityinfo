@@ -5,8 +5,6 @@
 
 
     <g:HTMLPanel>
-
-
       <div class="row">
           <div class="col-md-12">
             <h1><span ui:field="pageIcon"/> <span ui:field="folderNameElement"/></h1>
@@ -41,8 +39,5 @@
               </ul>
           </div>
       </div>
-
-
-
     </g:HTMLPanel>
 </ui:UiBinder>

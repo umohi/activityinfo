@@ -11,9 +11,9 @@
 
 @selectionBorderWidth: 2px;
 
-.dataGridWidget,
-.dataGridFooter,
-.dataGridHeader {
+.data-grid-widget,
+.data-grid-header,
+.data-grid-header {
 
   .table;
   .table-bordered;
@@ -40,7 +40,7 @@
   }
 }
 
-.dataGridHeader {
+.data-grid-header {
 
   th {
     cursor: pointer;
@@ -78,27 +78,27 @@
   }
 }
 
-.dataGridFooter {
+.data-grid-footer {
 
   tfoot {
     background-color: @table-bg-accent;
   }
 }
 
-.dataGridSelectedRow {
+.data-grid-selected-row {
   background: @state-success-bg;
   color: white;
   height: auto;
   overflow: auto;
 }
 
-.dataGridSelectedRowCell {
+.data-grid-selected-row-cell {
   border: @selectionBorderWidth solid;
 }
 
 /**
  * The keyboard selected cell is visible over selection.
  */
-.dataGridKeyboardSelectedCell {
+.data-grid-keyboard-selected-cell {
   border: @selectionBorderWidth solid #d7dde8;
 }

@@ -2,15 +2,17 @@ package org.activityinfo.ui.client.widget;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.gwt.core.client.Duration;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.fp.client.Promise;
-import org.activityinfo.ui.client.widget.async.FailureWidget;
-import org.activityinfo.ui.client.widget.async.LoadingWidget;
+import org.activityinfo.ui.client.widget.loading.LoadingPanelView;
+import org.activityinfo.ui.client.widget.loading.LoadingState;
+import org.activityinfo.ui.client.widget.loading.LoadingView;
+import org.activityinfo.ui.client.widget.loading.PageLoadingPanel;
 
 import javax.annotation.Nullable;
 import javax.inject.Provider;
@@ -29,9 +31,8 @@ public class LoadingPanel<V> implements IsWidget {
      * We get confused when things fail to quickly. I mean really, it's like you're not
      * even trying...
      */
-    public static final int FAILURE_MIN_DELAY = 1000;
+    public static final int DELAY_MS = 1000;
 
-    private final SimplePanel panel = new SimplePanel();
 
     /**
      * A function which provides the widget based on the resolved value
@@ -44,10 +45,17 @@ public class LoadingPanel<V> implements IsWidget {
      */
     private Provider<Promise<V>> valueProvider;
 
-    private FailureWidget failureWidget;
-    private LoadingWidget loadingWidget;
+    private LoadingPanelView loadingView;
 
     private int currentRequestNumber = 0;
+
+    public LoadingPanel() {
+        this.loadingView = new PageLoadingPanel();
+    }
+
+    public LoadingPanel(PageLoadingPanel view) {
+        this.loadingView = view;
+    }
 
     public void setDisplayWidget(DisplayWidget<? super V> widget) {
         this.widgetProvider = Functions.constant(widget);
@@ -79,16 +87,14 @@ public class LoadingPanel<V> implements IsWidget {
         final int requestNumber = currentRequestNumber+1;
         this.currentRequestNumber = requestNumber;
 
-        if(promisedValue.getState() != Promise.State.FULFILLED) {
-            showLoadingIndicator();
-        }
+        loadingView.onLoadingStateChanged(LoadingState.LOADING, null);
 
         Promise<Void> loadResult = promisedValue.then(new Function<V, Void>() {
             @Override
             public Void apply(@Nullable V result) {
                 if (requestNumber == currentRequestNumber) {
                     try {
-                        showWidget(result);
+                        showWidget(requestNumber, result);
                     } catch (Throwable e) {
                         showLoadFailure(requestNumber, e);
                     }
@@ -122,49 +128,46 @@ public class LoadingPanel<V> implements IsWidget {
         LOGGER.log(Level.SEVERE, "Load failed", caught);
 
         // the failure may have been caught upstream
-        if(!panel.isAttached()) {
+        if(!loadingView.asWidget().isAttached()) {
             return;
         }
 
-        if(failureWidget == null) {
-            failureWidget = new FailureWidget();
-            failureWidget.getRetryButton().addClickHandler(new ClickHandler() {
+        if(loadingView == null) {
+            loadingView = new PageLoadingPanel();
+            loadingView.getRetryButton().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
                     tryLoad(valueProvider);
                 }
             });
         }
-        failureWidget.setException(caught);
 
+        loadingView.onLoadingStateChanged(LoadingState.LOADING, caught);
+
+        setWidgetWithDelay(requestNumber, loadingView);
+    }
+
+    private void setWidgetWithDelay(final int requestNumber, final IsWidget widget) {
         Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
             @Override
             public boolean execute() {
                 if(requestNumber == currentRequestNumber) {
-                    panel.setWidget(failureWidget);
+                    loadingView.setWidget(widget);
                 }
                 return false;
             }
-        }, FAILURE_MIN_DELAY);
+        }, DELAY_MS);
     }
 
-    private void showLoadingIndicator() {
-        if(loadingWidget == null) {
-            loadingWidget = new LoadingWidget();
-        }
-        panel.setWidget(loadingWidget);
-    }
-
-    private void showWidget(V result) {
+    private void showWidget(int requestNumber, V result) {
         assert widgetProvider != null : "No widget/provider has been set!";
         DisplayWidget<? super V> displayWidget = widgetProvider.apply(result);
-        displayWidget.show(result);
-        panel.setWidget(displayWidget);
+        setWidgetWithDelay(requestNumber, displayWidget);
     }
 
     @Override
     public Widget asWidget() {
-        return panel;
+        return loadingView.asWidget();
     }
 
 }

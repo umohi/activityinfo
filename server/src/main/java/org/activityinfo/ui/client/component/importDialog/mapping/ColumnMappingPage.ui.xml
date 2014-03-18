@@ -7,7 +7,7 @@
   <ui:with field="i18n" type="org.activityinfo.i18n.shared.UiConstants"/>
   <ui:with field="style" type="org.activityinfo.ui.client.component.importDialog.mapping.ColumnMappingStyles"/>
 
-  <g:HeaderPanel styleName="{style.page}">
+  <g:HeaderPanel>
 
     <!-- Header -->
     <g:HTMLPanel>

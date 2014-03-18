@@ -3,24 +3,26 @@
              xmlns:a='urn:import:org.activityinfo.ui.client.widget'>
 
   <ui:with field="icons" type="org.activityinfo.ui.client.style.Icons"/>
-  <ui:with field="style" type="org.activityinfo.ui.client.widget.async.AsyncStylesheet"/>
+  <ui:with field="style" type="org.activityinfo.ui.client.widget.loading.LoadingStylesheet"/>
+  <ui:with field="bundle" type="org.activityinfo.ui.client.widget.loading.LoadingClientBundle"/>
   <ui:with field="i18n" type="org.activityinfo.i18n.shared.UiConstants"/>
 
-  <g:HTMLPanel addStyleNames="{style.asyncWidget}">
+  <g:HTMLPanel styleName="{style.loadingContainer}">
 
-    <div class="{style.outerBox}">
+    <img class="{style.loading}" src="{bundle.loadingIcon.getSafeUri}"/>
 
-      <div ui:field="icon"/>
+    <div class="{style.failed}">
 
-      <div class="{style.innerBox}">
+        <div ui:field="icon"/>
+
         <h3 ui:field="heading"/>
 
         <p ui:field="explanation"/>
 
         <a:Button ui:field="retryButton" style="DEFAULT" text="{i18n.retry}"/>
-      </div>
-
     </div>
+
+    <g:SimpleLayoutPanel ui:field="content" styleName="{style.loaded}"/>
 
   </g:HTMLPanel>
 </ui:UiBinder>

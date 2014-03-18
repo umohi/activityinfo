@@ -1,6 +1,5 @@
 package org.activityinfo.ui.client.style;
 
-import com.bedatadriven.rebar.style.client.Icon;
 import com.bedatadriven.rebar.style.client.IconSet;
 import com.google.gwt.core.shared.GWT;
 
@@ -11,49 +10,52 @@ public interface Icons extends IconSet {
 
     Icons INSTANCE = GWT.create(Icons.class);
 
-    @Icon("icons/add.svg")
+    @Source(value = "icons/fontawesome.svg", glyph = 0xf055)
     String add();
 
-    @Icon("icons/ocha/reporting.svg")
+    @Source(value = "icons/ocha/reporting.svg", glyph = 0xe61a)
     String form();
 
-    @Icon("icons/icomoon/location.svg")
+    @Source(value = "icons/ocha/reporting.svg", glyph = 0xe6c4)
     String location();
 
-    @Icon("icons/icomoon/folder-open.svg")
+    @Source(value = "icons/fontawesome.svg", glyph = 0xf115)
     String folder();
 
-    @Icon("icons/icomoon/remove.svg")
+    @Source(value = "icons/fontawesome.svg", glyph = 0xf114)
+    String folderOpen();
+
+    @Source(value = "icons/fontawesome.svg", glyph = 0xf057)
     String delete();
 
-    @Icon("icons/icomoon/mobile.svg")
+    @Source("icons/icomoon/mobile.svg")
     String mobileDevice();
 
-    @Icon("icons/icomoon/file-excel.svg")
+    @Source("icons/icomoon/file-excel.svg")
     String excelFile();
 
-    @Icon("icons/icomoon/cloud-upload.svg")
+    @Source("icons/icomoon/cloud-upload.svg")
     String importIcon();
 
-    @Icon("icons/icomoon/table.svg")
+    @Source("icons/icomoon/table.svg")
     String table();
 
-    @Icon("icons/icomoon/earth.svg")
+    @Source("icons/icomoon/earth.svg")
     String map();
 
-    @Icon("icons/icomoon/info.svg")
+    @Source("icons/icomoon/info.svg")
     String overview();
 
     /**
      * Symbolizes a problem connecting to the server
      */
-    @Icon("icons/disconnected.svg")
+    @Source("icons/disconnected.svg")
     String connectionProblem();
 
     /**
      * Symbolizes an unexpected exception (that is, a bug!)
      */
-    @Icon("icons/ocha/bug.svg")
+    @Source(value = "icons/fontawesome.svg", glyph = 0xf188)
     String exception();
 
 }
