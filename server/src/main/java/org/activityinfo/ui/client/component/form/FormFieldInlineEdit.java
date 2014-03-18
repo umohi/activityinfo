@@ -289,5 +289,6 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
 
     public void setFormPanel(FormPanel formPanel) {
         this.formPanel = formPanel;
+        referencePanel.setContainer(this);
     }
 }

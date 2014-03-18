@@ -65,6 +65,9 @@ public class DevResourceLocatorAdaptor implements ResourceLocator {
     public Promise<List<FormInstance>> queryInstances(Criteria criteria) {
         if (criteria instanceof ClassCriteria) {
             final Iri iri = ((ClassCriteria) criteria).getClassIri();
+            if (FormClass.CLASS_ID.asIri().equals(iri)) {
+                return Promise.resolved(DevUtils.getFormInstanceList(DevUtils.MULTIPLE_SMALL_ID));
+            }
             final int legacyId = CuidAdapter.getLegacyIdFromCuidIri(iri);
             return Promise.resolved(DevUtils.getFormInstanceList(legacyId));
         }
