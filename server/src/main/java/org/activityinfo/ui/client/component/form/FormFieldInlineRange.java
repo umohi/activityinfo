@@ -28,7 +28,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.form.FormInstanceLabeler;
+import org.activityinfo.legacy.client.callback.SuccessCallback;
 import org.activityinfo.ui.client.widget.SuggestBox;
 
 import java.util.List;
@@ -46,6 +50,7 @@ public class FormFieldInlineRange extends Composite {
 
     private final BiMap<String, Cuid> labelToCuidBiMap = HashBiMap.create();
     private final MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
+    private FormPanel formPanel;
 
     @UiField
     ListBox selectedList;
@@ -63,9 +68,21 @@ public class FormFieldInlineRange extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public void initOracle(List<FormClass> formClassess) {
-        for (FormClass formClass : formClassess) {
-            final String labelValue = formClass.getLabel().getValue();
+    public void init(FormPanel formPanel) {
+        this.formPanel = formPanel;
+        if (formPanel != null) {
+            this.formPanel.getResourceLocator().queryInstances(new ClassCriteria(FormClass.CLASS_ID)).then(new SuccessCallback<List<FormInstance>>() {
+                @Override
+                public void onSuccess(List<FormInstance> result) {
+                    initOracle(result);
+                }
+            });
+        }
+    }
+
+    public void initOracle(List<FormInstance> formClassess) {
+        for (FormInstance formClass : formClassess) {
+            final String labelValue = FormInstanceLabeler.getLabel(formClass);
             oracle.add(labelValue);
             labelToCuidBiMap.forcePut(labelValue, formClass.getId());
         }

@@ -89,6 +89,8 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     RadioButton singleChoice;
     @UiField
     DivElement errorContainer;
+    @UiField
+    FormFieldInlineRange range;
 
     public FormFieldInlineReferenceEdit() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -233,6 +235,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     public void apply() {
         final HasInstances hasInstances = getHasInstances();
         final FormField formField = getFormField();
+        range.init(container.getFormPanel());
         tableDataProvider.setList(hasInstances != null ? hasInstances.getInstances() : Lists.<FormInstance>newArrayList());
         tableDataProvider.refresh();
         if (formField != null && formField.getCardinality() != null) {
