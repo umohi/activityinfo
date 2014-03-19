@@ -3409,4 +3409,7 @@ public interface UiConstants extends Constants {
     @Key("chooseExistingFormClass")
     String chooseExistingFormClass();
 
+    @DefaultStringValue("Current form")
+    @Key("currentFormClass")
+    String currentFormClass();
 }

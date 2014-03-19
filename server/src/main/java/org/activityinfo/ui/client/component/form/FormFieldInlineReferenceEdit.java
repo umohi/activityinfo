@@ -30,13 +30,11 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -84,6 +82,12 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
             public String getLabel() {
                 return I18N.CONSTANTS.chooseExistingFormClass();
             }
+        },
+        CURRENT {
+            @Override
+            public String getLabel() {
+                return I18N.CONSTANTS.currentFormClass();
+            }
         };
 
         public abstract String getLabel();
@@ -108,6 +112,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     private boolean existingFormOracleIsInitialized = false;
     private boolean addedEventBusHandlers = false;
     private FormClass newFormClass = null;
+    private boolean editMode;
 
     @UiField
     CellTable<FormInstance> table;
@@ -162,7 +167,10 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     }
 
     private void initReferType() {
-        for (ReferType type : ReferType.values()) {
+        final List<ReferType> values = Lists.newArrayList(ReferType.values());
+        values.remove(ReferType.CURRENT);
+
+        for (ReferType type : values) {
             referType.addItem(type.getLabel(), type.name());
         }
         referType.addChangeHandler(new ChangeHandler() {
@@ -200,31 +208,46 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
 
     private void fireState() {
         final ReferType referType = getSelectedReferType();
-        final boolean isNewForm = referType == ReferType.NEW;
 
-        GwtUtil.setVisible(isNewForm, newFormNameContainer, valuesContainer);
-        GwtUtil.setVisible(!isNewForm, existingFormContainer);
+        // set visibible components state
+        GwtUtil.setVisible(referType == ReferType.NEW || referType == ReferType.CURRENT, valuesContainer);
+        GwtUtil.setVisible(referType == ReferType.NEW, newFormNameContainer);
+        GwtUtil.setVisible(referType == ReferType.EXISTING, existingFormContainer);
 
-        if (!isNewForm && !existingFormOracleIsInitialized) {
-            // init existing suggest box oracle
+        if (referType != null) {
+            switch (referType) {
+                case CURRENT:
+                    apply(); // apply current
+                    break;
+                case EXISTING:
+                    if (!existingFormOracleIsInitialized) {
+                        // init existing suggest box oracle
 
-            if (getContainer() != null && getContainer().getFormPanel() != null) {
-                existingFormOracleIsInitialized = true;
-                final MultiWordSuggestOracle suggestOracle = (MultiWordSuggestOracle) existingForm.getSuggestOracle();
-                getContainer().getFormPanel().getResourceLocator().queryInstances(new ClassCriteria(FormClass.CLASS_ID)).then(new SuccessCallback<List<FormInstance>>() {
-                    @Override
-                    public void onSuccess(List<FormInstance> result) {
-                        for (FormInstance formClass : result) {
-                            final String labelValue = formClass.getString(FormClass.LABEL_FIELD_ID);
-                            if (!Strings.isNullOrEmpty(labelValue)) {
-                                suggestOracle.add(labelValue);
-                                formClassLabelToCuidBiMap.forcePut(labelValue, formClass.getId());
-                            }
+                        if (getContainer() != null && getContainer().getFormPanel() != null) {
+                            existingFormOracleIsInitialized = true;
+                            final MultiWordSuggestOracle suggestOracle = (MultiWordSuggestOracle) existingForm.getSuggestOracle();
+                            getContainer().getFormPanel().getResourceLocator().queryInstances(new ClassCriteria(FormClass.CLASS_ID)).then(new SuccessCallback<List<FormInstance>>() {
+                                @Override
+                                public void onSuccess(List<FormInstance> result) {
+                                    for (FormInstance formClass : result) {
+                                        final String labelValue = formClass.getString(FormClass.LABEL_FIELD_ID);
+                                        if (!Strings.isNullOrEmpty(labelValue)) {
+                                            suggestOracle.add(labelValue);
+                                            formClassLabelToCuidBiMap.forcePut(labelValue, formClass.getId());
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
-                });
+                    break;
+                case NEW:
+                    tableDataProvider.setList(Lists.<FormInstance>newArrayList());
+                    tableDataProvider.refresh();
+                    break;
             }
         }
+
         if (getContainer() != null) {
             getContainer().fireState(false);
         }
@@ -238,8 +261,6 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
                 @Override
                 public void persist(PersistEvent p_event) {
                     if (FormFieldInlineReferenceEdit.this.newFormClass != null) {
-                        final List<FormInstance> newFormInstances = tableDataProvider.getList();
-
                         // persist class
                         formPanel.getResourceLocator().persist(newFormClass).then(new AsyncCallback<Void>() {
                             @Override
@@ -253,11 +274,15 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
                             }
                         });
 
-                        // persist new form instances
-                        formPanel.getResourceLocator().persist(newFormInstances).then(new AsyncCallback<Void>() {
+                    }
+
+                    // persist new/edited form instances
+                    final List<FormInstance> formInstances = tableDataProvider.getList();
+                    if (isEditMode() || FormFieldInlineReferenceEdit.this.newFormClass != null) {
+                        formPanel.getResourceLocator().persist(formInstances).then(new AsyncCallback<Void>() {
                             @Override
                             public void onFailure(Throwable caught) {
-                                Log.error("Failed to save newFormClass instances from inline reference panel.", caught);
+                                Log.error("Failed to save form instances from inline reference panel.", caught);
                             }
 
                             @Override
@@ -331,7 +356,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
             formField.setCardinality(singleChoice.getValue() ? FormFieldCardinality.SINGLE : FormFieldCardinality.MULTIPLE);
 
             // update range
-            if (formField.getType() == FormFieldType.REFERENCE) {
+            if (formField.getType() == FormFieldType.REFERENCE && !isEditMode()) {
                 final ReferType selectedReferType = getSelectedReferType();
                 if (selectedReferType == ReferType.NEW) {
                     newFormClass = createNewFormClass();
@@ -472,5 +497,19 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     @Override
     public Validator getValidator() {
         return validator;
+    }
+
+    public void setEditMode(boolean editMode) {
+        this.editMode = editMode;
+        if (getSelectedReferType() != ReferType.CURRENT && referType.getItemCount() < ReferType.values().length) {
+            final int index = 0;
+            referType.insertItem(ReferType.CURRENT.getLabel(), ReferType.CURRENT.name(), index);
+            referType.setSelectedIndex(index);
+            DomEvent.fireNativeEvent(Document.get().createChangeEvent(), referType);
+        }
+    }
+
+    public boolean isEditMode() {
+        return editMode;
     }
 }

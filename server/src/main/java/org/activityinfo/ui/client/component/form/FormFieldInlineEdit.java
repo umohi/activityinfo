@@ -238,6 +238,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
         this.type.setEnabled(!editMode);
+        this.referencePanel.setEditMode(editMode);
         GwtUtil.setVisibleInline(editMode, changeButton.getElement());
         setChangeButtonState();
     }
