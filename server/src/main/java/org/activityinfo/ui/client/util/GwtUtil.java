@@ -48,14 +48,16 @@ public class GwtUtil {
         }
     }
 
-    public static void setVisible(Element element, boolean visible) {
-        if (element != null) {
-            if (visible) {
-                element.removeClassName("hidden");
-                element.addClassName("show");
-            } else {
-                element.removeClassName("show");
-                element.addClassName("hidden");
+    public static void setVisible(boolean visible, Element... elements) {
+        if (elements != null) {
+            for (Element element : elements) {
+                if (visible) {
+                    element.removeClassName("hidden");
+                    element.addClassName("show");
+                } else {
+                    element.removeClassName("show");
+                    element.addClassName("hidden");
+                }
             }
         }
     }

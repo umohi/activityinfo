@@ -22,6 +22,8 @@ package org.activityinfo.ui.client.component.form;
  */
 
 import com.google.common.base.Strings;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.cell.client.CheckboxCell;
@@ -32,6 +34,8 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -40,18 +44,26 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.LocalizedString;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.form.*;
 import org.activityinfo.core.shared.form.has.HasInstances;
 import org.activityinfo.core.shared.validation.*;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.KeyGenerator;
+import org.activityinfo.legacy.client.callback.SuccessCallback;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
+import org.activityinfo.ui.client.component.form.event.PersistEvent;
+import org.activityinfo.ui.client.util.GwtUtil;
+import org.activityinfo.ui.client.widget.TextBox;
 
 import java.util.List;
 import java.util.Set;
@@ -90,8 +102,12 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     private final MultiSelectionModel<FormInstance> selectionModel = new MultiSelectionModel<>(
             FormInstanceKeyProvider.getInstance());
 
+    private final BiMap<String, Cuid> formClassLabelToCuidBiMap = HashBiMap.create();
     private final Validator validator;
     private FormFieldInlineEdit container;
+    private boolean existingFormOracleIsInitialized = false;
+    private boolean addedEventBusHandlers = false;
+    private FormClass newFormClass = null;
 
     @UiField
     CellTable<FormInstance> table;
@@ -107,6 +123,16 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     DivElement errorContainer;
     @UiField
     ListBox referType;
+    @UiField
+    DivElement valuesContainer;
+    @UiField
+    TextBox newFormName;
+    @UiField
+    DivElement newFormNameContainer;
+    @UiField
+    DivElement existingFormContainer;
+    @UiField
+    SuggestBox existingForm;
 
     public FormFieldInlineReferenceEdit() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -114,6 +140,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         initReferType();
         validator = createValidator();
         singleChoice.setValue(true);
+        fireState();
     }
 
     private Validator createValidator() {
@@ -121,11 +148,13 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
             @Override
             public List<ValidationFailure> validate() {
                 final List<ValidationFailure> failures = Lists.newArrayList();
-                if (getSelectedReferType() == ReferType.NEW && getInstances().isEmpty()) {
+                final ReferType selectedReferType = getSelectedReferType();
+                if (selectedReferType == ReferType.NEW && getInstances().isEmpty()) {
                     final String message = ValidationUtils.format(I18N.CONSTANTS.values(), I18N.CONSTANTS.validationControlIsEmpty());
                     failures.add(new ValidationFailure(new ValidationMessage(message)));
-                } else if (getSelectedReferType() == ReferType.EXISTING) {
-                    // todo
+                } else if (selectedReferType == ReferType.EXISTING && Strings.isNullOrEmpty(existingForm.getValue())) {
+                    final String message = ValidationUtils.format(I18N.CONSTANTS.selectFrom(), I18N.CONSTANTS.validationControlIsEmpty());
+                    failures.add(new ValidationFailure(new ValidationMessage(message)));
                 }
                 return failures;
             }
@@ -136,17 +165,110 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
         for (ReferType type : ReferType.values()) {
             referType.addItem(type.getLabel(), type.name());
         }
+        referType.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                fireState();
+            }
+        });
     }
 
-    private ReferType getSelectedReferType() {
+    public ReferType getSelectedReferType() {
         final int selectedIndex = referType.getSelectedIndex();
         if (selectedIndex != -1) {
             final String value = referType.getValue(selectedIndex);
-            if (Strings.isNullOrEmpty(value)) {
+            if (!Strings.isNullOrEmpty(value)) {
                 return ReferType.valueOf(value);
             }
         }
         return null;
+    }
+
+    private FormClass createNewFormClass() {
+        if (getSelectedReferType() == ReferType.NEW) {
+            final FormField newLabelField = new FormField(CuidAdapter.newFormField());
+            newLabelField.setType(FormFieldType.FREE_TEXT);
+
+            final FormClass newFormClass = new FormClass(CuidAdapter.newFormClass());
+            newFormClass.setLabel(new LocalizedString(newFormName.getValue()));
+            newFormClass.setParentId(getContainer().getFormPanel().getFormClass().getId());
+            newFormClass.addElement(newLabelField);
+            return newFormClass;
+        }
+        return null;
+    }
+
+    private void fireState() {
+        final ReferType referType = getSelectedReferType();
+        final boolean isNewForm = referType == ReferType.NEW;
+
+        GwtUtil.setVisible(isNewForm, newFormNameContainer, valuesContainer);
+        GwtUtil.setVisible(!isNewForm, existingFormContainer);
+
+        if (!isNewForm && !existingFormOracleIsInitialized) {
+            // init existing suggest box oracle
+
+            if (getContainer() != null && getContainer().getFormPanel() != null) {
+                existingFormOracleIsInitialized = true;
+                final MultiWordSuggestOracle suggestOracle = (MultiWordSuggestOracle) existingForm.getSuggestOracle();
+                getContainer().getFormPanel().getResourceLocator().queryInstances(new ClassCriteria(FormClass.CLASS_ID)).then(new SuccessCallback<List<FormInstance>>() {
+                    @Override
+                    public void onSuccess(List<FormInstance> result) {
+                        for (FormInstance formClass : result) {
+                            final String labelValue = formClass.getString(FormClass.LABEL_FIELD_ID);
+                            if (!Strings.isNullOrEmpty(labelValue)) {
+                                suggestOracle.add(labelValue);
+                                formClassLabelToCuidBiMap.forcePut(labelValue, formClass.getId());
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        if (getContainer() != null) {
+            getContainer().fireState(false);
+        }
+    }
+
+    private void addEventBusHandlers() {
+        final FormPanel formPanel = getContainer().getFormPanel();
+        if (!addedEventBusHandlers) {
+            addedEventBusHandlers = true;
+            formPanel.getEventBus().addHandler(PersistEvent.TYPE, new PersistEvent.Handler() {
+                @Override
+                public void persist(PersistEvent p_event) {
+                    if (FormFieldInlineReferenceEdit.this.newFormClass != null) {
+                        final List<FormInstance> newFormInstances = tableDataProvider.getList();
+
+                        // persist class
+                        formPanel.getResourceLocator().persist(newFormClass).then(new AsyncCallback<Void>() {
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                Log.error("Failed to save newFormClass from inline reference panel.", caught);
+                            }
+
+                            @Override
+                            public void onSuccess(Void result) {
+                                // do nothing
+                            }
+                        });
+
+                        // persist new form instances
+                        formPanel.getResourceLocator().persist(newFormInstances).then(new AsyncCallback<Void>() {
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                Log.error("Failed to save newFormClass instances from inline reference panel.", caught);
+                            }
+
+                            @Override
+                            public void onSuccess(Void result) {
+                                // do nothing
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     private void initTable() {
@@ -205,15 +327,27 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     public void updateModel() {
         final FormField formField = getFormField();
         if (formField != null) {
+            addEventBusHandlers();
             formField.setCardinality(singleChoice.getValue() ? FormFieldCardinality.SINGLE : FormFieldCardinality.MULTIPLE);
 
             // update range
-            final Set<Cuid> newRange = Sets.newHashSet();
-            final List<FormInstance> instances = tableDataProvider.getList();
-            for (FormInstance instance : instances) {
-                newRange.add(instance.getId());
+            if (formField.getType() == FormFieldType.REFERENCE) {
+                final ReferType selectedReferType = getSelectedReferType();
+                if (selectedReferType == ReferType.NEW) {
+                    newFormClass = createNewFormClass();
+                    getFormField().setRange(newFormClass.getId());
+                } else if (selectedReferType == ReferType.EXISTING) {
+                    final String existingFormClassLabel = existingForm.getValue();
+                    final Cuid cuid = formClassLabelToCuidBiMap.get(existingFormClassLabel);
+                    if (cuid != null) {
+                        getFormField().setRange(cuid);
+                    }
+                } else {
+                    formField.setRange(Sets.<Cuid>newHashSet());
+                }
+            } else {
+                formField.setRange(Sets.<Cuid>newHashSet());
             }
-            formField.setRange(newRange);
         }
     }
 

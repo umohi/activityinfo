@@ -34,7 +34,16 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" ui:field="newFormNameContainer">
+      <label class="col-sm-1 control-label">
+        <ui:text from='{i18n.name}'/>
+      </label>
+      <div class="col-sm-11">
+        <a:TextBox ui:field="newFormName"/>
+      </div>
+    </div>
+
+    <div class="form-group" ui:field="valuesContainer">
       <label class="col-sm-1 control-label">
         <ui:text from='{i18n.values}'/>
       </label>
@@ -59,6 +68,15 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="form-group" ui:field="existingFormContainer">
+      <label class="col-sm-1 control-label">
+        <ui:text from='{i18n.selectFrom}'/>
+      </label>
+      <div class="col-sm-11">
+        <g:SuggestBox ui:field="existingForm" addStyleNames="form-control"/>
       </div>
     </div>
   </g:HTMLPanel>

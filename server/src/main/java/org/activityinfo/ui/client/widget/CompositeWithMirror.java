@@ -37,10 +37,10 @@ public class CompositeWithMirror extends Composite {
     private final List<Element> mirrorElements = Lists.newArrayList();
 
     public void setVisible(boolean visible) {
-        GwtUtil.setVisible(getElement(), visible);
+        GwtUtil.setVisible(visible, getElement());
         for (Element mirrorElement : mirrorElements) {
 
-            GwtUtil.setVisible(mirrorElement, !visible);
+            GwtUtil.setVisible(!visible, mirrorElement);
         }
     }
 

@@ -59,9 +59,9 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Promise<Void> persist(Resource resource) {
-        if(resource instanceof FormInstance) {
+        if (resource instanceof FormInstance) {
             FormInstance instance = (FormInstance) resource;
-            if(instance.getId().getDomain() == CuidAdapter.SITE_DOMAIN) {
+            if (instance.getId().getDomain() == CuidAdapter.SITE_DOMAIN) {
                 int activityId = CuidAdapter.getLegacyIdFromCuid(instance.getClassId());
 
                 Promise<SiteBinding> siteBinding = dispatcher
@@ -73,8 +73,25 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
                         .then(Functions.<Void>constant(null));
 
             }
+        } else if (resource instanceof FormClass) {
+            FormClass formClass = (FormClass) resource;
+            // todo
         }
         return Promise.rejected(new UnsupportedOperationException());
+    }
+
+    // todo there should be better way to persist list of resources
+    @Override
+    public Promise<Void> persist(List<? extends Resource> resources) {
+        if (resources != null && !resources.isEmpty()) {
+            for (Resource resource : resources) {
+                final Promise<Void> intermediatePromise = persist(resource);
+                if (intermediatePromise.getState() != Promise.State.FULFILLED) {
+                    return intermediatePromise;
+                }
+            }
+        }
+        return Promise.resolved(null);
     }
 
     @Override

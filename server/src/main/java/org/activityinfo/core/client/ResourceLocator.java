@@ -32,6 +32,7 @@ public interface ResourceLocator {
      */
     Promise<Void> persist(Resource resource);
 
+    Promise<Void> persist(List<? extends Resource> resources);
 
     /**
      * Counts the form instances that match the given criteria.

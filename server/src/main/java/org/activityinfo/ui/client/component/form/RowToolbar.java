@@ -76,7 +76,7 @@ public class RowToolbar extends Composite {
             @Override
             public void onMouseOver(MouseOverEvent event) {
                 if (isDesignEnabled()) {
-                    GwtUtil.setVisible(toolbar, true);
+                    GwtUtil.setVisible(true, toolbar);
                 }
             }
         }, MouseOverEvent.getType());
@@ -84,7 +84,7 @@ public class RowToolbar extends Composite {
             @Override
             public void onMouseOut(MouseOutEvent event) {
                 if (isDesignEnabled()) {
-                    GwtUtil.setVisible(toolbar, false);
+                    GwtUtil.setVisible(false, toolbar);
                 }
             }
         }, MouseOutEvent.getType());

@@ -57,6 +57,11 @@ public class DevResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
+    public Promise<Void> persist(List<? extends Resource> resources) {
+        return null;
+    }
+
+    @Override
     public Promise<Integer> countInstances(Criteria criteria) {
         return null;
     }

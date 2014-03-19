@@ -26,7 +26,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,6 +36,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
@@ -50,6 +50,7 @@ import org.activityinfo.core.shared.validation.ValidatorBuilder;
 import org.activityinfo.core.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.ui.client.component.form.event.PersistEvent;
 import org.activityinfo.ui.client.component.form.event.UpdateStateEvent;
 import org.activityinfo.ui.client.util.GwtUtil;
 import org.activityinfo.ui.client.widget.undo.UndoListener;
@@ -70,10 +71,6 @@ import java.util.Set;
  */
 public class FormPanel extends Composite {
 
-    public static interface Handler {
-        public void onSave();
-    }
-
     private static UserFormPanelUiBinder uiBinder = GWT
             .create(UserFormPanelUiBinder.class);
 
@@ -89,7 +86,6 @@ public class FormPanel extends Composite {
     private boolean designEnabled = false;
     private ElementNode elementNode;
     private final EventBus eventBus = new SimpleEventBus();
-    private final List<Handler> handlerList = Lists.newArrayList();
     private final UndoManager undoManager = new UndoManager();
 
     @UiField
@@ -163,10 +159,6 @@ public class FormPanel extends Composite {
         redoButton.setEnabled(undoManager.canRedo());
     }
 
-    public void addHandler(Handler handler) {
-        handlerList.add(handler);
-    }
-
     private void initEventBusHandlers() {
         eventBus.addHandler(UpdateStateEvent.TYPE, new UpdateStateEvent.Handler() {
             @Override
@@ -174,6 +166,43 @@ public class FormPanel extends Composite {
                 fireState();
             }
         });
+        eventBus.addHandler(PersistEvent.TYPE, new PersistEvent.Handler() {
+            @Override
+            public void persist(PersistEvent p_event) {
+                save();
+            }
+        });
+    }
+
+    private void save() {
+        final FormInstance value = getValue();
+        if (value != null) {
+            resourceLocator.persist(value).then(new AsyncCallback<Void>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Log.error("Failed to save form instance");
+                }
+
+                @Override
+                public void onSuccess(Void result) {
+                    // do nothing
+                }
+            });
+        }
+        if (isDesignEnabled()) {
+            resourceLocator.persist(getFormClass()).then(new AsyncCallback<Void>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Log.error("Failed to save form class");
+                }
+
+                @Override
+                public void onSuccess(Void result) {
+                    // do nothing
+                }
+            });
+        }
+
     }
 
     public void fireState() {
@@ -204,9 +233,7 @@ public class FormPanel extends Composite {
     @UiHandler("saveButton")
     public void onSave(ClickEvent event) {
         beforeSave();
-        for (Handler handler : handlerList) {
-            handler.onSave();
-        }
+        eventBus.fireEvent(new PersistEvent());
     }
 
     protected void beforeSave() {

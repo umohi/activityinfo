@@ -78,28 +78,6 @@ public class FormPanelPage extends Composite implements Page {
 
     private void init() {
         fetchRemote();
-        formPanel.addHandler(new FormPanel.Handler() {
-            @Override
-            public void onSave() {
-                FormPanelPage.this.onSave();
-            }
-        });
-    }
-
-    private void onSave() {
-        final FormInstance value = formPanel.getValue();
-        if (value != null) {
-            resourceLocator.persist(value).then(new AsyncCallback<Void>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    Log.error("Failed to save form instance");
-                }
-
-                @Override
-                public void onSuccess(Void result) {
-                }
-            });
-        }
     }
 
     private void fetchRemote() {

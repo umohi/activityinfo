@@ -101,10 +101,13 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
         });
         final ValidatorBuilder validatorBuilder = ValidatorBuilder.instance().
                 addNotEmpty(label, I18N.CONSTANTS.fieldLabel()).
-                addValidator(createUnitValidator());
-        if (type.getSelectedType() == FormFieldType.REFERENCE) {
-            validatorBuilder.addValidator(referencePanel.getValidator());
-        }
+                addValidator(createUnitValidator()).
+                addValidator(new ValidatorWithPredicate(referencePanel.getValidator(), new SimplePredicate() {
+                    @Override
+                    public boolean apply() {
+                        return type.getSelectedType() == FormFieldType.REFERENCE;
+                    }
+                }));
 
         validator = validatorBuilder.build();
         label.addKeyUpHandler(new KeyUpHandler() {
@@ -122,6 +125,16 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
     }
 
 
+    public FormPanel getFormPanel() {
+        return formPanel;
+    }
+
+    public void setFormPanel(FormPanel formPanel) {
+        this.formPanel = formPanel;
+        referencePanel.setContainer(this);
+    }
+
+
     private Validator createUnitValidator() {
         return new ValidatorWithPredicate(new NotEmptyValidator(unit, I18N.CONSTANTS.fieldUnit()), new SimplePredicate() {
             @Override
@@ -133,11 +146,11 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
 
     private void setUnitControlState() {
         final boolean isUnitVisible = type.getSelectedType() == FormFieldType.QUANTITY;
-        GwtUtil.setVisible(unitContainer, isUnitVisible);
+        GwtUtil.setVisible(isUnitVisible, unitContainer);
     }
 
     private void setReferencePanelState() {
-        GwtUtil.setVisible(referenceContainer, type.getSelectedType() == FormFieldType.REFERENCE);
+        GwtUtil.setVisible(type.getSelectedType() == FormFieldType.REFERENCE, referenceContainer);
         referencePanel.apply();
     }
 
@@ -198,7 +211,7 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
         formField.setRequired(required.getValue());
 
         if (type.getSelectedType() == FormFieldType.REFERENCE) {
-            referencePanel.updateModel();
+            referencePanel.updateModel(); // update of reference field must be last
         }
     }
 
@@ -263,21 +276,12 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
     public void setRow(FormFieldRow row) {
         this.row = row;
         if (formPanel == null && row != null) {
-            formPanel = row.getFormPanel();
+            setFormPanel(row.getFormPanel());
         }
     }
 
     @Override
     public Validator getValidator() {
         return validator;
-    }
-
-    public FormPanel getFormPanel() {
-        return formPanel;
-    }
-
-    public void setFormPanel(FormPanel formPanel) {
-        this.formPanel = formPanel;
-        referencePanel.setContainer(this);
     }
 }

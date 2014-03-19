@@ -83,6 +83,11 @@ public class CuidAdapter {
         return attributeId(new KeyGenerator().generateInt());
     }
 
+    // todo yuriyz -> alex : please check it, right now used to add new form class in inline reference panel
+    public static Cuid newFormClass() {
+        return CuidAdapter.cuid('z', new KeyGenerator().generateInt());
+    }
+
     public static Cuid getFormInstanceLabelCuid(FormInstance formInstance) {
         return CuidAdapter.field(formInstance.getClassId(), NAME_FIELD);
     }

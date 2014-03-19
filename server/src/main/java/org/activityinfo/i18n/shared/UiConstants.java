@@ -3401,6 +3401,10 @@ public interface UiConstants extends Constants {
     @Key("referTo")
     String referTo();
 
+    @DefaultStringValue("Select from")
+    @Key("selectFrom")
+    String selectFrom();
+
     @DefaultStringValue("Choose from another form")
     @Key("chooseExistingFormClass")
     String chooseExistingFormClass();

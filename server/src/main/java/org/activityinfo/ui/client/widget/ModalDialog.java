@@ -66,7 +66,7 @@ public class ModalDialog extends Composite {
     }
 
     public void setVisible(boolean visible) {
-        GwtUtil.setVisible(getElement(), visible);
+        GwtUtil.setVisible(visible, getElement());
     }
 
     public void show() {
