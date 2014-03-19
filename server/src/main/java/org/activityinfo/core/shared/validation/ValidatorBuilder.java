@@ -44,7 +44,9 @@ public class ValidatorBuilder {
     }
 
     public ValidatorBuilder addValidator(Validator validator) {
-        validators.getValidators().add(validator);
+        if (validator != null) {
+            validators.getValidators().add(validator);
+        }
         return this;
     }
 

@@ -3393,7 +3393,16 @@ public interface UiConstants extends Constants {
     @Key("fieldTypeReferenceValues")
     String fieldTypeReferenceValues();
 
+    @DefaultStringValue("New form")
+    @Key("newForm")
+    String newForm();
+
+    @DefaultStringValue("Refer to")
+    @Key("referTo")
+    String referTo();
+
     @DefaultStringValue("Choose from another form")
     @Key("chooseExistingFormClass")
     String chooseExistingFormClass();
+
 }

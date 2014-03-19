@@ -21,6 +21,7 @@ package org.activityinfo.ui.client.component.form;
  * #L%
  */
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.cell.client.CheckboxCell;
@@ -47,6 +48,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.*;
 import org.activityinfo.core.shared.form.has.HasInstances;
+import org.activityinfo.core.shared.validation.*;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
@@ -57,7 +59,23 @@ import java.util.Set;
 /**
  * @author yuriyz on 3/5/14.
  */
-public class FormFieldInlineReferenceEdit extends Composite implements HasInstances {
+public class FormFieldInlineReferenceEdit extends Composite implements HasInstances, HasValidator {
+
+    public static enum ReferType {
+        NEW {
+            @Override
+            public String getLabel() {
+                return I18N.CONSTANTS.newForm();
+            }
+        }, EXISTING {
+            @Override
+            public String getLabel() {
+                return I18N.CONSTANTS.chooseExistingFormClass();
+            }
+        };
+
+        public abstract String getLabel();
+    }
 
     private static FormFieldInlineReferenceEditBinder uiBinder = GWT
             .create(FormFieldInlineReferenceEditBinder.class);
@@ -72,6 +90,7 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     private final MultiSelectionModel<FormInstance> selectionModel = new MultiSelectionModel<>(
             FormInstanceKeyProvider.getInstance());
 
+    private final Validator validator;
     private FormFieldInlineEdit container;
 
     @UiField
@@ -87,12 +106,47 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
     @UiField
     DivElement errorContainer;
     @UiField
-    ListBox type;
+    ListBox referType;
 
     public FormFieldInlineReferenceEdit() {
         initWidget(uiBinder.createAndBindUi(this));
         initTable();
+        initReferType();
+        validator = createValidator();
         singleChoice.setValue(true);
+    }
+
+    private Validator createValidator() {
+        return new Validator() {
+            @Override
+            public List<ValidationFailure> validate() {
+                final List<ValidationFailure> failures = Lists.newArrayList();
+                if (getSelectedReferType() == ReferType.NEW && getInstances().isEmpty()) {
+                    final String message = ValidationUtils.format(I18N.CONSTANTS.values(), I18N.CONSTANTS.validationControlIsEmpty());
+                    failures.add(new ValidationFailure(new ValidationMessage(message)));
+                } else if (getSelectedReferType() == ReferType.EXISTING) {
+                    // todo
+                }
+                return failures;
+            }
+        };
+    }
+
+    private void initReferType() {
+        for (ReferType type : ReferType.values()) {
+            referType.addItem(type.getLabel(), type.name());
+        }
+    }
+
+    private ReferType getSelectedReferType() {
+        final int selectedIndex = referType.getSelectedIndex();
+        if (selectedIndex != -1) {
+            final String value = referType.getValue(selectedIndex);
+            if (Strings.isNullOrEmpty(value)) {
+                return ReferType.valueOf(value);
+            }
+        }
+        return null;
     }
 
     private void initTable() {
@@ -279,5 +333,10 @@ public class FormFieldInlineReferenceEdit extends Composite implements HasInstan
 
     public void setContainer(FormFieldInlineEdit editPanel) {
         this.container = editPanel;
+    }
+
+    @Override
+    public Validator getValidator() {
+        return validator;
     }
 }

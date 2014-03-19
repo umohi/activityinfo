@@ -27,17 +27,10 @@
 
     <div class="form-group">
       <label class="col-sm-1 control-label">
-        <ui:text from='{i18n.type}'/>
+        <ui:text from='{i18n.referTo}'/>
       </label>
       <div class="col-sm-11">
-        <g:ListBox ui:field="type" addStyleNames="form-control">
-          <g:item value='1'>
-            <ui:text from='{i18n.newFormClass}'/>
-          </g:item>
-          <g:item value='2'>
-            <ui:text from='{i18n.chooseExistingFormClass}'/>
-          </g:item>
-        </g:ListBox>
+        <g:ListBox ui:field="referType" addStyleNames="form-control"/>
       </div>
     </div>
 

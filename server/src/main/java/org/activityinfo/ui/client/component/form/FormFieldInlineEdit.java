@@ -21,7 +21,6 @@ package org.activityinfo.ui.client.component.form;
  * #L%
  */
 
-import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -100,11 +99,14 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
                 fireState(true);
             }
         });
-        validator = ValidatorBuilder.instance().
+        final ValidatorBuilder validatorBuilder = ValidatorBuilder.instance().
                 addNotEmpty(label, I18N.CONSTANTS.fieldLabel()).
-                addValidator(createUnitValidator()).
-                addValidator(createReferenceValidator()).
-                build();
+                addValidator(createUnitValidator());
+        if (type.getSelectedType() == FormFieldType.REFERENCE) {
+            validatorBuilder.addValidator(referencePanel.getValidator());
+        }
+
+        validator = validatorBuilder.build();
         label.addKeyUpHandler(new KeyUpHandler() {
             public void onKeyUp(KeyUpEvent event) {
                 fireState(false);
@@ -119,19 +121,6 @@ public class FormFieldInlineEdit extends CompositeWithMirror implements HasValid
         fireState(true);
     }
 
-    private Validator createReferenceValidator() {
-        return new Validator() {
-            @Override
-            public List<ValidationFailure> validate() {
-                final List<ValidationFailure> failures = Lists.newArrayList();
-                if (type.getSelectedType() == FormFieldType.REFERENCE && getReferencePanel().getInstances().isEmpty()) {
-                    final String message = ValidationUtils.format(I18N.CONSTANTS.values(), I18N.CONSTANTS.validationControlIsEmpty());
-                    failures.add(new ValidationFailure(new ValidationMessage(message)));
-                }
-                return failures;
-            }
-        };
-    }
 
     private Validator createUnitValidator() {
         return new ValidatorWithPredicate(new NotEmptyValidator(unit, I18N.CONSTANTS.fieldUnit()), new SimplePredicate() {
