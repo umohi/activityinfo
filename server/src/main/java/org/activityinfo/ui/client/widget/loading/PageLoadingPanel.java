@@ -73,7 +73,7 @@ public class PageLoadingPanel implements IsWidget, LoadingPanelView {
 
 
     public void setWidget(IsWidget widget) {
-        content.setWidget(widget);
+        setWidget(widget.asWidget());
     }
 
     public HasClickHandlers getRetryButton() {

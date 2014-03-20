@@ -6,8 +6,19 @@
 
 // Define a crossfade between the three states
 
-.crossfade(loading-container, 0.5s, loading, failed, loaded);
 
+
+.loading-container > .indicator {
+    display: none;
+}
+
+.loading-container {
+
+  &.loading > .indicator.loading { display: block; }
+  &.failed  > .indicator.failed  { display: block }
+  &.loaded  > .indicator.loaded  { display: block }
+
+}
 
 //.page-context .failed  {
 //  margin-top: 2em;

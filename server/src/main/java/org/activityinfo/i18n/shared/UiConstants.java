@@ -660,7 +660,7 @@ public interface UiConstants extends Constants {
     String confirmRemoveFromDashboard();
 
     /**
-     * Translated "Connection problem, will retry in a second".
+     * Translated "Connection problem".
      *
      * @return translated "Connection problem
      */

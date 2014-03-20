@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.client.Resources;
 import org.activityinfo.core.shared.Cuid;
@@ -34,26 +35,29 @@ import java.util.List;
 public class InstancePage implements Page {
     public static final PageId PAGE_ID = new PageId("i");
 
+
+    // scrollpanel.bs > div.container > loadingPanel
     private final ScrollPanel scrollPanel;
+    private final SimplePanel container;
     private final LoadingPanel<FormInstance> loadingPanel;
 
     private final Resources resources;
-    private final SimpleLayoutPanel outer;
-
 
     public InstancePage(ResourceLocator resourceLocator) {
         this.resources = new Resources(resourceLocator);
-
-        outer = new SimpleLayoutPanel();
-        outer.setStyleName("bs");
 
         Icons.INSTANCE.ensureInjected();
 
         this.loadingPanel = new LoadingPanel<>(new PageLoadingPanel());
         this.loadingPanel.setDisplayWidgetProvider(new InstancePageViewFactory(resourceLocator));
 
-        this.scrollPanel = new ScrollPanel(loadingPanel.asWidget());
-        this.scrollPanel.addStyleName("container");
+        this.container = new SimplePanel(loadingPanel.asWidget());
+        this.container.addStyleName("container");
+
+        this.scrollPanel = new ScrollPanel(container);
+        this.scrollPanel.addStyleName("bs");
+
+
     }
 
     @Override

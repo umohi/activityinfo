@@ -7,12 +7,12 @@
   <ui:with field="i18n" type="org.activityinfo.i18n.shared.UiConstants"/>
   <ui:with field="messages" type="org.activityinfo.i18n.shared.UiMessages"/>
 
-  <g:HTMLPanel>
+  <g:HTMLPanel styleName="{style.loadingContainer} ">
 
-    <img class="{style.l}" src="{bundle.loadingIcon}"/>
+    <img class="{style.indicator} {style.loading}" src="{bundle.loadingIcon.getSafeUri}"/>
 
-    <div class="{style.failureIndicator}">
-      <span ui:field="messageSpan"/> <a:Button style="LINK" text="{i18n.retry}"/>
+    <div class="{style.indicator} {style.failed}">
+      <span ui:field="messageSpan"/> <a:Button ui:field="retryButton" style="LINK" text="{i18n.retry}"/>
     </div>
   </g:HTMLPanel>
 </ui:UiBinder>

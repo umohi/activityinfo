@@ -159,10 +159,24 @@ public class LoadingPanel<V> implements IsWidget {
         }, DELAY_MS);
     }
 
-    private void showWidget(int requestNumber, V result) {
+    private void showWidget(final int requestNumber, V result) {
         assert widgetProvider != null : "No widget/provider has been set!";
-        DisplayWidget<? super V> displayWidget = widgetProvider.apply(result);
-        setWidgetWithDelay(requestNumber, displayWidget);
+        try {
+            final DisplayWidget<? super V> displayWidget = widgetProvider.apply(result);
+            displayWidget.show(result).then(new AsyncCallback<Void>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    showLoadFailure(requestNumber, caught);
+                }
+
+                @Override
+                public void onSuccess(Void result) {
+                    setWidgetWithDelay(requestNumber, displayWidget);
+                }
+            });
+        } catch(Throwable caught) {
+            showLoadFailure(requestNumber, caught);
+        }
     }
 
     @Override

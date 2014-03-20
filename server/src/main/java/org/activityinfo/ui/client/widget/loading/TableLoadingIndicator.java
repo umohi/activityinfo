@@ -1,11 +1,14 @@
 package org.activityinfo.ui.client.widget.loading;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -19,7 +22,9 @@ import org.activityinfo.ui.client.widget.ButtonWithSize;
 public class TableLoadingIndicator implements IsWidget, LoadingView {
 
     private final HTMLPanel rootElement;
-    private Button retryButton;
+
+    @UiField Button retryButton;
+    @UiField SpanElement messageSpan;
 
     interface LoadingIndicatorUiBinder extends UiBinder<HTMLPanel, TableLoadingIndicator> {
     }
@@ -28,12 +33,19 @@ public class TableLoadingIndicator implements IsWidget, LoadingView {
 
     public TableLoadingIndicator() {
         rootElement = ourUiBinder.createAndBindUi(this);
-        retryButton = new Button(ButtonWithSize.ButtonStyle.DEFAULT);
     }
 
     @Override
-    public void onLoadingStateChanged(LoadingState state, Throwable caught) {
-        ExceptionOracle.setLoadingStyle(rootElement, LoadingState.LOADING);
+    public void onLoadingStateChanged(final LoadingState state, final Throwable caught) {
+        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+            @Override
+            public boolean execute() {
+                ExceptionOracle.setLoadingStyle(rootElement, state);
+                messageSpan.setInnerText(ExceptionOracle.getHeading(caught));
+                return false;
+            }
+        }, 500);
+
     }
 
     @Override

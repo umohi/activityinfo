@@ -9,9 +9,9 @@
 
   <g:HTMLPanel styleName="{style.loadingContainer}">
 
-    <img class="{style.loading}" src="{bundle.loadingIcon.getSafeUri}"/>
+    <img class="{style.indicator} {style.loading}" src="{bundle.loadingIcon.getSafeUri}"/>
 
-    <div class="{style.failed}">
+    <div class="{style.indicator} {style.failed}">
 
         <div ui:field="icon"/>
 
@@ -22,7 +22,7 @@
         <a:Button ui:field="retryButton" style="DEFAULT" text="{i18n.retry}"/>
     </div>
 
-    <g:SimpleLayoutPanel ui:field="content" styleName="{style.loaded}"/>
+    <g:SimplePanel ui:field="content" styleName="{style.indicator} {style.loaded}"/>
 
   </g:HTMLPanel>
 </ui:UiBinder>

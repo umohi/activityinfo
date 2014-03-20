@@ -2,6 +2,8 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -70,10 +72,14 @@ public class InstanceTable implements IsWidget {
 
         // Create our loading indicator which can also show failure
         loadingIndicator = new TableLoadingIndicator();
+        loadingIndicator.getRetryButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                reload();
+            }
+        });
         table.setLoadingIndicator(loadingIndicator.asWidget());
     }
-
-
 
     public void setCriteria(Criteria criteria) {
         this.criteria = criteria;

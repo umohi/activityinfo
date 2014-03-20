@@ -11,7 +11,7 @@ public interface LoadingStylesheet extends Stylesheet {
     public static final LoadingStylesheet INSTANCE = GWT.create(LoadingStylesheet.class);
 
     String loadingContainer();
-
+    String indicator();
     String loading();
     String failed();
     String loaded();

@@ -36,8 +36,6 @@ public class InstanceList extends HTML implements DisplayWidget<List<Projection>
         this.renderer = GWT.create(ListItemRenderer.class);
     }
 
-
-
     @Override
     public Promise<Void> show(List<Projection> projections) {
         SafeHtmlBuilder html = new SafeHtmlBuilder();
@@ -52,5 +50,4 @@ public class InstanceList extends HTML implements DisplayWidget<List<Projection>
         setHTML(html.toSafeHtml());
         return Promise.nothing();
     }
-
 }
