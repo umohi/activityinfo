@@ -9,6 +9,7 @@ import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.ui.client.component.table.FieldColumn;
+import org.activityinfo.ui.client.component.table.InstanceTableView;
 import org.activityinfo.ui.client.widget.DisplayWidget;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public class TablePresenter implements DisplayWidget<FormTree> {
 
-    private TableView tableView;
+    private InstanceTableView tableView;
 
     private FormTree formTree;
     private Map<Cuid, FieldColumn> columnMap;
@@ -28,7 +29,7 @@ public class TablePresenter implements DisplayWidget<FormTree> {
     private List<FieldColumn> selectedColumns;
 
     public TablePresenter(ResourceLocator resourceLocator) {
-        this.tableView = new TableView(resourceLocator);
+        this.tableView = new InstanceTableView(resourceLocator);
     }
 
     @Override
