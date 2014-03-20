@@ -21,9 +21,6 @@ package org.activityinfo.core.shared.type.converter;
  * #L%
  */
 
-import org.activityinfo.core.client.type.formatter.GwtDateFormatterFactory;
-import org.activityinfo.core.shared.type.formatter.DateFormatter;
-
 import javax.annotation.Nonnull;
 import java.util.Date;
 
@@ -34,14 +31,12 @@ public class StringToDateConverter implements StringConverter<Date> {
 
     public static final StringToDateConverter INSTANCE = new StringToDateConverter();
 
-    private final static DateFormatter FORMATTER = new GwtDateFormatterFactory().create();
-
     private StringToDateConverter() {
     }
 
     @Nonnull
     @Override
     public Date convert(@Nonnull String value) {
-        return FORMATTER.parse(value);
+        return new StringToLocalDateConverter().convert(value).atMidnightInMyTimezone();
     }
 }

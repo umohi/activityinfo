@@ -10,10 +10,10 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import org.activityinfo.core.shared.importing.SourceColumn;
 import org.activityinfo.core.shared.importing.model.ColumnTarget;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
-import org.activityinfo.ui.client.component.importDialog.data.SourceColumn;
 import org.activityinfo.ui.client.widget.Panel;
 
 /**

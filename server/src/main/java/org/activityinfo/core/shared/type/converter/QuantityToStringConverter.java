@@ -21,7 +21,6 @@ package org.activityinfo.core.shared.type.converter;
  * #L%
  */
 
-import org.activityinfo.core.client.type.formatter.GwtQuantityFormatterFactory;
 import org.activityinfo.core.shared.type.formatter.QuantityFormatter;
 
 import javax.annotation.Nonnull;
@@ -31,16 +30,15 @@ import javax.annotation.Nonnull;
  */
 public class QuantityToStringConverter implements QuantityConverter<String> {
 
-    public final static QuantityToStringConverter INSTANCE = new QuantityToStringConverter();
+    private final QuantityFormatter formatter;
 
-    private final static QuantityFormatter FORMATTER = new GwtQuantityFormatterFactory().create();
-
-    private QuantityToStringConverter() {
+    public QuantityToStringConverter(QuantityFormatter formatter) {
+        this.formatter = formatter;
     }
 
     @Nonnull
     @Override
     public String convert(@Nonnull Double value) {
-        return FORMATTER.format(value);
+        return formatter.format(value);
     }
 }

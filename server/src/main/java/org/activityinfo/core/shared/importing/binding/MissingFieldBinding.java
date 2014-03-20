@@ -3,7 +3,7 @@ package org.activityinfo.core.shared.importing.binding;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.tree.FormTree;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
+import org.activityinfo.core.shared.importing.SourceRow;
 
 /**
  * Binding for a field that has not been mapped to a source column.

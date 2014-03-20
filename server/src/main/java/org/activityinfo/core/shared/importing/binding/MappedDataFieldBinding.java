@@ -2,9 +2,8 @@ package org.activityinfo.core.shared.importing.binding;
 
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormField;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.type.converter.Converter;
-import org.activityinfo.core.shared.type.converter.ConverterFactory;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 
 /**
  * Imports a data (non-reference) field mapped to a single source column
@@ -16,10 +15,10 @@ public class MappedDataFieldBinding implements FieldBinding {
     private final int sourceColumn;
     private boolean newField;
 
-    public MappedDataFieldBinding(FormField field, int sourceColumn) {
+    public MappedDataFieldBinding(FormField field, int sourceColumn, Converter converter) {
         this.field = field;
         this.sourceColumn = sourceColumn;
-        this.converter = ConverterFactory.createStringConverter(field.getType());
+        this.converter = converter;
     }
 
     @Override

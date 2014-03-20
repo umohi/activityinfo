@@ -22,7 +22,9 @@ import java.util.Set;
 public class FormTree {
 
 
-    private FormClass rootFormClass;
+    public List<Node> getRootFields() {
+        return rootFields;
+    }
 
     public class Node {
 
@@ -41,20 +43,30 @@ public class FormTree {
             return field.getType() == FormFieldType.REFERENCE;
         }
 
-        public void addChildren(FormClass formClass) {
-            for (FormField property : formClass.getFields()) {
+        /**
+         * Add the fields of a referenced class to this node as children.
+         *
+         */
+        public void addChildrenFromReferencedClass(FormClass referencedClass) {
+            assert isReference();
+
+            for (FormField property : referencedClass.getFields()) {
                 Preconditions.checkNotNull(property);
 
                 FormTree.Node childNode = new FormTree.Node();
                 childNode.parent = this;
                 childNode.field = property;
                 childNode.path = new FieldPath(this.path, property);
-                childNode.formClass = formClass;
+                childNode.formClass = referencedClass;
                 children.add(childNode);
                 nodeMap.put(childNode.path, childNode);
             }
         }
 
+        /**
+         *
+         * @return the fields that are defined on the classes in this Field's range.
+         */
         public List<Node> getChildren() {
             return children;
         }
@@ -67,12 +79,22 @@ public class FormTree {
             return field;
         }
 
-        public FormClass getFormClass() { return formClass; }
+        /**
+         *
+         * @return the form class which has defined this form
+         */
+        public FormClass getDefiningFormClass() {
+            return formClass;
+        }
 
         public Cuid getFieldId() {
             return field.getId();
         }
 
+        /**
+         *
+         * @return for Reference fields, the range of this field
+         */
         public Set<Cuid> getRange() {
             return field.getRange();
         }
@@ -85,11 +107,15 @@ public class FormTree {
             return parent;
         }
 
+        /**
+         *
+         * @return a readable path for this node for debugging
+         */
         public String debugPath() {
             StringBuilder path = new StringBuilder();
             path.append(toString(this.getField().getLabel()));
             Node parent = this.parent;
-            while(!parent.isRoot()) {
+            while(parent != null) {
                 path.insert(0, toString(parent.getField().getLabel()) + ".");
                 parent = parent.parent;
             }
@@ -131,6 +157,10 @@ public class FormTree {
                 return null;
             }
         }
+
+        public boolean isLeaf() {
+            return children.isEmpty();
+        }
     }
 
     public enum SearchOrder {
@@ -138,20 +168,30 @@ public class FormTree {
         BREADTH_FIRST
     }
 
-    private Node root;
+    private List<Node> rootFields = Lists.newArrayList();
     private Map<FieldPath, Node> nodeMap = Maps.newHashMap();
 
-    public FormTree(FormClass rootFormClass) {
-        this.rootFormClass = rootFormClass;
-        root = new Node();
+    public FormTree() {
+
     }
 
-    public Node getRoot() {
-        return root;
+    public void addRootFormClass(FormClass formClass) {
+        for(FormField field : formClass.getFields()) {
+            Node node = new Node();
+            node.formClass = formClass;
+            node.field = field;
+            node.path = new FieldPath(field);
+            rootFields.add(node);
+            nodeMap.put(node.path, node);
+        }
     }
 
-    public FormClass getRootFormClass() {
-        return rootFormClass;
+    public Map<Cuid, FormClass> getRootFormClasses() {
+        Map<Cuid, FormClass> map = Maps.newHashMap();
+        for(Node node : rootFields) {
+            map.put(node.getDefiningFormClass().getId(), node.getDefiningFormClass());
+        }
+        return map;
     }
 
     public Node getNodeByPath(FieldPath path) {
@@ -162,42 +202,48 @@ public class FormTree {
         return node;
     }
 
-    private void findLeaves(List<Node> leaves, Node node) {
-        if (node.children.isEmpty()) {
-            leaves.add(node);
-        } else {
-            for (Node child : node.children) {
-                findLeaves(leaves, child);
+    private void findLeaves(List<Node> leaves, Iterable<Node> children) {
+        for(Node child : children) {
+            if(child.isLeaf()) {
+                leaves.add(child);
+            } else {
+                findLeaves(leaves, child.getChildren());
             }
         }
     }
 
     public List<Node> getLeaves() {
         List<Node> leaves = Lists.newArrayList();
-        findLeaves(leaves, root);
+        findLeaves(leaves, rootFields);
         return leaves;
     }
 
     public List<FieldPath> search(SearchOrder order, Predicate<? super Node> descendPredicate,
                                   Predicate<? super Node> matchPredicate) {
         List<FieldPath> paths = Lists.newArrayList();
-        search(paths, root, order, descendPredicate, matchPredicate);
+        search(paths, rootFields, order, descendPredicate, matchPredicate);
         return paths;
     }
 
-    private void search(List<FieldPath> paths, Node parent, SearchOrder searchOrder,
+    private void search(List<FieldPath> paths,
+                        Iterable<Node> childNodes,
+                        SearchOrder searchOrder,
                         Predicate<? super Node> descendPredicate,
                         Predicate<? super Node> matchPredicate) {
-        if (searchOrder == SearchOrder.BREADTH_FIRST && !parent.isRoot() && matchPredicate.apply(parent)) {
-            paths.add(parent.path);
-        }
-        if (parent.isRoot() || descendPredicate.apply(parent)) {
-            for (Node child : parent.children) {
-                search(paths, child, searchOrder, descendPredicate, matchPredicate);
+
+        for(Node child : childNodes) {
+
+            if (searchOrder == SearchOrder.BREADTH_FIRST && matchPredicate.apply(child)) {
+                paths.add(child.path);
             }
-        }
-        if (searchOrder == SearchOrder.DEPTH_FIRST && !parent.isRoot() && matchPredicate.apply(parent)) {
-            paths.add(parent.path);
+
+            if(!child.getChildren().isEmpty() & descendPredicate.apply(child)) {
+                search(paths, child.getChildren(), searchOrder, descendPredicate, matchPredicate);
+            }
+
+            if (searchOrder == SearchOrder.DEPTH_FIRST && matchPredicate.apply(child)) {
+                paths.add(child.path);
+            }
         }
     }
 

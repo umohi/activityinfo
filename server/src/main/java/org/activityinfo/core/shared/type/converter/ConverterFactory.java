@@ -1,27 +1,44 @@
 package org.activityinfo.core.shared.type.converter;
 
 import org.activityinfo.core.shared.form.FormFieldType;
-import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.core.shared.type.formatter.DateFormatter;
+import org.activityinfo.core.shared.type.formatter.QuantityFormatterFactory;
+
+import java.util.logging.Logger;
 
 /**
- * Creates a converter for a specific field type
+ * Provides Converters between supported types.
+ *
+ *
+ *
  */
 public class ConverterFactory {
 
-    private ConverterFactory() {
+
+    private static final Logger LOGGER = Logger.getLogger(ConverterFactory.class.getName());
+
+    private final DateToStringConverter dateToStringConverter;
+    private final QuantityToStringConverter quantityToStringConverter;
+    private final StringToQuantityConverter stringToQuantityFormatter;
+
+    public ConverterFactory(QuantityFormatterFactory quantityFormatterFactory, DateFormatter dateFormatter) {
+        quantityToStringConverter = new QuantityToStringConverter(quantityFormatterFactory.create());
+        stringToQuantityFormatter = new StringToQuantityConverter(quantityFormatterFactory.create());
+        dateToStringConverter = new DateToStringConverter(dateFormatter);
+
     }
 
-    public static Converter createSilently(FormFieldType from, FormFieldType to) {
+    public Converter createSilently(FormFieldType from, FormFieldType to) {
         try {
             return create(from, to);
         } catch (Exception e) {
-            Log.warn("Unable to create converter from " + from.name() + " to " + to.name() + "" +
+            LOGGER.warning("Unable to create converter from " + from.name() + " to " + to.name() + "" +
                     " (it's not supported or is otherwise illegal)");
             return null;
         }
     }
 
-    public static Converter create(FormFieldType from, FormFieldType to) {
+    public Converter create(FormFieldType from, FormFieldType to) {
         switch (from) {
             case FREE_TEXT:
             case NARRATIVE:
@@ -38,32 +55,32 @@ public class ConverterFactory {
         throw new UnsupportedOperationException("Conversion from " + from.name() + " to " + to.name() + " is not supported.");
     }
 
-    private static Converter createGeographicPointConverter(FormFieldType to) {
+    private Converter createGeographicPointConverter(FormFieldType to) {
         switch (to) {
             case GEOGRAPHIC_POINT:
-                return FakeConverter.INSTANCE;
+                return NullConverter.INSTANCE;
         }
         throw new UnsupportedOperationException(to.name());
     }
 
-    private static Converter createDateConverter(FormFieldType to) {
+    private Converter createDateConverter(FormFieldType to) {
         switch (to) {
             case FREE_TEXT:
             case NARRATIVE:
-                return DateToStringConverter.INSTANCE;
+                return dateToStringConverter;
             case LOCAL_DATE:
-                return FakeConverter.INSTANCE;
+                return NullConverter.INSTANCE;
         }
         throw new UnsupportedOperationException(to.name());
     }
 
-    public static Converter createQuantityConverter(FormFieldType to) {
+    public Converter createQuantityConverter(FormFieldType to) {
         switch (to) {
             case QUANTITY:
-                return FakeConverter.INSTANCE;
+                return NullConverter.INSTANCE;
             case FREE_TEXT:
             case NARRATIVE:
-                return QuantityToStringConverter.INSTANCE;
+                return quantityToStringConverter;
             case LOCAL_DATE:
             case GEOGRAPHIC_POINT:
             case REFERENCE:
@@ -72,13 +89,13 @@ public class ConverterFactory {
         throw new UnsupportedOperationException(to.name());
     }
 
-    public static Converter createStringConverter(FormFieldType fieldType) {
+    public Converter createStringConverter(FormFieldType fieldType) {
         switch (fieldType) {
             case QUANTITY:
-                return StringToQuantityConverter.INSTANCE;
+                return stringToQuantityFormatter;
             case NARRATIVE:
             case FREE_TEXT:
-                return FakeConverter.INSTANCE;
+                return NullConverter.INSTANCE;
             case REFERENCE:
                 throw new IllegalArgumentException("Reference fields are handled elsewhere");
             case LOCAL_DATE:

@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.importDialog.data;
+package org.activityinfo.core.shared.importing;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@ import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.AbstractHeaderOrFooterBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
+import org.activityinfo.core.shared.importing.SourceRow;
 
 /**
  * Builds a two-row header, with the first row showing the original column names, and the

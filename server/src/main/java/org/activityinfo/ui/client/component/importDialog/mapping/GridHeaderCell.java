@@ -2,10 +2,10 @@ package org.activityinfo.ui.client.component.importDialog.mapping;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import org.activityinfo.core.shared.importing.SourceColumn;
 import org.activityinfo.core.shared.importing.model.ColumnTarget;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.component.importDialog.data.SourceColumn;
 
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 

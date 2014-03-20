@@ -11,10 +11,10 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import org.activityinfo.core.shared.importing.SourceColumn;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.model.ColumnTarget;
 import org.activityinfo.core.shared.importing.model.ImportModel;
-import org.activityinfo.ui.client.component.importDialog.data.SourceColumn;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 import org.activityinfo.ui.client.style.table.DataGridResources;
 
 import java.util.List;

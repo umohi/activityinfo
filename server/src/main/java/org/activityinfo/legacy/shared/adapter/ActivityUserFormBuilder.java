@@ -20,6 +20,7 @@ public class ActivityUserFormBuilder {
     private FormClass siteForm;
 
     public ActivityUserFormBuilder(ActivityDTO activity) {
+        assert activity != null;
         this.activity = activity;
     }
 

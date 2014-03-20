@@ -8,10 +8,10 @@ import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.match.names.LatinPlaceNameScorer;
 import org.activityinfo.core.shared.importing.model.ColumnTarget;
-import org.activityinfo.core.shared.type.converter.FakeConverter;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
+import org.activityinfo.core.shared.type.converter.NullConverter;
 
 import java.util.List;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class MappedReferenceFieldBinding implements FieldBinding {
                     matchFields.add(new MatchFieldBinding(matchIndex++,
                             node.findDescendant(relativePath),
                             relativePath, sourceColumn,
-                            FakeConverter.INSTANCE, new LatinPlaceNameScorer()));
+                            NullConverter.INSTANCE, new LatinPlaceNameScorer()));
                 }
             }
         }

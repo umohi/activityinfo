@@ -3,8 +3,8 @@ package org.activityinfo.ui.client.component.importDialog.validation.columns;
 import com.google.common.base.Function;
 import com.google.gwt.cell.client.EditTextCell;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.binding.MissingFieldBinding;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 
 /**
  * Placeholder column for a field that is missing a mapping to the

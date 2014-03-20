@@ -1,8 +1,8 @@
 package org.activityinfo.core.shared.importing.process;
 
 import com.google.common.base.Predicate;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.binding.FieldBinding;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 
 import java.util.List;
 

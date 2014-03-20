@@ -2,10 +2,10 @@ package org.activityinfo.core.shared.importing.process;
 
 import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.binding.MatchFieldBinding;
 import org.activityinfo.core.shared.importing.match.ScoredReference;
 import org.activityinfo.fp.shared.BiFunction;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 
 import java.util.List;
 

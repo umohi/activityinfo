@@ -3,8 +3,8 @@ package org.activityinfo.ui.client.component.importDialog.validation.columns;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.user.cellview.client.Column;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.match.ValueStatus;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 
 public abstract class ImportColumn<C> extends Column<SourceRow, C> {
 

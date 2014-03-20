@@ -15,6 +15,8 @@ import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.importing.SourceColumn;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.binding.*;
 import org.activityinfo.core.shared.importing.match.ScoredReference;
 import org.activityinfo.core.shared.importing.model.ColumnTarget;
@@ -22,11 +24,10 @@ import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.process.CreateInstanceFunction;
 import org.activityinfo.core.shared.importing.process.MatchRowFunction;
 import org.activityinfo.core.shared.importing.process.ValidRowPredicate;
+import org.activityinfo.core.shared.type.converter.ConverterFactory;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.ui.client.component.importDialog.data.SourceColumn;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -42,7 +43,7 @@ import static com.google.common.collect.Iterables.filter;
  */
 public class Importer {
 
-    private final ResourceLocator resourceLocator;
+    private ConverterFactory converterFactory;
     private List<FieldBinding> bindings = Lists.newArrayList();
     private Scheduler scheduler;
     private Resources resources;
@@ -53,10 +54,11 @@ public class Importer {
 
     public Importer(Scheduler scheduler,
                     ResourceLocator resourceLocator,
+                    ConverterFactory converterFactory,
                     ImportModel importModel) {
         this.scheduler = scheduler;
 
-        this.resourceLocator = resourceLocator;
+        this.converterFactory = converterFactory;
         this.resources = new Resources(resourceLocator);
         this.importModel = importModel;
     }
@@ -98,13 +100,15 @@ public class Importer {
             if(binding.getValue().isMapped()) {
                 if(!binding.getValue().getFieldPath().isNested()) {
                     FormTree.Node fieldNode = getNodeByPath(binding.getValue().getFieldPath());
-                    bindings.add(new MappedDataFieldBinding(fieldNode.getField(), binding.getKey()));
+                    bindings.add(new MappedDataFieldBinding(fieldNode.getField(), binding.getKey(),
+                            converterFactory.createStringConverter(fieldNode.getFieldType())));
                 }
             } else if(binding.getValue().getAction() == ColumnTarget.Action.NEW_FIELD) {
                 // create a new field
                 SourceColumn column = importModel.getSourceColumn(binding.getKey());
                 FormField field = createNewField(column);
-                MappedDataFieldBinding fieldBinding = new MappedDataFieldBinding(field, binding.getKey());
+                MappedDataFieldBinding fieldBinding = new MappedDataFieldBinding(field, binding.getKey(),
+                        converterFactory.createStringConverter(field.getType()));
                 fieldBinding.setNewField(true);
                 bindings.add(fieldBinding);
             }
@@ -114,7 +118,7 @@ public class Importer {
 
         Set<Cuid> mappedRootFields = importModel.getMappedRootFields();
 
-        for(FormTree.Node node : importModel.getFormTree().getRoot().getChildren()) {
+        for(FormTree.Node node : importModel.getFormTree().getRootFields()) {
             if(!mappedRootFields.contains(node.getFieldId()) && node.getField().isRequired()) {
                 bindings.add(new MissingFieldBinding(node));
             }
@@ -158,7 +162,7 @@ public class Importer {
         List<SourceRow> rows = importModel.getSource().getRows();
 
         CreateInstanceFunction create = new CreateInstanceFunction(
-                importModel.getFormClass(),
+                getFormTree().getRootFormClasses(),
                 bindings,
                 new InstanceIdentityFunction());
 

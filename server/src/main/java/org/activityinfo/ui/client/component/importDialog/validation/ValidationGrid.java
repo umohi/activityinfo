@@ -3,10 +3,10 @@ package org.activityinfo.ui.client.component.importDialog.validation;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.ResizeComposite;
-import org.activityinfo.core.client.type.formatter.GwtQuantityFormatterFactory;
+import org.activityinfo.core.client.type.formatter.JsQuantityFormatterFactory;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.ui.client.component.importDialog.Importer;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 import org.activityinfo.ui.client.component.importDialog.validation.cells.ValidationCellTemplates;
 import org.activityinfo.ui.client.component.importDialog.validation.columns.ColumnFactory;
 import org.activityinfo.ui.client.component.importDialog.validation.columns.ImportColumn;
@@ -29,7 +29,7 @@ public class ValidationGrid extends ResizeComposite {
     public ValidationGrid(Importer importer) {
         this.importer = importer;
         this.columnFactory = new ColumnFactory(
-                new GwtQuantityFormatterFactory(),
+                new JsQuantityFormatterFactory(),
                 ValidationCellTemplates.INSTANCE,
                 importer.getFormTree());
 

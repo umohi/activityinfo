@@ -3,9 +3,9 @@ package org.activityinfo.core.shared.importing.binding;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.match.FieldValueScorer;
 import org.activityinfo.core.shared.type.converter.Converter;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 
 /**
 * Binds an {@code ImportColumn} to a data field of a referenced {@code FormClass} for

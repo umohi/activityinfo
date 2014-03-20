@@ -8,8 +8,8 @@ import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.form.tree.FormTree.SearchOrder;
-import org.activityinfo.ui.client.component.importDialog.data.SourceColumn;
-import org.activityinfo.ui.client.component.importDialog.data.SourceTable;
+import org.activityinfo.core.shared.importing.SourceColumn;
+import org.activityinfo.core.shared.importing.SourceTable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -49,8 +49,8 @@ public class ImportModel {
     }
 
 
-    public FormClass getFormClass() {
-        return getFormTree().getRootFormClass();
+    public FormClass getRootFormClasses() {
+        throw new UnsupportedOperationException();
     }
 
     public Set<ColumnTarget> getMappedFieldPaths() {

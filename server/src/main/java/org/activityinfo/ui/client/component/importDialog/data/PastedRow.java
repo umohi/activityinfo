@@ -1,6 +1,8 @@
 package org.activityinfo.ui.client.component.importDialog.data;
 
 
+import org.activityinfo.core.shared.importing.SourceRow;
+
 public class PastedRow implements SourceRow {
 
     private String[] columns;

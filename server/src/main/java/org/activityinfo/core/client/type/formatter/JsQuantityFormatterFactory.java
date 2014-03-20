@@ -7,7 +7,7 @@ import org.activityinfo.core.shared.type.formatter.QuantityFormatterFactory;
 /**
  * Creates QuantityFormatters using the GWT i18n classes.
  */
-public class GwtQuantityFormatterFactory implements QuantityFormatterFactory {
+public class JsQuantityFormatterFactory implements QuantityFormatterFactory {
     @Override
     public QuantityFormatter create() {
         final NumberFormat format = NumberFormat.getDecimalFormat();

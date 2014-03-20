@@ -30,6 +30,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import org.activityinfo.core.client.type.converter.JsConverterFactory;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.LocalizedString;
 import org.activityinfo.core.shared.form.FormField;
@@ -37,7 +38,6 @@ import org.activityinfo.core.shared.form.FormFieldCardinality;
 import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.type.converter.Converter;
-import org.activityinfo.core.shared.type.converter.ConverterFactory;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.util.GwtUtil;
 import org.activityinfo.ui.client.widget.HasReadOnly;
@@ -226,7 +226,7 @@ public class FormFieldRow extends Composite {
                 }
             } else { // newType != REFERENCE
                 Object convertedValue = null;
-                final Converter converter = ConverterFactory.createSilently(oldType, newType);
+                final Converter converter = JsConverterFactory.get().createSilently(oldType, newType);
                 if (converter != null) {
                     try {
                         convertedValue = converter.convert(value);

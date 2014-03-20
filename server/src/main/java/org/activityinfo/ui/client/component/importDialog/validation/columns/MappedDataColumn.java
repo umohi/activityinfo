@@ -5,8 +5,8 @@ import com.google.gwt.cell.client.SafeHtmlCell;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.binding.MappedDataFieldBinding;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 import org.activityinfo.ui.client.component.importDialog.validation.cells.ValidationCellTemplates;
 
 /**

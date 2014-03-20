@@ -4,10 +4,11 @@ import com.google.common.base.Function;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.binding.FieldBinding;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Creates an instance from a SourceRow and a list of FieldBindings
@@ -18,9 +19,10 @@ public class CreateInstanceFunction implements Function<SourceRow, FormInstance>
     private List<FieldBinding> bindings;
     private Function<SourceRow, Cuid> instanceIdentityFunction;
 
-    public CreateInstanceFunction(FormClass formClass, List<FieldBinding> bindings,
+    public CreateInstanceFunction(Map<Cuid, FormClass> formClasses, List<FieldBinding> bindings,
                                   Function<SourceRow, Cuid> instanceIdentityFunction) {
-        this.formClass = formClass;
+        assert formClasses.size() == 1;
+        this.formClass = formClasses.values().iterator().next();
         this.bindings = bindings;
         this.instanceIdentityFunction = instanceIdentityFunction;
     }

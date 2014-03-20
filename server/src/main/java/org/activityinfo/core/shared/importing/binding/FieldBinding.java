@@ -2,7 +2,7 @@ package org.activityinfo.core.shared.importing.binding;
 
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormField;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
+import org.activityinfo.core.shared.importing.SourceRow;
 
 /**
  * Defines a binding between a field and zero or more columns in the {@code ImportSource}

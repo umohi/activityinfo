@@ -39,7 +39,7 @@ public class TablePresenter implements DisplayWidget<FormTree> {
         // select all columns by default
         selectedColumns = Lists.newArrayList(columns);
 
-        tableView.setCriteria(new ClassCriteria(formTree.getRootFormClass().getId()));
+        tableView.setCriteria(ClassCriteria.union(formTree.getRootFormClasses().keySet()));
         tableView.setColumns(selectedColumns);
 
         return Promise.nothing();
@@ -59,13 +59,13 @@ public class TablePresenter implements DisplayWidget<FormTree> {
         columnMap = Maps.newHashMap();
         columns = Lists.newArrayList();
 
-        enumerateColumns(formTree.getRoot());
+        enumerateColumns(formTree.getRootFields());
     }
 
-    private void enumerateColumns(FormTree.Node parent) {
-        for(FormTree.Node child : parent.getChildren()) {
+    private void enumerateColumns(List<FormTree.Node> fields) {
+        for(FormTree.Node child : fields) {
             if(child.isReference()) {
-                enumerateColumns(child);
+                enumerateColumns(child.getChildren());
             } else {
                 if(columnMap.containsKey(child.getFieldId())) {
                     columnMap.get(child.getFieldId()).addFieldPath(child.getPath());
@@ -80,7 +80,7 @@ public class TablePresenter implements DisplayWidget<FormTree> {
 
     private String composeHeader(FormTree.Node child) {
         if(child.getPath().isNested()) {
-            return child.getFormClass().getLabel().getValue() + " " + child.getField().getLabel().getValue();
+            return child.getDefiningFormClass().getLabel().getValue() + " " + child.getField().getLabel().getValue();
         } else {
             return child.getField().getLabel().getValue();
         }

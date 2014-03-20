@@ -6,10 +6,10 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.importing.SourceRow;
 import org.activityinfo.core.shared.importing.binding.MappedReferenceFieldBinding;
 import org.activityinfo.core.shared.importing.binding.MatchFieldBinding;
 import org.activityinfo.core.shared.importing.match.ScoredReference;
-import org.activityinfo.ui.client.component.importDialog.data.SourceRow;
 import org.activityinfo.ui.client.component.importDialog.validation.cells.ValidationCellTemplates;
 
 /**

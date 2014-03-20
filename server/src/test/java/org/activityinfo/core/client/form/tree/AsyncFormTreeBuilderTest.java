@@ -1,22 +1,22 @@
 package org.activityinfo.core.client.form.tree;
 
 import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.fixtures.InjectionSupport;
-import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
-import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
-import static org.activityinfo.core.client.PromiseMatchers.resolvesTo;
 import static org.junit.Assert.assertThat;
 
 
+@SuppressWarnings("GwtClientClassFromNonInheritedModule")
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/sites-simple1.db.xml")
 public class AsyncFormTreeBuilderTest extends CommandTestCase2 {
@@ -25,10 +25,12 @@ public class AsyncFormTreeBuilderTest extends CommandTestCase2 {
     public void treeResolver() {
         ResourceLocator locator = new ResourceLocatorAdaptor(getDispatcher());
         AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(locator);
-        Promise<FormTree> tree = treeBuilder.apply(CuidAdapter.activityFormClass(1));
+        Cuid formClassId = CuidAdapter.activityFormClass(1);
+        FormTree tree = assertResolves(treeBuilder.apply(formClassId));
 
-        System.out.println(assertResolves(tree).toString());
+        System.out.println(tree);
 
-        assertThat(tree, resolvesTo(CoreMatchers.<FormTree>notNullValue()));
+        assertThat(tree.getRootFormClasses().keySet(), Matchers.hasItems(formClassId));
+
     }
 }

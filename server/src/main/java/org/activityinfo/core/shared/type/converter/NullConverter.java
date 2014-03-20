@@ -3,9 +3,9 @@ package org.activityinfo.core.shared.type.converter;
 import javax.annotation.Nonnull;
 
 /**
- * Converts an imported value to String
+ * Performs no conversion
  */
-public enum FakeConverter implements Converter  {
+public enum NullConverter implements Converter  {
     INSTANCE;
 
     @Nonnull

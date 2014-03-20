@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.client.type.converter.JsConverterFactory;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.ui.client.component.importDialog.mapping.ColumnMappingPage;
@@ -36,7 +37,7 @@ public class ImportPresenter {
 
     public ImportPresenter(ResourceLocator dispatcher, FormTree formTree) {
         this.importModel = new ImportModel(formTree);
-        this.importer = new Importer(Scheduler.get(), dispatcher, importModel);
+        this.importer = new Importer(Scheduler.get(), dispatcher, JsConverterFactory.get(), importModel);
 
         ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
         ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, new FieldChoicePresenter(importModel));

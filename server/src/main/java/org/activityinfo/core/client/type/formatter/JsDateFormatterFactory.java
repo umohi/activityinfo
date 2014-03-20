@@ -30,7 +30,7 @@ import java.util.Date;
 /**
  * @author yuriyz on 3/10/14.
  */
-public class GwtDateFormatterFactory implements DateFormatterFactory {
+public class JsDateFormatterFactory implements DateFormatterFactory {
 
     public static final DateTimeFormat GWT_FORMAT = DateTimeFormat.getFormat(FORMAT);
 

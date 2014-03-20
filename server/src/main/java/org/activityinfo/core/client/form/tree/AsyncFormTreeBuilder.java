@@ -11,6 +11,8 @@ import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.fp.client.Promise;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -29,8 +31,12 @@ public class AsyncFormTreeBuilder implements Function<Cuid, Promise<FormTree>> {
 
     @Override
     public Promise<FormTree> apply(Cuid formClassId) {
+        return execute(Collections.singleton(formClassId));
+    }
+
+    public Promise<FormTree> execute(Iterable<Cuid> formClasses) {
         Promise<FormTree> result = new Promise<>();
-        new Resolver(formClassId, result);
+        new Resolver(formClasses, result);
         return result;
     }
 
@@ -40,20 +46,12 @@ public class AsyncFormTreeBuilder implements Function<Cuid, Promise<FormTree>> {
         private FormTree tree;
         private int outstandingRequests = 0;
 
-        public Resolver(final Cuid formClassId, final AsyncCallback<FormTree> callback) {
+        public Resolver(final Iterable<Cuid> classIds, final AsyncCallback<FormTree> callback) {
             this.callback = callback;
-            locator.getFormClass(formClassId).then(new AsyncCallback<FormClass>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    callback.onFailure(caught);
-                }
-
-                @Override
-                public void onSuccess(FormClass result) {
-                    tree = new FormTree(result);
-                    requestFormClassForNode(tree.getRoot(), formClassId);
-                }
-            });
+            this.tree = new FormTree();
+            for(Cuid formClass : classIds) {
+                requestFormClassForNode(null, formClass);
+            }
         }
 
         private void requestFormClassForNode(final FormTree.Node node, final Cuid formClassId) {
@@ -87,8 +85,17 @@ public class AsyncFormTreeBuilder implements Function<Cuid, Promise<FormTree>> {
          * @param formClass
          */
         private void addChildrenToNode(FormTree.Node node, FormClass formClass) {
-            node.addChildren(formClass);
-            for(FormTree.Node child : node.getChildren()) {
+            if(node == null) {
+                tree.addRootFormClass(formClass);
+                queueNextRequests(tree.getRootFields());
+            } else {
+                node.addChildrenFromReferencedClass(formClass);
+                queueNextRequests(node.getChildren());
+            }
+        }
+
+        private void queueNextRequests(List<FormTree.Node> children) {
+            for(FormTree.Node child : children) {
                 if(child.isReference()) {
                     for(Cuid rangeClass : child.getRange()) {
                         final Iri iri = rangeClass.asIri();

@@ -26,16 +26,16 @@ public class FieldChoicePresenter {
         List<FieldModel> options = Lists.newArrayList();
 
         // add existing fields
-        collectFields(model.getFormTree().getRoot(), options);
+        collectFields(model.getFormTree().getRootFields(), options);
 
         return options;
     }
 
-    private void collectFields(FormTree.Node parent, List<FieldModel> options) {
-        for(FormTree.Node node : parent.getChildren()) {
+    private void collectFields(List<FormTree.Node> children, List<FieldModel> options) {
+        for(FormTree.Node node : children) {
             switch(node.getFieldType()) {
                 case REFERENCE:
-                    collectFields(node, options);
+                    collectFields(node.getChildren(), options);
                     break;
                 case GEOGRAPHIC_POINT:
                     options.add(new FieldModel(I18N.CONSTANTS.latitude(),
