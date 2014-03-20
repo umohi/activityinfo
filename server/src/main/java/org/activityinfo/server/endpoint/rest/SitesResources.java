@@ -71,7 +71,9 @@ public class SitesResources {
         writeGeoJson(sites, json);
 
         if (Strings.isNullOrEmpty(callback)) {
-            return Response.ok(writer.toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+            return Response
+                    .ok(writer.toString())
+                    .type("application/json; charset=UTF-8").build();
         } else {
             return Response
                     .ok(callback + "(" + writer.toString() + ");")
@@ -152,7 +154,10 @@ public class SitesResources {
     }
 
     private void writeGeoJson(List<SiteDTO> sites, JsonGenerator json) throws JsonGenerationException, IOException {
-        json.writeStartArray();
+
+        json.writeStartObject();
+        json.writeStringField("type", "FeatureCollection");
+        json.writeArrayFieldStart("features");
 
         for (SiteDTO site : sites) {
             if (site.hasLatLong()) {
@@ -183,6 +188,7 @@ public class SitesResources {
             }
         }
         json.writeEndArray();
+        json.writeEndObject();
         json.close();
     }
 
