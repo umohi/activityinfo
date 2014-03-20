@@ -23,7 +23,7 @@ package org.activityinfo.dev.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
-import org.activityinfo.dev.client.styles.Binder;
+import org.activityinfo.dev.client.table.InstanceTableShowcase;
 import org.activityinfo.ui.client.style.BaseStylesheet;
 
 /**
@@ -35,20 +35,12 @@ public class DevelopmentEntryPoint implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
-        userFormPanelShowcase();
-        //binder();
-    }
-
-    private void userFormPanelShowcase() {
         BaseStylesheet.INSTANCE.ensureInjected();
-        RootPanel.get().add(new FormPanelShowCase());
+//        RootPanel.get().add(new FormPanelShowCase());
+        RootPanel.get().add(new InstanceTableShowcase());
     }
 
-    private void binder() {
-        RootPanel.get().add(new Binder());
-    }
-
-//    public void gxt() {
+    //    public void gxt() {
 //        final FormClass userForm = DevUtils.createTestUserForm();
 //
 //        final UserFormPanel panel = new UserFormPanel(userForm, null);

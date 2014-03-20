@@ -26,7 +26,8 @@ import java.util.logging.Logger;
  */
 public class TableView implements IsWidget, RequiresResize {
 
-    private final Logger LOGGER = Logger.getLogger(TableView.class.getName());
+    private static final int DEFAULT_MAX_COLUMN_COUNT = 5;
+    private static final Logger LOGGER = Logger.getLogger(TableView.class.getName());
 
     private final HTMLPanel panel;
 
@@ -81,8 +82,14 @@ public class TableView implements IsWidget, RequiresResize {
 
         int columnLimit = (int) Math.floor(panel.getElement().getClientWidth() / columnWidthInPixels);
         LOGGER.log(Level.FINE, "columnLimit = " + columnLimit);
-
+        if (columnLimit <= 0) { // fallback : yuriyz: todo check calculations above
+            columnLimit = DEFAULT_MAX_COLUMN_COUNT;
+        }
         return columnLimit;
+    }
+
+    public InstanceTable getTable() {
+        return table;
     }
 
     @Override
