@@ -34,6 +34,7 @@ public class ConfigureDialog extends ModalDialog {
     public ConfigureDialog(InstanceTableView tableView) {
         this.content = new ConfigureDialogContent(tableView, this);
         setDialogTitle(I18N.CONSTANTS.configure());
-        getModalBody().appendChild(content.getElement());
+        getModalBody().add(content);
+        getModalBody().add(content);
     }
 }

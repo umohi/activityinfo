@@ -14,7 +14,8 @@
               <g:Button addStyleNames="close pull-right btn-link" ui:field="closeButton" text="×"/>
               <h4 class="modal-title" ui:field="title"/>
             </div>
-            <div class="modal-body" ui:field="modalBody">
+            <div class="modal-body">
+              <g:HTMLPanel ui:field="modalBody"/>
             </div>
             <div class="modal-footer" ui:field="modalFooter">
               <a:Button style="PRIMARY" text="{i18n.ok}" ui:field="okButton"/>

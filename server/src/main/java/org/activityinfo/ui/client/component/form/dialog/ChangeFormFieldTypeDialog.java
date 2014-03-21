@@ -42,8 +42,8 @@ public class ChangeFormFieldTypeDialog extends ModalDialog {
         setDialogTitle(I18N.CONSTANTS.changeType());
         setOkButtonState();
         type.setTypes(formField.getType().getAllowedConvertTo());
-        getModalBody().appendChild(type.getElement());
-        getModalBody().appendChild(new HTML(SafeHtmlUtils.fromString(I18N.CONSTANTS.changeTypeWarning())).getElement());
+        getModalBody().add(type);
+        getModalBody().add(new HTML(SafeHtmlUtils.fromString(I18N.CONSTANTS.changeTypeWarning())));
     }
 
     public FormFieldTypeCombobox getType() {

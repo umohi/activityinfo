@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.component.table;
  */
 
 import com.google.common.collect.Lists;
+import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
@@ -33,12 +34,12 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionChangeEvent;
+import org.activityinfo.core.shared.form.key.SelfKeyProvider;
+import org.activityinfo.ui.client.style.table.CellTableResources;
 
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -47,18 +48,6 @@ import java.util.logging.Logger;
 public class ConfigureDialogContent extends Composite {
 
     private static final Logger LOGGER = Logger.getLogger(ConfigureDialogContent.class.getName());
-
-    public static ProvidesKey<FieldColumn> createKeyProvider() {
-        return new ProvidesKey<FieldColumn>() {
-            @Override
-            public Object getKey(FieldColumn item) {
-                if (item != null) {
-                    return item.getHeader(); // todo fix!!!
-                }
-                return null;
-            }
-        };
-    }
 
     interface ConfigureDialogContentUiBinder extends UiBinder<HTMLPanel, ConfigureDialogContent> {
     }
@@ -69,7 +58,7 @@ public class ConfigureDialogContent extends Composite {
 
     private final ListDataProvider<FieldColumn> tableDataProvider = new ListDataProvider<>();
     private final MultiSelectionModel<FieldColumn> selectionModel = new MultiSelectionModel<FieldColumn>(
-            createKeyProvider());
+            new SelfKeyProvider<FieldColumn>());
 
     private CellTable<FieldColumn> table;
 
@@ -91,13 +80,13 @@ public class ConfigureDialogContent extends Composite {
     }
 
     private void initTable() {
-//        final Column<FieldColumn, Boolean> checkColumn = new Column<FieldColumn, Boolean>(
-//                new CheckboxCell(true, false)) {
-//            @Override
-//            public Boolean getValue(FieldColumn object) {
-//                return selectionModel.isSelected(object);
-//            }
-//        };
+        final Column<FieldColumn, Boolean> checkColumn = new Column<FieldColumn, Boolean>(
+                new CheckboxCell(true, false)) {
+            @Override
+            public Boolean getValue(FieldColumn object) {
+                return selectionModel.isSelected(object);
+            }
+        };
 
         final Column<FieldColumn, String> labelColumn = new Column<FieldColumn, String>(
                 new TextCell()) {
@@ -106,41 +95,32 @@ public class ConfigureDialogContent extends Composite {
                 return object.getHeader();
             }
         };
-//        labelColumn.setSortable(false);
+        labelColumn.setSortable(false);
 
-//        table = new CellTable<>(10, CellTableResources.INSTANCE);
-        table = new CellTable<>(10);
+        table = new CellTable<>(10, CellTableResources.INSTANCE);
         table.setWidth("100%", true);
-//        table.setSelectionModel(selectionModel, DefaultSelectionEventManager.<FieldColumn>createCheckboxManager());
-        table.setSelectionModel(selectionModel);
-
-//        table.setAutoHeaderRefreshDisabled(true);
-//        table.setAutoFooterRefreshDisabled(true);
-//        table.setSkipRowHoverCheck(true);
-//        table.setSkipRowHoverFloatElementCheck(true);
-//        table.addColumn(checkColumn);
+        table.setSelectionModel(selectionModel, DefaultSelectionEventManager.<FieldColumn>createCheckboxManager());
+        table.setAutoHeaderRefreshDisabled(true);
+        table.setAutoFooterRefreshDisabled(true);
+        table.setSkipRowHoverCheck(true);
+        table.setSkipRowHoverFloatElementCheck(true);
+        table.addColumn(checkColumn);
         table.addColumn(labelColumn);
-//        table.setColumnWidth(checkColumn, 40, Style.Unit.PX);
+        table.setColumnWidth(checkColumn, 40, Style.Unit.PX);
         table.setColumnWidth(labelColumn, 100, Style.Unit.PCT);
 
-//        tableDataProvider.addDataDisplay(table);
-//        tableDataProvider.setList(tableView.getColumns());
-//        tableDataProvider.refresh();
-        table.setRowData(tableView.getColumns());
+        tableDataProvider.addDataDisplay(table);
+        tableDataProvider.setList(tableView.getColumns());
+        tableDataProvider.refresh();
 
-        // todo
-//        for (FieldColumn column : tableView.getSelectedColumns()) {
-//            selectionModel.setSelected(column, true);
-//        }
-        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                final Set<FieldColumn> selectedSet = selectionModel.getSelectedSet();
-                for (FieldColumn column : tableView.getSelectedColumns()) {
-                    LOGGER.fine(column.getHeader() + " selected=" + selectionModel.isSelected(column));
-                }
-            }
-        });
+        for (FieldColumn column : tableView.getSelectedColumns()) {
+            selectionModel.setSelected(column, true);
+        }
+//        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+//            @Override
+//            public void onSelectionChange(SelectionChangeEvent event) {
+//            }
+//        });
     }
 
     private void onOk() {
