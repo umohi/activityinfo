@@ -11,7 +11,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <g:Button addStyleNames="close" ui:field="closeButton" text="×"/>
+              <g:Button addStyleNames="close pull-right btn-link" ui:field="closeButton" text="×"/>
               <h4 class="modal-title" ui:field="title"/>
             </div>
             <div class="modal-body" ui:field="modalBody">

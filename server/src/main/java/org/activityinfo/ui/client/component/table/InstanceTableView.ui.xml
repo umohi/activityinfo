@@ -21,7 +21,7 @@
         <img src="{img.filter.getSafeUri}" alt="{i18n.filter}" title="{i18n.filter}"/>
       </a:ButtonWithSize>
       <a:ButtonWithSize ui:field="blukEditButton" style="PRIMARY" size="EXTRA_SMALL">
-        <img src="{img.edit.getSafeUri}" alt="{i18n.edit}" title="{i18n.edit}"/>
+        <img src="{img.edit.getSafeUri}" alt="{i18n.bulkEdit}" title="{i18n.bulkEdit}"/>
       </a:ButtonWithSize>
     </div>
 

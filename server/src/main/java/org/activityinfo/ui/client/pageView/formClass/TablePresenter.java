@@ -26,7 +26,6 @@ public class TablePresenter implements DisplayWidget<FormTree> {
     private Map<Cuid, FieldColumn> columnMap;
 
     private List<FieldColumn> columns;
-    private List<FieldColumn> selectedColumns;
 
     public TablePresenter(ResourceLocator resourceLocator) {
         this.tableView = new InstanceTableView(resourceLocator);
@@ -37,11 +36,8 @@ public class TablePresenter implements DisplayWidget<FormTree> {
         this.formTree = formTree;
         enumerateColumns();
 
-        // select all columns by default
-        selectedColumns = Lists.newArrayList(columns);
-
         tableView.setCriteria(ClassCriteria.union(formTree.getRootFormClasses().keySet()));
-        tableView.setColumns(selectedColumns);
+        tableView.setColumns(columns);
 
         return Promise.nothing();
     }

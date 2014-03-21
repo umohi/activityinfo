@@ -1,5 +1,6 @@
 package org.activityinfo.ui.client.component.table;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
@@ -30,6 +31,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     private static final Logger LOGGER = Logger.getLogger(InstanceTableView.class.getName());
 
     private final HTMLPanel panel;
+    private List<FieldColumn> columns;
+    private List<FieldColumn> selectedColumns;
 
     @UiField
     DivElement emRuler;
@@ -56,20 +59,26 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     }
 
     public void setColumns(final List<FieldColumn> columns) {
+        this.columns = columns;
         Scheduler.get().scheduleDeferred(new Command() {
             @Override
             public void execute() {
-                doSetColumns(columns);
+                calculateSelectedColumns();
+                table.setColumns(selectedColumns);
             }
         });
     }
 
-    private void doSetColumns(List<FieldColumn> columns) {
+    public void setSelectedColumns(final List<FieldColumn> selectedColumns) {
+        this.selectedColumns = selectedColumns;
+    }
+
+    private void calculateSelectedColumns() {
         if (columns.size() <= getMaxNumberOfColumns()) {
-            table.setColumns(columns);
+            selectedColumns = Lists.newArrayList(columns);
             columnAlert.getStyle().setDisplay(Style.Display.BLOCK);
         } else {
-            table.setColumns(columns.subList(0, getMaxNumberOfColumns()));
+            selectedColumns = Lists.newArrayList(columns.subList(0, getMaxNumberOfColumns()));
             columnAlert.getStyle().clearDisplay();
         }
     }
@@ -105,7 +114,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiHandler("configureButton")
     public void onConfigure(ClickEvent event) {
-
+        final ConfigureDialog configureDialog = new ConfigureDialog(this);
+        configureDialog.show();
     }
 
 }
