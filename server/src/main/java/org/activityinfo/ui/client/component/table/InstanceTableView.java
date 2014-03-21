@@ -71,6 +71,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     public void setSelectedColumns(final List<FieldColumn> selectedColumns) {
         this.selectedColumns = selectedColumns;
+        table.setColumns(selectedColumns);
     }
 
     private void calculateSelectedColumns() {
@@ -118,4 +119,17 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         configureDialog.show();
     }
 
+    public List<FieldColumn> getColumns() {
+        if (columns == null) {
+            columns = Lists.newArrayList();
+        }
+        return columns;
+    }
+
+    public List<FieldColumn> getSelectedColumns() {
+        if (selectedColumns == null) {
+            selectedColumns = Lists.newArrayList();
+        }
+        return selectedColumns;
+    }
 }

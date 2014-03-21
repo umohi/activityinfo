@@ -21,10 +21,12 @@ package org.activityinfo.ui.client.component.table;
  * #L%
  */
 
-import com.google.gwt.cell.client.CheckboxCell;
+import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -33,13 +35,30 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
-import org.activityinfo.core.shared.form.FormField;
-import org.activityinfo.core.shared.form.key.ResourceKeyProvider;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionChangeEvent;
+
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * @author yuriyz on 3/21/14.
  */
 public class ConfigureDialogContent extends Composite {
+
+    private static final Logger LOGGER = Logger.getLogger(ConfigureDialogContent.class.getName());
+
+    public static ProvidesKey<FieldColumn> createKeyProvider() {
+        return new ProvidesKey<FieldColumn>() {
+            @Override
+            public Object getKey(FieldColumn item) {
+                if (item != null) {
+                    return item.getHeader(); // todo fix!!!
+                }
+                return null;
+            }
+        };
+    }
 
     interface ConfigureDialogContentUiBinder extends UiBinder<HTMLPanel, ConfigureDialogContent> {
     }
@@ -47,47 +66,85 @@ public class ConfigureDialogContent extends Composite {
     private static ConfigureDialogContentUiBinder uiBinder = GWT.create(ConfigureDialogContentUiBinder.class);
 
     private final InstanceTableView tableView;
-    private final ConfigureDialog dialog;
 
-    private final ListDataProvider<FormField> tableDataProvider = new ListDataProvider<>();
-    private final MultiSelectionModel<FormField> selectionModel = new MultiSelectionModel<>(
-            ResourceKeyProvider.FORM_FIELD_KEY_PROVIDER);
+    private final ListDataProvider<FieldColumn> tableDataProvider = new ListDataProvider<>();
+    private final MultiSelectionModel<FieldColumn> selectionModel = new MultiSelectionModel<FieldColumn>(
+            createKeyProvider());
+
+    private CellTable<FieldColumn> table;
 
     @UiField
-    CellTable table;
+    HTMLPanel tableContainer;
 
     public ConfigureDialogContent(InstanceTableView tableView, ConfigureDialog dialog) {
         this.tableView = tableView;
-        this.dialog = dialog;
-        initWidget(uiBinder.createAndBindUi(this));
         initTable();
+        initWidget(uiBinder.createAndBindUi(this));
+        tableContainer.add(table);
+
+        dialog.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onOk();
+            }
+        });
     }
 
     private void initTable() {
-        table.setSelectionModel(selectionModel);
-        tableDataProvider.addDataDisplay(table);
+//        final Column<FieldColumn, Boolean> checkColumn = new Column<FieldColumn, Boolean>(
+//                new CheckboxCell(true, false)) {
+//            @Override
+//            public Boolean getValue(FieldColumn object) {
+//                return selectionModel.isSelected(object);
+//            }
+//        };
 
-        final Column<FormField, Boolean> checkColumn = new Column<FormField, Boolean>(
-                new CheckboxCell(true, false)) {
-            @Override
-            public Boolean getValue(FormField object) {
-                return selectionModel.isSelected(object);
-            }
-        };
-
-        final Column<FormField, String> labelColumn = new Column<FormField, String>(
+        final Column<FieldColumn, String> labelColumn = new Column<FieldColumn, String>(
                 new TextCell()) {
             @Override
-            public String getValue(FormField object) {
-                return object.getLabel().getValue();
+            public String getValue(FieldColumn object) {
+                return object.getHeader();
             }
         };
-        labelColumn.setSortable(false);
+//        labelColumn.setSortable(false);
 
-        table.addColumn(checkColumn);
+//        table = new CellTable<>(10, CellTableResources.INSTANCE);
+        table = new CellTable<>(10);
+        table.setWidth("100%", true);
+//        table.setSelectionModel(selectionModel, DefaultSelectionEventManager.<FieldColumn>createCheckboxManager());
+        table.setSelectionModel(selectionModel);
+
+//        table.setAutoHeaderRefreshDisabled(true);
+//        table.setAutoFooterRefreshDisabled(true);
+//        table.setSkipRowHoverCheck(true);
+//        table.setSkipRowHoverFloatElementCheck(true);
+//        table.addColumn(checkColumn);
         table.addColumn(labelColumn);
-        table.setColumnWidth(checkColumn, 40, Style.Unit.PX);
-        table.setColumnWidth(labelColumn, 300, Style.Unit.PX);
+//        table.setColumnWidth(checkColumn, 40, Style.Unit.PX);
+        table.setColumnWidth(labelColumn, 100, Style.Unit.PCT);
+
+//        tableDataProvider.addDataDisplay(table);
+//        tableDataProvider.setList(tableView.getColumns());
+//        tableDataProvider.refresh();
+        table.setRowData(tableView.getColumns());
+
+        // todo
+//        for (FieldColumn column : tableView.getSelectedColumns()) {
+//            selectionModel.setSelected(column, true);
+//        }
+        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                final Set<FieldColumn> selectedSet = selectionModel.getSelectedSet();
+                for (FieldColumn column : tableView.getSelectedColumns()) {
+                    LOGGER.fine(column.getHeader() + " selected=" + selectionModel.isSelected(column));
+                }
+            }
+        });
+    }
+
+    private void onOk() {
+        tableView.setSelectedColumns(Lists.newArrayList(selectionModel.getSelectedSet()));
     }
 
 }

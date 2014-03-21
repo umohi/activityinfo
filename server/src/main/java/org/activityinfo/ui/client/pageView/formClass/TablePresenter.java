@@ -60,26 +60,19 @@ public class TablePresenter implements DisplayWidget<FormTree> {
     }
 
     private void enumerateColumns(List<FormTree.Node> fields) {
-        for(FormTree.Node child : fields) {
-            if(child.isReference()) {
-                enumerateColumns(child.getChildren());
+        for(FormTree.Node node : fields) {
+            if(node.isReference()) {
+                enumerateColumns(node.getChildren());
             } else {
-                if(columnMap.containsKey(child.getFieldId())) {
-                    columnMap.get(child.getFieldId()).addFieldPath(child.getPath());
+                if(columnMap.containsKey(node.getFieldId())) {
+                    columnMap.get(node.getFieldId()).addFieldPath(node.getPath());
                 } else {
-                    FieldColumn col = new FieldColumn(child.getPath(), composeHeader(child));
-                    columnMap.put(child.getFieldId(), col);
+                    FieldColumn col = new FieldColumn(node);
+                    columnMap.put(node.getFieldId(), col);
                     columns.add(col);
                 }
             }
         }
     }
 
-    private String composeHeader(FormTree.Node child) {
-        if(child.getPath().isNested()) {
-            return child.getDefiningFormClass().getLabel().getValue() + " " + child.getField().getLabel().getValue();
-        } else {
-            return child.getField().getLabel().getValue();
-        }
-    }
 }

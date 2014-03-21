@@ -86,15 +86,19 @@ public class InstanceTable implements IsWidget {
     }
 
     public void setColumns(List<FieldColumn> columns) {
-        while(table.getColumnCount() > 0) {
-            table.removeColumn(0);
-        }
+        removeAllColumns();
         for(FieldColumn column : columns) {
             table.addColumn(column, column.getHeader());
             fields.addAll(column.getFieldPaths());
         }
 
         reload();
+    }
+
+    private void removeAllColumns() {
+        while(table.getColumnCount() > 0) {
+            table.removeColumn(0);
+        }
     }
 
     public void reload() {

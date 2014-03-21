@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.widget;
  */
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -70,7 +71,12 @@ public class ModalDialog extends Composite {
     }
 
     public void show() {
-        dialog.center();
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                dialog.center();
+            }
+        });
     }
 
     public void setDialogTitle(String dialogTitle) {
