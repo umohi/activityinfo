@@ -36,5 +36,8 @@ public interface InstanceTableStyle extends Stylesheet {
     @ClassName("toobar")
     String toolbar();
 
+    @ClassName("column-half-width")
+    String columnHalfWidth();
+
 }
 

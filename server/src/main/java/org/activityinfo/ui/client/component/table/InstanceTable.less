@@ -1,7 +1,14 @@
+@import "../../style/bootstrap/variables.less";
+@import "../../style/bootstrap/mixins.less";
+
 @margin: 5px;
 
 .toobar {
   margin-top: @margin;
   margin-bottom: @margin;
   display: block;
+}
+
+.column-half-width {
+  .make-sm-column(6);
 }

@@ -73,4 +73,11 @@ public interface ImageResources extends ClientBundle {
 
     @Source("filter.png")
     ImageResource filter();
+
+    @Source("points2.png")
+    ImageResource moveLeft();
+
+    @Source("rappels2.png")
+    ImageResource moveRight();
+
 }

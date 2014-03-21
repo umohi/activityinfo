@@ -1,6 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:a="urn:import:org.activityinfo.ui.client.widget"
         >
 
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
@@ -8,6 +8,23 @@
   <ui:with field='style' type='org.activityinfo.ui.client.component.table.InstanceTableStyle'/>
 
   <g:HTMLPanel>
-    <g:HTMLPanel ui:field="tableContainer"/>
+    <div class="row">
+      <div class="col-sm-4">
+        <ui:text from='{i18n.visibleColumns}'/><br/>
+        <g:HTMLPanel ui:field="selectedColumnTableContainer"/>
+      </div>
+      <div class="col-sm-1">
+        <a:ButtonWithSize ui:field="leftButton" style="DEFAULT" size="EXTRA_SMALL">
+          <img src="{img.moveLeft.getSafeUri}" alt="{i18n.moveLeft}" title="{i18n.moveLeft}"/>
+        </a:ButtonWithSize>
+        <a:ButtonWithSize ui:field="rightButton" style="DEFAULT" size="EXTRA_SMALL">
+          <img src="{img.moveRight.getSafeUri}" alt="{i18n.moveRight}" title="{i18n.moveRight}"/>
+        </a:ButtonWithSize>
+      </div>
+      <div class="col-sm-4">
+        <ui:text from='{i18n.invisibleColumns}'/><br/>
+        <g:HTMLPanel ui:field="columnTableContainer"/>
+      </div>
+    </div>
   </g:HTMLPanel>
 </ui:UiBinder>

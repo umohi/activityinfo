@@ -3420,4 +3420,20 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Bulk edit")
     @Key("bulkEdit")
     String bulkEdit();
+
+    @DefaultStringValue("Move left")
+    @Key("moveLeft")
+    String moveLeft();
+
+    @DefaultStringValue("Move right")
+    @Key("moveRight")
+    String moveRight();
+
+    @DefaultStringValue("Visible columns")
+    @Key("visibleColumns")
+    String visibleColumns();
+
+    @DefaultStringValue("Invisible columns")
+    @Key("invisibleColumns")
+    String invisibleColumns();
 }

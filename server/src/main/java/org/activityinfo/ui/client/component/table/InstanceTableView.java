@@ -64,7 +64,6 @@ public class InstanceTableView implements IsWidget, RequiresResize {
             @Override
             public void execute() {
                 calculateSelectedColumns();
-                table.setColumns(selectedColumns);
             }
         });
     }
@@ -76,10 +75,10 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     private void calculateSelectedColumns() {
         if (columns.size() <= getMaxNumberOfColumns()) {
-            selectedColumns = Lists.newArrayList(columns);
+            setSelectedColumns(Lists.newArrayList(columns));
             columnAlert.getStyle().setDisplay(Style.Display.BLOCK);
         } else {
-            selectedColumns = Lists.newArrayList(columns.subList(0, getMaxNumberOfColumns()));
+            setSelectedColumns(Lists.newArrayList(columns.subList(0, getMaxNumberOfColumns())));
             columnAlert.getStyle().clearDisplay();
         }
     }

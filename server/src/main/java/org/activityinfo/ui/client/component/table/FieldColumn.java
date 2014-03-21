@@ -65,4 +65,11 @@ public class FieldColumn extends Column<Projection, String> {
             return node.getField().getLabel().getValue();
         }
     }
+
+    @Override
+    public String toString() {
+        return "FieldColumn{" +
+                "header='" + header + '\'' +
+                '}';
+    }
 }
