@@ -124,7 +124,7 @@ public class InstanceTable implements IsWidget {
     private void onRangeChanged(RangeChangeEvent event) {
         LOGGER.log(Level.INFO, "Instance Table Range Change: " +
                 "start = " + event.getNewRange().getStart() +
-                "length = " + event.getNewRange().getLength());
+                ", length = " + event.getNewRange().getLength());
 
 
         reload();

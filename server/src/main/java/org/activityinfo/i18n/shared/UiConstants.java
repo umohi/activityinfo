@@ -3412,4 +3412,12 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Current form")
     @Key("currentFormClass")
     String currentFormClass();
+
+    @DefaultStringValue("Configure")
+    @Key("configure")
+    String configure();
+
+    @DefaultStringValue("Bulk edit")
+    @Key("bulkEdit")
+    String bulkEdit();
 }

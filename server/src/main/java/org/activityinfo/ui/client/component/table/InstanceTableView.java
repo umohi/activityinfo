@@ -5,8 +5,10 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -38,12 +40,13 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiField(provided = true)
     InstanceTable table;
 
-    interface TableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
+    interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
 
-    private static TableViewUiBinder ourUiBinder = GWT.create(TableViewUiBinder.class);
+    private static InstanceTableViewUiBinder ourUiBinder = GWT.create(InstanceTableViewUiBinder.class);
 
     public InstanceTableView(ResourceLocator resourceLocator) {
+        InstanceTableStyle.INSTANCE.ensureInjected();
         table = new InstanceTable(resourceLocator);
         panel = ourUiBinder.createAndBindUi(this);
     }
@@ -62,9 +65,9 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     }
 
     private void doSetColumns(List<FieldColumn> columns) {
-        if(columns.size() <= getMaxNumberOfColumns()) {
+        if (columns.size() <= getMaxNumberOfColumns()) {
             table.setColumns(columns);
-            columnAlert.getStyle().setDisplay(Style.Display.NONE);
+            columnAlert.getStyle().setDisplay(Style.Display.BLOCK);
         } else {
             table.setColumns(columns.subList(0, getMaxNumberOfColumns()));
             columnAlert.getStyle().clearDisplay();
@@ -72,7 +75,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     }
 
     public int getMaxNumberOfColumns() {
-        double emSizeInPixels = ((double)emRuler.getOffsetWidth()) / 100d;
+        double emSizeInPixels = ((double) emRuler.getOffsetWidth()) / 100d;
 
         LOGGER.log(Level.FINE, "emSizeInPixels = " + emSizeInPixels);
 
@@ -99,4 +102,10 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void onResize() {
 
     }
+
+    @UiHandler("configureButton")
+    public void onConfigure(ClickEvent event) {
+
+    }
+
 }

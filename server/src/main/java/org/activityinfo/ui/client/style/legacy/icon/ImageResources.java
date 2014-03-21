@@ -67,4 +67,10 @@ public interface ImageResources extends ClientBundle {
 
     @Source("progress.gif")
     ImageResource progress();
+
+    @Source("cog.png")
+    ImageResource configure();
+
+    @Source("filter.png")
+    ImageResource filter();
 }
