@@ -37,4 +37,8 @@ public class ConfigureDialog extends ModalDialog {
         getModalBody().add(content);
         getModalBody().add(content);
     }
+
+    public ConfigureDialogContent getContent() {
+        return content;
+    }
 }

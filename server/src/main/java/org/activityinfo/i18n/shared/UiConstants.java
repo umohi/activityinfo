@@ -3436,4 +3436,8 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Invisible columns")
     @Key("invisibleColumns")
     String invisibleColumns();
+
+    @DefaultStringValue("Filter by name")
+    @Key("filterByName")
+    String filterByName();
 }

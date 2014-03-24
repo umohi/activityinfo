@@ -21,26 +21,33 @@ package org.activityinfo.ui.client.component.table;
  * #L%
  */
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.RowHoverEvent;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.shared.form.key.SelfKeyProvider;
-import org.activityinfo.ui.client.style.table.CellTableResources;
+import org.activityinfo.ui.client.style.table.DataGridResources;
 import org.activityinfo.ui.client.widget.ButtonWithSize;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -62,12 +69,12 @@ public class ConfigureDialogContent extends Composite {
     private final ListDataProvider<FieldColumn> selectedTableDataProvider = new ListDataProvider<>();
     private final MultiSelectionModel<FieldColumn> selectedSelectionModel = new MultiSelectionModel<FieldColumn>(
             new SelfKeyProvider<FieldColumn>());
-    private final CellTable<FieldColumn> selectedTable;
+    private final DataGrid<FieldColumn> selectedTable;
 
     private final ListDataProvider<FieldColumn> tableDataProvider = new ListDataProvider<>();
     private final MultiSelectionModel<FieldColumn> selectionModel = new MultiSelectionModel<FieldColumn>(
             new SelfKeyProvider<FieldColumn>());
-    private final CellTable<FieldColumn> table;
+    private final DataGrid<FieldColumn> table;
 
     @UiField
     HTMLPanel selectedColumnTableContainer;
@@ -77,8 +84,14 @@ public class ConfigureDialogContent extends Composite {
     ButtonWithSize leftButton;
     @UiField
     ButtonWithSize rightButton;
+    @UiField
+    TextBox filterColumnTable;
+    @UiField
+    ButtonWithSize upButton;
+    @UiField
+    ButtonWithSize downButton;
 
-    public ConfigureDialogContent(InstanceTableView tableView, ConfigureDialog dialog) {
+    public ConfigureDialogContent(final InstanceTableView tableView, ConfigureDialog dialog) {
         this.tableView = tableView;
 
         selectedTable = createTable();
@@ -86,6 +99,13 @@ public class ConfigureDialogContent extends Composite {
         selectedTableDataProvider.addDataDisplay(selectedTable);
         selectedTableDataProvider.setList(tableView.getSelectedColumns());
         selectedTableDataProvider.refresh();
+        selectedTable.addRowHoverHandler(new RowHoverEvent.Handler() {
+            @Override
+            public void onRowHover(RowHoverEvent event) {
+                event.getHoveringRow();
+                LOGGER.finest("event");
+            }
+        });
 
         final List<FieldColumn> allColumns = Lists.newArrayList(tableView.getColumns());
         allColumns.removeAll(tableView.getSelectedColumns());
@@ -115,6 +135,22 @@ public class ConfigureDialogContent extends Composite {
                 setMoveLeftButtonState();
             }
         });
+        filterColumnTable.addKeyUpHandler(new KeyUpHandler() {
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
+                final String value = filterColumnTable.getValue();
+                final ArrayList<FieldColumn> columnsToShow = Lists.newArrayList();
+                for (FieldColumn column : tableView.getColumns()) {
+                    final String headerLowercased = column.getHeader().toLowerCase();
+                    if (Strings.isNullOrEmpty(value) || headerLowercased.contains(value.toLowerCase())) {
+                        columnsToShow.add(column);
+                    }
+                }
+                columnsToShow.removeAll(selectedTableDataProvider.getList());
+                tableDataProvider.setList(columnsToShow);
+                tableDataProvider.refresh();
+            }
+        });
 
         dialog.getOkButton().addClickHandler(new ClickHandler() {
             @Override
@@ -124,7 +160,7 @@ public class ConfigureDialogContent extends Composite {
         });
     }
 
-    private static CellTable<FieldColumn> createTable() {
+    private static DataGrid<FieldColumn> createTable() {
         final Column<FieldColumn, String> labelColumn = new Column<FieldColumn, String>(
                 new TextCell()) {
             @Override
@@ -134,9 +170,9 @@ public class ConfigureDialogContent extends Composite {
         };
         labelColumn.setSortable(false);
 
-        final CellTable<FieldColumn> table = new CellTable<>(10, CellTableResources.INSTANCE);
-        table.setWidth("100%", true);
-
+        final DataGrid<FieldColumn> table = new DataGrid<>(10, DataGridResources.INSTANCE);
+        table.setHeight("400px"); // need to avoid height hardcode
+        table.setEmptyTableWidget(new Label());
         table.setAutoHeaderRefreshDisabled(true);
         table.setAutoFooterRefreshDisabled(true);
         table.setSkipRowHoverCheck(true);
@@ -178,6 +214,18 @@ public class ConfigureDialogContent extends Composite {
 
         selectedTableDataProvider.getList().removeAll(set);
         selectedTableDataProvider.refresh();
+    }
+
+    @UiHandler("upButton")
+    public void onUp(ClickEvent event) {
+        final Set<FieldColumn> set = selectionModel.getSelectedSet();
+        // todo
+    }
+
+    @UiHandler("downButton")
+    public void onDown(ClickEvent event) {
+        final Set<FieldColumn> set = selectionModel.getSelectedSet();
+        // todo
     }
 
 }
