@@ -9,25 +9,23 @@
 
   <g:HTMLPanel>
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-5">
       </div>
       <div class="col-sm-1">
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-5">
         <a:TextBox ui:field="filterColumnTable" placeholder="{i18n.filterByName}" styleName="form-control input-sm"/>
-        <br/>
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-5">
         <h4>
           <ui:text from='{i18n.visibleColumns}'/>
         </h4>
-        <br/>
         <g:HTMLPanel ui:field="selectedColumnTableContainer"/>
       </div>
       <div class="col-sm-1">
-        <br/><br/><br/><br/>
+        <br/><br/><br/>
         <a:ButtonWithSize ui:field="upButton" style="DEFAULT" size="EXTRA_SMALL">
           <img src="{img.up.getSafeUri}" alt="{i18n.moveUp}" title="{i18n.moveUp}"/>
         </a:ButtonWithSize>
@@ -42,11 +40,10 @@
           <img src="{img.moveRight.getSafeUri}" alt="{i18n.moveRight}" title="{i18n.moveRight}"/>
         </a:ButtonWithSize>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-5">
         <h4>
           <ui:text from='{i18n.invisibleColumns}'/>
         </h4>
-        <br/>
         <g:HTMLPanel ui:field="columnTableContainer"/>
       </div>
     </div>

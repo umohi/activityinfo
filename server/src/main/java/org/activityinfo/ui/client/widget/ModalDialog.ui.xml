@@ -6,7 +6,7 @@
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
 
   <g:HTMLPanel addStyleNames="bs">
-    <g:PopupPanel autoHideEnabled="false" modal="true" ui:field="dialog" styleName="ai">
+    <g:PopupPanel autoHideEnabled="false" modal="true" ui:field="dialog" styleName="bs">
       <g:HTMLPanel>
         <div class="modal-dialog">
           <div class="modal-content">

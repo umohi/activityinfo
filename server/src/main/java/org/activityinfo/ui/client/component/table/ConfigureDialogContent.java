@@ -35,11 +35,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.cellview.client.RowHoverEvent;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -48,6 +44,7 @@ import org.activityinfo.ui.client.style.table.DataGridResources;
 import org.activityinfo.ui.client.widget.ButtonWithSize;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -94,18 +91,13 @@ public class ConfigureDialogContent extends Composite {
     public ConfigureDialogContent(final InstanceTableView tableView, ConfigureDialog dialog) {
         this.tableView = tableView;
 
+        DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
+
         selectedTable = createTable();
         selectedTable.setSelectionModel(selectedSelectionModel);
         selectedTableDataProvider.addDataDisplay(selectedTable);
         selectedTableDataProvider.setList(tableView.getSelectedColumns());
         selectedTableDataProvider.refresh();
-        selectedTable.addRowHoverHandler(new RowHoverEvent.Handler() {
-            @Override
-            public void onRowHover(RowHoverEvent event) {
-                event.getHoveringRow();
-                LOGGER.finest("event");
-            }
-        });
 
         final List<FieldColumn> allColumns = Lists.newArrayList(tableView.getColumns());
         allColumns.removeAll(tableView.getSelectedColumns());
@@ -122,17 +114,23 @@ public class ConfigureDialogContent extends Composite {
 
         setMoveLeftButtonState();
         setMoveRightButtonState();
+        setUpButtonState();
+        setDownButtonState();
 
         selectedSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 setMoveRightButtonState();
+                setMoveLeftButtonState();
+                setDownButtonState();
+                setUpButtonState();
             }
         });
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 setMoveLeftButtonState();
+                setMoveRightButtonState();
             }
         });
         filterColumnTable.addKeyUpHandler(new KeyUpHandler() {
@@ -171,7 +169,7 @@ public class ConfigureDialogContent extends Composite {
         labelColumn.setSortable(false);
 
         final DataGrid<FieldColumn> table = new DataGrid<>(10, DataGridResources.INSTANCE);
-        table.setHeight("400px"); // need to avoid height hardcode
+        table.setHeight("300px"); // need to avoid height hardcode
         table.setEmptyTableWidget(new Label());
         table.setAutoHeaderRefreshDisabled(true);
         table.setAutoFooterRefreshDisabled(true);
@@ -194,6 +192,42 @@ public class ConfigureDialogContent extends Composite {
         rightButton.setEnabled(!selectedSelectionModel.getSelectedSet().isEmpty());
     }
 
+    public void setUpButtonState() {
+        boolean enabled = false;
+        if (!selectedSelectionModel.getSelectedSet().isEmpty()) {
+            int minIndex = -1;
+            for (FieldColumn column : selectedSelectionModel.getSelectedSet()) {
+                final int indexOf = selectedTableDataProvider.getList().indexOf(column);
+                if (minIndex > indexOf || minIndex == -1) {
+                    minIndex = indexOf;
+                }
+            }
+            if (minIndex > 0) {
+                enabled = true;
+            }
+        }
+
+        upButton.setEnabled(enabled);
+    }
+
+    public void setDownButtonState() {
+        boolean enabled = false;
+        if (!selectedSelectionModel.getSelectedSet().isEmpty()) {
+            int maxIndex = -1;
+            for (FieldColumn column : selectedSelectionModel.getSelectedSet()) {
+                final int indexOf = selectedTableDataProvider.getList().indexOf(column);
+                if (maxIndex < indexOf || maxIndex == -1) {
+                    maxIndex = indexOf;
+                }
+            }
+            if (maxIndex < selectedTableDataProvider.getList().size()) {
+                enabled = true;
+            }
+        }
+
+        downButton.setEnabled(enabled);
+    }
+
     @UiHandler("leftButton")
     public void onMoveLeft(ClickEvent event) {
         final Set<FieldColumn> set = selectionModel.getSelectedSet();
@@ -203,6 +237,8 @@ public class ConfigureDialogContent extends Composite {
 
         selectedTableDataProvider.getList().addAll(set);
         selectedTableDataProvider.refresh();
+
+        setMoveLeftButtonState();
     }
 
     @UiHandler("rightButton")
@@ -214,20 +250,42 @@ public class ConfigureDialogContent extends Composite {
 
         selectedTableDataProvider.getList().removeAll(set);
         selectedTableDataProvider.refresh();
+
+        setMoveRightButtonState();
     }
 
     @UiHandler("upButton")
     public void onUp(ClickEvent event) {
-        final Set<FieldColumn> set = selectionModel.getSelectedSet();
-        // todo
+        final Set<FieldColumn> set = selectedSelectionModel.getSelectedSet();
+        if (set != null) {
+            final ArrayList<FieldColumn> copy = Lists.newArrayList(selectedTableDataProvider.getList());
+            for (FieldColumn column : set) {
+                final int index = copy.indexOf(column);
+                if (index > 0) {
+                    Collections.swap(copy, index, index - 1);
+                }
+            }
+            selectedTableDataProvider.setList(copy);
+        }
+        setUpButtonState();
     }
 
     @UiHandler("downButton")
     public void onDown(ClickEvent event) {
-        final Set<FieldColumn> set = selectionModel.getSelectedSet();
-        // todo
+        final Set<FieldColumn> set = selectedSelectionModel.getSelectedSet();
+        if (set != null) {
+            final ArrayList<FieldColumn> copy = Lists.newArrayList(selectedTableDataProvider.getList());
+            final int size = copy.size();
+            for (FieldColumn column : set) {
+                final int index = copy.indexOf(column);
+                if (index < (size - 1)) {
+                    Collections.swap(copy, index, index + 1);
+                }
+            }
+            selectedTableDataProvider.setList(copy);
+        }
+        setDownButtonState();
     }
-
 }
 
 
