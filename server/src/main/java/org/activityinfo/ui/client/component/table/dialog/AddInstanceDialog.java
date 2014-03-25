@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table;
+package org.activityinfo.ui.client.component.table.dialog;
 /*
  * #%L
  * ActivityInfo Server
@@ -22,22 +22,23 @@ package org.activityinfo.ui.client.component.table;
  */
 
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.ui.client.component.table.InstanceTableView;
 import org.activityinfo.ui.client.widget.ModalDialog;
 
 /**
- * @author yuriyz on 3/21/14.
+ * @author yuriyz on 3/24/14.
  */
-public class ConfigureDialog extends ModalDialog {
+public class AddInstanceDialog extends ModalDialog {
 
-    private final ConfigureDialogContent content;
+    private final AddInstanceDialogContent content;
 
-    public ConfigureDialog(InstanceTableView tableView) {
-        this.content = new ConfigureDialogContent(tableView, this);
-        setDialogTitle(I18N.CONSTANTS.configure());
+    public AddInstanceDialog(InstanceTableView tableView) {
+        this.content = new AddInstanceDialogContent(tableView, this);
+        setDialogTitle(I18N.CONSTANTS.addInstance());
         getModalBody().add(content);
     }
 
-    public ConfigureDialogContent getContent() {
+    public AddInstanceDialogContent getContent() {
         return content;
     }
 }

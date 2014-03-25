@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table;
+package org.activityinfo.ui.client.component.table.dialog;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,23 +21,23 @@ package org.activityinfo.ui.client.component.table;
  * #L%
  */
 
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.ui.client.widget.ModalDialog;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import org.activityinfo.ui.client.component.table.InstanceTableView;
 
 /**
- * @author yuriyz on 3/21/14.
+ * @author yuriyz on 3/24/14.
  */
-public class ConfigureDialog extends ModalDialog {
+public class AddInstanceDialogContent extends Composite {
 
-    private final ConfigureDialogContent content;
-
-    public ConfigureDialog(InstanceTableView tableView) {
-        this.content = new ConfigureDialogContent(tableView, this);
-        setDialogTitle(I18N.CONSTANTS.configure());
-        getModalBody().add(content);
+    interface AddInstanceDialogContentUiBinder extends UiBinder<HTMLPanel, AddInstanceDialogContent> {
     }
 
-    public ConfigureDialogContent getContent() {
-        return content;
+    private static AddInstanceDialogContentUiBinder uiBinder = GWT.create(AddInstanceDialogContentUiBinder.class);
+
+    public AddInstanceDialogContent(InstanceTableView tableView, AddInstanceDialog addInstanceDialog) {
+        initWidget(uiBinder.createAndBindUi(this));
     }
 }

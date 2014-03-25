@@ -42,9 +42,9 @@ public class InstanceTable implements IsWidget {
 
     private final CellTable<Projection> table;
     private final TableLoadingIndicator loadingIndicator;
+    private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
 
     private Set<FieldPath> fields = Sets.newHashSet();
-
     private Criteria criteria;
 
     public InstanceTable(ResourceLocator resourceLocator) {
@@ -59,10 +59,7 @@ public class InstanceTable implements IsWidget {
         // Set the table to fixed width: we will provide explicit
         // column widths
         table.setWidth("100%", true);
-
-        MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
         table.setSelectionModel(selectionModel);
-
         table.addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
@@ -118,6 +115,10 @@ public class InstanceTable implements IsWidget {
                 table.setRowData(result);
             }
         });
+    }
+
+    public MultiSelectionModel<Projection> getSelectionModel() {
+        return selectionModel;
     }
 
     @Override

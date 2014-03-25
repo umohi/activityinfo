@@ -23,6 +23,12 @@
       <a:ButtonWithSize ui:field="blukEditButton" style="PRIMARY" size="EXTRA_SMALL">
         <img src="{img.edit.getSafeUri}" alt="{i18n.bulkEdit}" title="{i18n.bulkEdit}"/>
       </a:ButtonWithSize>
+      <a:ButtonWithSize ui:field="addButton" style="SUCCESS" size="EXTRA_SMALL">
+        <img src="{img.add.getSafeUri}" alt="{i18n.addInstance}" title="{i18n.addInstance}"/>
+      </a:ButtonWithSize>
+      <a:ButtonWithSize ui:field="removeButton" style="DANGER" size="EXTRA_SMALL">
+        <img src="{img.delete.getSafeUri}" alt="{i18n.removeInstance}" title="{i18n.removeInstance}"/>
+      </a:ButtonWithSize>
     </div>
 
     <!-- If we can display all the columns, inform the user -->

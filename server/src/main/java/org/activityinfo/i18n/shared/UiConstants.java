@@ -3440,4 +3440,12 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Filter by name")
     @Key("filterByName")
     String filterByName();
+
+    @DefaultStringValue("Add instance")
+    @Key("addInstance")
+    String addInstance();
+
+    @DefaultStringValue("Remove instance")
+    @Key("removeInstance")
+    String removeInstance();
 }

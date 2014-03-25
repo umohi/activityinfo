@@ -15,8 +15,11 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.ui.client.component.table.dialog.AddInstanceDialog;
+import org.activityinfo.ui.client.widget.ButtonWithSize;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -36,12 +39,16 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiField
     DivElement emRuler;
-
     @UiField
     Element columnAlert;
-
     @UiField(provided = true)
     InstanceTable table;
+    @UiField
+    ButtonWithSize addButton;
+    @UiField
+    ButtonWithSize removeButton;
+    @UiField
+    ButtonWithSize blukEditButton;
 
     interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
@@ -52,6 +59,22 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         InstanceTableStyle.INSTANCE.ensureInjected();
         table = new InstanceTable(resourceLocator);
         panel = ourUiBinder.createAndBindUi(this);
+
+        initButtons();
+    }
+
+    private void initButtons() {
+        setRemoveButtonState();
+        table.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                setRemoveButtonState();
+            }
+        });
+    }
+
+    private void setRemoveButtonState() {
+        removeButton.setEnabled(!table.getSelectionModel().getSelectedSet().isEmpty());
     }
 
     public void setCriteria(Criteria criteria) {
@@ -116,6 +139,17 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void onConfigure(ClickEvent event) {
         final ConfigureDialog configureDialog = new ConfigureDialog(this);
         configureDialog.show();
+    }
+
+    @UiHandler("addButton")
+    public void onAdd(ClickEvent event) {
+        final AddInstanceDialog addInstanceDialog = new AddInstanceDialog(this);
+        addInstanceDialog.show();
+    }
+
+    @UiHandler("removeButton")
+    public void onRemove(ClickEvent event) {
+        //todo
     }
 
     public List<FieldColumn> getColumns() {
