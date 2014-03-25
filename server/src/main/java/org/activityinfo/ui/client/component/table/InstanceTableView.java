@@ -33,6 +33,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     private static final int DEFAULT_MAX_COLUMN_COUNT = 5;
     private static final Logger LOGGER = Logger.getLogger(InstanceTableView.class.getName());
 
+    private final ResourceLocator resourceLocator;
     private final HTMLPanel panel;
     private List<FieldColumn> columns;
     private List<FieldColumn> selectedColumns;
@@ -57,8 +58,9 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     public InstanceTableView(ResourceLocator resourceLocator) {
         InstanceTableStyle.INSTANCE.ensureInjected();
-        table = new InstanceTable(resourceLocator);
-        panel = ourUiBinder.createAndBindUi(this);
+        this.resourceLocator = resourceLocator;
+        this.table = new InstanceTable(resourceLocator);
+        this.panel = ourUiBinder.createAndBindUi(this);
 
         initButtons();
     }
@@ -164,5 +166,9 @@ public class InstanceTableView implements IsWidget, RequiresResize {
             selectedColumns = Lists.newArrayList();
         }
         return selectedColumns;
+    }
+
+    public ResourceLocator getResourceLocator() {
+        return resourceLocator;
     }
 }

@@ -21,42 +21,39 @@ package org.activityinfo.ui.client.component.table.dialog;
  * #L%
  */
 
-import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.FormElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
+import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.ui.client.component.form.FormFieldWidgetFactory;
 import org.activityinfo.ui.client.component.table.FieldColumn;
-import org.activityinfo.ui.client.component.table.InstanceTableView;
-
-import java.util.List;
-import java.util.Map;
 
 /**
- * @author yuriyz on 3/24/14.
+ * @author yuriyz on 3/25/14.
  */
-public class AddInstanceDialogContent extends Composite {
+public class AddInstanceDialogRow extends Composite {
 
-    interface AddInstanceDialogContentUiBinder extends UiBinder<HTMLPanel, AddInstanceDialogContent> {
+    interface AddInstanceDialogRowUiBinder extends UiBinder<HTMLPanel, AddInstanceDialogRow> {
     }
 
-    private static AddInstanceDialogContentUiBinder uiBinder = GWT.create(AddInstanceDialogContentUiBinder.class);
+    private static AddInstanceDialogRowUiBinder uiBinder = GWT.create(AddInstanceDialogRowUiBinder.class);
 
-    private final Map<FieldColumn, AddInstanceDialogRow> rowMap = Maps.newHashMap();
-
+    private final FieldColumn column;
+    private final IsWidget widget;
     @UiField
-    FormElement form;
+    Label label;
+    @UiField
+    HTMLPanel controlContainer;
 
-    public AddInstanceDialogContent(InstanceTableView tableView, AddInstanceDialog addInstanceDialog) {
+    public AddInstanceDialogRow(FieldColumn column, ResourceLocator resourceLocator) {
         initWidget(uiBinder.createAndBindUi(this));
-
-        final List<FieldColumn> selectedColumns = tableView.getSelectedColumns();
-        for (FieldColumn column : selectedColumns) {
-            final AddInstanceDialogRow row = new AddInstanceDialogRow(column, tableView.getResourceLocator());
-            rowMap.put(column, row);
-            form.appendChild(row.getElement());
-        }
+        this.widget = FormFieldWidgetFactory.createWidget(column.getNode().getField(), resourceLocator);
+        this.column = column;
+        label.setText(column.getHeader());
+        controlContainer.add(widget);
     }
 }

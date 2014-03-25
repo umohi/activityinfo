@@ -28,6 +28,7 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.IsWidget;
+import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.core.shared.form.FormInstance;
@@ -47,7 +48,7 @@ public class FormFieldWidgetFactory {
     }
 
     public static IsWidget create(FormField field, FormPanel formPanel) {
-        final IsWidget widget = createWidget(field, formPanel);
+        final IsWidget widget = createWidget(field, formPanel.getResourceLocator());
         addValueChangeHandler(widget, field, formPanel);
         addKeyUpHandlers(widget, formPanel);
         return widget;
@@ -81,7 +82,7 @@ public class FormFieldWidgetFactory {
         }
     }
 
-    private static IsWidget createWidget(FormField field, FormPanel formPanel) {
+    public static IsWidget createWidget(FormField field, ResourceLocator resourceLocator) {
         final FormFieldType fieldType = field.getType();
         if (fieldType != null) {
             switch (fieldType) {
@@ -96,7 +97,7 @@ public class FormFieldWidgetFactory {
                 case GEOGRAPHIC_POINT:
                     return new GeographicTextBox();
                 case REFERENCE:
-                    return new FormFieldWidgetReference(field, formPanel.getResourceLocator());
+                    return new FormFieldWidgetReference(field, resourceLocator);
                 default:
                     Log.error("Field type " + fieldType + " is not supported, created text box widget as fallback.");
             }
