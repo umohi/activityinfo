@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.style;
+    package org.activityinfo.ui.client.style;
 
 import com.bedatadriven.rebar.style.client.IconSet;
 import com.google.gwt.core.shared.GWT;
@@ -13,10 +13,10 @@ public interface Icons extends IconSet {
     @Source(value = "icons/fontawesome.svg", glyph = 0xf055)
     String add();
 
-    @Source(value = "icons/ocha/reporting.svg", glyph = 0xe61a)
+    @Source(value = "icons/ocha.svg", glyph = 0xe61a)
     String form();
 
-    @Source(value = "icons/ocha/reporting.svg", glyph = 0xe6c4)
+    @Source(value = "icons/ocha.svg", glyph = 0xe6c4)
     String location();
 
     @Source(value = "icons/fontawesome.svg", glyph = 0xf115)
