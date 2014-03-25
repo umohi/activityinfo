@@ -23,6 +23,7 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
@@ -35,7 +36,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.cellview.client.RowStyles;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -43,10 +48,7 @@ import org.activityinfo.core.shared.form.key.SelfKeyProvider;
 import org.activityinfo.ui.client.style.table.DataGridResources;
 import org.activityinfo.ui.client.widget.ButtonWithSize;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -78,9 +80,9 @@ public class ConfigureDialogContent extends Composite {
     @UiField
     HTMLPanel columnTableContainer;
     @UiField
-    ButtonWithSize leftButton;
-    @UiField
     ButtonWithSize rightButton;
+    @UiField
+    ButtonWithSize removeButton;
     @UiField
     TextBox filterColumnTable;
     @UiField
@@ -100,10 +102,18 @@ public class ConfigureDialogContent extends Composite {
         selectedTableDataProvider.refresh();
 
         final List<FieldColumn> allColumns = Lists.newArrayList(tableView.getColumns());
-        allColumns.removeAll(tableView.getSelectedColumns());
 
         table = createTable();
         table.setSelectionModel(selectionModel);
+        table.setRowStyles(new RowStyles<FieldColumn>() {
+            @Override
+            public String getStyleNames(FieldColumn row, int rowIndex) {
+                if (selectedTableDataProvider.getList().contains(row)) {
+                    return "row-disabled";
+                }
+                return null;
+            }
+        });
         tableDataProvider.addDataDisplay(table);
         tableDataProvider.setList(allColumns);
         tableDataProvider.refresh();
@@ -112,16 +122,16 @@ public class ConfigureDialogContent extends Composite {
         selectedColumnTableContainer.add(selectedTable);
         columnTableContainer.add(table);
 
-        setMoveLeftButtonState();
         setMoveRightButtonState();
+        setRemoveButtonState();
         setUpButtonState();
         setDownButtonState();
 
         selectedSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                setRemoveButtonState();
                 setMoveRightButtonState();
-                setMoveLeftButtonState();
                 setDownButtonState();
                 setUpButtonState();
             }
@@ -129,8 +139,8 @@ public class ConfigureDialogContent extends Composite {
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                setMoveLeftButtonState();
                 setMoveRightButtonState();
+                setRemoveButtonState();
             }
         });
         filterColumnTable.addKeyUpHandler(new KeyUpHandler() {
@@ -144,7 +154,7 @@ public class ConfigureDialogContent extends Composite {
                         columnsToShow.add(column);
                     }
                 }
-                columnsToShow.removeAll(selectedTableDataProvider.getList());
+
                 tableDataProvider.setList(columnsToShow);
                 tableDataProvider.refresh();
             }
@@ -184,12 +194,14 @@ public class ConfigureDialogContent extends Composite {
         tableView.setSelectedColumns(Lists.newArrayList(selectedTableDataProvider.getList()));
     }
 
-    public void setMoveLeftButtonState() {
-        leftButton.setEnabled(!selectionModel.getSelectedSet().isEmpty());
+    public void setMoveRightButtonState() {
+        final HashSet<FieldColumn> selectedSet = Sets.newHashSet(selectionModel.getSelectedSet());
+        selectedSet.removeAll(selectedTableDataProvider.getList());
+        rightButton.setEnabled(!selectedSet.isEmpty());
     }
 
-    public void setMoveRightButtonState() {
-        rightButton.setEnabled(!selectedSelectionModel.getSelectedSet().isEmpty());
+    public void setRemoveButtonState() {
+        removeButton.setEnabled(!selectedSelectionModel.getSelectedSet().isEmpty());
     }
 
     public void setUpButtonState() {
@@ -220,7 +232,7 @@ public class ConfigureDialogContent extends Composite {
                     maxIndex = indexOf;
                 }
             }
-            if (maxIndex < selectedTableDataProvider.getList().size()) {
+            if (maxIndex < (selectedTableDataProvider.getList().size() - 1)) {
                 enabled = true;
             }
         }
@@ -228,30 +240,36 @@ public class ConfigureDialogContent extends Composite {
         downButton.setEnabled(enabled);
     }
 
-    @UiHandler("leftButton")
-    public void onMoveLeft(ClickEvent event) {
-        final Set<FieldColumn> set = selectionModel.getSelectedSet();
+    @UiHandler("rightButton")
+    public void onMoveRight(ClickEvent event) {
+        final Set<FieldColumn> set = Sets.newHashSet(selectionModel.getSelectedSet());
 
-        tableDataProvider.getList().removeAll(set);
-        tableDataProvider.refresh();
-
+        set.removeAll(selectedTableDataProvider.getList());
         selectedTableDataProvider.getList().addAll(set);
         selectedTableDataProvider.refresh();
 
-        setMoveLeftButtonState();
+        setMoveRightButtonState();
+        redrawTableRows(set);
     }
 
-    @UiHandler("rightButton")
-    public void onMoveRight(ClickEvent event) {
-        final Set<FieldColumn> set = selectedSelectionModel.getSelectedSet();
+    public void redrawTableRows(Collection<FieldColumn> rows) {
+        for (FieldColumn column : rows) {
+            final int index = tableDataProvider.getList().indexOf(column);
+            if (index != -1) {
+                table.redrawRow(index);
+            }
+        }
+    }
 
-        tableDataProvider.getList().addAll(set);
-        tableDataProvider.refresh();
+    @UiHandler("removeButton")
+    public void onRemove(ClickEvent event) {
+        final Set<FieldColumn> set = selectedSelectionModel.getSelectedSet();
 
         selectedTableDataProvider.getList().removeAll(set);
         selectedTableDataProvider.refresh();
 
-        setMoveRightButtonState();
+        setRemoveButtonState();
+        redrawTableRows(set);
     }
 
     @UiHandler("upButton")
