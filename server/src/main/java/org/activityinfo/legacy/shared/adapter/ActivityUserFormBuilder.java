@@ -28,6 +28,7 @@ public class ActivityUserFormBuilder {
         Cuid classId = CuidAdapter.activityFormClass(activity.getId());
 
         siteForm = new FormClass(classId);
+        siteForm.setLabel(new LocalizedString(activity.getName()));
 
         if(!Strings.isNullOrEmpty(activity.getCategory())) {
             siteForm.setParentId(activityCategoryFolderId(activity.getDatabase(), activity.getCategory()));
