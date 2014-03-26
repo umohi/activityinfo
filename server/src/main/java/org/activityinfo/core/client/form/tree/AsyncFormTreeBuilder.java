@@ -2,18 +2,21 @@ package org.activityinfo.core.client.form.tree;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Cuids;
 import org.activityinfo.core.shared.Iri;
 import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.fp.client.Promise;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -85,39 +88,26 @@ public class AsyncFormTreeBuilder implements Function<Cuid, Promise<FormTree>> {
          * @param formClass
          */
         private void addChildrenToNode(FormTree.Node node, FormClass formClass) {
-            if(node == null) {
-                tree.addRootFormClass(formClass);
-                queueNextRequests(tree.getRootFields());
-            } else {
-                node.addChildrenFromReferencedClass(formClass);
-                queueNextRequests(node.getChildren());
-            }
-        }
-
-        private void queueNextRequests(List<FormTree.Node> children) {
-            for(FormTree.Node child : children) {
-                if(child.isReference()) {
-                    for(Cuid rangeClass : child.getRange()) {
-                        final Iri iri = rangeClass.asIri();
-                        if(iri.getScheme().equals(Cuids.SCHEME)) {
-                            requestFormClassForNode(child, new Cuid(iri.getSchemeSpecificPart()));
-                        }
-                    }
+            for(FormField field : formClass.getFields()) {
+                FormTree.Node childNode;
+                if(node == null) {
+                    childNode = tree.addRootField(formClass, field);
+                } else {
+                    childNode = node.addChild(formClass, field);
+                }
+                if(childNode.isReference()) {
+                    queueNextRequests(childNode);
                 }
             }
         }
 
-        /**
-         * Returns a single FormClass id from a set of IRIs defining the range of the field.
-         * Cheating a bit, but a field could have a range of multiple fields, but it will do for now.
-         */
-        private Cuid formIdFromRange(Set<Iri> range) {
-            Preconditions.checkState(range.size() == 1);
-
-            Iri rangeIri = range.iterator().next();
-            Preconditions.checkState(rangeIri.getScheme().equals(Cuids.SCHEME));
-
-            return new Cuid(rangeIri.getSchemeSpecificPart());
+        private void queueNextRequests(FormTree.Node child) {
+            for(Cuid rangeClass : child.getRange()) {
+                final Iri iri = rangeClass.asIri();
+                if(iri.getScheme().equals(Cuids.SCHEME)) {
+                    requestFormClassForNode(child, new Cuid(iri.getSchemeSpecificPart()));
+                }
+            }
         }
     }
 }

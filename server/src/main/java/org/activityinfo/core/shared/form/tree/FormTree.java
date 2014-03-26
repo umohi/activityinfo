@@ -43,24 +43,17 @@ public class FormTree {
             return field.getType() == FormFieldType.REFERENCE;
         }
 
-        /**
-         * Add the fields of a referenced class to this node as children.
-         *
-         */
-        public void addChildrenFromReferencedClass(FormClass referencedClass) {
-            assert isReference();
+        public Node addChild(FormClass declaringClass, FormField field) {
+            assert isReference() : "only reference fields can have children";
 
-            for (FormField property : referencedClass.getFields()) {
-                Preconditions.checkNotNull(property);
-
-                FormTree.Node childNode = new FormTree.Node();
-                childNode.parent = this;
-                childNode.field = property;
-                childNode.path = new FieldPath(this.path, property);
-                childNode.formClass = referencedClass;
-                children.add(childNode);
-                nodeMap.put(childNode.path, childNode);
-            }
+            FormTree.Node childNode = new FormTree.Node();
+            childNode.parent = this;
+            childNode.field = field;
+            childNode.path = new FieldPath(this.path, field);
+            childNode.formClass = declaringClass;
+            children.add(childNode);
+            nodeMap.put(childNode.path, childNode);
+            return childNode;
         }
 
         /**
@@ -113,10 +106,10 @@ public class FormTree {
          */
         public String debugPath() {
             StringBuilder path = new StringBuilder();
-            path.append(toString(this.getField().getLabel()));
+            path.append(toString(this.getField().getLabel(), this.getDefiningFormClass()));
             Node parent = this.parent;
             while(parent != null) {
-                path.insert(0, toString(parent.getField().getLabel()) + ".");
+                path.insert(0, toString(parent.getField().getLabel(), parent.getDefiningFormClass()) + ".");
                 parent = parent.parent;
             }
             return path.toString();
@@ -124,19 +117,18 @@ public class FormTree {
 
         @Override
         public String toString() {
-            if(isRoot()) {
-                return "ROOT";
-            } else {
-                return toString(field.getLabel()) + ":" + field.getType().name();
-            }
+            return toString(field.getLabel(), this.getDefiningFormClass()) + ":" + field.getType().name();
         }
 
-        private String toString(LocalizedString label) {
-            if(label.getValue().contains(" ")) {
-                return "[" + label.getValue() + "]";
-            } else {
-                return label.getValue();
+        private String toString(LocalizedString label, FormClass definingFormClass) {
+            String field = "[";
+            if(definingFormClass != null && definingFormClass.getLabel() != null)  {
+                field += definingFormClass.getLabel().getValue() + ":";
             }
+            field += label.getValue();
+            field += "]";
+
+            return field;
         }
 
         public Node findDescendant(FieldPath relativePath) {
@@ -175,15 +167,14 @@ public class FormTree {
 
     }
 
-    public void addRootFormClass(FormClass formClass) {
-        for(FormField field : formClass.getFields()) {
-            Node node = new Node();
-            node.formClass = formClass;
-            node.field = field;
-            node.path = new FieldPath(field);
-            rootFields.add(node);
-            nodeMap.put(node.path, node);
-        }
+    public Node addRootField(FormClass declaringClass, FormField field) {
+        Node node = new Node();
+        node.formClass = declaringClass;
+        node.field = field;
+        node.path = new FieldPath(field);
+        rootFields.add(node);
+        nodeMap.put(node.path, node);
+        return node;
     }
 
     public Map<Cuid, FormClass> getRootFormClasses() {
