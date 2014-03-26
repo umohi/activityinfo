@@ -19,6 +19,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.ui.client.component.table.dialog.AddInstanceDialog;
+import org.activityinfo.ui.client.component.table.dialog.ConfigureDialog;
 import org.activityinfo.ui.client.widget.ButtonWithSize;
 
 import java.util.List;
