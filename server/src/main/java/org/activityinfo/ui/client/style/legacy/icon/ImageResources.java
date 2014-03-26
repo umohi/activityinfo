@@ -41,6 +41,9 @@ public interface ImageResources extends ClientBundle {
     @Source("edit.png")
     ImageResource edit();
 
+    @Source("arrow_merge.png")
+    ImageResource editBulk();
+
     @Source("undo.png")
     ImageResource undo();
 

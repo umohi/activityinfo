@@ -3448,4 +3448,8 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Remove instance")
     @Key("removeInstance")
     String removeInstance();
+
+    @DefaultStringValue("Add column")
+    @Key("addColumn")
+    String addColumn();
 }

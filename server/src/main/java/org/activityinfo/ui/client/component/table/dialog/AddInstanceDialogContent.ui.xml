@@ -1,5 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:a="urn:import:org.activityinfo.ui.client.widget"
         >
 
   <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
@@ -7,9 +8,17 @@
   <ui:with field='style' type='org.activityinfo.ui.client.component.table.InstanceTableStyle'/>
 
   <g:HTMLPanel>
-    <g:ScrollPanel>
-      <g:HTMLPanel>
+    <g:ScrollPanel alwaysShowScrollBars="false" height="500px">
+      <g:HTMLPanel width="90%">
         <form class="form-horizontal" role="form" ui:field="form">
+          <div class="form-group">
+            <div class="col-sm-2 control-label"/>
+            <div class="col-sm-10">
+              <a:Button text="{i18n.addColumn}" ui:field="addButton" style="SUCCESS">
+                <img src="{img.delete.getSafeUri}" alt="{i18n.addColumn}" title="{i18n.addColumn}"/>
+              </a:Button>
+            </div>
+          </div>
         </form>
       </g:HTMLPanel>
     </g:ScrollPanel>

@@ -21,18 +21,24 @@ package org.activityinfo.ui.client.component.table.dialog;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.FormElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import org.activityinfo.ui.client.component.table.FieldColumn;
 import org.activityinfo.ui.client.component.table.InstanceTableView;
+import org.activityinfo.ui.client.widget.ButtonWithSize;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author yuriyz on 3/24/14.
@@ -45,18 +51,57 @@ public class AddInstanceDialogContent extends Composite {
     private static AddInstanceDialogContentUiBinder uiBinder = GWT.create(AddInstanceDialogContentUiBinder.class);
 
     private final Map<FieldColumn, AddInstanceDialogRow> rowMap = Maps.newHashMap();
+    private final InstanceTableView tableView;
 
     @UiField
     FormElement form;
+    @UiField
+    ButtonWithSize addButton;
 
-    public AddInstanceDialogContent(InstanceTableView tableView, AddInstanceDialog addInstanceDialog) {
+    public AddInstanceDialogContent(InstanceTableView tableView, AddInstanceDialog dialog) {
         initWidget(uiBinder.createAndBindUi(this));
+        this.tableView = tableView;
+        dialog.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onOk();
+            }
+        });
 
         final List<FieldColumn> selectedColumns = tableView.getSelectedColumns();
         for (FieldColumn column : selectedColumns) {
+            addColumn(column);
+        }
+    }
+
+    @UiHandler("addButton")
+    public void onAddColumn(ClickEvent event) {
+        final AddColumnDialog dialog = new AddColumnDialog(tableView.getColumns(), Lists.newArrayList(rowMap.keySet()));
+        dialog.show();
+        dialog.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                addColumns(dialog.getContent().getSelectionModel().getSelectedSet());
+            }
+        });
+    }
+
+    private void addColumns(Set<FieldColumn> selectedSet) {
+        for (FieldColumn column : selectedSet) {
+            addColumn(column);
+        }
+    }
+
+    private void addColumn(FieldColumn column) {
+        if (!rowMap.containsKey(column)) {
             final AddInstanceDialogRow row = new AddInstanceDialogRow(column, tableView.getResourceLocator());
             rowMap.put(column, row);
             form.appendChild(row.getElement());
         }
     }
+
+    private void onOk() {
+        // todo
+    }
+
 }

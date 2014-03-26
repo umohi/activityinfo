@@ -40,13 +40,15 @@ import org.activityinfo.ui.client.util.GwtUtil;
 /**
  * @author yuriyz on 3/4/14.
  */
-public class ModalDialog extends Composite {
+public class ModalDialog<T extends Widget> extends Composite {
 
     private static ModalDialogBinder uiBinder = GWT
             .create(ModalDialogBinder.class);
 
     interface ModalDialogBinder extends UiBinder<Widget, ModalDialog> {
     }
+
+    private T content;
 
     @UiField
     HeadingElement title;
@@ -64,6 +66,20 @@ public class ModalDialog extends Composite {
         ModalStylesheet.INSTANCE.ensureInjected();
 
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public ModalDialog(T content, String dialogTitle) {
+        this(content);
+        setDialogTitle(dialogTitle);
+    }
+
+    public ModalDialog(T content) {
+        this.content = content;
+        getModalBody().add(content);
+    }
+
+    public T getContent() {
+        return content;
     }
 
     public void setVisible(boolean visible) {

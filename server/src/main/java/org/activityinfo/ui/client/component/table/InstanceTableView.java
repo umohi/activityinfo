@@ -51,6 +51,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     ButtonWithSize removeButton;
     @UiField
     ButtonWithSize blukEditButton;
+    @UiField
+    ButtonWithSize editButton;
 
     interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
@@ -118,7 +120,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
         int columnLimit = (int) Math.floor(panel.getElement().getClientWidth() / columnWidthInPixels);
         LOGGER.log(Level.FINE, "columnLimit = " + columnLimit);
-        if (columnLimit <= 0) { // fallback : yuriyz: todo check calculations above
+        if (columnLimit <= 0) { // fallback : yuriyz: check calculations above
             columnLimit = DEFAULT_MAX_COLUMN_COUNT;
         }
         return columnLimit;
