@@ -7,7 +7,11 @@
   <ui:with field='style' type='org.activityinfo.ui.client.component.table.InstanceTableStyle'/>
 
   <g:HTMLPanel>
-    <form class="form-horizontal" role="form" ui:field="form">
-    </form>
+    <g:ScrollPanel>
+      <g:HTMLPanel>
+        <form class="form-horizontal" role="form" ui:field="form">
+        </form>
+      </g:HTMLPanel>
+    </g:ScrollPanel>
   </g:HTMLPanel>
 </ui:UiBinder>

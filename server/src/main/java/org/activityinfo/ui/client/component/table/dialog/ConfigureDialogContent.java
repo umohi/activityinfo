@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table;
+package org.activityinfo.ui.client.component.table.dialog;
 /*
  * #%L
  * ActivityInfo Server
@@ -45,6 +45,8 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.shared.form.key.SelfKeyProvider;
+import org.activityinfo.ui.client.component.table.FieldColumn;
+import org.activityinfo.ui.client.component.table.InstanceTableView;
 import org.activityinfo.ui.client.style.table.DataGridResources;
 import org.activityinfo.ui.client.widget.ButtonWithSize;
 

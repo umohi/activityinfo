@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table;
+package org.activityinfo.ui.client.component.table.dialog;
 /*
  * #%L
  * ActivityInfo Server
@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.component.table;
  */
 
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.ui.client.component.table.InstanceTableView;
 import org.activityinfo.ui.client.widget.ModalDialog;
 
 /**
