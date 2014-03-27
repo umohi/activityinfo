@@ -221,6 +221,7 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData> impl
 
             IndicatorDTO newIndicator = new IndicatorDTO();
             newIndicator.setAggregation(IndicatorDTO.AGGREGATE_SUM);
+            newIndicator.set("sortOrder", activity.getIndicators().size()+1);
 
             newEntity = newIndicator;
             newEntity.set("activityId", activity.getId());

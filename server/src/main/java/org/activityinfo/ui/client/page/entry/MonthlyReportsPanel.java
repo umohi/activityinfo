@@ -31,6 +31,7 @@ import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.state.StateManager;
 import com.extjs.gxt.ui.client.store.GroupingStore;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.util.DateWrapper;
@@ -61,7 +62,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
     private final Dispatcher service;
 
     private ListLoader<MonthlyReportResult> loader;
-    private GroupingStore<IndicatorRowDTO> store;
+    private ListStore<IndicatorRowDTO> store;
     private MonthlyGrid grid;
     private ReportingPeriodProxy proxy;
     private MappingComboBox<Month> monthCombo;
@@ -82,7 +83,6 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
         loader = new BaseListLoader<MonthlyReportResult>(proxy);
         store = new GroupingStore<IndicatorRowDTO>(loader);
         store.setMonitorChanges(true);
-        store.groupBy("activityName");
         store.addListener(Store.Update, new Listener<BaseEvent>() {
             @Override
             public void handleEvent(BaseEvent be) {

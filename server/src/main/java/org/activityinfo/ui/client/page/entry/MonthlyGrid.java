@@ -25,10 +25,13 @@ package org.activityinfo.ui.client.page.entry;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.store.GroupingStore;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.DateWrapper;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
-import com.extjs.gxt.ui.client.widget.grid.*;
+import com.extjs.gxt.ui.client.widget.grid.CellEditor;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
@@ -49,7 +52,7 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
     private static final int MONTH_COLUMN_WIDTH = 75;
     private boolean readOnly = true;
 
-    public MonthlyGrid(GroupingStore<IndicatorRowDTO> store) {
+    public MonthlyGrid(ListStore<IndicatorRowDTO> store) {
         super(store, createColumnModel());
 
         setAutoExpandColumn("indicatorName");
@@ -62,23 +65,8 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
                 }
             }
         });
-        
-        GroupingView view = new GroupingView();
-        view.setGroupRenderer(new GridGroupRenderer() {
-            
-            @Override
-            public String render(GroupColumnData data) {
-                if(data.text != null && !data.text.isEmpty()) {
-                    return data.text;
-                } else { 
-                    return I18N.CONSTANTS.unknownGroup();
-                }
-            }
-        });
-        view.setShowGroupedColumn(false);
-        view.setForceFit(true);
-        setView(view);
     }
+
     /**
      * Updates the month headers based on the given start month
      */
