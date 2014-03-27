@@ -64,7 +64,7 @@ public class GetMonthlyReportsHandler implements
 
         List<Indicator> indicators = em
                 .createQuery("select i from Indicator i where i.activity.id =" +
-                        "(select s.activity.id from Site s where s.id = ?1)")
+                        "(select s.activity.id from Site s where s.id = ?1) order by i.sortOrder")
                 .setParameter(1, cmd.getSiteId())
                 .getResultList();
 

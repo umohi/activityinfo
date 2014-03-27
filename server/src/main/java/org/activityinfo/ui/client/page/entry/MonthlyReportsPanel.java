@@ -208,7 +208,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
 //        this.toolBar.setActionEnabled(UIActions.SAVE, !readOnly);
     }
     
-    public void onNoSeletion() {
+    public void onNoSelection() {
         this.grid.getStore().removeAll();
         this.grid.getView().setEmptyText(I18N.MESSAGES.SelectSiteAbove());
     }
@@ -227,11 +227,8 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
         }
 
         @Override
-        protected void load(Object loadConfig,
-                            AsyncCallback<MonthlyReportResult> callback) {
-
-            service.execute(new GetMonthlyReports(siteId, startMonth, 7),
-                    callback);
+        protected void load(Object loadConfig, AsyncCallback<MonthlyReportResult> callback) {
+            service.execute(new GetMonthlyReports(siteId, startMonth, 7), callback);
         }
     }
 }

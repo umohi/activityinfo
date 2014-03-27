@@ -258,7 +258,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
     private void onNoSelection() {
         toolBar.setActionEnabled(UIActions.EDIT, false);
         toolBar.setActionEnabled(UIActions.DELETE, false);
-        monthlyPanel.onNoSeletion();
+        monthlyPanel.onNoSelection();
     }
 
     @Override

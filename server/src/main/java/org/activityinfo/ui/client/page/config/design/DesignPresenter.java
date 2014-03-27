@@ -136,9 +136,11 @@ public class DesignPresenter extends AbstractEditorGridPresenter<ModelData> impl
                     messages.indicators());
             treeStore.add(activityNode, indicatorFolder, false);
             
-            for (IndicatorDTO indicator : activity.getIndicators()) {
-                IndicatorDTO indicatorNode = new IndicatorDTO(indicator);
-                treeStore.add(indicatorFolder, indicatorNode, false);
+            for (IndicatorGroup group : activity.groupIndicators()) {
+                for(IndicatorDTO indicator : group.getIndicators()) {
+                    IndicatorDTO indicatorNode = new IndicatorDTO(indicator);
+                    treeStore.add(indicatorFolder, indicatorNode, false);
+                }
             }
         }
     }
