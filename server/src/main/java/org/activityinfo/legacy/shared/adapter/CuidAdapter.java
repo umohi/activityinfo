@@ -261,8 +261,8 @@ public class CuidAdapter {
     private static String block(int id) {
         // yuriy : commented it, conversion legacyId <-> cuid should be transparent
         // now CuidAdapterTest.locationInstance() is passed successfully
-        return CuidGenerator.pad(id);
-//        return Integer.toString(id, Cuids.RADIX);
+//        return CuidGenerator.pad(id);
+        return Integer.toString(id, Cuids.RADIX);
     }
 
     public static int getBlock(Cuid cuid, int blockIndex) {
