@@ -58,19 +58,16 @@ public class DefaultColumnModelProvider implements ColumnModelProvider {
 
             @Override
             public void onSuccess(SchemaDTO result) {
-                if (filter
-                        .isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
+                if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
                     ActivityDTO singleActivity = result.getActivityById(filter
                             .getRestrictedCategory(DimensionType.Activity));
-                    callback.onSuccess(forSingleActivity(grouping,
-                            singleActivity));
-                } else if (filter
-                        .isDimensionRestrictedToSingleCategory(DimensionType.Database)) {
+                    callback.onSuccess(forSingleActivity(grouping, singleActivity));
+
+                } else if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Database)) {
                     UserDatabaseDTO singleDatabase = result
-                            .getDatabaseById(filter
-                                    .getRestrictedCategory(DimensionType.Database));
-                    callback.onSuccess(forSingleDatabase(grouping,
-                            singleDatabase));
+                            .getDatabaseById(filter.getRestrictedCategory(DimensionType.Database));
+                    callback.onSuccess(forSingleDatabase(grouping, singleDatabase));
+
                 } else {
                     callback.onSuccess(forMultipleDatabases(grouping, result));
                 }

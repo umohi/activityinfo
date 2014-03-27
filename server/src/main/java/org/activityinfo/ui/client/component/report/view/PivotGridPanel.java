@@ -27,9 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.extjs.gxt.ui.client.widget.Info;
+import com.extjs.gxt.ui.client.widget.InfoConfig;
+import com.extjs.gxt.ui.client.widget.tips.ToolTip;
+import com.extjs.gxt.ui.client.widget.tips.ToolTipConfig;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.client.type.DateUtilGWTImpl;
 import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
@@ -68,17 +71,20 @@ public class PivotGridPanel extends ContentPanel implements
     private Map<Integer, PivotTableData.Axis> columnMap;
 
     private ColumnModel columnModel;
-    private EventBus eventBus;
     private Dispatcher dispatcher;
     private DrillDownEditor drillDownEditor;
 
-    public PivotGridPanel(EventBus eventBus, Dispatcher dispatcher) {
-    	this.eventBus = eventBus;
+    private ToolTip drillDownTip;
+
+
+    public PivotGridPanel(Dispatcher dispatcher) {
     	this.dispatcher = dispatcher;
-    	this.drillDownEditor = new DrillDownEditor(eventBus, dispatcher, null, DateUtilGWTImpl.INSTANCE);
+    	this.drillDownEditor = new DrillDownEditor(dispatcher);
         setLayout(new FitLayout());
+
     }
 
+    @SuppressWarnings("GwtInconsistentSerializableClass")
     public class PivotTableRow extends BaseTreeModel {
 
         private PivotTableData.Axis rowAxis;
@@ -132,11 +138,10 @@ public class PivotGridPanel extends ContentPanel implements
                     @Override
                     public void handleEvent(GridEvent<PivotTableRow> ge) {
                         if (ge.getColIndex() != 0) {
-                             eventBus.fireEvent(new
-                             PivotCellEvent(AppEvents.DRILL_DOWN,
-                             element,
-                             ge.getModel().getRowAxis(),
-                             columnMap.get(ge.getColIndex())));
+                            PivotTableData.Axis row = ge.getModel().getRowAxis();
+                            PivotTableData.Axis column = columnMap.get(ge.getColIndex());
+
+                            drillDownEditor.drillDown(element, row, column);
                         }
                     }
                 });
@@ -145,6 +150,27 @@ public class PivotGridPanel extends ContentPanel implements
 
         layout();
 
+        if(grid.getStore().getCount() > 0) {
+            showDrilldownTip();
+        }
+
+    }
+
+    private void showDrilldownTip() {
+        if(drillDownTip == null) {
+            ToolTipConfig config = new ToolTipConfig();
+            config.setText("Double-click a value to view the individual sites");
+            config.setDismissDelay(1500);
+            config.setCloseable(true);
+            config.setAutoHide(true);
+
+            drillDownTip = new ToolTip();
+            drillDownTip.update(config);
+        }
+
+        drillDownTip.showAt(this.getAbsoluteLeft() + (this.getWidth() / 2),
+                this.getAbsoluteTop() + (this.getHeight() - 50));
+
     }
 
     private void addRows(PivotTableData.Axis parent, int depth) {
@@ -152,16 +178,6 @@ public class PivotGridPanel extends ContentPanel implements
             store.add(new PivotTableRow(axis, depth));
             addRows(axis, depth + 1);
         }
-    }
-
-    protected int findIndicatorId(PivotTableData.Axis axis) {
-        while (axis != null) {
-            if (axis.getDimension().getType() == DimensionType.Indicator) {
-                return ((EntityCategory) axis.getCategory()).getId();
-            }
-            axis = axis.getParent();
-        }
-        return -1;
     }
 
     private static class RowHeaderRenderer implements
@@ -242,4 +258,5 @@ public class PivotGridPanel extends ContentPanel implements
     public Component asComponent() {
         return this;
     }
+
 }

@@ -22,18 +22,31 @@ package org.activityinfo.ui.client.component.report.view;
  * #L%
  */
 
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.widget.grid.RowExpander;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.state.StateProvider;
+import org.activityinfo.legacy.client.type.DateUtilGWTImpl;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
 import org.activityinfo.legacy.shared.reports.content.PivotTableData;
+import org.activityinfo.legacy.shared.reports.model.DateRange;
+import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
 import org.activityinfo.legacy.shared.reports.util.DateUtil;
 import org.activityinfo.ui.client.AppEvents;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.page.common.Shutdownable;
+import org.activityinfo.ui.client.page.common.toolbar.ActionListener;
+import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
+import org.activityinfo.ui.client.page.common.toolbar.UIActions;
 import org.activityinfo.ui.client.page.entry.SiteGridPanel;
+import org.activityinfo.ui.client.page.entry.form.SiteDialogCallback;
+import org.activityinfo.ui.client.page.entry.form.SiteDialogLauncher;
 import org.activityinfo.ui.client.page.entry.grouping.NullGroupingModel;
 
 import com.extjs.gxt.ui.client.event.Listener;
@@ -41,54 +54,49 @@ import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.layout.FillLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
-public class DrillDownEditor implements Shutdownable {
+import static org.activityinfo.legacy.shared.reports.model.DateRange.intersection;
 
-    private final EventBus eventBus;
-    private final DateUtil dateUtil;
-    private Listener<PivotCellEvent> eventListener;
+public class DrillDownEditor implements Shutdownable, ActionListener {
+
+    private static final DateUtil DATES = new DateUtilGWTImpl();
+
+    private Dispatcher dispatcher;
     private SiteGridPanel gridPanel;
     private Dialog dialog;
+    private ActionToolBar toolBar;
 
-    public DrillDownEditor(EventBus eventBus, Dispatcher service,
-                           StateProvider stateMgr, DateUtil dateUtil) {
+    public DrillDownEditor(Dispatcher dispatcher) {
 
-        this.eventBus = eventBus;
-        this.dateUtil = dateUtil;
-        this.gridPanel = new SiteGridPanel(service);
-        
-        createDialog();
-        
-        eventListener = new Listener<PivotCellEvent>() {
-            @Override
-            public void handleEvent(PivotCellEvent be) {
-                onDrillDown(be);
-            }
-        };
-        eventBus.addListener(AppEvents.DRILL_DOWN, eventListener);
+        this.dispatcher = dispatcher;
+
+        createUi();
+    }
+
+    private void createUi() {
+        if(gridPanel == null) {
+            gridPanel = new SiteGridPanel(dispatcher, new DrillDownColumnModelProvider(dispatcher));
+
+            createToolbar();
+            createDialog();
+        }
     }
 
     @Override
     public void shutdown() {
-        eventBus.removeListener(AppEvents.DRILL_DOWN, eventListener);
     }
 
-    public void onDrillDown(PivotCellEvent event) {
+    public void drillDown(PivotReportElement element, PivotTableData.Axis row, PivotTableData.Axis column) {
+
+        createUi();
 
         // construct our filter from the intersection of rows and columns
-        Filter filter = new Filter(filterFromAxis(event.getRow()),
-                filterFromAxis(event.getColumn()));
+        Filter filter = new Filter(filterFromAxis(row), filterFromAxis(column));
 
         // apply the effective filter
-        final Filter effectiveFilter = new Filter(filter, event.getElement()
-                .getContent().getEffectiveFilter());
-
-        effectiveFilter.getRestrictions(DimensionType.Indicator).iterator()
-                .next();
-        effectiveFilter.clearRestrictions(DimensionType.Indicator);
+        final Filter effectiveFilter = new Filter(filter, element.getContent().getEffectiveFilter());
 
         gridPanel.load(NullGroupingModel.INSTANCE, effectiveFilter);
         dialog.show();
-        
     }
 
     private Filter filterFromAxis(PivotTableData.Axis axis) {
@@ -97,8 +105,9 @@ public class DrillDownEditor implements Shutdownable {
         while (axis != null) {
             if (axis.getDimension() != null) {
                 if (axis.getDimension().getType() == DimensionType.Date) {
-                    filter.setDateRange(dateUtil.rangeFromCategory(axis
-                            .getCategory()));
+                    filter.setDateRange(intersection(filter.getDateRange(),
+                            DATES.rangeFromCategory(axis.getCategory())));
+
                 } else if (axis.getCategory() instanceof EntityCategory) {
                     filter.addRestriction(axis.getDimension().getType(),
                             ((EntityCategory) axis.getCategory()).getId());
@@ -108,21 +117,46 @@ public class DrillDownEditor implements Shutdownable {
         }
         return filter;
     }
+
+    private void createToolbar() {
+
+        toolBar = new ActionToolBar(this);
+        toolBar.addEditButton();
+
+        gridPanel.addSelectionChangedListener(new SelectionChangedListener<SiteDTO>() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<SiteDTO> event) {
+                toolBar.setActionEnabled(UIActions.EDIT, gridPanel.getSelection() != null);
+            }
+        });
+    }
     
     private void createDialog() {
     	dialog = new Dialog();
     	dialog.setHeadingText(I18N.CONSTANTS.sites());
     	dialog.setButtons(Dialog.CLOSE);
     	dialog.setLayout(new FitLayout());
+        dialog.setTopComponent(toolBar);
     	dialog.setSize(600, 500);
     	
     	gridPanel.setHeaderVisible(false);
     	gridPanel.setLayout(new FillLayout());
     	gridPanel.setBorders(false);
-        dialog.add(gridPanel);    	
+        dialog.add(gridPanel);
+
+
     }
 
-    public SiteGridPanel getGridPanel() {
-        return gridPanel;
+    @Override
+    public void onUIAction(String actionId) {
+        if(UIActions.EDIT.equals(actionId)) {
+            SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
+            launcher.editSite(gridPanel.getSelection(), new SiteDialogCallback() {
+                @Override
+                public void onSaved(SiteDTO site) {
+                    gridPanel.refresh();
+                }
+            });
+        }
     }
 }

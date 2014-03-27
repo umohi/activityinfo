@@ -319,10 +319,6 @@ public class GetSitesHandler implements
         }
     }
 
-    private boolean isRemote(ExecutionContext context) {
-        return context.isRemote();
-    }
-
     private void applySort(SqlQuery query, SortInfo sortInfo) {
         if (sortInfo.getSortDir() != SortDir.NONE) {
             String field = sortInfo.getSortField();

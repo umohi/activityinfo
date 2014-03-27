@@ -174,6 +174,12 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         final Filter filter = new Filter(rawFilter);
         filter.clearRestrictions(DimensionType.Location);
 
+        // avoid fetching a list of ALL locations if no indicators have been selected
+        if(!filter.isRestricted(DimensionType.Indicator)) {
+            store.removeAll();
+            return;
+        }
+
         if (baseFilter == null || !baseFilter.equals(filter)) {
             PivotSites pivotSites = new PivotSites();
             pivotSites.setDimensions(Sets.<Dimension>newHashSet(new Dimension(DimensionType.Location)));

@@ -68,13 +68,14 @@ public class PivotSitesHandler implements
 
         LOGGER.fine("Pivoting: " + command);
 
-        if (command.getValueType() == ValueType.INDICATOR) {
-            if (command.getFilter() == null
-                    ||
-                    command.getFilter().getRestrictions(DimensionType.Indicator)
-                            .isEmpty()) {
-                Log.error("No indicator filter provided to pivot query");
-            }
+        if (command.getFilter() == null
+                ||
+                command.getFilter().getRestrictions(DimensionType.Indicator)
+                        .isEmpty()) {
+            Log.error("No indicator filter provided to pivot query");
+            PivotResult emptyResult = new PivotResult();
+            emptyResult.setBuckets(Lists.<Bucket>newArrayList());
+            callback.onSuccess(emptyResult);
         }
 
         final PivotQueryContext queryContext = new PivotQueryContext(command,

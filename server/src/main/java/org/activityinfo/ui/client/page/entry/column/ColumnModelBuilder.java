@@ -139,7 +139,7 @@ public class ColumnModelBuilder {
         return this;
     }
 
-    public ColumnConfig addIndicatorColumn(IndicatorDTO indicator, String header) {
+    public ColumnConfig createIndicatorColumn(IndicatorDTO indicator, String header) {
 
         NumberField indicatorField = new NumberField();
         indicatorField.getPropertyEditor().setFormat(
@@ -168,8 +168,23 @@ public class ColumnModelBuilder {
                     }
                 }
             });
+        } else if(indicator.getAggregation() == IndicatorDTO.AGGREGATE_SITE_COUNT) {
+            indicatorColumn.setRenderer(new GridCellRenderer() {
+                @Override
+                public Object render(ModelData model, String property,
+                                     ColumnData config, int rowIndex, int colIndex,
+                                     ListStore listStore, Grid grid) {
+
+                    return "1"; // the value of a site count indicator a single site is always 1
+                }
+            });
         }
         return indicatorColumn;
+    }
+
+    public ColumnModelBuilder addIndicatorColumn(IndicatorDTO indicator, String header) {
+        columns.add(createIndicatorColumn(indicator, header));
+        return this;
     }
 
     public ColumnModelBuilder maybeAddTwoLineLocationColumn(ActivityDTO activity) {
@@ -286,7 +301,7 @@ public class ColumnModelBuilder {
             for (IndicatorDTO indicator : activity.getIndicators()) {
                 if (indicator.getListHeader() != null
                         && !indicator.getListHeader().isEmpty()) {
-                    columns.add(addIndicatorColumn(indicator,
+                    columns.add(createIndicatorColumn(indicator,
                             indicator.getListHeader()));
                 }
             }

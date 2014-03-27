@@ -105,17 +105,12 @@ public final class SiteGridPanel extends ContentPanel {
 
             @Override
             public void onSuccess(SchemaDTO result) {
-                if (filter
-                        .isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
-                    int activityId = filter
-                            .getRestrictedCategory(DimensionType.Activity);
+                if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
+                    int activityId = filter.getRestrictedCategory(DimensionType.Activity);
                     ActivityDTO activity = result.getActivityById(activityId);
-                    setHeadingText(activity.getDatabase().getName() + " - "
-                            + activity.getName());
-                } else if (filter
-                        .isDimensionRestrictedToSingleCategory(DimensionType.Database)) {
-                    int databaseId = filter
-                            .getRestrictedCategory(DimensionType.Database);
+                    setHeadingText(activity.getDatabase().getName() + " - " + activity.getName());
+                } else if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Database)) {
+                    int databaseId = filter.getRestrictedCategory(DimensionType.Database);
                     UserDatabaseDTO db = result.getDatabaseById(databaseId);
                     setHeadingText(db.getName());
                 }
@@ -140,10 +135,8 @@ public final class SiteGridPanel extends ContentPanel {
             installGrid(panel);
 
         } else {
-            SiteTreeGrid treeGrid = new SiteTreeGrid(dispatcher, grouping,
-                    filter, columnModel);
-            treeGrid
-                    .addSelectionChangeListener(new SelectionChangedListener<SiteDTO>() {
+            SiteTreeGrid treeGrid = new SiteTreeGrid(dispatcher, grouping, filter, columnModel);
+            treeGrid.addSelectionChangeListener(new SelectionChangedListener<SiteDTO>() {
 
                         @Override
                         public void selectionChanged(
