@@ -22,25 +22,6 @@ package org.activityinfo.ui.client.component.report.view;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.extjs.gxt.ui.client.widget.Info;
-import com.extjs.gxt.ui.client.widget.InfoConfig;
-import com.extjs.gxt.ui.client.widget.tips.ToolTip;
-import com.extjs.gxt.ui.client.widget.tips.ToolTipConfig;
-import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
-import org.activityinfo.legacy.shared.command.DimensionType;
-import org.activityinfo.legacy.shared.reports.content.EntityCategory;
-import org.activityinfo.legacy.shared.reports.content.PivotTableData;
-import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
-import org.activityinfo.ui.client.AppEvents;
-import org.activityinfo.ui.client.EventBus;
-
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BaseTreeModel;
 import com.extjs.gxt.ui.client.event.Events;
@@ -48,16 +29,23 @@ import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Format;
+import com.extjs.gxt.ui.client.util.Point;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.grid.CellSelectionModel;
-import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnData;
-import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
-import com.extjs.gxt.ui.client.widget.grid.HeaderGroupConfig;
+import com.extjs.gxt.ui.client.widget.Info;
+import com.extjs.gxt.ui.client.widget.InfoConfig;
+import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
+import org.activityinfo.legacy.shared.reports.content.PivotTableData;
+import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PivotGridPanel extends ContentPanel implements
         ReportView<PivotReportElement> {
@@ -74,7 +62,7 @@ public class PivotGridPanel extends ContentPanel implements
     private Dispatcher dispatcher;
     private DrillDownEditor drillDownEditor;
 
-    private ToolTip drillDownTip;
+    private Info drillDownTip;
 
 
     public PivotGridPanel(Dispatcher dispatcher) {
@@ -151,26 +139,30 @@ public class PivotGridPanel extends ContentPanel implements
         layout();
 
         if(grid.getStore().getCount() > 0) {
-            showDrilldownTip();
+            showDrillDownTip();
         }
 
     }
 
-    private void showDrilldownTip() {
-        if(drillDownTip == null) {
-            ToolTipConfig config = new ToolTipConfig();
-            config.setText("Double-click a value to view the individual sites");
-            config.setDismissDelay(1500);
-            config.setCloseable(true);
-            config.setAutoHide(true);
+    private void showDrillDownTip() {
+        InfoConfig config = new InfoConfig(I18N.CONSTANTS.drillDownTipHeading(),
+                I18N.CONSTANTS.drillDownTip());
+        config.display = 5000;
 
-            drillDownTip = new ToolTip();
-            drillDownTip.update(config);
+        if(drillDownTip == null) {
+
+            drillDownTip = new Info() {
+                @Override
+                protected Point position() {
+                    ContentPanel c = PivotGridPanel.this;
+                    return new Point(
+                            c.getAbsoluteLeft() + ((c.getWidth() - config.width)  / 2),
+                            c.getAbsoluteTop() +   (c.getHeight() - config.height));
+                }
+            };
         }
 
-        drillDownTip.showAt(this.getAbsoluteLeft() + (this.getWidth() / 2),
-                this.getAbsoluteTop() + (this.getHeight() - 50));
-
+        drillDownTip.show(config);
     }
 
     private void addRows(PivotTableData.Axis parent, int depth) {

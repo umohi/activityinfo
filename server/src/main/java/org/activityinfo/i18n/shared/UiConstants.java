@@ -3453,6 +3453,12 @@ public interface UiConstants extends Constants {
     @Key("failedToCreateWidget")
     String failedToCreateWidget();
 
+    @DefaultStringValue("Quick tip!")
+    String drillDownTipHeading();
+
+    @DefaultStringValue("Double-click a value to view the individual sites")
+    String drillDownTip();
+
     @DefaultStringValue("Not all columns are shown. You can configure visible columns with 'Visible columns' button.")
     @Key("notAllColumnsAreShown")
     String notAllColumnsAreShown();
