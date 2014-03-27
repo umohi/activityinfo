@@ -149,7 +149,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
                 value.getRestrictions(DimensionType.Location));
         applyInternalValue();
         if (fireEvents) {
-            ValueChangeEvent.fire(this, value);
+            ValueChangeEvent.fire(this, this.value);
         }        
     }
     

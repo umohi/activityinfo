@@ -27,6 +27,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.ui.client.page.entry.ActivityFilterPanel;
 
@@ -62,6 +63,7 @@ public class FilterPanelSet implements FilterPanel {
                                 }
 
                                 Filter value = composeFilter(new Filter(), null);
+                                Log.debug("FilterPanelSet: Filter changed = " + value);
                                 ValueChangeEvent.fire(FilterPanelSet.this, value);
                             }
                         });
@@ -79,8 +81,6 @@ public class FilterPanelSet implements FilterPanel {
                 ((AttributeGroupFilterWidgets) panel).clearFilter();
             } else if (panel instanceof PartnerFilterPanel) {
                 ((PartnerFilterPanel) panel).clearFilter();
-            } else if(panel instanceof LocationFilterPanel) {
-                ((LocationFilterPanel)panel).clearFilter();
             }
         }
     }
