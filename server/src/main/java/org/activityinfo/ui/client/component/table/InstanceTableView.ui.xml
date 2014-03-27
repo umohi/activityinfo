@@ -16,13 +16,13 @@
 
     <div ui:field="toolbar" class="{style.toolbar}">
       <a:ButtonWithSize ui:field="addButton" style="SUCCESS" size="EXTRA_SMALL"
-                        text="{i18n.addInstance}" title="{i18n.addInstance}"/>
+                        text="{i18n.add}" title="{i18n.add}"/>
 
       <a:ButtonWithSize ui:field="removeButton" style="DANGER" size="EXTRA_SMALL"
-                        text="{i18n.removeInstance}" title="{i18n.removeInstance}"/>
+                        text="{i18n.remove}" title="{i18n.remove}"/>
       <a:ButtonWithSize ui:field="editButton" style="DEFAULT" size="EXTRA_SMALL"
                         text="{i18n.edit}" title="{i18n.edit}"/>
-      &nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;
       <a:ButtonWithSize ui:field="visibleColumns" style="PRIMARY" size="EXTRA_SMALL"
                         text="{i18n.visibleColumns}" title="{i18n.visibleColumns}"/>
       <a:ButtonWithSize ui:field="filterButton" style="PRIMARY" size="EXTRA_SMALL"
