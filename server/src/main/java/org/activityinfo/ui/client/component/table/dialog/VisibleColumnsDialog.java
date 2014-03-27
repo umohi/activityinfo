@@ -28,17 +28,17 @@ import org.activityinfo.ui.client.widget.ModalDialog;
 /**
  * @author yuriyz on 3/21/14.
  */
-public class ConfigureDialog extends ModalDialog {
+public class VisibleColumnsDialog extends ModalDialog {
 
-    private final ConfigureDialogContent content;
+    private final VisibleColumnsDialogContent content;
 
-    public ConfigureDialog(InstanceTableView tableView) {
-        this.content = new ConfigureDialogContent(tableView, this);
-        setDialogTitle(I18N.CONSTANTS.configure());
+    public VisibleColumnsDialog(InstanceTableView tableView) {
+        this.content = new VisibleColumnsDialogContent(tableView, this);
+        setDialogTitle(I18N.CONSTANTS.visibleColumns());
         getModalBody().add(content);
     }
 
-    public ConfigureDialogContent getContent() {
+    public VisibleColumnsDialogContent getContent() {
         return content;
     }
 }

@@ -18,8 +18,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.criteria.Criteria;
-import org.activityinfo.ui.client.component.table.dialog.AddInstanceDialog;
-import org.activityinfo.ui.client.component.table.dialog.ConfigureDialog;
+import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
 import org.activityinfo.ui.client.widget.ButtonWithSize;
 
 import java.util.List;
@@ -140,16 +139,15 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     }
 
-    @UiHandler("configureButton")
+    @UiHandler("visibleColumns")
     public void onConfigure(ClickEvent event) {
-        final ConfigureDialog configureDialog = new ConfigureDialog(this);
-        configureDialog.show();
+        final VisibleColumnsDialog visibleColumnsDialog = new VisibleColumnsDialog(this);
+        visibleColumnsDialog.show();
     }
 
     @UiHandler("addButton")
     public void onAdd(ClickEvent event) {
-        final AddInstanceDialog addInstanceDialog = new AddInstanceDialog(this);
-        addInstanceDialog.show();
+
     }
 
     @UiHandler("removeButton")

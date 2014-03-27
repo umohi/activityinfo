@@ -56,11 +56,11 @@ import java.util.logging.Logger;
 /**
  * @author yuriyz on 3/21/14.
  */
-public class ConfigureDialogContent extends Composite {
+public class VisibleColumnsDialogContent extends Composite {
 
-    private static final Logger LOGGER = Logger.getLogger(ConfigureDialogContent.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VisibleColumnsDialogContent.class.getName());
 
-    interface ConfigureDialogContentUiBinder extends UiBinder<HTMLPanel, ConfigureDialogContent> {
+    interface ConfigureDialogContentUiBinder extends UiBinder<HTMLPanel, VisibleColumnsDialogContent> {
     }
 
     private static ConfigureDialogContentUiBinder uiBinder = GWT.create(ConfigureDialogContentUiBinder.class);
@@ -92,7 +92,7 @@ public class ConfigureDialogContent extends Composite {
     @UiField
     ButtonWithSize downButton;
 
-    public ConfigureDialogContent(final InstanceTableView tableView, ConfigureDialog dialog) {
+    public VisibleColumnsDialogContent(final InstanceTableView tableView, VisibleColumnsDialog dialog) {
         this.tableView = tableView;
 
         DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
