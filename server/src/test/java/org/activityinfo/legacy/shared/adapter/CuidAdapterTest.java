@@ -22,9 +22,13 @@ package org.activityinfo.legacy.shared.adapter;
  */
 
 import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Cuids;
 import org.activityinfo.core.shared.Iri;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author yuriyz on 2/10/14.
@@ -32,11 +36,20 @@ import org.junit.Test;
 public class CuidAdapterTest {
 
     @Test
+    public void blockSize() {
+        assertThat(CuidAdapter.BLOCK_SIZE, equalTo(Integer.toString(Integer.MAX_VALUE, Cuids.RADIX).length()));
+    }
+
+    @Test
     public void locationInstance() {
         int id = 998707825;
         final Cuid cuid = CuidAdapter.locationInstanceId(id);
         final int legacyIdFromCuid = CuidAdapter.getLegacyIdFromCuid(cuid);
         Assert.assertEquals(id, legacyIdFromCuid);
+
+        Cuid fieldId = CuidAdapter.field(cuid, CuidAdapter.ADMIN_FIELD);
+        assertThat(CuidAdapter.getBlock(fieldId, 0), equalTo(id));
+        assertThat(CuidAdapter.getBlock(fieldId, 1), equalTo(CuidAdapter.ADMIN_FIELD));
     }
 
     @Test

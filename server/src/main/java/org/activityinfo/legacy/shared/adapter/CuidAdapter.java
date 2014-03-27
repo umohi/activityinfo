@@ -1,6 +1,6 @@
 package org.activityinfo.legacy.shared.adapter;
 
-import org.activityinfo.core.client.CuidGenerator;
+import com.google.common.base.Strings;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Cuids;
 import org.activityinfo.core.shared.Iri;
@@ -61,6 +61,8 @@ public class CuidAdapter {
     public static final int DATE_FIELD = 9;
     public static final int FULL_NAME_FIELD = 10;
     public static final int LOCATION_FIELD = 11;
+
+    public static final int BLOCK_SIZE = 6;
 
     /**
      * Avoid instance creation.
@@ -259,15 +261,12 @@ public class CuidAdapter {
     }
 
     private static String block(int id) {
-        // yuriy : commented it, conversion legacyId <-> cuid should be transparent
-        // now CuidAdapterTest.locationInstance() is passed successfully
-//        return CuidGenerator.pad(id);
-        return Integer.toString(id, Cuids.RADIX);
+        return Strings.padStart(Integer.toString(id, Cuids.RADIX), BLOCK_SIZE, '0');
     }
 
     public static int getBlock(Cuid cuid, int blockIndex) {
-        int startIndex = 1 + (blockIndex * CuidGenerator.BLOCK_SIZE);
-        String block = cuid.asString().substring(startIndex, startIndex+CuidGenerator.BLOCK_SIZE);
+        int startIndex = 1 + (blockIndex * BLOCK_SIZE);
+        String block = cuid.asString().substring(startIndex, startIndex + BLOCK_SIZE);
         return Integer.parseInt(block, Cuids.RADIX);
     }
 
