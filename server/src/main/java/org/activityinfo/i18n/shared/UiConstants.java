@@ -3462,4 +3462,7 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Not all columns are shown. You can configure visible columns with 'Visible columns' button.")
     @Key("notAllColumnsAreShown")
     String notAllColumnsAreShown();
+
+    @DefaultStringValue("(Locked)")
+    String lockedMonthHeader();
 }

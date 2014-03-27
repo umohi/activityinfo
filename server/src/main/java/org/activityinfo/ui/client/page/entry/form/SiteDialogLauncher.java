@@ -27,6 +27,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.KeyGenerator;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSchema;
@@ -34,7 +35,6 @@ import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
 import org.activityinfo.ui.client.page.entry.location.LocationDialog;
 
@@ -83,16 +83,20 @@ public class SiteDialogLauncher {
 
             @Override
             public void onSuccess(SchemaDTO schema) {
+                ActivityDTO activity = schema.getActivityById(site.getActivityId());
+
                 // check whether the site has been locked
-                LockedPeriodSet locks = new LockedPeriodSet(schema);
-                if (locks.isLocked(site)) {
-                    MessageBox.alert(I18N.CONSTANTS.lockedSiteTitle(),
-                            I18N.CONSTANTS.siteIsLocked(), null);
-                    return;
+                // (this only applies to Once-reported activities because
+                //  otherwise the date criteria applies to the monthly report)
+                if(activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
+                    LockedPeriodSet locks = new LockedPeriodSet(schema);
+                    if (locks.isLocked(site)) {
+                        MessageBox.alert(I18N.CONSTANTS.lockedSiteTitle(),
+                                I18N.CONSTANTS.siteIsLocked(), null);
+                        return;
+                    }
                 }
 
-                ActivityDTO activity = schema.getActivityById(site
-                        .getActivityId());
                 SiteDialog dialog = new SiteDialog(dispatcher, activity);
                 dialog.showExisting(site, callback);
             }
