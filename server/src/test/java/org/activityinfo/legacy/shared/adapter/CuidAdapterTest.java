@@ -21,14 +21,23 @@ package org.activityinfo.legacy.shared.adapter;
  * #L%
  */
 
-import junit.framework.Assert;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Iri;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author yuriyz on 2/10/14.
  */
 public class CuidAdapterTest {
+
+    @Test
+    public void locationInstance() {
+        int id = 998707825;
+        final Cuid cuid = CuidAdapter.locationInstanceId(id);
+        final int legacyIdFromCuid = CuidAdapter.getLegacyIdFromCuid(cuid);
+        Assert.assertEquals(id, legacyIdFromCuid);
+    }
 
     @Test
     public void cuidConversion() {
