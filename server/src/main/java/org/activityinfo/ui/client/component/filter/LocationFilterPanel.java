@@ -138,12 +138,12 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
     }
 
     @Override
-    public void setValue(Filter arg0) {
+    public void setValue(Filter value) {
         setValue(value, false);
     }
 
     @Override
-    public void setValue(Filter arg0, boolean fireEvents) {
+    public void setValue(Filter value, boolean fireEvents) {
         this.value = new Filter();
         this.value.addRestriction(DimensionType.Location,
                 value.getRestrictions(DimensionType.Location));
@@ -194,10 +194,11 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
 
                     for(Bucket bucket : result.getBuckets()) {
                         LocationDTO dto = new LocationDTO();
-                        dto.setId(((EntityCategory)bucket.getCategory(new Dimension(DimensionType.Location))).getId());
-                        dto.setName(((EntityCategory)bucket.getCategory(new Dimension(DimensionType.Location))).getLabel());
+                        dto.setId(((EntityCategory) bucket.getCategory(new Dimension(DimensionType.Location))).getId());
+                        dto.setName(((EntityCategory) bucket.getCategory(new Dimension(DimensionType.Location))).getLabel());
                         store.add(dto);
                     }
+                    store.sort("name", Style.SortDir.ASC);
                     
                     applyInternalValue();
                     for (LocationDTO location : store.getModels()) {
