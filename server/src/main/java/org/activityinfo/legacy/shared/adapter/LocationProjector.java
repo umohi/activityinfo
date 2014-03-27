@@ -46,7 +46,7 @@ public class LocationProjector implements Function<ListResult<LocationDTO>, List
         List<Projection> projections = Lists.newArrayList();
         for(LocationDTO location : input.getData()) {
             Projection projection = new Projection(CuidAdapter.locationInstanceId(location.getId()),
-                    CuidAdapter.locationFormClass(location.getId()));
+                    CuidAdapter.locationFormClass(location.getLocationTypeId()));
             for(Projector projector : projectors) {
                 projector.update(projection, location);
             }
