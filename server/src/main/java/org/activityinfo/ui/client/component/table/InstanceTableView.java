@@ -11,17 +11,25 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
+import org.activityinfo.ui.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.client.widget.ButtonWithSize;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +45,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     private final HTMLPanel panel;
     private List<FieldColumn> columns;
     private List<FieldColumn> selectedColumns;
+    private Collection<FormClass> rootFormClasses;
 
     @UiField
     DivElement emRuler;
@@ -68,13 +77,20 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     }
 
     private void initButtons() {
+        setEditButtonState();
         setRemoveButtonState();
         table.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                setEditButtonState();
                 setRemoveButtonState();
             }
         });
+    }
+
+    private void setEditButtonState() {
+        final Set<Projection> selectedSet = table.getSelectionModel().getSelectedSet();
+        editButton.setEnabled(!selectedSet.isEmpty() && selectedSet.size() == 1);
     }
 
     private void setRemoveButtonState() {
@@ -147,7 +163,17 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiHandler("addButton")
     public void onAdd(ClickEvent event) {
+        final Cuid instanceId = CuidAdapter.newFormInstance();
+        final FormClass formClass = rootFormClasses.iterator().next();
+        final UserFormPlace userFormPlace = new UserFormPlace(formClass.getId(), instanceId);
+        History.newItem("#" + userFormPlace.serializeAsPlaceHistoryToken());
+    }
 
+    @UiHandler("editButton")
+    public void onEdit(ClickEvent event) {
+        final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
+        final UserFormPlace userFormPlace = new UserFormPlace(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId());
+        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
     }
 
     @UiHandler("removeButton")
@@ -171,5 +197,9 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     public ResourceLocator getResourceLocator() {
         return resourceLocator;
+    }
+
+    public void setRootFormClasses(Collection<FormClass> rootFormClasses) {
+        this.rootFormClasses = rootFormClasses;
     }
 }

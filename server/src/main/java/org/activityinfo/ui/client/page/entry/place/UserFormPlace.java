@@ -58,6 +58,10 @@ public class UserFormPlace implements PageState {
         return UserFormPlaceParser.serialize(this);
     }
 
+    public String serializeAsPlaceHistoryToken() {
+        return getPageId() + "/" + serializeAsHistoryToken();
+    }
+
     @Override
     public List<PageId> getEnclosingFrames() {
         return Arrays.asList(PAGE_ID);

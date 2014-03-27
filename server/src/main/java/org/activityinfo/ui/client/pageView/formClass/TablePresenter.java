@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.ui.client.component.table.FieldColumn;
@@ -36,7 +37,10 @@ public class TablePresenter implements DisplayWidget<FormTree> {
         this.formTree = formTree;
         enumerateColumns();
 
-        tableView.setCriteria(ClassCriteria.union(formTree.getRootFormClasses().keySet()));
+        final Map<Cuid,FormClass> rootFormClasses = formTree.getRootFormClasses();
+
+        tableView.setRootFormClasses(rootFormClasses.values());
+        tableView.setCriteria(ClassCriteria.union(rootFormClasses.keySet()));
         tableView.setColumns(columns);
 
         return Promise.nothing();
