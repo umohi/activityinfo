@@ -30,6 +30,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
@@ -38,15 +39,20 @@ import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormFieldCardinality;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.has.HasInstances;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.callback.SuccessCallback;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author yuriyz on 2/7/14.
  */
 public class FormFieldWidgetReference extends Composite implements FormFieldWidget<Set<Cuid>>, HasInstances {
+
+    private static final Logger LOGGER = Logger.getLogger(FormFieldWidgetReference.class.getName());
 
     /**
      * Based on this numbers FormField Widget generates different widgets and layouts:
@@ -82,12 +88,18 @@ public class FormFieldWidgetReference extends Composite implements FormFieldWidg
         this.formField = formField;
         initWidget(uiBinder.createAndBindUi(this));
 
-        resourceLocator.queryInstances(ClassCriteria.union(formField.getRange())).then(new SuccessCallback<List<FormInstance>>() {
-            @Override
-            public void onSuccess(List<FormInstance> result) {
-                createAndAddWidget(result);
-            }
-        });
+        try {
+            resourceLocator.queryInstances(ClassCriteria.union(formField.getRange())).then(new SuccessCallback<List<FormInstance>>() {
+                @Override
+                public void onSuccess(List<FormInstance> result) {
+                    createAndAddWidget(result);
+                }
+            });
+        } catch (Exception e) {
+            // in linked promise we may got reject on call failure which leads to unresponsive UI, catch it here and log
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            panel.add(new Label(I18N.CONSTANTS.failedToCreateWidget()));
+        }
     }
 
     public FormFieldWidgetReference(final FormField formField, final List<FormInstance> instances) {

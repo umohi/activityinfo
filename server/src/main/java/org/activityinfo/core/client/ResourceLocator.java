@@ -48,4 +48,5 @@ public interface ResourceLocator {
 
     Promise<List<Projection>> query(InstanceQuery query);
 
+    Promise<Void> remove(List<Cuid> resources);
 }

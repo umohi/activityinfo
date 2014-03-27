@@ -62,6 +62,11 @@ public class DevResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
+    public Promise<Void> remove(List<Cuid> resources) {
+        return null;
+    }
+
+    @Override
     public Promise<Integer> countInstances(Criteria criteria) {
         return null;
     }

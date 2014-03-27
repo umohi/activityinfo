@@ -12,6 +12,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
@@ -166,7 +167,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         final Cuid instanceId = CuidAdapter.newFormInstance();
         final FormClass formClass = rootFormClasses.iterator().next();
         final UserFormPlace userFormPlace = new UserFormPlace(formClass.getId(), instanceId);
-        History.newItem("#" + userFormPlace.serializeAsPlaceHistoryToken());
+        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
     }
 
     @UiHandler("editButton")
@@ -178,7 +179,22 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiHandler("removeButton")
     public void onRemove(ClickEvent event) {
-        //todo
+        final Set<Projection> selectedSet = table.getSelectionModel().getSelectedSet();
+        final List<Cuid> cuids = Lists.newArrayList();
+        for (Projection projection: selectedSet) {
+            cuids.add(projection.getRootInstanceId());
+        }
+        resourceLocator.remove(cuids).then(new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                LOGGER.log(Level.FINE, "Failed to remove instances.");
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                table.reload();
+            }
+        });
     }
 
     public List<FieldColumn> getColumns() {

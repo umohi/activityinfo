@@ -3448,4 +3448,9 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Add column")
     @Key("addColumn")
     String addColumn();
+
+    @DefaultStringValue("Failed to create widget.")
+    @Key("failedToCreateWidget")
+    String failedToCreateWidget();
+
 }

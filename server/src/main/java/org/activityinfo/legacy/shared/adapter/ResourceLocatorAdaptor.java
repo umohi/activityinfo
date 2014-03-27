@@ -108,4 +108,9 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     public Promise<List<Projection>> query(InstanceQuery query) {
         return new Joiner(dispatcher, query.getFieldPaths(), query.getCriteria()).apply(query);
     }
+
+    @Override
+    public Promise<Void> remove(List<Cuid> resources) {
+        return new Eraser(dispatcher, resources).execute();
+    }
 }
