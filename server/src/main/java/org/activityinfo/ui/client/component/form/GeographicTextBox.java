@@ -72,7 +72,10 @@ public class GeographicTextBox extends Composite implements HasValue<AiLatLng>, 
 
     @Override
     public AiLatLng getValue() {
-        return new AiLatLng(latitude.getValue(), longitude.getValue());
+        if (latitude != null && longitude != null) {
+            return new AiLatLng(latitude.getValue(), longitude.getValue());
+        }
+        return null;
     }
 
     @Override

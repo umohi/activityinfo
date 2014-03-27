@@ -1,7 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:a="urn:import:org.activityinfo.ui.client.widget"
              xmlns:table="urn:import:org.activityinfo.ui.client.component.table"
         >
 
@@ -15,24 +14,47 @@
     <div ui:field="emRuler" style="position:absolute; width:100em;"/>
 
     <div ui:field="toolbar" class="{style.toolbar}">
-      <a:ButtonWithSize ui:field="addButton" style="SUCCESS" size="EXTRA_SMALL"
-                        text="{i18n.add}" title="{i18n.add}"/>
 
-      <a:ButtonWithSize ui:field="removeButton" style="DANGER" size="EXTRA_SMALL"
-                        text="{i18n.remove}" title="{i18n.remove}"/>
-      <a:ButtonWithSize ui:field="editButton" style="DEFAULT" size="EXTRA_SMALL"
-                        text="{i18n.edit}" title="{i18n.edit}"/>
+      <g:Button styleName="btn btn-success btn-xs" ui:field="addButton" title="{i18n.add}">
+        <span class="{icons.add}">
+          <ui:text from='{i18n.add}'/>
+        </span>
+      </g:Button>
+
+      <g:Button styleName="btn btn-danger btn-xs" ui:field="removeButton" title="{i18n.remove}">
+        <span class="{icons.remove}">
+          <ui:text from='{i18n.remove}'/>
+        </span>
+      </g:Button>
+      <g:Button styleName="btn btn-default btn-xs" ui:field="editButton" title="{i18n.edit}">
+        <span class="{icons.edit}">
+          <ui:text from='{i18n.edit}'/>
+        </span>
+      </g:Button>
       &nbsp;&nbsp;&nbsp;
-      <a:ButtonWithSize ui:field="visibleColumns" style="PRIMARY" size="EXTRA_SMALL"
-                        text="{i18n.visibleColumns}" title="{i18n.visibleColumns}"/>
-      <a:ButtonWithSize ui:field="filterButton" style="PRIMARY" size="EXTRA_SMALL"
-                        text="{i18n.filter}" title="{i18n.filter}"/>
-      <a:ButtonWithSize ui:field="blukEditButton" style="PRIMARY" size="EXTRA_SMALL"
-                        text="{i18n.bulkEdit}" title="{i18n.bulkEdit}"/>
+      <g:Button styleName="btn btn-primary btn-xs" ui:field="visibleColumns" title="{i18n.visibleColumns}">
+        <span class="{icons.wrench}">
+          <ui:text from='{i18n.visibleColumns}'/>
+        </span>
+      </g:Button>
+      <g:Button styleName="btn btn-primary btn-xs" ui:field="filterButton" title="{i18n.filter}">
+        <span class="{icons.filter}">
+          <ui:text from='{i18n.filter}'/>
+        </span>
+      </g:Button>
+
+      <g:Button styleName="btn btn-primary btn-xs" ui:field="blukEditButton" title="{i18n.bulkEdit}">
+        <span class="{icons.bulkEdit}">
+          <ui:text from='{i18n.bulkEdit}'/>
+        </span>
+      </g:Button>
     </div>
 
     <!-- If we can display all the columns, inform the user -->
-    <div ui:field="columnAlert" class="alert"/>
+    <div ui:field="columnAlert" class="alert alert-warning hidden">
+      <g:Button addStyleNames="close pull-right btn-link" ui:field="closeAlertButton" text="×"/>
+      <ui:text from='{i18n.notAllColumnsAreShown}'/>
+    </div>
 
     <table:InstanceTable ui:field="table"/>
 

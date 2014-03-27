@@ -13,6 +13,24 @@ public interface Icons extends IconSet {
     @Source(value = "icons/fontawesome.svg", glyph = 0xf055)
     String add();
 
+    @Source(value = "icons/icomoon/remove.svg")
+    String remove();
+
+    @Source(value = "icons/icomoon/pencil.svg")
+    String edit();
+
+    @Source(value = "icons/icomoon/cogs.svg")
+    String bulkEdit();
+
+    @Source(value = "icons/icomoon/cog.svg")
+    String configure();
+
+    @Source(value = "icons/icomoon/pie.svg")
+    String filter();
+
+    @Source(value = "icons/icomoon/wrench.svg")
+    String wrench();
+
     @Source(value = "icons/ocha.svg", glyph = 0xe61a)
     String form();
 

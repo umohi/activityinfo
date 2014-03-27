@@ -3453,4 +3453,7 @@ public interface UiConstants extends Constants {
     @Key("failedToCreateWidget")
     String failedToCreateWidget();
 
+    @DefaultStringValue("Not all columns are shown. You can configure visible columns with 'Visible columns' button.")
+    @Key("notAllColumnsAreShown")
+    String notAllColumnsAreShown();
 }

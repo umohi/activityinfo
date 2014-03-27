@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -13,10 +12,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.RequiresResize;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
@@ -26,7 +22,7 @@ import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
 import org.activityinfo.ui.client.page.entry.place.UserFormPlace;
-import org.activityinfo.ui.client.widget.ButtonWithSize;
+import org.activityinfo.ui.client.util.GwtUtil;
 
 import java.util.Collection;
 import java.util.List;
@@ -51,17 +47,17 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiField
     DivElement emRuler;
     @UiField
-    Element columnAlert;
+    DivElement columnAlert;
     @UiField(provided = true)
     InstanceTable table;
     @UiField
-    ButtonWithSize addButton;
+    Button addButton;
     @UiField
-    ButtonWithSize removeButton;
+    Button removeButton;
     @UiField
-    ButtonWithSize blukEditButton;
+    Button blukEditButton;
     @UiField
-    ButtonWithSize editButton;
+    Button editButton;
 
     interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
@@ -115,15 +111,24 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void setSelectedColumns(final List<FieldColumn> selectedColumns) {
         this.selectedColumns = selectedColumns;
         table.setColumns(selectedColumns);
+        if (selectedColumns.size() < columns.size()) {
+            GwtUtil.setVisible(true, columnAlert);
+            columnAlert.getStyle().setDisplay(Style.Display.BLOCK);
+        } else {
+            GwtUtil.setVisible(false, columnAlert);
+        }
+    }
+
+    @UiHandler("closeAlertButton")
+    public void onCloseAlert(ClickEvent event) {
+        GwtUtil.setVisible(false, columnAlert);
     }
 
     private void calculateSelectedColumns() {
         if (columns.size() <= getMaxNumberOfColumns()) {
             setSelectedColumns(Lists.newArrayList(columns));
-            columnAlert.getStyle().setDisplay(Style.Display.BLOCK);
         } else {
             setSelectedColumns(Lists.newArrayList(columns.subList(0, getMaxNumberOfColumns())));
-            columnAlert.getStyle().clearDisplay();
         }
     }
 
