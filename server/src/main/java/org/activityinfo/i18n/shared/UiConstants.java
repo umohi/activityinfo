@@ -3453,4 +3453,10 @@ public interface UiConstants extends Constants {
     @Key("failedToCreateWidget")
     String failedToCreateWidget();
 
+    @DefaultStringValue("Quick tip!")
+    String drillDownTipHeading();
+
+    @DefaultStringValue("Double-click a value to view the individual sites")
+    String drillDownTip();
+
 }
