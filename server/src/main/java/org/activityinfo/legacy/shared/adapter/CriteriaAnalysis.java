@@ -25,6 +25,7 @@ class CriteriaAnalysis extends CriteriaVisitor {
     private final Set<Cuid> parentCriteria = Sets.newHashSet();
 
     private boolean rootOnly = false;
+    private boolean classUnion = true;
 
     /**
      * Must be one of these ids
@@ -72,12 +73,15 @@ class CriteriaAnalysis extends CriteriaVisitor {
     }
 
     @Override
-    public void visitUnion(CriteriaUnion criteria) {
-        throw new UnsupportedOperationException();
+    public void visitUnion(CriteriaUnion criteriaUnion) {
+        classUnion = true; // todo dummy fix! - in general wrong approach!
+        for (Criteria criteria : criteriaUnion) {
+            criteria.accept(this);
+        }
     }
 
     public boolean isEmptySet() {
-        if(classCriteria.size() > 1) {
+        if(classCriteria.size() > 1 && !classUnion) {
             // a single instance cannot (at this time) be a member of more than one
             // class, so the result of this query is logically the empty set
             return true;
@@ -104,6 +108,10 @@ class CriteriaAnalysis extends CriteriaVisitor {
         return classCriteria.size() == 1;
     }
 
+    public boolean isRestrictedByUnionOfClasses() {
+        return classUnion && !classCriteria.isEmpty();
+    }
+
     public boolean isRestrictedById() {
         return !ids.isEmpty();
     }
@@ -115,6 +123,10 @@ class CriteriaAnalysis extends CriteriaVisitor {
     public Cuid getClassRestriction() {
         Iri classIri = classCriteria.iterator().next();
         return new Cuid(classIri.getSchemeSpecificPart());
+    }
+
+    public Set<Iri> getClassCriteria() {
+        return classCriteria;
     }
 
     public Multimap<Character, Integer> getIds() {

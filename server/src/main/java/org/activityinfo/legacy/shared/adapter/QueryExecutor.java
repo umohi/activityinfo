@@ -3,6 +3,7 @@ package org.activityinfo.legacy.shared.adapter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Iri;
 import org.activityinfo.core.shared.application.FolderClass;
 import org.activityinfo.core.shared.criteria.*;
 import org.activityinfo.core.shared.form.FormInstance;
@@ -16,6 +17,7 @@ import org.activityinfo.legacy.shared.command.GetSchema;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.activityinfo.fp.shared.BiFunctions.concatMap;
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
@@ -46,8 +48,9 @@ public class QueryExecutor  {
         }
 
         if(criteriaAnalysis.isRestrictedToSingleClass()) {
-            return queryByClassId();
-
+            return queryByClassId(criteriaAnalysis.getClassRestriction());
+        } else if (criteriaAnalysis.isRestrictedByUnionOfClasses()) {
+            return queryByClassIds();
         } else if(criteriaAnalysis.isRestrictedById()) {
             List<Promise<List<FormInstance>>> resultSets = Lists.newArrayList();
             for(Character domain : criteriaAnalysis.getIds().keySet()) {
@@ -68,6 +71,14 @@ public class QueryExecutor  {
         }
     }
 
+    private Promise<List<FormInstance>> queryByClassIds() {
+        final Set<Iri> classCriteria = criteriaAnalysis.getClassCriteria();
+        final List<Promise<List<FormInstance>>> resultSets = Lists.newArrayList();
+        for (Iri classIri : classCriteria) {
+            resultSets.add(queryByClassId(new Cuid(classIri.getSchemeSpecificPart())));
+        }
+        return Promise.foldLeft(Collections.<FormInstance>emptyList(), new ConcatList<FormInstance>(), resultSets);
+    }
 
     private Promise<List<FormInstance>> queryByIds(char domain, Collection<Integer> ids) {
         switch(domain) {
@@ -95,10 +106,7 @@ public class QueryExecutor  {
         throw new UnsupportedOperationException("unrecognized domain: " + domain);
     }
 
-    private Promise<List<FormInstance>> queryByClassId() {
-
-        Cuid formClassId = criteriaAnalysis.getClassRestriction();
-
+    private Promise<List<FormInstance>> queryByClassId(Cuid formClassId) {
         if(formClassId.equals(FolderClass.CLASS_ID)) {
             return folders();
         }
