@@ -171,7 +171,12 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void onAdd(ClickEvent event) {
         final Cuid instanceId = CuidAdapter.newFormInstance();
         final FormClass formClass = rootFormClasses.iterator().next();
-        final FormPanelDialog dialog = new FormPanelDialog(resourceLocator);
+        final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
+            @Override
+            public void onPersist() {
+                getTable().reload();
+            }
+        };
         dialog.setDialogTitle(I18N.CONSTANTS.addInstance());
         dialog.show(formClass.getId(), instanceId);
 
@@ -184,7 +189,12 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void onEdit(ClickEvent event) {
         final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
 
-        final FormPanelDialog dialog = new FormPanelDialog(resourceLocator);
+        final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
+            @Override
+            public void onPersist() {
+                getTable().reload();
+            }
+        };
         dialog.setDialogTitle(I18N.CONSTANTS.editInstance());
         dialog.show(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId());
 

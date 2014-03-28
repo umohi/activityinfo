@@ -30,6 +30,7 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.ui.client.component.form.event.PersistEvent;
 import org.activityinfo.ui.client.style.legacy.icon.ImageResources;
 import org.activityinfo.ui.client.widget.ModalDialog;
 
@@ -49,12 +50,21 @@ public class FormPanelDialog extends ModalDialog {
         super();
         this.resourceLocator = resourceLocator;
         formPanel = new FormPanel(resourceLocator);
+        formPanel.getEventBus().addHandler(PersistEvent.TYPE, new PersistEvent.Handler() {
+            @Override
+            public void persist(PersistEvent p_event) {
+                onPersist();
+            }
+        });
+    }
+
+    public void onPersist() {
+
     }
 
     public FormPanel getFormPanel() {
         return formPanel;
     }
-
 
     @Override
     public void show() {

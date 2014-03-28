@@ -24,6 +24,7 @@ package org.activityinfo.core.shared.form;
 import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Resource;
 import org.activityinfo.core.shared.form.has.HasHashCode;
@@ -139,7 +140,7 @@ public class FormInstance implements Resource, HasHashCode {
         } else if(value instanceof Set) {
             return (Set<Cuid>)value;
         }
-        return null;
+        return Sets.newHashSet();
     }
 
     public Double getDouble(Cuid fieldId) {
