@@ -9,8 +9,12 @@ import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.core.shared.model.AiLatLng;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fp.client.Promise;
+import org.activityinfo.legacy.shared.command.GetLocations;
+import org.activityinfo.legacy.shared.command.result.LocationResult;
+import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.hamcrest.Matchers;
@@ -53,6 +57,8 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
 
     public static final Cuid VILLAGE_CLASS = CuidAdapter.locationFormClass(VILLAGE_TYPE_ID);
 
+    public static final int IRUMU = 21;
+
 
     private ResourceLocatorAdaptor resourceLocator;
 
@@ -79,6 +85,28 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
     @Test
     public void simpleLocationQuery() {
         assertThat(queryByClass(locationFormClass(HEALTH_CENTER_LOCATION_TYPE)), Matchers.hasSize(4));
+    }
+
+    @Test
+    public void persistLocation() {
+
+        FormInstance instance = new FormInstance(CuidAdapter.generateLocationCuid(), HEALTH_CENTER_CLASS);
+        instance.set(field(HEALTH_CENTER_CLASS, NAME_FIELD), "CS Ubuntu");
+        instance.set(field(HEALTH_CENTER_CLASS, GEOMETRY_FIELD), new AiLatLng(-1, 13));
+        instance.set(field(HEALTH_CENTER_CLASS, ADMIN_FIELD), adminEntityInstanceId(IRUMU));
+
+        assertResolves(resourceLocator.persist(instance));
+
+        // ensure that everything worked out
+        GetLocations query = new GetLocations(getLegacyIdFromCuid(instance.getId()));
+        LocationResult result = execute(query);
+        LocationDTO location = result.getData().get(0);
+
+        assertThat(location.getName(), equalTo("CS Ubuntu"));
+        assertThat(location.getAdminEntity(1).getName(), equalTo("Ituri"));
+        assertThat(location.getAdminEntity(2).getName(), equalTo("Irumu"));
+        assertThat(location.getLatitude(), equalTo(-1d));
+        assertThat(location.getLongitude(), equalTo(13d));
     }
 
     @Test

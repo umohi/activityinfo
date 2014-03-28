@@ -281,4 +281,9 @@ public class CuidAdapter {
     public static Cuid databaseId(UserDatabaseDTO database) {
         return cuid(DATABASE_DOMAIN, database);
     }
+
+    public static Cuid generateLocationCuid() {
+        return locationInstanceId(new KeyGenerator().generateInt());
+    }
+
 }
