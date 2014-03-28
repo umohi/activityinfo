@@ -47,6 +47,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(InjectionSupport.class)
@@ -86,6 +87,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     @Test
     public void testNoIndicator() {
         withIndicatorAsDimension();
+        filteringOnDatabases(1,2);
 
         execute();
 
@@ -105,15 +107,18 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     @Test
     public void testTotalSiteCount() {
         forTotalSiteCounts();
+        filteringOnDatabases(1,2,3,4,5);
 
         execute();
 
         assertThat().thereIsOneBucketWithValue(8);
     }
 
+
     @Test
     public void testYears() {
         forTotalSiteCounts();
+        filteringOnDatabases(1,2);
         dimensions.add(new DateDimension(DateUnit.YEAR));
 
         execute();
@@ -125,6 +130,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     @Test
     public void testSiteCountOnQuarters() {
         forTotalSiteCounts();
+        filteringOnDatabases(1,2);
         dimensions.add(new DateDimension(DateUnit.QUARTER));
 
         execute();
@@ -136,6 +142,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     @Test
     public void testMonths() {
         forTotalSiteCounts();
+        filteringOnDatabases(1,2);
         dimensions.add(new DateDimension(DateUnit.MONTH));
         filter.setDateRange(new DateUtilCalendarImpl().yearRange(2009));
 
@@ -282,7 +289,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
         filter.addRestriction(DimensionType.Database, 1);
         filter.addRestriction(DimensionType.Project, 1);
         filter
-                .addRestriction(DimensionType.Indicator, Arrays.asList(1, 2, 103));
+                .addRestriction(DimensionType.Indicator, asList(1, 2, 103));
 
         execute();
 
@@ -378,7 +385,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     public void testDeletedNotLinked() {
 
         withIndicatorAsDimension();
-        filter.addRestriction(DimensionType.Indicator, Arrays.asList(400, 401));
+        filter.addRestriction(DimensionType.Indicator, asList(400, 401));
 
         execute();
 
@@ -456,7 +463,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     @OnDataSet("/dbunit/sites-linked.db.xml")
     public void testLinkedValuesAreDuplicated() {
         withIndicatorAsDimension();
-        filter.addRestriction(DimensionType.Indicator, Arrays.asList(1, 3));
+        filter.addRestriction(DimensionType.Indicator, asList(1, 3));
         execute();
         assertThat().forIndicator(1).thereIsOneBucketWithValue(1900);
         assertThat().forIndicator(3).thereIsOneBucketWithValue(1500);
@@ -467,6 +474,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     public void testLinkedPartnerSiteCount() {
         withPartnerAsDimension();
         forTotalSiteCounts();
+        filteringOnDatabases(1,2);
         execute();
         assertThat().thereAre(2).buckets();
         assertThat().forPartner(1).thereIsOneBucketWithValue(2).andItsPartnerLabelIs("NRC");
@@ -477,6 +485,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     @OnDataSet("/dbunit/sites-linked.db.xml")
     public void testLinkedPartnerFilterData() {
         withPartnerAsDimension();
+        filter.addRestriction(DimensionType.Database, asList(1, 2));
         forFilterData();
         execute();
 
@@ -490,6 +499,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     public void testLinkedAttributegroupFilterData() {
         withAttributeGroupDim();
         forFilterData();
+        filteringOnDatabases(1,2);
         execute();
 
         assertThat().thereAre(2).buckets();
@@ -532,7 +542,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
 
         // NRC, NRC2
         filter = new Filter();
-        filter.addRestriction(DimensionType.Indicator, Arrays.asList(1, 2, 100));
+        filter.addRestriction(DimensionType.Indicator, asList(1, 2, 100));
         execute();
         assertThat().thereAre(2).buckets();
         assertThat().forPartner(1).thereIsOneBucketWithValue(0).andItsPartnerLabelIs("NRC");
@@ -574,7 +584,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
 
         // cause, contenu du kit
         filter = new Filter();
-        filter.addRestriction(DimensionType.Indicator, Arrays.asList(1, 2, 100));
+        filter.addRestriction(DimensionType.Indicator, asList(1, 2, 100));
         execute();
         assertThat().thereAre(2).buckets();
         bucket1 = findBucketsByCategory(buckets, dim, new EntityCategory(1)).get(0);
@@ -598,6 +608,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     public void testPointsInferred() {
         dimensions.add(new Dimension(DimensionType.Location));
         withPoints();
+        filteringOnDatabases(1);
         execute();
 
         // should be calculated from the territory's MBR
@@ -618,6 +629,7 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     @OnDataSet("/dbunit/sites-points.db.xml")
     public void testPointsAdmin() {
         dimensions.add(new AdminDimension(2));
+        filteringOnDatabases(1);
         withPoints();
         execute();
 
@@ -630,6 +642,9 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
                 (-4.022388142 + -1.991221064) / 2.0);
     }
 
+    private void filteringOnDatabases(Integer... databaseIds) {
+        filter.addRestriction(DimensionType.Database, asList(databaseIds));
+    }
 
     private List<Bucket> findBucketsByCategory(List<Bucket> buckets,
                                                Dimension dim, DimensionCategory cat) {
