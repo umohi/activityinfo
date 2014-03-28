@@ -96,11 +96,6 @@ public class ReportsTest {
     }
 
     @Test
-    public void parseAllReports() {
-
-    }
-
-    @Test
     public void testApplesReport() throws Throwable {
         Report report = getReport("realworld/ApplesReport.xml");
 

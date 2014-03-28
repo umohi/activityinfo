@@ -218,7 +218,6 @@ public class Filter implements Serializable {
     }
 
     /**
-     * @param activity
      * @return
      * @throws UnsupportedOperationException if the dimension is not restricted to exactly one category
      */

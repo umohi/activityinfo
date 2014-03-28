@@ -57,6 +57,7 @@ public class SchemaCache implements CommandCache<GetSchema>, DispatchListener {
         source.registerListener(AddPartner.class, this);
         source.registerListener(RemovePartner.class, this);
         source.registerListener(RequestChange.class, this);
+        source.registerListener(BatchCommand.class, this);
 
         schemaEntityTypes.add("UserDatabase");
         schemaEntityTypes.add("Activity");
@@ -91,6 +92,10 @@ public class SchemaCache implements CommandCache<GetSchema>, DispatchListener {
             schema = null;
         } else if (command instanceof RequestChange &&
                 isSchemaEntity(((RequestChange) command).getEntityType())) {
+        } else if (command instanceof BatchCommand) {
+            for(Command element : ((BatchCommand) command).getCommands()) {
+                beforeDispatched(element);
+            }
         }
     }
 

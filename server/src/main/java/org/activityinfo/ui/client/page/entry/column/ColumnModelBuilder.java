@@ -130,12 +130,13 @@ public class ColumnModelBuilder {
     }
 
     public ColumnModelBuilder maybeAddLockColumn(final ActivityDTO activity) {
-        ColumnConfig columnLocked = new ColumnConfig("x", "", 28);
-        columnLocked.setRenderer(new LockedColumnRenderer(new LockedPeriodSet(
-                activity)));
-        columnLocked.setSortable(false);
-        columnLocked.setMenuDisabled(true);
-        columns.add(columnLocked);
+        if(activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
+            ColumnConfig columnLocked = new ColumnConfig("x", "", 28);
+            columnLocked.setRenderer(new LockedColumnRenderer(new LockedPeriodSet(activity)));
+            columnLocked.setSortable(false);
+            columnLocked.setMenuDisabled(true);
+            columns.add(columnLocked);
+        }
         return this;
     }
 

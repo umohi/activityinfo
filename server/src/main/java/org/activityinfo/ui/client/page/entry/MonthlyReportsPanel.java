@@ -38,17 +38,21 @@ import com.extjs.gxt.ui.client.util.DateWrapper;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
+import com.google.common.base.Predicate;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.command.GetMonthlyReports;
+import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.command.Month;
 import org.activityinfo.legacy.shared.command.UpdateMonthlyReports;
 import org.activityinfo.legacy.shared.command.result.MonthlyReportResult;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.IndicatorRowDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.ui.client.page.common.toolbar.ActionListener;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
@@ -68,9 +72,11 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
     private MappingComboBox<Month> monthCombo;
 
     private int currentSiteId;
+    private ActivityDTO currentActivity;
 
     private ActionToolBar toolBar;
     private boolean readOnly;
+
 
     public MonthlyReportsPanel(Dispatcher service) {
         this.service = service;
@@ -129,14 +135,44 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
         setTopComponent(toolBar);
     }
 
-    public void load(SiteDTO site) {
+    public void load(final SiteDTO site) {
         this.currentSiteId = site.getId();
+        this.grid.getStore().removeAll();
+
+        service.execute(new GetSchema(), new MaskingAsyncMonitor(this, I18N.CONSTANTS.loading()), new AsyncCallback<SchemaDTO>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                // caught by monitor
+            }
+
+            @Override
+            public void onSuccess(SchemaDTO schema) {
+                currentActivity = schema.getActivityById(site.getActivityId());
+                populateGrid(site, currentActivity);
+            }
+        });
+    }
+
+    private void populateGrid(SiteDTO site, ActivityDTO activity) {
         Month startMonth = getInitialStartMonth(site);
         monthCombo.setMappedValue(startMonth);
+        grid.setLockedPredicate(createLockPredicate(new LockedPeriodSet(activity)));
         grid.updateMonthColumns(startMonth);
         proxy.setStartMonth(startMonth);
         proxy.setSiteId(site.getId());
         loader.load();
+    }
+
+    private Predicate<Month> createLockPredicate(final LockedPeriodSet lockedPeriodSet) {
+        return new Predicate<Month>() {
+            @Override
+            public boolean apply(Month input) {
+                DateWrapper date = new DateWrapper(input.getYear(), input.getMonth()-1, 1)
+                            .getLastDateOfMonth();
+                return lockedPeriodSet.isActivityLocked(currentActivity.getId(), date.asDate());
+            }
+        };
     }
 
     private void selectStartMonth(Month startMonth) {
@@ -156,13 +192,6 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
 
         DateWrapper today = new DateWrapper();
         return new Month(today.getFullYear(), today.getMonth());
-    }
-
-    public void onMonthSelected(Month month) {
-        Month startMonth = new Month(month.getYear(), month.getMonth() - 3);
-        proxy.setStartMonth(startMonth);
-        grid.updateMonthColumns(startMonth);
-        loader.load();
     }
 
     @Override

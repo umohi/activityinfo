@@ -28,6 +28,7 @@ import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.PivotSites;
 import org.activityinfo.legacy.shared.command.PivotSites.PivotResult;
 import org.activityinfo.legacy.shared.command.PivotSites.ValueType;
@@ -68,14 +69,12 @@ public class PivotSitesHandler implements
 
         LOGGER.fine("Pivoting: " + command);
 
-        if (command.getFilter() == null
-                ||
-                command.getFilter().getRestrictions(DimensionType.Indicator)
-                        .isEmpty()) {
-            Log.error("No indicator filter provided to pivot query");
+        if (command.getFilter() == null || filterIsToBroad(command.getFilter())) {
+            Log.error("Filter is to broad: " + command.getFilter());
             PivotResult emptyResult = new PivotResult();
             emptyResult.setBuckets(Lists.<Bucket>newArrayList());
             callback.onSuccess(emptyResult);
+            return;
         }
 
         final PivotQueryContext queryContext = new PivotQueryContext(command,
@@ -104,8 +103,7 @@ public class PivotSitesHandler implements
                     if (errors.isEmpty()) {
                         remaining.remove(query);
                         if (remaining.isEmpty()) {
-                            callback.onSuccess(new PivotResult(queryContext
-                                    .getBuckets()));
+                            callback.onSuccess(new PivotResult(queryContext.getBuckets()));
                         }
                     }
                 }
@@ -119,6 +117,26 @@ public class PivotSitesHandler implements
                 }
             });
         }
+    }
+
+    /**
+     * Ensure that there is some filtering so that we don't burden the database
+     * with a query that returns everything!
+     */
+    private boolean filterIsToBroad(Filter filter) {
+        if(filter.isRestricted(DimensionType.Indicator)) {
+            return false;
+        }
+        if(filter.isRestricted(DimensionType.Activity)) {
+            return false;
+        }
+        if(filter.isRestricted(DimensionType.Database)) {
+            return false;
+        }
+        if(filter.isRestricted(DimensionType.Site)) {
+            return false;
+        }
+        return true;
     }
 
 }

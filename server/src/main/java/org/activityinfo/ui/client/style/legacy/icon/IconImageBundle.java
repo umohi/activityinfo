@@ -212,6 +212,9 @@ public interface IconImageBundle extends ImageBundle {
     @Resource(value = "LockedPeriod.png")
     AbstractImagePrototype lockedPeriod();
 
+    @Resource(value = "lockSmall.png")
+    AbstractImagePrototype lockedPeriodSmall();
+
     @Resource(value = "adminlevel1.png")
     AbstractImagePrototype adminlevel1();
 
