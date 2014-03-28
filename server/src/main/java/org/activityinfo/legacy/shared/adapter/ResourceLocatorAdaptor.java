@@ -40,21 +40,6 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     public Promise<FormInstance> getFormInstance(Cuid instanceId) {
         return queryInstances(new IdCriteria(instanceId))
                .then(new SelectSingle());
-//        if (instanceId.getDomain() == SITE_DOMAIN) {
-//            final int siteId = getLegacyIdFromCuid(instanceId);
-//
-//            Promise<SchemaDTO> schema = dispatcher
-//                    .execute(new GetSchema());
-//
-//            Promise<SiteDTO> site = dispatcher
-//                    .execute(GetSites.byId(siteId))
-//                    .then(new SingleListResultAdapter<SiteDTO>());
-//
-//            return Promise.fmap(new SiteInstanceAdapter()).apply(schema, site);
-//        }
-//        return Promise.rejected(new NotFoundException(instanceId.asIri()));
-
-
     }
 
     @Override
@@ -72,6 +57,8 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
                         .apply(siteBinding, Promise.resolved(instance))
                         .then(Functions.<Void>constant(null));
 
+            } else if (instance.getId().getDomain() == CuidAdapter.LOCATION_DOMAIN) {
+                return new LocationPersister(dispatcher, instance).persist();
             }
         } else if (resource instanceof FormClass) {
             FormClass formClass = (FormClass) resource;

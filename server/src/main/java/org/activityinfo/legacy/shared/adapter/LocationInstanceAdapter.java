@@ -1,14 +1,23 @@
 package org.activityinfo.legacy.shared.adapter;
 
+import com.extjs.gxt.ui.client.data.RpcMap;
 import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.model.AiLatLng;
+import org.activityinfo.legacy.shared.command.CreateLocation;
+import org.activityinfo.legacy.shared.command.CreateSite;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 
 
 /**
@@ -30,6 +39,7 @@ public class LocationInstanceAdapter implements Function<LocationDTO, FormInstan
 
         return instance;
     }
+
 
     private Set<Cuid> toInstanceIdSet(List<AdminEntityDTO> adminEntities) {
         // in the legacy database, all admin entities are stored to simplify
