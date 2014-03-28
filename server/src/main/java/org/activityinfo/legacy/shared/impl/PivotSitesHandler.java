@@ -76,6 +76,7 @@ public class PivotSitesHandler implements
             PivotResult emptyResult = new PivotResult();
             emptyResult.setBuckets(Lists.<Bucket>newArrayList());
             callback.onSuccess(emptyResult);
+            return;
         }
 
         final PivotQueryContext queryContext = new PivotQueryContext(command,
