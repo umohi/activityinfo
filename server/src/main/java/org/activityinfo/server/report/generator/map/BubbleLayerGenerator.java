@@ -52,8 +52,15 @@ public class BubbleLayerGenerator extends PointLayerGenerator<BubbleMapLayer> {
 
         Extents extents = Extents.emptyExtents();
         for (SiteDTO site : sites) {
-            if (site.hasLatLong() && hasValue(site, layer.getIndicatorIds())) {
-                extents.grow(site.getLatitude(), site.getLongitude());
+            if (hasValue(site, layer.getIndicatorIds())) {
+                if(site.hasLatLong()) {
+                    extents.grow(site.getLatitude(), site.getLongitude());
+                } else {
+                    Extents siteExtents = getBounds(site);
+                    if(siteExtents != null) {
+                        extents.grow(siteExtents);
+                    }
+                }
             }
         }
 
@@ -120,8 +127,7 @@ public class BubbleLayerGenerator extends PointLayerGenerator<BubbleMapLayer> {
             marker.setLng(latlng.getLng());
             marker.setAlpha(layer.getAlpha());
             marker.setTitle(formatTitle(cluster));
-            marker
-                    .setIndicatorIds(new HashSet<Integer>(layer.getIndicatorIds()));
+            marker.setIndicatorIds(new HashSet<Integer>(layer.getIndicatorIds()));
             marker.setClusterAmount(cluster.getPointValues().size());
             marker.setClustering(layer.getClustering());
 
@@ -182,9 +188,9 @@ public class BubbleLayerGenerator extends PointLayerGenerator<BubbleMapLayer> {
             if (hasValue(site, layer.getIndicatorIds())) {
 
                 Point px = null;
-                if (site.hasLatLong()) {
-                    px = map.fromLatLngToPixel(new AiLatLng(site.getLatitude(),
-                            site.getLongitude()));
+                AiLatLng geoPoint = getPoint(site);
+                if (geoPoint != null) {
+                    px = map.fromLatLngToPixel(geoPoint);
                 }
 
                 Double value = getValue(site, layer.getIndicatorIds());
@@ -193,8 +199,7 @@ public class BubbleLayerGenerator extends PointLayerGenerator<BubbleMapLayer> {
                             createSymbol(site, layer.getColorDimensions()),
                             value, px);
 
-                    // TODO: add AdminLevel to pointvalue
-                    if (clusterer.isMapped(site)) {
+                    if (geoPoint != null || clusterer.isMapped(site)) {
                         mapped.add(pv);
                     } else {
                         unmapped.add(pv);
