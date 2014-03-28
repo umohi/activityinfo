@@ -13,11 +13,23 @@ public interface Icons extends IconSet {
     @Source(value = "icons/fontawesome.svg", glyph = 0xf055)
     String add();
 
+    @Source(value = "icons/add.svg")
+    String add2();
+
     @Source(value = "icons/icomoon/remove.svg")
     String remove();
 
+    @Source(value = "icons/icomoon/remove2.svg")
+    String remove2();
+
     @Source(value = "icons/icomoon/pencil.svg")
     String edit();
+
+    @Source(value = "icons/icomoon/undo.svg")
+    String undo();
+
+    @Source(value = "icons/icomoon/redo.svg")
+    String redo();
 
     @Source(value = "icons/icomoon/cogs.svg")
     String bulkEdit();
@@ -25,7 +37,7 @@ public interface Icons extends IconSet {
     @Source(value = "icons/icomoon/cog.svg")
     String configure();
 
-    @Source(value = "icons/icomoon/pie.svg")
+    @Source(value = "icons/icomoon/filter.svg")
     String filter();
 
     @Source(value = "icons/icomoon/wrench.svg")
@@ -63,6 +75,18 @@ public interface Icons extends IconSet {
 
     @Source("icons/icomoon/info.svg")
     String overview();
+
+    @Source("icons/icomoon/arrow-up.svg")
+    String arrowUp();
+
+    @Source("icons/icomoon/arrow-down.svg")
+    String arrowDown();
+
+    @Source("icons/icomoon/arrow-left.svg")
+    String arrowLeft();
+
+    @Source("icons/icomoon/arrow-right.svg")
+    String arrowRight();
 
     /**
      * Symbolizes a problem connecting to the server

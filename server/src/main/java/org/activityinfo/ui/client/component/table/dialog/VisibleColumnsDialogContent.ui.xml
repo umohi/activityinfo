@@ -3,7 +3,7 @@
              xmlns:a="urn:import:org.activityinfo.ui.client.widget"
         >
 
-  <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
+  <ui:with field="icons" type="org.activityinfo.ui.client.style.Icons"/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
   <ui:with field='style' type='org.activityinfo.ui.client.component.table.InstanceTableStyle'/>
 
@@ -26,20 +26,20 @@
       </div>
       <div class="col-sm-1">
         <br/><br/>
-        <a:ButtonWithSize ui:field="upButton" style="DEFAULT" size="EXTRA_SMALL">
-          <img src="{img.up.getSafeUri}" alt="{i18n.moveUp}" title="{i18n.moveUp}"/>
-        </a:ButtonWithSize>
-        <a:ButtonWithSize ui:field="downButton" style="DEFAULT" size="EXTRA_SMALL">
-          <img src="{img.down.getSafeUri}" alt="{i18n.moveDown}" title="{i18n.moveDown}"/>
-        </a:ButtonWithSize>
-        <a:ButtonWithSize ui:field="removeButton" style="DEFAULT" size="EXTRA_SMALL">
-          <img src="{img.delete.getSafeUri}" alt="{i18n.delete}" title="{i18n.delete}"/>
-        </a:ButtonWithSize>
+        <g:Button styleName="btn btn-default btn-xs" ui:field="upButton">
+          <span class="{icons.arrowUp}"/>
+        </g:Button>
+        <g:Button styleName="btn btn-default btn-xs" ui:field="downButton">
+          <span class="{icons.arrowDown}"/>
+        </g:Button>
+        <g:Button styleName="btn btn-default btn-xs" ui:field="removeButton">
+          <span class="{icons.remove2}"/>
+        </g:Button>
         <br/>
         <br/>
-        <a:ButtonWithSize ui:field="rightButton" style="DEFAULT" size="EXTRA_SMALL">
-          <img src="{img.moveRight.getSafeUri}" alt="{i18n.moveRight}" title="{i18n.moveRight}"/>
-        </a:ButtonWithSize>
+        <g:Button styleName="btn btn-default btn-xs" ui:field="rightButton">
+          <span class="{icons.arrowRight}"/>
+        </g:Button>
         <br/>
       </div>
       <div class="col-sm-5">

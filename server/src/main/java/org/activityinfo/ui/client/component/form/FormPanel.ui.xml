@@ -5,7 +5,7 @@
              xmlns:form="urn:import:org.activityinfo.ui.client.component.form"
         >
 
-  <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
+  <ui:with field="icons" type="org.activityinfo.ui.client.style.Icons"/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
   <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
@@ -14,21 +14,21 @@
       <br/>
       <div class="pull-left" style="width: 200px">
         <g:Button addStyleNames="btn btn-default" ui:field="undoButton" title="{i18n.undo}">
-          <img src="{img.undo.getSafeUri}" alt="{i18n.undo}"/>
+          <span class="{icons.undo}"/>
         </g:Button>
         <g:Button addStyleNames="btn btn-default" ui:field="redoButton" title="{i18n.redo}">
-          <img src="{img.redo.getSafeUri}" alt="{i18n.redo}"/>
+          <span class="{icons.redo}"/>
         </g:Button>
         <g:Button addStyleNames="btn btn-success hidden" ui:field="addSectionButton" title="{i18n.addSection}">
-          <img src="{img.addFolder.getSafeUri}" alt="{i18n.add}"/>
+          <span class="{icons.add2}"/>
         </g:Button>
         <g:Button addStyleNames="btn btn-success hidden" ui:field="addFieldButton" title="{i18n.addField}">
-          <img src="{img.add.getSafeUri}" alt="{i18n.add}"/>
+          <span class="{icons.add}"/>
         </g:Button>
       </div>
       <div class="pull-right">
         <div class="pull-left hidden" ui:field="progressDiv">
-          <img src="{img.progress.getSafeUri}" alt="Progress"/>
+          <!--<span class="{icons.progress}"/>-->
         </div>
         <a:Button style="PRIMARY" ui:field="saveButton" text="{i18n.save}"/>
         <a:Button style="DEFAULT" ui:field="resetButton" text="{i18n.reset}"/>

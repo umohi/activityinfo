@@ -37,10 +37,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.RowStyles;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -48,17 +45,15 @@ import org.activityinfo.core.shared.form.key.SelfKeyProvider;
 import org.activityinfo.ui.client.component.table.FieldColumn;
 import org.activityinfo.ui.client.component.table.InstanceTableView;
 import org.activityinfo.ui.client.style.table.DataGridResources;
-import org.activityinfo.ui.client.widget.ButtonWithSize;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * @author yuriyz on 3/21/14.
  */
 public class VisibleColumnsDialogContent extends Composite {
 
-    private static final Logger LOGGER = Logger.getLogger(VisibleColumnsDialogContent.class.getName());
+//    private static final Logger LOGGER = Logger.getLogger(VisibleColumnsDialogContent.class.getName());
 
     interface ConfigureDialogContentUiBinder extends UiBinder<HTMLPanel, VisibleColumnsDialogContent> {
     }
@@ -68,12 +63,12 @@ public class VisibleColumnsDialogContent extends Composite {
     private final InstanceTableView tableView;
 
     private final ListDataProvider<FieldColumn> selectedTableDataProvider = new ListDataProvider<>();
-    private final MultiSelectionModel<FieldColumn> selectedSelectionModel = new MultiSelectionModel<FieldColumn>(
+    private final MultiSelectionModel<FieldColumn> selectedSelectionModel = new MultiSelectionModel<>(
             new SelfKeyProvider<FieldColumn>());
     private final DataGrid<FieldColumn> selectedTable;
 
     private final ListDataProvider<FieldColumn> tableDataProvider = new ListDataProvider<>();
-    private final MultiSelectionModel<FieldColumn> selectionModel = new MultiSelectionModel<FieldColumn>(
+    private final MultiSelectionModel<FieldColumn> selectionModel = new MultiSelectionModel<>(
             new SelfKeyProvider<FieldColumn>());
     private final DataGrid<FieldColumn> table;
 
@@ -82,15 +77,15 @@ public class VisibleColumnsDialogContent extends Composite {
     @UiField
     HTMLPanel columnTableContainer;
     @UiField
-    ButtonWithSize rightButton;
+    Button rightButton;
     @UiField
-    ButtonWithSize removeButton;
+    Button removeButton;
     @UiField
     TextBox filterColumnTable;
     @UiField
-    ButtonWithSize upButton;
+    Button upButton;
     @UiField
-    ButtonWithSize downButton;
+    Button downButton;
 
     public VisibleColumnsDialogContent(final InstanceTableView tableView, VisibleColumnsDialog dialog) {
         this.tableView = tableView;

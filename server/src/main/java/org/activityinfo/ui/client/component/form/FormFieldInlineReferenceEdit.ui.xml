@@ -5,7 +5,7 @@
              xmlns:a="urn:import:org.activityinfo.ui.client.widget"
         >
 
-  <ui:with field='img' type='org.activityinfo.ui.client.style.legacy.icon.ImageResources'/>
+  <ui:with field="icons" type="org.activityinfo.ui.client.style.Icons"/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
   <ui:with field='style' type='org.activityinfo.ui.client.component.form.FormPanelStyles'/>
 
@@ -55,10 +55,10 @@
                               autoFooterRefreshDisabled="true" rowCount="10"/>
               <g:VerticalPanel>
                 <a:Button ui:field="addButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">
-                  <img src="{img.add.getSafeUri}" alt="Add"/>
+                  <span class="{icons.add}"/>
                 </a:Button>
                 <a:Button ui:field="removeButton" style="DEFAULT" addStyleNames="{style.referenceBtn}">
-                  <img src="{img.delete.getSafeUri}" alt="Remove"/>
+                  <span class="{icons.remove}"/>
                 </a:Button>
               </g:VerticalPanel>
             </g:HorizontalPanel>
