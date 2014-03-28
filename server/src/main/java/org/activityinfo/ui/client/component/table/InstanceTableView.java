@@ -10,7 +10,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -19,9 +18,10 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
+import org.activityinfo.ui.client.component.form.FormPanelDialog;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
-import org.activityinfo.ui.client.page.entry.place.UserFormPlace;
 import org.activityinfo.ui.client.util.GwtUtil;
 
 import java.util.Collection;
@@ -171,15 +171,26 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void onAdd(ClickEvent event) {
         final Cuid instanceId = CuidAdapter.newFormInstance();
         final FormClass formClass = rootFormClasses.iterator().next();
-        final UserFormPlace userFormPlace = new UserFormPlace(formClass.getId(), instanceId);
-        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
+        final FormPanelDialog dialog = new FormPanelDialog(resourceLocator);
+        dialog.setDialogTitle(I18N.CONSTANTS.addInstance());
+        dialog.show(formClass.getId(), instanceId);
+
+        // navigate to new page
+//        final UserFormPlace userFormPlace = new UserFormPlace(formClass.getId(), instanceId);
+//        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
     }
 
     @UiHandler("editButton")
     public void onEdit(ClickEvent event) {
         final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
-        final UserFormPlace userFormPlace = new UserFormPlace(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId());
-        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
+
+        final FormPanelDialog dialog = new FormPanelDialog(resourceLocator);
+        dialog.setDialogTitle(I18N.CONSTANTS.editInstance());
+        dialog.show(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId());
+
+        // navigate to new page
+//        final UserFormPlace userFormPlace = new UserFormPlace(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId());
+//        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
     }
 
     @UiHandler("removeButton")

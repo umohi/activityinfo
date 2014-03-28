@@ -3465,4 +3465,7 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("(Locked)")
     String lockedMonthHeader();
+
+    @DefaultStringValue("Edit instance")
+    String editInstance();
 }

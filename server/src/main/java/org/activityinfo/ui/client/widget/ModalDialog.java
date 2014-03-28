@@ -60,6 +60,10 @@ public class ModalDialog<T extends Widget> extends Composite {
     HTMLPanel modalBody;
     @UiField
     DivElement modalFooter;
+    @UiField
+    DivElement dialogDiv;
+    @UiField
+    DivElement contentDiv;
 
     public ModalDialog() {
         BaseStylesheet.INSTANCE.ensureInjected();
@@ -95,6 +99,10 @@ public class ModalDialog<T extends Widget> extends Composite {
         });
     }
 
+    public PopupPanel getDialog() {
+        return dialog;
+    }
+
     public void setDialogTitle(String dialogTitle) {
         this.title.setInnerHTML(dialogTitle);
     }
@@ -124,5 +132,13 @@ public class ModalDialog<T extends Widget> extends Composite {
 
     public DivElement getModalFooter() {
         return modalFooter;
+    }
+
+    public DivElement getDialogDiv() {
+        return dialogDiv;
+    }
+
+    public DivElement getContentDiv() {
+        return contentDiv;
     }
 }

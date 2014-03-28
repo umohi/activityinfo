@@ -8,8 +8,8 @@
   <g:HTMLPanel addStyleNames="bs">
     <g:PopupPanel autoHideEnabled="false" modal="true" ui:field="dialog" styleName="bs">
       <g:HTMLPanel>
-        <div class="modal-dialog">
-          <div class="modal-content">
+        <div class="modal-dialog" ui:field="dialogDiv" style="margin: 0;">
+          <div class="modal-content" ui:field="contentDiv">
             <div class="modal-header">
               <g:Button addStyleNames="close pull-right btn-link" ui:field="closeButton" text="×"/>
               <h4 class="modal-title" ui:field="title"/>

@@ -37,18 +37,19 @@
           <ui:text from='{i18n.visibleColumns}'/>
         </span>
       </g:Button>
-      <g:Button styleName="btn btn-primary btn-xs" ui:field="filterButton" title="{i18n.filter}">
+      <g:Button styleName="btn btn-primary btn-xs hidden" ui:field="filterButton" title="{i18n.filter}">
         <span class="{icons.filter}">
           <ui:text from='{i18n.filter}'/>
         </span>
       </g:Button>
 
-      <g:Button styleName="btn btn-primary btn-xs" ui:field="blukEditButton" title="{i18n.bulkEdit}">
+      <g:Button styleName="btn btn-primary btn-xs hidden" ui:field="blukEditButton" title="{i18n.bulkEdit}">
         <span class="{icons.bulkEdit}">
           <ui:text from='{i18n.bulkEdit}'/>
         </span>
       </g:Button>
     </div>
+    <br/>
 
     <!-- If we can display all the columns, inform the user -->
     <div ui:field="columnAlert" class="alert alert-warning hidden">
