@@ -3468,4 +3468,11 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Edit instance")
     String editInstance();
+
+    @DefaultStringValue("Save operation failed (instance).")
+    String failedToSaveInstance();
+
+    @DefaultStringValue("Save operation failed (formclass).")
+    String failedToSaveClass();
+
 }

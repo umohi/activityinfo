@@ -21,6 +21,7 @@ package org.activityinfo.core.shared.validation;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -36,12 +37,33 @@ public class ValidationUtils {
     }
 
     public static void show(List<ValidationFailure> failures, DivElement failuresContainer) {
-        final SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        final List<String> messages = Lists.newArrayList();
         for (ValidationFailure failure : failures) {
-            safeHtmlBuilder.append(SafeHtmlUtils.fromString(failure.getMessage().getMessage().getValue()))
+            messages.add(failure.getMessage().getMessage().getLocale());
+        }
+        showMessages(messages, failuresContainer);
+    }
+
+    public static void showMessage(String message, DivElement divContainer){
+        showMessages(Lists.newArrayList(message), divContainer);
+    }
+
+    public static void addMessage(String message, DivElement divContainer){
+        final SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendHtmlConstant(divContainer.getInnerHTML()).
+                appendHtmlConstant("<br/>").
+                append(SafeHtmlUtils.fromString(message));
+
+        divContainer.setInnerHTML(safeHtmlBuilder.toSafeHtml().asString());
+    }
+
+    public static void showMessages(List<String> messages, DivElement divContainer) {
+        final SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        for (String message : messages) {
+            safeHtmlBuilder.append(SafeHtmlUtils.fromString(message))
                     .appendHtmlConstant("<br/>");
         }
-        failuresContainer.setInnerHTML(safeHtmlBuilder.toSafeHtml().asString());
+        divContainer.setInnerHTML(safeHtmlBuilder.toSafeHtml().asString());
     }
 
     public static String format(String controlName, String validationMessage) {

@@ -32,7 +32,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -110,6 +109,8 @@ public class FormPanel extends Composite {
     FormSectionInlineEdit addSectionPanel;
     @UiField
     FormFieldInlineEdit addFieldPanel;
+    @UiField
+    DivElement infoContainer;
 
     public FormPanel(ResourceLocator resourceLocator) {
         FormPanelStyles.INSTANCE.ensureInjected();
@@ -175,17 +176,20 @@ public class FormPanel extends Composite {
     }
 
     private void save() {
+        clearMessages();
+
         final FormInstance value = getValue();
         if (value != null) {
             resourceLocator.persist(value).then(new AsyncCallback<Void>() {
                 @Override
                 public void onFailure(Throwable caught) {
                     Log.error("Failed to save form instance");
+                    ValidationUtils.addMessage(I18N.CONSTANTS.failedToSaveInstance(), errorContainer);
                 }
 
                 @Override
                 public void onSuccess(Void result) {
-                    // do nothing
+                    ValidationUtils.showMessage(I18N.CONSTANTS.saved(), infoContainer);
                 }
             });
         }
@@ -194,15 +198,21 @@ public class FormPanel extends Composite {
                 @Override
                 public void onFailure(Throwable caught) {
                     Log.error("Failed to save form class");
+                    ValidationUtils.addMessage(I18N.CONSTANTS.failedToSaveClass(), errorContainer);
                 }
 
                 @Override
                 public void onSuccess(Void result) {
-                    // do nothing
+                    ValidationUtils.showMessage(I18N.CONSTANTS.saved(), infoContainer);
                 }
             });
         }
 
+    }
+
+    private void clearMessages() {
+        errorContainer.setInnerHTML("");
+        infoContainer.setInnerHTML("");
     }
 
     public void fireState() {
@@ -241,6 +251,7 @@ public class FormPanel extends Composite {
 
     @UiHandler("resetButton")
     public void onReset(ClickEvent event) {
+        clearMessages();
         if (isDesignEnabled()) {
             rebuildPanel(); // Completely rebuilds panel.
         } else {
@@ -369,14 +380,6 @@ public class FormPanel extends Composite {
         for (FormFieldRow row : elementNode.getOwnAndChildFieldMap().values()) {
             row.setReadOnly(readOnly);
         }
-    }
-
-    public void showError(String errorMessage) {
-        errorContainer.setInnerSafeHtml(SafeHtmlUtils.fromSafeConstant(errorMessage));
-    }
-
-    public void clearError() {
-        errorContainer.setInnerHTML("");
     }
 
     public UndoManager getUndoManager() {

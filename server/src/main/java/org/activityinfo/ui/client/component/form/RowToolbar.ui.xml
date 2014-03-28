@@ -13,7 +13,7 @@
         <span class="{icons.edit}"/>
       </g:Button>
       <g:Button styleName="btn btn-success btn-xs" ui:field="addSectionButton">
-        <span class="{icons.add2}"/>
+        <span class="{icons.plus}"/>
       </g:Button>
       <g:Button styleName="btn btn-success btn-xs"  ui:field="addButton">
         <span class="{icons.add}"/>
