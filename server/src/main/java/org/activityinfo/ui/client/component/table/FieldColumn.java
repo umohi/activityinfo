@@ -6,6 +6,8 @@ import com.google.gwt.user.cellview.client.Column;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
+import org.activityinfo.ui.client.component.table.renderer.RendererFactory;
+import org.activityinfo.ui.client.component.table.renderer.ValueRenderer;
 
 import java.util.List;
 
@@ -33,10 +35,11 @@ public class FieldColumn extends Column<Projection, String> {
 
     @Override
     public String getValue(Projection projection) {
-        for(FieldPath path : fieldPaths) {
+        for (FieldPath path : fieldPaths) {
             Object value = projection.getValue(path);
-            if(value != null) {
-                return value.toString();
+            if (value != null) {
+                final ValueRenderer valueRenderer = RendererFactory.create(getNode().getFieldType());
+                return valueRenderer.asString(value);
             }
         }
         return "";
