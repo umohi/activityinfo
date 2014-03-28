@@ -33,7 +33,7 @@ public interface InstanceTableStyle extends Stylesheet {
 
     public static final InstanceTableStyle INSTANCE = GWT.create(InstanceTableStyle.class);
 
-    @ClassName("toobar")
+    @ClassName("instance-table-toobar")
     String toolbar();
 
     @ClassName("column-half-width")

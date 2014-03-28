@@ -48,7 +48,7 @@ public interface FormPanelStyles extends Stylesheet {
     @ClassName("reference-btn")
     String referenceBtn();
 
-    @ClassName("toobar")
+    @ClassName("form-panel-toobar")
     String toolbar();
 
 }
