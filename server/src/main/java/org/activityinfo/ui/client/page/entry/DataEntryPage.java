@@ -76,6 +76,8 @@ import java.util.Set;
 public class DataEntryPage extends LayoutContainer implements Page,
         ActionListener {
 
+    private static final boolean IMPORT_FUNCTION_ENABLED = false;
+
     public static final PageId PAGE_ID = new PageId("data-entry");
 
     private final Dispatcher dispatcher;
@@ -200,7 +202,9 @@ public class DataEntryPage extends LayoutContainer implements Page,
 
         toolBar.add(new SeparatorToolItem());
 
-        toolBar.addImportButton();
+        if(IMPORT_FUNCTION_ENABLED) {
+            toolBar.addImportButton();
+        }
         toolBar.addExcelExportButton();
 
         toolBar.addPrintButton();
@@ -337,7 +341,10 @@ public class DataEntryPage extends LayoutContainer implements Page,
 
         // also embedding is only implemented for one activity
         toolBar.setActionEnabled("EMBED", activities.size() == 1);
-        toolBar.setActionEnabled(UIActions.IMPORT, activities.size() == 1);
+
+        if(IMPORT_FUNCTION_ENABLED) {
+            toolBar.setActionEnabled(UIActions.IMPORT, activities.size() == 1);
+        }
 
 
         // adding is also only enabled for one activity, but we have to
@@ -359,7 +366,9 @@ public class DataEntryPage extends LayoutContainer implements Page,
             public void onSuccess(SchemaDTO result) {
                 boolean isAllowed = result.getActivityById(activityId).getDatabase().isEditAllowed();
                 toolBar.setActionEnabled(UIActions.ADD, isAllowed);
-                toolBar.setActionEnabled("IMPORT", isAllowed);
+                if(IMPORT_FUNCTION_ENABLED) {
+                    toolBar.setActionEnabled("IMPORT", isAllowed);
+                }
             }
         });
     }
@@ -426,7 +435,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
             EmbedDialog dialog = new EmbedDialog(dispatcher);
             dialog.show(currentPlace);
 
-        } else if (UIActions.IMPORT.equals(actionId)) {
+        } else if (IMPORT_FUNCTION_ENABLED && UIActions.IMPORT.equals(actionId)) {
             doImport();
 
         }
