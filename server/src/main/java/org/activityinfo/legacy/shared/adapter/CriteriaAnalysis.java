@@ -74,8 +74,11 @@ class CriteriaAnalysis extends CriteriaVisitor {
 
     @Override
     public void visitUnion(CriteriaUnion criteriaUnion) {
-        classUnion = true; // todo dummy fix! - in general wrong approach!
+        classUnion = true; // todo temp fix! - in general wrong approach, will work in flat case only!
         for (Criteria criteria : criteriaUnion) {
+            if (classUnion && !(criteria instanceof ClassCriteria)) {
+                classUnion = false;
+            }
             criteria.accept(this);
         }
     }
