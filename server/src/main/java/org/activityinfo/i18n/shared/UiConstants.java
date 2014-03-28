@@ -156,7 +156,7 @@ public interface UiConstants extends Constants {
      *
      * @return translated "Administrative Levels"
      */
-    @DefaultStringValue("Administrative Levels")
+    @DefaultStringValue("Administrative Unit")
     @Key("adminEntities")
     String adminEntities();
 
@@ -3474,5 +3474,8 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Save operation failed (formclass).")
     String failedToSaveClass();
+
+    @DefaultStringValue("Alternate Name")
+    String alternateName();
 
 }

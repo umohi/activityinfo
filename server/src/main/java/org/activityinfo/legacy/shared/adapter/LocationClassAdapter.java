@@ -66,7 +66,7 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
         formClass.addElement(nameField);
 
         FormField axeField = new FormField(getAxeFieldId(classId));
-        axeField.setLabel(new LocalizedString(I18N.CONSTANTS.axe()));
+        axeField.setLabel(new LocalizedString(I18N.CONSTANTS.alternateName()));
         axeField.setType(FormFieldType.FREE_TEXT);
         formClass.addElement(axeField);
 
@@ -79,7 +79,7 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
         FormField adminField = new FormField(getAdminFieldId(classId));
         adminField.setLabel(new LocalizedString(I18N.CONSTANTS.adminEntities()));
         adminField.setType(FormFieldType.REFERENCE);
-        adminField.setCardinality(FormFieldCardinality.SINGLE);
+        adminField.setCardinality(FormFieldCardinality.MULTIPLE);
         adminField.setRange(adminRange);
         formClass.addElement(adminField);
 
