@@ -12,20 +12,20 @@
     <form:FormFieldInlineEdit ui:field="editFieldPanel" addStyleNames="hidden" editMode="true"/>
     <form:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="hidden"/>
     <div class="row {style.fieldRow}" ui:field="rowContainer">
-      <div class="col-sm-2 has-error">
+      <div class="col-sm-2 has-error" ui:field="labelDiv">
         <div ui:field="label" style="display:inline;"/>
         <div class="help-block hidden" ui:field="requiredMarker" style="display:inline;">*</div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-3" ui:field="controlDiv">
         <g:FlowPanel ui:field="control" width="100%"/>
       </div>
-      <div class="col-sm-1">
+      <div class="col-sm-1" ui:field="unitDiv">
         <div ui:field="unit"/>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-3" ui:field="descriptionDiv">
         <div ui:field="description"/>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-3" ui:field="toolbarDiv">
         <form:RowToolbar ui:field="toolbar"/>
       </div>
     </div>

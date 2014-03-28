@@ -49,6 +49,7 @@ import org.activityinfo.core.shared.validation.ValidatorBuilder;
 import org.activityinfo.core.shared.validation.widget.NotEmptyValidator;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.ui.client.component.form.event.DesignStateEvent;
 import org.activityinfo.ui.client.component.form.event.PersistEvent;
 import org.activityinfo.ui.client.component.form.event.UpdateStateEvent;
 import org.activityinfo.ui.client.util.GwtUtil;
@@ -339,6 +340,7 @@ public class FormPanel extends Composite {
     public void setDesignEnabled(boolean designEnabled) {
         this.designEnabled = designEnabled;
         GwtUtil.setVisibleInline(designEnabled, addSectionButton.getElement(), addFieldButton.getElement());
+        eventBus.fireEvent(new DesignStateEvent(designEnabled));
     }
 
     public boolean isDesignEnabled() {

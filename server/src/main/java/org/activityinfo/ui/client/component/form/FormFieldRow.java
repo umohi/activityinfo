@@ -39,6 +39,7 @@ import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.type.converter.Converter;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.ui.client.component.form.event.DesignStateEvent;
 import org.activityinfo.ui.client.util.GwtUtil;
 import org.activityinfo.ui.client.widget.HasReadOnly;
 import org.activityinfo.ui.client.widget.undo.IsUndoable;
@@ -77,6 +78,16 @@ public class FormFieldRow extends Composite {
     FormFieldInlineEdit addFieldPanel;
     @UiField
     DivElement requiredMarker;
+    @UiField
+    DivElement labelDiv;
+    @UiField
+    DivElement controlDiv;
+    @UiField
+    DivElement unitDiv;
+    @UiField
+    DivElement descriptionDiv;
+    @UiField
+    DivElement toolbarDiv;
 
     private FormField formField;
     private IsWidget formFieldWidget;
@@ -104,11 +115,43 @@ public class FormFieldRow extends Composite {
                 node.addSection(addSectionPanel.getFormSection(), rowIndexOnPanel);
             }
         });
-
+        calculatedWidth();
         initPanels();
         addHandlers();
         updateUI();
         control.add(formFieldWidget);
+        formPanel.getEventBus().addHandler(DesignStateEvent.TYPE, new DesignStateEvent.Handler() {
+            @Override
+            public void update(DesignStateEvent p_event) {
+                calculatedWidth();
+            }
+        });
+    }
+
+    // funny code, need better approach
+    private void calculatedWidth() {
+        final boolean designEnabled = formPanel.isDesignEnabled();
+        if (designEnabled) {
+            labelDiv.removeClassName("col-sm-3");
+            controlDiv.removeClassName("col-sm-4");
+            descriptionDiv.removeClassName("col-sm-4");
+            toolbarDiv.removeClassName("col-sm-0");
+
+            labelDiv.addClassName("col-sm-2");
+            controlDiv.addClassName("col-sm-3");
+            descriptionDiv.addClassName("col-sm-3");
+            toolbarDiv.addClassName("col-sm-3");
+        } else {
+            labelDiv.removeClassName("col-sm-2");
+            controlDiv.removeClassName("col-sm-3");
+            descriptionDiv.removeClassName("col-sm-3");
+            toolbarDiv.removeClassName("col-sm-3");
+
+            labelDiv.addClassName("col-sm-3");
+            controlDiv.addClassName("col-sm-4");
+            descriptionDiv.addClassName("col-sm-4");
+            toolbarDiv.addClassName("col-sm-0");
+        }
     }
 
     private void initPanels() {

@@ -23,12 +23,14 @@ package org.activityinfo.ui.client.component.form;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.ui.client.style.legacy.icon.ImageResources;
 import org.activityinfo.ui.client.widget.ModalDialog;
 
 /**
@@ -36,38 +38,41 @@ import org.activityinfo.ui.client.widget.ModalDialog;
  */
 public class FormPanelDialog extends ModalDialog {
 
+    private static final String SCROLL_HEIGHT = "500px";
+
     private final ResourceLocator resourceLocator;
     private final FormPanel formPanel;
-    private ScrollPanel scrollPanel;
+    private final ScrollPanel scrollPanel = new ScrollPanel();
+    private final Image progressImage = new Image(ImageResources.ICONS.progress());
 
     public FormPanelDialog(ResourceLocator resourceLocator) {
         super();
-        getDialog().show();
         this.resourceLocator = resourceLocator;
-        getDialogDiv().setAttribute("style", "width:auto;");
         formPanel = new FormPanel(resourceLocator);
-        formPanel.setDesignEnabled(false);
     }
-
-//    public FormPanelDialog(ResourceLocator resourceLocator, Cuid classId, Cuid instanceId) {
-//        this(resourceLocator);
-//        load(classId, instanceId);
-//    }
 
     public FormPanel getFormPanel() {
         return formPanel;
     }
 
+
+    @Override
+    public void show() {
+        throw new UnsupportedOperationException("Please use show(final Cuid classId, final Cuid instanceId) instead.");
+    }
+
     public void show(final Cuid classId, final Cuid instanceId) {
-        scrollPanel = new ScrollPanel();
-        scrollPanel.setHeight("500px");
-        scrollPanel.setWidth("800px");
-        getModalBody().setWidth("850px");
-        getModalBody().add(scrollPanel);
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
+                scrollPanel.setHeight(SCROLL_HEIGHT);
+                getModalBody().add(scrollPanel);
+                scrollPanel.add(progressImage);
+                getDialogDiv().setAttribute("style", "width:auto;"); // override modal-dialog width
+                getOkButton().addStyleName("hidden");
                 getDialog().center();
+                formPanel.setDesignEnabled(false);
+
                 load(classId, instanceId);
             }
         });
@@ -78,10 +83,12 @@ public class FormPanelDialog extends ModalDialog {
             @Override
             public void onFailure(Throwable caught) {
                 Log.error("Unable to fetch UserForm, iri=" + classId, caught);
+                scrollPanel.remove(progressImage);
             }
 
             @Override
             public void onSuccess(FormClass result) {
+                scrollPanel.remove(progressImage);
                 scrollPanel.add(formPanel);
                 formPanel.renderForm(result);
                 resourceLocator.getFormInstance(instanceId).then(new AsyncCallback<FormInstance>() {
