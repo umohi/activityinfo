@@ -2,7 +2,6 @@ package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Functions;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
@@ -24,7 +23,7 @@ import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 
 /**
  * Updates/creates a location object.
- *
+ * <p/>
  * <p>The legacy api expects the location to be denormalized with
  * ALL ancestors, so we have to fetch them before we're able to persist</p>
  */
@@ -33,7 +32,7 @@ public class LocationPersister {
     private final Dispatcher dispatcher;
     private final FormInstance instance;
     private Promise<Void> callback;
-    private Map<String,Object> properties;
+    private Map<String, Object> properties;
     private Queue<Integer> parents = new LinkedList<>();
     private Cuid classId;
 
@@ -53,14 +52,16 @@ public class LocationPersister {
         properties.put("axe", instance.get(field(classId, AXE_FIELD)));
 
         AiLatLng point = (AiLatLng) instance.get(field(classId, GEOMETRY_FIELD));
-        if(point != null) {
+        if (point != null) {
             properties.put("latitude", point.getLat());
             properties.put("longitude", point.getLng());
         }
 
         Set<Cuid> adminEntities = instance.getReferences(field(classId, ADMIN_FIELD));
-        for(Cuid adminEntityCuid : adminEntities) {
-            parents.add(getLegacyIdFromCuid(adminEntityCuid));
+        if (adminEntities != null) {
+            for (Cuid adminEntityCuid : adminEntities) {
+                parents.add(getLegacyIdFromCuid(adminEntityCuid));
+            }
         }
 
         resolveNextParent();
@@ -68,7 +69,7 @@ public class LocationPersister {
     }
 
     private void resolveNextParent() {
-        if(parents.isEmpty()) {
+        if (parents.isEmpty()) {
             persistLocation();
             return;
         }
@@ -83,12 +84,12 @@ public class LocationPersister {
 
             @Override
             public void onSuccess(AdminEntityResult result) {
-                if(result.getData().isEmpty()) {
+                if (result.getData().isEmpty()) {
                     callback.onFailure(new IllegalStateException("No entity with id = " + query.getEntityIds()));
                 }
                 AdminEntityDTO entity = result.getData().get(0);
                 properties.put(AdminLevelDTO.getPropertyName(entity.getLevelId()), entity.getId());
-                if(entity.getParentId() != null) {
+                if (entity.getParentId() != null) {
                     parents.add(entity.getParentId());
                 }
                 resolveNextParent();
