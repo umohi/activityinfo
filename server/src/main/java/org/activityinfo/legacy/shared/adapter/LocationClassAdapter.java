@@ -46,7 +46,7 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
     }
 
     public static Cuid getAdminFieldId(Cuid classId) {
-        return CuidAdapter.adminField(classId, CuidAdapter.ADMIN_PARENT_FIELD);
+        return CuidAdapter.field(classId, CuidAdapter.ADMIN_FIELD);
     }
 
     @Nullable

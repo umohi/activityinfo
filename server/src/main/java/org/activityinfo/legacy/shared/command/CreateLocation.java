@@ -70,4 +70,7 @@ public class CreateLocation implements MutatingCommand<VoidResult> {
         return (Integer) properties.get("id");
     }
 
+    public int getLocationTypeId() {
+        return (Integer) properties.get("locationTypeId");
+    }
 }

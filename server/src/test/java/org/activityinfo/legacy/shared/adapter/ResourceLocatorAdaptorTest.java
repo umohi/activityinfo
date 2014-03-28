@@ -110,6 +110,31 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
     }
 
     @Test
+    public void updateLocation() {
+
+//        <location locationId="1" name="Penekusu Kivu" locationTypeId="1"
+//        X="1.532" Y="27.323" timeEdited="1"/>
+//        <locationAdminLink locationId="1" adminEntityId="2"/>
+//        <locationAdminLink locationId="1" adminEntityId="12"/>
+
+        FormInstance instance = assertResolves(resourceLocator.getFormInstance(locationInstanceId(1)));
+        instance.set(field(HEALTH_CENTER_CLASS, NAME_FIELD), "New Penekusu");
+
+        assertResolves(resourceLocator.persist(instance));
+
+        GetLocations query = new GetLocations(1);
+        LocationResult result = execute(query);
+        LocationDTO location = result.getData().get(0);
+
+        assertThat(location.getName(), equalTo("New Penekusu"));
+        assertThat(location.getLocationTypeId(), equalTo(1));
+        assertThat(location.getLatitude(), equalTo(27.323));
+        assertThat(location.getLongitude(), equalTo(1.532));
+        assertThat(location.getAdminEntity(1).getId(), equalTo(2));
+        assertThat(location.getAdminEntity(2).getId(), equalTo(12));
+    }
+
+    @Test
     public void projection() {
 
         // fields to request

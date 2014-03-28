@@ -22,35 +22,57 @@ package org.activityinfo.legacy.shared.impl;
  * #L%
  */
 
+import com.bedatadriven.rebar.sql.client.SqlResultCallback;
+import com.bedatadriven.rebar.sql.client.SqlResultSet;
+import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlInsert;
+import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.bedatadriven.rebar.sql.client.query.SqlUpdate;
 import com.extjs.gxt.ui.client.data.RpcMap;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.legacy.shared.command.CreateLocation;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
+import org.activityinfo.legacy.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 
 import java.util.Date;
+import java.util.Map;
 
-public class CreateLocationHandler implements
-        CommandHandlerAsync<CreateLocation, VoidResult> {
+public class CreateLocationHandler implements CommandHandlerAsync<CreateLocation, VoidResult> {
 
     @Override
-    public void execute(CreateLocation command, ExecutionContext context,
-                        AsyncCallback<VoidResult> callback) {
+    public void execute(final CreateLocation command, ExecutionContext context,
+                        final AsyncCallback<VoidResult> callback) {
 
-        Date timestamp = new Date();
+        SqlQuery.select("LocationTypeId")
+        .from(Tables.LOCATION)
+        .where("LocationId").equalTo(command.getLocationId())
+        .execute(context.getTransaction(), new SqlResultCallback() {
+            @Override
+            public void onSuccess(SqlTransaction tx, SqlResultSet results) {
+                if (results.getRows().isEmpty()) {
+                    // New Location
+                    createLocation(tx, command);
+                    callback.onSuccess(null);
+
+                } else {
+                    // Location exists, but make sure that we're not trying to change
+                    // the location type (FormClass)
+                    int locationTypeId = results.getRow(0).getInt("LocationTypeId");
+                    if (locationTypeId != command.getLocationTypeId()) {
+                        callback.onFailure(new IllegalAccessCommandException("Cannot change location type"));
+                    } else {
+                        updateLocation(tx, command.getProperties());
+                        callback.onSuccess(null);
+                    }
+                }
+            }
+        });
+    }
+
+    private void createLocation(SqlTransaction tx, CreateLocation command) {
 
         RpcMap properties = command.getProperties();
-
-        // We need to handle the case in which the command is sent twice to
-        // the server
-        SqlUpdate.delete(Tables.LOCATION)
-                .where("LocationId", properties.get("id"))
-                .execute(context.getTransaction());
-        SqlUpdate.delete(Tables.LOCATION_ADMIN_LINK)
-                .where("LocationId", properties.get("id"))
-                .execute(context.getTransaction());
 
         SqlInsert.insertInto("location")
                 .value("LocationId", properties.get("id"))
@@ -59,17 +81,40 @@ public class CreateLocationHandler implements
                 .value("Axe", properties.get("axe"))
                 .value("X", properties.get("longitude"))
                 .value("Y", properties.get("latitude"))
-                .value("timeEdited", timestamp.getTime())
-                .execute(context.getTransaction());
+                .value("timeEdited", new Date().getTime())
+                .execute(tx);
+
+        insertAdminLinks(tx, properties);
+    }
+
+
+    private void updateLocation(SqlTransaction tx, RpcMap properties) {
+        SqlUpdate.update("location")
+                .value("Name", properties.get("name"))
+                .value("Axe", properties.get("axe"))
+                .value("X", properties.get("longitude"))
+                .value("Y", properties.get("latitude"))
+                .value("timeEdited", new Date().getTime())
+                .where("locationId", properties.get("id"))
+                .execute(tx);
+
+        SqlUpdate.delete(Tables.LOCATION_ADMIN_LINK)
+                .where("LocationId", properties.get("id"))
+                .execute(tx);
+
+        insertAdminLinks(tx, properties);
+    }
+
+    private void insertAdminLinks(SqlTransaction tx, RpcMap properties) {
 
         for (String property : properties.keySet()) {
             if (property.startsWith(AdminLevelDTO.PROPERTY_PREFIX)) {
                 SqlInsert.insertInto("locationadminlink")
                         .value("LocationId", properties.get("id"))
                         .value("AdminEntityId", properties.get(property))
-                        .execute(context.getTransaction());
+                        .execute(tx);
             }
         }
-        callback.onSuccess(null);
     }
+
 }
