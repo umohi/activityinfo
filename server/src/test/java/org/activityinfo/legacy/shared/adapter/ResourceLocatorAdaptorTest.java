@@ -15,6 +15,7 @@ import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -130,6 +131,7 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
     }
 
 
+    @Ignore("WIP")
     @Test
     public void siteProjections() {
 

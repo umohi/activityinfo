@@ -18,6 +18,8 @@ import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.server.command.CommandTestCase2;
+import org.activityinfo.ui.client.component.importDialog.mapping.FieldChoicePresenter;
+import org.activityinfo.ui.client.component.importDialog.mapping.FieldModel;
 import org.activityinfo.ui.client.component.importDialog.validation.columns.ImportColumn;
 import org.junit.Before;
 
@@ -113,16 +115,16 @@ public class AbstractImporterTest extends CommandTestCase2 {
     }
 
     protected ColumnTarget field(String debugFieldPath) {
-        List<FieldPath> fieldsToMatch = importModel.getFormTree().search(FormTree.SearchOrder.BREADTH_FIRST,
-                Predicates.alwaysTrue(), Predicates.alwaysTrue());
+
+        FieldChoicePresenter choicePresenter = new FieldChoicePresenter(importModel);
+
 
         List<String> fieldsWeHave = Lists.newArrayList();
-        for(FieldPath path : fieldsToMatch) {
-            String debugPath = importModel.getFormTree().getNodeByPath(path).debugPath();
-            if(debugPath.equals(debugFieldPath)) {
-                return ColumnTarget.mapped(path);
+        for(FieldModel path : choicePresenter.getOptions()) {
+            if(path.getLabel().equals(debugFieldPath)) {
+                return ColumnTarget.mapped(path.getTarget().getFieldPath());
             }
-            fieldsWeHave.add(debugPath);
+            fieldsWeHave.add(path.getLabel());
         }
         throw new RuntimeException(String.format("No field matching '%s', we have: %s",
                 debugFieldPath, fieldsWeHave));

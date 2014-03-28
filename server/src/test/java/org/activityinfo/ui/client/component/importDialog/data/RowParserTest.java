@@ -1,5 +1,6 @@
 package org.activityinfo.ui.client.component.importDialog.data;
 
+import com.google.common.base.Joiner;
 import org.junit.Test;
 
 import java.util.List;
@@ -39,7 +40,9 @@ public class RowParserTest {
     public void quotedFieldsWithNewlines() {
         List<PastedRow> rows = new RowParser(
                 "1,Jane Goodall,\"304 E42nd street\nNew York, NY\nUSA\"\n" +
-                "2,Richard Feynman, \"401 1st Street\nCaltech\nUSA\"", ',').parseRows();
+                "2,Richard Feynman,\"401 1st Street\nCaltech\nUSA\"", ',').parseRows();
+
+        System.out.println(Joiner.on('\n').join(rows));
 
         assertThat(rows.size(), equalTo(2));
         assertThat(rows.get(0).getColumnValue(2), equalTo("304 E42nd street\n" +

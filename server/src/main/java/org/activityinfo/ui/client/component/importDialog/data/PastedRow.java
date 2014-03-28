@@ -59,7 +59,7 @@ public class PastedRow implements SourceRow {
             if(sb.length() > 0) {
                 sb.append(", ");
             }
-            sb.append(getColumnValue(i));
+            sb.append(getColumnValue(i).replace("\n", "\\n"));
         }
         return sb.toString();
     }

@@ -66,9 +66,9 @@ public class ImporterTest extends AbstractImporterTest {
         // Step 2: User maps imported columns to FormFields
         dumpList("FIELDS", importModel.getFieldsToMatch());
         importModel.setColumnBinding(field("NumAdultMale"), columnIndex("MEMBER_NO_ADULT_FEMALE"));
-        importModel.setColumnBinding(field("[End Date]"), columnIndex("_SUBMISSION_DATE"));
-        importModel.setColumnBinding(field("Upzilla.District.Name"), columnIndex("district"));
-        importModel.setColumnBinding(field("Upzilla.Name"), columnIndex("upazila"));
+        importModel.setColumnBinding(field("End Date"), columnIndex("_SUBMISSION_DATE"));
+        importModel.setColumnBinding(field("District Name"), columnIndex("district"));
+        importModel.setColumnBinding(field("Upzilla Name"), columnIndex("upazila"));
 
 
         // Step 3: Match Instances
