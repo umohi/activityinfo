@@ -117,8 +117,7 @@ public class DimensionModel extends BaseModelData {
                     for (AttributeGroupDTO attributeGroup : activity
                             .getAttributeGroups()) {
                         if (!groupsAdded.contains(attributeGroup.getName())) {
-                            DimensionModel dimModel = new DimensionModel(
-                                    attributeGroup);
+                            DimensionModel dimModel = new DimensionModel(attributeGroup);
                             models.add(dimModel);
                             groupsAdded.add(attributeGroup.getName());
                         }

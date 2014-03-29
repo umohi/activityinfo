@@ -42,10 +42,12 @@ public class IndicatorFilterPanel extends IndicatorTreePanel implements FilterPa
     public IndicatorFilterPanel(Dispatcher service, boolean multipleSelection) {
         super(service, multipleSelection);
 
+
         addCheckChangedListener(new Listener<TreePanelEvent>() {
             @Override
             public void handleEvent(TreePanelEvent be) {
                 // aggregate events before re-throwing, to avoid cascading TreePanelEvents
+                delayedEvent.cancel();
                 delayedEvent.schedule(UPDATE_DELAY);
             }
         });
@@ -53,13 +55,9 @@ public class IndicatorFilterPanel extends IndicatorTreePanel implements FilterPa
         delayedEvent = new Timer() {
             @Override
             public void run() {
-                fireDelayedEvents();
+                ValueChangeEvent.fire(IndicatorFilterPanel.this, getValue());
             }
         };
-    }
-
-    private void fireDelayedEvents() {
-        ValueChangeEvent.fire(IndicatorFilterPanel.this, getValue());
     }
 
     @Override
@@ -93,5 +91,4 @@ public class IndicatorFilterPanel extends IndicatorTreePanel implements FilterPa
     public void applyBaseFilter(Filter filter) {
         // we don't filter indicators
     }
-
 }

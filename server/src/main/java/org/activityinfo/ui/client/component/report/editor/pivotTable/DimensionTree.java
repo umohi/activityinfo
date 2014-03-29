@@ -34,6 +34,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
@@ -97,6 +98,7 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
         treePanel.getStyle().setNodeCloseIcon(null);
         treePanel.getStyle().setNodeOpenIcon(null);
         treePanel.setStateful(true);
+        treePanel.setStateId("dimensionTree");
         treePanel.setDisplayProperty("name");
         treePanel.addListener(Events.Expand, new Listener<BaseEvent>() {
 
@@ -111,7 +113,6 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
         // source.setTreeSource(DND.TreeSource.LEAF);
         /* end enable drag and drop for dev */
 
-        treePanel.setId("statefullavaildims");
         treePanel.collapseAll();
 
         treePanel.addListener(Events.CheckChange,
@@ -252,6 +253,7 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
             if (model.hasDimension() && (
                     model.getDimension() instanceof AttributeGroupDimension ||
                             model.getDimension() instanceof AdminDimension)) {
+                Log.info("Removing " + model.getCaption());
                 store.remove(model);
             }
         }
