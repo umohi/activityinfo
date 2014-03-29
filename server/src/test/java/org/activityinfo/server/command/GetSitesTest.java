@@ -25,11 +25,7 @@ package org.activityinfo.server.command;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.SortInfo;
-import com.google.common.collect.Lists;
-import org.activityinfo.core.client.InstanceQuery;
-import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.fixtures.InjectionSupport;
-import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSites;
@@ -44,6 +40,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
@@ -96,18 +93,16 @@ public class GetSitesTest extends CommandTestCase2 {
 
         GetSites cmd = new GetSites();
         cmd.filter().onActivity(1);
-        cmd.setSortInfo(new SortInfo(IndicatorDTO.getPropertyName(1),
-                SortDir.DESC));
+        cmd.setSortInfo(new SortInfo(IndicatorDTO.getPropertyName(1), SortDir.DESC));
 
         PagingLoadResult<SiteDTO> result = execute(cmd);
 
         // assure sorted
         assertThat("sorted", result.getData().get(0).getIndicatorValue(1), equalTo(10000.0));
-        Assert.assertEquals("sorted", result.getData().get(1).getIndicatorValue(1), equalTo(3600.0));
-        Assert.assertEquals("sorted", result.getData().get(2).getIndicatorValue(1), equalTo(1500.0));
+        assertThat("sorted", result.getData().get(1).getIndicatorValue(1), closeTo(3600.0, 1d));
+        assertThat("sorted", result.getData().get(2).getIndicatorValue(1), closeTo(1500.0, 1d));
 
-        Assert.assertNotNull("activityId", result.getData().get(0)
-                .getActivityId());
+        Assert.assertNotNull("activityId", result.getData().get(0).getActivityId());
     }
 
     @Test
