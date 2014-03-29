@@ -76,8 +76,7 @@ final class FlatSiteGridPanel extends ContentPanel implements SiteGridPanelView 
 
     public void initGrid(Filter filter, ColumnModel columnModel) {
 
-        PagingLoader<PagingLoadResult<SiteDTO>> loader = new BasePagingLoader<PagingLoadResult<SiteDTO>>(
-                new SiteProxy());
+        PagingLoader<PagingLoadResult<SiteDTO>> loader = new BasePagingLoader<PagingLoadResult<SiteDTO>>(new SiteProxy());
         loader.addLoadListener(new LoadListener() {
 
             @Override

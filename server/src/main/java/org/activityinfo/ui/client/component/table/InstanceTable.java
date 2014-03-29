@@ -55,6 +55,7 @@ public class InstanceTable implements IsWidget {
         table = new CellTable<>(50, CellTableResources.INSTANCE);
         table.setSkipRowHoverCheck(true);
         table.setSkipRowHoverFloatElementCheck(true);
+        table.setSkipRowHoverStyleUpdate(true);
 
         // Set the table to fixed width: we will provide explicit
         // column widths

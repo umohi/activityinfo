@@ -22,72 +22,63 @@ package org.activityinfo.ui.client.component.report.view;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedListener;
-import com.extjs.gxt.ui.client.widget.grid.RowExpander;
-import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.data.BaseListLoader;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.client.state.StateProvider;
 import org.activityinfo.legacy.client.type.DateUtilGWTImpl;
+import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
-import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
 import org.activityinfo.legacy.shared.reports.content.PivotTableData;
-import org.activityinfo.legacy.shared.reports.model.DateRange;
-import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
+import org.activityinfo.legacy.shared.reports.model.*;
 import org.activityinfo.legacy.shared.reports.util.DateUtil;
-import org.activityinfo.ui.client.AppEvents;
-import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.page.common.Shutdownable;
-import org.activityinfo.ui.client.page.common.toolbar.ActionListener;
-import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
-import org.activityinfo.ui.client.page.common.toolbar.UIActions;
-import org.activityinfo.ui.client.page.entry.SiteGridPanel;
-import org.activityinfo.ui.client.page.entry.form.SiteDialogCallback;
-import org.activityinfo.ui.client.page.entry.form.SiteDialogLauncher;
-import org.activityinfo.ui.client.page.entry.grouping.NullGroupingModel;
 
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.Dialog;
-import com.extjs.gxt.ui.client.widget.layout.FillLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.activityinfo.legacy.shared.reports.model.DateRange.intersection;
 
-public class DrillDownEditor implements Shutdownable, ActionListener {
+public class DrillDownEditor implements Shutdownable {
 
     private static final DateUtil DATES = new DateUtilGWTImpl();
 
     private Dispatcher dispatcher;
-    private SiteGridPanel gridPanel;
     private Dialog dialog;
-    private ActionToolBar toolBar;
+    private DrillDownProxy proxy;
+    private Grid<DrillDownRow> grid;
+    private ListStore<DrillDownRow> store;
+
 
     public DrillDownEditor(Dispatcher dispatcher) {
-
         this.dispatcher = dispatcher;
-
-        createUi();
     }
 
-    private void createUi() {
-        if(gridPanel == null) {
-            gridPanel = new SiteGridPanel(dispatcher, new DrillDownColumnModelProvider(dispatcher));
-
-            createToolbar();
+    private void show() {
+        if(dialog == null) {
             createDialog();
         }
+        store.removeAll();
+        dialog.show();
     }
 
     @Override
     public void shutdown() {
+        dialog.hide();
     }
 
     public void drillDown(PivotReportElement element, PivotTableData.Axis row, PivotTableData.Axis column) {
 
-        createUi();
+        show();
 
         // construct our filter from the intersection of rows and columns
         Filter filter = new Filter(filterFromAxis(row), filterFromAxis(column));
@@ -95,8 +86,15 @@ public class DrillDownEditor implements Shutdownable, ActionListener {
         // apply the effective filter
         final Filter effectiveFilter = new Filter(filter, element.getContent().getEffectiveFilter());
 
-        gridPanel.load(NullGroupingModel.INSTANCE, effectiveFilter);
-        dialog.show();
+        // only show the indicator name column if there are multiple indicators
+        int indicatorColumnIndex = grid.getColumnModel().getIndexById("indicator");
+        grid.getColumnModel().setHidden(indicatorColumnIndex,
+                effectiveFilter.getRestrictions(DimensionType.Indicator).size() == 1);
+        grid.getView().refresh(true);
+
+        // now query the rows:
+        proxy.setFilter(effectiveFilter);
+        store.getLoader().load();
     }
 
     private Filter filterFromAxis(PivotTableData.Axis axis) {
@@ -118,45 +116,36 @@ public class DrillDownEditor implements Shutdownable, ActionListener {
         return filter;
     }
 
-    private void createToolbar() {
-
-        toolBar = new ActionToolBar(this);
-        toolBar.addEditButton();
-
-        gridPanel.addSelectionChangedListener(new SelectionChangedListener<SiteDTO>() {
-            @Override
-            public void selectionChanged(SelectionChangedEvent<SiteDTO> event) {
-                toolBar.setActionEnabled(UIActions.EDIT, gridPanel.getSelection() != null);
-            }
-        });
-    }
-    
     private void createDialog() {
+
+        proxy = new DrillDownProxy(dispatcher);
+        store = new ListStore<>(new BaseListLoader(proxy));
+        grid = new Grid<>(store, buildColumnModel());
+        grid.setLoadMask(true);
+
     	dialog = new Dialog();
     	dialog.setHeadingText(I18N.CONSTANTS.sites());
     	dialog.setButtons(Dialog.CLOSE);
     	dialog.setLayout(new FitLayout());
-        dialog.setTopComponent(toolBar);
     	dialog.setSize(600, 500);
-    	
-    	gridPanel.setHeaderVisible(false);
-    	gridPanel.setLayout(new FillLayout());
-    	gridPanel.setBorders(false);
-        dialog.add(gridPanel);
-
-
+        dialog.add(grid);
     }
 
-    @Override
-    public void onUIAction(String actionId) {
-        if(UIActions.EDIT.equals(actionId)) {
-            SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
-            launcher.editSite(gridPanel.getSelection(), new SiteDialogCallback() {
-                @Override
-                public void onSaved(SiteDTO site) {
-                    gridPanel.refresh();
-                }
-            });
-        }
+    private ColumnModel buildColumnModel() {
+        List<ColumnConfig> config = new ArrayList<>();
+        config.add(new ColumnConfig("partner", I18N.CONSTANTS.partner(), 100));
+        config.add(new ColumnConfig("location", I18N.CONSTANTS.location(), 100));
+        config.add(new ColumnConfig("date", I18N.CONSTANTS.date(), 100));
+
+        ColumnConfig indicatorNameColumn = new ColumnConfig("indicator", I18N.CONSTANTS.indicator(), 100);
+        indicatorNameColumn.setHidden(true);
+        config.add(indicatorNameColumn);
+
+        ColumnConfig valueColumn = new ColumnConfig("value", I18N.CONSTANTS.value(), 100);
+        valueColumn.setNumberFormat(IndicatorNumberFormat.INSTANCE);
+        valueColumn.setAlignment(Style.HorizontalAlignment.RIGHT);
+        config.add(valueColumn);
+
+        return new ColumnModel(config);
     }
 }

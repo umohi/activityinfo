@@ -85,8 +85,7 @@ public class ColumnModelBuilder {
     }
 
     public ColumnModelBuilder addDatabaseColumn(final SchemaDTO schema) {
-        ColumnConfig config = new ColumnConfig("activityId",
-                I18N.CONSTANTS.activity(), 100);
+        ColumnConfig config = new ColumnConfig("activityId", I18N.CONSTANTS.database(), 100);
         config.setRenderer(new GridCellRenderer<SiteDTO>() {
 
             @Override

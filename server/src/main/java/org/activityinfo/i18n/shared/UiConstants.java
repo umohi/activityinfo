@@ -1379,7 +1379,7 @@ public interface UiConstants extends Constants {
      *
      * @return translated "indicator"
      */
-    @DefaultStringValue("indicator")
+    @DefaultStringValue("Indicator")
     @Key("indicator")
     String indicator();
 
@@ -3453,10 +3453,10 @@ public interface UiConstants extends Constants {
     @Key("failedToCreateWidget")
     String failedToCreateWidget();
 
-    @DefaultStringValue("Quick tip!")
+    @DefaultStringValue("Double click")
     String drillDownTipHeading();
 
-    @DefaultStringValue("Double-click a value to view the individual sites")
+    @DefaultStringValue("Double-click a value to drill down to the individual sites")
     String drillDownTip();
 
     @DefaultStringValue("Not all columns are shown. You can configure visible columns with 'Visible columns' button.")

@@ -96,7 +96,8 @@ public class PivotQuery {
 
         baseTable.setupQuery(command, query);
 
-        if (command.isPivotedBy(DimensionType.Location) || command.isPointRequested()) {
+        if (command.isPivotedBy(DimensionType.Location) || command.isPivotedBy(DimensionType.Site) ||
+                command.isPointRequested()) {
             query.leftJoin(Tables.LOCATION, "Location")
                     .on("Location.LocationId=" + baseTable.getDimensionIdColumn(DimensionType.Location));
         }
@@ -235,8 +236,10 @@ public class PivotQuery {
                         "Project.Name");
 
             } else if (dimension.getType() == DimensionType.Location) {
-                addEntityDimension(dimension, "Site.LocationId",
-                        "Location.Name");
+                addEntityDimension(dimension, "Location.LocationId", "Location.Name");
+
+            } else if (dimension.getType() == DimensionType.Site) {
+                addEntityDimension(dimension, baseTable.getDimensionIdColumn(DimensionType.Site), "Location.Name");
 
             } else if (dimension.getType() == DimensionType.Indicator) {
                 addOrderedEntityDimension(dimension, "Indicator.IndicatorId",
@@ -268,11 +271,9 @@ public class PivotQuery {
                     String yearAlias = appendDimColumn("year",
                             dialect.yearFunction(baseTable.getDateCompleteColumn()));
                     String quarterAlias = appendDimColumn("quarter",
-                            dialect.quarterFunction(baseTable
-                                    .getDateCompleteColumn()));
+                            dialect.quarterFunction(baseTable.getDateCompleteColumn()));
 
-                    bundlers.add(new QuarterBundler(dimension, yearAlias,
-                            quarterAlias));
+                    bundlers.add(new QuarterBundler(dimension, yearAlias, quarterAlias));
                 } else if (dateDim.getUnit() == DateUnit.WEEK_MON) {
                     // Mode = 3 means
                     // "Monday 1-53   with more than 3 days this year"
@@ -280,12 +281,14 @@ public class PivotQuery {
                     // http://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_week
                     if (dialect.isMySql()) {
                         String weekAlias = appendDimColumn("yearweek",
-                                "YEARWEEK(" + baseTable.getDateCompleteColumn()
-                                        + ", 3)");
-                        bundlers.add(new MySqlYearWeekBundler(dimension,
-                                weekAlias));
+                                "YEARWEEK(" + baseTable.getDateCompleteColumn() + ", 3)");
+                        bundlers.add(new MySqlYearWeekBundler(dimension, weekAlias));
                     }
                     // TODO: sqlite
+                } else if(dateDim.getUnit() == DateUnit.DAY) {
+                    String dateAlias = appendDimColumn("date", baseTable.getDateCompleteColumn());
+
+                    bundlers.add(new DayBundler(dimension, dateAlias));
                 }
 
             } else if (dimension instanceof AdminDimension) {
@@ -335,8 +338,6 @@ public class PivotQuery {
     /**
      * Defines an a dimension based on an Attribute Group defined
      * by the user. This is essentially a custom dimension
-     *
-     * @param dimension
      */
     private void defineAttributeDimension(AttributeGroupDimension dim) {
         // this pivots the data by a single-valued attribute group

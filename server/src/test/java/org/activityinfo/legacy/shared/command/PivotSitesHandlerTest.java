@@ -128,6 +128,28 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
     }
 
     @Test
+    public void pivotOnSites() {
+        filter.addRestriction(DimensionType.Indicator, 1);
+        dimensions.add(new Dimension(DimensionType.Site));
+
+        execute();
+
+        assertThat().thereAre(3).buckets();
+
+        assertThat().forSite(1).thereIsOneBucketWithValue(1500);
+        assertThat().forSite(2).thereIsOneBucketWithValue(3600);
+        assertThat().forSite(3).thereIsOneBucketWithValue(10000);
+    }
+
+    @Test
+    public void pivotByDate() {
+        filter.addRestriction(DimensionType.Indicator, 5);
+        dimensions.add(new DateDimension(DateUnit.DAY));
+
+        execute();
+    }
+
+    @Test
     public void testSiteCountOnQuarters() {
         forTotalSiteCounts();
         filteringOnDatabases(1,2);
@@ -763,6 +785,13 @@ public class PivotSitesHandlerTest extends CommandTestCase2 {
         public AssertionBuilder forYear(int year) {
             criteria.append(" in year ").append(year);
             filter(new DateDimension(DateUnit.YEAR), Integer.toString(year));
+            return this;
+        }
+
+        public AssertionBuilder forSite(int siteId) {
+            criteria.append(" for site id ").append(siteId);
+
+            filter(new Dimension(DimensionType.Site), siteId);
             return this;
         }
 

@@ -27,6 +27,7 @@ public enum DateUnit {
     YEAR,
     QUARTER,
     MONTH,
-    WEEK_MON;
+    WEEK_MON,
+    DAY;
 
 }

@@ -24,6 +24,7 @@ package org.activityinfo.ui.client.component.report.view;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BaseTreeModel;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -36,6 +37,7 @@ import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.InfoConfig;
 import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.tips.ToolTipConfig;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
@@ -62,9 +64,6 @@ public class PivotGridPanel extends ContentPanel implements
     private Dispatcher dispatcher;
     private DrillDownEditor drillDownEditor;
 
-    private Info drillDownTip;
-
-
     public PivotGridPanel(Dispatcher dispatcher) {
     	this.dispatcher = dispatcher;
     	this.drillDownEditor = new DrillDownEditor(dispatcher);
@@ -74,7 +73,6 @@ public class PivotGridPanel extends ContentPanel implements
 
     @SuppressWarnings("GwtInconsistentSerializableClass")
     public class PivotTableRow extends BaseTreeModel {
-
         private PivotTableData.Axis rowAxis;
         private int depth;
 
@@ -83,10 +81,8 @@ public class PivotGridPanel extends ContentPanel implements
             this.depth = depth;
             set("header", axis.getLabel());
 
-            for (Map.Entry<PivotTableData.Axis, PivotTableData.Cell> entry : axis
-                    .getCells().entrySet()) {
-                set(propertyMap.get(entry.getKey()), entry.getValue()
-                        .getValue());
+            for (Map.Entry<PivotTableData.Axis, PivotTableData.Cell> entry : axis.getCells().entrySet()) {
+                set(propertyMap.get(entry.getKey()), entry.getValue().getValue());
             }
         }
 
@@ -109,17 +105,18 @@ public class PivotGridPanel extends ContentPanel implements
 
         PivotTableData data = element.getContent().getData();
 
-        propertyMap = new HashMap<PivotTableData.Axis, String>();
-        columnMap = new HashMap<Integer, PivotTableData.Axis>();
+        propertyMap = new HashMap<>();
+        columnMap = new HashMap<>();
         columnModel = createColumnModel(data);
 
-        store = new ListStore<PivotTableRow>();
+        store = new ListStore<>();
 
         addRows(data.getRootRow(), 0);
 
-        grid = new Grid<PivotTableRow>(store, columnModel);
+        grid = new Grid<>(store, columnModel);
         grid.setAutoExpandColumn("header");
         grid.setAutoExpandMin(150);
+        grid.setView(new PivotGridView());
         grid.setSelectionModel(new CellSelectionModel<PivotGridPanel.PivotTableRow>());
         grid.addListener(Events.CellDoubleClick,
                 new Listener<GridEvent<PivotTableRow>>() {
@@ -128,41 +125,17 @@ public class PivotGridPanel extends ContentPanel implements
                         if (ge.getColIndex() != 0) {
                             PivotTableData.Axis row = ge.getModel().getRowAxis();
                             PivotTableData.Axis column = columnMap.get(ge.getColIndex());
-
-                            drillDownEditor.drillDown(element, row, column);
+                            if(row.getCell(column) != null) {
+                                drillDownEditor.drillDown(element, row, column);
+                            }
                         }
                     }
                 });
 
         add(grid);
 
+
         layout();
-
-        if(grid.getStore().getCount() > 0) {
-            showDrillDownTip();
-        }
-
-    }
-
-    private void showDrillDownTip() {
-        InfoConfig config = new InfoConfig(I18N.CONSTANTS.drillDownTipHeading(),
-                I18N.CONSTANTS.drillDownTip());
-        config.display = 5000;
-
-        if(drillDownTip == null) {
-
-            drillDownTip = new Info() {
-                @Override
-                protected Point position() {
-                    ContentPanel c = PivotGridPanel.this;
-                    return new Point(
-                            c.getAbsoluteLeft() + ((c.getWidth() - config.width)  / 2),
-                            c.getAbsoluteTop() +   (c.getHeight() - config.height));
-                }
-            };
-        }
-
-        drillDownTip.show(config);
     }
 
     private void addRows(PivotTableData.Axis parent, int depth) {
@@ -188,7 +161,7 @@ public class PivotGridPanel extends ContentPanel implements
 
     protected ColumnModel createColumnModel(PivotTableData data) {
 
-        List<ColumnConfig> config = new ArrayList<ColumnConfig>();
+        List<ColumnConfig> config = new ArrayList<>();
 
         ColumnConfig rowHeader = new ColumnConfig("header", "", 150);
         rowHeader.setRenderer(new RowHeaderRenderer());
@@ -213,6 +186,21 @@ public class PivotGridPanel extends ContentPanel implements
             column.setAlignment(Style.HorizontalAlignment.RIGHT);
             column.setSortable(false);
             column.setMenuDisabled(true);
+            column.setRenderer(new GridCellRenderer() {
+                @Override
+                public Object render(ModelData model, String property, ColumnData config, int rowIndex, int colIndex,
+                                     ListStore store, Grid grid) {
+
+                    Double value = model.get(property);
+                    if(value == null) {
+                        config.cellAttr = "";
+                        return null;
+                    } else {
+                        config.cellAttr = "data-pivot='value'";
+                        return IndicatorNumberFormat.INSTANCE.format(value);
+                    }
+                }
+            });
 
             propertyMap.put(axis, id);
             columnMap.put(colIndex, axis);
@@ -227,16 +215,14 @@ public class PivotGridPanel extends ContentPanel implements
         int row = 0;
 
         for (int d = 1; d <= depth; ++d) {
-            List<PivotTableData.Axis> children = data.getRootColumn()
-                    .getDescendantsAtDepth(d);
+            List<PivotTableData.Axis> children = data.getRootColumn().getDescendantsAtDepth(d);
 
             if (d < depth) {
                 int col = 1;
                 for (PivotTableData.Axis child : children) {
 
                     int colSpan = child.getLeaves().size();
-                    columnModel.addHeaderGroup(row, col, new HeaderGroupConfig(
-                            child.getLabel(), 1, colSpan));
+                    columnModel.addHeaderGroup(row, col, new HeaderGroupConfig(child.getLabel(), 1, colSpan));
 
                     col += colSpan;
                 }
@@ -250,5 +236,4 @@ public class PivotGridPanel extends ContentPanel implements
     public Component asComponent() {
         return this;
     }
-
 }

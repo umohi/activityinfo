@@ -185,3 +185,7 @@
 .headerImage {
     margin-right: 0.25em;
 }
+
+.cell-hover {
+    background-color: #C9E3FF;
+}
