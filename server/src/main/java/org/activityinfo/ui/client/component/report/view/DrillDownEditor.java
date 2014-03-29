@@ -25,9 +25,11 @@ package org.activityinfo.ui.client.component.report.view;
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.type.DateUtilGWTImpl;
@@ -36,12 +38,9 @@ import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
 import org.activityinfo.legacy.shared.reports.content.PivotTableData;
-import org.activityinfo.legacy.shared.reports.model.*;
+import org.activityinfo.legacy.shared.reports.model.PivotReportElement;
 import org.activityinfo.legacy.shared.reports.util.DateUtil;
 import org.activityinfo.ui.client.page.common.Shutdownable;
-
-import com.extjs.gxt.ui.client.widget.Dialog;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,12 +84,6 @@ public class DrillDownEditor implements Shutdownable {
 
         // apply the effective filter
         final Filter effectiveFilter = new Filter(filter, element.getContent().getEffectiveFilter());
-
-        // only show the indicator name column if there are multiple indicators
-        int indicatorColumnIndex = grid.getColumnModel().getIndexById("indicator");
-        grid.getColumnModel().setHidden(indicatorColumnIndex,
-                effectiveFilter.getRestrictions(DimensionType.Indicator).size() == 1);
-        grid.getView().refresh(true);
 
         // now query the rows:
         proxy.setFilter(effectiveFilter);

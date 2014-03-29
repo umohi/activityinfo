@@ -254,7 +254,12 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
                     model.getDimension() instanceof AttributeGroupDimension ||
                             model.getDimension() instanceof AdminDimension)) {
                 Log.info("Removing " + model.getCaption());
-                store.remove(model);
+                try {
+                    store.remove(model);
+                } catch(Exception e) {
+                    // workaround for buggy GXT
+                    Log.debug("Exception thrown removing " + model.getCaption(), e);
+                }
             }
         }
     }
