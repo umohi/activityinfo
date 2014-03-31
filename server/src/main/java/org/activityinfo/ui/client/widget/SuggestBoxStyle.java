@@ -21,16 +21,16 @@ package org.activityinfo.ui.client.widget;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.SuggestOracle;
+import com.bedatadriven.rebar.style.client.Source;
+import com.bedatadriven.rebar.style.client.Stylesheet;
+import com.google.gwt.core.client.GWT;
 
 /**
- * @author yuriyz on 3/14/14.
+ * @author yuriyz on 3/31/14.
  */
-public class SuggestBox extends com.google.gwt.user.client.ui.SuggestBox {
+@Source("SuggestBox.less")
+public interface SuggestBoxStyle extends Stylesheet {
 
-    public SuggestBox(SuggestOracle oracle) {
-        super(oracle);
-        SuggestBoxStyle.INSTANCE.ensureInjected();
-        getValueBox().setStyleName("form-control");
-    }
+    public static final SuggestBoxStyle INSTANCE = GWT.create(SuggestBoxStyle.class);
+
 }

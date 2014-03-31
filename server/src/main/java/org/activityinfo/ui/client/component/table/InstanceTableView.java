@@ -196,7 +196,6 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiHandler("editButton")
     public void onEdit(ClickEvent event) {
         final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
-        final FormClass formClass = rootFormClasses.iterator().next();
         final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
             @Override
             public void onPersistedSuccessfully() {
