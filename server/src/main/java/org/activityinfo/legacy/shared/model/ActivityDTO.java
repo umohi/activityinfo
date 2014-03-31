@@ -23,6 +23,7 @@ package org.activityinfo.legacy.shared.model;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.activityinfo.legacy.shared.model.LockedPeriodDTO.HasLockedPeriod;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
@@ -356,6 +357,10 @@ public final class ActivityDTO
 
             return getDatabase().getCountry().getAdminLevelAncestors(
                     getLocationType().getBoundAdminLevelId());
+        } else if(getLocationType().isNationwide()) {
+
+            return Lists.newArrayList();
+
         } else {
 
             // all admin levels

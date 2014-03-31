@@ -48,8 +48,7 @@ public class SiteDialogLauncher {
     }
 
     public void addSite(final Filter filter, final SiteDialogCallback callback) {
-        if (filter
-                .isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
+        if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
             dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
 
                 @Override
@@ -66,6 +65,10 @@ public class SiteDialogLauncher {
 
                     if (activity.getLocationType().isAdminLevel()) {
                         addNewSiteWithBoundLocation(activity, callback);
+
+                    } else if(activity.getLocationType().isNationwide()) {
+                        addNewSiteWithNoLocation(activity, callback);
+
                     } else {
                         chooseLocationThenAddSite(activity, callback);
                     }
@@ -130,6 +133,19 @@ public class SiteDialogLauncher {
 
         LocationDTO location = new LocationDTO();
         location.setId(new KeyGenerator().generateInt());
+        location.setLocationTypeId(activity.getLocationTypeId());
+
+        SiteDialog dialog = new SiteDialog(dispatcher, activity);
+        dialog.showNew(newSite, location, true, callback);
+    }
+
+    private void addNewSiteWithNoLocation(ActivityDTO activity,
+                                             SiteDialogCallback callback) {
+        SiteDTO newSite = new SiteDTO();
+        newSite.setActivityId(activity.getId());
+
+        LocationDTO location = new LocationDTO();
+        location.setId(activity.getLocationTypeId());
         location.setLocationTypeId(activity.getLocationTypeId());
 
         SiteDialog dialog = new SiteDialog(dispatcher, activity);

@@ -68,6 +68,11 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
         return get("name");
     }
 
+    public boolean isNationwide() {
+        // hack!!
+        return "Country".equals(getName()) && getId() != 20301;
+    }
+
     @JsonProperty("adminLevelId")
     @JsonView(DTOViews.Schema.class)
     public Integer getBoundAdminLevelId() {
@@ -97,4 +102,5 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
     public void setDatabaseId(Integer databaseId) {
         this.databaseId = databaseId;
     }
+
 }

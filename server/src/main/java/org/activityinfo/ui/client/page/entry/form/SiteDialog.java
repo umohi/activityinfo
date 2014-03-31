@@ -74,6 +74,7 @@ public class SiteDialog extends Window {
      * True if this is a brand new site
      */
     private boolean newSite;
+    private KeyGenerator keyGenerator;
 
     public SiteDialog(Dispatcher dispatcher, ActivityDTO activity) {
         this.dispatcher = dispatcher;
@@ -99,6 +100,8 @@ public class SiteDialog extends Window {
 
         if (activity.getLocationType().isAdminLevel()) {
             locationForm = new BoundLocationSection(dispatcher, activity);
+        } else if(activity.getLocationType().isNationwide()) {
+            locationForm = new NullLocationFormSection(activity.getLocationType());
         } else {
             locationForm = new LocationSection(dispatcher, activity);
         }
@@ -107,9 +110,11 @@ public class SiteDialog extends Window {
                 .withHeader(I18N.CONSTANTS.siteDialogIntervention())
                 .withDescription(I18N.CONSTANTS.siteDialogInterventionDesc()));
 
-        addSection(FormSectionModel.forComponent(locationForm)
-                .withHeader(I18N.CONSTANTS.location())
-                .withDescription(I18N.CONSTANTS.siteDialogSiteDesc()));
+        if(!activity.getLocationType().isNationwide()) {
+            addSection(FormSectionModel.forComponent(locationForm)
+                    .withHeader(I18N.CONSTANTS.location())
+                    .withDescription(I18N.CONSTANTS.siteDialogSiteDesc()));
+        }
 
         if (!activity.getAttributeGroups().isEmpty()) {
 
@@ -199,6 +204,9 @@ public class SiteDialog extends Window {
                 .getModels()) {
             section.getSection().updateModel(newSite);
         }
+
+        // no-location: hack
+        locationForm.updateModel(newSite);
     }
 
     private void addSection(FormSectionModel<SiteDTO> model) {
@@ -244,7 +252,8 @@ public class SiteDialog extends Window {
 
     private void saveNewSite() {
         final SiteDTO newSite = new SiteDTO();
-        newSite.setId(new KeyGenerator().generateInt());
+        keyGenerator = new KeyGenerator();
+        newSite.setId(keyGenerator.generateInt());
         newSite.setActivityId(activity.getId());
 
         if (activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
@@ -253,20 +262,19 @@ public class SiteDialog extends Window {
 
         updateModel(newSite);
 
-        dispatcher.execute(new CreateSite(newSite),
-                new AsyncCallback<CreateResult>() {
+        dispatcher.execute(new CreateSite(newSite), new AsyncCallback<CreateResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        showError(caught);
-                    }
+            @Override
+            public void onFailure(Throwable caught) {
+                showError(caught);
+            }
 
-                    @Override
-                    public void onSuccess(CreateResult result) {
-                        hide();
-                        callback.onSaved(newSite);
-                    }
-                });
+            @Override
+            public void onSuccess(CreateResult result) {
+                hide();
+                callback.onSaved(newSite);
+            }
+        });
     }
 
     private void updateSite() {
