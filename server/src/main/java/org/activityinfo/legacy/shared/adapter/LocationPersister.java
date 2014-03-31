@@ -91,8 +91,8 @@ public class LocationPersister {
                 properties.put(AdminLevelDTO.getPropertyName(entity.getLevelId()), entity.getId());
                 if (entity.getParentId() != null && !parents.contains(entity.getParentId())) {
                     parents.add(entity.getParentId());
-                    resolveNextParent();
                 }
+                resolveNextParent();
             }
         });
     }
