@@ -124,6 +124,7 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
         int result = 1;
         result = prime * result + ((filter == null) ? 0 : filter.hashCode());
         result = prime * result + ((levelId == null) ? 0 : levelId.hashCode());
+        result = prime * result + ((entityIds == null) ? 0 : entityIds.hashCode());
         result = prime * result
                 + ((parentId == null) ? 0 : parentId.hashCode());
         return result;
@@ -153,6 +154,13 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
         } else if (!levelId.equals(other.levelId)) {
             return false;
         }
+        if (entityIds == null) {
+            if (other.entityIds != null) {
+                return false;
+            }
+        } else if (!entityIds.equals(other.entityIds)) {
+            return false;
+        }
         if (parentId == null) {
             if (other.parentId != null) {
                 return false;
@@ -166,7 +174,7 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
     @Override
     public String toString() {
         return "GetAdminEntities [levelId=" + levelId + ", parentId="
-                + parentId + ", filter=" + filter + ", country=" + countryIds + "]";
+                + parentId + ", filter=" + filter + ", country=" + countryIds + ", entityIds=" + entityIds + "]";
     }
 
 }
