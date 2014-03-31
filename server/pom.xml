@@ -636,6 +636,13 @@
     </profile>
 
     <profile>
+      <id>appscale</id>
+      <properties>
+        <gae.version>1.8.0</gae.version>
+      </properties>
+    </profile>
+
+    <profile>
       <id>reset-test-db</id>
 
       <build>
