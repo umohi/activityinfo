@@ -39,7 +39,7 @@ public class ValidationUtils {
     public static void show(List<ValidationFailure> failures, DivElement failuresContainer) {
         final List<String> messages = Lists.newArrayList();
         for (ValidationFailure failure : failures) {
-            messages.add(failure.getMessage().getMessage().getLocale());
+            messages.add(failure.getMessage().getMessage().getValue());
         }
         showMessages(messages, failuresContainer);
     }
