@@ -173,7 +173,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         final Cuid instanceId = CuidAdapter.newFormInstance(formClass.getId());
         final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
             @Override
-            public void onPersist() {
+            public void onPersistedSuccessfully() {
                 getTable().reload();
             }
         };
@@ -191,7 +191,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
         final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
             @Override
-            public void onPersist() {
+            public void onPersistedSuccessfully() {
                 getTable().reload();
             }
         };

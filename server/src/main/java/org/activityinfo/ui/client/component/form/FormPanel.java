@@ -27,6 +27,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -51,6 +52,7 @@ import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.component.form.event.DesignStateEvent;
 import org.activityinfo.ui.client.component.form.event.PersistEvent;
+import org.activityinfo.ui.client.component.form.event.PersistedSuccessfullyEvent;
 import org.activityinfo.ui.client.component.form.event.UpdateStateEvent;
 import org.activityinfo.ui.client.util.GwtUtil;
 import org.activityinfo.ui.client.widget.undo.UndoListener;
@@ -191,6 +193,7 @@ public class FormPanel extends Composite {
                 @Override
                 public void onSuccess(Void result) {
                     ValidationUtils.showMessage(I18N.CONSTANTS.saved(), infoContainer);
+                    eventBus.fireEvent(new PersistedSuccessfullyEvent());
                 }
             });
         }
@@ -205,6 +208,7 @@ public class FormPanel extends Composite {
                 @Override
                 public void onSuccess(Void result) {
                     ValidationUtils.showMessage(I18N.CONSTANTS.saved(), infoContainer);
+                    eventBus.fireEvent(new PersistedSuccessfullyEvent());
                 }
             });
         }
@@ -357,7 +361,12 @@ public class FormPanel extends Composite {
         this.initialFormInstance = formInstance.copy();
         this.formInstance = formInstance;
         applyValue(formInstance);
-        fireState();
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                fireState();
+            }
+        });
     }
 
     private void applyValue(@Nonnull FormInstance formInstance) {

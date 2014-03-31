@@ -33,7 +33,7 @@ import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
-import org.activityinfo.ui.client.component.form.event.PersistEvent;
+import org.activityinfo.ui.client.component.form.event.PersistedSuccessfullyEvent;
 import org.activityinfo.ui.client.style.legacy.icon.ImageResources;
 import org.activityinfo.ui.client.widget.Button;
 import org.activityinfo.ui.client.widget.ButtonWithSize;
@@ -55,10 +55,10 @@ public class FormPanelDialog extends ModalDialog {
         super();
         this.resourceLocator = resourceLocator;
         formPanel = new FormPanel(resourceLocator);
-        formPanel.getEventBus().addHandler(PersistEvent.TYPE, new PersistEvent.Handler() {
+        formPanel.getEventBus().addHandler(PersistedSuccessfullyEvent.TYPE, new PersistedSuccessfullyEvent.Handler() {
             @Override
-            public void persist(PersistEvent p_event) {
-                onPersist();
+            public void persist(PersistedSuccessfullyEvent p_event) {
+                onPersistedSuccessfully();
             }
         });
         configureFooter();
@@ -94,7 +94,7 @@ public class FormPanelDialog extends ModalDialog {
         getModalFooter().add(getCancelButton());
     }
 
-    public void onPersist() {
+    public void onPersistedSuccessfully() {
 
     }
 
@@ -136,21 +136,24 @@ public class FormPanelDialog extends ModalDialog {
                 scrollPanel.remove(progressImage);
                 scrollPanel.add(formPanel);
                 formPanel.renderForm(result);
-                resourceLocator.getFormInstance(instanceId).then(new AsyncCallback<FormInstance>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Log.error("Unable to fetch FormInstance, iri=" + instanceId, caught);
-                    }
-
-                    @Override
-                    public void onSuccess(FormInstance result) {
-                        if (result == null || result.getId() == null) {
-                            formPanel.setValue(new FormInstance(classId, instanceId));
-                        } else {
-                            formPanel.setValue(result);
+                if (instanceId != null) {
+                    resourceLocator.getFormInstance(instanceId).then(new AsyncCallback<FormInstance>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            Log.error("Unable to fetch FormInstance, iri=" + instanceId, caught);
+                            formPanel.setValue(new FormInstance(instanceId, classId));
                         }
-                    }
-                });
+
+                        @Override
+                        public void onSuccess(FormInstance result) {
+                            if (result == null || result.getId() == null) {
+                                formPanel.setValue(new FormInstance(instanceId, classId));
+                            } else {
+                                formPanel.setValue(result);
+                            }
+                        }
+                    });
+                }
             }
         });
     }
