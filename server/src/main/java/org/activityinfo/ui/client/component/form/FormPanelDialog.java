@@ -115,7 +115,6 @@ public class FormPanelDialog extends ModalDialog {
                 getModalBody().add(scrollPanel);
                 scrollPanel.add(progressImage);
                 getDialogDiv().setAttribute("style", "width:auto;"); // override modal-dialog width
-                getOkButton().addStyleName("hidden");
                 getDialog().center();
                 formPanel.setDesignEnabled(false);
 
