@@ -177,7 +177,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
                 getTable().reload();
             }
         };
-        dialog.setDialogTitle(I18N.CONSTANTS.addInstance());
+        dialog.setDialogTitle(I18N.CONSTANTS.add() + " " + getFormClassLabel());
         dialog.show(formClass.getId(), instanceId);
 
         // navigate to new page
@@ -185,17 +185,25 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 //        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
     }
 
+    private String getFormClassLabel() {
+        if (rootFormClasses != null && !rootFormClasses.isEmpty()) {
+            final FormClass formClass = rootFormClasses.iterator().next();
+            return formClass.getLabel().getValue();
+        }
+        return "";
+    }
+
     @UiHandler("editButton")
     public void onEdit(ClickEvent event) {
         final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
-
+        final FormClass formClass = rootFormClasses.iterator().next();
         final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
             @Override
             public void onPersistedSuccessfully() {
                 getTable().reload();
             }
         };
-        dialog.setDialogTitle(I18N.CONSTANTS.editInstance());
+        dialog.setDialogTitle(I18N.CONSTANTS.edit() + " " + getFormClassLabel());
         dialog.show(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId());
 
         // navigate to new page
