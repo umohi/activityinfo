@@ -61,10 +61,12 @@ public class FormFieldWidgetFactory {
                 @Override
                 public void onValueChange(ValueChangeEvent event) {
                     final FormInstance formInstance = formPanel.getValue();
-                    final Object oldValue = formInstance.get(formField.getId());
-                    formPanel.getUndoManager().addUndoable(UndoableCreator.create(event, oldValue)); // push undoable
-                    formInstance.set(formField.getId(), event.getValue());
-                    formPanel.fireState();
+                    if (formInstance != null) {
+                        final Object oldValue = formInstance.get(formField.getId());
+                        formPanel.getUndoManager().addUndoable(UndoableCreator.create(event, oldValue)); // push undoable
+                        formInstance.set(formField.getId(), event.getValue());
+                        formPanel.fireState();
+                    }
                 }
             });
         }

@@ -169,8 +169,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiHandler("addButton")
     public void onAdd(ClickEvent event) {
-        final Cuid instanceId = CuidAdapter.newFormInstance();
         final FormClass formClass = rootFormClasses.iterator().next();
+        final Cuid instanceId = CuidAdapter.newFormInstance(formClass.getId());
         final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
             @Override
             public void onPersist() {

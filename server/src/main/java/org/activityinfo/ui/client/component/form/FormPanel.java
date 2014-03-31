@@ -258,6 +258,7 @@ public class FormPanel extends Composite {
         } else {
             resetFormInstanceValues(); // Resets only form instance values.
         }
+        fireState();
     }
 
     @UiHandler("undoButton")

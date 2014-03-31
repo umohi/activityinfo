@@ -80,7 +80,20 @@ public class CuidAdapter {
         return CuidAdapter.cuid('x', new KeyGenerator().generateInt());
     }
 
-    // todo yuriyz -> alex : please check it, right now used to add new form instance to form field
+    // todo yuriyz -> alex : please check it
+    public static Cuid newFormInstance(Cuid formClassId) {
+        if (formClassId != null) {
+            final int newId = new KeyGenerator().generateInt();
+            switch (formClassId.getDomain()) {
+                case LOCATION_TYPE_DOMAIN:
+                    return locationInstanceId(newId);
+                case ATTRIBUTE_GROUP_DOMAIN:
+                    return attributeId(newId);
+            }
+        }
+        throw new UnsupportedOperationException();
+    }
+
     public static Cuid newFormInstance() {
         return attributeId(new KeyGenerator().generateInt());
     }
@@ -164,6 +177,7 @@ public class CuidAdapter {
     /**
      * Generates a CUID for a FormField in a given previously-built-in FormClass using
      * the FormClass's CUID and a field index.
+     *
      * @param classId
      * @param fieldIndex
      * @return
