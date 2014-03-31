@@ -407,4 +407,12 @@ public class FormPanel extends Composite {
     public EventBus getEventBus() {
         return eventBus;
     }
+
+    public void setSaveButtonVisible(boolean visible) {
+        GwtUtil.setVisible(visible, saveButton.getElement());
+    }
+
+    public void setResetButtonVisible(boolean visible) {
+        GwtUtil.setVisible(visible, resetButton.getElement());
+    }
 }

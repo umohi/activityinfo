@@ -59,11 +59,13 @@ public class ModalDialog<T extends Widget> extends Composite {
     @UiField
     HTMLPanel modalBody;
     @UiField
-    DivElement modalFooter;
+    HTMLPanel modalFooter;
     @UiField
     DivElement dialogDiv;
     @UiField
     DivElement contentDiv;
+    @UiField
+    Button cancelButton;
 
     public ModalDialog() {
         BaseStylesheet.INSTANCE.ensureInjected();
@@ -130,7 +132,7 @@ public class ModalDialog<T extends Widget> extends Composite {
         return modalBody;
     }
 
-    public DivElement getModalFooter() {
+    public HTMLPanel getModalFooter() {
         return modalFooter;
     }
 
@@ -140,5 +142,9 @@ public class ModalDialog<T extends Widget> extends Composite {
 
     public DivElement getContentDiv() {
         return contentDiv;
+    }
+
+    public Button getCancelButton() {
+        return cancelButton;
     }
 }

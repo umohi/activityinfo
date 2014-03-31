@@ -17,9 +17,11 @@
             <div class="modal-body">
               <g:HTMLPanel ui:field="modalBody"/>
             </div>
-            <div class="modal-footer" ui:field="modalFooter">
-              <a:Button style="PRIMARY" text="{i18n.ok}" ui:field="okButton"/>
-              <a:Button style="DEFAULT" text="{i18n.cancel}" ui:field="cancelButton"/>
+            <div class="modal-footer">
+              <g:HTMLPanel ui:field="modalFooter">
+                <a:Button style="PRIMARY" text="{i18n.ok}" ui:field="okButton"/>
+                <a:Button style="DEFAULT" text="{i18n.cancel}" ui:field="cancelButton"/>
+              </g:HTMLPanel>
             </div>
           </div>
         </div>

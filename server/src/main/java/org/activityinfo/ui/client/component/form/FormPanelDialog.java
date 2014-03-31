@@ -22,6 +22,8 @@ package org.activityinfo.ui.client.component.form;
  */
 
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -29,9 +31,12 @@ import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.component.form.event.PersistEvent;
 import org.activityinfo.ui.client.style.legacy.icon.ImageResources;
+import org.activityinfo.ui.client.widget.Button;
+import org.activityinfo.ui.client.widget.ButtonWithSize;
 import org.activityinfo.ui.client.widget.ModalDialog;
 
 /**
@@ -56,6 +61,37 @@ public class FormPanelDialog extends ModalDialog {
                 onPersist();
             }
         });
+        configureFooter();
+    }
+
+    private void configureFooter() {
+        // hide form panel buttons and show them in dialog footer instead
+        formPanel.setSaveButtonVisible(false);
+        formPanel.setResetButtonVisible(false);
+
+        final Button saveButton = new Button(ButtonWithSize.ButtonStyle.PRIMARY);
+        saveButton.setText(I18N.CONSTANTS.save());
+        saveButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                formPanel.onSave(event);
+            }
+        });
+        final Button resetButton = new Button(ButtonWithSize.ButtonStyle.DEFAULT);
+        resetButton.setText(I18N.CONSTANTS.reset());
+        resetButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                formPanel.onReset(event);
+            }
+        });
+
+        getModalFooter().remove(getOkButton());
+        getModalFooter().remove(getCancelButton());
+
+        getModalFooter().add(saveButton);
+        getModalFooter().add(resetButton);
+        getModalFooter().add(getCancelButton());
     }
 
     public void onPersist() {
