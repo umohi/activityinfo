@@ -44,11 +44,9 @@
     <div class="has-error">
       <div class="help-block" ui:field="errorContainer"/>
     </div>
-    <br/>
     <div class="has-success">
       <div class="help-block" ui:field="infoContainer"/>
     </div>
-    <br/>
     <g:FlowPanel ui:field="contentPanel" width="97%">
       <form:FormSectionInlineEdit ui:field="addSectionPanel" addStyleNames="{style.sectionMarginLeft} hidden"/>
       <form:FormFieldInlineEdit ui:field="addFieldPanel" addStyleNames="{style.sectionMarginLeft} hidden"/>

@@ -1,6 +1,4 @@
-
 // Inspired in part by from Fuel UX
-
 @import "../bootstrap/variables";
 @import "../bootstrap/mixins";
 @import (reference) "../bootstrap/tables";
@@ -21,9 +19,10 @@
 
   // get rid of the margin for datagrids
   margin-bottom: 0;
+  white-space:nowrap;
 
   // smaller type
-  font-size: @datagrid-font-size;
+  //  font-size: @datagrid-font-size;
 
   tbody {
     tr.selectable {
@@ -49,7 +48,6 @@
   thead {
 
     background-color: @table-bg-accent;
-
 
     // When changing this section verify stretchHeight column sizes when sorting
     // and update SORTED_HEADER_OFFSET in datagrid.js as needed
@@ -83,6 +81,22 @@
   tfoot {
     background-color: @table-bg-accent;
   }
+}
+
+.data-grid-row {
+  border-bottom: 1px solid @table-border-color;
+}
+
+.data-grid-odd-row {
+  .data-grid-row;
+}
+
+.data-grid-even-row {
+  .data-grid-row;
+}
+
+.data-grid-cell {
+  border-right: 1px solid @table-border-color;
 }
 
 .data-grid-selected-row {

@@ -4,10 +4,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
 import org.activityinfo.core.client.InstanceQuery;
@@ -16,7 +17,7 @@ import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
-import org.activityinfo.ui.client.style.table.CellTableResources;
+import org.activityinfo.ui.client.style.table.DataGridResources;
 import org.activityinfo.ui.client.widget.loading.LoadingState;
 import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 
@@ -37,10 +38,15 @@ public class InstanceTable implements IsWidget {
      */
     public static final int COLUMN_WIDTH = 10;
 
+    public static final String FALLBACK_TABLE_HEIGHT_PX = "500px";
 
+
+    // container is used to calculate table height
+//    private final ResizeLayoutPanel containerPanel = new ResizeLayoutPanel();
     private final ResourceLocator resourceLocator;
 
-    private final CellTable<Projection> table;
+    private final ListDataProvider<Projection> tableDataProvider = new ListDataProvider<>();
+    private final DataGrid<Projection> table;
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
 
@@ -50,16 +56,17 @@ public class InstanceTable implements IsWidget {
     public InstanceTable(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
 
-        CellTableResources.INSTANCE.cellTableStyle().ensureInjected();
+        DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
 
-        table = new CellTable<>(50, CellTableResources.INSTANCE);
+        table = new DataGrid<>(50, DataGridResources.INSTANCE);
         table.setSkipRowHoverCheck(true);
         table.setSkipRowHoverFloatElementCheck(true);
         table.setSkipRowHoverStyleUpdate(true);
 
         // Set the table to fixed width: we will provide explicit
         // column widths
-        table.setWidth("100%", true);
+        table.setWidth("100%");
+        table.setHeight(FALLBACK_TABLE_HEIGHT_PX);
         table.setSelectionModel(selectionModel);
         table.addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
@@ -67,6 +74,7 @@ public class InstanceTable implements IsWidget {
                 onRangeChanged(event);
             }
         });
+        tableDataProvider.addDataDisplay(table);
 
         // Create our loading indicator which can also show failure
         loadingIndicator = new TableLoadingIndicator();
@@ -77,6 +85,29 @@ public class InstanceTable implements IsWidget {
             }
         });
         table.setLoadingIndicator(loadingIndicator.asWidget());
+
+//        containerPanel.setHeight("100%");
+//        containerPanel.setWidth("100%");
+//        containerPanel.add(table);
+//        containerPanel.addAttachHandler(new AttachEvent.Handler() {
+//            @Override
+//            public void onAttachOrDetach(AttachEvent event) {
+//                if (event.isAttached()) {
+//                    final Element contentContainerPanel = Document.get().getElementById("gwt-debug-contentContainerPanel");
+//                    if (contentContainerPanel != null) {
+//                        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+//                            @Override
+//                            public void execute() {
+//                                final int offsetHeight = contentContainerPanel.getOffsetHeight();
+//                                if (offsetHeight > 0) {
+//                                    table.setHeight(offsetHeight + "px");
+//                                }
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+//        });
     }
 
     public void setCriteria(Criteria criteria) {
@@ -85,7 +116,7 @@ public class InstanceTable implements IsWidget {
 
     public void setColumns(List<FieldColumn> columns) {
         removeAllColumns();
-        for(FieldColumn column : columns) {
+        for (FieldColumn column : columns) {
             table.addColumn(column, column.getHeader());
             fields.addAll(column.getFieldPaths());
         }
@@ -94,7 +125,7 @@ public class InstanceTable implements IsWidget {
     }
 
     private void removeAllColumns() {
-        while(table.getColumnCount() > 0) {
+        while (table.getColumnCount() > 0) {
             table.removeColumn(0);
         }
     }
@@ -113,7 +144,7 @@ public class InstanceTable implements IsWidget {
 
             @Override
             public void onSuccess(List<Projection> result) {
-                table.setRowData(result);
+                tableDataProvider.setList(result);
             }
         });
     }
