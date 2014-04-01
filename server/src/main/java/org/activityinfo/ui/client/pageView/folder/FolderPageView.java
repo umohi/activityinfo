@@ -2,23 +2,32 @@ package org.activityinfo.ui.client.pageView.folder;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.core.client.CuidGenerator;
 import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.client.Resources;
+import org.activityinfo.core.shared.LocalizedString;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.application.ApplicationProperties;
 import org.activityinfo.core.shared.application.FolderClass;
 import org.activityinfo.core.shared.criteria.ParentCriteria;
+import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.ui.client.component.list.InstanceList;
 import org.activityinfo.ui.client.page.instance.BreadCrumbBuilder;
 import org.activityinfo.ui.client.pageView.IconStyleProvider;
 import org.activityinfo.ui.client.pageView.InstancePageView;
+import org.activityinfo.ui.client.widget.Button;
 import org.activityinfo.ui.client.widget.LoadingPanel;
 
 import java.util.List;
@@ -52,6 +61,12 @@ public class FolderPageView implements InstancePageView {
     Element breadCrumbElement;
 
     @UiField
+    Button newFormButton;
+
+    @UiField
+    Button newFolderButton;
+
+    @UiField
     LoadingPanel<List<Projection>> instanceList;
 
     private BreadCrumbBuilder breadCrumb;
@@ -80,6 +95,26 @@ public class FolderPageView implements InstancePageView {
                     ApplicationProperties.LABEL_PROPERTY,
                     ApplicationProperties.DESCRIPTION_PROPERTY)
             .where(ParentCriteria.isChildOf(instance.getId())).build();
+    }
+
+    @UiHandler("newFormButton")
+    public void onNewFormButton(ClickEvent event) {
+        final FormClass formClass = new FormClass(CuidGenerator.INSTANCE.nextCuid());
+        formClass.setLabel(new LocalizedString("New Form"));
+        formClass.setParentId(instance.getId());
+        resources.resourceLocator.persist(formClass).then(new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert(caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                Window.Location.replace(Window.Location.createUrlBuilder()
+                        .setHash("#i/" + formClass.getId().asString() + "/design")
+                        .buildString());
+            }
+        });
     }
 
     @Override

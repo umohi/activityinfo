@@ -57,6 +57,7 @@ public class FormClass implements Resource, FormElementContainer, HasHashCode {
 
     public FormClass copy() {
         final FormClass copy = new FormClass(this.getId());
+        copy.setParentId(this.getParentId());
         copy.getElements().addAll(this.getElements());
         copy.getSubClasses().addAll(this.getSubClasses());
         copy.getSuperClasses().addAll(this.getSuperClasses());

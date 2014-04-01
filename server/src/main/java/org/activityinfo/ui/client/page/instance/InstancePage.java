@@ -49,14 +49,12 @@ public class InstancePage implements Page {
         Icons.INSTANCE.ensureInjected();
 
         this.loadingPanel = new LoadingPanel<>(new PageLoadingPanel());
-        this.loadingPanel.setDisplayWidgetProvider(new InstancePageViewFactory(resourceLocator));
 
         this.container = new SimplePanel(loadingPanel.asWidget());
         this.container.addStyleName("container");
 
         this.scrollPanel = new ScrollPanel(container);
         this.scrollPanel.addStyleName("bs");
-
 
     }
 
@@ -83,6 +81,9 @@ public class InstancePage implements Page {
     @Override
     public boolean navigate(PageState place) {
         InstancePlace instancePlace = (InstancePlace) place;
+        this.loadingPanel.setDisplayWidgetProvider(
+                new InstancePageViewFactory(resources.resourceLocator,
+                (InstancePlace)place));
         loadingPanel.show(resources.fetchInstance(), instancePlace.getInstanceId());
         return true;
     }

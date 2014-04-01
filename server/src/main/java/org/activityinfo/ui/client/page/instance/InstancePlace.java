@@ -17,9 +17,15 @@ import java.util.List;
 public class InstancePlace implements PageState {
 
     private Cuid instanceId;
+    private String view;
 
     public InstancePlace(Cuid instanceId) {
         this.instanceId = instanceId;
+    }
+
+    public InstancePlace(Cuid cuid, String part) {
+        this.instanceId = cuid;
+        this.view = part;
     }
 
     @Override
@@ -46,11 +52,20 @@ public class InstancePlace implements PageState {
         return null;
     }
 
+    public String getView() {
+        return view;
+    }
+
     public static class Parser implements PageStateParser {
 
         @Override
         public PageState parse(String token) {
-            return new InstancePlace(new Cuid(token));
+            String parts[] = token.split("/");
+            if(parts.length == 1) {
+                return new InstancePlace(new Cuid(parts[0]));
+            } else {
+                return new InstancePlace(new Cuid(parts[0]), parts[1]);
+            }
         }
     }
 

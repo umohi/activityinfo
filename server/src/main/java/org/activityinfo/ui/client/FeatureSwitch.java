@@ -12,4 +12,8 @@ public class FeatureSwitch {
     public static boolean isNewFormEnabled() {
         return isEnabled("newForm");
     }
+
+    public static boolean useInMemStore() {
+        return isEnabled("inmem");
+    }
 }

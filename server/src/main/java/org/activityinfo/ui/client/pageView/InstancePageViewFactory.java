@@ -6,7 +6,9 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.application.FolderClass;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.ui.client.page.instance.InstancePlace;
 import org.activityinfo.ui.client.pageView.folder.FolderPageView;
+import org.activityinfo.ui.client.pageView.formClass.FormClassDesignView;
 import org.activityinfo.ui.client.pageView.formClass.FormClassPageView;
 import org.activityinfo.ui.client.widget.DisplayWidget;
 
@@ -16,9 +18,11 @@ import org.activityinfo.ui.client.widget.DisplayWidget;
 public class InstancePageViewFactory implements Function<FormInstance, DisplayWidget<FormInstance>> {
 
     private final ResourceLocator resourceLocator;
+    private final InstancePlace place;
 
-    public InstancePageViewFactory(ResourceLocator resourceLocator) {
+    public InstancePageViewFactory(ResourceLocator resourceLocator, InstancePlace place) {
         this.resourceLocator = resourceLocator;
+        this.place = place;
     }
 
     @Override
@@ -27,7 +31,11 @@ public class InstancePageViewFactory implements Function<FormInstance, DisplayWi
         if(classId.equals(FolderClass.CLASS_ID)) {
             return new FolderPageView(resourceLocator);
         } else if(classId.equals(FormClass.CLASS_ID)) {
-            return new FormClassPageView(resourceLocator);
+            if("design".equals(place.getView())) {
+                return new FormClassDesignView(resourceLocator);
+            } else {
+                 return new FormClassPageView(resourceLocator);
+            }
         } else {
             throw new UnsupportedOperationException();
         }

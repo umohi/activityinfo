@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormField;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -147,4 +148,7 @@ public class FieldPath {
         return path.equals(otherPath.path);
     }
 
+    public Iterator<Cuid> iterator() {
+        return path.iterator();
+    }
 }

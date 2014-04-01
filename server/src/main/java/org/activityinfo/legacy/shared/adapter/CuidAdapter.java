@@ -1,6 +1,7 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Strings;
+import org.activityinfo.core.client.CuidGenerator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Cuids;
 import org.activityinfo.core.shared.Iri;
@@ -91,7 +92,7 @@ public class CuidAdapter {
                     return attributeId(newId);
             }
         }
-        throw new UnsupportedOperationException();
+        return CuidGenerator.INSTANCE.nextCuid();
     }
 
     public static Cuid newFormInstance() {

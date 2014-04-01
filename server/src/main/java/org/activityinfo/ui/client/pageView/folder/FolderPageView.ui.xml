@@ -33,9 +33,8 @@
 
               <h2>Common Tasks</h2>
               <ul>
-                  <li><a href="#">Getting started with entering data</a></li>
-                  <li><a href="#">Export data to Excel</a></li>
-                  <li><a href="#">Create a map from your data</a></li>
+                 <a:Button ui:field="newFormButton" style="DEFAULT" text="Create a new Form"/>
+                 <a:Button ui:field="newFolderButton" style="DEFAULT" text="Create a new Folder"/>
               </ul>
           </div>
       </div>

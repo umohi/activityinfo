@@ -26,6 +26,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.activityinfo.core.client.InMemResourceLocator;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.legacy.client.DispatchEventSource;
 import org.activityinfo.legacy.client.Dispatcher;
@@ -40,6 +41,7 @@ import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
 import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.legacy.shared.command.RemoteCommandServiceAsync;
 import org.activityinfo.ui.client.EventBus;
+import org.activityinfo.ui.client.FeatureSwitch;
 import org.activityinfo.ui.client.LoggingEventBus;
 import org.activityinfo.ui.client.local.LocalController;
 import org.activityinfo.ui.client.page.Frame;
@@ -76,6 +78,10 @@ public class AppModule extends AbstractGinModule {
 
     @Provides @Singleton
     public ResourceLocator provideResourceLocator(Dispatcher dispatcher) {
-        return new ResourceLocatorAdaptor(dispatcher);
+        if(FeatureSwitch.useInMemStore()) {
+            return new InMemResourceLocator();
+        } else {
+            return new ResourceLocatorAdaptor(dispatcher);
+        }
     }
 }
