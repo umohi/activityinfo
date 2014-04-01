@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -22,7 +21,8 @@ import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.component.form.FormPanelDialog;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
-import org.activityinfo.ui.client.util.GwtUtil;
+import org.activityinfo.ui.client.widget.AlertPanel;
+import org.activityinfo.ui.client.widget.ConfirmDialog;
 
 import java.util.Collection;
 import java.util.List;
@@ -47,7 +47,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiField
     DivElement emRuler;
     @UiField
-    DivElement columnAlert;
+    AlertPanel columnAlert;
     @UiField(provided = true)
     InstanceTable table;
     @UiField
@@ -58,6 +58,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     Button blukEditButton;
     @UiField
     Button editButton;
+    @UiField
+    AlertPanel errorMessages;
 
     interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
@@ -112,16 +114,10 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         this.selectedColumns = selectedColumns;
         table.setColumns(selectedColumns);
         if (selectedColumns.size() < columns.size()) {
-            GwtUtil.setVisible(true, columnAlert);
-            columnAlert.getStyle().setDisplay(Style.Display.BLOCK);
+            columnAlert.showMessages(I18N.CONSTANTS.notAllColumnsAreShown());
         } else {
-            GwtUtil.setVisible(false, columnAlert);
+            columnAlert.setVisible(false);
         }
-    }
-
-    @UiHandler("closeAlertButton")
-    public void onCloseAlert(ClickEvent event) {
-        GwtUtil.setVisible(false, columnAlert);
     }
 
     private void calculateSelectedColumns() {
@@ -213,14 +209,25 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiHandler("removeButton")
     public void onRemove(ClickEvent event) {
         final Set<Projection> selectedSet = table.getSelectionModel().getSelectedSet();
+        final String message = I18N.MESSAGES.removeTableRowsConfirmation(selectedSet.size(), getFormClassLabel());
+        ConfirmDialog.confirm(message, new ConfirmDialog.ListenerAdapter() {
+            @Override
+            public void onYes() {
+                removeRows(selectedSet);
+            }
+        });
+    }
+
+    public void removeRows(Set<Projection> selectedRows) {
         final List<Cuid> cuids = Lists.newArrayList();
-        for (Projection projection: selectedSet) {
+        for (Projection projection: selectedRows) {
             cuids.add(projection.getRootInstanceId());
         }
         resourceLocator.remove(cuids).then(new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
                 LOGGER.log(Level.FINE, "Failed to remove instances.");
+                errorMessages.showMessages(Lists.newArrayList(I18N.CONSTANTS.failedToRemoveRows()));
             }
 
             @Override
@@ -251,4 +258,5 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void setRootFormClasses(Collection<FormClass> rootFormClasses) {
         this.rootFormClasses = rootFormClasses;
     }
+
 }

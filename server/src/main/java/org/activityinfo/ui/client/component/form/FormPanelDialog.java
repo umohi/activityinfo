@@ -34,9 +34,9 @@ import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.component.form.event.PersistedSuccessfullyEvent;
+import org.activityinfo.ui.client.style.ElementStyle;
 import org.activityinfo.ui.client.style.legacy.icon.ImageResources;
 import org.activityinfo.ui.client.widget.Button;
-import org.activityinfo.ui.client.widget.ButtonWithSize;
 import org.activityinfo.ui.client.widget.ModalDialog;
 
 /**
@@ -69,7 +69,7 @@ public class FormPanelDialog extends ModalDialog {
         formPanel.setSaveButtonVisible(false);
         formPanel.setResetButtonVisible(false);
 
-        final Button saveButton = new Button(ButtonWithSize.ButtonStyle.PRIMARY);
+        final Button saveButton = new Button(ElementStyle.PRIMARY);
         saveButton.setText(I18N.CONSTANTS.save());
         saveButton.addClickHandler(new ClickHandler() {
             @Override
@@ -77,7 +77,7 @@ public class FormPanelDialog extends ModalDialog {
                 formPanel.onSave(event);
             }
         });
-        final Button resetButton = new Button(ButtonWithSize.ButtonStyle.DEFAULT);
+        final Button resetButton = new Button(ElementStyle.DEFAULT);
         resetButton.setText(I18N.CONSTANTS.reset());
         resetButton.addClickHandler(new ClickHandler() {
             @Override

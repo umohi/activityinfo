@@ -3478,4 +3478,15 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Alternate Name")
     String alternateName();
 
+    @DefaultStringValue("Confirmation")
+    String confirmation();
+
+    @DefaultStringValue("Yes")
+    String yes();
+
+    @DefaultStringValue("No")
+    String no();
+
+    @DefaultStringValue("Failed to remove row(s).")
+    String failedToRemoveRows();
 }

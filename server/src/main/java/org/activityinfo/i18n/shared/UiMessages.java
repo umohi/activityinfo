@@ -22,7 +22,6 @@ package org.activityinfo.i18n.shared;
  * #L%
  */
 
-import com.google.gwt.i18n.client.Messages;
 import com.google.gwt.safehtml.shared.SafeHtml;
 
 import java.util.Date;
@@ -313,4 +312,6 @@ public interface UiMessages extends com.google.gwt.i18n.client.Messages {
     @DefaultMessage("Showing {0} of {1} columns.")
     String showColumns(int numberOfColumnsShown, int numberOfColumnsTotal);
 
+    @DefaultMessage("Are you sure you want to delete {0} row(s) from {1}?")
+    String removeTableRowsConfirmation(int numberOfRows, String formClassLabel);
 }

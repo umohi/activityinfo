@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.widget;
  */
 
 import com.google.gwt.uibinder.client.UiConstructor;
+import org.activityinfo.ui.client.style.ElementStyle;
 
 /**
  * Subclass of {@link com.google.gwt.user.client.ui.Button} that applies our application styles
@@ -29,40 +30,6 @@ import com.google.gwt.uibinder.client.UiConstructor;
  * @author yuriyz on 3/14/14.
  */
 public class ButtonWithSize extends com.google.gwt.user.client.ui.Button {
-
-    public static enum ButtonStyle {
-        DEFAULT,
-
-        /**
-         * Provides extra visual weight and identifies the primary action in a set of buttons
-         */
-        PRIMARY,
-
-        /**
-         * Indicates a successful or positive action
-         */
-        SUCCESS,
-
-        /**
-         * Contextual button for informational alert messages
-         */
-        INFO,
-
-        /**
-         * Indicates caution should be taken with this action
-         */
-        WARNING,
-
-        /**
-         * Indicates a dangerous or potentially negative action
-         */
-        DANGER,
-
-        /**
-         * Deemphasize a button by making it look like a link while maintaining button behavior
-         */
-        LINK
-    }
 
     // bootstrap:  .btn-lg, .btn-sm, or .btn-xs
     public static enum Size {
@@ -83,7 +50,7 @@ public class ButtonWithSize extends com.google.gwt.user.client.ui.Button {
     }
 
     @UiConstructor
-    public ButtonWithSize(ButtonStyle style, Size size) {
+    public ButtonWithSize(ElementStyle style, Size size) {
         String styleName = "btn btn-" + style.name().toLowerCase();
         if (size != null) {
             styleName = styleName + " btn-" + size.getClassName();
