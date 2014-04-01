@@ -1,5 +1,4 @@
-target/
-/src/main/java/org/sigmah/client/i18n/UIConstants.java
+./target/
 /gwt-unitCache
 /ActivityInfo.launch
 /Embed.launch
@@ -16,4 +15,3 @@ war/WEB-INF/classes
 war/WEB-INF/appengine-generated
 /ActivityInfo Chrome.launch
 /ActivityInfo Firefox.launch
-/target

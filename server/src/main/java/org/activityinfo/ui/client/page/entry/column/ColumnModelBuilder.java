@@ -37,6 +37,7 @@ import org.activityinfo.ui.client.page.common.columns.EditableLocalDateColumn;
 import org.activityinfo.ui.client.page.common.columns.ReadTextColumn;
 import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -215,13 +216,13 @@ public class ColumnModelBuilder {
     }
 
     public ColumnModelBuilder addAdminLevelColumns(ActivityDTO activity) {
-        return addAdminLevelColumns(getAdminLevels(activity));
+        return addAdminLevelColumns(activity.getAdminLevels());
     }
 
     public ColumnModelBuilder addSingleAdminColumn(ActivityDTO activity) {
         ColumnConfig admin = new ColumnConfig("admin",
                 I18N.CONSTANTS.location(), 100);
-        admin.setRenderer(new AdminColumnRenderer(getAdminLevels(activity)));
+        admin.setRenderer(new AdminColumnRenderer(activity.getAdminLevels()));
         columns.add(admin);
         return this;
     }
@@ -239,18 +240,6 @@ public class ColumnModelBuilder {
     public ColumnModelBuilder addAdminLevelColumns(UserDatabaseDTO database) {
         return addAdminLevelColumns(database.getCountry().getAdminLevels());
 
-    }
-
-    public List<AdminLevelDTO> getAdminLevels(ActivityDTO activity) {
-        if (activity.getLocationType().isAdminLevel()) {
-            return activity
-                    .getDatabase()
-                    .getCountry()
-                    .getAdminLevelAncestors(
-                            activity.getLocationType().getBoundAdminLevelId());
-        } else {
-            return activity.getDatabase().getCountry().getAdminLevels();
-        }
     }
 
     public ColumnModelBuilder maybeAddPartnerColumn(UserDatabaseDTO database) {
