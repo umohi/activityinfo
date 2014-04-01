@@ -63,11 +63,6 @@
 
   <repositories>
     <repository>
-      <id>central</id>
-      <name>Central Repository</name>
-      <url>http://repo1.maven.org/maven2/</url>
-    </repository>
-    <repository>
       <id>bedatadriven-public</id>
       <name>Bedatadriven Public Repo</name>
       <url>http://nexus.bedatadriven.com/content/groups/public</url>
@@ -75,7 +70,7 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-  </repositories>
+  </repositories> 
 
   <pluginRepositories>
     <pluginRepository>
@@ -88,13 +83,7 @@
       <name>Bedatadriven Public Repo</name>
       <url>http://nexus.bedatadriven.com/content/groups/public</url>
     </pluginRepository>
-    <pluginRepository>
-      <id>modafocus</id>
-      <name>Sonatype</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </pluginRepository>
   </pluginRepositories>
-
 
   <modules>
     <module>geoadmin</module>
@@ -102,7 +91,6 @@
   </modules>
 
   <dependencies>
-
 
     <!-- Logging facades -->
     <dependency>
