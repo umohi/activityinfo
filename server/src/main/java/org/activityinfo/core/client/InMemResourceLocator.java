@@ -127,8 +127,11 @@ public class InMemResourceLocator implements ResourceLocator {
 
     @Override
     public Promise<Void> remove(List<Cuid> resources) {
-        instances.remove(resources);
-        formClasses.remove(resources);
+        for (Cuid cuid : resources) {
+            instances.remove(cuid);
+            formClasses.remove(cuid);
+        }
+
         return Promise.nothing();
     }
 }

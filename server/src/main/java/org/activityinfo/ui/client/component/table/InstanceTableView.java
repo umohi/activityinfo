@@ -226,7 +226,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         resourceLocator.remove(cuids).then(new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
-                LOGGER.log(Level.FINE, "Failed to remove instances.");
+                LOGGER.log(Level.FINE, "Failed to remove instances.", caught);
                 errorMessages.showMessages(Lists.newArrayList(I18N.CONSTANTS.failedToRemoveRows()));
             }
 
