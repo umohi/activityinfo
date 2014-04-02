@@ -28,7 +28,7 @@
   <set-property name="user.agent" value="gecko1_8,safari"/>
   <set-property name="locale" value="en"/>
 
-  <set-property name="gwt.logging.logLevel" value="DEBUG"/>
+  <set-property name="gwt.logging.logLevel" value="FINE"/>
 
   <entry-point class="org.activityinfo.ui.client.ActivityInfoEntryPoint"/>
 
