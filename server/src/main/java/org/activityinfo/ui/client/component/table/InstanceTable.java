@@ -2,6 +2,7 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -18,6 +19,7 @@ import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.client.style.table.DataGridResources;
+import org.activityinfo.ui.client.widget.HasScrollAncestor;
 import org.activityinfo.ui.client.widget.loading.LoadingState;
 import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 
@@ -50,12 +52,14 @@ public class InstanceTable implements IsWidget {
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
 
+    private HasScrollAncestor hasScrollAncestor;
     private Set<FieldPath> fields = Sets.newHashSet();
     private Criteria criteria;
+    private int tableHeightReduction;
 
-    public InstanceTable(ResourceLocator resourceLocator) {
+    public InstanceTable(ResourceLocator resourceLocator, HasScrollAncestor hasScrollAncestor) {
         this.resourceLocator = resourceLocator;
-
+        this.hasScrollAncestor = hasScrollAncestor;
         DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
 
         table = new DataGrid<>(50, DataGridResources.INSTANCE);
@@ -85,29 +89,6 @@ public class InstanceTable implements IsWidget {
             }
         });
         table.setLoadingIndicator(loadingIndicator.asWidget());
-
-//        containerPanel.setHeight("100%");
-//        containerPanel.setWidth("100%");
-//        containerPanel.add(table);
-//        containerPanel.addAttachHandler(new AttachEvent.Handler() {
-//            @Override
-//            public void onAttachOrDetach(AttachEvent event) {
-//                if (event.isAttached()) {
-//                    final Element contentContainerPanel = Document.get().getElementById("gwt-debug-contentContainerPanel");
-//                    if (contentContainerPanel != null) {
-//                        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-//                            @Override
-//                            public void execute() {
-//                                final int offsetHeight = contentContainerPanel.getOffsetHeight();
-//                                if (offsetHeight > 0) {
-//                                    table.setHeight(offsetHeight + "px");
-//                                }
-//                            }
-//                        });
-//                    }
-//                }
-//            }
-//        });
     }
 
     public void setCriteria(Criteria criteria) {
@@ -147,6 +128,7 @@ public class InstanceTable implements IsWidget {
                 tableDataProvider.setList(result);
             }
         });
+        recalculateTableHeight();
     }
 
     public MultiSelectionModel<Projection> getSelectionModel() {
@@ -158,6 +140,10 @@ public class InstanceTable implements IsWidget {
         return table;
     }
 
+    public DataGrid<Projection> getTable() {
+        return table;
+    }
+
     private void onRangeChanged(RangeChangeEvent event) {
         LOGGER.log(Level.INFO, "Instance Table Range Change: " +
                 "start = " + event.getNewRange().getStart() +
@@ -165,5 +151,52 @@ public class InstanceTable implements IsWidget {
 
 
         reload();
+    }
+
+    public int getTableHeightReduction() {
+        return tableHeightReduction;
+    }
+
+    public void setTableHeightReduction(int tableHeightReduction) {
+        this.tableHeightReduction = tableHeightReduction;
+    }
+
+    public void recalculateTableHeight(int tableHeightReduction) {
+        setTableHeightReduction(tableHeightReduction);
+        recalculateTableHeight();
+    }
+
+    public void recalculateTableHeight() {
+        if (hasScrollAncestor != null && hasScrollAncestor.getScrollAncestor() != null) {
+            final int offsetHeight = hasScrollAncestor.getScrollAncestor().getOffsetHeight();
+            if (offsetHeight > 0) {
+                // header and links and other ancestors stuff to which we don't have references
+                final int ancestorsStuffHeight = 175; // ugly magic number - need better way to calculate it
+                final int height = offsetHeight - ancestorsStuffHeight - tableHeightReduction;
+                if (height > 0) {
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                        @Override
+                        public void execute() {
+                            table.setHeight(height + "px");
+                            improveTableHeightIfScrollAppears(height);
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    private void improveTableHeightIfScrollAppears(int height) {
+        final int verticalScrollPosition = hasScrollAncestor.getScrollAncestor().getVerticalScrollPosition();
+        if (verticalScrollPosition > 0) {
+            final int newHeight = height - 10;
+            Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                @Override
+                public void execute() {
+                    table.setHeight(newHeight + "px");
+                    improveTableHeightIfScrollAppears(newHeight);
+                }
+            });
+        }
     }
 }

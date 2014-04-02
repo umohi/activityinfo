@@ -5,10 +5,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -21,6 +24,7 @@ import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.component.form.FormPanelDialog;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
+import org.activityinfo.ui.client.pageView.formClass.TablePresenter;
 import org.activityinfo.ui.client.widget.AlertPanel;
 import org.activityinfo.ui.client.widget.ConfirmDialog;
 
@@ -37,6 +41,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     private static final int DEFAULT_MAX_COLUMN_COUNT = 5;
     private static final Logger LOGGER = Logger.getLogger(InstanceTableView.class.getName());
+    public static final int FALLBACK_TOOLBAR_HEIGHT = 24;
+    public static final int HEIGHT_RECALCULATION_DELAY_MS = 500; // give client chance resize widgets
 
     private final ResourceLocator resourceLocator;
     private final HTMLPanel panel;
@@ -60,19 +66,55 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     Button editButton;
     @UiField
     AlertPanel errorMessages;
+    @UiField
+    DivElement toolbar;
 
     interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
 
     private static InstanceTableViewUiBinder ourUiBinder = GWT.create(InstanceTableViewUiBinder.class);
 
-    public InstanceTableView(ResourceLocator resourceLocator) {
+    public InstanceTableView(ResourceLocator resourceLocator, TablePresenter tablePresenter) {
         InstanceTableStyle.INSTANCE.ensureInjected();
         this.resourceLocator = resourceLocator;
-        this.table = new InstanceTable(resourceLocator);
-        this.panel = ourUiBinder.createAndBindUi(this);
+        this.table = new InstanceTable(resourceLocator, tablePresenter);
 
+        final AlertPanel.VisibilityHandler visibilityHandler = new AlertPanel.VisibilityHandler() {
+            @Override
+            public void onVisibilityChange(boolean isVisible) {
+                recalculateTableHeightReduction();
+            }
+        };
+        this.panel = ourUiBinder.createAndBindUi(this);
+        this.columnAlert.addVisibilityHandler(visibilityHandler);
+        this.errorMessages.addVisibilityHandler(visibilityHandler);
         initButtons();
+
+        delayedRecalculationOfTableHeightReduction();
+        Window.addResizeHandler(new ResizeHandler() {
+            @Override
+            public void onResize(ResizeEvent event) {
+                delayedRecalculationOfTableHeightReduction();
+            }
+        });
+    }
+
+    private void delayedRecalculationOfTableHeightReduction() {
+        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+            @Override
+            public boolean execute() {
+                recalculateTableHeightReduction();
+                return false;
+            }
+        }, HEIGHT_RECALCULATION_DELAY_MS);
+    }
+
+    private void recalculateTableHeightReduction() {
+        int toolbarHeight = toolbar.getOffsetHeight();
+        toolbarHeight = toolbarHeight > 0 ? toolbarHeight : FALLBACK_TOOLBAR_HEIGHT; // fallback
+        final int columnAlertHeight = columnAlert.getOffsetHeight();
+        final int errorMessagesHeight = errorMessages.getOffsetHeight();
+        table.recalculateTableHeight(toolbarHeight + columnAlertHeight + errorMessagesHeight);
     }
 
     private void initButtons() {
@@ -220,7 +262,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     public void removeRows(Set<Projection> selectedRows) {
         final List<Cuid> cuids = Lists.newArrayList();
-        for (Projection projection: selectedRows) {
+        for (Projection projection : selectedRows) {
             cuids.add(projection.getRootInstanceId());
         }
         resourceLocator.remove(cuids).then(new AsyncCallback<Void>() {
@@ -258,5 +300,4 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void setRootFormClasses(Collection<FormClass> rootFormClasses) {
         this.rootFormClasses = rootFormClasses;
     }
-
 }

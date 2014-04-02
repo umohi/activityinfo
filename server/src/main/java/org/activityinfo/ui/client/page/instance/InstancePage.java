@@ -1,33 +1,18 @@
 package org.activityinfo.ui.client.page.instance;
 
-import com.google.common.base.Function;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.client.Resources;
-import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.application.FolderClass;
-import org.activityinfo.core.shared.criteria.IdCriteria;
-import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
-import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.page.NavigationCallback;
 import org.activityinfo.ui.client.page.Page;
 import org.activityinfo.ui.client.page.PageId;
 import org.activityinfo.ui.client.page.PageState;
-import org.activityinfo.ui.client.pageView.InstancePageView;
 import org.activityinfo.ui.client.pageView.InstancePageViewFactory;
-import org.activityinfo.ui.client.pageView.folder.FolderPageView;
-import org.activityinfo.ui.client.pageView.formClass.FormClassPageView;
 import org.activityinfo.ui.client.style.Icons;
-import org.activityinfo.ui.client.widget.DisplayWidget;
 import org.activityinfo.ui.client.widget.LoadingPanel;
 import org.activityinfo.ui.client.widget.loading.PageLoadingPanel;
-
-import java.util.List;
 
 /**
  * Adapter that hosts a view of a given instance.
@@ -55,6 +40,10 @@ public class InstancePage implements Page {
 
         this.scrollPanel = new ScrollPanel(container);
         this.scrollPanel.addStyleName("bs");
+
+        // set scroll ancestor, child widgets may want to "watch" it to provide own scrolling (e.g. table)
+        // and avoid double scrolls as well as "correct" height
+        this.loadingPanel.setScrollAncestor(scrollPanel);
 
     }
 

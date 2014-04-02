@@ -42,14 +42,22 @@ import java.util.List;
  * @author yuriyz on 4/1/14.
  */
 public class AlertPanel extends Composite {
+
+    public static interface VisibilityHandler {
+        public void onVisibilityChange(boolean isVisible);
+    }
+
     private static AlertPanelBinder uiBinder = GWT
             .create(AlertPanelBinder.class);
+
     @UiField
     Button close;
     @UiField
     DivElement container;
     @UiField
     DivElement messages;
+
+    private final List<VisibilityHandler> visibilityHandlers = Lists.newArrayList();
 
     interface AlertPanelBinder extends UiBinder<Widget, AlertPanel> {
     }
@@ -67,6 +75,9 @@ public class AlertPanel extends Composite {
 
     public void setVisible(boolean visible) {
         GwtUtil.setVisible(visible, container);
+        for (VisibilityHandler handler : visibilityHandlers) {
+            handler.onVisibilityChange(visible);
+        }
     }
 
     public void showMessages(String message) {
@@ -74,7 +85,11 @@ public class AlertPanel extends Composite {
     }
 
     public void showMessages(List<String> message) {
-        GwtUtil.setVisible(true, container);
+        setVisible(true);
         ValidationUtils.showMessages(message, messages);
+    }
+
+    public void addVisibilityHandler(VisibilityHandler handler) {
+        visibilityHandlers.add(handler);
     }
 }

@@ -2,10 +2,10 @@ package org.activityinfo.ui.client.pageView.formClass;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.client.form.tree.AsyncFormTreeBuilder;
@@ -14,17 +14,17 @@ import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.fp.client.Promise;
-import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.page.instance.BreadCrumbBuilder;
 import org.activityinfo.ui.client.pageView.IconStyleProvider;
 import org.activityinfo.ui.client.pageView.InstancePageView;
 import org.activityinfo.ui.client.style.Icons;
+import org.activityinfo.ui.client.widget.HasScrollAncestor;
 import org.activityinfo.ui.client.widget.LoadingPanel;
 
 /**
  * Provides a view for a FormClass instance
  */
-public class FormClassPageView implements InstancePageView {
+public class FormClassPageView implements InstancePageView, HasScrollAncestor {
 
     private final Widget rootElement;
     private final ResourceLocator resourceLocator;
@@ -34,6 +34,9 @@ public class FormClassPageView implements InstancePageView {
 
     private static FormViewUiBinder ourUiBinder = GWT.create(FormViewUiBinder.class);
 
+    private BreadCrumbBuilder breadCrumb;
+    private ScrollPanel scrollAncestor;
+
     @UiField
     Element nameElement;
 
@@ -42,8 +45,6 @@ public class FormClassPageView implements InstancePageView {
 
     @UiField
     Element breadCrumbElement;
-
-    private BreadCrumbBuilder breadCrumb;
 
     @UiField
     LoadingPanel<FormTree> contentPanel;
@@ -64,12 +65,22 @@ public class FormClassPageView implements InstancePageView {
 
         breadCrumb.show(instance);
 
-        contentPanel.setDisplayWidget(new TablePresenter(resourceLocator));
+        final TablePresenter tablePresenter = new TablePresenter(resourceLocator);
+        tablePresenter.setScrollAncestor(scrollAncestor);
+        contentPanel.setDisplayWidget(tablePresenter);
         return contentPanel.show(new AsyncFormTreeBuilder(resourceLocator), classId);
     }
 
     @Override
     public Widget asWidget() {
         return rootElement;
+    }
+
+    public ScrollPanel getScrollAncestor() {
+        return scrollAncestor;
+    }
+
+    public void setScrollAncestor(ScrollPanel scrollAncestor) {
+        this.scrollAncestor = scrollAncestor;
     }
 }

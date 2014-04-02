@@ -5,13 +5,13 @@ import com.google.common.base.Functions;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.ui.client.widget.loading.LoadingPanelView;
 import org.activityinfo.ui.client.widget.loading.LoadingState;
-import org.activityinfo.ui.client.widget.loading.LoadingView;
 import org.activityinfo.ui.client.widget.loading.PageLoadingPanel;
 
 import javax.annotation.Nullable;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * SimpleLayoutPanel for widgets that need to be asynchronously
  * created
  */
-public class LoadingPanel<V> implements IsWidget {
+public class LoadingPanel<V> implements IsWidget, HasScrollAncestor {
 
     private static final Logger LOGGER = Logger.getLogger(LoadingPanel.class.getName());
 
@@ -48,6 +48,7 @@ public class LoadingPanel<V> implements IsWidget {
     private LoadingPanelView loadingView;
 
     private int currentRequestNumber = 0;
+    private ScrollPanel scrollAncestor;
 
     public LoadingPanel() {
         this.loadingView = new PageLoadingPanel();
@@ -58,6 +59,9 @@ public class LoadingPanel<V> implements IsWidget {
     }
 
     public void setDisplayWidget(DisplayWidget<? super V> widget) {
+        if (widget instanceof HasScrollAncestor) { // hack! - inject scroll ancestor
+            ((HasScrollAncestor) widget).setScrollAncestor(scrollAncestor);
+        }
         this.widgetProvider = Functions.constant(widget);
     }
 
@@ -163,6 +167,9 @@ public class LoadingPanel<V> implements IsWidget {
         assert widgetProvider != null : "No widget/provider has been set!";
         try {
             final DisplayWidget<? super V> displayWidget = widgetProvider.apply(result);
+            if (displayWidget instanceof HasScrollAncestor) { // hack! - inject scroll ancestor
+                ((HasScrollAncestor) displayWidget).setScrollAncestor(scrollAncestor);
+            }
             displayWidget.show(result).then(new AsyncCallback<Void>() {
                 @Override
                 public void onFailure(Throwable caught) {
@@ -184,4 +191,11 @@ public class LoadingPanel<V> implements IsWidget {
         return loadingView.asWidget();
     }
 
+    public void setScrollAncestor(ScrollPanel scrollAncestor) {
+        this.scrollAncestor = scrollAncestor;
+    }
+
+    public ScrollPanel getScrollAncestor() {
+        return scrollAncestor;
+    }
 }
