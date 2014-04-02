@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table;
+package org.activityinfo.ui.client.component.table.filter;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,25 +21,29 @@ package org.activityinfo.ui.client.component.table;
  * #L%
  */
 
-import com.bedatadriven.rebar.style.client.Source;
-import com.bedatadriven.rebar.style.client.Stylesheet;
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.cell.client.ActionCell;
+import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.Window;
 
 /**
- * @author yuriyz on 3/21/14.
+ * @author yuriyz on 4/2/14.
  */
-@Source("InstanceTable.less")
-public interface InstanceTableStyle extends Stylesheet {
+public class FilterHeader extends Header<String> {
 
-    public static final InstanceTableStyle INSTANCE = GWT.create(InstanceTableStyle.class);
+    private final String headerValue;
 
-    @ClassName("instance-table-toobar")
-    String toolbar();
+    public FilterHeader(final String headerValue) {
+        super(new FilterCell<>(headerValue, new ActionCell.Delegate<String>() {
+            @Override
+            public void execute(String contact) {
+                Window.alert(headerValue);
+            }
+        }));
+        this.headerValue = headerValue;
+    }
 
-    @ClassName("column-half-width")
-    String columnHalfWidth();
-
-    @ClassName("table-header")
-    String header();
+    @Override
+    public String getValue() {
+        return headerValue;
+    }
 }
-
