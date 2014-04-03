@@ -126,7 +126,7 @@ public class FormPanel extends Composite {
 
     public FormPanel(FormClass formClass, ResourceLocator resourceLocator) {
         this(resourceLocator);
-        renderForm(formClass);
+        setFormClass(formClass);
     }
 
     public ResourceLocator getResourceLocator() {
@@ -136,7 +136,7 @@ public class FormPanel extends Composite {
     /**
      * Renders user form.
      */
-    public void renderForm(FormClass formClass) {
+    public void setFormClass(FormClass formClass) {
         this.formClass = formClass;
         this.initialFormClass = formClass.copy();
         this.elementNode = new ElementNode(this, contentPanel, null, formClass);
@@ -332,7 +332,7 @@ public class FormPanel extends Composite {
      * Completely rebuilds panel.
      */
     private void rebuildPanel() {
-        renderForm(initialFormClass);
+        setFormClass(initialFormClass);
         if (initialFormInstance != null) {
             setValue(initialFormInstance);
         }

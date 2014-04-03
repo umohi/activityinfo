@@ -30,7 +30,11 @@ public class InstancePlace implements PageState {
 
     @Override
     public String serializeAsHistoryToken() {
-        return instanceId.asString();
+        StringBuilder token = new StringBuilder(instanceId.asString());
+        if(view != null) {
+            token.append("/").append(view);
+        }
+        return token.toString();
     }
 
     @Override

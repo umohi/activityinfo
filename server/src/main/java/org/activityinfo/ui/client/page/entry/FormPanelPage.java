@@ -89,7 +89,7 @@ public class FormPanelPage extends Composite implements Page {
 
             @Override
             public void onSuccess(FormClass result) {
-                formPanel.renderForm(result);
+                formPanel.setFormClass(result);
                 resourceLocator.getFormInstance(userFormPlace.getUserFormInstanceId()).then(new AsyncCallback<FormInstance>() {
                     @Override
                     public void onFailure(Throwable caught) {

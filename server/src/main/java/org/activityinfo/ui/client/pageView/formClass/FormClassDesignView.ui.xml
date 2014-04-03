@@ -1,0 +1,10 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+        xmlns:form="urn:import:org.activityinfo.ui.client.component.form"
+        xmlns:a="urn:import:org.activityinfo.ui.client.widget">
+    <g:HTMLPanel>
+        <a:EditableHeader ui:field="formHeader"></a:EditableHeader>
+
+        <form:FormPanel ui:field="formPanel"/>
+    </g:HTMLPanel>
+</ui:UiBinder>

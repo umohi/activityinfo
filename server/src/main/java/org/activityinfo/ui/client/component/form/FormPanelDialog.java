@@ -135,7 +135,7 @@ public class FormPanelDialog extends ModalDialog {
             public void onSuccess(FormClass result) {
                 scrollPanel.remove(progressImage);
                 scrollPanel.add(formPanel);
-                formPanel.renderForm(result);
+                formPanel.setFormClass(result);
                 if (instanceId != null) {
                     resourceLocator.getFormInstance(instanceId).then(new AsyncCallback<FormInstance>() {
                         @Override

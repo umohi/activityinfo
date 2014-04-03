@@ -3462,4 +3462,7 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Failed to remove row(s).")
     String failedToRemoveRows();
+
+    @DefaultStringValue("New Value")
+    String changeHeaderMessage();
 }
