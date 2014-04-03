@@ -27,7 +27,6 @@ import com.google.gwt.cell.client.CompositeCell;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Header;
-import com.google.gwt.user.client.Window;
 import org.activityinfo.ui.client.widget.cell.HasCellAdapter;
 
 /**
@@ -37,25 +36,15 @@ public class FilterHeader extends Header<String> {
 
     private final String headerValue;
 
-    public FilterHeader(final String headerValue) {
-        super(createCell(headerValue));
+    public FilterHeader(final String headerValue, ActionCell.Delegate cellAction) {
+        super(createCell(headerValue, cellAction));
         this.headerValue = headerValue;
     }
 
-    private static CompositeCell createCell(final String headerValue) {
+    private static CompositeCell createCell(final String headerValue, ActionCell.Delegate cellAction) {
         final TextCell textCell = new TextCell();
-        final FilterCell actionCell = new FilterCell(new ActionCell.Delegate() {
-            @Override
-            public void execute(Object object) {
-                Window.alert(headerValue);
-            }
-        });
-        final HasCell headerNameCell = new HasCellAdapter(textCell) {
-            @Override
-            public Object getValue(Object object) {
-                return headerValue;
-            }
-        };
+        final FilterCell actionCell = new FilterCell(cellAction);
+        final HasCell headerNameCell = new HasCellAdapter(textCell, headerValue);
         return new CompositeCell(Lists.newArrayList(
                 headerNameCell,
                 new HasCellAdapter(actionCell)

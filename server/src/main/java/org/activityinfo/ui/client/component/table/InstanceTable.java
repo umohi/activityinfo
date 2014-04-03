@@ -17,6 +17,7 @@ import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
 import org.activityinfo.ui.client.style.table.DataGridResources;
 import org.activityinfo.ui.client.widget.HasScrollAncestor;
@@ -99,7 +100,8 @@ public class InstanceTable implements IsWidget {
     public void setColumns(List<FieldColumn> columns) {
         removeAllColumns();
         for (FieldColumn column : columns) {
-            table.addColumn(column, new FilterHeader(column.getHeader()));
+            final FilterCellAction filterAction = new FilterCellAction(table, column);
+            table.addColumn(column, new FilterHeader(column.getHeader(), filterAction));
             fields.addAll(column.getFieldPaths());
         }
 

@@ -28,29 +28,41 @@ import com.google.gwt.cell.client.HasCell;
 /**
  * @author yuriyz on 4/2/14.
  */
-public class HasCellAdapter implements HasCell {
+public class HasCellAdapter<T,C> implements HasCell<T,C> {
 
-    private Cell cell;
+    private Cell<C> cell;
+    private C value;
+    private FieldUpdater<T, C> fieldUpdater;
 
-    public HasCellAdapter() {
+    public HasCellAdapter(Cell<C> cell) {
+        this(cell, null, null);
     }
 
-    public HasCellAdapter(Cell cell) {
+    public HasCellAdapter(Cell<C> cell, C value) {
+        this(cell, value, null);
+    }
+
+    public HasCellAdapter(Cell<C> cell, C value, FieldUpdater<T, C> fieldUpdater) {
         this.cell = cell;
+        this.value = value;
+        this.fieldUpdater = fieldUpdater;
     }
 
-    @Override
-    public Cell getCell() {
+    public Cell<C> getCell() {
         return cell;
     }
 
-    @Override
-    public FieldUpdater getFieldUpdater() {
-        return null;
+    /**
+     * Returns the {@link FieldUpdater} instance.
+     *
+     * @return an instance of FieldUpdater<T, C>
+     */
+    public FieldUpdater<T, C> getFieldUpdater(){
+        return fieldUpdater;
     }
 
     @Override
-    public Object getValue(Object object) {
-        return null;
+    public C getValue(T object) {
+        return value;
     }
 }
