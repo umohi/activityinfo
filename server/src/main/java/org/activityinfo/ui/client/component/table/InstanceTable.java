@@ -2,7 +2,6 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -52,11 +51,11 @@ public class InstanceTable implements IsWidget {
     private final DataGrid<Projection> table;
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
+    private final InstanceTableHeightAdjuster heightAdjuster;
 
     private HasScrollAncestor hasScrollAncestor;
     private Set<FieldPath> fields = Sets.newHashSet();
     private Criteria criteria;
-    private int tableHeightReduction;
 
     public InstanceTable(ResourceLocator resourceLocator, HasScrollAncestor hasScrollAncestor) {
         this.resourceLocator = resourceLocator;
@@ -90,6 +89,7 @@ public class InstanceTable implements IsWidget {
             }
         });
         table.setLoadingIndicator(loadingIndicator.asWidget());
+        heightAdjuster = new InstanceTableHeightAdjuster(this);
     }
 
     public void setCriteria(Criteria criteria) {
@@ -129,7 +129,7 @@ public class InstanceTable implements IsWidget {
                 tableDataProvider.setList(result);
             }
         });
-        recalculateTableHeight();
+        heightAdjuster.recalculateTableHeight();
     }
 
     public MultiSelectionModel<Projection> getSelectionModel() {
@@ -154,50 +154,11 @@ public class InstanceTable implements IsWidget {
         reload();
     }
 
-    public int getTableHeightReduction() {
-        return tableHeightReduction;
+    public HasScrollAncestor getHasScrollAncestor() {
+        return hasScrollAncestor;
     }
 
-    public void setTableHeightReduction(int tableHeightReduction) {
-        this.tableHeightReduction = tableHeightReduction;
-    }
-
-    public void recalculateTableHeight(int tableHeightReduction) {
-        setTableHeightReduction(tableHeightReduction);
-        recalculateTableHeight();
-    }
-
-    public void recalculateTableHeight() {
-        if (hasScrollAncestor != null && hasScrollAncestor.getScrollAncestor() != null) {
-            final int offsetHeight = hasScrollAncestor.getScrollAncestor().getOffsetHeight();
-            if (offsetHeight > 0) {
-                // header and links and other ancestors stuff to which we don't have references
-                final int ancestorsStuffHeight = 175; // ugly magic number - need better way to calculate it
-                final int height = offsetHeight - ancestorsStuffHeight - tableHeightReduction;
-                if (height > 0) {
-                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                        @Override
-                        public void execute() {
-                            table.setHeight(height + "px");
-                            improveTableHeightIfScrollAppears(height);
-                        }
-                    });
-                }
-            }
-        }
-    }
-
-    private void improveTableHeightIfScrollAppears(int height) {
-        final int verticalScrollPosition = hasScrollAncestor.getScrollAncestor().getVerticalScrollPosition();
-        if (verticalScrollPosition > 0) {
-            final int newHeight = height - 10;
-            Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                @Override
-                public void execute() {
-                    table.setHeight(newHeight + "px");
-                    improveTableHeightIfScrollAppears(newHeight);
-                }
-            });
-        }
+    public InstanceTableHeightAdjuster getHeightAdjuster() {
+        return heightAdjuster;
     }
 }

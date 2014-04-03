@@ -114,7 +114,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         toolbarHeight = toolbarHeight > 0 ? toolbarHeight : FALLBACK_TOOLBAR_HEIGHT; // fallback
         final int columnAlertHeight = columnAlert.getOffsetHeight();
         final int errorMessagesHeight = errorMessages.getOffsetHeight();
-        table.recalculateTableHeight(toolbarHeight + columnAlertHeight + errorMessagesHeight);
+        table.getHeightAdjuster().recalculateTableHeight(toolbarHeight + columnAlertHeight + errorMessagesHeight);
     }
 
     private void initButtons() {

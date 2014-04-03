@@ -38,16 +38,15 @@ import static com.google.gwt.dom.client.BrowserEvents.KEYDOWN;
 
 /**
  * @param <C> the type that this Cell represents
- *
  * @author yuriyz on 4/2/14.
  */
 public class FilterCell<C> extends AbstractCell<C> {
 
     public interface Template extends SafeHtmlTemplates {
-        @SafeHtmlTemplates.Template("<div class='table-header'>" +
-                "{0}<div class='pull-right'><button type='button' tabindex='-1'><span class='{1}'></span></button></div>" +
+        @SafeHtmlTemplates.Template("<div class='pull-right'>" +
+                "<button class='btn btn-default btn-xs' type='button' tabindex='-1'><span class='{0}'></span></button>" +
                 "</div>")
-        SafeHtml html(String headerName, String icon);
+        SafeHtml html(String icon);
     }
 
     private static final Template TEMPLATE = GWT.create(Template.class);
@@ -55,11 +54,11 @@ public class FilterCell<C> extends AbstractCell<C> {
     private final SafeHtml html;
     private final ActionCell.Delegate<C> delegate;
 
-    public FilterCell(String headerName, ActionCell.Delegate<C> delegate) {
+    public FilterCell(ActionCell.Delegate<C> delegate) {
         super(CLICK, KEYDOWN);
 
         this.delegate = delegate;
-        this.html = TEMPLATE.html(headerName, Icons.INSTANCE.filter());
+        this.html = TEMPLATE.html(Icons.INSTANCE.filter());
     }
 
     @Override

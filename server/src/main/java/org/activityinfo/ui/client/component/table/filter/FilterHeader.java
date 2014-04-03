@@ -21,9 +21,14 @@ package org.activityinfo.ui.client.component.table.filter;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.ActionCell;
+import com.google.gwt.cell.client.CompositeCell;
+import com.google.gwt.cell.client.HasCell;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.Window;
+import org.activityinfo.ui.client.widget.cell.HasCellAdapter;
 
 /**
  * @author yuriyz on 4/2/14.
@@ -33,13 +38,28 @@ public class FilterHeader extends Header<String> {
     private final String headerValue;
 
     public FilterHeader(final String headerValue) {
-        super(new FilterCell<>(headerValue, new ActionCell.Delegate<String>() {
+        super(createCell(headerValue));
+        this.headerValue = headerValue;
+    }
+
+    private static CompositeCell createCell(final String headerValue) {
+        final TextCell textCell = new TextCell();
+        final FilterCell actionCell = new FilterCell(new ActionCell.Delegate() {
             @Override
-            public void execute(String contact) {
+            public void execute(Object object) {
                 Window.alert(headerValue);
             }
-        }));
-        this.headerValue = headerValue;
+        });
+        final HasCell headerNameCell = new HasCellAdapter(textCell) {
+            @Override
+            public Object getValue(Object object) {
+                return headerValue;
+            }
+        };
+        return new CompositeCell(Lists.newArrayList(
+                headerNameCell,
+                new HasCellAdapter(actionCell)
+        ));
     }
 
     @Override
