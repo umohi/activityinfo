@@ -314,15 +314,6 @@ public interface UiConstants extends Constants {
     String appCacheProgress();
 
     /**
-     * Translated "ActivityInfo".
-     *
-     * @return translated "ActivityInfo"
-     */
-    @DefaultStringValue("ActivityInfo")
-    @Key("appTitle")
-    String appTitle();
-
-    /**
      * Translated "Application version".
      *
      * @return translated "Application version"
@@ -1834,15 +1825,6 @@ public interface UiConstants extends Constants {
     String newUser();
 
     /**
-     * Translated "ActivityInfo updated!".
-     *
-     * @return translated "ActivityInfo updated!"
-     */
-    @DefaultStringValue("ActivityInfo updated!")
-    @Key("newVersion")
-    String newVersion();
-
-    /**
      * Translated "A new version of ActivityInfo has been downloaded. Do you want to reload now?".
      *
      * @return translated "A new version of ActivityInfo has been downloaded. Do you want to reload now?"
@@ -1850,15 +1832,6 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("A new version of ActivityInfo has been downloaded. Do you want to reload now?")
     @Key("newVersionChoice")
     String newVersionChoice();
-
-    /**
-     * Translated "ActivityInfo has been updated! You must refresh the page to continue.".
-     *
-     * @return translated "ActivityInfo has been updated! You must refresh the page to continue."
-     */
-    @DefaultStringValue("ActivityInfo has been updated! You must refresh the page to continue.")
-    @Key("newVersionPrompt")
-    String newVersionPrompt();
 
 
     /**

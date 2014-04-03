@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.ui.client.ClientContext;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.SessionUtil;
 import org.activityinfo.ui.client.inject.ClientSideAuthProvider;
@@ -120,7 +121,7 @@ public class SettingsPopup extends PopupPanel {
         setAutoHideOnHistoryEventsEnabled(true);
         setWidth(WIDTH + "px");
 
-        versionLabel.setInnerText(VersionInfo.getDisplayName());
+        versionLabel.setInnerText(ClientContext.getVersion());
         emailLabel.setInnerText(new ClientSideAuthProvider().get().getEmail());
 
         syncRow.getStyle().setDisplay(Display.NONE);
@@ -183,7 +184,7 @@ public class SettingsPopup extends PopupPanel {
                 if (response.getStatusCode() != 200) {
                     versionStatus.setInnerText(I18N.CONSTANTS.versionConnectionProblem());
 
-                } else if (response.getText().startsWith(VersionInfo.getCommitId())) {
+                } else if (response.getText().startsWith(ClientContext.getCommitId())) {
                     versionStatus.setInnerText(I18N.CONSTANTS.versionLatest());
 
                 } else {

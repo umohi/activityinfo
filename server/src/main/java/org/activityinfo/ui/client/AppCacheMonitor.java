@@ -40,7 +40,7 @@ public class AppCacheMonitor {
 
             @Override
             public void onAppCacheUpdateReady() {
-                MessageBox.confirm(I18N.CONSTANTS.newVersion(),
+                MessageBox.confirm(I18N.MESSAGES.newVersion(ClientContext.getAppTitle()),
                         I18N.CONSTANTS.newVersionChoice(),
                         new Listener<MessageBoxEvent>() {
 
