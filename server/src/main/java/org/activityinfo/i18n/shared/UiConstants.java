@@ -3465,4 +3465,7 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("New Value")
     String changeHeaderMessage();
+
+    @DefaultStringValue("Clear filter")
+    String clearFilter();
 }

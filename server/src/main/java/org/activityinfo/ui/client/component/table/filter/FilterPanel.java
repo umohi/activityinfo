@@ -23,20 +23,24 @@ package org.activityinfo.ui.client.component.table.filter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.filter.Filter;
+import org.activityinfo.core.shared.filter.HasFilter;
 import org.activityinfo.ui.client.component.table.DataGrid;
 import org.activityinfo.ui.client.component.table.FieldColumn;
 
 /**
  * @author yuriyz on 4/3/14.
  */
-public class FilterPanel extends Composite {
+public class FilterPanel extends Composite implements HasFilter {
+
 
     interface FilterPanelUiBinder extends UiBinder<HTMLPanel, FilterPanel> {
     }
@@ -45,16 +49,26 @@ public class FilterPanel extends Composite {
 
     private final DataGrid<Projection> table;
     private final FieldColumn column;
+    private final FilterContent filterContent;
 
     @UiField
     PopupPanel popup;
     @UiField
-    Button closeButton;
+    HTMLPanel contentContainer;
 
     public FilterPanel(DataGrid<Projection> table, FieldColumn column) {
         this.table = table;
         this.column = column;
         initWidget(uiBinder.createAndBindUi(this));
+        filterContent = FilterContentFactory.create(table, column);
+        if (filterContent != null) { // we may have null for unsupported types
+            contentContainer.add(filterContent);
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return filterContent.getFilter();
     }
 
     public void show(final PopupPanel.PositionCallback positionCallback) {
@@ -68,5 +82,20 @@ public class FilterPanel extends Composite {
 
     public PopupPanel getPopup() {
         return popup;
+    }
+
+    @UiHandler("clearButton")
+    public void onClear(ClickEvent event) {
+        popup.hide();
+    }
+
+    @UiHandler("okButton")
+    public void onOk(ClickEvent event) {
+        popup.hide();
+    }
+
+    @UiHandler("cancelButton")
+    public void cancelButton(ClickEvent event) {
+        popup.hide();
     }
 }

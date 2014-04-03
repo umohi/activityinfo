@@ -56,9 +56,10 @@ public class FilterCellAction implements ActionCell.Delegate {
                 final int absoluteTop = cellElement.getAbsoluteTop();
                 final int absoluteLeft = cellElement.getAbsoluteLeft();
                 final int height = cellElement.getOffsetHeight();
-//                final int width = cellElement.getOffsetWidth();
+                final int width = cellElement.getOffsetWidth();
 
-                filterPanel.getPopup().setPopupPosition(absoluteLeft /* + width*/,
+                filterPanel.getPopup().setWidth(width + "px");
+                filterPanel.getPopup().setPopupPosition(absoluteLeft,
                         absoluteTop + height);
             }
         });
