@@ -24,8 +24,9 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:org.activityinfo.ui.client.page.app"
     >
-  <ui:with field="resources"
-           type="org.activityinfo.ui.client.page.app.resources.AppFrameResources"/>
+  <ui:with field="resources" type="org.activityinfo.ui.client.page.app.resources.AppFrameResources"/>
+  <ui:with field="clientContext" type="org.activityinfo.ui.client.ClientContext"/>
+
   <ui:data field="backgroundImage" src="resources/background.gif"/>
   <ui:data field="gearImage" src="resources/gear.png"></ui:data>
   <ui:data field="helpImage" src="resources/help.png"></ui:data>
@@ -100,7 +101,7 @@
     </g:layer>
     <g:layer bottom='2px' height='35px'>
       <g:HTMLPanel styleName="{style.leftPanel}">
-        <g:Label text="ActivityInfo" styleName="{style.logo}"
+        <g:Label text="{clientContext.getAppTitle}" styleName="{style.logo}"
                  ui:field="logo"/>
         <b:SectionTabStrip ui:field="sectionTabStrip"/>
         <g:Label styleName="{style.icon} {style.settingsIcon}"

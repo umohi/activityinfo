@@ -314,4 +314,8 @@ public interface UiMessages extends com.google.gwt.i18n.client.Messages {
 
     @DefaultMessage("Are you sure you want to delete {0} row(s) from {1}?")
     String removeTableRowsConfirmation(int numberOfRows, String formClassLabel);
+
+    @DefaultMessage("{0} updated!")
+    String newVersion(String appTitle);
+
 }

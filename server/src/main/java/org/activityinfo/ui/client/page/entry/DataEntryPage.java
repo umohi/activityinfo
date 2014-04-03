@@ -51,6 +51,7 @@ import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
+import org.activityinfo.ui.client.ClientContext;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.FeatureSwitch;
 import org.activityinfo.ui.client.component.importDialog.ImportPresenter;
@@ -412,7 +413,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
                         });
             }
         } else if (UIActions.DELETE.equals(actionId)) {
-            MessageBox.confirm(I18N.CONSTANTS.appTitle(), I18N.MESSAGES.confirmDeleteSite(), new Listener<MessageBoxEvent>() {
+            MessageBox.confirm(ClientContext.getAppTitle(), I18N.MESSAGES.confirmDeleteSite(), new Listener<MessageBoxEvent>() {
                 @Override
                 public void handleEvent(MessageBoxEvent be) {
                     if(be.getButtonClicked().getItemId().equals(Dialog.YES)) {

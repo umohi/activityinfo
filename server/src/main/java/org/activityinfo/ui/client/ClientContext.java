@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.page.app;
+package org.activityinfo.ui.client;
 
 /*
  * #%L
@@ -24,19 +24,23 @@ package org.activityinfo.ui.client.page.app;
 
 import com.google.gwt.i18n.client.Dictionary;
 
-public final class VersionInfo {
+public final class ClientContext {
 
     private static final Dictionary DICTIONARY = Dictionary
-            .getDictionary("VersionInfo");
+            .getDictionary("ClientContext");
 
-    private VersionInfo() {
+    private ClientContext() {
     }
 
     /**
      * @return the display name of the loaded version (e.g. "2.5.6")
      */
-    public static String getDisplayName() {
-        return DICTIONARY.get("display");
+    public static String getVersion() {
+        return DICTIONARY.get("version");
+    }
+
+    public static String getAppTitle() {
+        return DICTIONARY.get("title");
     }
 
     /**

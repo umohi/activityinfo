@@ -85,9 +85,11 @@
                 document.cookie.indexOf('email') == -1) {
             window.location = "/login" + window.location.hash;
         }
-        var VersionInfo = {
-            display: '$[display.version]',
-            commitId: '$[git.commit.id]'
+        var ClientContext = {
+            version: '$[display.version]',
+            commitId: '$[git.commit.id]',
+            title: '${domain.title}'
+
         };
     </script>
 
@@ -116,7 +118,7 @@
     <div id="loading-box">
         <div class="loading-indicator">
             <img src="ActivityInfo/gxt231/images/default/shared/large-loading.gif" alt=""/>
-        ${label.activityInfo} $[display.version]<br/>
+        ${domain.title} $[display.version]<br/>
             <span id="loading-msg">${label.loading}</span>
 
         </div>

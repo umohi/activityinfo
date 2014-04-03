@@ -43,6 +43,7 @@ import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.client.AppEvents;
+import org.activityinfo.ui.client.ClientContext;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.page.NavigationEvent;
 import org.activityinfo.ui.client.page.NavigationHandler;
@@ -141,7 +142,7 @@ public class DbListPresenter implements ActionListener {
     }
 
     private void onDelete() {
-        MessageBox.confirm(I18N.CONSTANTS.appTitle(),
+        MessageBox.confirm(ClientContext.getAppTitle(),
                 I18N.MESSAGES.confirmDeleteDb(selection.getName()),
                 new Listener<MessageBoxEvent>() {
                     @Override
