@@ -22,9 +22,12 @@ package org.activityinfo.ui.client.component.table.filter;
  */
 
 import com.google.gwt.cell.client.ActionCell;
-import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.TableRowElement;
+import com.google.gwt.dom.client.TableSectionElement;
+import com.google.gwt.user.client.ui.PopupPanel;
 import org.activityinfo.core.shared.Projection;
+import org.activityinfo.ui.client.component.table.DataGrid;
 import org.activityinfo.ui.client.component.table.FieldColumn;
 
 /**
@@ -32,14 +35,33 @@ import org.activityinfo.ui.client.component.table.FieldColumn;
  */
 public class FilterCellAction implements ActionCell.Delegate {
 
+    private final DataGrid<Projection> table;
     private final FieldColumn column;
 
     public FilterCellAction(DataGrid<Projection> table, FieldColumn column) {
+        this.table = table;
         this.column = column;
     }
 
     @Override
     public void execute(Object object) {
-        Window.alert(column.getHeader());
+        final TableSectionElement tableHeadElement = table.getTableHeadElement();
+        final FilterPanel filterPanel = new FilterPanel(table, column);
+        filterPanel.show(new PopupPanel.PositionCallback() {
+            @Override
+            public void setPosition(int offsetWidth, int offsetHeight) {
+                final TableRowElement row = tableHeadElement.getRows().getItem(0);
+                final int columnIndex = table.getColumnIndex(column);
+                final TableCellElement cellElement = row.getCells().getItem(columnIndex);
+                final int absoluteTop = cellElement.getAbsoluteTop();
+                final int absoluteLeft = cellElement.getAbsoluteLeft();
+                final int height = cellElement.getOffsetHeight();
+//                final int width = cellElement.getOffsetWidth();
+
+                filterPanel.getPopup().setPopupPosition(absoluteLeft /* + width*/,
+                        absoluteTop + height);
+            }
+        });
+
     }
 }
