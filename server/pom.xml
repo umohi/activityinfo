@@ -622,8 +622,10 @@
     <profile>
       <id>bracinfo</id>
       <properties>
-
         <!-- Required by AppScale -->
+        <gae.application>bracinfo</gae.application>
+        <gae.application.version>1</gae.application.version>
+        <display.version>build ${BUILD_NUMBER}</display.version>
         <gae.version>1.8.0</gae.version>
       </properties>
 
