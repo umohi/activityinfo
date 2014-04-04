@@ -26,6 +26,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
+ * DataGrid with public access to getTableHeadElement()
+ *
  * @author yuriyz on 4/3/14.
  */
 public class DataGrid<T> extends com.google.gwt.user.cellview.client.DataGrid<T> {

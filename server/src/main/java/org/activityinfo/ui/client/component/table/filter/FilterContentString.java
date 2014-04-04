@@ -41,7 +41,6 @@ import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.filter.Filter;
 import org.activityinfo.ui.client.component.table.DataGrid;
 import org.activityinfo.ui.client.component.table.FieldColumn;
-import org.activityinfo.ui.client.style.table.DataGridResources;
 import org.activityinfo.ui.client.widget.TextBox;
 
 import java.util.List;
@@ -53,7 +52,13 @@ import java.util.Set;
 public class FilterContentString extends Composite implements FilterContent {
 
     public static final String FILTER_GRID_HEIGHT = "300px";
+    public static final int CHECKBOX_COLUMN_WIDTH = 20;
 
+    /**
+     * Search box is shown if number of items is more or equals to SEARCH_BOX_PRESENCE_ITEM_COUNT.
+     * Otherwise it's removed from filter panel.
+     */
+    private static final int SEARCH_BOX_PRESENCE_ITEM_COUNT = 7;
 
     interface FilterContentStringUiBinder extends UiBinder<HTMLPanel, FilterContentString> {
     }
@@ -72,9 +77,11 @@ public class FilterContentString extends Composite implements FilterContent {
     TextBox textBox;
     @UiField
     HTMLPanel gridContainer;
+    @UiField
+    HTMLPanel textBoxContainer;
 
     public FilterContentString(DataGrid<Projection> table, FieldColumn column) {
-        DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
+        FilterDataGridResources.INSTANCE.dataGridStyle().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
         this.table = table;
@@ -94,21 +101,35 @@ public class FilterContentString extends Composite implements FilterContent {
             }
         };
 
-        filterGrid = new DataGrid<>(100, DataGridResources.INSTANCE);
+        filterGrid = new DataGrid<>(100, FilterDataGridResources.INSTANCE);
         filterGrid.setSelectionModel(selectionModel, DefaultSelectionEventManager
-                .<Projection> createCheckboxManager());
+                .<Projection>createCheckboxManager());
         filterGrid.addColumn(checkColumn);
         filterGrid.addColumn(column);
-        filterGrid.setColumnWidth(checkColumn, 20, Style.Unit.PX);
+        filterGrid.setColumnWidth(checkColumn, CHECKBOX_COLUMN_WIDTH, Style.Unit.PX);
         filterGrid.setHeight(FILTER_GRID_HEIGHT);
         filterGrid.setAutoHeaderRefreshDisabled(true);
         filterGrid.setAutoFooterRefreshDisabled(true);
 
         tableDataProvider.addDataDisplay(filterGrid);
-        allItems = table.getVisibleItems();
-        tableDataProvider.setList(allItems);
+        allItems = extractItems(table.getVisibleItems());
+        if (allItems.size() < SEARCH_BOX_PRESENCE_ITEM_COUNT) {
+            textBoxContainer.remove(textBox);
+        }
+        filterData();
 
         gridContainer.add(filterGrid);
+    }
+
+    private List<Projection> extractItems(List<Projection> visibleItems) {
+        final List<Projection> items = Lists.newArrayList();
+        for (Projection projection : visibleItems) {
+            final String value = column.getValue(projection);
+            if (!Strings.isNullOrEmpty(value)) {
+                items.add(projection);
+            }
+        }
+        return items;
     }
 
     private void filterData() {
@@ -116,7 +137,7 @@ public class FilterContentString extends Composite implements FilterContent {
         final List<Projection> toShow = Lists.newArrayList();
         for (Projection projection : allItems) {
             final String value = column.getValue(projection);
-            if (!Strings.isNullOrEmpty(value) && (Strings.isNullOrEmpty(stringFilter) || value.contains(stringFilter))) {
+            if (Strings.isNullOrEmpty(stringFilter) || value.contains(stringFilter)) {
                 toShow.add(projection);
             }
         }

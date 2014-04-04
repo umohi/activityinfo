@@ -1,14 +1,15 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:cell="urn:import:com.google.gwt.user.cellview.client"
              xmlns:a="urn:import:org.activityinfo.ui.client.widget">
 
   <ui:with field="icons" type="org.activityinfo.ui.client.style.Icons"/>
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
 
-  <g:HTMLPanel>
-    <a:TextBox ui:field="textBox" placeholder="{i18n.search}" width="100%"  addStyleNames="form-control"/>
+  <g:HTMLPanel styleName="f">
+    <g:HTMLPanel ui:field="textBoxContainer" width="100%">
+      <a:TextBox ui:field="textBox" placeholder="{i18n.search}" width="100%" addStyleNames="form-control input-sm"/>
+    </g:HTMLPanel>
     <g:HTMLPanel ui:field="gridContainer"/>
   </g:HTMLPanel>
 </ui:UiBinder>

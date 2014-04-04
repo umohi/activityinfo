@@ -3468,4 +3468,7 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Clear filter")
     String clearFilter();
+
+    @DefaultStringValue("Advanced filter")
+    String advancedFilter();
 }

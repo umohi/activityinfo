@@ -1,7 +1,7 @@
 // Inspired in part by from Fuel UX
-@import "../bootstrap/variables";
-@import "../bootstrap/mixins";
-@import (reference) "../bootstrap/tables";
+@import "../../../style/bootstrap/variables";
+@import "../../../style/bootstrap/mixins";
+@import (reference) "../../../style/bootstrap/tables";
 
 @table-bg-accent-dark: darken(@table-bg-accent, 8%);
 
@@ -9,9 +9,11 @@
 
 @selectionBorderWidth: 2px;
 
-.data-grid-widget,
-.data-grid-header,
-.data-grid-header {
+.f
+
+.f .data-grid-widget,
+.f .data-grid-header,
+.f .data-grid-header {
 
   .table;
   .table-bordered;
@@ -39,7 +41,7 @@
   }
 }
 
-.data-grid-header {
+.f .data-grid-header {
 
   th {
     cursor: pointer;
@@ -48,8 +50,6 @@
   thead {
 
     background-color: @table-bg-accent;
-    text-align: center;
-    padding-left: @table-cell-padding;
 
     // When changing this section verify stretchHeight column sizes when sorting
     // and update SORTED_HEADER_OFFSET in datagrid.js as needed
@@ -69,16 +69,11 @@
       cursor: pointer;
       position: relative;
 
-      // needs to be ported to bootstrap 3
-      // &:hover {
-      //   .gradientBar(@table-bg-accent, @table-bg-accent-dark, @text-color, 'none');
-      // }
     }
-
   }
 }
 
-.data-grid-footer {
+.f .data-grid-footer {
 
   tfoot {
     background-color: @table-bg-accent;
@@ -86,37 +81,36 @@
 }
 
 .data-grid-row {
-  border-bottom: 1px solid @table-border-color;
 }
 
-.data-grid-odd-row {
+.f .data-grid-odd-row {
   .data-grid-row;
 }
 
-.data-grid-even-row {
+.f .data-grid-even-row {
   .data-grid-row;
 }
 
-.data-grid-cell {
-  border-right: 1px solid @table-border-color;
-  padding-right: @table-cell-padding;
-  text-align: right;
+.f .data-grid-cell {
+  border-right: 1px solid @table-bg;
+  padding-left: @table-cell-padding;
+  text-align: left;
 }
 
-.data-grid-selected-row {
+.f .data-grid-selected-row {
   background: @state-success-bg;
   color: @state-success-text;
   height: auto;
   overflow: auto;
 }
 
-.data-grid-selected-row-cell {
+.f .data-grid-selected-row-cell {
   border: @selectionBorderWidth solid;
 }
 
 /**
  * The keyboard selected cell is visible over selection.
  */
-.data-grid-keyboard-selected-cell {
+.f .data-grid-keyboard-selected-cell {
   border: @selectionBorderWidth solid #d7dde8;
 }
