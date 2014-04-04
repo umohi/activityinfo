@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Column;
 import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.ui.client.component.table.renderer.RendererFactory;
@@ -19,6 +20,7 @@ public class FieldColumn extends Column<Projection, String> {
     private FormTree.Node node;
     private List<FieldPath> fieldPaths;
     private String header;
+    private Criteria criteria;
 
     public FieldColumn(FormTree.Node node) {
         super(new TextCell());
@@ -33,15 +35,24 @@ public class FieldColumn extends Column<Projection, String> {
         this.fieldPaths = Lists.newArrayList(fieldPath);
     }
 
-    @Override
-    public String getValue(Projection projection) {
+    public Object getValueAsObject(Projection projection) {
         for (FieldPath path : fieldPaths) {
-            Object value = projection.getValue(path);
+            final Object value = projection.getValue(path);
             if (value != null) {
-                final ValueRenderer valueRenderer = RendererFactory.create(getNode().getFieldType());
-                return valueRenderer.asString(value);
+                return value;
             }
         }
+        return null;
+    }
+
+    @Override
+    public String getValue(Projection projection) {
+        final Object valueAsObject = getValueAsObject(projection);
+        if (valueAsObject != null) {
+            final ValueRenderer valueRenderer = RendererFactory.create(getNode().getFieldType());
+            return valueRenderer.asString(valueAsObject);
+        }
+
         return "";
     }
 
@@ -62,17 +73,26 @@ public class FieldColumn extends Column<Projection, String> {
     }
 
     private String composeHeader(FormTree.Node node) {
-        if(node.getPath().isNested()) {
+        if (node.getPath().isNested()) {
             return node.getDefiningFormClass().getLabel().getValue() + " " + node.getField().getLabel().getValue();
         } else {
             return node.getField().getLabel().getValue();
         }
     }
 
+    public Criteria getCriteria() {
+        return criteria;
+    }
+
+    public void setCriteria(Criteria criteria) {
+        this.criteria = criteria;
+    }
+
     @Override
     public String toString() {
         return "FieldColumn{" +
                 "header='" + header + '\'' +
+                ", criteria=" + criteria +
                 '}';
     }
 }

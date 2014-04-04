@@ -22,7 +22,6 @@ package org.activityinfo.ui.client.component.table.filter;
  */
 
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -51,14 +50,12 @@ public class FilterCell<C> extends AbstractCell<C> {
 
     private static final Template TEMPLATE = GWT.create(Template.class);
 
-    private final SafeHtml html;
-    private final ActionCell.Delegate<C> delegate;
+    private final FilterCellAction cellAction;
 
-    public FilterCell(ActionCell.Delegate<C> delegate) {
+    public FilterCell(FilterCellAction cellAction) {
         super(CLICK, KEYDOWN);
 
-        this.delegate = delegate;
-        this.html = TEMPLATE.html(Icons.INSTANCE.filter());
+        this.cellAction = cellAction;
     }
 
     @Override
@@ -80,12 +77,14 @@ public class FilterCell<C> extends AbstractCell<C> {
 
     @Override
     public void render(Context context, C value, SafeHtmlBuilder sb) {
-        sb.append(html);
+        final boolean hasCriteria = cellAction.getColumn().getCriteria() != null;
+        final String icon = hasCriteria ? Icons.INSTANCE.filter() : Icons.INSTANCE.arrowDown();
+        sb.append(TEMPLATE.html(icon));
     }
 
     @Override
     protected void onEnterKeyDown(Context context, Element parent, C value,
                                   NativeEvent event, ValueUpdater<C> valueUpdater) {
-        delegate.execute(value);
+        cellAction.execute(value);
     }
 }

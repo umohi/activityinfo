@@ -22,11 +22,11 @@ package org.activityinfo.ui.client.component.table.filter;
  */
 
 import com.google.common.collect.Lists;
-import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.CompositeCell;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Header;
+import org.activityinfo.ui.client.component.table.FieldColumn;
 import org.activityinfo.ui.client.widget.cell.HasCellAdapter;
 
 /**
@@ -34,17 +34,17 @@ import org.activityinfo.ui.client.widget.cell.HasCellAdapter;
  */
 public class FilterHeader extends Header<String> {
 
-    private final String headerValue;
+    private final FieldColumn headerColumn;
 
-    public FilterHeader(final String headerValue, ActionCell.Delegate cellAction) {
-        super(createCell(headerValue, cellAction));
-        this.headerValue = headerValue;
+    public FilterHeader(final FieldColumn headerColumn, FilterCellAction cellAction) {
+        super(createCell(headerColumn, cellAction));
+        this.headerColumn = headerColumn;
     }
 
-    private static CompositeCell createCell(final String headerValue, ActionCell.Delegate cellAction) {
+    private static CompositeCell createCell(final FieldColumn headerColumn, FilterCellAction cellAction) {
         final TextCell textCell = new TextCell();
         final FilterCell actionCell = new FilterCell(cellAction);
-        final HasCell headerNameCell = new HasCellAdapter(textCell, headerValue);
+        final HasCell headerNameCell = new HasCellAdapter(textCell, headerColumn.getHeader());
         return new CompositeCell(Lists.newArrayList(
                 headerNameCell,
                 new HasCellAdapter(actionCell)
@@ -53,6 +53,6 @@ public class FilterHeader extends Header<String> {
 
     @Override
     public String getValue() {
-        return headerValue;
+        return headerColumn.getHeader();
     }
 }

@@ -3,6 +3,7 @@ package org.activityinfo.core.shared.criteria;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public class FieldCriteria implements Criteria {
     private Cuid fieldId;
     private Object value;
 
-    public FieldCriteria(Cuid fieldId, Object value) {
+    public FieldCriteria(@Nonnull Cuid fieldId, @Nonnull Object value) {
         this.fieldId = fieldId;
         this.value = value;
     }
@@ -30,4 +31,11 @@ public class FieldCriteria implements Criteria {
         return Objects.equals(input.get(fieldId), value);
     }
 
+    public Cuid getFieldId() {
+        return fieldId;
+    }
+
+    public Object getValue() {
+        return value;
+    }
 }

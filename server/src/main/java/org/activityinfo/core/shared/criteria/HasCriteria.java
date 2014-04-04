@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table.filter;
+package org.activityinfo.core.shared.criteria;
 /*
  * #%L
  * ActivityInfo Server
@@ -21,11 +21,9 @@ package org.activityinfo.ui.client.component.table.filter;
  * #L%
  */
 
-import com.google.gwt.user.client.ui.IsWidget;
-import org.activityinfo.core.shared.criteria.HasCriteria;
-
 /**
- * @author yuriyz on 4/3/14.
+ * @author yuriyz on 4/4/14.
  */
-public interface FilterContent extends HasCriteria, IsWidget {
+public interface HasCriteria {
+    Criteria getCriteria();
 }

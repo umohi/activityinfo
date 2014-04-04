@@ -30,24 +30,22 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import org.activityinfo.core.shared.Projection;
-import org.activityinfo.core.shared.filter.Filter;
-import org.activityinfo.core.shared.filter.HasFilter;
-import org.activityinfo.ui.client.component.table.DataGrid;
+import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.HasCriteria;
 import org.activityinfo.ui.client.component.table.FieldColumn;
+import org.activityinfo.ui.client.component.table.InstanceTable;
 
 /**
  * @author yuriyz on 4/3/14.
  */
-public class FilterPanel extends Composite implements HasFilter {
-
+public class FilterPanel extends Composite implements HasCriteria {
 
     interface FilterPanelUiBinder extends UiBinder<HTMLPanel, FilterPanel> {
     }
 
     private static FilterPanelUiBinder uiBinder = GWT.create(FilterPanelUiBinder.class);
 
-    private final DataGrid<Projection> table;
+    private final InstanceTable table;
     private final FieldColumn column;
     private final FilterContent filterContent;
 
@@ -56,7 +54,7 @@ public class FilterPanel extends Composite implements HasFilter {
     @UiField
     HTMLPanel contentContainer;
 
-    public FilterPanel(DataGrid<Projection> table, FieldColumn column) {
+    public FilterPanel(InstanceTable table, FieldColumn column) {
         this.table = table;
         this.column = column;
         initWidget(uiBinder.createAndBindUi(this));
@@ -67,8 +65,8 @@ public class FilterPanel extends Composite implements HasFilter {
     }
 
     @Override
-    public Filter getFilter() {
-        return filterContent.getFilter();
+    public Criteria getCriteria() {
+        return filterContent.getCriteria();
     }
 
     public void show(final PopupPanel.PositionCallback positionCallback) {
@@ -86,12 +84,17 @@ public class FilterPanel extends Composite implements HasFilter {
 
     @UiHandler("clearButton")
     public void onClear(ClickEvent event) {
+        column.setCriteria(null);
+        table.getTable().redrawHeaders();
+        table.reload();
         popup.hide();
     }
 
     @UiHandler("okButton")
     public void onOk(ClickEvent event) {
-        final Filter filter = getFilter(); // todo
+        column.setCriteria(getCriteria());
+        table.getTable().redrawHeaders();
+        table.reload();
         popup.hide();
     }
 

@@ -15,6 +15,7 @@ import org.activityinfo.core.client.ProjectionKeyProvider;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.CriteriaUnion;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
@@ -52,7 +53,6 @@ public class InstanceTable implements IsWidget {
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
     private final InstanceTableHeightAdjuster heightAdjuster;
-
     private HasScrollAncestor hasScrollAncestor;
     private Set<FieldPath> fields = Sets.newHashSet();
     private Criteria criteria;
@@ -99,8 +99,8 @@ public class InstanceTable implements IsWidget {
     public void setColumns(List<FieldColumn> columns) {
         removeAllColumns();
         for (FieldColumn column : columns) {
-            final FilterCellAction filterAction = new FilterCellAction(table, column);
-            table.addColumn(column, new FilterHeader(column.getHeader(), filterAction));
+            final FilterCellAction filterAction = new FilterCellAction(this, column);
+            table.addColumn(column, new FilterHeader(column, filterAction));
             fields.addAll(column.getFieldPaths());
         }
 
@@ -116,7 +116,7 @@ public class InstanceTable implements IsWidget {
     public void reload() {
         loadingIndicator.onLoadingStateChanged(LoadingState.LOADING, null);
 
-        InstanceQuery query = new InstanceQuery(Lists.newArrayList(fields), criteria);
+        InstanceQuery query = new InstanceQuery(Lists.newArrayList(fields), buildQueryCriteria());
         resourceLocator.query(query).then(new AsyncCallback<List<Projection>>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -131,6 +131,18 @@ public class InstanceTable implements IsWidget {
             }
         });
         heightAdjuster.recalculateTableHeight();
+    }
+
+    private Criteria buildQueryCriteria() {
+        final List<Criteria> unionCriteria = Lists.newArrayList(criteria);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            final FieldColumn column = (FieldColumn) table.getColumn(i);
+            final Criteria columnCriteria = column.getCriteria();
+            if (columnCriteria != null) {
+                unionCriteria.add(columnCriteria);
+            }
+        }
+        return new CriteriaUnion(unionCriteria);
     }
 
     public MultiSelectionModel<Projection> getSelectionModel() {
@@ -152,7 +164,7 @@ public class InstanceTable implements IsWidget {
                 ", length = " + event.getNewRange().getLength());
 
 
-        reload();
+        //reload();
     }
 
     public HasScrollAncestor getHasScrollAncestor() {
@@ -162,4 +174,5 @@ public class InstanceTable implements IsWidget {
     public InstanceTableHeightAdjuster getHeightAdjuster() {
         return heightAdjuster;
     }
+
 }

@@ -21,9 +21,8 @@ package org.activityinfo.ui.client.component.table.filter;
  * #L%
  */
 
-import org.activityinfo.core.shared.Projection;
-import org.activityinfo.ui.client.component.table.DataGrid;
 import org.activityinfo.ui.client.component.table.FieldColumn;
+import org.activityinfo.ui.client.component.table.InstanceTable;
 
 /**
  * @author yuriyz on 4/3/14.
@@ -33,7 +32,7 @@ public class FilterContentFactory {
     private FilterContentFactory() {
     }
 
-    public static FilterContent create(DataGrid<Projection> table, FieldColumn column) {
+    public static FilterContent create(InstanceTable table, FieldColumn column) {
         switch (column.getNode().getFieldType()) {
             case FREE_TEXT:
             case NARRATIVE:

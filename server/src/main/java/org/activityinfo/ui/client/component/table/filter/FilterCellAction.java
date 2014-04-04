@@ -29,29 +29,31 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.ui.client.component.table.DataGrid;
 import org.activityinfo.ui.client.component.table.FieldColumn;
+import org.activityinfo.ui.client.component.table.InstanceTable;
 
 /**
  * @author yuriyz on 4/3/14.
  */
 public class FilterCellAction implements ActionCell.Delegate {
 
-    private final DataGrid<Projection> table;
+    private final InstanceTable table;
     private final FieldColumn column;
 
-    public FilterCellAction(DataGrid<Projection> table, FieldColumn column) {
+    public FilterCellAction(InstanceTable table, FieldColumn column) {
         this.table = table;
         this.column = column;
     }
 
     @Override
     public void execute(Object object) {
-        final TableSectionElement tableHeadElement = table.getTableHeadElement();
+        final DataGrid<Projection> grid = table.getTable();
+        final TableSectionElement tableHeadElement = grid.getTableHeadElement();
         final FilterPanel filterPanel = new FilterPanel(table, column);
         filterPanel.show(new PopupPanel.PositionCallback() {
             @Override
             public void setPosition(int offsetWidth, int offsetHeight) {
                 final TableRowElement row = tableHeadElement.getRows().getItem(0);
-                final int columnIndex = table.getColumnIndex(column);
+                final int columnIndex = grid.getColumnIndex(column);
                 final TableCellElement cellElement = row.getCells().getItem(columnIndex);
                 final int absoluteTop = cellElement.getAbsoluteTop();
                 final int absoluteLeft = cellElement.getAbsoluteLeft();
@@ -63,6 +65,13 @@ public class FilterCellAction implements ActionCell.Delegate {
                         absoluteTop + height);
             }
         });
+    }
 
+    public InstanceTable getTable() {
+        return table;
+    }
+
+    public FieldColumn getColumn() {
+        return column;
     }
 }

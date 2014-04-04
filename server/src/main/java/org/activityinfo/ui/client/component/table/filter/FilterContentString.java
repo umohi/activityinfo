@@ -38,12 +38,14 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import org.activityinfo.core.client.ProjectionKeyProvider;
 import org.activityinfo.core.shared.Projection;
-import org.activityinfo.core.shared.filter.Filter;
+import org.activityinfo.core.shared.criteria.*;
 import org.activityinfo.ui.client.component.table.DataGrid;
 import org.activityinfo.ui.client.component.table.FieldColumn;
+import org.activityinfo.ui.client.component.table.InstanceTable;
 import org.activityinfo.ui.client.widget.TextBox;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -51,7 +53,7 @@ import java.util.Set;
  */
 public class FilterContentString extends Composite implements FilterContent {
 
-    public static final String FILTER_GRID_HEIGHT = "300px";
+    public static final String FILTER_GRID_HEIGHT = "250px";
     public static final int CHECKBOX_COLUMN_WIDTH = 20;
 
     /**
@@ -69,7 +71,7 @@ public class FilterContentString extends Composite implements FilterContent {
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
 
     private final FieldColumn column;
-    private final DataGrid<Projection> table;
+    private final InstanceTable table;
     private final DataGrid<Projection> filterGrid;
     private final List<Projection> allItems;
 
@@ -80,7 +82,7 @@ public class FilterContentString extends Composite implements FilterContent {
     @UiField
     HTMLPanel textBoxContainer;
 
-    public FilterContentString(DataGrid<Projection> table, FieldColumn column) {
+    public FilterContentString(InstanceTable table, FieldColumn column) {
         FilterDataGridResources.INSTANCE.dataGridStyle().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -112,13 +114,39 @@ public class FilterContentString extends Composite implements FilterContent {
         filterGrid.setAutoFooterRefreshDisabled(true);
 
         tableDataProvider.addDataDisplay(filterGrid);
-        allItems = extractItems(table.getVisibleItems());
+        allItems = extractItems(table.getTable().getVisibleItems());
         if (allItems.size() < SEARCH_BOX_PRESENCE_ITEM_COUNT) {
             textBoxContainer.remove(textBox);
         }
         filterData();
+        initByCriteriaVisit();
 
         gridContainer.add(filterGrid);
+    }
+
+    private void initByCriteriaVisit() {
+        final Criteria criteria = column.getCriteria();
+        if (criteria != null) {
+            final CriteriaVisitor initializationVisitor = new CriteriaVisitor() {
+                @Override
+                public void visitFieldCriteria(FieldCriteria fieldCriteria) {
+                    for (Projection projection : allItems) {
+                        final Object valueAsObject = column.getValueAsObject(projection);
+                        if (Objects.equals(valueAsObject, fieldCriteria.getValue())) {
+                            selectionModel.setSelected(projection, true);
+                        }
+                    }
+                }
+
+                @Override
+                public void visitUnion(CriteriaUnion criteriaUnion) {
+                    for (Criteria criteria : criteriaUnion) {
+                        criteria.accept(this);
+                    }
+                }
+            };
+            criteria.accept(initializationVisitor);
+        }
     }
 
     private List<Projection> extractItems(List<Projection> visibleItems) {
@@ -145,8 +173,13 @@ public class FilterContentString extends Composite implements FilterContent {
     }
 
     @Override
-    public Filter getFilter() {
+    public Criteria getCriteria() {
         final Set<Projection> selectedSet = selectionModel.getSelectedSet();
-        return null;
+        final List<Criteria> criteriaList = Lists.newArrayList();
+        for (Projection projection : selectedSet) {
+            final Object valueAsObject = column.getValueAsObject(projection);
+            criteriaList.add(new FieldCriteria(column.getNode().getFieldId(), valueAsObject));
+        }
+        return new CriteriaUnion(criteriaList);
     }
 }
