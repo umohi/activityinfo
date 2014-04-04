@@ -35,8 +35,10 @@ public class FilterContentFactory {
 
     public static FilterContent create(DataGrid<Projection> table, FieldColumn column) {
         switch (column.getNode().getFieldType()) {
-
+            case FREE_TEXT:
+            case NARRATIVE:
+                return new FilterContentString(table, column);
         }
-        return null;
+        return new FilterContentString(table, column);
     }
 }

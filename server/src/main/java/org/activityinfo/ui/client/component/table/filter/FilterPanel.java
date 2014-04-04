@@ -91,6 +91,7 @@ public class FilterPanel extends Composite implements HasFilter {
 
     @UiHandler("okButton")
     public void onOk(ClickEvent event) {
+        final Filter filter = getFilter(); // todo
         popup.hide();
     }
 
