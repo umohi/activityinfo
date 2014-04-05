@@ -21,11 +21,18 @@ package org.activityinfo.legacy.shared.adapter;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.BatchCommand;
+import org.activityinfo.legacy.shared.command.Command;
+import org.activityinfo.legacy.shared.command.CreateLocation;
+import org.activityinfo.legacy.shared.model.LocationDTO;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yuriyz on 3/27/14.
@@ -33,14 +40,28 @@ import java.util.List;
 public class Eraser {
 
     private final Dispatcher dispatcher;
-    private final List<Cuid> cuids;
+    private final List<Cuid> instanceIds;
 
-    public Eraser(Dispatcher dispatcher, List<Cuid> cuids) {
+    public Eraser(Dispatcher dispatcher, List<Cuid> instanceIds) {
         this.dispatcher = dispatcher;
-        this.cuids = cuids;
+        this.instanceIds = instanceIds;
     }
 
     public Promise<Void> execute() {
-        return Promise.rejected(new UnsupportedOperationException());
+
+        List<Command> commands = Lists.newArrayList();
+        for(Cuid instanceId : instanceIds) {
+            if(instanceId.getDomain() == CuidAdapter.LOCATION_DOMAIN) {
+
+
+                Map<String, Object> properties = new HashMap<>();
+                properties.put("id", CuidAdapter.getLegacyIdFromCuid(instanceId));
+                properties.put("workflowstatusid", "rejected");
+
+                commands.add(new CreateLocation(properties));
+            }
+        }
+
+        return dispatcher.execute(new BatchCommand(commands)).thenDiscardResult();
     }
 }

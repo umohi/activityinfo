@@ -56,15 +56,8 @@ public class CreateLocationHandler implements CommandHandlerAsync<CreateLocation
                     callback.onSuccess(null);
 
                 } else {
-                    // Location exists, but make sure that we're not trying to change
-                    // the location type (FormClass)
-                    int locationTypeId = results.getRow(0).getInt("LocationTypeId");
-                    if (locationTypeId != command.getLocationTypeId()) {
-                        callback.onFailure(new IllegalAccessCommandException("Cannot change location type"));
-                    } else {
-                        updateLocation(tx, command.getProperties());
-                        callback.onSuccess(null);
-                    }
+                    updateLocation(tx, command.getProperties());
+                    callback.onSuccess(null);
                 }
             }
         });
@@ -90,10 +83,11 @@ public class CreateLocationHandler implements CommandHandlerAsync<CreateLocation
 
     private void updateLocation(SqlTransaction tx, RpcMap properties) {
         SqlUpdate.update("location")
-                .value("Name", properties.get("name"))
-                .value("Axe", properties.get("axe"))
-                .value("X", properties.get("longitude"))
-                .value("Y", properties.get("latitude"))
+                .valueIfNotNull("Name", properties.get("name"))
+                .valueIfNotNull("Axe", properties.get("axe"))
+                .valueIfNotNull("X", properties.get("longitude"))
+                .valueIfNotNull("Y", properties.get("latitude"))
+                .valueIfNotNull("workflowstatusid", properties.get("workflowstatusid"))
                 .value("timeEdited", new Date().getTime())
                 .where("locationId", properties.get("id"))
                 .execute(tx);

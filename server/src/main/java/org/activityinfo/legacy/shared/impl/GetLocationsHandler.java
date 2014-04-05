@@ -66,6 +66,7 @@ public class GetLocationsHandler implements
         if(command.getLocationTypeId() != null) {
             query.where("locationTypeId").equalTo(command.getLocationTypeId());
         }
+        query.where("workflowstatusid").equalTo("validated");
 
         query.execute(context.getTransaction(), new SqlResultCallback() {
             @Override

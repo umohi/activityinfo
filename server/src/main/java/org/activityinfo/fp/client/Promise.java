@@ -2,6 +2,7 @@ package org.activityinfo.fp.client;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -101,6 +102,11 @@ public final class Promise<T> implements AsyncCallback<T> {
             }
         });
         return chained;
+    }
+
+
+    public Promise<Void> thenDiscardResult() {
+        return then(Functions.<Void>constant(null));
     }
 
     /**
