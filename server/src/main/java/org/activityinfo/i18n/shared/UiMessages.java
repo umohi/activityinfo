@@ -318,4 +318,9 @@ public interface UiMessages extends com.google.gwt.i18n.client.Messages {
     @DefaultMessage("{0} updated!")
     String newVersion(String appTitle);
 
+    @DefaultMessage("Do you want to retry deleting {0} row(s) from {1}?")
+    String retryDeletion(int size, String formClassLabel);
+
+    @DefaultMessage("Deleting {0} row(s) from {1}...")
+    String deletingRows(int size, String formClassLabel);
 }

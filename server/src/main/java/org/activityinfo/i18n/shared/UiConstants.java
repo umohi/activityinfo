@@ -3480,4 +3480,11 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Confirm Deletion")
     String confirmDeletion();
+
+    @DefaultStringValue("Deletion Failed")
+    String deletionFailed();
+
+    @DefaultStringValue("Deletion in Progress")
+    String deletionInProgress();
+
 }

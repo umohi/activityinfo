@@ -28,6 +28,8 @@ import org.activityinfo.ui.client.pageView.formClass.TablePresenter;
 import org.activityinfo.ui.client.style.ElementStyle;
 import org.activityinfo.ui.client.widget.AlertPanel;
 import org.activityinfo.ui.client.widget.ConfirmDialog;
+import org.activityinfo.ui.client.widget.ConfirmDialogCallback;
+import org.activityinfo.ui.client.widget.ConfirmDialogResources;
 
 import java.util.Collection;
 import java.util.List;
@@ -252,19 +254,31 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiHandler("removeButton")
     public void onRemove(ClickEvent event) {
         final Set<Projection> selectedSet = table.getSelectionModel().getSelectedSet();
-        final String title = I18N.CONSTANTS.confirmDeletion();
-        final String message = I18N.MESSAGES.removeTableRowsConfirmation(selectedSet.size(), getFormClassLabel());
-        final ConfirmDialog confirmDialog = new ConfirmDialog(title, message, ElementStyle.DANGER, new ConfirmDialog.ListenerAdapter() {
+
+        final int rowsSize = selectedSet.size();
+        final String formClassLabel = getFormClassLabel();
+
+        final ConfirmDialogResources confirmResources = new ConfirmDialogResources();
+        confirmResources.setConfirmTitle(I18N.CONSTANTS.confirmDeletion());
+        confirmResources.setConfirmMessage(I18N.MESSAGES.removeTableRowsConfirmation(rowsSize, formClassLabel));
+        confirmResources.setConfirmOkButtonText(I18N.CONSTANTS.delete());
+        confirmResources.setFailedTitle(I18N.CONSTANTS.deletionFailed());
+        confirmResources.setFailedMessage(I18N.MESSAGES.retryDeletion(rowsSize, formClassLabel));
+        confirmResources.setFailedOkButtonText(I18N.CONSTANTS.retry());
+        confirmResources.setProgressTitle(I18N.CONSTANTS.deletionInProgress());
+        confirmResources.setProgressMessage(I18N.MESSAGES.deletingRows(rowsSize, formClassLabel));
+        confirmResources.setProgressOkButtonText(I18N.CONSTANTS.deleting());
+
+        final ConfirmDialog<Void> confirmDialog = new ConfirmDialog<>(confirmResources, ElementStyle.DANGER, new ConfirmDialog.ConfirmAction<Void>() {
             @Override
-            public void onYes() {
-                removeRows(selectedSet);
+            public void perform(ConfirmDialogCallback<Void> callback) {
+                removeRows(selectedSet, callback);
             }
         });
-        confirmDialog.getOkButton().setText(I18N.CONSTANTS.delete());
         confirmDialog.show();
     }
 
-    public void removeRows(Set<Projection> selectedRows) {
+    public void removeRows(Set<Projection> selectedRows, final ConfirmDialogCallback<Void> callback) {
         final List<Cuid> cuids = Lists.newArrayList();
         for (Projection projection : selectedRows) {
             cuids.add(projection.getRootInstanceId());
@@ -272,12 +286,13 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         resourceLocator.remove(cuids).then(new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
+                callback.onFailure(caught);
                 LOGGER.log(Level.FINE, "Failed to remove instances.", caught);
-                errorMessages.showMessages(Lists.newArrayList(I18N.CONSTANTS.failedToRemoveRows()));
             }
 
             @Override
             public void onSuccess(Void result) {
+                callback.onSuccess(result);
                 table.reload();
             }
         });

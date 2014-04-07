@@ -26,6 +26,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -48,6 +50,7 @@ public class ModalDialog<T extends Widget> extends Composite {
     interface ModalDialogBinder extends UiBinder<Widget, ModalDialog> {
     }
 
+    private HandlerRegistration okButtonHandler;
     private T content;
 
     @UiField
@@ -72,6 +75,12 @@ public class ModalDialog<T extends Widget> extends Composite {
         ModalStylesheet.INSTANCE.ensureInjected();
 
         initWidget(uiBinder.createAndBindUi(this));
+        okButtonHandler = getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                dialog.hide();
+            }
+        });
     }
 
     public ModalDialog(T content, String dialogTitle) {
@@ -113,9 +122,8 @@ public class ModalDialog<T extends Widget> extends Composite {
         return okButton;
     }
 
-    @UiHandler("okButton")
-    public void onOk(ClickEvent event) {
-        dialog.hide();
+    public HandlerRegistration getOkButtonHandler() {
+        return okButtonHandler;
     }
 
     @UiHandler("closeButton")
