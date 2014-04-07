@@ -9,6 +9,9 @@
   <g:HTMLPanel styleName="f">
     <g:HTMLPanel ui:field="textBoxContainer" width="100%">
       <a:TextBox ui:field="textBox" placeholder="{i18n.search}" width="100%" addStyleNames="form-control input-sm"/>
+
+      <g:Button addStyleNames="btn btn-default btn-xs" ui:field="selectAllButton" text="{i18n.selectAll}"/>
+      <g:Button addStyleNames="btn btn-default btn-xs" ui:field="deselectAllButton" text="{i18n.deselectAll}"/>
     </g:HTMLPanel>
     <g:HTMLPanel ui:field="gridContainer"/>
   </g:HTMLPanel>

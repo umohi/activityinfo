@@ -3471,4 +3471,10 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Advanced filter")
     String advancedFilter();
+
+    @DefaultStringValue("Select all")
+    String selectAll();
+
+    @DefaultStringValue("Deselect all")
+    String deselectAll();
 }

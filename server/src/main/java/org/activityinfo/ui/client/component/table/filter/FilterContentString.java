@@ -26,10 +26,12 @@ import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -38,7 +40,10 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import org.activityinfo.core.client.ProjectionKeyProvider;
 import org.activityinfo.core.shared.Projection;
-import org.activityinfo.core.shared.criteria.*;
+import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.CriteriaUnion;
+import org.activityinfo.core.shared.criteria.CriteriaVisitor;
+import org.activityinfo.core.shared.criteria.FieldCriteria;
 import org.activityinfo.ui.client.component.table.DataGrid;
 import org.activityinfo.ui.client.component.table.FieldColumn;
 import org.activityinfo.ui.client.component.table.InstanceTable;
@@ -181,5 +186,21 @@ public class FilterContentString extends Composite implements FilterContent {
             criteriaList.add(new FieldCriteria(column.getNode().getFieldId(), valueAsObject));
         }
         return new CriteriaUnion(criteriaList);
+    }
+
+    private void selectAll(boolean selectState) {
+        for (Projection projection : tableDataProvider.getList()) {
+            selectionModel.setSelected(projection, selectState);
+        }
+    }
+
+    @UiHandler("selectAllButton")
+    public void onSelectAll(ClickEvent event) {
+        selectAll(true);
+    }
+
+    @UiHandler("deselectAllButton")
+    public void onDeselectAll(ClickEvent event) {
+        selectAll(false);
     }
 }
