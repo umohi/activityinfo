@@ -3477,4 +3477,7 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Deselect all")
     String deselectAll();
+
+    @DefaultStringValue("Confirm Deletion")
+    String confirmDeletion();
 }

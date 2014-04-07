@@ -27,6 +27,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.HTML;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.ui.client.style.ElementStyle;
 
 import javax.annotation.Nonnull;
 
@@ -51,38 +52,32 @@ public class ConfirmDialog extends ModalDialog {
         }
     }
 
-    private ConfirmDialog() {
+    public ConfirmDialog(@Nonnull String message, @Nonnull Listener listener) {
+        this(I18N.CONSTANTS.confirmation(), message, ElementStyle.PRIMARY, listener);
     }
 
-    public static void confirm(@Nonnull String message, @Nonnull Listener listener) {
-        confirm(I18N.CONSTANTS.confirmation(), message, listener);
-    }
-
-    public static void confirm(@Nonnull String title, @Nonnull String message, @Nonnull final Listener listener) {
+    public ConfirmDialog(@Nonnull String title, @Nonnull String message, @Nonnull ElementStyle primaryButtonStyle, @Nonnull final Listener listener) {
         Preconditions.checkNotNull(title);
         Preconditions.checkNotNull(message);
         Preconditions.checkNotNull(listener);
 
-        final ConfirmDialog dialog = new ConfirmDialog();
-        dialog.setDialogTitle(title);
-        dialog.getModalBody().add(new HTML(SafeHtmlUtils.fromString(message)));
-        dialog.getOkButton().setText(I18N.CONSTANTS.yes());
-        dialog.getCancelButton().setText(I18N.CONSTANTS.no());
-        dialog.show();
+        setDialogTitle(title);
+        getModalBody().add(new HTML(SafeHtmlUtils.fromString(message)));
+        getOkButton().setStyleName("btn btn-" + primaryButtonStyle.name().toLowerCase());
+        getOkButton().setText(I18N.CONSTANTS.yes());
 
         // handlers
-        dialog.getOkButton().addClickHandler(new ClickHandler() {
+        getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 listener.onYes();
             }
         });
-        dialog.getCancelButton().addClickHandler(new ClickHandler() {
+        getCancelButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 listener.onNo();
             }
         });
-
     }
 }

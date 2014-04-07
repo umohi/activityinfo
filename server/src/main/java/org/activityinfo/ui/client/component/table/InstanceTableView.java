@@ -25,6 +25,7 @@ import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.component.form.FormPanelDialog;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
 import org.activityinfo.ui.client.pageView.formClass.TablePresenter;
+import org.activityinfo.ui.client.style.ElementStyle;
 import org.activityinfo.ui.client.widget.AlertPanel;
 import org.activityinfo.ui.client.widget.ConfirmDialog;
 
@@ -251,13 +252,16 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiHandler("removeButton")
     public void onRemove(ClickEvent event) {
         final Set<Projection> selectedSet = table.getSelectionModel().getSelectedSet();
+        final String title = I18N.CONSTANTS.confirmDeletion();
         final String message = I18N.MESSAGES.removeTableRowsConfirmation(selectedSet.size(), getFormClassLabel());
-        ConfirmDialog.confirm(message, new ConfirmDialog.ListenerAdapter() {
+        final ConfirmDialog confirmDialog = new ConfirmDialog(title, message, ElementStyle.DANGER, new ConfirmDialog.ListenerAdapter() {
             @Override
             public void onYes() {
                 removeRows(selectedSet);
             }
         });
+        confirmDialog.getOkButton().setText(I18N.CONSTANTS.delete());
+        confirmDialog.show();
     }
 
     public void removeRows(Set<Projection> selectedRows) {
