@@ -23,6 +23,7 @@ package org.activityinfo.ui.client.component.table.filter;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
@@ -49,9 +50,7 @@ import org.activityinfo.ui.client.component.table.FieldColumn;
 import org.activityinfo.ui.client.component.table.InstanceTable;
 import org.activityinfo.ui.client.widget.TextBox;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author yuriyz on 4/3/14.
@@ -155,14 +154,14 @@ public class FilterContentString extends Composite implements FilterContent {
     }
 
     private List<Projection> extractItems(List<Projection> visibleItems) {
-        final List<Projection> items = Lists.newArrayList();
+        final SortedMap<String, Projection> labelToProjectionMap = Maps.newTreeMap();
         for (Projection projection : visibleItems) {
             final String value = column.getValue(projection);
-            if (!Strings.isNullOrEmpty(value)) {
-                items.add(projection);
+            if (!Strings.isNullOrEmpty(value) && !labelToProjectionMap.containsKey(value)) {
+                labelToProjectionMap.put(value, projection);
             }
         }
-        return items;
+        return Lists.newArrayList(labelToProjectionMap.values());
     }
 
     private void filterData() {
