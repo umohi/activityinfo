@@ -33,6 +33,10 @@ public class ClassCriteria implements Criteria {
         visitor.visitClassCriteria(this);
     }
 
+    public Cuid getClassId() {
+        return classId;
+    }
+
     @Override
     public boolean apply(FormInstance input) {
         return classId.equals(input.getClassId());

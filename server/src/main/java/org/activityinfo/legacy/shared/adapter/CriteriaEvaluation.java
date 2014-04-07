@@ -44,10 +44,7 @@ public class CriteriaEvaluation {
 
         @Override
         public void visitClassCriteria(ClassCriteria criteria) {
-            if(criteria.getClassIri().getScheme().equals(Cuids.SCHEME)) {
-               classPredicates.add(Predicates.equalTo(
-                       new Cuid(criteria.getClassIri().getSchemeSpecificPart())));
-            }
+               classPredicates.add(Predicates.equalTo(criteria.getClassId()));
         }
 
         @Override
@@ -61,7 +58,7 @@ public class CriteriaEvaluation {
 
         @Override
         public void visitUnion(CriteriaUnion union) {
-            ClassIdEvaluator visitor = evaluateSet(union);
+            ClassIdEvaluator visitor = evaluateSet(union.getElements());
             if(visitor.hasCriteriaIndependentOfClassId) {
                 hasCriteriaIndependentOfClassId = true;
             } else {

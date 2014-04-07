@@ -170,7 +170,7 @@ public class CuidAdapter {
     }
 
 
-    public static Cuid adminEntityInstanceId(int adminEntityId) {
+    public static Cuid entity(int adminEntityId) {
         return cuid(ADMIN_ENTITY_DOMAIN, adminEntityId);
 
     }

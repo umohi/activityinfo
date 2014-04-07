@@ -5,6 +5,8 @@ import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Iri;
 import org.activityinfo.core.shared.LocalizedString;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.criteria.Criteria;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
@@ -22,7 +24,7 @@ public class FormField implements FormElement {
     private LocalizedString description;
     private LocalizedString unit;
     private FormFieldType type;
-    private Set<Cuid> range;
+    private Criteria range;
     private String calculation;
     private boolean readOnly;
     private boolean visible = true;
@@ -94,16 +96,16 @@ public class FormField implements FormElement {
      *
      * @return
      */
-    public Set<Cuid> getRange() {
+    public Criteria getRange() {
         return range;
     }
 
-    public void setRange(Set<Cuid> range) {
+    public void setRange(Criteria range) {
         this.range = range;
     }
 
-    public void setRange(Cuid range) {
-        this.range = Collections.singleton(range);
+    public void setRange(Cuid classId) {
+        this.range = new ClassCriteria(classId);
     }
 
     /**
@@ -192,6 +194,10 @@ public class FormField implements FormElement {
 
     public void addSuperProperty(Cuid propertyId) {
         superProperties.add(propertyId);
+    }
+
+    public boolean isSubPropertyOf(Cuid propertyId) {
+        return superProperties.contains(propertyId);
     }
 
     public void setSuperProperties(Set<Cuid> superProperties) {

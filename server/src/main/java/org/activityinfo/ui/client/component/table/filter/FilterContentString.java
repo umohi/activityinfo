@@ -144,7 +144,7 @@ public class FilterContentString extends Composite implements FilterContent {
 
                 @Override
                 public void visitUnion(CriteriaUnion criteriaUnion) {
-                    for (Criteria criteria : criteriaUnion) {
+                    for (Criteria criteria : criteriaUnion.getElements()) {
                         criteria.accept(this);
                     }
                 }

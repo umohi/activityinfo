@@ -53,4 +53,8 @@ public class CriteriaIntersection implements Criteria, Iterable<Criteria> {
     public Iterator<Criteria> iterator() {
         return members.iterator();
     }
+
+    public Iterable<Criteria> getElements() {
+        return members;
+    }
 }

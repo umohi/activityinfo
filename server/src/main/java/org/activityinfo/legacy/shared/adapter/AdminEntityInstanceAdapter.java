@@ -15,13 +15,13 @@ public class AdminEntityInstanceAdapter implements Function<AdminEntityDTO, Form
     public FormInstance apply(AdminEntityDTO input) {
 
         Cuid classId = CuidAdapter.adminLevelFormClass(input.getLevelId());
-        Cuid instanceId = CuidAdapter.adminEntityInstanceId(input.getId());
+        Cuid instanceId = CuidAdapter.entity(input.getId());
         FormInstance instance = new FormInstance(instanceId, classId);
 
         // Parent field value
         if(input.getParentId() != null) {
             instance.set(CuidAdapter.field(classId, CuidAdapter.ADMIN_PARENT_FIELD),
-                    CuidAdapter.adminEntityInstanceId(input.getParentId()));
+                    CuidAdapter.entity(input.getParentId()));
         }
 
         instance.set(CuidAdapter.field(classId, CuidAdapter.NAME_FIELD), input.getName());

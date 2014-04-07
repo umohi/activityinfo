@@ -44,7 +44,6 @@ import org.activityinfo.ui.client.local.ui.SyncStatusBar;
 import org.activityinfo.ui.client.page.*;
 import org.activityinfo.ui.client.page.config.DbListPageState;
 import org.activityinfo.ui.client.page.dashboard.DashboardPlace;
-import org.activityinfo.ui.client.page.entry.FormPanelPage;
 import org.activityinfo.ui.client.page.entry.place.DataEntryPlace;
 import org.activityinfo.ui.client.page.report.ReportsPlace;
 import org.activityinfo.ui.client.page.search.SearchPageState;
@@ -151,15 +150,6 @@ public class AppFrameSet implements Frame {
             viewport.remove(activeWidget);
         }
 
-        // ugly code : should be removed after we moved away from gxt (to natural layout)
-        // introduced as part of AI-482
-        if (FeatureSwitch.isNewFormEnabled() && widget instanceof FormPanelPage) {
-            final LayoutContainer widgetContainer = new LayoutContainer();
-            widgetContainer.setScrollMode(Style.Scroll.AUTOY);
-            widgetContainer.add(widget);
-
-            widget = widgetContainer;
-        }
         viewport.add(widget, new BorderLayoutData(LayoutRegion.CENTER));
         activeWidget = widget;
         viewport.layout();

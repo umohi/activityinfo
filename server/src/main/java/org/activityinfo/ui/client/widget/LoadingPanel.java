@@ -5,6 +5,9 @@ import com.google.common.base.Functions;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -45,13 +48,15 @@ public class LoadingPanel<V> implements IsWidget {
      */
     private Provider<Promise<V>> valueProvider;
 
-    private LoadingPanelView loadingView;
+    private final LoadingPanelView loadingView;
 
     private int currentRequestNumber = 0;
     private ScrollPanel scrollAncestor;
 
+    private HandlerRegistration retryHandler;
+
     public LoadingPanel() {
-        this.loadingView = new PageLoadingPanel();
+        this(new PageLoadingPanel());
     }
 
     public LoadingPanel(PageLoadingPanel view) {
@@ -68,7 +73,7 @@ public class LoadingPanel<V> implements IsWidget {
 
     public Promise<Void> show(Provider<Promise<V>> provider) {
         this.valueProvider = provider;
-        return tryLoad(provider);
+        return tryLoad();
     }
 
     public <T> Promise<Void> show(final Function<T, Promise<V>> function, final T argument) {
@@ -81,8 +86,8 @@ public class LoadingPanel<V> implements IsWidget {
         });
     }
 
-    private Promise<Void> tryLoad(Provider<Promise<V>> provider) {
-        Promise<V> promisedValue = provider.get();
+    private Promise<Void> tryLoad() {
+        Promise<V> promisedValue = valueProvider.get();
 
         // make sure we only react to the last request submitted...
         final int requestNumber = currentRequestNumber+1;
@@ -124,7 +129,7 @@ public class LoadingPanel<V> implements IsWidget {
         return loadResult;
     }
 
-    private void showLoadFailure(final int requestNumber, Throwable caught) {
+    private void showLoadFailure(final int requestNumber, final Throwable caught) {
 
         LOGGER.log(Level.SEVERE, "Load failed", caught);
 
@@ -133,19 +138,22 @@ public class LoadingPanel<V> implements IsWidget {
             return;
         }
 
-        if(loadingView == null) {
-            loadingView = new PageLoadingPanel();
-            loadingView.getRetryButton().addClickHandler(new ClickHandler() {
+        if(retryHandler == null) {
+            retryHandler = loadingView.getRetryButton().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
-                    tryLoad(valueProvider);
+                    tryLoad();
                 }
             });
         }
 
-        loadingView.onLoadingStateChanged(LoadingState.LOADING, caught);
-
-        setWidgetWithDelay(requestNumber, loadingView);
+        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+            @Override
+            public boolean execute() {
+                loadingView.onLoadingStateChanged(LoadingState.FAILED, caught);
+                return false;
+            }
+        }, DELAY_MS);
     }
 
     private void setWidgetWithDelay(final int requestNumber, final IsWidget widget) {
@@ -184,7 +192,6 @@ public class LoadingPanel<V> implements IsWidget {
     public Widget asWidget() {
         return loadingView.asWidget();
     }
-
     public void setScrollAncestor(ScrollPanel scrollAncestor) {
         this.scrollAncestor = scrollAncestor;
     }
@@ -192,4 +199,5 @@ public class LoadingPanel<V> implements IsWidget {
     public ScrollPanel getScrollAncestor() {
         return scrollAncestor;
     }
+
 }

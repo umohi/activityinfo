@@ -94,7 +94,7 @@ public class StartupListener extends GuiceServletContextListener {
                 new ExportModule(),
                 new MonitoringModule(),
                 new KmlModule(),
-                new BrandingModule(),
+                    new BrandingModule(),
                 new BlobServiceModule(),
                 new LocaleModule(),
                 new JaxRsModule(),

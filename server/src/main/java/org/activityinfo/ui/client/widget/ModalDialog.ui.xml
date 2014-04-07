@@ -5,7 +5,7 @@
 
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
 
-  <g:HTMLPanel addStyleNames="bs">
+  <g:HTMLPanel>
     <g:PopupPanel autoHideEnabled="false" modal="true" ui:field="dialog" styleName="bs">
       <g:HTMLPanel>
         <div class="modal-dialog" ui:field="dialogDiv">
@@ -15,7 +15,7 @@
               <h4 class="modal-title" ui:field="title"/>
             </div>
             <div class="modal-body">
-              <g:HTMLPanel ui:field="modalBody"/>
+              <g:SimplePanel ui:field="modalBody"/>
             </div>
             <div class="modal-footer">
               <g:HTMLPanel ui:field="modalFooter">

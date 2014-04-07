@@ -4,6 +4,7 @@ package org.activityinfo.fp.client;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -11,6 +12,7 @@ import org.activityinfo.fp.shared.*;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -23,7 +25,6 @@ import java.util.List;
  * @param <T> the type of the promised value
  */
 public final class Promise<T> implements AsyncCallback<T> {
-
 
 
     public enum State {
@@ -98,7 +99,11 @@ public final class Promise<T> implements AsyncCallback<T> {
 
             @Override
             public void onSuccess(T t) {
-                function.apply(t).then(chained);
+                try {
+                    function.apply(t).then(chained);
+                } catch(Throwable caught) {
+                    chained.onFailure(caught);
+                }
             }
         });
         return chained;
@@ -107,6 +112,10 @@ public final class Promise<T> implements AsyncCallback<T> {
 
     public Promise<Void> thenDiscardResult() {
         return then(Functions.<Void>constant(null));
+    }
+
+    public <R> Promise<R> join(Supplier<Promise<R>> supplier) {
+        return join(Functions.forSupplier(supplier));
     }
 
     /**
@@ -159,6 +168,18 @@ public final class Promise<T> implements AsyncCallback<T> {
         return chained;
     }
 
+    public <R> Promise<R> then(final Supplier<R> function) {
+        return then(Functions.forSupplier(function));
+    }
+
+    public T get() {
+        if(state != State.FULFILLED) {
+            throw new IllegalStateException();
+        }
+        return value;
+    }
+
+
     @Override
     public void onFailure(Throwable caught) {
         reject(caught);
@@ -201,7 +222,7 @@ public final class Promise<T> implements AsyncCallback<T> {
         return promise;
     }
 
-    public static Promise<Void> nothing() {
+    public static Promise<Void> done() {
         return Promise.resolved(null);
     }
 
@@ -302,6 +323,39 @@ public final class Promise<T> implements AsyncCallback<T> {
 
         return BiFunctions.foldLeft(initialValue, concatOp, promisedItems);
     }
+
+    public static Promise<Void> waitAll(Promise<?>... promises) {
+        return waitAll(Arrays.asList(promises));
+    }
+
+    public static Promise<Void> waitAll(List<? extends Promise<?>> promises) {
+
+        if(promises.isEmpty()) {
+            return Promise.done();
+        }
+
+        final Promise<Void> result = new Promise<>();
+        final int[] remaining = new int[] { promises.size() };
+        AsyncCallback callback = new AsyncCallback() {
+            @Override
+            public void onFailure(Throwable caught) {
+                result.onFailure(caught);
+            }
+
+            @Override
+            public void onSuccess(Object o) {
+                remaining[0]--;
+                if(remaining[0] == 0) {
+                    result.onSuccess(null);
+                }
+            }
+        };
+        for(int i=0;i!=promises.size();++i) {
+            promises.get(i).then(callback);
+        }
+        return result;
+    }
+
 
     @Override
     public String toString() {

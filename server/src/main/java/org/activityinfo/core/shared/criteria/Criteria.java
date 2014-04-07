@@ -1,5 +1,6 @@
 package org.activityinfo.core.shared.criteria;
 
+
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
 
@@ -16,5 +17,6 @@ public interface Criteria {
     boolean apply(@Nonnull FormInstance instance);
 
     boolean apply(@Nonnull Projection projection);
+
 
 }

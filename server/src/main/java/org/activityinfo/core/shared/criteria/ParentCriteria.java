@@ -38,7 +38,8 @@ public class ParentCriteria implements Criteria {
 
     @Override
     public boolean apply(@Nonnull Projection projection) {
-        throw new UnsupportedOperationException();
+        // todo
+        return true;
     }
 
     public static ParentCriteria isRoot() {

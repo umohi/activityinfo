@@ -71,6 +71,9 @@ public class PageLoadingPanel implements IsWidget, LoadingPanelView {
         content.setWidget(w);
     }
 
+    public void setContentStyleName(String styleName) {
+        content.setStyleName(styleName);
+    }
 
     public void setWidget(IsWidget widget) {
         setWidget(widget.asWidget());

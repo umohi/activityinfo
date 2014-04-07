@@ -20,8 +20,9 @@ public class ExceptionOracle {
     }
 
     public static String getIcon(Throwable caught) {
-        return isConnectionFailure(caught) ? Icons.INSTANCE.connectionProblem() :
-                Icons.INSTANCE.connectionProblem();
+        return isConnectionFailure(caught) ?
+                Icons.INSTANCE.connectionProblem() :
+                Icons.INSTANCE.exception();
     }
 
     public static String getHeading(Throwable caught) {
@@ -31,6 +32,8 @@ public class ExceptionOracle {
     }
 
     public static String getExplanation(Throwable caught) {
-        return I18N.CONSTANTS.connectionProblemText();
+        return isConnectionFailure(caught) ?
+            I18N.CONSTANTS.connectionProblemText() :
+            I18N.CONSTANTS.unexpectedExceptionExplanation();
     }
 }

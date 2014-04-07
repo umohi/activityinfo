@@ -7,6 +7,7 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.application.ApplicationProperties;
 import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.CriteriaAnalysis;
 import org.activityinfo.core.shared.criteria.IdCriteria;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormField;

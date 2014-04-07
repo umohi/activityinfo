@@ -3,8 +3,8 @@
         xmlns:form="urn:import:org.activityinfo.ui.client.component.form"
         xmlns:a="urn:import:org.activityinfo.ui.client.widget">
     <g:HTMLPanel>
-        <a:EditableHeader ui:field="formHeader"></a:EditableHeader>
+        <a:EditableHeader ui:field="formHeader"/>
 
-        <form:FormPanel ui:field="formPanel"/>
+        <g:Label ui:field="formPanel"/>
     </g:HTMLPanel>
 </ui:UiBinder>

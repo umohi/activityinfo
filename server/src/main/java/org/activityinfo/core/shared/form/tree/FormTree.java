@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.LocalizedString;
+import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormFieldType;
@@ -22,9 +23,6 @@ import java.util.Set;
 public class FormTree {
 
 
-    public List<Node> getRootFields() {
-        return rootFields;
-    }
 
     public class Node {
 
@@ -88,7 +86,7 @@ public class FormTree {
          *
          * @return for Reference fields, the range of this field
          */
-        public Set<Cuid> getRange() {
+        public Criteria getRange() {
             return field.getRange();
         }
 
@@ -177,6 +175,10 @@ public class FormTree {
         return node;
     }
 
+    public List<Node> getRootFields() {
+        return rootFields;
+    }
+
     public Map<Cuid, FormClass> getRootFormClasses() {
         Map<Cuid, FormClass> map = Maps.newHashMap();
         for(Node node : rootFields) {
@@ -191,6 +193,11 @@ public class FormTree {
             throw new IllegalArgumentException();
         }
         return node;
+    }
+
+
+    public Node getRootField(Cuid fieldId) {
+        return nodeMap.get(new FieldPath(fieldId));
     }
 
     private void findLeaves(List<Node> leaves, Iterable<Node> children) {

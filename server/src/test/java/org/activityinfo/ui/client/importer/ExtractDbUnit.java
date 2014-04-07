@@ -25,33 +25,25 @@ public class ExtractDbUnit {
 
         // partial database export
         QueryDataSet partialDataSet = new QueryDataSet(connection);
-
-        partialDataSet.addTable("userlogin", "select * from userlogin where userid in " +
-                "(select owneruserid from userdatabase where databaseid=1100)");
+//
+//        partialDataSet.addTable("userlogin", "select * from userlogin where userid in " +
+//                "(select owneruserid from userdatabase where databaseid=1100)");
 
         partialDataSet.addTable("country", "select * from country where countryid=360");
         partialDataSet.addTable("adminlevel", "select * from adminlevel where countryid=360");
-        partialDataSet.addTable("adminentity", "select * from adminentity where adminlevelid in " +
+        partialDataSet.addTable("adminentity", "select AdminEntityId, AdminEntityParentId, AdminLevelId, Name" +
+                " from adminentity where adminlevelid in " +
                 "(select adminlevelid from adminlevel where CountryId=360)");
-        partialDataSet.addTable("locationtype", "select * from locationtype where locationtypeid = 1360");
-        partialDataSet.addTable("location", "select * from location where locationtypeid = 1360");
+        partialDataSet.addTable("locationtype", "select * from locationtype" +
+                " where countryid = 360 and BoundAdminLevelId is null");
+        partialDataSet.addTable("location", "select * from location where locationtypeid in " +
+                "(select locationtypeid from locationtype where countryid = 360 and BoundAdminLevelId is null)");
         partialDataSet.addTable("locationadminlink", "select * from locationadminlink where locationid in " +
-                "(select locationid from location where LocationTypeID=1360)");
-
-        partialDataSet.addTable("userdatabase", "select * from userdatabase where databaseid=1100");
-        partialDataSet.addTable("partner", "select * from partner where partnerid " +
-                " in (select partnerid from partnerindatabase where databaseid=1100)");
-
-        partialDataSet.addTable("activity", "select * from activity where databaseid=1100 and" +
-                " activity.datedeleted is null ");
-
-        partialDataSet.addTable("attribute", "select * from attribute at where " +
-                "at.datedeleted is null and at.attributegroupid in " +
-                "(select attributegroupid from attributegroupinactivity ag where ag.activityid in " +
-                "(select activityid from activity where databaseid=1100 and activity.datedeleted is null)) ");
+                "(select locationid from location where LocationTypeID in " +
+                "(select locationtypeid from locationtype where countryid = 360 and BoundAdminLevelId is null))");
 
 
-        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("src/test/resources/dbunit/attrib-import.xml"));
+        FlatXmlDataSet.write(partialDataSet, new FileOutputStream("src/test/resources/dbunit/jordan-locations.db.xml"));
 
     }
 }
