@@ -156,6 +156,6 @@ public class RootResource {
 
     @Path("/locations")
     public LocationsResource getLocations() {
-        return new LocationsResource();
+        return new LocationsResource(dispatcher);
     }
 }

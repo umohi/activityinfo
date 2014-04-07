@@ -1,6 +1,11 @@
 package org.activityinfo.server.endpoint.rest;
 
 import com.sun.jersey.api.core.InjectParam;
+import org.activityinfo.legacy.shared.command.GetLocations;
+import org.activityinfo.legacy.shared.command.result.LocationResult;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.LocationDTO;
+import org.activityinfo.server.command.DispatcherSync;
 import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.Location;
 import org.activityinfo.server.database.hibernate.entity.LocationType;
@@ -20,32 +25,38 @@ import java.util.List;
 
 public class LocationsResource {
 
+    private DispatcherSync dispatcher;
+
+    public LocationsResource(DispatcherSync dispatcher) {
+        this.dispatcher = dispatcher;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Object query(@InjectParam EntityManager em, @QueryParam("type") int typeId)
+    public Response query(@QueryParam("type") int typeId)
             throws IOException {
 
-        List<Location> locations = em.createQuery("select distinct loc from" +
-                " Location loc left join fetch loc.adminEntities where loc.locationType.id = :typeId")
-                .setParameter("typeId", typeId)
-                .getResultList();
+        GetLocations query = new GetLocations();
+        query.setLocationTypeId(typeId);
+
+        LocationResult result = dispatcher.execute(query);
 
 
         StringWriter writer = new StringWriter();
         JsonGenerator json = Jackson.createJsonFactory(writer);
 
         json.writeStartArray();
-        for (Location location : locations) {
+        for (LocationDTO location : result.getData()) {
             json.writeStartObject();
             json.writeNumberField("id", location.getId());
             json.writeStringField("name", location.getName());
-            if (location.getX() != null && location.getY() != null) {
-                json.writeNumberField("latitude", location.getY());
-                json.writeNumberField("longitude", location.getX());
+            if (location.hasCoordinates()) {
+                json.writeNumberField("latitude", location.getLatitude());
+                json.writeNumberField("longitude", location.getLongitude());
             }
             json.writeObjectFieldStart("adminEntities");
-            for (AdminEntity entity : location.getAdminEntities()) {
-                json.writeFieldName(Integer.toString(entity.getLevel().getId()));
+            for (AdminEntityDTO entity : location.getAdminEntities()) {
+                json.writeFieldName(Integer.toString(entity.getLevelId()));
                 json.writeStartObject();
                 json.writeNumberField("id", entity.getId());
                 json.writeStringField("name", entity.getName());
