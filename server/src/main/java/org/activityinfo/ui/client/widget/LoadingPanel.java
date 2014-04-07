@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * SimpleLayoutPanel for widgets that need to be asynchronously
  * created
  */
-public class LoadingPanel<V> implements IsWidget, HasScrollAncestor {
+public class LoadingPanel<V> implements IsWidget {
 
     private static final Logger LOGGER = Logger.getLogger(LoadingPanel.class.getName());
 
@@ -59,9 +59,6 @@ public class LoadingPanel<V> implements IsWidget, HasScrollAncestor {
     }
 
     public void setDisplayWidget(DisplayWidget<? super V> widget) {
-        if (widget instanceof HasScrollAncestor) { // hack! - inject scroll ancestor
-            ((HasScrollAncestor) widget).setScrollAncestor(scrollAncestor);
-        }
         this.widgetProvider = Functions.constant(widget);
     }
 
@@ -167,9 +164,6 @@ public class LoadingPanel<V> implements IsWidget, HasScrollAncestor {
         assert widgetProvider != null : "No widget/provider has been set!";
         try {
             final DisplayWidget<? super V> displayWidget = widgetProvider.apply(result);
-            if (displayWidget instanceof HasScrollAncestor) { // hack! - inject scroll ancestor
-                ((HasScrollAncestor) displayWidget).setScrollAncestor(scrollAncestor);
-            }
             displayWidget.show(result).then(new AsyncCallback<Void>() {
                 @Override
                 public void onFailure(Throwable caught) {

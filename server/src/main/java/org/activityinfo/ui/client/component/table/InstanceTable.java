@@ -20,7 +20,6 @@ import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
 import org.activityinfo.ui.client.style.table.DataGridResources;
-import org.activityinfo.ui.client.widget.HasScrollAncestor;
 import org.activityinfo.ui.client.widget.loading.LoadingState;
 import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 
@@ -52,14 +51,11 @@ public class InstanceTable implements IsWidget {
     private final DataGrid<Projection> table;
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
-    private final InstanceTableHeightAdjuster heightAdjuster;
-    private HasScrollAncestor hasScrollAncestor;
     private Set<FieldPath> fields = Sets.newHashSet();
     private Criteria criteria;
 
-    public InstanceTable(ResourceLocator resourceLocator, HasScrollAncestor hasScrollAncestor) {
+    public InstanceTable(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
-        this.hasScrollAncestor = hasScrollAncestor;
         DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
 
         table = new DataGrid<>(50, DataGridResources.INSTANCE);
@@ -89,7 +85,6 @@ public class InstanceTable implements IsWidget {
             }
         });
         table.setLoadingIndicator(loadingIndicator.asWidget());
-        heightAdjuster = new InstanceTableHeightAdjuster(this);
     }
 
     public void setCriteria(Criteria criteria) {
@@ -130,7 +125,6 @@ public class InstanceTable implements IsWidget {
                 tableDataProvider.setList(result);
             }
         });
-        heightAdjuster.recalculateTableHeight();
     }
 
     private Criteria buildQueryCriteria() {
@@ -166,13 +160,4 @@ public class InstanceTable implements IsWidget {
 
         //reload();
     }
-
-    public HasScrollAncestor getHasScrollAncestor() {
-        return hasScrollAncestor;
-    }
-
-    public InstanceTableHeightAdjuster getHeightAdjuster() {
-        return heightAdjuster;
-    }
-
 }

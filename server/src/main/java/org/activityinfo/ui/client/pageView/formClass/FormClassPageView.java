@@ -18,13 +18,12 @@ import org.activityinfo.ui.client.page.instance.BreadCrumbBuilder;
 import org.activityinfo.ui.client.pageView.IconStyleProvider;
 import org.activityinfo.ui.client.pageView.InstancePageView;
 import org.activityinfo.ui.client.style.Icons;
-import org.activityinfo.ui.client.widget.HasScrollAncestor;
 import org.activityinfo.ui.client.widget.LoadingPanel;
 
 /**
  * Provides a view for a FormClass instance
  */
-public class FormClassPageView implements InstancePageView, HasScrollAncestor {
+public class FormClassPageView implements InstancePageView {
 
     private final Widget rootElement;
     private final ResourceLocator resourceLocator;

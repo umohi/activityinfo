@@ -13,7 +13,6 @@ import org.activityinfo.fp.client.Promise;
 import org.activityinfo.ui.client.component.table.FieldColumn;
 import org.activityinfo.ui.client.component.table.InstanceTableView;
 import org.activityinfo.ui.client.widget.DisplayWidget;
-import org.activityinfo.ui.client.widget.HasScrollAncestor;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ import java.util.Map;
 /**
  * Presents the instances of this form class as table
  */
-public class TablePresenter implements DisplayWidget<FormTree>, HasScrollAncestor {
+public class TablePresenter implements DisplayWidget<FormTree> {
 
     private InstanceTableView tableView;
 
