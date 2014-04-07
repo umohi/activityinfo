@@ -15,6 +15,7 @@ import org.activityinfo.core.client.ProjectionKeyProvider;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.CriteriaIntersection;
 import org.activityinfo.core.shared.criteria.CriteriaUnion;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
@@ -128,15 +129,18 @@ public class InstanceTable implements IsWidget {
     }
 
     private Criteria buildQueryCriteria() {
-        final List<Criteria> unionCriteria = Lists.newArrayList(criteria);
+        // we want the intersection of the base (class) criteria and
+        // each of the column filters: the rows that satisfy the class AND
+        // the Col1 filter AND Col2 filter
+        final List<Criteria> intersection = Lists.newArrayList(criteria);
         for (int i = 0; i < table.getColumnCount(); i++) {
             final FieldColumn column = (FieldColumn) table.getColumn(i);
             final Criteria columnCriteria = column.getCriteria();
             if (columnCriteria != null) {
-                unionCriteria.add(columnCriteria);
+                intersection.add(columnCriteria);
             }
         }
-        return new CriteriaUnion(unionCriteria);
+        return new CriteriaIntersection(intersection);
     }
 
     public MultiSelectionModel<Projection> getSelectionModel() {

@@ -1,5 +1,6 @@
 package org.activityinfo.core.shared.criteria;
 
+import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
@@ -25,4 +26,8 @@ public class NullCriteria implements Criteria {
         return true;
     }
 
+    @Override
+    public boolean apply(@Nonnull Projection projection) {
+        return true;
+    }
 }

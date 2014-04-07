@@ -20,6 +20,7 @@ import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetLocations;
 import org.activityinfo.legacy.shared.command.GetSites;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -109,6 +110,21 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
             results = results.join(new FetchAndJoinFunction(fieldToJoin));
         }
 
+        // filter
+        results = results.then(new Function<List<Projection>, List<Projection>>() {
+            @Nullable
+            @Override
+            public List<Projection> apply(@Nullable List<Projection> input) {
+                List<Projection> matching = new ArrayList<Projection>();
+                for(Projection projection : input) {
+                    if(criteria.apply(projection)) {
+                        matching.add(projection);
+                    }
+                }
+                return matching;
+            }
+        });
+
         return results;
     }
 
@@ -134,7 +150,7 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         query.setLocationIds(criteriaAnalysis.getIds(CuidAdapter.LOCATION_TYPE_DOMAIN));
 
         return dispatcher.execute(query)
-                .then(new LocationProjector(fieldPaths));
+                .then(new LocationProjector(criteria, fieldPaths));
     }
 
 

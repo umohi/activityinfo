@@ -1,6 +1,7 @@
 package org.activityinfo.core.shared.criteria;
 
 import com.google.common.collect.Lists;
+import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
@@ -25,6 +26,16 @@ public class CriteriaIntersection implements Criteria, Iterable<Criteria> {
 
     @Override
     public boolean apply(@Nonnull FormInstance input) {
+        for(Criteria criteria : members) {
+            if(!criteria.apply(input)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean apply(@Nonnull Projection input) {
         for(Criteria criteria : members) {
             if(!criteria.apply(input)) {
                 return false;

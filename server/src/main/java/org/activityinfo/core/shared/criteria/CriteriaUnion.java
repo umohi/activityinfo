@@ -2,6 +2,7 @@ package org.activityinfo.core.shared.criteria;
 
 
 import com.google.common.collect.Lists;
+import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
@@ -25,6 +26,16 @@ public class CriteriaUnion implements Criteria, Iterable<Criteria> {
     public boolean apply(@Nonnull FormInstance instance) {
         for(Criteria criterium : criteria) {
             if(criterium.apply(instance)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean apply(@Nonnull Projection projection) {
+        for(Criteria criterium : criteria) {
+            if(criterium.apply(projection)) {
                 return true;
             }
         }

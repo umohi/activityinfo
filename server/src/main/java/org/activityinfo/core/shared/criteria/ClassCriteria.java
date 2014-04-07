@@ -3,8 +3,10 @@ package org.activityinfo.core.shared.criteria;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Iri;
+import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Set;
 
@@ -15,19 +17,15 @@ import java.util.Set;
  */
 public class ClassCriteria implements Criteria {
 
-    private Iri classIri;
+    private Cuid classId;
 
-
-    public ClassCriteria(Iri classIri) {
-        this.classIri = classIri;
-    }
 
     public ClassCriteria(Cuid cuid) {
-        this.classIri = cuid.asIri();
+        this.classId = cuid;
     }
 
     public Iri getClassIri() {
-        return classIri;
+        return classId.asIri();
     }
 
     @Override
@@ -37,7 +35,12 @@ public class ClassCriteria implements Criteria {
 
     @Override
     public boolean apply(FormInstance input) {
-        return classIri.equals(input.getClassId().asIri());
+        return classId.equals(input.getClassId());
+    }
+
+    @Override
+    public boolean apply(@Nonnull Projection projection) {
+        return classId.equals(projection.getRootClassId());
     }
 
     public static Criteria union(Set<Cuid> range) {
