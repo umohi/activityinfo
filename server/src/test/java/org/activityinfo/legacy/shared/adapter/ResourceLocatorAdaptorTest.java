@@ -4,9 +4,11 @@ package org.activityinfo.legacy.shared.adapter;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.client.InstanceQuery;
+import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.criteria.IdCriteria;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.model.AiLatLng;
@@ -23,6 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -181,6 +184,23 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
 
         assertThat(projections.size(), equalTo(4));
         assertThat(projections.get(0).getStringValue(provinceName), equalTo("Sud Kivu"));
+    }
+
+
+    @Test
+    public void deleteLocation() {
+
+        ResourceLocatorAdaptor adapter = new ResourceLocatorAdaptor(getDispatcher());
+        Cuid instanceToDelete = CuidAdapter.locationInstanceId(1);
+        adapter.remove(Arrays.asList(instanceToDelete));
+
+        List<FormInstance> formInstances = assertResolves(adapter.queryInstances(new ClassCriteria(CuidAdapter.locationFormClass(1))));
+
+        for(FormInstance instance : formInstances) {
+            if(instance.getId().equals(instanceToDelete)) {
+                throw new AssertionError();
+            }
+        }
     }
 
 
