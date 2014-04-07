@@ -37,6 +37,7 @@ import javax.persistence.EntityManager;
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -87,6 +88,8 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain filterChain) throws IOException, ServletException {
 
+        allowCrossOriginRequests((HttpServletResponse) response);
+
         authProvider.clear();
 
         String authToken = ((HttpServletRequest) request).getHeader("Authorization");
@@ -107,6 +110,16 @@ public class AuthenticationFilter implements Filter {
             }
         }
         filterChain.doFilter(request, response);
+
+    }
+
+    private void allowCrossOriginRequests(HttpServletResponse response) {
+
+        // Allow all sites to make unauthenticated, cross-origin requests
+        response.addHeader("Access-Control-Allow-Origin", "*");
+
+        // cache cor permission for a full day
+        response.addHeader("Access-Control-Max-Age", Integer.toString(24*60*60));
     }
 
     @Override
