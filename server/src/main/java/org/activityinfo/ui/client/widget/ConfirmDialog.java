@@ -128,8 +128,6 @@ public class ConfirmDialog  {
         dialog.getModalBody().add(failedMessageContainer);
         dialog.getModalBody().add(messageContainer);
 
-        // handlers
-        dialog.getOkButtonHandler().removeHandler();
         dialog.getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -162,7 +160,7 @@ public class ConfirmDialog  {
 
             @Override
             public void onSuccess(Void result) {
-                ConfirmDialog.this.dialog.setVisible(false);
+                ConfirmDialog.this.dialog.hide();
                 action.onComplete();
             }
         });

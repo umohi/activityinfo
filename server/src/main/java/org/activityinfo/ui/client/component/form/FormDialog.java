@@ -21,14 +21,9 @@ package org.activityinfo.ui.client.component.form;
  * #L%
  */
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.*;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.i18n.shared.I18N;
@@ -37,7 +32,8 @@ import org.activityinfo.ui.client.component.form.model.FormViewModel;
 import org.activityinfo.ui.client.component.form.model.FormViewModelProvider;
 import org.activityinfo.ui.client.style.ModalStylesheet;
 import org.activityinfo.ui.client.widget.LoadingPanel;
-import org.activityinfo.ui.client.widget.ModalTitle;
+import org.activityinfo.ui.client.widget.ModalDialog;
+import org.activityinfo.ui.client.widget.loading.ExceptionOracle;
 import org.activityinfo.ui.client.widget.loading.PageLoadingPanel;
 
 /**
@@ -47,42 +43,17 @@ public class FormDialog {
 
     private FormDialogCallback callback;
 
-    interface FormDialogUiBinder extends UiBinder<PopupPanel, FormDialog> {
-    }
-
-    private static FormDialogUiBinder ourUiBinder = GWT.create(FormDialogUiBinder.class);
-
     private final ResourceLocator resourceLocator;
 
-    private final PopupPanel popupPanel;
+    private final ModalDialog dialog;
     private final SimpleFormPanel formPanel;
     private final LoadingPanel<FormViewModel> loadingPanel;
-
-    @UiField
-    ModalTitle title;
-
-    @UiField
-    ScrollPanel container;
-
-    @UiField
-    Button saveButton;
-
-    @UiField
-    Button cancelButton;
-
-    @UiField
-    InlineLabel statusLabel;
 
     public FormDialog(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
 
         ModalStylesheet.INSTANCE.ensureInjected();
 
-
-        popupPanel = ourUiBinder.createAndBindUi(this);
-        popupPanel.setWidth(Math.min(500, Window.getClientWidth()) + "px");
-        popupPanel.setHeight((Window.getClientHeight()-50) + "px");
-        popupPanel.center();
 
         formPanel = new SimpleFormPanel(
                 new VerticalFieldContainer.Factory(),
@@ -92,41 +63,44 @@ public class FormDialog {
         loadingPanel = new LoadingPanel<>(new PageLoadingPanel());
         loadingPanel.setDisplayWidget(formPanel);
 
-        container.add(loadingPanel);
+        dialog = new ModalDialog(loadingPanel);
+        dialog.getOkButton().setText(I18N.CONSTANTS.save());
+        dialog.getOkButton().setStyleName("btn btn-primary");
+        dialog.getOkButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                save();
+            }
+        });
     }
 
     public void setDialogTitle(String text) {
-        title.setText(text);
+        dialog.setDialogTitle(text);
     }
 
     public void show(final Cuid classId, final Cuid instanceId, FormDialogCallback callback) {
         this.callback = callback;
         loadingPanel.show(new FormViewModelProvider(resourceLocator, classId, instanceId));
-        popupPanel.show();
+        dialog.show();
     }
 
-    @UiHandler("saveButton")
-    public void onSave(ClickEvent event) {
-        statusLabel.setText(I18N.CONSTANTS.saving());
-        saveButton.setEnabled(false);
+    public void save() {
+        dialog.getStatusLabel().setText(I18N.CONSTANTS.saving());
+        dialog.getOkButton().setEnabled(false);
         resourceLocator.persist(formPanel.getInstance()).then(new AsyncCallback<Void>() {
 
             @Override
             public void onFailure(Throwable caught) {
-                statusLabel.setText(I18N.CONSTANTS.connectionProblem());
-                saveButton.setEnabled(true);
+                dialog.getStatusLabel().setText(ExceptionOracle.getExplanation(caught));
+                        dialog.getOkButton().setEnabled(true);
             }
 
             @Override
             public void onSuccess(Void result) {
-                popupPanel.hide();
+                dialog.hide();
                 callback.onPersisted(formPanel.getInstance());
             }
         });
     }
 
-    @UiHandler("cancelButton")
-    public void onCancel(ClickEvent event) {
-        popupPanel.hide();
-    }
 }
