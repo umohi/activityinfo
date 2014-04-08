@@ -5,25 +5,24 @@
 
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
 
-  <g:PopupPanel autoHideEnabled="false" modal="true" ui:field="dialog" styleName="bs">
-    <g:HTMLPanel>
-      <div class="modal-dialog" ui:field="dialogDiv">
-        <div class="modal-content" ui:field="contentDiv">
-          <div class="modal-header">
-            <g:Button addStyleNames="close pull-right btn-link" ui:field="closeButton" text="×"/>
-            <h4 class="modal-title" ui:field="title"/>
-          </div>
-          <div class="modal-body">
-            <g:FlowPanel ui:field="modalBody"/>
-          </div>
-          <div class="modal-footer">
-            <g:HTMLPanel ui:field="modalFooter">
-              <a:Button style="DEFAULT" text="{i18n.cancel}" ui:field="cancelButton"/>
-              <a:Button style="PRIMARY" text="{i18n.ok}" ui:field="okButton"/>
-            </g:HTMLPanel>
-          </div>
+  <g:HTMLPanel styleName="modal fade">
+    <div class="bs modal-dialog">
+      <div class="modal-content" ui:field="contentDiv">
+        <div class="modal-header">
+          <g:Button addStyleNames="close pull-right btn-link" ui:field="closeButton" text="×"/>
+          <h4 class="modal-title" ui:field="title"/>
+        </div>
+        <div class="modal-body">
+          <g:FlowPanel ui:field="modalBody"/>
+        </div>
+        <div class="modal-footer">
+          <g:HTMLPanel ui:field="modalFooter">
+            <g:InlineLabel ui:field="statusLabel"/>
+            <a:Button style="DEFAULT" text="{i18n.cancel}" ui:field="cancelButton"/>
+            <a:Button style="PRIMARY" text="{i18n.ok}" ui:field="okButton"/>
+          </g:HTMLPanel>
         </div>
       </div>
-    </g:HTMLPanel>
-  </g:PopupPanel>
+    </div>
+  </g:HTMLPanel>
 </ui:UiBinder>

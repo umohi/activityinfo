@@ -22,78 +22,80 @@ package org.activityinfo.ui.client.widget;
  */
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.HeadingElement;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.ui.client.style.BaseStylesheet;
 import org.activityinfo.ui.client.style.ModalStylesheet;
 
 /**
  * @author yuriyz on 3/4/14.
  */
-public class ModalDialog<T extends Widget>  {
+public class ModalDialog  {
+
+    private static SimplePanel backdrop;
+
 
     private static ModalDialogBinder uiBinder = GWT
             .create(ModalDialogBinder.class);
 
-    interface ModalDialogBinder extends UiBinder<PopupPanel, ModalDialog> {
+    interface ModalDialogBinder extends UiBinder<HTMLPanel, ModalDialog> {
     }
 
     private HandlerRegistration okButtonHandler;
-    private T content;
+    private IsWidget content;
+
+    HTMLPanel dialog;
 
     @UiField
     HeadingElement title;
+
+    @UiField
+    FlowPanel modalBody;
+
+    @UiField
+    DivElement contentDiv;
+
     @UiField
     Button okButton;
 
-    PopupPanel dialog;
-    @UiField
-    FlowPanel modalBody;
     @UiField
     HTMLPanel modalFooter;
-    @UiField
-    DivElement dialogDiv;
-    @UiField
-    DivElement contentDiv;
+
     @UiField
     Button cancelButton;
+    @UiField
+    InlineLabel statusLabel;
 
     public ModalDialog() {
         BaseStylesheet.INSTANCE.ensureInjected();
         ModalStylesheet.INSTANCE.ensureInjected();
 
         dialog = uiBinder.createAndBindUi(this);
-
-        okButtonHandler = getOkButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                dialog.hide();
-            }
-        });
+        RootPanel.get().add(dialog);
     }
 
-    public ModalDialog(T content, String dialogTitle) {
-        this(content);
-        setDialogTitle(dialogTitle);
-    }
-
-    public ModalDialog(T content) {
+    public ModalDialog(IsWidget content) {
+        this();
         this.content = content;
         getModalBody().add(content);
     }
 
-    public T getContent() {
+    public ModalDialog(IsWidget content, String dialogTitle) {
+        this(content);
+        setDialogTitle(dialogTitle);
+    }
+
+
+    public IsWidget getContent() {
         return content;
     }
 
@@ -102,17 +104,33 @@ public class ModalDialog<T extends Widget>  {
     }
 
     public void show() {
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                dialog.center();
-            }
-        });
+        showBackdrop();
+        showDialog();
     }
 
-    public PopupPanel getDialog() {
-        return dialog;
+    private void showDialog() {
+        dialog.addStyleName("modal-open");
+        dialog.addStyleName("in");
+        dialog.getElement().getStyle().setDisplay(Style.Display.BLOCK);
     }
+
+    private void showBackdrop() {
+        if(backdrop == null) {
+            backdrop = new SimplePanel();
+            backdrop.setStyleName("modal-backdrop fade");
+            RootPanel.get().add(backdrop);
+        }
+        backdrop.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+        backdrop.addStyleName("in");
+    }
+
+    public void hide() {
+        if(backdrop != null) {
+            backdrop.removeStyleName("in");
+        }
+        dialog.removeStyleName("modal-open");
+    }
+
 
     public void setDialogTitle(String dialogTitle) {
         this.title.setInnerHTML(dialogTitle);
@@ -122,18 +140,14 @@ public class ModalDialog<T extends Widget>  {
         return okButton;
     }
 
-    public HandlerRegistration getOkButtonHandler() {
-        return okButtonHandler;
-    }
-
     @UiHandler("closeButton")
     public void onClose(ClickEvent event) {
-        dialog.hide();
+        hide();
     }
 
     @UiHandler("cancelButton")
     public void cancelButton(ClickEvent event) {
-        dialog.hide();
+        hide();
     }
 
     public FlowPanel getModalBody() {
@@ -144,15 +158,15 @@ public class ModalDialog<T extends Widget>  {
         return modalFooter;
     }
 
-    public DivElement getDialogDiv() {
-        return dialogDiv;
-    }
-
     public DivElement getContentDiv() {
         return contentDiv;
     }
 
     public Button getCancelButton() {
         return cancelButton;
+    }
+
+    public HasText getStatusLabel() {
+        return statusLabel;
     }
 }
