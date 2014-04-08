@@ -15,7 +15,7 @@
               <h4 class="modal-title" ui:field="title"/>
             </div>
             <div class="modal-body">
-              <g:SimplePanel ui:field="modalBody"/>
+              <g:FlowPanel ui:field="modalBody"/>
             </div>
             <div class="modal-footer">
               <g:HTMLPanel ui:field="modalFooter">
