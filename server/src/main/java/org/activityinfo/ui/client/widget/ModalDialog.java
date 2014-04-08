@@ -57,7 +57,7 @@ public class ModalDialog<T extends Widget> extends Composite {
     @UiField
     PopupPanel dialog;
     @UiField
-    SimplePanel modalBody;
+    FlowPanel modalBody;
     @UiField
     HTMLPanel modalFooter;
     @UiField
@@ -133,7 +133,7 @@ public class ModalDialog<T extends Widget> extends Composite {
         dialog.hide();
     }
 
-    public SimplePanel getModalBody() {
+    public FlowPanel getModalBody() {
         return modalBody;
     }
 
