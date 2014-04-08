@@ -16,6 +16,7 @@ import org.activityinfo.legacy.shared.adapter.bindings.SiteBinding;
 import org.activityinfo.legacy.shared.adapter.bindings.SiteBindingFactory;
 import org.activityinfo.legacy.shared.command.GetSchema;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -97,7 +98,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     }
 
     @Override
-    public Promise<Void> remove(List<Cuid> resources) {
+    public Promise<Void> remove(Collection<Cuid> resources) {
         return new Eraser(dispatcher, resources).execute();
     }
 }

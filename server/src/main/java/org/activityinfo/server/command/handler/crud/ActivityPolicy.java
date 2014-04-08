@@ -22,17 +22,19 @@ package org.activityinfo.server.command.handler.crud;
  * #L%
  */
 
-import java.util.Date;
-
-import javax.persistence.EntityManager;
-
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.activityinfo.legacy.shared.model.LocationTypeDTO;
 import org.activityinfo.server.command.handler.PermissionOracle;
 import org.activityinfo.server.database.hibernate.dao.ActivityDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
-import org.activityinfo.server.database.hibernate.entity.*;
+import org.activityinfo.server.database.hibernate.entity.Activity;
+import org.activityinfo.server.database.hibernate.entity.LocationType;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.Date;
 
 public class ActivityPolicy implements EntityPolicy<Activity> {
 
@@ -111,7 +113,8 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
         }
 
         if (changes.containsKey("category")) {
-            activity.setCategory(((String) changes.get("category")).trim());
+            String category = Strings.nullToEmpty((String)changes.get("category")).trim();
+            activity.setCategory(Strings.emptyToNull(category));
         }
 
         if (changes.containsKey("mapIcon")) {

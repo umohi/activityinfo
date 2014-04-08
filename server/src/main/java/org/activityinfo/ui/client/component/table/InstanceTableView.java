@@ -21,9 +21,10 @@ import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.component.form.FormDialog;
 import org.activityinfo.ui.client.component.form.FormDialogCallback;
-import org.activityinfo.ui.client.component.table.dialog.DeleteInstanceDialog;
+import org.activityinfo.ui.client.component.table.dialog.DeleteAction;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
 import org.activityinfo.ui.client.widget.AlertPanel;
+import org.activityinfo.ui.client.widget.ConfirmDialog;
 
 import java.util.Collection;
 import java.util.List;
@@ -203,8 +204,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiHandler("removeButton")
     public void onRemove(ClickEvent event) {
-        final DeleteInstanceDialog deleteDialog = new DeleteInstanceDialog(this);
-        deleteDialog.show();
+        ConfirmDialog.confirm(new DeleteAction(this));
     }
 
     public List<FieldColumn> getColumns() {
