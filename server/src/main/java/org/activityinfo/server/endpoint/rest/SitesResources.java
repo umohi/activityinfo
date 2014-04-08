@@ -173,6 +173,21 @@ public class SitesResources {
                     json.writeStringField("comments", site.getComments());
                 }
 
+                // write indicators and attributes
+                for(String propertyName : site.getPropertyNames()) {
+                    if(propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {
+                        Object value = site.get(propertyName);
+                        if(value instanceof Number) {
+                            json.writeNumberField("indicator" + IndicatorDTO.indicatorIdForPropertyName(propertyName),
+                                    ((Number)value).doubleValue());
+                        }
+                    } else if(propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
+                        Object value = site.get(propertyName);
+                        json.writeBooleanField("attribute" + AttributeDTO.idForPropertyName(propertyName),
+                                value == Boolean.TRUE);
+                    }
+                }
+
                 json.writeEndObject();
 
                 // write out the geometry object

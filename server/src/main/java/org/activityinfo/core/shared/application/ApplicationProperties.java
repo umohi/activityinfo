@@ -28,4 +28,6 @@ public class ApplicationProperties {
     public static final Cuid CLASS_PROPERTY = new Cuid("_classOf");
 
 
+    public static final Cuid HIERARCHIAL = new Cuid("_multiLevel");
+
 }

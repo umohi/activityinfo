@@ -1,6 +1,7 @@
 package org.activityinfo.core.shared.criteria;
 
 import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
@@ -33,6 +34,12 @@ public class ParentCriteria implements Criteria {
     @Override
     public boolean apply(@Nonnull FormInstance instance) {
         return Objects.equals(parentId, instance.getParentId());
+    }
+
+    @Override
+    public boolean apply(@Nonnull Projection projection) {
+        // todo
+        return true;
     }
 
     public static ParentCriteria isRoot() {

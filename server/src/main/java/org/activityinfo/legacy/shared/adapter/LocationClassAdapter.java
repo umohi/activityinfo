@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.LocalizedString;
 import org.activityinfo.core.shared.application.ApplicationProperties;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.FormFieldCardinality;
@@ -80,7 +81,8 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
         adminField.setLabel(new LocalizedString(I18N.CONSTANTS.adminEntities()));
         adminField.setType(FormFieldType.REFERENCE);
         adminField.setCardinality(FormFieldCardinality.MULTIPLE);
-        adminField.setRange(adminRange);
+        adminField.setRange(ClassCriteria.union(adminRange));
+        adminField.addSuperProperty(ApplicationProperties.HIERARCHIAL);
         formClass.addElement(adminField);
 
         FormField pointField = new FormField(getPointFieldId(classId));

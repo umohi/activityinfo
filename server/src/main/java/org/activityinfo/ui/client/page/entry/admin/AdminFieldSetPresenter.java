@@ -337,5 +337,4 @@ public class AdminFieldSetPresenter extends BaseObservable implements
     public boolean isLevelEnabled(AdminLevelDTO level) {
         return isLevelEnabled(level.getId());
     }
-
 }

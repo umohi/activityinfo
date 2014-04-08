@@ -3,6 +3,7 @@ package org.activityinfo.core.client;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.NullCriteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class InstanceQuery {
     private final Criteria criteria;
 
     public InstanceQuery(List<FieldPath> fieldPaths, Criteria criteria) {
+        assert criteria != null;
         this.criteria = criteria;
         this.fieldPaths = fieldPaths;
     }
@@ -40,9 +42,7 @@ public class InstanceQuery {
         private Builder() {}
 
         public Builder where(Criteria criteria) {
-            if(this.criteria != null) {
-                throw new IllegalStateException("Criteria already specified");
-            }
+            assert this.criteria == null : "Criteria already specified";
             this.criteria = criteria;
             return this;
         }
@@ -55,6 +55,9 @@ public class InstanceQuery {
         }
 
         public InstanceQuery build() {
+            if(criteria == null) {
+                criteria = NullCriteria.INSTANCE;
+            }
             return new InstanceQuery(paths, criteria);
         }
     }

@@ -1,33 +1,32 @@
-.row (@margin: 5px) {
-  margin-top: @margin;
-  margin-bottom: @margin;
+@import "../../style/defines";
+@import (reference) "../../style/bootstrap/grid";
+
+//// we have to wrap the form panel in a container/row
+//// in the form dialog, otherwise the nested rows don't work properly
+//.form-dialog {
+//
+//}
+
+
+.field-element {
+
+  .make-row(@gutter: 0px);
+  margin-bottom: 10px;
+
+  label {
+    font-weight: normal;
+    vertical-align: middle;
+    .make-xs-column(3, @gutter: 0px);
+  }
+
+  .form-control {
+    .make-xs-column(6);
+  }
+
+  .clear-button {
+    .make-xs-column(3);
+  }
+
 }
 
-.section-margin-left {
-  margin-left: 20px;
-}
 
-.field-row {
-  .row;
-}
-
-.inline-panel-row {
-  .row;
-}
-
-.show-inline {
-  display: inline !important
-}
-
-.reference-btn {
-  margin: 3px 3px 3px 3px;
-  height: 34px;
-}
-
-.form-panel-toobar {
-  position: absolute;
-  width: 300px;
-  /*border: dashed;*/
-  /*border-width: 2px;*/
-  /*border-color: #000810;*/
-}

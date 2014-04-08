@@ -178,4 +178,9 @@ public class FormClass implements Resource, FormElementContainer, HasHashCode {
     public void setHashCode(HashCode hashCode) {
         this.hashCode = hashCode;
     }
+
+    @Override
+    public String toString() {
+        return "<FormClass: " + getLabel() + ">";
+    }
 }

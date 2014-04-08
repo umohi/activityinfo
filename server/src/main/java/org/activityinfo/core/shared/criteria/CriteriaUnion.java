@@ -2,18 +2,19 @@ package org.activityinfo.core.shared.criteria;
 
 
 import com.google.common.collect.Lists;
+import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 
-public class CriteriaUnion implements Criteria, Iterable<Criteria> {
+public class CriteriaUnion implements Criteria {
 
-    private final List<Criteria> criteria;
+    private final List<Criteria> elements;
 
-    public CriteriaUnion(Iterable<? extends Criteria> criteria) {
-        this.criteria = Lists.newArrayList(criteria);
+    public CriteriaUnion(Iterable<? extends Criteria> elements) {
+        this.elements = Lists.newArrayList(elements);
     }
 
     @Override
@@ -21,9 +22,13 @@ public class CriteriaUnion implements Criteria, Iterable<Criteria> {
         visitor.visitUnion(this);
     }
 
+    public Collection<Criteria> getElements() {
+        return elements;
+    }
+
     @Override
     public boolean apply(@Nonnull FormInstance instance) {
-        for(Criteria criterium : criteria) {
+        for(Criteria criterium : elements) {
             if(criterium.apply(instance)) {
                 return true;
             }
@@ -32,7 +37,13 @@ public class CriteriaUnion implements Criteria, Iterable<Criteria> {
     }
 
     @Override
-    public Iterator<Criteria> iterator() {
-        return criteria.iterator();
+    public boolean apply(@Nonnull Projection projection) {
+        for(Criteria criterium : elements) {
+            if(criterium.apply(projection)) {
+                return true;
+            }
+        }
+        return false;
     }
+
 }

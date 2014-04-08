@@ -48,6 +48,6 @@ public class InstanceList extends HTML implements DisplayWidget<List<Projection>
                     InstancePlace.safeUri(projection.getRootInstanceId()).asString());
         }
         setHTML(html.toSafeHtml());
-        return Promise.nothing();
+        return Promise.done();
     }
 }

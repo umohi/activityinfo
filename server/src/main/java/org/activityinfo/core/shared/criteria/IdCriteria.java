@@ -2,6 +2,7 @@ package org.activityinfo.core.shared.criteria;
 
 import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
 
 import javax.annotation.Nonnull;
@@ -38,5 +39,10 @@ public class IdCriteria implements Criteria {
     @Override
     public boolean apply(@Nonnull FormInstance instance) {
         return instanceIds.contains(instance.getId());
+    }
+
+    @Override
+    public boolean apply(@Nonnull Projection projection) {
+        return instanceIds.contains(projection.getRootInstanceId());
     }
 }

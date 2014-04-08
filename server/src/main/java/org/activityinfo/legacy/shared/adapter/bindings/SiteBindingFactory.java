@@ -100,7 +100,7 @@ public class SiteBindingFactory implements Function<SchemaDTO, SiteBinding> {
         public void updateInstanceFromModel(FormInstance instance, SiteDTO model) {
             LocationDTO dummyLocation = model.getLocation();
             final AdminEntityDTO adminEntity = dummyLocation.getAdminEntity(levelId);
-            instance.set(locationField(activityId), Sets.newHashSet(adminEntityInstanceId(adminEntity.getId())));
+            instance.set(locationField(activityId), Sets.newHashSet(entity(adminEntity.getId())));
         }
 
         @Override

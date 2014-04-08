@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.component.form;
  */
 
 import com.bedatadriven.rebar.style.client.Source;
+import com.bedatadriven.rebar.style.client.Strictness;
 import com.bedatadriven.rebar.style.client.Stylesheet;
 import com.google.gwt.core.client.GWT;
 
@@ -29,26 +30,16 @@ import com.google.gwt.core.client.GWT;
  * @author yuriyz on 3/14/14.
  */
 @Source("FormPanel.less")
+@Strictness(ignoreMissingClasses = true)
 public interface FormPanelStyles extends Stylesheet {
 
     public static final FormPanelStyles INSTANCE = GWT.create(FormPanelStyles.class);
 
-    @ClassName("section-margin-left")
-    String sectionMarginLeft();
+    String formPanel();
 
-    @ClassName("field-row")
-    String fieldRow();
+    String formDialog();
 
-    @ClassName("inline-panel-row")
-    String inlinePanelRow();
+    String fieldElement();
 
-    @ClassName("show-inline")
-    String showInline();
-
-    @ClassName("reference-btn")
-    String referenceBtn();
-
-    @ClassName("form-panel-toobar")
-    String toolbar();
-
+    String clearButton();
 }

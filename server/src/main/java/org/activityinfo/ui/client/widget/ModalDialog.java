@@ -31,10 +31,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.ui.client.style.BaseStylesheet;
 import org.activityinfo.ui.client.style.ModalStylesheet;
 import org.activityinfo.ui.client.util.GwtUtil;
@@ -60,7 +57,7 @@ public class ModalDialog<T extends Widget> extends Composite {
     @UiField
     PopupPanel dialog;
     @UiField
-    HTMLPanel modalBody;
+    SimplePanel modalBody;
     @UiField
     HTMLPanel modalFooter;
     @UiField
@@ -136,7 +133,7 @@ public class ModalDialog<T extends Widget> extends Composite {
         dialog.hide();
     }
 
-    public HTMLPanel getModalBody() {
+    public SimplePanel getModalBody() {
         return modalBody;
     }
 

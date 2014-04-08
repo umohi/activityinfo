@@ -8,6 +8,9 @@ import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Cuids;
 import org.activityinfo.core.shared.Iri;
+import org.activityinfo.core.shared.criteria.ClassCriteria;
+import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.CriteriaAnalysis;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.tree.FormTree;
@@ -84,8 +87,6 @@ public class AsyncFormTreeBuilder implements Function<Cuid, Promise<FormTree>> {
          * Now that we have the actual FormClass model that corresponds to this node's
          * formClassId, add it's children.
          *
-         * @param node
-         * @param formClass
          */
         private void addChildrenToNode(FormTree.Node node, FormClass formClass) {
             for(FormField field : formClass.getFields()) {
@@ -102,11 +103,9 @@ public class AsyncFormTreeBuilder implements Function<Cuid, Promise<FormTree>> {
         }
 
         private void queueNextRequests(FormTree.Node child) {
-            for(Cuid rangeClass : child.getRange()) {
-                final Iri iri = rangeClass.asIri();
-                if(iri.getScheme().equals(Cuids.SCHEME)) {
-                    requestFormClassForNode(child, new Cuid(iri.getSchemeSpecificPart()));
-                }
+            CriteriaAnalysis criteriaAnalysis = CriteriaAnalysis.analyze(child.getRange());
+            for(Cuid classId : criteriaAnalysis.getClassCriteria()) {
+                requestFormClassForNode(child, classId);
             }
         }
     }

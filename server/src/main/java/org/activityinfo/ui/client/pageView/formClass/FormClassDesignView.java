@@ -7,13 +7,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.LocalizedString;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
-import org.activityinfo.ui.client.component.form.FormPanel;
 import org.activityinfo.ui.client.pageView.InstancePageView;
 import org.activityinfo.ui.client.widget.EditableHeader;
 
@@ -40,11 +40,11 @@ public class FormClassDesignView implements InstancePageView{
     @UiField
     EditableHeader formHeader;
     @UiField(provided = true)
-    FormPanel formPanel;
+    Label formPanel;
 
     public FormClassDesignView(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
-        this.formPanel = new FormPanel(resourceLocator);
+        this.formPanel = new Label("Under (re)construction!");
         rootElement = ourUiBinder.createAndBindUi(this);
     }
 
@@ -52,14 +52,13 @@ public class FormClassDesignView implements InstancePageView{
     public Promise<Void> show(FormInstance value) {
         return this.resourceLocator.getFormClass(value.getId())
                 .then(new Function<FormClass, Void>() {
-
                     @Nullable
                     @Override
                     public Void apply(@Nullable FormClass formClass) {
                         FormClassDesignView.this.formClass = formClass;
                         formHeader.setValue(formClass.getLabel().getValue());
-                        formPanel.setFormClass(formClass);
-                        formPanel.setDesignEnabled(true);
+//                        formPanel.setFormClass(formClass);
+//                        formPanel.setDesignEnabled(true);
                         return null;
                     }
                 });

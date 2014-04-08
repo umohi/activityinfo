@@ -3487,4 +3487,6 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Deletion in Progress")
     String deletionInProgress();
 
+    @DefaultStringValue("This field is required")
+    String requiredFieldMessage();
 }

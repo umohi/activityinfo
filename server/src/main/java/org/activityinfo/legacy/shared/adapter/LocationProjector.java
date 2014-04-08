@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.model.AiLatLng;
 import org.activityinfo.legacy.shared.command.result.ListResult;
@@ -19,12 +20,14 @@ import java.util.List;
 public class LocationProjector implements Function<ListResult<LocationDTO>, List<Projection>> {
 
     private final List<Projector> projectors;
+    private Criteria criteria;
 
     private interface Projector {
         void update(Projection projection, LocationDTO locationDTO);
     }
 
-    public LocationProjector(List<FieldPath> fields) {
+    public LocationProjector(Criteria criteria, List<FieldPath> fields) {
+        this.criteria = criteria;
         projectors = Lists.newArrayList();
         for(FieldPath path : fields) {
             Cuid fieldId = path.getLeafId();
@@ -50,7 +53,9 @@ public class LocationProjector implements Function<ListResult<LocationDTO>, List
             for(Projector projector : projectors) {
                 projector.update(projection, location);
             }
-            projections.add(projection);
+            if(criteria.apply(projection)) {
+                projections.add(projection);
+            }
         }
         return projections;
     }

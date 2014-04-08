@@ -14,6 +14,7 @@ import org.activityinfo.legacy.shared.command.GetAdminEntities;
 import org.activityinfo.legacy.shared.command.GetLocations;
 import org.activityinfo.legacy.shared.command.GetSchema;
 
+import javax.mail.event.FolderAdapter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -61,7 +62,8 @@ public class QueryExecutor  {
         } else if(criteriaAnalysis.isAncestorQuery()) {
             Cuid parentId = criteriaAnalysis.getParentCriteria();
 
-            if(parentId.getDomain() == DATABASE_DOMAIN || parentId.getDomain() == ACTIVITY_CATEGORY_DOMAIN) {
+            if(parentId.equals(FolderListAdapter.HOME_ID) || parentId.getDomain() == DATABASE_DOMAIN ||
+                    parentId.getDomain() == ACTIVITY_CATEGORY_DOMAIN) {
                 return folders();
             } else {
                 throw new UnsupportedOperationException("parentID " + parentId);
@@ -72,10 +74,10 @@ public class QueryExecutor  {
     }
 
     private Promise<List<FormInstance>> queryByClassIds() {
-        final Set<Iri> classCriteria = criteriaAnalysis.getClassCriteria();
+        final Set<Cuid> classCriteria = criteriaAnalysis.getClassCriteria();
         final List<Promise<List<FormInstance>>> resultSets = Lists.newArrayList();
-        for (Iri classIri : classCriteria) {
-            resultSets.add(queryByClassId(new Cuid(classIri.getSchemeSpecificPart())));
+        for (Cuid classId : classCriteria) {
+            resultSets.add(queryByClassId(classId));
         }
         return Promise.foldLeft(Collections.<FormInstance>emptyList(), new ConcatList<FormInstance>(), resultSets);
     }
@@ -97,6 +99,7 @@ public class QueryExecutor  {
                 return dispatcher.execute(new GetLocations(Lists.newArrayList(ids)))
                         .then(new ListResultAdapter<>(new LocationInstanceAdapter()));
 
+            case 'h': // home
             case DATABASE_DOMAIN:
             case ACTIVITY_CATEGORY_DOMAIN:
             case ACTIVITY_DOMAIN:
@@ -143,6 +146,19 @@ public class QueryExecutor  {
         if(!ids.get(ADMIN_ENTITY_DOMAIN).isEmpty()) {
             query.setEntityIds(ids.get(ADMIN_ENTITY_DOMAIN));
         }
+        if(criteria instanceof CriteriaIntersection) {
+            for(Criteria element : ((CriteriaIntersection) criteria).getElements()) {
+                if(element instanceof FieldCriteria) {
+                    FieldCriteria fieldCriteria = (FieldCriteria) element;
+                    if(fieldCriteria.getFieldId().equals(CuidAdapter.field(formClassId, ADMIN_PARENT_FIELD))) {
+                        Cuid id = (Cuid) fieldCriteria.getValue();
+
+                        query.setParentId(CuidAdapter.getLegacyIdFromCuid(id));
+                    }
+                }
+            }
+        }
+
         return query;
     }
 

@@ -90,6 +90,7 @@ public class GetLocationsHandler implements
                         .appendColumn("AdminEntity.AdminEntityId", "adminEntityId")
                         .appendColumn("AdminEntity.Name", "name")
                         .appendColumn("AdminEntity.AdminLevelId", "levelId")
+                        .appendColumn("AdminEntity.AdminEntityParentId", "parentId")
                         .appendColumn("link.LocationID", "locationId")
                         .from(Tables.LOCATION_ADMIN_LINK, "link")
                         .leftJoin(Tables.ADMIN_ENTITY, "AdminEntity").on("link.AdminEntityId=AdminEntity.AdminEntityId");
@@ -113,7 +114,9 @@ public class GetLocationsHandler implements
                                     entity.setId(row.getInt("adminEntityId"));
                                     entity.setName(row.getString("name"));
                                     entity.setLevelId(row.getInt("levelId"));
-
+                                    if(!row.isNull("parentId")) {
+                                        entity.setParentId(row.getInt("parentId"));
+                                    }
                                     LocationDTO dto = dtos.get(row.getInt("locationId"));
                                     if (dto != null) {
                                         dto.setAdminEntity(entity.getLevelId(), entity);

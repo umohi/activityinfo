@@ -3,10 +3,12 @@ package org.activityinfo.legacy.shared.adapter;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.application.FolderClass;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.model.*;
 
 import javax.annotation.Nullable;
@@ -20,6 +22,9 @@ import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
  * Extracts a list of databases as a list of folders
  */
 public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>> {
+
+    public static final Cuid HOME_ID = new Cuid("home");
+
     private final Criteria criteria;
 
     public FolderListAdapter(Criteria criteria) {
@@ -30,6 +35,13 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
     @Override
     public List<FormInstance> apply(SchemaDTO schemaDTO) {
         List<FormInstance> instances = Lists.newArrayList();
+
+        FormInstance root = new FormInstance(HOME_ID, FolderClass.CLASS_ID);
+        root.set(FolderClass.LABEL_FIELD_ID, I18N.CONSTANTS.home());
+        if(criteria.apply(root)) {
+            instances.add(root);
+        }
+
         for(UserDatabaseDTO db : schemaDTO.getDatabases()) {
             FormInstance dbFolder = newFolder(db);
             if(criteria.apply(dbFolder)) {
@@ -89,8 +101,8 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
     }
 
     private FormInstance newFolder(UserDatabaseDTO db) {
-        FormInstance folder = new FormInstance(cuid(DATABASE_DOMAIN, db.getId()),
-                FolderClass.CLASS_ID);
+        FormInstance folder = new FormInstance(cuid(DATABASE_DOMAIN, db.getId()), FolderClass.CLASS_ID);
+        folder.setParentId(HOME_ID);
         folder.set(FolderClass.LABEL_FIELD_ID, db.getName());
         folder.set(FolderClass.DESCRIPTION_FIELD_ID, db.getFullName());
         return folder;

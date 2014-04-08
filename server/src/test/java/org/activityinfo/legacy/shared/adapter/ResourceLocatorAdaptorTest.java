@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Arrays.asList;
 import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
@@ -34,6 +35,7 @@ import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.getAdminFieldId;
 import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.getNameFieldId;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
@@ -91,12 +93,22 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
     }
 
     @Test
+    @OnDataSet("/dbunit/jordan-locations.db.xml")
+    public void getLocation() {
+        Cuid classId = locationFormClass(50512);
+        FormInstance instance = assertResolves(resourceLocator.getFormInstance(locationInstanceId(1590565828)));
+        Set<Cuid> adminUnits = instance.getReferences(field(classId, ADMIN_FIELD));
+        System.out.println(adminUnits);
+
+    }
+
+    @Test
     public void persistLocation() {
 
         FormInstance instance = new FormInstance(CuidAdapter.generateLocationCuid(), HEALTH_CENTER_CLASS);
         instance.set(field(HEALTH_CENTER_CLASS, NAME_FIELD), "CS Ubuntu");
         instance.set(field(HEALTH_CENTER_CLASS, GEOMETRY_FIELD), new AiLatLng(-1, 13));
-        instance.set(field(HEALTH_CENTER_CLASS, ADMIN_FIELD), adminEntityInstanceId(IRUMU));
+        instance.set(field(HEALTH_CENTER_CLASS, ADMIN_FIELD), entity(IRUMU));
 
         assertResolves(resourceLocator.persist(instance));
 
@@ -210,7 +222,6 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
 
         Cuid partnerClassId = CuidAdapter.partnerFormClass(PEAR_DATABASE_ID);
 
-
         ResourceLocatorAdaptor adapter = new ResourceLocatorAdaptor(getDispatcher());
         FieldPath villageName = new FieldPath(getNameFieldId(VILLAGE_CLASS));
         FieldPath provinceName = new FieldPath(getAdminFieldId(VILLAGE_CLASS), field(PROVINCE_CLASS, CuidAdapter.NAME_FIELD));
@@ -228,6 +239,4 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
         assertThat(projections.size(), equalTo(4));
         assertThat(projections.get(0).getStringValue(provinceName), equalTo("Sud Kivu"));
     }
-
-
 }

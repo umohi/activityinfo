@@ -45,7 +45,7 @@ public class TablePresenter implements DisplayWidget<FormTree> {
         tableView.setCriteria(ClassCriteria.union(rootFormClasses.keySet()));
         tableView.setColumns(columns);
 
-        return Promise.nothing();
+        return Promise.done();
     }
 
     @Override

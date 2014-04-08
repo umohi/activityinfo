@@ -65,7 +65,7 @@ public class InMemResourceLocator implements ResourceLocator {
         } else {
             instances.put(resource.getId(), (FormInstance) resource);
         }
-        return Promise.nothing();
+        return Promise.done();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class InMemResourceLocator implements ResourceLocator {
         for(Resource resource : resources) {
             persist(resource);
         }
-        return Promise.nothing();
+        return Promise.done();
     }
 
     @Override
@@ -131,7 +131,6 @@ public class InMemResourceLocator implements ResourceLocator {
             instances.remove(cuid);
             formClasses.remove(cuid);
         }
-
-        return Promise.nothing();
+        return Promise.done();
     }
 }

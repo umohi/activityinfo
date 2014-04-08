@@ -17,9 +17,11 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormClass;
+import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.ui.client.component.form.FormPanelDialog;
+import org.activityinfo.ui.client.component.form.FormDialog;
+import org.activityinfo.ui.client.component.form.FormDialogCallback;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
 import org.activityinfo.ui.client.pageView.formClass.TablePresenter;
 import org.activityinfo.ui.client.style.ElementStyle;
@@ -173,18 +175,14 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void onAdd(ClickEvent event) {
         final FormClass formClass = rootFormClasses.iterator().next();
         final Cuid instanceId = CuidAdapter.newFormInstance(formClass.getId());
-        final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
+        FormDialog dialog = new FormDialog(resourceLocator);
+        dialog.setDialogTitle(I18N.CONSTANTS.addInstance());
+        dialog.show(formClass.getId(), instanceId, new FormDialogCallback() {
             @Override
-            public void onPersistedSuccessfully() {
+            public void onPersisted(FormInstance instance) {
                 getTable().reload();
             }
-        };
-        dialog.setDialogTitle(I18N.CONSTANTS.add() + " " + getFormClassLabel());
-        dialog.show(formClass.getId(), instanceId);
-
-        // navigate to new page
-//        final UserFormPlace userFormPlace = new UserFormPlace(formClass.getId(), instanceId);
-//        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
+        });
     }
 
     private String getFormClassLabel() {
@@ -198,18 +196,14 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiHandler("editButton")
     public void onEdit(ClickEvent event) {
         final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
-        final FormPanelDialog dialog = new FormPanelDialog(resourceLocator) {
+        final FormDialog dialog = new FormDialog(resourceLocator);
+        dialog.setDialogTitle(I18N.CONSTANTS.editInstance());
+        dialog.show(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId(), new FormDialogCallback() {
             @Override
-            public void onPersistedSuccessfully() {
+            public void onPersisted(FormInstance instance) {
                 getTable().reload();
             }
-        };
-        dialog.setDialogTitle(I18N.CONSTANTS.edit() + " " + getFormClassLabel());
-        dialog.show(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId());
-
-        // navigate to new page
-//        final UserFormPlace userFormPlace = new UserFormPlace(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId());
-//        History.newItem(userFormPlace.serializeAsPlaceHistoryToken());
+        });
     }
 
     @UiHandler("removeButton")

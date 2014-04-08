@@ -41,7 +41,6 @@ import org.activityinfo.ui.client.page.config.ConfigModule;
 import org.activityinfo.ui.client.page.dashboard.DashboardLoader;
 import org.activityinfo.ui.client.page.entry.DataEntryLoader;
 import org.activityinfo.ui.client.page.entry.EntryModule;
-import org.activityinfo.ui.client.page.entry.FormPanelPageLoader;
 import org.activityinfo.ui.client.page.home.PageLoader;
 import org.activityinfo.ui.client.page.report.ReportLoader;
 import org.activityinfo.ui.client.page.report.ReportModule;
@@ -81,8 +80,6 @@ public interface AppInjector extends Ginjector {
     SearchLoader createSearchLoader();
 
     DashboardLoader createDashboardLoader();
-
-    FormPanelPageLoader createSiteFormLoader();
 
     PageLoader createFolderPageLoader();
 

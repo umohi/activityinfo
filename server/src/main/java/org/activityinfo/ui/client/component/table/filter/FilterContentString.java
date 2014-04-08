@@ -144,7 +144,7 @@ public class FilterContentString extends Composite implements FilterContent {
 
                 @Override
                 public void visitUnion(CriteriaUnion criteriaUnion) {
-                    for (Criteria criteria : criteriaUnion) {
+                    for (Criteria criteria : criteriaUnion.getElements()) {
                         criteria.accept(this);
                     }
                 }
@@ -182,7 +182,7 @@ public class FilterContentString extends Composite implements FilterContent {
         final List<Criteria> criteriaList = Lists.newArrayList();
         for (Projection projection : selectedSet) {
             final Object valueAsObject = column.getValueAsObject(projection);
-            criteriaList.add(new FieldCriteria(column.getNode().getFieldId(), valueAsObject));
+            criteriaList.add(new FieldCriteria(column.getNode().getPath(), valueAsObject));
         }
         return new CriteriaUnion(criteriaList);
     }

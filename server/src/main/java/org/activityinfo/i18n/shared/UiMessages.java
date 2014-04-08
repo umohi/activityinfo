@@ -323,4 +323,10 @@ public interface UiMessages extends com.google.gwt.i18n.client.Messages {
 
     @DefaultMessage("Deleting {0} row(s) from {1}...")
     String deletingRows(int size, String formClassLabel);
+
+    @DefaultMessage("Add {0}")
+    String addLocation(String locationTypeName);
+
+    @DefaultMessage("Edit {0}")
+    String editLocation(String locationTypeName);
 }

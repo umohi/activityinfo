@@ -33,7 +33,7 @@ public class MappedReferenceFieldBinding implements FieldBinding {
         this.fieldNode = node;
         this.fieldId = node.getFieldId();
 
-        this.range = ClassCriteria.union(fieldNode.getField().getRange());
+        this.range = fieldNode.getField().getRange();
 
         int matchIndex = 0;
         for(Map.Entry<Integer, ColumnTarget> binding : columnBindings.entrySet()) {
