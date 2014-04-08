@@ -52,7 +52,8 @@ public class FilterCellAction implements ActionCell.Delegate {
         filterPanel.show(new PopupPanel.PositionCallback() {
             @Override
             public void setPosition(int offsetWidth, int offsetHeight) {
-                final TableRowElement row = tableHeadElement.getRows().getItem(0);
+                // get second row (first row is header action row)
+                final TableRowElement row = tableHeadElement.getRows().getItem(1);
                 final int columnIndex = grid.getColumnIndex(column);
                 final TableCellElement cellElement = row.getCells().getItem(columnIndex);
                 final int absoluteTop = cellElement.getAbsoluteTop();
