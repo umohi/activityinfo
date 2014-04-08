@@ -2,6 +2,7 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,7 +19,10 @@ import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.criteria.CriteriaIntersection;
+import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.ui.client.component.table.action.DeleteInstanceButton;
+import org.activityinfo.ui.client.component.table.action.NewInstanceButton;
 import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
 import org.activityinfo.ui.client.style.table.CellTableResources;
@@ -46,17 +50,17 @@ public class InstanceTable implements IsWidget {
 
     public static final String FALLBACK_TABLE_HEIGHT_PX = "500px";
 
-
-    // container is used to calculate table height
-//    private final ResizeLayoutPanel containerPanel = new ResizeLayoutPanel();
     private final ResourceLocator resourceLocator;
 
     private final ListDataProvider<Projection> tableDataProvider = new ListDataProvider<>();
     private final CellTable<Projection> table;
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
+    private final List<Cell> headerActions = Lists.newArrayList();
+
     private Set<FieldPath> fields = Sets.newHashSet();
     private Criteria criteria;
+    private FormClass rootFormClass;
 
     public InstanceTable(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
@@ -66,6 +70,7 @@ public class InstanceTable implements IsWidget {
         table.setSkipRowHoverCheck(true);
         table.setSkipRowHoverFloatElementCheck(true);
         table.setSkipRowHoverStyleUpdate(true);
+        table.setHeaderBuilder(new InstanceTableHeaderBuilder(this));
 
         // Set the table to fixed width: we will provide explicit
         // column widths
@@ -102,6 +107,13 @@ public class InstanceTable implements IsWidget {
                 }
             }
         });
+
+        initHeaderActions();
+    }
+
+    private void initHeaderActions() {
+        headerActions.add(new NewInstanceButton(this));
+        headerActions.add(new DeleteInstanceButton(this));
     }
 
     public void setCriteria(Criteria criteria) {
@@ -179,5 +191,21 @@ public class InstanceTable implements IsWidget {
 
 
         //reload();
+    }
+
+    public ResourceLocator getResourceLocator() {
+        return resourceLocator;
+    }
+
+    public void setRootFormClass(FormClass rootFormClass) {
+        this.rootFormClass = rootFormClass;
+    }
+
+    public FormClass getRootFormClass() {
+        return rootFormClass;
+    }
+
+    public List<Cell> getHeaderActions() {
+        return headerActions;
     }
 }

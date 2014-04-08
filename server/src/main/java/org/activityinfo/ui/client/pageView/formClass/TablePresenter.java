@@ -31,7 +31,7 @@ public class TablePresenter implements DisplayWidget<FormTree> {
     private ScrollPanel scrollAncestor;
 
     public TablePresenter(ResourceLocator resourceLocator) {
-        this.tableView = new InstanceTableView(resourceLocator, this);
+        this.tableView = new InstanceTableView(resourceLocator);
     }
 
     @Override

@@ -1,0 +1,78 @@
+package org.activityinfo.ui.client.component.table;
+/*
+ * #%L
+ * ActivityInfo Server
+ * %%
+ * Copyright (C) 2009 - 2013 UNICEF
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.dom.builder.shared.TableCellBuilder;
+import com.google.gwt.dom.builder.shared.TableRowBuilder;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.cellview.client.DefaultHeaderOrFooterBuilder;
+import com.google.gwt.user.cellview.client.Header;
+import org.activityinfo.core.shared.Projection;
+
+/**
+ * @author yuriyz on 4/2/14.
+ */
+public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Projection> {
+
+    private static final String ACTION_HEADER_ATTRIBUTE = "action_header_";
+
+    private final InstanceTable table;
+
+    /**
+     * Create a new InstanceTableHeaderBuilder for the header section.
+     *
+     * @param table the table being built
+     */
+    public InstanceTableHeaderBuilder(InstanceTable table) {
+        super(table.getTable(), false);
+        this.table = table;
+    }
+
+    @Override
+    protected boolean buildHeaderOrFooterImpl() {
+        buildActionRow();
+        super.buildHeaderOrFooterImpl();
+        return true;
+    }
+
+    public Header<?> getHeader(Element elem) {
+        return super.getHeader(elem);
+    }
+
+    private void buildActionRow() {
+        final int columnCount = getTable().getColumnCount();
+        TableRowBuilder tr = startRow();
+        TableCellBuilder th = tr.startTH().colSpan(columnCount);
+
+        th.attribute(ACTION_HEADER_ATTRIBUTE, Document.get().createUniqueId());
+        final SafeHtmlBuilder sb = new SafeHtmlBuilder();
+        for (Cell cellAction : table.getHeaderActions()) {
+            cellAction.render(new Cell.Context(0, 0, table), "", sb);
+        }
+        th.html(sb.toSafeHtml());
+
+        th.endTH();
+    }
+}

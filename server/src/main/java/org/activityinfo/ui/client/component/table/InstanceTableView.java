@@ -23,7 +23,6 @@ import org.activityinfo.ui.client.component.form.FormDialog;
 import org.activityinfo.ui.client.component.form.FormDialogCallback;
 import org.activityinfo.ui.client.component.table.dialog.DeleteInstanceDialog;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
-import org.activityinfo.ui.client.pageView.formClass.TablePresenter;
 import org.activityinfo.ui.client.widget.AlertPanel;
 
 import java.util.Collection;
@@ -70,7 +69,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     private static InstanceTableViewUiBinder ourUiBinder = GWT.create(InstanceTableViewUiBinder.class);
 
-    public InstanceTableView(ResourceLocator resourceLocator, TablePresenter tablePresenter) {
+    public InstanceTableView(ResourceLocator resourceLocator) {
         InstanceTableStyle.INSTANCE.ensureInjected();
         this.resourceLocator = resourceLocator;
         this.table = new InstanceTable(resourceLocator);
@@ -228,5 +227,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     public void setRootFormClasses(Collection<FormClass> rootFormClasses) {
         this.rootFormClasses = rootFormClasses;
+        if (rootFormClasses != null && !rootFormClasses.isEmpty()) {
+            table.setRootFormClass(rootFormClasses.iterator().next());
+        }
     }
 }
