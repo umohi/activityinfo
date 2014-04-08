@@ -13,10 +13,7 @@ import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.fp.client.Promise;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by alex on 4/1/14.
@@ -126,7 +123,7 @@ public class InMemResourceLocator implements ResourceLocator {
     }
 
     @Override
-    public Promise<Void> remove(List<Cuid> resources) {
+    public Promise<Void> remove(Collection<Cuid> resources) {
         for (Cuid cuid : resources) {
             instances.remove(cuid);
             formClasses.remove(cuid);

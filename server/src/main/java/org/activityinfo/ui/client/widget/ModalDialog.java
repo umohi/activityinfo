@@ -31,20 +31,22 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.ui.client.style.BaseStylesheet;
 import org.activityinfo.ui.client.style.ModalStylesheet;
-import org.activityinfo.ui.client.util.GwtUtil;
 
 /**
  * @author yuriyz on 3/4/14.
  */
-public class ModalDialog<T extends Widget> extends Composite {
+public class ModalDialog<T extends Widget>  {
 
     private static ModalDialogBinder uiBinder = GWT
             .create(ModalDialogBinder.class);
 
-    interface ModalDialogBinder extends UiBinder<Widget, ModalDialog> {
+    interface ModalDialogBinder extends UiBinder<PopupPanel, ModalDialog> {
     }
 
     private HandlerRegistration okButtonHandler;
@@ -54,7 +56,7 @@ public class ModalDialog<T extends Widget> extends Composite {
     HeadingElement title;
     @UiField
     Button okButton;
-    @UiField
+
     PopupPanel dialog;
     @UiField
     FlowPanel modalBody;
@@ -71,7 +73,8 @@ public class ModalDialog<T extends Widget> extends Composite {
         BaseStylesheet.INSTANCE.ensureInjected();
         ModalStylesheet.INSTANCE.ensureInjected();
 
-        initWidget(uiBinder.createAndBindUi(this));
+        dialog = uiBinder.createAndBindUi(this);
+
         okButtonHandler = getOkButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -95,7 +98,7 @@ public class ModalDialog<T extends Widget> extends Composite {
     }
 
     public void setVisible(boolean visible) {
-        GwtUtil.setVisible(visible, getElement());
+        dialog.setVisible(visible);
     }
 
     public void show() {

@@ -28,8 +28,8 @@ import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.BatchCommand;
 import org.activityinfo.legacy.shared.command.Command;
 import org.activityinfo.legacy.shared.command.CreateLocation;
-import org.activityinfo.legacy.shared.model.LocationDTO;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +40,9 @@ import java.util.Map;
 public class Eraser {
 
     private final Dispatcher dispatcher;
-    private final List<Cuid> instanceIds;
+    private final Collection<Cuid> instanceIds;
 
-    public Eraser(Dispatcher dispatcher, List<Cuid> instanceIds) {
+    public Eraser(Dispatcher dispatcher, Collection<Cuid> instanceIds) {
         this.dispatcher = dispatcher;
         this.instanceIds = instanceIds;
     }

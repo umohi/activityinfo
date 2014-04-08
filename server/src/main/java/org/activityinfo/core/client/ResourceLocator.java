@@ -9,6 +9,7 @@ import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ResourceLocator {
@@ -48,5 +49,5 @@ public interface ResourceLocator {
 
     Promise<List<Projection>> query(InstanceQuery query);
 
-    Promise<Void> remove(List<Cuid> resources);
+    Promise<Void> remove(Collection<Cuid> resources);
 }
