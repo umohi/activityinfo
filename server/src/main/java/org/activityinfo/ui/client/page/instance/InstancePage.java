@@ -40,11 +40,6 @@ public class InstancePage implements Page {
 
         this.scrollPanel = new ScrollPanel(container);
         this.scrollPanel.addStyleName("bs");
-
-        // set scroll ancestor, child widgets may want to "watch" it to provide own scrolling (e.g. table)
-        // and avoid double scrolls as well as "correct" height
-        this.loadingPanel.setScrollAncestor(scrollPanel);
-
     }
 
     @Override

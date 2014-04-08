@@ -2,8 +2,10 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -19,7 +21,8 @@ import org.activityinfo.core.shared.criteria.CriteriaUnion;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
-import org.activityinfo.ui.client.style.table.DataGridResources;
+import org.activityinfo.ui.client.style.table.CellTableResources;
+import org.activityinfo.ui.client.widget.CellTable;
 import org.activityinfo.ui.client.widget.loading.LoadingState;
 import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 
@@ -48,7 +51,7 @@ public class InstanceTable implements IsWidget {
     private final ResourceLocator resourceLocator;
 
     private final ListDataProvider<Projection> tableDataProvider = new ListDataProvider<>();
-    private final DataGrid<Projection> table;
+    private final CellTable<Projection> table;
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
     private Set<FieldPath> fields = Sets.newHashSet();
@@ -56,16 +59,16 @@ public class InstanceTable implements IsWidget {
 
     public InstanceTable(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator;
-        DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
+        CellTableResources.INSTANCE.cellTableStyle().ensureInjected();
 
-        table = new DataGrid<>(50, DataGridResources.INSTANCE);
+        table = new CellTable<>(50, CellTableResources.INSTANCE);
         table.setSkipRowHoverCheck(true);
         table.setSkipRowHoverFloatElementCheck(true);
         table.setSkipRowHoverStyleUpdate(true);
 
         // Set the table to fixed width: we will provide explicit
         // column widths
-        table.setWidth("100%");
+        table.setWidth("100%", true);
         table.setHeight(FALLBACK_TABLE_HEIGHT_PX);
         table.setSelectionModel(selectionModel);
         table.addRangeChangeHandler(new RangeChangeEvent.Handler() {
@@ -85,6 +88,19 @@ public class InstanceTable implements IsWidget {
             }
         });
         table.setLoadingIndicator(loadingIndicator.asWidget());
+        table.addAttachHandler(new AttachEvent.Handler() {
+            @Override
+            public void onAttachOrDetach(AttachEvent event) {
+                if (event.isAttached()) {
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                        @Override
+                        public void execute() {
+                            new CellTableAffixer(table);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public void setCriteria(Criteria criteria) {
@@ -148,7 +164,7 @@ public class InstanceTable implements IsWidget {
         return table;
     }
 
-    public DataGrid<Projection> getTable() {
+    public CellTable<Projection> getTable() {
         return table;
     }
 

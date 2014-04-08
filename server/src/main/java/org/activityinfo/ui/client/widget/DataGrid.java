@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table;
+package org.activityinfo.ui.client.widget;
 /*
  * #%L
  * ActivityInfo Server

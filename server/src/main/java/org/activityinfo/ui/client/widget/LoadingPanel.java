@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.ui.client.widget.loading.LoadingPanelView;
@@ -48,7 +47,6 @@ public class LoadingPanel<V> implements IsWidget {
     private LoadingPanelView loadingView;
 
     private int currentRequestNumber = 0;
-    private ScrollPanel scrollAncestor;
 
     public LoadingPanel() {
         this.loadingView = new PageLoadingPanel();
@@ -183,13 +181,5 @@ public class LoadingPanel<V> implements IsWidget {
     @Override
     public Widget asWidget() {
         return loadingView.asWidget();
-    }
-
-    public void setScrollAncestor(ScrollPanel scrollAncestor) {
-        this.scrollAncestor = scrollAncestor;
-    }
-
-    public ScrollPanel getScrollAncestor() {
-        return scrollAncestor;
     }
 }

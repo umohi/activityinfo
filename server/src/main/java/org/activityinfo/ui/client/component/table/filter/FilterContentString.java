@@ -45,7 +45,7 @@ import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.criteria.CriteriaUnion;
 import org.activityinfo.core.shared.criteria.CriteriaVisitor;
 import org.activityinfo.core.shared.criteria.FieldCriteria;
-import org.activityinfo.ui.client.component.table.DataGrid;
+import org.activityinfo.ui.client.widget.DataGrid;
 import org.activityinfo.ui.client.component.table.FieldColumn;
 import org.activityinfo.ui.client.component.table.InstanceTable;
 import org.activityinfo.ui.client.widget.TextBox;
