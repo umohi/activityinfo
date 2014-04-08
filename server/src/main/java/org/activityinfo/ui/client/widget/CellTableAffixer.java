@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table;
+package org.activityinfo.ui.client.widget;
 /*
  * #%L
  * ActivityInfo Server
@@ -28,7 +28,6 @@ import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.activityinfo.ui.client.widget.CellTable;
 
 /**
  * Adds affix behavior to table.

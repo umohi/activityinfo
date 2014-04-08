@@ -18,12 +18,12 @@ import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.criteria.CriteriaIntersection;
-import org.activityinfo.core.shared.criteria.CriteriaUnion;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
 import org.activityinfo.ui.client.style.table.CellTableResources;
 import org.activityinfo.ui.client.widget.CellTable;
+import org.activityinfo.ui.client.widget.CellTableAffixer;
 import org.activityinfo.ui.client.widget.loading.LoadingState;
 import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 

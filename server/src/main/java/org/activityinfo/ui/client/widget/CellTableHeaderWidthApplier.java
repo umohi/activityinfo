@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.table;
+package org.activityinfo.ui.client.widget;
 /*
  * #%L
  * ActivityInfo Server
@@ -24,7 +24,6 @@ package org.activityinfo.ui.client.component.table;
 import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.*;
 import org.activityinfo.core.shared.Pair;
-import org.activityinfo.ui.client.widget.CellTable;
 
 import java.util.Map;
 
@@ -33,7 +32,6 @@ import java.util.Map;
  */
 public class CellTableHeaderWidthApplier {
 
-    private final CellTable table;
     private final TableSectionElement tableHeadElement;
 
     // width information
@@ -42,7 +40,6 @@ public class CellTableHeaderWidthApplier {
     private int headerWidth;
 
     public CellTableHeaderWidthApplier(final CellTable table) {
-        this.table = table;
         this.tableHeadElement = table.getTableHeadElement();
     }
 
