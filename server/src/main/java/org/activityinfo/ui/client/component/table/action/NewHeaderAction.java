@@ -21,12 +21,7 @@ package org.activityinfo.ui.client.component.table.action;
  * #L%
  */
 
-import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
@@ -41,32 +36,17 @@ import org.activityinfo.ui.client.style.Icons;
 /**
  * @author yuriyz on 4/8/14.
  */
-public class NewInstanceButton extends ButtonCell {
-
-    public interface Template extends SafeHtmlTemplates {
-        @SafeHtmlTemplates.Template("<div class='pull-right'>" +
-                "<button class='btn btn-default btn-xs' type='button' tabindex='-1'><span class='{0}'>{1}</span></button>" +
-                "</div>")
-        SafeHtml button(String icon, String text);
-    }
-
-    public static final Template BUTTON_TEMPLATE = GWT.create(Template.class);
+public class NewHeaderAction implements TableHeaderAction {
 
     private final InstanceTable table;
 
-    public NewInstanceButton(InstanceTable table) {
+    public NewHeaderAction(InstanceTable table) {
         super();
         this.table = table;
     }
 
     @Override
-    public void render(Context context, String value, SafeHtmlBuilder sb) {
-        sb.append(BUTTON_TEMPLATE.button(Icons.INSTANCE.add(), I18N.CONSTANTS.newText()));
-    }
-
-    @Override
-    protected void onEnterKeyDown(Context context, Element parent, String value,
-                                  NativeEvent event, ValueUpdater<String> valueUpdater) {
+    public void execute() {
         final FormClass formClass = table.getRootFormClass();
         final Cuid instanceId = CuidAdapter.newFormInstance(formClass.getId());
         FormDialog dialog = new FormDialog(table.getResourceLocator());
@@ -77,5 +57,10 @@ public class NewInstanceButton extends ButtonCell {
                 table.reload();
             }
         });
+    }
+
+    @Override
+    public void render(Cell.Context context, String value, SafeHtmlBuilder sb) {
+        sb.append(TEMPLATE.rightAlignedButton(Icons.INSTANCE.add(), I18N.CONSTANTS.newText()));
     }
 }

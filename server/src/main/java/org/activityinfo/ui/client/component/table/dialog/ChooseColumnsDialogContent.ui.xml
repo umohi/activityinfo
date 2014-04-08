@@ -44,7 +44,7 @@
       </div>
       <div class="col-sm-5">
         <h4>
-          <ui:text from='{i18n.visibleColumns}'/>
+          <ui:text from='{i18n.chooseColumns}'/>
         </h4>
         <g:HTMLPanel ui:field="selectedColumnTableContainer"/>
       </div>

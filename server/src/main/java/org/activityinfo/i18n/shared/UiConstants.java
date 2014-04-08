@@ -3398,9 +3398,9 @@ public interface UiConstants extends Constants {
     @Key("moveRight")
     String moveRight();
 
-    @DefaultStringValue("Visible columns")
-    @Key("visibleColumns")
-    String visibleColumns();
+    @DefaultStringValue("Choose columns")
+    @Key("chooseColumns")
+    String chooseColumns();
 
     @DefaultStringValue("All columns")
     @Key("allColumns")

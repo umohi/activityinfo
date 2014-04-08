@@ -21,35 +21,39 @@ package org.activityinfo.ui.client.component.table.action;
  * #L%
  */
 
-import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.component.table.InstanceTable;
+import org.activityinfo.ui.client.component.table.dialog.DeleteAction;
 import org.activityinfo.ui.client.style.Icons;
+import org.activityinfo.ui.client.widget.ConfirmDialog;
 
 /**
  * @author yuriyz on 4/8/14.
  */
-public class DeleteInstanceButton extends ButtonCell {
+public class DeleteHeaderAction implements TableHeaderAction {
 
     private final InstanceTable table;
 
-    public DeleteInstanceButton(InstanceTable table) {
+    public DeleteHeaderAction(InstanceTable table) {
         super();
         this.table = table;
     }
 
     @Override
-    public void render(Context context, String value, SafeHtmlBuilder sb) {
-        sb.append(TEMPLATE.enabled(Icons.INSTANCE.remove(), I18N.CONSTANTS.remove()));
+    public void execute() {
+        ConfirmDialog.confirm(new DeleteAction(table.getTableView()));
     }
 
     @Override
-    protected void onEnterKeyDown(Context context, Element parent, String value,
-                                  NativeEvent event, ValueUpdater<String> valueUpdater) {
-        // todo
+    public void render(Cell.Context context, String value, SafeHtmlBuilder sb) {
+        final boolean hasSelection = !table.getSelectionModel().getSelectedSet().isEmpty();
+        if (hasSelection) {
+            sb.append(TEMPLATE.enabled(Icons.INSTANCE.remove(), I18N.CONSTANTS.remove()));
+        } else {
+            sb.append(TEMPLATE.disabled(Icons.INSTANCE.remove(), I18N.CONSTANTS.remove()));
+        }
     }
 }
 

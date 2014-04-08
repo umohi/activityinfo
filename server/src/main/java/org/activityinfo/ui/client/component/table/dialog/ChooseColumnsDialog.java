@@ -28,17 +28,17 @@ import org.activityinfo.ui.client.widget.ModalDialog;
 /**
  * @author yuriyz on 3/21/14.
  */
-public class VisibleColumnsDialog extends ModalDialog {
+public class ChooseColumnsDialog extends ModalDialog {
 
-    private final VisibleColumnsDialogContent content;
+    private final ChooseColumnsDialogContent content;
 
-    public VisibleColumnsDialog(InstanceTableView tableView) {
-        this.content = new VisibleColumnsDialogContent(tableView, this);
-        setDialogTitle(I18N.CONSTANTS.visibleColumns());
+    public ChooseColumnsDialog(InstanceTableView tableView) {
+        this.content = new ChooseColumnsDialogContent(tableView, this);
+        setDialogTitle(I18N.CONSTANTS.chooseColumns());
         getModalBody().add(content);
     }
 
-    public VisibleColumnsDialogContent getContent() {
+    public ChooseColumnsDialogContent getContent() {
         return content;
     }
 }

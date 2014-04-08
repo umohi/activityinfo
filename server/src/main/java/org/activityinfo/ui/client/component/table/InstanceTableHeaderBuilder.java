@@ -24,19 +24,19 @@ package org.activityinfo.ui.client.component.table;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.dom.builder.shared.TableCellBuilder;
 import com.google.gwt.dom.builder.shared.TableRowBuilder;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.DefaultHeaderOrFooterBuilder;
 import com.google.gwt.user.cellview.client.Header;
 import org.activityinfo.core.shared.Projection;
+import org.activityinfo.ui.client.component.table.action.ButtonActionCell;
+import org.activityinfo.ui.client.component.table.action.TableHeaderAction;
 
 /**
  * @author yuriyz on 4/2/14.
  */
 public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Projection> {
-
-    private static final String ACTION_HEADER_ATTRIBUTE = "action_header_";
 
     private final InstanceTable table;
 
@@ -52,7 +52,13 @@ public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Pro
 
     @Override
     protected boolean buildHeaderOrFooterImpl() {
-        buildActionRow();
+        int columnCount = getTable().getColumnCount();
+        if (columnCount == 0) {
+            // Nothing to render;
+            return false;
+        }
+
+        buildActionRow(columnCount);
         super.buildHeaderOrFooterImpl();
         return true;
     }
@@ -61,18 +67,22 @@ public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Pro
         return super.getHeader(elem);
     }
 
-    private void buildActionRow() {
-        final int columnCount = getTable().getColumnCount();
+    private void buildActionRow(int columnCount) {
         TableRowBuilder tr = startRow();
         TableCellBuilder th = tr.startTH().colSpan(columnCount);
 
-        th.attribute(ACTION_HEADER_ATTRIBUTE, Document.get().createUniqueId());
         final SafeHtmlBuilder sb = new SafeHtmlBuilder();
-        for (Cell cellAction : table.getHeaderActions()) {
-            cellAction.render(new Cell.Context(0, 0, table), "", sb);
+        sb.append(SafeHtmlUtils.fromString(table.getRootFormClass().getLabel().getValue()));
+        sb.append(SafeHtmlUtils.fromTrustedString("&nbsp;"));
+        for (TableHeaderAction buttonAction : table.getHeaderActions()) {
+            final ButtonActionCell cell = new ButtonActionCell(buttonAction);
+            cell.render(new Cell.Context(0, 0, table), "", sb);
+            sb.append(SafeHtmlUtils.fromTrustedString("&nbsp;"));
         }
+//        enableColumnHandlers(th, getTable().getColumn(0));
         th.html(sb.toSafeHtml());
 
         th.endTH();
+        tr.endTR();
     }
 }

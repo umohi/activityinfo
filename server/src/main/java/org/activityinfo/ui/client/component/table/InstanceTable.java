@@ -2,7 +2,6 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -21,8 +20,7 @@ import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.criteria.CriteriaIntersection;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.tree.FieldPath;
-import org.activityinfo.ui.client.component.table.action.DeleteInstanceButton;
-import org.activityinfo.ui.client.component.table.action.NewInstanceButton;
+import org.activityinfo.ui.client.component.table.action.*;
 import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
 import org.activityinfo.ui.client.style.table.CellTableResources;
@@ -31,6 +29,7 @@ import org.activityinfo.ui.client.widget.CellTableAffixer;
 import org.activityinfo.ui.client.widget.loading.LoadingState;
 import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -56,14 +55,16 @@ public class InstanceTable implements IsWidget {
     private final CellTable<Projection> table;
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
-    private final List<Cell> headerActions = Lists.newArrayList();
+    private final List<TableHeaderAction> headerActions;
+    private final InstanceTableView tableView;
 
     private Set<FieldPath> fields = Sets.newHashSet();
     private Criteria criteria;
     private FormClass rootFormClass;
 
-    public InstanceTable(ResourceLocator resourceLocator) {
-        this.resourceLocator = resourceLocator;
+    public InstanceTable(InstanceTableView tableView) {
+        this.tableView = tableView;
+        this.resourceLocator = tableView.getResourceLocator();
         CellTableResources.INSTANCE.cellTableStyle().ensureInjected();
 
         table = new CellTable<>(50, CellTableResources.INSTANCE);
@@ -108,12 +109,16 @@ public class InstanceTable implements IsWidget {
             }
         });
 
-        initHeaderActions();
+        headerActions = createHeaderActions();
     }
 
-    private void initHeaderActions() {
-        headerActions.add(new NewInstanceButton(this));
-        headerActions.add(new DeleteInstanceButton(this));
+    private List<TableHeaderAction> createHeaderActions() {
+        final List<TableHeaderAction> actions = new ArrayList<>();
+        actions.add(new NewHeaderAction(this));
+        actions.add(new DeleteHeaderAction(this));
+        actions.add(new EditHeaderAction(this));
+        actions.add(new ChooseColumnsHeaderAction(this));
+        return actions;
     }
 
     public void setCriteria(Criteria criteria) {
@@ -189,8 +194,7 @@ public class InstanceTable implements IsWidget {
                 "start = " + event.getNewRange().getStart() +
                 ", length = " + event.getNewRange().getLength());
 
-
-        //reload();
+        table.redrawHeaders();
     }
 
     public ResourceLocator getResourceLocator() {
@@ -205,7 +209,11 @@ public class InstanceTable implements IsWidget {
         return rootFormClass;
     }
 
-    public List<Cell> getHeaderActions() {
+    public List<TableHeaderAction> getHeaderActions() {
         return headerActions;
+    }
+
+    public InstanceTableView getTableView() {
+        return tableView;
     }
 }

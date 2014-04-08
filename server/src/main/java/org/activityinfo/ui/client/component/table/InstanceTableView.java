@@ -21,8 +21,8 @@ import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.component.form.FormDialog;
 import org.activityinfo.ui.client.component.form.FormDialogCallback;
+import org.activityinfo.ui.client.component.table.dialog.ChooseColumnsDialog;
 import org.activityinfo.ui.client.component.table.dialog.DeleteAction;
-import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
 import org.activityinfo.ui.client.widget.AlertPanel;
 import org.activityinfo.ui.client.widget.ConfirmDialog;
 
@@ -73,7 +73,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public InstanceTableView(ResourceLocator resourceLocator) {
         InstanceTableStyle.INSTANCE.ensureInjected();
         this.resourceLocator = resourceLocator;
-        this.table = new InstanceTable(resourceLocator);
+        this.table = new InstanceTable(this);
         this.panel = ourUiBinder.createAndBindUi(this);
 
         initButtons();
@@ -163,7 +163,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiHandler("visibleColumns")
     public void onConfigure(ClickEvent event) {
-        final VisibleColumnsDialog visibleColumnsDialog = new VisibleColumnsDialog(this);
+        final ChooseColumnsDialog visibleColumnsDialog = new ChooseColumnsDialog(this);
         visibleColumnsDialog.show();
     }
 

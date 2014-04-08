@@ -51,11 +51,11 @@ import java.util.*;
 /**
  * @author yuriyz on 3/21/14.
  */
-public class VisibleColumnsDialogContent extends Composite {
+public class ChooseColumnsDialogContent extends Composite {
 
 //    private static final Logger LOGGER = Logger.getLogger(VisibleColumnsDialogContent.class.getName());
 
-    interface ConfigureDialogContentUiBinder extends UiBinder<HTMLPanel, VisibleColumnsDialogContent> {
+    interface ConfigureDialogContentUiBinder extends UiBinder<HTMLPanel, ChooseColumnsDialogContent> {
     }
 
     private static ConfigureDialogContentUiBinder uiBinder = GWT.create(ConfigureDialogContentUiBinder.class);
@@ -87,7 +87,7 @@ public class VisibleColumnsDialogContent extends Composite {
     @UiField
     Button downButton;
 
-    public VisibleColumnsDialogContent(final InstanceTableView tableView, VisibleColumnsDialog dialog) {
+    public ChooseColumnsDialogContent(final InstanceTableView tableView, ChooseColumnsDialog dialog) {
         this.tableView = tableView;
 
         DataGridResources.INSTANCE.dataGridStyle().ensureInjected();

@@ -23,12 +23,9 @@ package org.activityinfo.ui.client.component.table.action;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
@@ -37,20 +34,13 @@ import static com.google.gwt.dom.client.BrowserEvents.KEYDOWN;
 /**
  * @author yuriyz on 4/8/14.
  */
-public class ButtonCell extends AbstractCell<String> {
+public class ButtonActionCell extends AbstractCell<String> {
 
-    public interface Template extends SafeHtmlTemplates {
-        @SafeHtmlTemplates.Template("<button class='btn btn-default btn-xs' type='button' tabindex='-1'><span class='{0}'>{1}</span></button>")
-        SafeHtml enabled(String icon, String text);
+    private final TableHeaderAction action;
 
-        @SafeHtmlTemplates.Template("<button class='btn btn-default btn-xs' type='button' tabindex='-1' disabled='disabled'><span class='{0}'>{1}</span></button>")
-        SafeHtml disabled(String icon, String text);
-    }
-
-    public static final Template TEMPLATE = GWT.create(Template.class);
-
-    public ButtonCell() {
+    public ButtonActionCell(TableHeaderAction action) {
         super(CLICK, KEYDOWN);
+        this.action = action;
     }
 
     @Override
@@ -72,11 +62,12 @@ public class ButtonCell extends AbstractCell<String> {
 
     @Override
     public void render(Context context, String value, SafeHtmlBuilder sb) {
-        sb.append(TEMPLATE.enabled("", value));
+        action.render(context, value, sb);
     }
 
     @Override
     protected void onEnterKeyDown(Context context, Element parent, String value,
                                   NativeEvent event, ValueUpdater<String> valueUpdater) {
+        action.execute();
     }
 }
