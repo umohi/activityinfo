@@ -29,98 +29,42 @@ import javax.annotation.Nonnull;
 public class ConfirmDialogResources {
 
     @Nonnull
-    private String confirmTitle;
+    private ConfirmDialogMessages confirm;
     @Nonnull
-    private String progressTitle;
+    private ConfirmDialogMessages progress;
     @Nonnull
-    private String failedTitle;
+    private ConfirmDialogMessages failed;
+
+    public ConfirmDialogResources(@Nonnull ConfirmDialogMessages confirm, @Nonnull ConfirmDialogMessages progress, @Nonnull ConfirmDialogMessages failed) {
+        this.confirm = confirm;
+        this.progress = progress;
+        this.failed = failed;
+    }
 
     @Nonnull
-    private String confirmMessage;
+    public ConfirmDialogMessages getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(@Nonnull ConfirmDialogMessages confirm) {
+        this.confirm = confirm;
+    }
+
     @Nonnull
-    private String progressMessage;
+    public ConfirmDialogMessages getProgress() {
+        return progress;
+    }
+
+    public void setProgress(@Nonnull ConfirmDialogMessages progress) {
+        this.progress = progress;
+    }
+
     @Nonnull
-    private String failedMessage;
-
-    @Nonnull
-    private String confirmOkButtonText;
-    @Nonnull
-    private String progressOkButtonText;
-    @Nonnull
-    private String failedOkButtonText;
-
-    public ConfirmDialogResources() {
+    public ConfirmDialogMessages getFailed() {
+        return failed;
     }
 
-    public String getConfirmTitle() {
-        return confirmTitle;
-    }
-
-    public void setConfirmTitle(String confirmTitle) {
-        this.confirmTitle = confirmTitle;
-    }
-
-    public String getProgressTitle() {
-        return progressTitle;
-    }
-
-    public void setProgressTitle(String progressTitle) {
-        this.progressTitle = progressTitle;
-    }
-
-    public String getFailedTitle() {
-        return failedTitle;
-    }
-
-    public void setFailedTitle(String failedTitle) {
-        this.failedTitle = failedTitle;
-    }
-
-    public String getConfirmMessage() {
-        return confirmMessage;
-    }
-
-    public void setConfirmMessage(String confirmMessage) {
-        this.confirmMessage = confirmMessage;
-    }
-
-    public String getProgressMessage() {
-        return progressMessage;
-    }
-
-    public void setProgressMessage(String progressMessage) {
-        this.progressMessage = progressMessage;
-    }
-
-    public String getFailedMessage() {
-        return failedMessage;
-    }
-
-    public void setFailedMessage(String failedMessage) {
-        this.failedMessage = failedMessage;
-    }
-
-    public String getConfirmOkButtonText() {
-        return confirmOkButtonText;
-    }
-
-    public void setConfirmOkButtonText(String confirmOkButtonText) {
-        this.confirmOkButtonText = confirmOkButtonText;
-    }
-
-    public String getProgressOkButtonText() {
-        return progressOkButtonText;
-    }
-
-    public void setProgressOkButtonText(String progressOkButtonText) {
-        this.progressOkButtonText = progressOkButtonText;
-    }
-
-    public String getFailedOkButtonText() {
-        return failedOkButtonText;
-    }
-
-    public void setFailedOkButtonText(String failedOkButtonText) {
-        this.failedOkButtonText = failedOkButtonText;
+    public void setFailed(@Nonnull ConfirmDialogMessages failed) {
+        this.failed = failed;
     }
 }

@@ -38,7 +38,7 @@ import org.activityinfo.ui.client.util.GwtUtil;
 public class ConfirmDialog<T> extends ModalDialog {
 
     // action performed on "ok" (primary button click)
-    public static interface ConfirmAction<T> {
+    public static interface Supplier<T> {
         void perform(ConfirmDialogCallback<T> callback);
     }
 
@@ -69,7 +69,7 @@ public class ConfirmDialog<T> extends ModalDialog {
     private State state = ConfirmDialog.INITIAL_STATE;
 
     public ConfirmDialog(ConfirmDialogResources resources, ElementStyle primaryButtonStyle,
-                         final ConfirmDialog.ConfirmAction<T> confirmAction) {
+                         final Supplier<T> supplier) {
         this.resources = resources;
 
         getOkButton().setStyleName("btn btn-" + primaryButtonStyle.name().toLowerCase());
@@ -85,7 +85,7 @@ public class ConfirmDialog<T> extends ModalDialog {
             @Override
             public void onClick(ClickEvent event) {
                 setState(State.PROGRESS);
-                confirmAction.perform(callback);
+                supplier.perform(callback);
             }
         });
     }
@@ -95,23 +95,23 @@ public class ConfirmDialog<T> extends ModalDialog {
         switch (state) {
             case CONFIRM:
                 getOkButton().setEnabled(true);
-                setDialogTitle(resources.getConfirmTitle());
-                messageContainer.setHTML(SafeHtmlUtils.fromString(resources.getConfirmMessage()));
-                getOkButton().setText(resources.getConfirmOkButtonText());
+                setDialogTitle(resources.getConfirm().getTitleText());
+                messageContainer.setHTML(SafeHtmlUtils.fromString(resources.getConfirm().getMessageText()));
+                getOkButton().setText(resources.getConfirm().getPrimaryButtonText());
                 GwtUtil.setVisible(false, failedMessageContainer.getElement());
                 break;
             case FAILED:
                 failedMessageContainer.setHTML(WARNING_TEMPLATE.html(I18N.CONSTANTS.unexpectedException()));
-                messageContainer.setHTML(SafeHtmlUtils.fromString(resources.getFailedMessage()));
+                messageContainer.setHTML(SafeHtmlUtils.fromString(resources.getFailed().getMessageText()));
                 getOkButton().setEnabled(true);
-                getOkButton().setText(resources.getFailedOkButtonText());
+                getOkButton().setText(resources.getFailed().getPrimaryButtonText());
                 GwtUtil.setVisible(true, failedMessageContainer.getElement());
                 break;
             case PROGRESS:
-                setDialogTitle(resources.getProgressTitle());
-                messageContainer.setHTML(SafeHtmlUtils.fromString(resources.getProgressMessage()));
+                setDialogTitle(resources.getProgress().getTitleText());
+                messageContainer.setHTML(SafeHtmlUtils.fromString(resources.getProgress().getMessageText()));
                 getOkButton().setEnabled(false);
-                getOkButton().setHTML(OK_BTN_TEMPLATE.html(resources.getProgressOkButtonText()));
+                getOkButton().setHTML(OK_BTN_TEMPLATE.html(resources.getProgress().getPrimaryButtonText()));
                 GwtUtil.setVisible(false, failedMessageContainer.getElement());
                 break;
         }

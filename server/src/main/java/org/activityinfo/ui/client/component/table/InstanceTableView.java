@@ -9,7 +9,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import org.activityinfo.core.client.ResourceLocator;
@@ -22,13 +21,10 @@ import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.ui.client.component.form.FormDialog;
 import org.activityinfo.ui.client.component.form.FormDialogCallback;
+import org.activityinfo.ui.client.component.table.dialog.DeleteInstanceDialog;
 import org.activityinfo.ui.client.component.table.dialog.VisibleColumnsDialog;
 import org.activityinfo.ui.client.pageView.formClass.TablePresenter;
-import org.activityinfo.ui.client.style.ElementStyle;
 import org.activityinfo.ui.client.widget.AlertPanel;
-import org.activityinfo.ui.client.widget.ConfirmDialog;
-import org.activityinfo.ui.client.widget.ConfirmDialogCallback;
-import org.activityinfo.ui.client.widget.ConfirmDialogResources;
 
 import java.util.Collection;
 import java.util.List;
@@ -185,7 +181,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         });
     }
 
-    private String getFormClassLabel() {
+    public String getFormClassLabel() {
         if (rootFormClasses != null && !rootFormClasses.isEmpty()) {
             final FormClass formClass = rootFormClasses.iterator().next();
             return formClass.getLabel().getValue();
@@ -208,49 +204,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiHandler("removeButton")
     public void onRemove(ClickEvent event) {
-        final Set<Projection> selectedSet = table.getSelectionModel().getSelectedSet();
-
-        final int rowsSize = selectedSet.size();
-        final String formClassLabel = getFormClassLabel();
-
-        final ConfirmDialogResources confirmResources = new ConfirmDialogResources();
-        confirmResources.setConfirmTitle(I18N.CONSTANTS.confirmDeletion());
-        confirmResources.setConfirmMessage(I18N.MESSAGES.removeTableRowsConfirmation(rowsSize, formClassLabel));
-        confirmResources.setConfirmOkButtonText(I18N.CONSTANTS.delete());
-        confirmResources.setFailedTitle(I18N.CONSTANTS.deletionFailed());
-        confirmResources.setFailedMessage(I18N.MESSAGES.retryDeletion(rowsSize, formClassLabel));
-        confirmResources.setFailedOkButtonText(I18N.CONSTANTS.retry());
-        confirmResources.setProgressTitle(I18N.CONSTANTS.deletionInProgress());
-        confirmResources.setProgressMessage(I18N.MESSAGES.deletingRows(rowsSize, formClassLabel));
-        confirmResources.setProgressOkButtonText(I18N.CONSTANTS.deleting());
-
-        final ConfirmDialog<Void> confirmDialog = new ConfirmDialog<>(confirmResources, ElementStyle.DANGER, new ConfirmDialog.ConfirmAction<Void>() {
-            @Override
-            public void perform(ConfirmDialogCallback<Void> callback) {
-                removeRows(selectedSet, callback);
-            }
-        });
-        confirmDialog.show();
-    }
-
-    public void removeRows(Set<Projection> selectedRows, final ConfirmDialogCallback<Void> callback) {
-        final List<Cuid> cuids = Lists.newArrayList();
-        for (Projection projection : selectedRows) {
-            cuids.add(projection.getRootInstanceId());
-        }
-        resourceLocator.remove(cuids).then(new AsyncCallback<Void>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                callback.onFailure(caught);
-                LOGGER.log(Level.FINE, "Failed to remove instances.", caught);
-            }
-
-            @Override
-            public void onSuccess(Void result) {
-                callback.onSuccess(result);
-                table.reload();
-            }
-        });
+        final DeleteInstanceDialog deleteDialog = new DeleteInstanceDialog(this);
+        deleteDialog.show();
     }
 
     public List<FieldColumn> getColumns() {
