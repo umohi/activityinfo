@@ -22,6 +22,10 @@ package org.activityinfo.ui.client.widget;
  */
 
 import com.google.gwt.dom.client.TableSectionElement;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -29,6 +33,29 @@ import com.google.gwt.view.client.ProvidesKey;
  * @author yuriyz on 4/7/14.
  */
 public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<T> {
+
+    public static class HeaderRedrawnEvent extends GwtEvent<HeaderRedrawnEvent.Handler> {
+
+        public static interface Handler extends EventHandler {
+
+            void update(HeaderRedrawnEvent p_event);
+        }
+
+        public static final Type<Handler> TYPE = new Type<Handler>();
+
+        @Override
+        public Type<Handler> getAssociatedType() {
+            return TYPE;
+        }
+
+        @Override
+        protected void dispatch(Handler handler) {
+            handler.update(this);
+        }
+    }
+
+
+    private final EventBus eventBus = new SimpleEventBus();
 
     public CellTable() {
     }
@@ -64,5 +91,15 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
     @Override
     public TableSectionElement getTableHeadElement() {
         return super.getTableHeadElement();
+    }
+
+    public EventBus getEventBus() {
+        return eventBus;
+    }
+
+    @Override
+    public void redrawHeaders() {
+        super.redrawHeaders();
+        eventBus.fireEvent(new HeaderRedrawnEvent());
     }
 }

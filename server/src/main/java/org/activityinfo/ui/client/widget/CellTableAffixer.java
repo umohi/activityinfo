@@ -70,6 +70,12 @@ public class CellTableAffixer {
         }
 
         widthApplier.saveHeaderWidthInformation();
+        table.getEventBus().addHandler(CellTable.HeaderRedrawnEvent.TYPE, new CellTable.HeaderRedrawnEvent.Handler() {
+            @Override
+            public void update(CellTable.HeaderRedrawnEvent p_event) {
+                widthApplier.restoreHeaderWidthInformation();
+            }
+        });
     }
 
     private int getVerticalScrollPosition() {
