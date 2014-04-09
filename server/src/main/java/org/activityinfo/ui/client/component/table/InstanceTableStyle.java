@@ -44,5 +44,8 @@ public interface InstanceTableStyle extends Stylesheet {
 
     @ClassName("header-hover")
     String headerHover();
+
+    @ClassName("row-present")
+    String rowPresent();
 }
 

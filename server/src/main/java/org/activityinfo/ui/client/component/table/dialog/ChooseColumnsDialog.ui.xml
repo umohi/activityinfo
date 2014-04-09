@@ -12,10 +12,7 @@
       <div class="col-sm-5">
         <a:TextBox ui:field="filterColumnTable" placeholder="{i18n.filterByName}" styleName="form-control input-sm"/>
       </div>
-      <div class="col-sm-1">
-      </div>
-      <div class="col-sm-5">
-      </div>
+      <div class="col-sm-7"/>
     </div>
     <div class="row">
       <div class="col-sm-5">
@@ -25,7 +22,8 @@
         <g:HTMLPanel ui:field="columnTableContainer"/>
       </div>
       <div class="col-sm-1">
-        <br/><br/>
+        <br/>
+        <br/>
         <g:Button styleName="btn btn-default btn-xs" ui:field="upButton">
           <span class="{icons.arrowUp}"/>
         </g:Button>
@@ -47,6 +45,8 @@
           <ui:text from='{i18n.chooseColumns}'/>
         </h4>
         <g:HTMLPanel ui:field="selectedColumnTableContainer"/>
+      </div>
+      <div class="col-sm-1">
       </div>
     </div>
   </g:HTMLPanel>

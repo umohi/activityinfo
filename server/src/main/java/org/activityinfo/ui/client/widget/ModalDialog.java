@@ -26,12 +26,9 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import org.activityinfo.ui.client.style.BaseStylesheet;
 import org.activityinfo.ui.client.style.ModalStylesheet;
@@ -43,14 +40,12 @@ public class ModalDialog  {
 
     private static SimplePanel backdrop;
 
-
     private static ModalDialogBinder uiBinder = GWT
             .create(ModalDialogBinder.class);
 
     interface ModalDialogBinder extends UiBinder<HTMLPanel, ModalDialog> {
     }
 
-    private HandlerRegistration okButtonHandler;
     private IsWidget content;
 
     HTMLPanel dialog;
