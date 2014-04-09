@@ -5,10 +5,6 @@
 
 @table-bg-accent-dark: darken(@table-bg-accent, 8%);
 
-@datagrid-font-size: 0.9em;
-
-@selectionBorderWidth: 2px;
-
 .data-grid-widget,
 .data-grid-header,
 .data-grid-header {
@@ -20,9 +16,6 @@
   // get rid of the margin for datagrids
   margin-bottom: 0;
   white-space:nowrap;
-
-  // smaller type
-  //  font-size: @datagrid-font-size;
 
   tbody {
     tr.selectable {
@@ -98,7 +91,7 @@
 }
 
 .data-grid-cell {
-  border-right: 1px solid @table-border-color;
+  border-right-color: @table-border-color;
   padding-right: @table-cell-padding;
   text-align: right;
 }
@@ -111,12 +104,11 @@
 }
 
 .data-grid-selected-row-cell {
-  border: @selectionBorderWidth solid;
 }
 
 /**
  * The keyboard selected cell is visible over selection.
  */
 .data-grid-keyboard-selected-cell {
-  border: @selectionBorderWidth solid #d7dde8;
+  border-color: @table-border-color;
 }
