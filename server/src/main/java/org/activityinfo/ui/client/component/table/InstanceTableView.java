@@ -4,31 +4,21 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.RequiresResize;
+import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.client.ResourceLocator;
-import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormClass;
-import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.ui.client.component.form.FormDialog;
-import org.activityinfo.ui.client.component.form.FormDialogCallback;
-import org.activityinfo.ui.client.component.table.dialog.ChooseColumnsDialog;
-import org.activityinfo.ui.client.component.table.dialog.DeleteAction;
 import org.activityinfo.ui.client.widget.AlertPanel;
-import org.activityinfo.ui.client.widget.ConfirmDialog;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,17 +43,7 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     @UiField(provided = true)
     InstanceTable table;
     @UiField
-    Button addButton;
-    @UiField
-    Button removeButton;
-    @UiField
-    Button blukEditButton;
-    @UiField
-    Button editButton;
-    @UiField
     AlertPanel errorMessages;
-    @UiField
-    DivElement toolbar;
 
     interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
@@ -75,29 +55,6 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         this.resourceLocator = resourceLocator;
         this.table = new InstanceTable(this);
         this.panel = ourUiBinder.createAndBindUi(this);
-
-        initButtons();
-    }
-
-    private void initButtons() {
-        setEditButtonState();
-        setRemoveButtonState();
-        table.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                setEditButtonState();
-                setRemoveButtonState();
-            }
-        });
-    }
-
-    private void setEditButtonState() {
-        final Set<Projection> selectedSet = table.getSelectionModel().getSelectedSet();
-        editButton.setEnabled(!selectedSet.isEmpty() && selectedSet.size() == 1);
-    }
-
-    private void setRemoveButtonState() {
-        removeButton.setEnabled(!table.getSelectionModel().getSelectedSet().isEmpty());
     }
 
     public void setCriteria(Criteria criteria) {
@@ -161,50 +118,12 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     }
 
-    @UiHandler("visibleColumns")
-    public void onConfigure(ClickEvent event) {
-        final ChooseColumnsDialog visibleColumnsDialog = new ChooseColumnsDialog(this);
-        visibleColumnsDialog.show();
-    }
-
-    @UiHandler("addButton")
-    public void onAdd(ClickEvent event) {
-        final FormClass formClass = rootFormClasses.iterator().next();
-        final Cuid instanceId = CuidAdapter.newFormInstance(formClass.getId());
-        FormDialog dialog = new FormDialog(resourceLocator);
-        dialog.setDialogTitle(I18N.CONSTANTS.addInstance());
-        dialog.show(formClass.getId(), instanceId, new FormDialogCallback() {
-            @Override
-            public void onPersisted(FormInstance instance) {
-                getTable().reload();
-            }
-        });
-    }
-
     public String getFormClassLabel() {
         if (rootFormClasses != null && !rootFormClasses.isEmpty()) {
             final FormClass formClass = rootFormClasses.iterator().next();
             return formClass.getLabel().getValue();
         }
         return "";
-    }
-
-    @UiHandler("editButton")
-    public void onEdit(ClickEvent event) {
-        final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
-        final FormDialog dialog = new FormDialog(resourceLocator);
-        dialog.setDialogTitle(I18N.CONSTANTS.editInstance());
-        dialog.show(selectedProjection.getRootClassId(), selectedProjection.getRootInstanceId(), new FormDialogCallback() {
-            @Override
-            public void onPersisted(FormInstance instance) {
-                getTable().reload();
-            }
-        });
-    }
-
-    @UiHandler("removeButton")
-    public void onRemove(ClickEvent event) {
-        ConfirmDialog.confirm(new DeleteAction(this));
     }
 
     public List<FieldColumn> getColumns() {

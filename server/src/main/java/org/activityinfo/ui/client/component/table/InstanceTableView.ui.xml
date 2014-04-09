@@ -14,44 +14,6 @@
     <!-- Use a div to measure the font size -->
     <div ui:field="emRuler" style="position:absolute; width:100em;"/>
 
-    <div ui:field="toolbar" class="{style.toolbar}">
-
-      <g:Button styleName="btn btn-success btn-xs" ui:field="addButton" title="{i18n.add}">
-        <span class="{icons.add}">
-          <ui:text from='{i18n.add}'/>
-        </span>
-      </g:Button>
-
-      <g:Button styleName="btn btn-danger btn-xs" ui:field="removeButton" title="{i18n.remove}">
-        <span class="{icons.remove}">
-          <ui:text from='{i18n.remove}'/>
-        </span>
-      </g:Button>
-      <g:Button styleName="btn btn-default btn-xs" ui:field="editButton" title="{i18n.edit}">
-        <span class="{icons.edit}">
-          <ui:text from='{i18n.edit}'/>
-        </span>
-      </g:Button>
-      &nbsp;&nbsp;&nbsp;
-      <g:Button styleName="btn btn-primary btn-xs" ui:field="visibleColumns" title="{i18n.chooseColumns}">
-        <span class="{icons.wrench}">
-          <ui:text from='{i18n.chooseColumns}'/>
-        </span>
-      </g:Button>
-      <g:Button styleName="btn btn-primary btn-xs hidden" ui:field="filterButton" title="{i18n.filter}">
-        <span class="{icons.filter}">
-          <ui:text from='{i18n.filter}'/>
-        </span>
-      </g:Button>
-
-      <g:Button styleName="btn btn-primary btn-xs hidden" ui:field="blukEditButton" title="{i18n.bulkEdit}">
-        <span class="{icons.bulkEdit}">
-          <ui:text from='{i18n.bulkEdit}'/>
-        </span>
-      </g:Button>
-    </div>
-    <br/>
-
     <!-- If we can display all the columns, inform the user -->
     <a:AlertPanel ui:field="columnAlert" style="WARNING"/>
 
