@@ -99,10 +99,6 @@ public class ModalDialog  {
         return content;
     }
 
-    public void setVisible(boolean visible) {
-        dialog.setVisible(visible);
-    }
-
     public void show() {
         showBackdrop();
         showDialog();
@@ -117,18 +113,18 @@ public class ModalDialog  {
     private void showBackdrop() {
         if(backdrop == null) {
             backdrop = new SimplePanel();
-            backdrop.setStyleName("modal-backdrop fade");
+            backdrop.setStyleName("modal-backdrop fade in");
             RootPanel.get().add(backdrop);
         }
         backdrop.getElement().getStyle().setDisplay(Style.Display.BLOCK);
-        backdrop.addStyleName("in");
     }
 
     public void hide() {
         if(backdrop != null) {
-            backdrop.removeStyleName("in");
+            backdrop.getElement().getStyle().setDisplay(Style.Display.NONE);
         }
         dialog.removeStyleName("modal-open");
+        dialog.getElement().getStyle().setDisplay(Style.Display.NONE);
     }
 
 

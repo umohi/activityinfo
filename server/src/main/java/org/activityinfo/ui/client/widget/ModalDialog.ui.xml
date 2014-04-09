@@ -5,7 +5,7 @@
 
   <ui:with field='i18n' type='org.activityinfo.i18n.shared.UiConstants'/>
 
-  <g:HTMLPanel styleName="modal fade">
+  <g:HTMLPanel styleName="modal">
     <div class="bs modal-dialog">
       <div class="modal-content" ui:field="contentDiv">
         <div class="modal-header">

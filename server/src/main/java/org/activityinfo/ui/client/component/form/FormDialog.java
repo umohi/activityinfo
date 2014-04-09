@@ -97,7 +97,7 @@ public class FormDialog {
 
             @Override
             public void onSuccess(Void result) {
-                dialog.setVisible(false);
+                dialog.hide();
                 callback.onPersisted(formPanel.getInstance());
             }
         });

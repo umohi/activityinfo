@@ -160,7 +160,7 @@ public class ConfirmDialog  {
 
             @Override
             public void onSuccess(Void result) {
-                ConfirmDialog.this.dialog.setVisible(false);
+                ConfirmDialog.this.dialog.hide();
                 action.onComplete();
             }
         });
