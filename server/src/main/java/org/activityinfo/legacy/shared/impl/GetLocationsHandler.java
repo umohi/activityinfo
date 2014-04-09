@@ -93,7 +93,8 @@ public class GetLocationsHandler implements
                         .appendColumn("AdminEntity.AdminEntityParentId", "parentId")
                         .appendColumn("link.LocationID", "locationId")
                         .from(Tables.LOCATION_ADMIN_LINK, "link")
-                        .leftJoin(Tables.ADMIN_ENTITY, "AdminEntity").on("link.AdminEntityId=AdminEntity.AdminEntityId");
+                        .leftJoin(Tables.ADMIN_ENTITY, "AdminEntity").on("link.AdminEntityId=AdminEntity.AdminEntityId")
+                        .whereTrue("AdminEntity.AdminEntityId is not null");
 
                 if(!command.getLocationIds().isEmpty()) {
                     query.where("link.LocationId").in(command.getLocationIds());
@@ -103,6 +104,7 @@ public class GetLocationsHandler implements
                     query.leftJoin(Tables.LOCATION, "Location").on("link.LocationId=Location.LocationId");
                     query.where("Location.LocationTypeId").equalTo(command.getLocationTypeId());
                 }
+
 
                 query
                         .execute(context.getTransaction(), new SqlResultCallback() {
@@ -114,7 +116,7 @@ public class GetLocationsHandler implements
                                     entity.setId(row.getInt("adminEntityId"));
                                     entity.setName(row.getString("name"));
                                     entity.setLevelId(row.getInt("levelId"));
-                                    if(!row.isNull("parentId")) {
+                                    if (!row.isNull("parentId")) {
                                         entity.setParentId(row.getInt("parentId"));
                                     }
                                     LocationDTO dto = dtos.get(row.getInt("locationId"));
@@ -125,7 +127,7 @@ public class GetLocationsHandler implements
 
                                 List<LocationDTO> list = new ArrayList<>(dtos.values());
                                 callback.onSuccess(new LocationResult(list));
-                           }
+                            }
                         });
             }
         });
