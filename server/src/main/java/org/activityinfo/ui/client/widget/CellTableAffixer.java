@@ -21,6 +21,7 @@ package org.activityinfo.ui.client.widget;
  * #L%
  */
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.TableSectionElement;
 import com.google.gwt.event.dom.client.ScrollEvent;
@@ -73,7 +74,12 @@ public class CellTableAffixer {
         table.getEventBus().addHandler(CellTable.HeaderRedrawnEvent.TYPE, new CellTable.HeaderRedrawnEvent.Handler() {
             @Override
             public void update(CellTable.HeaderRedrawnEvent p_event) {
-                widthApplier.restoreHeaderWidthInformation();
+                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                    @Override
+                    public void execute() {
+                        widthApplier.restoreHeaderWidthInformation();
+                    }
+                });
             }
         });
     }
