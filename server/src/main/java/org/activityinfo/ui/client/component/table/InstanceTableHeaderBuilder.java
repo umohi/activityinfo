@@ -27,6 +27,7 @@ import com.google.gwt.dom.builder.shared.TableRowBuilder;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.DefaultHeaderOrFooterBuilder;
 import com.google.gwt.user.cellview.client.Header;
 import org.activityinfo.core.shared.Projection;
@@ -68,8 +69,10 @@ public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Pro
     }
 
     private void buildActionRow(int columnCount) {
+        AbstractCellTable.Style style = getTable().getResources().style();
+
         TableRowBuilder tr = startRow();
-        TableCellBuilder th = tr.startTH().colSpan(columnCount);
+        TableCellBuilder th = tr.startTH().colSpan(columnCount).className(style.header());
 
         final SafeHtmlBuilder sb = new SafeHtmlBuilder();
         sb.append(SafeHtmlUtils.fromString(table.getRootFormClass().getLabel().getValue()));
@@ -79,7 +82,6 @@ public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Pro
             cell.render(new Cell.Context(0, 0, table), "", sb);
             sb.append(SafeHtmlUtils.fromTrustedString("&nbsp;"));
         }
-//        enableColumnHandlers(th, getTable().getColumn(0));
         th.html(sb.toSafeHtml());
 
         th.endTH();

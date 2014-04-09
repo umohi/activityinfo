@@ -32,17 +32,19 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
  */
 public interface TableHeaderAction {
 
-    public interface Template extends SafeHtmlTemplates {
-        @SafeHtmlTemplates.Template("<button class='btn btn-default btn-xs' type='button' tabindex='-1'><span class='{0}'>{1}</span></button>")
-        SafeHtml enabled(String icon, String text);
+    public static final String ACTION_ATTRIBUTE = "header_action";
 
-        @SafeHtmlTemplates.Template("<button class='btn btn-default btn-xs' type='button' tabindex='-1' disabled='disabled'><span class='{0}'>{1}</span></button>")
-        SafeHtml disabled(String icon, String text);
+    public interface Template extends SafeHtmlTemplates {
+        @SafeHtmlTemplates.Template("<button class='btn btn-default btn-xs' type='button' tabindex='-1' header_action='{0}'><span class='{1}'>{2}</span></button>")
+        SafeHtml enabled(String uniqueId, String icon, String text);
+
+        @SafeHtmlTemplates.Template("<button class='btn btn-default btn-xs' type='button' tabindex='-1' disabled='disabled' header_action='{0}'><span class='{1}'>{2}</span></button>")
+        SafeHtml disabled(String uniqueId, String icon, String text);
 
         @SafeHtmlTemplates.Template("<div class='pull-right'>" +
-                "<button class='btn btn-default btn-xs' type='button' tabindex='-1'><span class='{0}'>{1}</span></button>" +
+                "<button class='btn btn-default btn-xs' type='button' tabindex='-1' header_action='{0}'><span class='{1}'>{2}</span></button>" +
                 "</div>")
-        SafeHtml rightAlignedButton(String icon, String text);
+        SafeHtml rightAlignedButton(String uniqueId, String icon, String text);
     }
 
     public static final Template TEMPLATE = GWT.create(Template.class);
@@ -50,4 +52,6 @@ public interface TableHeaderAction {
     public void execute();
 
     public void render(Cell.Context context, String value, SafeHtmlBuilder sb);
+
+    public String getUniqueId();
 }

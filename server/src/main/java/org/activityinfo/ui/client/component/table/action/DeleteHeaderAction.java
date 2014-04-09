@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.component.table.action;
  */
 
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.component.table.InstanceTable;
@@ -35,10 +36,11 @@ import org.activityinfo.ui.client.widget.ConfirmDialog;
 public class DeleteHeaderAction implements TableHeaderAction {
 
     private final InstanceTable table;
+    private final String uniqueId;
 
     public DeleteHeaderAction(InstanceTable table) {
-        super();
         this.table = table;
+        this.uniqueId = Document.get().createUniqueId();
     }
 
     @Override
@@ -50,10 +52,15 @@ public class DeleteHeaderAction implements TableHeaderAction {
     public void render(Cell.Context context, String value, SafeHtmlBuilder sb) {
         final boolean hasSelection = !table.getSelectionModel().getSelectedSet().isEmpty();
         if (hasSelection) {
-            sb.append(TEMPLATE.enabled(Icons.INSTANCE.remove(), I18N.CONSTANTS.remove()));
+            sb.append(TEMPLATE.enabled(uniqueId, Icons.INSTANCE.remove(), I18N.CONSTANTS.remove()));
         } else {
-            sb.append(TEMPLATE.disabled(Icons.INSTANCE.remove(), I18N.CONSTANTS.remove()));
+            sb.append(TEMPLATE.disabled(uniqueId, Icons.INSTANCE.remove(), I18N.CONSTANTS.remove()));
         }
+    }
+
+    @Override
+    public String getUniqueId() {
+        return uniqueId;
     }
 }
 

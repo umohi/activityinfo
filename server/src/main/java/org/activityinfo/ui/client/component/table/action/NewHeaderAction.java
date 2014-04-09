@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.component.table.action;
  */
 
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
@@ -39,10 +40,11 @@ import org.activityinfo.ui.client.style.Icons;
 public class NewHeaderAction implements TableHeaderAction {
 
     private final InstanceTable table;
+    private final String uniqueId;
 
     public NewHeaderAction(InstanceTable table) {
-        super();
         this.table = table;
+        this.uniqueId = Document.get().createUniqueId();
     }
 
     @Override
@@ -61,6 +63,11 @@ public class NewHeaderAction implements TableHeaderAction {
 
     @Override
     public void render(Cell.Context context, String value, SafeHtmlBuilder sb) {
-        sb.append(TEMPLATE.rightAlignedButton(Icons.INSTANCE.add(), I18N.CONSTANTS.newText()));
+        sb.append(TEMPLATE.rightAlignedButton(uniqueId, Icons.INSTANCE.add(), I18N.CONSTANTS.newText()));
+    }
+
+    @Override
+    public String getUniqueId() {
+        return uniqueId;
     }
 }

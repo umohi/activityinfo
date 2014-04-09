@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.component.table.action;
  */
 
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.FormInstance;
@@ -37,10 +38,11 @@ import org.activityinfo.ui.client.style.Icons;
 public class EditHeaderAction implements TableHeaderAction {
 
     private final InstanceTable table;
+    private final String uniqueId;
 
     public EditHeaderAction(InstanceTable table) {
-        super();
         this.table = table;
+        this.uniqueId = Document.get().createUniqueId();
     }
 
     @Override
@@ -60,9 +62,14 @@ public class EditHeaderAction implements TableHeaderAction {
     public void render(Cell.Context context, String value, SafeHtmlBuilder sb) {
         final boolean hasSelection = !table.getSelectionModel().getSelectedSet().isEmpty();
         if (hasSelection) {
-            sb.append(TEMPLATE.enabled(Icons.INSTANCE.edit(), I18N.CONSTANTS.edit()));
+            sb.append(TEMPLATE.enabled(uniqueId, Icons.INSTANCE.edit(), I18N.CONSTANTS.edit()));
         } else {
-            sb.append(TEMPLATE.disabled(Icons.INSTANCE.edit(), I18N.CONSTANTS.edit()));
+            sb.append(TEMPLATE.disabled(uniqueId, Icons.INSTANCE.edit(), I18N.CONSTANTS.edit()));
         }
+    }
+
+    @Override
+    public String getUniqueId() {
+        return uniqueId;
     }
 }

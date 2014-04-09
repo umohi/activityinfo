@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.component.table.action;
  */
 
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.component.table.InstanceTable;
@@ -34,10 +35,11 @@ import org.activityinfo.ui.client.style.Icons;
 public class ChooseColumnsHeaderAction implements TableHeaderAction {
 
     private final InstanceTable table;
+    private final String uniqueId;
 
     public ChooseColumnsHeaderAction(InstanceTable table) {
-        super();
         this.table = table;
+        this.uniqueId = Document.get().createUniqueId();
     }
 
     @Override
@@ -48,6 +50,12 @@ public class ChooseColumnsHeaderAction implements TableHeaderAction {
 
     @Override
     public void render(Cell.Context context, String value, SafeHtmlBuilder sb) {
-        sb.append(TEMPLATE.enabled(Icons.INSTANCE.wrench(), I18N.CONSTANTS.chooseColumns()));
+        sb.append(TEMPLATE.enabled(uniqueId, Icons.INSTANCE.wrench(), I18N.CONSTANTS.chooseColumns()));
     }
+
+    @Override
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
 }

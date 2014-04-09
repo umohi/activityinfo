@@ -6,6 +6,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.AttachEvent;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -47,8 +48,6 @@ public class InstanceTable implements IsWidget {
      */
     public static final int COLUMN_WIDTH = 10;
 
-    public static final String FALLBACK_TABLE_HEIGHT_PX = "500px";
-
     private final ResourceLocator resourceLocator;
 
     private final ListDataProvider<Projection> tableDataProvider = new ListDataProvider<>();
@@ -67,7 +66,14 @@ public class InstanceTable implements IsWidget {
         this.resourceLocator = tableView.getResourceLocator();
         CellTableResources.INSTANCE.cellTableStyle().ensureInjected();
 
-        table = new CellTable<>(50, CellTableResources.INSTANCE);
+        final TableHeaderActionBrowserEventHandler headerActionEventHandler = new TableHeaderActionBrowserEventHandler(this);
+        table = new CellTable<Projection>(50, CellTableResources.INSTANCE) {
+            @Override
+            protected void onBrowserEvent2(Event event) {
+                super.onBrowserEvent2(event);
+                headerActionEventHandler.onBrowserEvent(event);
+            }
+        };
         table.setSkipRowHoverCheck(true);
         table.setSkipRowHoverFloatElementCheck(true);
         table.setSkipRowHoverStyleUpdate(true);
@@ -76,12 +82,11 @@ public class InstanceTable implements IsWidget {
         // Set the table to fixed width: we will provide explicit
         // column widths
         table.setWidth("100%", true);
-        table.setHeight(FALLBACK_TABLE_HEIGHT_PX);
         table.setSelectionModel(selectionModel);
         table.addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
-                onRangeChanged(event);
+                table.redrawHeaders();
             }
         });
         tableDataProvider.addDataDisplay(table);
@@ -187,14 +192,6 @@ public class InstanceTable implements IsWidget {
 
     public CellTable<Projection> getTable() {
         return table;
-    }
-
-    private void onRangeChanged(RangeChangeEvent event) {
-        LOGGER.log(Level.INFO, "Instance Table Range Change: " +
-                "start = " + event.getNewRange().getStart() +
-                ", length = " + event.getNewRange().getLength());
-
-        table.redrawHeaders();
     }
 
     public ResourceLocator getResourceLocator() {
