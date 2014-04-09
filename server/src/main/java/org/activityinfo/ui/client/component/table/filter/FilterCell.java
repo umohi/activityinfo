@@ -42,10 +42,9 @@ import static com.google.gwt.dom.client.BrowserEvents.KEYDOWN;
 public class FilterCell<C> extends AbstractCell<C> {
 
     public interface Template extends SafeHtmlTemplates {
-        @SafeHtmlTemplates.Template("<div class='pull-right'>" +
-                "<button class='btn btn-default btn-xs' type='button' tabindex='-1'><span class='{0}'></span></button>" +
-                "</div>")
-        SafeHtml html(String icon);
+        @SafeHtmlTemplates.Template("<span>{0}</span>" +
+                "<span class='{1} pull-right'/>")
+        SafeHtml html(String headerName, String icon);
     }
 
     private static final Template TEMPLATE = GWT.create(Template.class);
@@ -67,11 +66,7 @@ public class FilterCell<C> extends AbstractCell<C> {
             if (!Element.is(eventTarget)) {
                 return;
             }
-            final Element firstChildElement = parent.getFirstChildElement();
-            if (firstChildElement.isOrHasChild(Element.as(eventTarget))) {
-                // Ignore clicks that occur outside of the main element.
-                onEnterKeyDown(context, parent, value, event, valueUpdater);
-            }
+            onEnterKeyDown(context, parent, value, event, valueUpdater);
         }
     }
 
@@ -79,7 +74,7 @@ public class FilterCell<C> extends AbstractCell<C> {
     public void render(Context context, C value, SafeHtmlBuilder sb) {
         final boolean hasCriteria = cellAction.getColumn().getCriteria() != null;
         final String icon = hasCriteria ? Icons.INSTANCE.filter() : Icons.INSTANCE.arrowDown();
-        sb.append(TEMPLATE.html(icon));
+        sb.append(TEMPLATE.html(cellAction.getColumn().getHeader(), icon));
     }
 
     @Override

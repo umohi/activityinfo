@@ -41,5 +41,8 @@ public interface InstanceTableStyle extends Stylesheet {
 
     @ClassName("table-header")
     String header();
+
+    @ClassName("header-hover")
+    String headerHover();
 }
 

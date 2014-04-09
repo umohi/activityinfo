@@ -24,12 +24,10 @@ package org.activityinfo.ui.client.component.table;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.dom.builder.shared.TableCellBuilder;
 import com.google.gwt.dom.builder.shared.TableRowBuilder;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.AbstractCellTable;
-import com.google.gwt.user.cellview.client.DefaultHeaderOrFooterBuilder;
-import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.cellview.client.AbstractHeaderOrFooterBuilder;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.ui.client.component.table.action.ButtonActionCell;
 import org.activityinfo.ui.client.component.table.action.TableHeaderAction;
@@ -37,7 +35,7 @@ import org.activityinfo.ui.client.component.table.action.TableHeaderAction;
 /**
  * @author yuriyz on 4/2/14.
  */
-public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Projection> {
+public class InstanceTableHeaderBuilder extends AbstractHeaderOrFooterBuilder<Projection> {
 
     private final InstanceTable table;
 
@@ -59,16 +57,28 @@ public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Pro
             return false;
         }
 
-        buildActionRow(columnCount);
-        super.buildHeaderOrFooterImpl();
+        buildActionRow(0, columnCount);
+        buildColumnRow(1, columnCount);
         return true;
     }
 
-    public Header<?> getHeader(Element elem) {
-        return super.getHeader(elem);
+    private void buildColumnRow(int row, int columnCount) {
+        final TableRowBuilder tr = startRow();
+        for (int i = 0; i < columnCount; i++) {
+            final FieldColumn column = (FieldColumn) getTable().getColumn(i);
+
+            TableCellBuilder th = tr.startTH().className(InstanceTableStyle.INSTANCE.headerHover());
+            enableColumnHandlers(th, column);
+
+            Cell.Context context = new Cell.Context(row, i, null);
+            renderHeader(th, context, getTable().getHeader(i));
+
+            th.endTH();
+        }
+        tr.endTR();
     }
 
-    private void buildActionRow(int columnCount) {
+    private void buildActionRow(int row, int columnCount) {
         AbstractCellTable.Style style = getTable().getResources().style();
 
         TableRowBuilder tr = startRow();
@@ -79,7 +89,7 @@ public class InstanceTableHeaderBuilder extends DefaultHeaderOrFooterBuilder<Pro
         sb.append(SafeHtmlUtils.fromTrustedString("&nbsp;"));
         for (TableHeaderAction buttonAction : table.getHeaderActions()) {
             final ButtonActionCell cell = new ButtonActionCell(buttonAction);
-            cell.render(new Cell.Context(0, 0, table), "", sb);
+            cell.render(new Cell.Context(row, 0, table), "", sb);
             sb.append(SafeHtmlUtils.fromTrustedString("&nbsp;"));
         }
         th.html(sb.toSafeHtml());

@@ -21,13 +21,8 @@ package org.activityinfo.ui.client.component.table.filter;
  * #L%
  */
 
-import com.google.common.collect.Lists;
-import com.google.gwt.cell.client.CompositeCell;
-import com.google.gwt.cell.client.HasCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Header;
 import org.activityinfo.ui.client.component.table.FieldColumn;
-import org.activityinfo.ui.client.widget.cell.HasCellAdapter;
 
 /**
  * @author yuriyz on 4/2/14.
@@ -37,18 +32,8 @@ public class FilterHeader extends Header<String> {
     private final FieldColumn headerColumn;
 
     public FilterHeader(final FieldColumn headerColumn, FilterCellAction cellAction) {
-        super(createCell(headerColumn, cellAction));
+        super(new FilterCell(cellAction));
         this.headerColumn = headerColumn;
-    }
-
-    private static CompositeCell createCell(final FieldColumn headerColumn, FilterCellAction cellAction) {
-        final TextCell textCell = new TextCell();
-        final FilterCell actionCell = new FilterCell(cellAction);
-        final HasCell headerNameCell = new HasCellAdapter(textCell, headerColumn.getHeader());
-        return new CompositeCell(Lists.newArrayList(
-                headerNameCell,
-                new HasCellAdapter(actionCell)
-        ));
     }
 
     @Override
