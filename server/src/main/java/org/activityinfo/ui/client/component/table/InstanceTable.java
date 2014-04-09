@@ -44,14 +44,11 @@ public class InstanceTable implements IsWidget {
      */
     public static final int COLUMN_WIDTH = 10;
 
-    public static final String FALLBACK_TABLE_HEIGHT_PX = "500px";
-
 
     // container is used to calculate table height
 //    private final ResizeLayoutPanel containerPanel = new ResizeLayoutPanel();
     private final ResourceLocator resourceLocator;
 
-    private final ListDataProvider<Projection> tableDataProvider = new ListDataProvider<>();
     private final CellTable<Projection> table;
     private final TableLoadingIndicator loadingIndicator;
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
@@ -70,15 +67,7 @@ public class InstanceTable implements IsWidget {
         // Set the table to fixed width: we will provide explicit
         // column widths
         table.setWidth("100%", true);
-        table.setHeight(FALLBACK_TABLE_HEIGHT_PX);
         table.setSelectionModel(selectionModel);
-        table.addRangeChangeHandler(new RangeChangeEvent.Handler() {
-            @Override
-            public void onRangeChange(RangeChangeEvent event) {
-                onRangeChanged(event);
-            }
-        });
-        tableDataProvider.addDataDisplay(table);
 
         // Create our loading indicator which can also show failure
         loadingIndicator = new TableLoadingIndicator();
@@ -139,7 +128,7 @@ public class InstanceTable implements IsWidget {
 
             @Override
             public void onSuccess(List<Projection> result) {
-                tableDataProvider.setList(result);
+                table.setRowData(result);
             }
         });
     }
