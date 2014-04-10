@@ -25,12 +25,52 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.TableSectionElement;
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author yuriyz on 4/7/14.
  */
 public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<T> {
+
+    public static interface ScrollHandler extends EventHandler {
+
+        void onScroll(ScrollEvent event);
+    }
+
+
+    public static class ScrollEvent extends GwtEvent<ScrollHandler> {
+
+        public static final Type<ScrollHandler> TYPE = new Type<>();
+
+        private final ScrollPanel scrollAncestor;
+
+        public ScrollEvent(ScrollPanel scrollAncestor) {
+            this.scrollAncestor = scrollAncestor;
+        }
+
+        public int getVerticalScrollPosition() {
+            if (scrollAncestor != null) {
+                return scrollAncestor.getVerticalScrollPosition();
+            } else {
+                return Window.getScrollTop();
+            }
+        }
+
+        @Override
+        public Type<ScrollHandler> getAssociatedType() {
+            return TYPE;
+        }
+
+        @Override
+        protected void dispatch(ScrollHandler handler) {
+            handler.onScroll(this);
+        }
+    }
 
     private final EventBus eventBus = new SimpleEventBus();
     private CellTableAffixer affixer;
@@ -47,9 +87,29 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
                             affixer = new CellTableAffixer(CellTable.this);
                         }
                     });
+                    addScrollHandlers();
                 }
             }
         });
+    }
+
+    private void addScrollHandlers() {
+        final ScrollPanel scrollAncestor = getScrollAncestor();
+        if (scrollAncestor != null) {
+            scrollAncestor.addScrollHandler(new com.google.gwt.event.dom.client.ScrollHandler() {
+                @Override
+                public void onScroll(com.google.gwt.event.dom.client.ScrollEvent event) {
+                    eventBus.fireEvent(new ScrollEvent(scrollAncestor));
+                }
+            });
+        } else { // attach scroll handler to window (if scrollAncestor can't be identified)
+            Window.addWindowScrollHandler(new Window.ScrollHandler() {
+                @Override
+                public void onWindowScroll(Window.ScrollEvent event) {
+                    eventBus.fireEvent(new ScrollEvent(scrollAncestor));
+                }
+            });
+        }
     }
 
     @Override
@@ -63,5 +123,21 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
 
     public EventBus getEventBus() {
         return eventBus;
+    }
+
+    public ScrollPanel getScrollAncestor() {
+        return getScrollAncestor(this);
+    }
+
+    public static ScrollPanel getScrollAncestor(Widget widget) {
+        if (widget != null && widget.getParent() != null) {
+            final Widget parent = widget.getParent();
+            if (parent instanceof ScrollPanel) {
+                return (ScrollPanel) parent;
+            } else {
+                return getScrollAncestor(parent);
+            }
+        }
+        return null;
     }
 }

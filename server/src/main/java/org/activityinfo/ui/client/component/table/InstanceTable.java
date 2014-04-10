@@ -43,6 +43,7 @@ public class InstanceTable implements IsWidget {
      * The default column width, in {@code em}
      */
     public static final int COLUMN_WIDTH = 10;
+    public static final int PAGE_SIZE = 100;
 
     private final ResourceLocator resourceLocator;
 
@@ -62,7 +63,7 @@ public class InstanceTable implements IsWidget {
         CellTableResources.INSTANCE.cellTableStyle().ensureInjected();
 
         final TableHeaderActionBrowserEventHandler headerActionEventHandler = new TableHeaderActionBrowserEventHandler(this);
-        table = new CellTable<Projection>(50, CellTableResources.INSTANCE) {
+        table = new CellTable<Projection>(PAGE_SIZE, CellTableResources.INSTANCE) {
             @Override
             protected void onBrowserEvent2(Event event) {
                 super.onBrowserEvent2(event);
@@ -96,6 +97,17 @@ public class InstanceTable implements IsWidget {
         table.setLoadingIndicator(loadingIndicator.asWidget());
 
         headerActions = createHeaderActions();
+
+        table.getEventBus().addHandler(CellTable.ScrollEvent.TYPE, new CellTable.ScrollHandler() {
+            @Override
+            public void onScroll(CellTable.ScrollEvent event) {
+                handleScroll(event);
+            }
+        });
+    }
+
+    private void handleScroll(CellTable.ScrollEvent event) {
+        // todo
     }
 
     private List<TableHeaderAction> createHeaderActions() {

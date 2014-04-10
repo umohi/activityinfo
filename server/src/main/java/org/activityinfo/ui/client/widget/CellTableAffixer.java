@@ -23,11 +23,7 @@ package org.activityinfo.ui.client.widget;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.TableSectionElement;
-import com.google.gwt.event.dom.client.ScrollEvent;
-import com.google.gwt.event.dom.client.ScrollHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Adds affix behavior to table.
@@ -49,25 +45,15 @@ public class CellTableAffixer {
     public CellTableAffixer(final CellTable table) {
         this.table = table;
         this.tableHeadElement = table.getTableHeadElement();
-        this.scrollAncestor = getScrollAncestor(this.table);
+        this.scrollAncestor = table.getScrollAncestor();
         this.widthApplier = new CellTableHeaderWidthApplier(table);
 
-        // attach scroll handler to scroll ancestor
-        if (this.scrollAncestor != null) {
-            this.scrollAncestor.addScrollHandler(new ScrollHandler() {
-                @Override
-                public void onScroll(ScrollEvent event) {
-                    CellTableAffixer.this.onScroll();
-                }
-            });
-        } else { // attach scroll handler to window (if scrollAncestor can't be identified)
-            Window.addWindowScrollHandler(new Window.ScrollHandler() {
-                @Override
-                public void onWindowScroll(Window.ScrollEvent event) {
-                    CellTableAffixer.this.onScroll();
-                }
-            });
-        }
+        table.getEventBus().addHandler(CellTable.ScrollEvent.TYPE, new CellTable.ScrollHandler() {
+            @Override
+            public void onScroll(CellTable.ScrollEvent p_event) {
+                handleScroll(p_event);
+            }
+        });
 
         widthApplier.saveHeaderWidthInformation();
     }
@@ -76,16 +62,8 @@ public class CellTableAffixer {
         return widthApplier;
     }
 
-    private int getVerticalScrollPosition() {
-        if (scrollAncestor != null) {
-            return scrollAncestor.getVerticalScrollPosition();
-        } else {
-            return Window.getScrollTop();
-        }
-    }
-
-    private void onScroll() {
-        final int verticalScroll = getVerticalScrollPosition();
+    private void handleScroll(CellTable.ScrollEvent event) {
+        final int verticalScroll = event.getVerticalScrollPosition();
 
         final int tableTop = table.getAbsoluteTop();
         boolean shouldAffix = verticalScroll > tableTop;
@@ -104,18 +82,6 @@ public class CellTableAffixer {
             tableHeadElement.getStyle().clearTop();
             widthApplier.clearHeaderWidthInformation();
         }
-    }
-
-    private static ScrollPanel getScrollAncestor(Widget widget) {
-        if (widget != null && widget.getParent() != null) {
-            final Widget parent = widget.getParent();
-            if (parent instanceof ScrollPanel) {
-                return (ScrollPanel) parent;
-            } else {
-                return getScrollAncestor(parent);
-            }
-        }
-        return null;
     }
 
 }
