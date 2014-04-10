@@ -206,7 +206,14 @@ public class SchemaImporter {
     }
 
     private boolean isTruthy(String columnValue) {
-        return columnValue != null && "1".equals(columnValue);
+        if(columnValue == null) {
+            return false;
+        }
+        String loweredValue = columnValue.toLowerCase().trim();
+        return loweredValue.equals("1") ||
+               loweredValue.startsWith("t") || // true
+               loweredValue.startsWith("y");   // yes
+
     }
 
     private ActivityDTO getActivity(SourceRow row) {
