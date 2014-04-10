@@ -22,6 +22,8 @@ package org.activityinfo.ui.client.widget;
  */
 
 import com.google.common.collect.Maps;
+import com.google.gwt.dom.builder.shared.TableCellBuilder;
+import com.google.gwt.dom.builder.shared.TableRowBuilder;
 import com.google.gwt.dom.client.*;
 import org.activityinfo.core.shared.Pair;
 
@@ -98,5 +100,15 @@ public class CellTableHeaderWidthApplier {
                 headerCellToWidthMap.put(new Pair<>(i, j), cell.getOffsetWidth());
             }
         }
+    }
+
+    public void setTrWidth(TableRowBuilder tr, int rowIndex) {
+        final Integer integer = headerRowToWidthMap.get(rowIndex);
+        tr.attribute("style", "width: " + integer + "px");
+    }
+
+    public void setTdWidth(TableCellBuilder td, int rowIndex, int columnIndex) {
+        final Integer integer = headerCellToWidthMap.get(new Pair<>(rowIndex, columnIndex));
+        td.attribute("style", "width: " + integer + "px");
     }
 }

@@ -2,15 +2,12 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
 import org.activityinfo.core.client.InstanceQuery;
@@ -26,7 +23,6 @@ import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
 import org.activityinfo.ui.client.style.table.CellTableResources;
 import org.activityinfo.ui.client.widget.CellTable;
-import org.activityinfo.ui.client.widget.CellTableAffixer;
 import org.activityinfo.ui.client.widget.loading.LoadingState;
 import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 
@@ -98,19 +94,6 @@ public class InstanceTable implements IsWidget {
             }
         });
         table.setLoadingIndicator(loadingIndicator.asWidget());
-        table.addAttachHandler(new AttachEvent.Handler() {
-            @Override
-            public void onAttachOrDetach(AttachEvent event) {
-                if (event.isAttached()) {
-                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                        @Override
-                        public void execute() {
-                            new CellTableAffixer(table);
-                        }
-                    });
-                }
-            }
-        });
 
         headerActions = createHeaderActions();
     }

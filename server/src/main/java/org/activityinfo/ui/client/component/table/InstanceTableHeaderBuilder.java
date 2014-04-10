@@ -31,11 +31,15 @@ import com.google.gwt.user.cellview.client.AbstractHeaderOrFooterBuilder;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.ui.client.component.table.action.ButtonActionCell;
 import org.activityinfo.ui.client.component.table.action.TableHeaderAction;
+import org.activityinfo.ui.client.widget.CellTableAffixer;
 
 /**
  * @author yuriyz on 4/2/14.
  */
 public class InstanceTableHeaderBuilder extends AbstractHeaderOrFooterBuilder<Projection> {
+
+    public static final int ACTION_ROW_INDEX = 0;
+    public static final int COLUMN_ROW_INDEX = 1;
 
     private final InstanceTable table;
 
@@ -57,21 +61,25 @@ public class InstanceTableHeaderBuilder extends AbstractHeaderOrFooterBuilder<Pr
             return false;
         }
 
-        buildActionRow(0, columnCount);
-        buildColumnRow(1, columnCount);
+        buildActionRow(ACTION_ROW_INDEX, columnCount);
+        buildColumnRow(COLUMN_ROW_INDEX, columnCount);
         return true;
     }
 
     private void buildColumnRow(int row, int columnCount) {
+
         final TableRowBuilder tr = startRow();
-        for (int i = 0; i < columnCount; i++) {
-            final FieldColumn column = (FieldColumn) getTable().getColumn(i);
+        setTrWidth(tr, row);
+
+        for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
+            final FieldColumn column = (FieldColumn) getTable().getColumn(columnIndex);
 
             TableCellBuilder th = tr.startTH().className(InstanceTableStyle.INSTANCE.headerHover());
+            setTdWidth(th, row, columnIndex);
             enableColumnHandlers(th, column);
 
-            Cell.Context context = new Cell.Context(row, i, null);
-            renderHeader(th, context, getTable().getHeader(i));
+            Cell.Context context = new Cell.Context(row, columnIndex, null);
+            renderHeader(th, context, getTable().getHeader(columnIndex));
 
             th.endTH();
         }
@@ -82,7 +90,10 @@ public class InstanceTableHeaderBuilder extends AbstractHeaderOrFooterBuilder<Pr
         AbstractCellTable.Style style = getTable().getResources().style();
 
         TableRowBuilder tr = startRow();
+        setTrWidth(tr, row);
+
         TableCellBuilder th = tr.startTH().colSpan(columnCount).className(style.header());
+        setTdWidth(th, row, 0);
 
         final SafeHtmlBuilder sb = new SafeHtmlBuilder();
         sb.append(SafeHtmlUtils.fromString(table.getRootFormClass().getLabel().getValue()));
@@ -97,4 +108,19 @@ public class InstanceTableHeaderBuilder extends AbstractHeaderOrFooterBuilder<Pr
         th.endTH();
         tr.endTR();
     }
+
+    private void setTdWidth(TableCellBuilder th, int row, int columnIndex) {
+        final CellTableAffixer affixer = table.getTable().getAffixer();
+        if (affixer != null) { // affixer can be null if table is not attached yet
+            affixer.getWidthApplier().setTdWidth(th, row, columnIndex);
+        }
+    }
+
+    private void setTrWidth(TableRowBuilder tr, int row) {
+        final CellTableAffixer affixer = table.getTable().getAffixer();
+        if (affixer != null) { // affixer can be null if table is not attached yet
+            affixer.getWidthApplier().setTrWidth(tr, row);
+        }
+    }
 }
+

@@ -21,71 +21,35 @@ package org.activityinfo.ui.client.widget;
  * #L%
  */
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.TableSectionElement;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ProvidesKey;
 
 /**
  * @author yuriyz on 4/7/14.
  */
 public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<T> {
 
-    public static class HeaderRedrawnEvent extends GwtEvent<HeaderRedrawnEvent.Handler> {
-
-        public static interface Handler extends EventHandler {
-
-            void update(HeaderRedrawnEvent p_event);
-        }
-
-        public static final Type<Handler> TYPE = new Type<Handler>();
-
-        @Override
-        public Type<Handler> getAssociatedType() {
-            return TYPE;
-        }
-
-        @Override
-        protected void dispatch(Handler handler) {
-            handler.update(this);
-        }
-    }
-
-
     private final EventBus eventBus = new SimpleEventBus();
-
-    public CellTable() {
-    }
-
-    public CellTable(int pageSize) {
-        super(pageSize);
-    }
-
-    public CellTable(ProvidesKey<T> keyProvider) {
-        super(keyProvider);
-    }
+    private CellTableAffixer affixer;
 
     public CellTable(int pageSize, Resources resources) {
         super(pageSize, resources);
-    }
-
-    public CellTable(int pageSize, ProvidesKey<T> keyProvider) {
-        super(pageSize, keyProvider);
-    }
-
-    public CellTable(int pageSize, Resources resources, ProvidesKey<T> keyProvider) {
-        super(pageSize, resources, keyProvider);
-    }
-
-    public CellTable(int pageSize, Resources resources, ProvidesKey<T> keyProvider, Widget loadingIndicator) {
-        super(pageSize, resources, keyProvider, loadingIndicator);
-    }
-
-    public CellTable(int pageSize, Resources resources, ProvidesKey<T> keyProvider, Widget loadingIndicator, boolean enableColGroup, boolean attachLoadingPanel) {
-        super(pageSize, resources, keyProvider, loadingIndicator, enableColGroup, attachLoadingPanel);
+        addAttachHandler(new AttachEvent.Handler() {
+            @Override
+            public void onAttachOrDetach(AttachEvent event) {
+                if (event.isAttached()) {
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                        @Override
+                        public void execute() {
+                            affixer = new CellTableAffixer(CellTable.this);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -93,13 +57,11 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
         return super.getTableHeadElement();
     }
 
-    public EventBus getEventBus() {
-        return eventBus;
+    public CellTableAffixer getAffixer() {
+        return affixer;
     }
 
-    @Override
-    public void redrawHeaders() {
-        super.redrawHeaders();
-        eventBus.fireEvent(new HeaderRedrawnEvent());
+    public EventBus getEventBus() {
+        return eventBus;
     }
 }
