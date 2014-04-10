@@ -73,7 +73,7 @@ public class FilterCell<C> extends AbstractCell<C> {
     @Override
     public void render(Context context, C value, SafeHtmlBuilder sb) {
         final boolean hasCriteria = cellAction.getColumn().getCriteria() != null;
-        final String icon = hasCriteria ? Icons.INSTANCE.filter() : Icons.INSTANCE.arrowDown();
+        final String icon = hasCriteria ? Icons.INSTANCE.filter() : Icons.INSTANCE.caretDown();
         sb.append(TEMPLATE.html(cellAction.getColumn().getHeader(), icon));
     }
 
