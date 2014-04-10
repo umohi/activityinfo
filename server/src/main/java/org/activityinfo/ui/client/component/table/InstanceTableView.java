@@ -74,8 +74,10 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     public void setSelectedColumns(final List<FieldColumn> selectedColumns) {
         this.selectedColumns = selectedColumns;
         table.setColumns(selectedColumns);
-        if (selectedColumns.size() < columns.size()) {
-            columnAlert.showMessages(I18N.CONSTANTS.notAllColumnsAreShown());
+        final int allColumns = columns.size();
+        final int visibleColumns = selectedColumns.size();
+        if (visibleColumns < allColumns) {
+            columnAlert.showMessages(I18N.MESSAGES.notAllColumnsAreShown(visibleColumns, allColumns, I18N.CONSTANTS.chooseColumns()));
         } else {
             columnAlert.setVisible(false);
         }

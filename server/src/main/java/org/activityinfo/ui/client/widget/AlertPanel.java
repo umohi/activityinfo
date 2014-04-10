@@ -25,6 +25,7 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
@@ -78,6 +79,11 @@ public class AlertPanel extends Composite {
         for (VisibilityHandler handler : visibilityHandlers) {
             handler.onVisibilityChange(visible);
         }
+    }
+
+    public void showMessages(SafeHtml message) {
+        messages.setInnerSafeHtml(message);
+        setVisible(true);
     }
 
     public void showMessages(String message) {

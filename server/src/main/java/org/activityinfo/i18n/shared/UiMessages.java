@@ -329,4 +329,7 @@ public interface UiMessages extends com.google.gwt.i18n.client.Messages {
 
     @DefaultMessage("Edit {0}")
     String editLocation(String locationTypeName);
+
+    @DefaultMessage("<b>Showing {0} of {1} columns.</b> You can choose visible columns with ''{2}'' button")
+    SafeHtml  notAllColumnsAreShown(int visibleColumns, int allColumns, String chooseColumnButtonName);
 }

@@ -26,6 +26,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -84,7 +85,7 @@ public class ChooseColumnsDialog {
     @UiField
     Button rightButton;
     @UiField
-    Button removeButton;
+    Button leftButton;
     @UiField
     TextBox filterColumnTable;
     @UiField
@@ -200,6 +201,7 @@ public class ChooseColumnsDialog {
 
     private void onOk() {
         tableView.setSelectedColumns(Lists.newArrayList(selectedTableDataProvider.getList()));
+        dialog.hide();
     }
 
     public void setMoveRightButtonState() {
@@ -209,7 +211,7 @@ public class ChooseColumnsDialog {
     }
 
     public void setRemoveButtonState() {
-        removeButton.setEnabled(!selectedSelectionModel.getSelectedSet().isEmpty());
+        leftButton.setEnabled(!selectedSelectionModel.getSelectedSet().isEmpty());
     }
 
     public void setUpButtonState() {
@@ -256,8 +258,13 @@ public class ChooseColumnsDialog {
         selectedTableDataProvider.getList().addAll(set);
         selectedTableDataProvider.refresh();
 
-        setMoveRightButtonState();
-        redrawTableRows(set);
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                setMoveRightButtonState();
+                redrawTableRows(set);
+            }
+        });
     }
 
     public void redrawTableRows(Collection<FieldColumn> rows) {
@@ -269,47 +276,55 @@ public class ChooseColumnsDialog {
         }
     }
 
-    @UiHandler("removeButton")
-    public void onRemove(ClickEvent event) {
+    @UiHandler("leftButton")
+    public void onMoveLeft(ClickEvent event) {
         final Set<FieldColumn> set = selectedSelectionModel.getSelectedSet();
 
         selectedTableDataProvider.getList().removeAll(set);
         selectedTableDataProvider.refresh();
+        selectedSelectionModel.clear(); // remove selection explicitly
 
-        setRemoveButtonState();
-        redrawTableRows(set);
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                setUpButtonState();
+                setDownButtonState();
+                setRemoveButtonState();
+                redrawTableRows(set);
+            }
+        });
     }
 
     @UiHandler("upButton")
     public void onUp(ClickEvent event) {
         final Set<FieldColumn> set = selectedSelectionModel.getSelectedSet();
-        if (set != null) {
-            final ArrayList<FieldColumn> copy = Lists.newArrayList(selectedTableDataProvider.getList());
-            for (FieldColumn column : set) {
-                final int index = copy.indexOf(column);
-                if (index > 0) {
-                    Collections.swap(copy, index, index - 1);
-                }
+
+        final ArrayList<FieldColumn> copy = Lists.newArrayList(selectedTableDataProvider.getList());
+        for (FieldColumn column : set) {
+            final int index = copy.indexOf(column);
+            if (index > 0) {
+                Collections.swap(copy, index, index - 1);
             }
-            selectedTableDataProvider.setList(copy);
         }
+        selectedTableDataProvider.setList(copy);
+
         setUpButtonState();
     }
 
     @UiHandler("downButton")
     public void onDown(ClickEvent event) {
         final Set<FieldColumn> set = selectedSelectionModel.getSelectedSet();
-        if (set != null) {
-            final ArrayList<FieldColumn> copy = Lists.newArrayList(selectedTableDataProvider.getList());
-            final int size = copy.size();
-            for (FieldColumn column : set) {
-                final int index = copy.indexOf(column);
-                if (index < (size - 1)) {
-                    Collections.swap(copy, index, index + 1);
-                }
+
+        final ArrayList<FieldColumn> copy = Lists.newArrayList(selectedTableDataProvider.getList());
+        final int size = copy.size();
+        for (FieldColumn column : set) {
+            final int index = copy.indexOf(column);
+            if (index < (size - 1)) {
+                Collections.swap(copy, index, index + 1);
             }
-            selectedTableDataProvider.setList(copy);
         }
+        selectedTableDataProvider.setList(copy);
+
         setDownButtonState();
     }
 }
