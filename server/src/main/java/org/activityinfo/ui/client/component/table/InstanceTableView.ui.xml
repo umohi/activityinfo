@@ -21,5 +21,6 @@
 
     <table:InstanceTable ui:field="table"/>
 
+    <g:Button ui:field="loadMoreButton" styleName="btn btn-default center-block" enabled="false" text="{i18n.loadMore}"/>
   </g:HTMLPanel>
 </ui:UiBinder>

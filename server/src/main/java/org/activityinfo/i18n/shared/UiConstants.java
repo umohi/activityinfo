@@ -3485,4 +3485,7 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("This field is required")
     String requiredFieldMessage();
+
+    @DefaultStringValue("Load more")
+    String loadMore();
 }

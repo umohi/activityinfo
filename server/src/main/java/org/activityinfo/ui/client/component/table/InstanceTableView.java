@@ -4,13 +4,12 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.RequiresResize;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormClass;
@@ -44,6 +43,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     InstanceTable table;
     @UiField
     AlertPanel errorMessages;
+    @UiField
+    Button loadMoreButton;
 
     interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
@@ -55,6 +56,19 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         this.resourceLocator = resourceLocator;
         this.table = new InstanceTable(this);
         this.panel = ourUiBinder.createAndBindUi(this);
+
+        handleLoadMoreButtonState();
+    }
+
+    private void handleLoadMoreButtonState() {
+        table.getTable().getEventBus().addHandler(InstanceTableDataLoader.DataLoadEvent.TYPE, new InstanceTableDataLoader.DataLoadHandler() {
+            @Override
+            public void onLoad(InstanceTableDataLoader.DataLoadEvent event) {
+                final int totalCount = event.getTotalCount();
+                final int loadedDataCount = event.getLoadedDataCount();
+                loadMoreButton.setEnabled(loadedDataCount < totalCount);
+            }
+        });
     }
 
     public void setCriteria(Criteria criteria) {
@@ -117,7 +131,11 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @Override
     public void onResize() {
+    }
 
+    @UiHandler("loadMoreButton")
+    public void onLoadMore(ClickEvent event) {
+        table.loadMore();
     }
 
     public String getFormClassLabel() {

@@ -179,4 +179,8 @@ public class InstanceTable implements IsWidget {
     public TableLoadingIndicator getLoadingIndicator() {
         return loadingIndicator;
     }
+
+    public void loadMore() {
+        dataLoader.loadMore();
+    }
 }

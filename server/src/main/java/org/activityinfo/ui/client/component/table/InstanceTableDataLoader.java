@@ -23,6 +23,8 @@ package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import org.activityinfo.core.client.InstanceQuery;
@@ -41,6 +43,44 @@ import java.util.logging.Logger;
  * @author yuriyz on 4/10/14.
  */
 public class InstanceTableDataLoader {
+
+    public static interface DataLoadHandler extends EventHandler {
+
+        void onLoad(DataLoadEvent event);
+    }
+
+
+    public static class DataLoadEvent extends GwtEvent<DataLoadHandler> {
+
+        public static final Type<DataLoadHandler> TYPE = new Type<>();
+
+        private final int totalCount;
+        private final int loadedDataCount;
+
+
+        public DataLoadEvent(int totalCount, int loadedDataCount) {
+            this.totalCount = totalCount;
+            this.loadedDataCount= loadedDataCount;
+        }
+
+        public int getTotalCount() {
+            return totalCount;
+        }
+
+        public int getLoadedDataCount() {
+            return loadedDataCount;
+        }
+
+        @Override
+        public Type<DataLoadHandler> getAssociatedType() {
+            return TYPE;
+        }
+
+        @Override
+        protected void dispatch(DataLoadHandler handler) {
+            handler.onLoad(this);
+        }
+    }
 
     private static final Logger LOGGER = Logger.getLogger(InstanceTableDataLoader.class.getName());
 
@@ -76,14 +116,18 @@ public class InstanceTableDataLoader {
 
         // if near the end then load data
         if (lastVerticalScrollPosition >= maxScrollTop) {
+            // AI-524: as pointed in issue for now we will put "Load more" button instead of
+            // loading data on scrolling
+            // loadMore();
+        }
+    }
 
-            final int offset = tableDataProvider.getList().size();
-
-            // load data only if offset is less then total count (and totalCount is initialized)
-            if (offset < instanceTotalCount && instanceTotalCount != -1) {
-                final int count = Math.min(InstanceTable.PAGE_SIZE, instanceTotalCount - offset);
-                load(offset, count);
-            }
+    public void loadMore() {
+        final int offset = tableDataProvider.getList().size();
+        // load data only if offset is less then total count (and totalCount is initialized)
+        if (offset < instanceTotalCount && instanceTotalCount != -1) {
+            final int count = Math.min(InstanceTable.PAGE_SIZE, instanceTotalCount - offset);
+            load(offset, count);
         }
     }
 
@@ -114,6 +158,7 @@ public class InstanceTableDataLoader {
             public void onSuccess(InstanceQueryResult result) {
                 tableDataProvider.getList().addAll(result.getProjections());
                 instanceTotalCount = result.getTotalCount();
+                table.getTable().fireEvent(new DataLoadEvent(instanceTotalCount, tableDataProvider.getList().size()));
             }
         });
     }
