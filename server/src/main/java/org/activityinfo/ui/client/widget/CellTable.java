@@ -61,6 +61,10 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
             }
         }
 
+        public ScrollPanel getScrollAncestor() {
+            return scrollAncestor;
+        }
+
         @Override
         public Type<ScrollHandler> getAssociatedType() {
             return TYPE;

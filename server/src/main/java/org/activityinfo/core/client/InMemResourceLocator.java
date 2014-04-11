@@ -12,6 +12,7 @@ import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.fp.client.Promise;
+import org.activityinfo.legacy.shared.adapter.InstanceQueryResultAdapter;
 
 import java.util.*;
 
@@ -92,6 +93,10 @@ public class InMemResourceLocator implements ResourceLocator {
             }
         }
         return matching;
+    }
+
+    public Promise<InstanceQueryResult> queryProjection(InstanceQuery query) {
+        return query(query).then(new InstanceQueryResultAdapter());
     }
 
     @Override

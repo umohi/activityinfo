@@ -1,43 +1,35 @@
 package org.activityinfo.ui.client.component.table;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
-import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.ProjectionKeyProvider;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.criteria.CriteriaIntersection;
 import org.activityinfo.core.shared.form.FormClass;
-import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.ui.client.component.table.action.*;
 import org.activityinfo.ui.client.component.table.filter.FilterCellAction;
 import org.activityinfo.ui.client.component.table.filter.FilterHeader;
 import org.activityinfo.ui.client.style.table.CellTableResources;
 import org.activityinfo.ui.client.widget.CellTable;
-import org.activityinfo.ui.client.widget.loading.LoadingState;
 import org.activityinfo.ui.client.widget.loading.TableLoadingIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Reusable component to display Instances in a table
  */
 public class InstanceTable implements IsWidget {
 
-    private static final Logger LOGGER = Logger.getLogger(InstanceTable.class.getName());
+//    private static final Logger LOGGER = Logger.getLogger(InstanceTable.class.getName());
 
     /**
      * The default column width, in {@code em}
@@ -52,8 +44,8 @@ public class InstanceTable implements IsWidget {
     private final MultiSelectionModel<Projection> selectionModel = new MultiSelectionModel<>(new ProjectionKeyProvider());
     private final List<TableHeaderAction> headerActions;
     private final InstanceTableView tableView;
+    private final InstanceTableDataLoader dataLoader;
 
-    private Set<FieldPath> fields = Sets.newHashSet();
     private Criteria criteria;
     private FormClass rootFormClass;
 
@@ -85,6 +77,8 @@ public class InstanceTable implements IsWidget {
                 table.redrawHeaders();
             }
         });
+        dataLoader = new InstanceTableDataLoader(this);
+
 
         // Create our loading indicator which can also show failure
         loadingIndicator = new TableLoadingIndicator();
@@ -98,16 +92,6 @@ public class InstanceTable implements IsWidget {
 
         headerActions = createHeaderActions();
 
-        table.getEventBus().addHandler(CellTable.ScrollEvent.TYPE, new CellTable.ScrollHandler() {
-            @Override
-            public void onScroll(CellTable.ScrollEvent event) {
-                handleScroll(event);
-            }
-        });
-    }
-
-    private void handleScroll(CellTable.ScrollEvent event) {
-        // todo
     }
 
     private List<TableHeaderAction> createHeaderActions() {
@@ -128,7 +112,7 @@ public class InstanceTable implements IsWidget {
         for (FieldColumn column : columns) {
             final FilterCellAction filterAction = new FilterCellAction(this, column);
             table.addColumn(column, new FilterHeader(column, filterAction));
-            fields.addAll(column.getFieldPaths());
+            dataLoader.getFields().addAll(column.getFieldPaths());
         }
 
         reload();
@@ -141,25 +125,10 @@ public class InstanceTable implements IsWidget {
     }
 
     public void reload() {
-        loadingIndicator.onLoadingStateChanged(LoadingState.LOADING, null);
-
-        InstanceQuery query = new InstanceQuery(Lists.newArrayList(fields), buildQueryCriteria());
-        resourceLocator.query(query).then(new AsyncCallback<List<Projection>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                LOGGER.log(Level.SEVERE, "Failed to load instances. Criteria = " +
-                        criteria + ", fields = " + fields, caught);
-                loadingIndicator.onLoadingStateChanged(LoadingState.FAILED, caught);
-            }
-
-            @Override
-            public void onSuccess(List<Projection> result) {
-                table.setRowData(result);
-            }
-        });
+        dataLoader.reload();
     }
 
-    private Criteria buildQueryCriteria() {
+    public Criteria buildQueryCriteria() {
         // we want the intersection of the base (class) criteria and
         // each of the column filters: the rows that satisfy the class AND
         // the Col1 filter AND Col2 filter
@@ -205,5 +174,9 @@ public class InstanceTable implements IsWidget {
 
     public InstanceTableView getTableView() {
         return tableView;
+    }
+
+    public TableLoadingIndicator getLoadingIndicator() {
+        return loadingIndicator;
     }
 }
