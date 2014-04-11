@@ -16,7 +16,7 @@ public interface Icons extends IconSet {
     @Source(value = "icons/add.svg")
     String add2();
 
-    @Source(value = "icons/caret_down.svg")
+    @Source(value = "icons/fontawesome.svg", glyph = 0xf0d7)
     String caretDown();
 
     @Source(value = "icons/icomoon/plus.svg")
