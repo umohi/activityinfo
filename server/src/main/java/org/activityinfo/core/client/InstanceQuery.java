@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class InstanceQuery {
 
-    private final static int FALLBACK_MAX_COUNT = 10000;
+    private final static int FALLBACK_MAX_COUNT = 100;
 
     private final List<FieldPath> fieldPaths;
     private final Criteria criteria;
