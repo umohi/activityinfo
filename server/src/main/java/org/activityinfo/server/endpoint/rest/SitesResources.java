@@ -103,6 +103,7 @@ public class SitesResources {
             json.writeStartObject();
             json.writeNumberField("id", site.getId());
             json.writeNumberField("activity", site.getActivityId());
+            json.writeNumberField("timestamp", site.getTimeEdited());
 
             // write start / end date if applicable
             if (site.getDate1() != null && site.getDate2() != null) {
