@@ -1,12 +1,15 @@
 package org.activityinfo.server.endpoint.rest;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.command.GetSites;
 import org.activityinfo.legacy.shared.model.AttributeDTO;
 import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.command.DispatcherSync;
 import org.codehaus.jackson.JsonGenerationException;
@@ -21,6 +24,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class SitesResources {
@@ -159,6 +163,8 @@ public class SitesResources {
         json.writeStringField("type", "FeatureCollection");
         json.writeArrayFieldStart("features");
 
+        final SchemaDTO schemaDTO = dispatcher.execute(new GetSchema());
+
         for (SiteDTO site : sites) {
             if (site.hasLatLong()) {
                 json.writeStartObject();
@@ -173,22 +179,37 @@ public class SitesResources {
                     json.writeStringField("comments", site.getComments());
                 }
 
+                final Map<String, Object> indicatorsMap = Maps.newHashMap();
+                final Map<String, Object> attributesMap = Maps.newHashMap();
+
                 // write indicators and attributes
                 for(String propertyName : site.getPropertyNames()) {
                     if(propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {
                         Object value = site.get(propertyName);
                         if(value instanceof Number) {
-                            json.writeNumberField("indicator" + IndicatorDTO.indicatorIdForPropertyName(propertyName),
-                                    ((Number)value).doubleValue());
+                            final int indicatorId = IndicatorDTO.indicatorIdForPropertyName(propertyName);
+                            final IndicatorDTO dto = schemaDTO.getIndicatorById(indicatorId);
+                            final double doubleValue = ((Number) value).doubleValue();
+                            indicatorsMap.put(dto.getName(), doubleValue);
+                            json.writeNumberField("indicator" + indicatorId, doubleValue);
                         }
                     } else if(propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
                         Object value = site.get(propertyName);
-                        json.writeBooleanField("attribute" + AttributeDTO.idForPropertyName(propertyName),
+                        final int attributeId = AttributeDTO.idForPropertyName(propertyName);
+                        final AttributeDTO attributeDTO = schemaDTO.getAttributeById(attributeId);
+                        attributesMap.put(attributeDTO.getName(), value == Boolean.TRUE);
+                        json.writeBooleanField("attribute" + attributeId,
                                 value == Boolean.TRUE);
                     }
                 }
 
                 json.writeEndObject();
+
+                // write indicators
+                Jackson.writeMap(json, "indicators", indicatorsMap);
+
+                // write attributes
+                Jackson.writeMap(json, "attributes", attributesMap);
 
                 // write out the geometry object
                 json.writeObjectFieldStart("geometry");
