@@ -12,7 +12,6 @@ import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.command.DispatcherSync;
-import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 
 import javax.ws.rs.GET;
@@ -70,7 +69,7 @@ public class SitesResources {
     public Response queryPoints(
             @QueryParam("activity") List<Integer> activityIds,
             @QueryParam("database") List<Integer> databaseIds,
-            @QueryParam("callback") String callback) throws JsonGenerationException, IOException {
+            @QueryParam("callback") String callback) throws IOException {
 
         Filter filter = new Filter();
         filter.addRestriction(DimensionType.Activity, activityIds);
@@ -96,7 +95,7 @@ public class SitesResources {
 
 
     private void writeJson(List<SiteDTO> sites, JsonGenerator json)
-            throws IOException, JsonGenerationException {
+            throws IOException {
         json.writeStartArray();
 
         for (SiteDTO site : sites) {
@@ -166,7 +165,7 @@ public class SitesResources {
         json.close();
     }
 
-    private void writeGeoJson(List<SiteDTO> sites, JsonGenerator json) throws JsonGenerationException, IOException {
+    private void writeGeoJson(List<SiteDTO> sites, JsonGenerator json) throws IOException {
 
         json.writeStartObject();
         json.writeStringField("type", "FeatureCollection");
@@ -200,15 +199,12 @@ public class SitesResources {
                             final IndicatorDTO dto = schemaDTO.getIndicatorById(indicatorId);
                             final double doubleValue = ((Number) value).doubleValue();
                             indicatorsMap.put(dto.getName(), doubleValue);
-//                            json.writeNumberField("indicator" + indicatorId, doubleValue);
                         }
                     } else if(propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
                         Object value = site.get(propertyName);
                         final int attributeId = AttributeDTO.idForPropertyName(propertyName);
                         final AttributeDTO attributeDTO = schemaDTO.getAttributeById(attributeId);
                         attributesMap.put(attributeDTO.getName(), value == Boolean.TRUE);
-//                        json.writeBooleanField("attribute" + attributeId,
-//                                value == Boolean.TRUE);
                     }
                 }
 
@@ -219,8 +215,6 @@ public class SitesResources {
                 Jackson.writeMap(json, "attributes", attributesMap);
 
                 json.writeEndObject();
-
-
 
                 // write out the geometry object
                 json.writeObjectFieldStart("geometry");
@@ -256,7 +250,7 @@ public class SitesResources {
             if (propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
                 int attributeId = AttributeDTO
                         .idForPropertyName(propertyName);
-                boolean value = (Boolean) site.get(propertyName, false);
+                boolean value = site.get(propertyName, false);
                 if (value) {
                     ids.add(attributeId);
                 }
