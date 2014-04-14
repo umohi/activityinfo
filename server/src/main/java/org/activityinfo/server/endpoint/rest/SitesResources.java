@@ -200,25 +200,27 @@ public class SitesResources {
                             final IndicatorDTO dto = schemaDTO.getIndicatorById(indicatorId);
                             final double doubleValue = ((Number) value).doubleValue();
                             indicatorsMap.put(dto.getName(), doubleValue);
-                            json.writeNumberField("indicator" + indicatorId, doubleValue);
+//                            json.writeNumberField("indicator" + indicatorId, doubleValue);
                         }
                     } else if(propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
                         Object value = site.get(propertyName);
                         final int attributeId = AttributeDTO.idForPropertyName(propertyName);
                         final AttributeDTO attributeDTO = schemaDTO.getAttributeById(attributeId);
                         attributesMap.put(attributeDTO.getName(), value == Boolean.TRUE);
-                        json.writeBooleanField("attribute" + attributeId,
-                                value == Boolean.TRUE);
+//                        json.writeBooleanField("attribute" + attributeId,
+//                                value == Boolean.TRUE);
                     }
                 }
 
-                json.writeEndObject();
-
-                // write indicators
+                // write indicators inside properties
                 Jackson.writeMap(json, "indicators", indicatorsMap);
 
-                // write attributes
+                // write attributes inside properties
                 Jackson.writeMap(json, "attributes", attributesMap);
+
+                json.writeEndObject();
+
+
 
                 // write out the geometry object
                 json.writeObjectFieldStart("geometry");
