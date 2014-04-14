@@ -40,12 +40,20 @@ public class SitesResources {
     public String query(
             @QueryParam("activity") List<Integer> activityIds,
             @QueryParam("database") List<Integer> databaseIds,
-            @QueryParam("format") String format)
-            throws IOException {
+            @QueryParam("indicator") List<Integer> indicatorIds,
+            @QueryParam("partner") List<Integer> partnerIds,
+            @QueryParam("attribute") List<Integer> attributeIds,
+            @QueryParam("location") List<Integer> locationIds,
+            @QueryParam("format") String format
+    ) throws IOException {
 
         Filter filter = new Filter();
         filter.addRestriction(DimensionType.Activity, activityIds);
         filter.addRestriction(DimensionType.Database, databaseIds);
+        filter.addRestriction(DimensionType.Indicator, indicatorIds);
+        filter.addRestriction(DimensionType.Partner, partnerIds);
+        filter.addRestriction(DimensionType.Attribute, attributeIds);
+        filter.addRestriction(DimensionType.Location, locationIds);
 
         List<SiteDTO> sites = dispatcher.execute(new GetSites(filter)).getData();
 
