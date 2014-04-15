@@ -4,13 +4,10 @@ package org.activityinfo.legacy.shared.adapter;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.client.InstanceQuery;
-import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.application.ApplicationProperties;
 import org.activityinfo.core.shared.criteria.ClassCriteria;
-import org.activityinfo.core.shared.criteria.IdCriteria;
-import org.activityinfo.core.shared.criteria.ParentCriteria;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.model.AiLatLng;
@@ -23,7 +20,6 @@ import org.activityinfo.server.command.CommandTestCase2;
 import org.activityinfo.server.database.OnDataSet;
 import org.hamcrest.Matchers;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -38,7 +34,6 @@ import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.getAdminFieldId;
 import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.getNameFieldId;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
@@ -183,7 +178,6 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
     @Test
     public void locationProjection() {
 
-
         ResourceLocatorAdaptor adapter = new ResourceLocatorAdaptor(getDispatcher());
         FieldPath villageName = new FieldPath(getNameFieldId(VILLAGE_CLASS));
         FieldPath provinceName = new FieldPath(
@@ -218,8 +212,6 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
         }
     }
 
-
-    @Ignore("WIP")
     @Test
     public void siteProjections() {
 

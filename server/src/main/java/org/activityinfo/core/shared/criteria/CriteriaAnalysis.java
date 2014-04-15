@@ -30,7 +30,6 @@ public class CriteriaAnalysis extends CriteriaVisitor {
      */
     private final Multimap<Character,Integer> ids = HashMultimap.create();
 
-
     public Cuid getParentCriteria() {
         return parentCriteria.iterator().next();
     }
@@ -109,6 +108,16 @@ public class CriteriaAnalysis extends CriteriaVisitor {
 
     public boolean isRestrictedById() {
         return !ids.isEmpty();
+    }
+
+    public boolean isLocationQuery() {
+        return isRestrictedToSingleClass() &&
+                getClassRestriction().getDomain() == CuidAdapter.LOCATION_TYPE_DOMAIN;
+    }
+
+    public boolean isSiteQuery() {
+        return isRestrictedToSingleClass() &&
+                getClassRestriction().getDomain() == CuidAdapter.ACTIVITY_DOMAIN;
     }
 
     public boolean isAncestorQuery() {

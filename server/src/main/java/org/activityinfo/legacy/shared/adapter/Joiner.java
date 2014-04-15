@@ -16,6 +16,8 @@ import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.shared.BiFunction;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.adapter.projection.LocationProjector;
+import org.activityinfo.legacy.shared.adapter.projection.SiteProjector;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetLocations;
@@ -93,13 +95,13 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
         CriteriaAnalysis criteriaAnalysis = CriteriaAnalysis.analyze(instanceQuery.getCriteria());
 
-        if(isLocationQuery(criteriaAnalysis)) {
+        if (criteriaAnalysis.isLocationQuery()) {
             return projectLocations(criteriaAnalysis, instanceQuery.getFieldPaths());
         }
 
-//        if(isSiteQuery(criteriaAnalysis)) {
-//            return projectSites(criteriaAnalysis, instanceQuery.getFieldPaths());
-//        }
+        if (criteriaAnalysis.isSiteQuery()) {
+            return projectSites(criteriaAnalysis, instanceQuery.getFieldPaths());
+        }
 
         Promise<List<FormInstance>> instances = query(criteria);
         Promise<List<FormClass>> classes = instances.join(new FetchFormClasses());
@@ -139,7 +141,8 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         GetSites query = new GetSites();
         query.setFilter(filter);
 
-        throw new UnsupportedOperationException("todo");
+        return dispatcher.execute(query)
+                .then(new SiteProjector(criteria, fieldPaths));
     }
 
     private Promise<List<Projection>> projectLocations(CriteriaAnalysis criteriaAnalysis, List<FieldPath> fieldPaths) {
@@ -152,12 +155,6 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
         return dispatcher.execute(query)
                 .then(new LocationProjector(criteria, fieldPaths));
-    }
-
-
-    private boolean isLocationQuery(CriteriaAnalysis criteria) {
-        return criteria.isRestrictedToSingleClass() &&
-                criteria.getClassRestriction().getDomain() == CuidAdapter.LOCATION_TYPE_DOMAIN;
     }
 
     private Promise<List<FormInstance>> query(Criteria criteria) {
