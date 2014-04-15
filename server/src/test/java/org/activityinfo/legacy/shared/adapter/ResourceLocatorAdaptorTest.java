@@ -231,7 +231,7 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
 
         System.out.println(Joiner.on("\n").join(projections));
 
-        assertThat(projections.size(), equalTo(4));
+        assertThat(projections.size(), equalTo(3));
         assertThat(projections.get(0).getStringValue(provinceName), equalTo("Sud Kivu"));
     }
 

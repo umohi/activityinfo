@@ -23,6 +23,7 @@ package org.activityinfo.legacy.shared.adapter.projection;
 
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.tree.FieldPath;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.model.PartnerDTO;
 
 /**
@@ -30,12 +31,22 @@ import org.activityinfo.legacy.shared.model.PartnerDTO;
  */
 public class PartnerProjectionUpdater implements ProjectionUpdater<PartnerDTO> {
 
-    public PartnerProjectionUpdater(FieldPath path) {
+    private FieldPath path;
+    private int databaseId;
+    private int fieldIndex;
 
+    public PartnerProjectionUpdater(FieldPath path, int databaseId, int fieldIndex) {
+        this.path = path;
+        this.databaseId = databaseId;
+        this.fieldIndex = fieldIndex;
     }
 
     @Override
     public void update(Projection projection, PartnerDTO dto) {
-        // todo
+        switch (fieldIndex) {
+            case CuidAdapter.NAME_FIELD:
+                projection.setValue(path, dto.getName());
+                break;
+        }
     }
 }

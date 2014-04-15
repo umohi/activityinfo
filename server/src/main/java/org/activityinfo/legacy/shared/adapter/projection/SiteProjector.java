@@ -34,7 +34,9 @@ public class SiteProjector implements Function<ListResult<SiteDTO>, List<Project
             Cuid fieldId = path.getLeafId();
 
             if (fieldId.getDomain() == CuidAdapter.PARTNER_FORM_CLASS_DOMAIN) {
-                partnerProjectors.add(new PartnerProjectionUpdater(path));
+                int databaseId = CuidAdapter.getBlock(fieldId, 0);
+                int fieldIndex = CuidAdapter.getBlock(fieldId, 1);
+                partnerProjectors.add(new PartnerProjectionUpdater(path, databaseId, fieldIndex));
             } else if (fieldId.getDomain() == CuidAdapter.INDICATOR_DOMAIN) {
                 indicatorProjectors.add(new IndicatorProjectionUpdater(path));
             }
