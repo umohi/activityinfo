@@ -7,10 +7,7 @@ import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.command.GetSites;
-import org.activityinfo.legacy.shared.model.AttributeDTO;
-import org.activityinfo.legacy.shared.model.IndicatorDTO;
-import org.activityinfo.legacy.shared.model.SchemaDTO;
-import org.activityinfo.legacy.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.server.command.DispatcherSync;
 import org.codehaus.jackson.JsonGenerator;
 
@@ -178,6 +175,21 @@ public class SitesResources {
                 json.writeStartObject();
                 json.writeStringField("type", "Feature");
                 json.writeNumberField("id", site.getId());
+                json.writeNumberField("timestamp", site.getTimeEdited());
+
+                final ActivityDTO activity = schemaDTO.getActivityById(site.getActivityId());
+
+                json.writeNumberField("activity", site.getActivityId());
+                if (!Strings.isNullOrEmpty(activity.getCategory())) {
+                    json.writeStringField("activityCategory", activity.getCategory());
+                }
+                json.writeStringField("activityName", activity.getName());
+
+                // write start / end date if applicable
+                if (site.getDate1() != null && site.getDate2() != null) {
+                    json.writeStringField("startDate", site.getDate1().toString());
+                    json.writeStringField("endDate", site.getDate2().toString());
+                }
 
                 // write out the properties object
                 json.writeObjectFieldStart("properties");
@@ -188,7 +200,7 @@ public class SitesResources {
                 }
 
                 final Map<String, Object> indicatorsMap = Maps.newHashMap();
-                final Map<String, Object> attributesMap = Maps.newHashMap();
+                final Map<AttributeGroupDTO, Map<String, Object>> attributesGroupMap = Maps.newHashMap();
 
                 // write indicators and attributes
                 for(String propertyName : site.getPropertyNames()) {
@@ -203,16 +215,30 @@ public class SitesResources {
                     } else if(propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
                         Object value = site.get(propertyName);
                         final int attributeId = AttributeDTO.idForPropertyName(propertyName);
-                        final AttributeDTO attributeDTO = schemaDTO.getAttributeById(attributeId);
-                        attributesMap.put(attributeDTO.getName(), value == Boolean.TRUE);
+                        for (AttributeGroupDTO attributeGroupDTO : activity.getAttributeGroups()) {
+                            final AttributeDTO attributeDTO = attributeGroupDTO.getAttributeById(attributeId);
+                            if (attributeDTO != null) {
+                                if (attributesGroupMap.containsKey(attributeGroupDTO)) {
+                                    final Map<String, Object> map = attributesGroupMap.get(attributeGroupDTO);
+                                    map.put(attributeDTO.getName(), value == Boolean.TRUE);
+                                } else {
+                                    final Map<String, Object> map = Maps.newHashMap();
+                                    map.put(attributeDTO.getName(), value == Boolean.TRUE);
+                                    attributesGroupMap.put(attributeGroupDTO, map);
+                                }
+                                break;
+                            }
+                        }
                     }
                 }
 
                 // write indicators inside properties
                 Jackson.writeMap(json, "indicators", indicatorsMap);
 
-                // write attributes inside properties
-                Jackson.writeMap(json, "attributes", attributesMap);
+                // write attribute groups
+                for (Map.Entry<AttributeGroupDTO, Map<String, Object>> entry : attributesGroupMap.entrySet()) {
+                      Jackson.writeMap(json, entry.getKey().getName(), entry.getValue());
+                }
 
                 json.writeEndObject();
 
