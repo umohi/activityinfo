@@ -24,6 +24,7 @@ import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>> {
 
     public static final Cuid HOME_ID = new Cuid("home");
+    public static final Cuid GEODB_ID = new Cuid("_geodb");
 
     private final Criteria criteria;
 
@@ -40,6 +41,12 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
         root.set(FolderClass.LABEL_FIELD_ID, I18N.CONSTANTS.home());
         if(criteria.apply(root)) {
             instances.add(root);
+        }
+
+        FormInstance geodb = new FormInstance(GEODB_ID, FolderClass.CLASS_ID);
+        root.set(FolderClass.LABEL_FIELD_ID, "Geographic Reference Database");
+        if(criteria.apply(geodb)) {
+            instances.add(geodb);
         }
 
         for(UserDatabaseDTO db : schemaDTO.getDatabases()) {

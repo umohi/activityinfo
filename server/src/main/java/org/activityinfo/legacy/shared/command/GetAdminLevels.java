@@ -28,6 +28,7 @@ import java.util.Set;
 
 public class GetAdminLevels implements Command<AdminLevelResult> {
     private Set<Integer> indicatorIds;
+    private int countryId;
 
     public Set<Integer> getIndicatorIds() {
         return indicatorIds;
@@ -37,4 +38,11 @@ public class GetAdminLevels implements Command<AdminLevelResult> {
         this.indicatorIds = indicatorIds;
     }
 
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
 }

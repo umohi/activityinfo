@@ -193,8 +193,8 @@ public class SiteRenderer {
         int count = 0;
         if (group != null) {
             for (AttributeDTO attribute : group.getAttributes()) {
-                Boolean value = site.getAttributeValue(attribute.getId());
-                if (value != null && value) {
+                boolean value = site.getAttributeValue(attribute.getId());
+                if (value) {
                     if (count == 0) {
                         html.append("<p class='attribute'><span class='groupName'>");
                         html.append(group.getName());

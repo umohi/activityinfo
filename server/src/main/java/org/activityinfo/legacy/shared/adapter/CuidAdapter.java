@@ -21,6 +21,8 @@ import javax.annotation.Nonnull;
  */
 public class CuidAdapter {
 
+    public static final char COUNTRY_DOMAIN = 'c';
+
     public static final char SITE_DOMAIN = 's';
 
     public static final char ACTIVITY_DOMAIN = 'a';

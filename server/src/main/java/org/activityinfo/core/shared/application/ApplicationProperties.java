@@ -30,4 +30,8 @@ public class ApplicationProperties {
 
     public static final Cuid HIERARCHIAL = new Cuid("_multiLevel");
 
+    public static final Cuid COUNTRY_CLASS = new Cuid("_country");
+
+    public static final Cuid COUNTRY_NAME_FIELD = new Cuid("_country_name");
+
 }

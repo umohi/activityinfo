@@ -7,8 +7,10 @@ import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.application.ApplicationProperties;
 import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.criteria.IdCriteria;
+import org.activityinfo.core.shared.criteria.ParentCriteria;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.model.AiLatLng;
@@ -31,6 +33,7 @@ import java.util.Set;
 
 import static java.util.Arrays.asList;
 import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
+import static org.activityinfo.core.shared.criteria.ParentCriteria.isChildOf;
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.getAdminFieldId;
 import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.getNameFieldId;
@@ -239,4 +242,23 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
         assertThat(projections.size(), equalTo(4));
         assertThat(projections.get(0).getStringValue(provinceName), equalTo("Sud Kivu"));
     }
+
+    @Test
+    public void geodb() {
+
+        ResourceLocatorAdaptor adapter = new ResourceLocatorAdaptor(getDispatcher());
+
+        FormInstance geodbFolder = assertResolves(adapter.getFormInstance(FolderListAdapter.GEODB_ID));
+
+        List<FormInstance> countries = assertResolves(adapter.queryInstances(isChildOf(geodbFolder.getId())));
+        assertThat(countries, Matchers.hasSize(1));
+
+        FormInstance rdc = countries.get(0);
+        assertThat(rdc.getString(ApplicationProperties.COUNTRY_NAME_FIELD), equalTo("Rdc"));
+
+        List<FormInstance> levels = assertResolves(adapter.queryInstances(isChildOf(rdc.getId())));
+        System.out.println(levels);
+
+    }
+
 }

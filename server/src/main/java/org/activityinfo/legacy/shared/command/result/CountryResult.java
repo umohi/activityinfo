@@ -28,7 +28,7 @@ import org.activityinfo.legacy.shared.model.CountryDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CountryResult implements CommandResult, ListLoadResult<CountryDTO> {
+public class CountryResult extends ListResult<CountryDTO> {
     private List<CountryDTO> data;
 
     /**

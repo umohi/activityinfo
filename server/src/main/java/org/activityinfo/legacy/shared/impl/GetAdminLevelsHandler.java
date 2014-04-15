@@ -54,11 +54,13 @@ public class GetAdminLevelsHandler implements
                 "where e.adminlevelid=level.adminlevelid and geometry is not null)";
 
 
-        SqlQuery
-                .select()
+        SqlQuery query = SqlQuery.select()
                 .appendColumn("level.adminlevelId", "id")
                 .appendColumn("level.name", "name")
-                .appendColumn(hasPolygonsSubQuery, "polygons")
+                .appendColumn(hasPolygonsSubQuery, "polygons");
+
+        if(!command.getIndicatorIds().isEmpty()) {
+            query
                 .from(Tables.INDICATOR, "i")
                 .innerJoin(Tables.ACTIVITY, "a").on("i.activityId=a.activityId")
                 .innerJoin(Tables.USER_DATABASE, "db").on("a.databaseid=db.databaseid")
@@ -66,22 +68,29 @@ public class GetAdminLevelsHandler implements
                 .innerJoin(Tables.ADMIN_LEVEL, "level").on("level.countryid=c.countryid")
                 .where("i.indicatorId").in(command.getIndicatorIds())
                 .groupBy("level.adminlevelid")
-                .groupBy("level.name")
-                .execute(context.getTransaction(), new SqlResultCallback() {
+                .groupBy("level.name");
+        } else {
+            query = SqlQuery
+                    .select()
+                    .from(Tables.ADMIN_LEVEL, "level")
+                    .where("level.countryId").equalTo(command.getCountryId());
+        }
 
-                    @Override
-                    public void onSuccess(SqlTransaction tx, SqlResultSet results) {
-                        List<AdminLevelDTO> levels = Lists.newArrayList();
-                        for (SqlResultSetRow row : results.getRows()) {
-                            AdminLevelDTO level = new AdminLevelDTO();
-                            level.setId(row.getInt("id"));
-                            level.setName(row.getString("name"));
-                            level.setPolygons(row.getBoolean("polygons"));
-                            levels.add(level);
-                        }
+        query.execute(context.getTransaction(), new SqlResultCallback() {
 
-                        callback.onSuccess(new AdminLevelResult(levels));
-                    }
-                });
+            @Override
+            public void onSuccess(SqlTransaction tx, SqlResultSet results) {
+                List<AdminLevelDTO> levels = Lists.newArrayList();
+                for (SqlResultSetRow row : results.getRows()) {
+                    AdminLevelDTO level = new AdminLevelDTO();
+                    level.setId(row.getInt("id"));
+                    level.setName(row.getString("name"));
+                    level.setPolygons(row.getBoolean("polygons"));
+                    levels.add(level);
+                }
+
+                callback.onSuccess(new AdminLevelResult(levels));
+            }
+        });
     }
 }

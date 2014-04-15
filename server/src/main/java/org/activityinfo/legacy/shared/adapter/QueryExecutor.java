@@ -3,18 +3,18 @@ package org.activityinfo.legacy.shared.adapter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.Iri;
+import org.activityinfo.core.shared.application.ApplicationProperties;
 import org.activityinfo.core.shared.application.FolderClass;
-import org.activityinfo.core.shared.criteria.*;
+import org.activityinfo.core.shared.criteria.Criteria;
+import org.activityinfo.core.shared.criteria.CriteriaAnalysis;
+import org.activityinfo.core.shared.criteria.CriteriaIntersection;
+import org.activityinfo.core.shared.criteria.FieldCriteria;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.shared.ConcatList;
 import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.shared.command.GetAdminEntities;
-import org.activityinfo.legacy.shared.command.GetLocations;
-import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.*;
 
-import javax.mail.event.FolderAdapter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -65,12 +65,24 @@ public class QueryExecutor  {
             if(parentId.equals(FolderListAdapter.HOME_ID) || parentId.getDomain() == DATABASE_DOMAIN ||
                     parentId.getDomain() == ACTIVITY_CATEGORY_DOMAIN) {
                 return folders();
+            } else if(parentId.equals(FolderListAdapter.GEODB_ID)) {
+                return countries();
+            } else if(parentId.getDomain() == CuidAdapter.COUNTRY_DOMAIN) {
+                return adminLevels(CuidAdapter.getLegacyIdFromCuid(parentId));
             } else {
                 throw new UnsupportedOperationException("parentID " + parentId);
             }
         } else {
             throw new UnsupportedOperationException("queries must have either class criteria or parent criteria");
         }
+    }
+
+    private Promise<List<FormInstance>> adminLevels(int countryId) {
+        GetAdminLevels query = new GetAdminLevels();
+        query.setCountryId(countryId);
+
+        return dispatcher.execute(query)
+                .then(new ListResultAdapter<>(new AdminLevelInstanceAdapter()));
     }
 
     private Promise<List<FormInstance>> queryByClassIds() {
@@ -99,6 +111,10 @@ public class QueryExecutor  {
                 return dispatcher.execute(new GetLocations(Lists.newArrayList(ids)))
                         .then(new ListResultAdapter<>(new LocationInstanceAdapter()));
 
+            case COUNTRY_DOMAIN:
+                return countries();
+
+            case '_': // system objects
             case 'h': // home
             case DATABASE_DOMAIN:
             case ACTIVITY_CATEGORY_DOMAIN:
@@ -109,9 +125,16 @@ public class QueryExecutor  {
         throw new UnsupportedOperationException("unrecognized domain: " + domain);
     }
 
+    private Promise<List<FormInstance>> countries() {
+        return dispatcher.execute(new GetCountries())
+                .then(new ListResultAdapter<>(new CountryInstanceAdapter()));
+    }
+
     private Promise<List<FormInstance>> queryByClassId(Cuid formClassId) {
         if(formClassId.equals(FolderClass.CLASS_ID)) {
             return folders();
+        } else if(formClassId.equals(ApplicationProperties.COUNTRY_CLASS)) {
+            return countries();
         }
 
         switch(formClassId.getDomain()) {

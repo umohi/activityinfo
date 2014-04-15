@@ -6,10 +6,12 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.application.FolderClass;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.legacy.shared.adapter.FolderListAdapter;
 import org.activityinfo.ui.client.page.instance.InstancePlace;
 import org.activityinfo.ui.client.pageView.folder.FolderPageView;
 import org.activityinfo.ui.client.pageView.formClass.FormClassDesignView;
 import org.activityinfo.ui.client.pageView.formClass.FormClassPageView;
+import org.activityinfo.ui.client.pageView.geodb.GeodbPageView;
 import org.activityinfo.ui.client.widget.DisplayWidget;
 
 /**
@@ -27,6 +29,10 @@ public class InstancePageViewFactory implements Function<FormInstance, DisplayWi
 
     @Override
     public InstancePageView apply(FormInstance instance) {
+        if(instance.getId().equals(FolderListAdapter.GEODB_ID)) {
+            return new GeodbPageView(resourceLocator);
+        }
+
         Cuid classId = instance.getClassId();
         if(classId.equals(FolderClass.CLASS_ID)) {
             return new FolderPageView(resourceLocator);
