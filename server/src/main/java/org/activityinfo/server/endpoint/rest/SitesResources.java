@@ -175,9 +175,17 @@ public class SitesResources {
                 json.writeStartObject();
                 json.writeStringField("type", "Feature");
                 json.writeNumberField("id", site.getId());
-                json.writeNumberField("timestamp", site.getTimeEdited());
+//                json.writeNumberField("timestamp", site.getTimeEdited());
 
                 final ActivityDTO activity = schemaDTO.getActivityById(site.getActivityId());
+
+                // write out the properties object
+                json.writeObjectFieldStart("properties");
+                json.writeStringField("locationName", site.getLocationName());
+                json.writeStringField("partnerName", site.getPartnerName());
+                if (!Strings.isNullOrEmpty(site.getComments())) {
+                    json.writeStringField("comments", site.getComments());
+                }
 
                 json.writeNumberField("activity", site.getActivityId());
                 if (!Strings.isNullOrEmpty(activity.getCategory())) {
@@ -189,14 +197,6 @@ public class SitesResources {
                 if (site.getDate1() != null && site.getDate2() != null) {
                     json.writeStringField("startDate", site.getDate1().toString());
                     json.writeStringField("endDate", site.getDate2().toString());
-                }
-
-                // write out the properties object
-                json.writeObjectFieldStart("properties");
-                json.writeStringField("locationName", site.getLocationName());
-                json.writeStringField("partnerName", site.getPartnerName());
-                if (!Strings.isNullOrEmpty(site.getComments())) {
-                    json.writeStringField("comments", site.getComments());
                 }
 
                 final Map<String, Object> indicatorsMap = Maps.newHashMap();
