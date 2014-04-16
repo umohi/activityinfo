@@ -44,6 +44,8 @@ import java.util.logging.Logger;
  */
 public class InstanceTableDataLoader {
 
+    private static final int PAGE_SIZE = 100;
+
     public static interface DataLoadHandler extends EventHandler {
 
         void onLoad(DataLoadEvent event);
@@ -126,7 +128,7 @@ public class InstanceTableDataLoader {
         final int offset = tableDataProvider.getList().size();
         // load data only if offset is less then total count (and totalCount is initialized)
         if (offset < instanceTotalCount && instanceTotalCount != -1) {
-            final int count = Math.min(InstanceTable.PAGE_SIZE, instanceTotalCount - offset);
+            final int count = Math.min(PAGE_SIZE, instanceTotalCount - offset);
             load(offset, count);
         }
     }
@@ -165,7 +167,7 @@ public class InstanceTableDataLoader {
 
     public void reload() {
         tableDataProvider.getList().clear();
-        load(0, InstanceTable.PAGE_SIZE);
+        load(0, PAGE_SIZE);
     }
 
     public Set<FieldPath> getFields() {
