@@ -2,7 +2,7 @@ package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Functions;
 import org.activityinfo.core.client.InstanceQuery;
-import org.activityinfo.core.client.InstanceQueryResult;
+import org.activityinfo.core.client.QueryResult;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
@@ -98,8 +98,8 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         return new Joiner(dispatcher, query.getFieldPaths(), query.getCriteria()).apply(query);
     }
 
-    public Promise<InstanceQueryResult> queryProjection(InstanceQuery query) {
-        return query(query).then(new InstanceQueryResultAdapter());
+    public Promise<QueryResult<Projection>> queryProjection(InstanceQuery query) {
+        return query(query).then(new InstanceQueryResultAdapter(query));
     }
 
 

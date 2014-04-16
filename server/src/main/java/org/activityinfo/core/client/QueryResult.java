@@ -21,24 +21,22 @@ package org.activityinfo.core.client;
  * #L%
  */
 
-import org.activityinfo.core.shared.Projection;
-
 import java.util.List;
 
 /**
  * @author yuriyz on 4/10/14.
  */
-public class InstanceQueryResult {
+public class QueryResult<T> {
 
-    private final List<Projection> projections;
+    private final List<T> projections;
     private final int totalCount;
 
-    public InstanceQueryResult(List<Projection> projections, int totalCount) {
+    public QueryResult(List<T> projections, int totalCount) {
         this.projections = projections;
         this.totalCount = totalCount;
     }
 
-    public List<Projection> getProjections() {
+    public List<T> getProjections() {
         return projections;
     }
 
@@ -52,7 +50,7 @@ public class InstanceQueryResult {
      * @param projections projections
      * @return full result where result contains all data (list.size == totalCount)
      */
-    public static InstanceQueryResult fullResult(List<Projection> projections) {
-        return new InstanceQueryResult(projections, projections.size());
+    public static <T> QueryResult<T> fullResult(List<T> projections) {
+        return new QueryResult<>(projections, projections.size());
     }
 }

@@ -28,7 +28,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import org.activityinfo.core.client.InstanceQuery;
-import org.activityinfo.core.client.InstanceQueryResult;
+import org.activityinfo.core.client.QueryResult;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.fp.client.Promise;
@@ -132,7 +132,7 @@ public class InstanceTableDataLoader {
     }
 
 
-    private Promise<InstanceQueryResult> query(int offset, int count) {
+    private Promise<QueryResult<Projection>> query(int offset, int count) {
         table.getLoadingIndicator().onLoadingStateChanged(LoadingState.LOADING, null);
         InstanceQuery query = new InstanceQuery(Lists.newArrayList(fields), table.buildQueryCriteria(), offset, count);
         return table.getResourceLocator().queryProjection(query);
@@ -147,7 +147,7 @@ public class InstanceTableDataLoader {
     private void load(int offset, int count) {
         LOGGER.log(Level.FINE, "Loading instances... offset = " +
                 offset + ", count = " + count + ", fields = " + fields);
-        query(offset, count).then(new AsyncCallback<InstanceQueryResult>() {
+        query(offset, count).then(new AsyncCallback<QueryResult<Projection>>() {
             @Override
             public void onFailure(Throwable caught) {
                 LOGGER.log(Level.SEVERE, "Failed to load instances. fields = " + fields, caught);
@@ -155,10 +155,10 @@ public class InstanceTableDataLoader {
             }
 
             @Override
-            public void onSuccess(InstanceQueryResult result) {
+            public void onSuccess(QueryResult<Projection> result) {
                 tableDataProvider.getList().addAll(result.getProjections());
                 instanceTotalCount = result.getTotalCount();
-                table.getTable().fireEvent(new DataLoadEvent(instanceTotalCount, tableDataProvider.getList().size()));
+                table.getTable().getEventBus().fireEvent(new DataLoadEvent(instanceTotalCount, tableDataProvider.getList().size()));
             }
         });
     }

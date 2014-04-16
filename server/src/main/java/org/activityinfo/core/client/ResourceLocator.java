@@ -47,7 +47,7 @@ public interface ResourceLocator {
      */
     Promise<List<FormInstance>> queryInstances(Criteria criteria);
 
-    Promise<InstanceQueryResult> queryProjection(InstanceQuery query);
+    Promise<QueryResult<Projection>> queryProjection(InstanceQuery query);
 
     Promise<List<Projection>> query(InstanceQuery query);
 
