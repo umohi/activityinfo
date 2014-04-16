@@ -15,6 +15,7 @@ import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.widget.AlertPanel;
+import org.activityinfo.ui.client.widget.Templates;
 
 import java.util.Collection;
 import java.util.List;
@@ -45,6 +46,8 @@ public class InstanceTableView implements IsWidget, RequiresResize {
     AlertPanel errorMessages;
     @UiField
     Button loadMoreButton;
+    @UiField
+    HTML loadFailureMessageContainer;
 
     interface InstanceTableViewUiBinder extends UiBinder<HTMLPanel, InstanceTableView> {
     }
@@ -57,18 +60,37 @@ public class InstanceTableView implements IsWidget, RequiresResize {
         this.table = new InstanceTable(this);
         this.panel = ourUiBinder.createAndBindUi(this);
 
-        handleLoadMoreButtonState();
+        addLoadMoreButtonHandler();
     }
 
-    private void handleLoadMoreButtonState() {
+    private void addLoadMoreButtonHandler() {
         table.getTable().getEventBus().addHandler(InstanceTableDataLoader.DataLoadEvent.TYPE, new InstanceTableDataLoader.DataLoadHandler() {
             @Override
-            public void onLoad(InstanceTableDataLoader.DataLoadEvent event) {
-                final int totalCount = event.getTotalCount();
-                final int loadedDataCount = event.getLoadedDataCount();
-                loadMoreButton.setEnabled(loadedDataCount < totalCount);
+            public void onLoad(final InstanceTableDataLoader.DataLoadEvent event) {
+                if (event.isFailed()) {
+                    // Show failure message only after a short fixed delay to ensure that
+                    // the progress stage is displayed. Otherwise if we have a synchronous error, clicking
+                    // the retry button will look like it's not working.
+                    Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+                        @Override
+                        public boolean execute() {
+                            handleLoadMoreButton(event);
+                            return false;
+                        }
+                    }, 500);
+                } else {
+                    handleLoadMoreButton(event);
+                }
             }
         });
+    }
+
+    private void handleLoadMoreButton(final InstanceTableDataLoader.DataLoadEvent event) {
+        loadFailureMessageContainer.setVisible(event.isFailed());
+        loadMoreButton.setText(event.isFailed() ? I18N.CONSTANTS.retryLoading() : I18N.CONSTANTS.loadMore());
+        final int totalCount = event.getTotalCount();
+        final int loadedDataCount = event.getLoadedDataCount();
+        loadMoreButton.setEnabled(loadedDataCount < totalCount);
     }
 
     public void setCriteria(Criteria criteria) {
@@ -135,6 +157,9 @@ public class InstanceTableView implements IsWidget, RequiresResize {
 
     @UiHandler("loadMoreButton")
     public void onLoadMore(ClickEvent event) {
+        loadMoreButton.setHTML(Templates.OK_BTN_TEMPLATE.html(I18N.CONSTANTS.loading()));
+        loadMoreButton.setEnabled(false);
+        loadFailureMessageContainer.setVisible(false);
         table.loadMore();
     }
 

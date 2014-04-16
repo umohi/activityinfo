@@ -51,18 +51,17 @@ public class InstanceTableDataLoader {
         void onLoad(DataLoadEvent event);
     }
 
-
     public static class DataLoadEvent extends GwtEvent<DataLoadHandler> {
 
         public static final Type<DataLoadHandler> TYPE = new Type<>();
 
         private final int totalCount;
         private final int loadedDataCount;
-
+        private boolean failed = false;
 
         public DataLoadEvent(int totalCount, int loadedDataCount) {
             this.totalCount = totalCount;
-            this.loadedDataCount= loadedDataCount;
+            this.loadedDataCount = loadedDataCount;
         }
 
         public int getTotalCount() {
@@ -71,6 +70,14 @@ public class InstanceTableDataLoader {
 
         public int getLoadedDataCount() {
             return loadedDataCount;
+        }
+
+        public boolean isFailed() {
+            return failed;
+        }
+
+        public void setFailed(boolean failed) {
+            this.failed = failed;
         }
 
         @Override
@@ -154,6 +161,10 @@ public class InstanceTableDataLoader {
             public void onFailure(Throwable caught) {
                 LOGGER.log(Level.SEVERE, "Failed to load instances. fields = " + fields, caught);
                 table.getLoadingIndicator().onLoadingStateChanged(LoadingState.FAILED, caught);
+
+                final DataLoadEvent dataLoadEvent = new DataLoadEvent(instanceTotalCount, tableDataProvider.getList().size());
+                dataLoadEvent.setFailed(true);
+                table.getTable().getEventBus().fireEvent(dataLoadEvent);
             }
 
             @Override
