@@ -197,7 +197,7 @@ public class MapEditorMapView extends ContentPanel implements
         }
         overlays.clear();
         overlays.setBaseMap(result.getBaseMap());
-        overlays.addMarkers(result.getMarkers());
+        overlays.addMarkers(result.getMarkers(), dispatcher);
         for (AdminOverlay overlay : result.getAdminOverlays()) {
             overlays.addAdminLayer(overlay);
         }

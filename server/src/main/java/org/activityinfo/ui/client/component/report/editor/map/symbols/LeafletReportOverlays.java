@@ -2,6 +2,7 @@ package org.activityinfo.ui.client.component.report.editor.map.symbols;
 
 import com.google.common.base.Objects;
 import com.google.gwt.http.client.*;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.model.BaseMap;
 import org.activityinfo.legacy.shared.model.TileBaseMap;
@@ -69,10 +70,10 @@ public class LeafletReportOverlays {
         }
     }
 
-    public Extents addMarkers(List<MapMarker> markers) {
+    public Extents addMarkers(List<MapMarker> markers, Dispatcher dispatcher) {
         Extents extents = Extents.emptyExtents();
         for (MapMarker marker : markers) {
-            markerLayer.addLayer(LeafletMarkerFactory.create(marker));
+            markerLayer.addLayer(LeafletMarkerFactory.create(marker, dispatcher));
             extents.grow(marker.getLat(), marker.getLng());
         }
         return extents;
@@ -84,7 +85,7 @@ public class LeafletReportOverlays {
 
     public void syncWith(MapReportElement element) {
         clear();
-        addMarkers(element.getContent().getMarkers());
+        addMarkers(element.getContent().getMarkers(), null);
         setBaseMap(element.getContent().getBaseMap());
         for (AdminOverlay overlay : element.getContent().getAdminOverlays()) {
             addAdminLayer(overlay);

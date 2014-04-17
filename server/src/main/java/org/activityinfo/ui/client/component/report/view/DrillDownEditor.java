@@ -76,14 +76,17 @@ public class DrillDownEditor implements Shutdownable {
     }
 
     public void drillDown(PivotReportElement element, PivotTableData.Axis row, PivotTableData.Axis column) {
-
-        show();
-
         // construct our filter from the intersection of rows and columns
         Filter filter = new Filter(filterFromAxis(row), filterFromAxis(column));
 
         // apply the effective filter
         final Filter effectiveFilter = new Filter(filter, element.getContent().getEffectiveFilter());
+
+        drillDown(effectiveFilter);
+    }
+
+    public void drillDown(Filter effectiveFilter) {
+        show();
 
         // now query the rows:
         proxy.setFilter(effectiveFilter);

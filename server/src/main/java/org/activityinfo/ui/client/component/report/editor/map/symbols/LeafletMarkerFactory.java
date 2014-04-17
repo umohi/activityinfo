@@ -1,13 +1,22 @@
 package org.activityinfo.ui.client.component.report.editor.map.symbols;
 
+import com.google.common.collect.Lists;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.DimensionType;
+import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.reports.content.BubbleMapMarker;
 import org.activityinfo.legacy.shared.reports.content.IconMapMarker;
 import org.activityinfo.legacy.shared.reports.content.MapMarker;
 import org.activityinfo.legacy.shared.reports.content.PieMapMarker;
 import org.activityinfo.legacy.shared.reports.content.PieMapMarker.SliceValue;
 import org.activityinfo.legacy.shared.reports.model.MapIcon;
+import org.activityinfo.ui.client.component.report.view.DrillDownEditor;
 import org.activityinfo.ui.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.Options;
+import org.discotools.gwt.leaflet.client.events.Event;
+import org.discotools.gwt.leaflet.client.events.handler.EventHandler;
+import org.discotools.gwt.leaflet.client.events.handler.EventHandlerManager;
+import org.discotools.gwt.leaflet.client.jsobject.JSObject;
 import org.discotools.gwt.leaflet.client.marker.CircleMarker;
 import org.discotools.gwt.leaflet.client.marker.Marker;
 import org.discotools.gwt.leaflet.client.marker.MarkerOptions;
@@ -16,18 +25,66 @@ import org.discotools.gwt.leaflet.client.types.IconOptions;
 import org.discotools.gwt.leaflet.client.types.LatLng;
 import org.discotools.gwt.leaflet.client.types.Point;
 
+import java.util.List;
+
 public class LeafletMarkerFactory {
 
-    public static Marker create(MapMarker marker) {
-        if (marker instanceof IconMapMarker) {
-            return createIconMapMarker((IconMapMarker) marker);
-        } else if (marker instanceof PieMapMarker) {
-            return createPieMapMarker((PieMapMarker) marker);
-        } else if (marker instanceof BubbleMapMarker) {
-            return createBubbleMapMarker((BubbleMapMarker) marker);
+    public static final String SITES_JS_FIELD_NAME = "sites";
+
+    public static Marker create(MapMarker mapMarker) {
+        return create(mapMarker, null);
+    }
+
+    public static Marker create(MapMarker mapMarker, final Dispatcher dispatcher) {
+        final Marker marker;
+        if (mapMarker instanceof IconMapMarker) {
+            marker = createIconMapMarker((IconMapMarker) mapMarker);
+        } else if (mapMarker instanceof PieMapMarker) {
+            marker = createPieMapMarker((PieMapMarker) mapMarker);
+        } else if (mapMarker instanceof BubbleMapMarker) {
+            marker = createBubbleMapMarker((BubbleMapMarker) mapMarker);
         } else {
-            return new Marker(toLatLng(marker), new Options());
+            final Options options = new Options();
+            options.setProperty(SITES_JS_FIELD_NAME, createSiteIdsJSObject(mapMarker.getSiteIds()));
+            marker = new Marker(toLatLng(mapMarker), options);
         }
+
+        if (dispatcher != null) {
+            EventHandlerManager.addEventHandler(marker, EventHandler.Events.click, new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                    final Filter effectiveFilter = new Filter();
+                    final JSObject options = marker.getJSObject().getProperty("options");
+                    final JSObject siteIdJsObject = options.getProperty(SITES_JS_FIELD_NAME);
+                    effectiveFilter.addRestriction(DimensionType.Site, getSiteIds(siteIdJsObject));
+                    final DrillDownEditor drillDownEditor = new DrillDownEditor(dispatcher);
+                    drillDownEditor.drillDown(effectiveFilter);
+                }
+            });
+        }
+        return marker;
+    }
+
+    public static JSObject createSiteIdsJSObject(List<Integer> siteIds) {
+        final JSObject sitesJson = JSObject.createJSObject();
+        for (Integer siteId : siteIds) {
+            sitesJson.setProperty(siteId.toString(), siteId);
+        }
+        return sitesJson;
+    }
+
+    private static List<Integer> getSiteIds(JSObject jsObject) {
+        final List<Integer> siteIds = Lists.newArrayList();
+        final String propertyNames = jsObject.getPropertyNames();
+        final String[] propertyNamesArray = propertyNames.split(",");
+        for (String propertyName : propertyNamesArray) {
+            try {
+                siteIds.add(Integer.parseInt(propertyName));
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+        return siteIds;
     }
 
     /**
@@ -44,6 +101,7 @@ public class LeafletMarkerFactory {
 
         Options markerOptions = new MarkerOptions();
         markerOptions.setProperty("icon", new Icon(iconOptions));
+        markerOptions.setProperty(SITES_JS_FIELD_NAME, createSiteIdsJSObject(model.getSiteIds()));
 
         return new Marker(toLatLng(model), markerOptions);
     }
@@ -61,6 +119,7 @@ public class LeafletMarkerFactory {
         options.setProperty("fillOpacity", marker.getAlpha());
         options.setProperty("color", LeafletUtil.color(marker.getColor())); // stroke color
         options.setProperty("opacity", 0.8); // stroke opacity
+        options.setProperty(SITES_JS_FIELD_NAME, createSiteIdsJSObject(marker.getSiteIds()));
 
         return new CircleMarker(toLatLng(marker), options);
     }
@@ -82,6 +141,7 @@ public class LeafletMarkerFactory {
 
         Options markerOptions = new MarkerOptions();
         markerOptions.setProperty("icon", new Icon(iconOptions));
+        markerOptions.setProperty(SITES_JS_FIELD_NAME, createSiteIdsJSObject(marker.getSiteIds()));
 
         return new Marker(toLatLng(marker), markerOptions);
     }
