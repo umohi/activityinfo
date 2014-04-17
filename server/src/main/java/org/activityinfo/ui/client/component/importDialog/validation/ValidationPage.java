@@ -8,12 +8,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.validation.ValidatedTable;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.client.PromiseMonitor;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
 import org.activityinfo.ui.client.component.importDialog.Importer;
-
-import javax.annotation.Nullable;
 
 /**
  * Presents the result of the matching to the user and provides
@@ -24,6 +24,7 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
 
     private static ValidationPageUiBinder uiBinder = GWT
             .create(ValidationPageUiBinder.class);
+    private ImportModel model;
     private Importer importer;
 
 
@@ -39,10 +40,11 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
     @UiField
     Element loadingErrorElement;
 
-    public ValidationPage(Importer importer) {
+    public ValidationPage(ImportModel model, Importer importer) {
+        this.model = model;
         this.importer = importer;
 
-        dataGrid = new ValidationGrid(importer);
+        dataGrid = new ValidationGrid();
 
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -50,14 +52,12 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
 
     @Override
     public void start() {
-        importer.updateBindings();
-        importer.matchReferences()
+        importer.validate(model)
                 .withMonitor(this)
-                .then(new Function<Void, Void>() {
-                    @Nullable
+                .then(new Function<ValidatedTable, Void>() {
                     @Override
-                    public Void apply(@Nullable Void input) {
-                        dataGrid.refreshRows();
+                    public Void apply(ValidatedTable input) {
+                        dataGrid.refresh(input);
                         return null;
                     }
                 });

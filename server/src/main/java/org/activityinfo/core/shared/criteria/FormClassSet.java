@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormClass;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
@@ -58,6 +59,10 @@ public class FormClassSet {
         return !open && closed.isEmpty();
     }
 
+    public boolean isSingleton() {
+        return !open && closed.size() == 1;
+    }
+
     public Cuid unique() {
         assert !open : "The set is open";
         assert !closed.isEmpty() : "The set is empty";
@@ -66,8 +71,15 @@ public class FormClassSet {
         return closed.iterator().next();
     }
 
+    public Collection<Cuid> getElements() {
+        assert isClosed();
+        return closed;
+    }
+
     private static FormClassSet computeUnion(CriteriaUnion criteria) {
         FormClassSet union = new FormClassSet();
+        union.open = false;
+
         for(Criteria element : criteria.getElements()) {
             FormClassSet elementSet = FormClassSet.of(element);
             if(elementSet.open) {
@@ -115,5 +127,12 @@ public class FormClassSet {
         int result = (open ? 1 : 0);
         result = 31 * result + closed.hashCode();
         return result;
+    }
+
+    public static FormClassSet of(Set<Cuid> range) {
+        FormClassSet set = new FormClassSet();
+        set.open = false;
+        set.closed.addAll(range);
+        return set;
     }
 }

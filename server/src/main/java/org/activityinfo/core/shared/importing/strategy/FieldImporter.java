@@ -1,0 +1,25 @@
+package org.activityinfo.core.shared.importing.strategy;
+
+import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.shared.form.FormInstance;
+import org.activityinfo.core.shared.importing.source.SourceRow;
+import org.activityinfo.core.shared.importing.validation.ValidatedColumn;
+import org.activityinfo.core.shared.importing.validation.ValidationResult;
+import org.activityinfo.fp.client.Promise;
+
+import java.util.List;
+
+/**
+ * FieldImporters operate on
+ */
+public interface FieldImporter {
+
+    Promise<Void> prepare(ResourceLocator locator, List<SourceRow> batch);
+
+    void validateInstance(SourceRow row, List<ValidationResult> results);
+
+    boolean updateInstance(SourceRow row, FormInstance instance);
+
+    List<ValidatedColumn> getColumns();
+
+}

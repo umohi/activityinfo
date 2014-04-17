@@ -22,10 +22,6 @@ public class CriteriaUnion implements Criteria {
         visitor.visitUnion(this);
     }
 
-    public Collection<Criteria> getElements() {
-        return elements;
-    }
-
     @Override
     public boolean apply(@Nonnull FormInstance instance) {
         for(Criteria criterium : elements) {
@@ -46,4 +42,7 @@ public class CriteriaUnion implements Criteria {
         return false;
     }
 
+    public Collection<Criteria> getElements() {
+        return elements;
+    }
 }

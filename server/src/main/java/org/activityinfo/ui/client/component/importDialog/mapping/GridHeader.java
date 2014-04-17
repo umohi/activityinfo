@@ -5,7 +5,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.view.client.SelectionModel;
-import org.activityinfo.core.shared.importing.SourceColumn;
+import org.activityinfo.core.shared.importing.source.SourceColumn;
 
 /**
  * Header for a SourceColumn

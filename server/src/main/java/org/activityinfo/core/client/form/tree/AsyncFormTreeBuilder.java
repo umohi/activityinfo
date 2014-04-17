@@ -1,25 +1,16 @@
 package org.activityinfo.core.client.form.tree;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.Cuids;
-import org.activityinfo.core.shared.Iri;
-import org.activityinfo.core.shared.criteria.ClassCriteria;
-import org.activityinfo.core.shared.criteria.Criteria;
-import org.activityinfo.core.shared.criteria.CriteriaAnalysis;
+import org.activityinfo.core.shared.criteria.FormClassSet;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.fp.client.Promise;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -103,8 +94,9 @@ public class AsyncFormTreeBuilder implements Function<Cuid, Promise<FormTree>> {
         }
 
         private void queueNextRequests(FormTree.Node child) {
-            CriteriaAnalysis criteriaAnalysis = CriteriaAnalysis.analyze(child.getRange());
-            for(Cuid classId : criteriaAnalysis.getClassCriteria()) {
+            FormClassSet classSet = FormClassSet.of(child.getRange());
+            assert classSet.isClosed() : "trees for open class ranges not yet implemented";
+            for(Cuid classId : classSet.getElements()) {
                 requestFormClassForNode(child, classId);
             }
         }

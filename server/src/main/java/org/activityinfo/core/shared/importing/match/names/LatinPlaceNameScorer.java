@@ -1,7 +1,6 @@
 package org.activityinfo.core.shared.importing.match.names;
 
 import com.google.common.annotations.VisibleForTesting;
-import org.activityinfo.core.shared.importing.match.FieldValueScorer;
 
 import static java.lang.Math.max;
 
@@ -10,7 +9,7 @@ import static java.lang.Math.max;
  * script.
  *
  */
-public class LatinPlaceNameScorer implements FieldValueScorer<String> {
+public class LatinPlaceNameScorer {
 
 
     public static final int MINIMUM_STRING_LENGTH_FOR_FUZZY_MATCHING = 1;
@@ -32,7 +31,6 @@ public class LatinPlaceNameScorer implements FieldValueScorer<String> {
     public LatinPlaceNameScorer() {
     }
 
-    @Override
     public double score(String importedValue, String referencedValue) {
 
         // quick check...

@@ -627,6 +627,7 @@
         <gae.application.version>1</gae.application.version>
         <display.version>build ${BUILD_NUMBER}</display.version>
         <gae.version>1.8.0</gae.version>
+        <display.version>Build ${BUILD_NUMBER}</display.version>
       </properties>
 
       <build>

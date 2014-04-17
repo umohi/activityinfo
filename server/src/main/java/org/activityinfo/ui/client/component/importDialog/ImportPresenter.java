@@ -1,18 +1,16 @@
 package org.activityinfo.ui.client.component.importDialog;
 
 import com.google.common.collect.Lists;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import org.activityinfo.core.client.ResourceLocator;
-import org.activityinfo.core.client.type.converter.JsConverterFactory;
 import org.activityinfo.core.shared.form.tree.FormTree;
+import org.activityinfo.core.shared.importing.model.ColumnAction;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.ui.client.component.importDialog.mapping.ColumnMappingPage;
-import org.activityinfo.ui.client.component.importDialog.mapping.FieldChoicePresenter;
 import org.activityinfo.ui.client.component.importDialog.source.ChooseSourcePage;
 import org.activityinfo.ui.client.component.importDialog.validation.ValidationPage;
 import org.activityinfo.ui.client.widget.FullScreenOverlay;
@@ -35,13 +33,16 @@ public class ImportPresenter {
     private ImportPage currentPage;
 
 
-    public ImportPresenter(ResourceLocator dispatcher, FormTree formTree) {
+    public ImportPresenter(ResourceLocator resourceLocator, FormTree formTree) {
         this.importModel = new ImportModel(formTree);
-        this.importer = new Importer(Scheduler.get(), dispatcher, JsConverterFactory.get(), importModel);
+        this.importer = new Importer(resourceLocator, formTree);
 
         ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
-        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, new FieldChoicePresenter(importModel));
-        ValidationPage validationPage = new ValidationPage(importer);
+
+
+        // TODO: enumerate potential column actions
+        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, Lists.<ColumnAction>newArrayList());
+        ValidationPage validationPage = new ValidationPage(importModel, importer);
 
         pages = Lists.<ImportPage>newArrayList(chooseSourcePage, matchingPage, validationPage).listIterator();
 

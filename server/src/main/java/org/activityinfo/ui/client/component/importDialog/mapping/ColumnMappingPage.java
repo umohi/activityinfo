@@ -10,11 +10,13 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import org.activityinfo.core.shared.importing.SourceColumn;
-import org.activityinfo.core.shared.importing.model.ColumnTarget;
+import org.activityinfo.core.shared.importing.model.ColumnAction;
+import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
 import org.activityinfo.ui.client.widget.Panel;
+
+import java.util.List;
 
 /**
  * Page that allows the user to match columns in an imported table to
@@ -35,7 +37,7 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     ColumnMappingGrid dataGrid;
 
     @UiField(provided = true)
-    FieldSelector fieldSelector;
+    ColumnActionSelector actionSelector;
 
     @UiField
     Label fieldSelectorHeading;
@@ -46,13 +48,13 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     private final ImportModel importModel;
     private final SingleSelectionModel<SourceColumn> columnSelectionModel;
 
-    public ColumnMappingPage(ImportModel importModel, FieldChoicePresenter optionsFactory) {
+    public ColumnMappingPage(ImportModel importModel, List<ColumnAction> actions) {
         this.importModel = importModel;
 
         columnSelectionModel = new SingleSelectionModel<>();
 
-        dataGrid = new ColumnMappingGrid(importModel, optionsFactory, columnSelectionModel);
-        fieldSelector = new FieldSelector(optionsFactory.getOptions());
+        dataGrid = new ColumnMappingGrid(importModel, columnSelectionModel);
+        actionSelector = new ColumnActionSelector(actions);
 
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -63,10 +65,10 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
             }
         });
 
-        fieldSelector.addValueChangeHandler(new ValueChangeHandler<ColumnTarget>() {
+        actionSelector.addValueChangeHandler(new ValueChangeHandler<ColumnAction>() {
 
             @Override
-            public void onValueChange(ValueChangeEvent<ColumnTarget> event) {
+            public void onValueChange(ValueChangeEvent<ColumnAction> event) {
                 updateColumnMapping(event.getValue());
             }
         });
@@ -75,14 +77,14 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     private void onColumnChanged(SourceColumn column) {
         fieldSelectorPanel.removeStyleName(ColumnMappingStyles.INSTANCE.incomplete());
         fieldSelectorHeading.setText(column.getHeader());
-        fieldSelector.setValue(importModel.getColumnBindings().get(column.getIndex()), false);
+        actionSelector.setValue(importModel.getColumnAction(column));
     }
 
     private SourceColumn getSelectedColumn() {
         return columnSelectionModel.getSelectedObject();
     }
 
-    private void updateColumnMapping(ColumnTarget action) {
+    private void updateColumnMapping(ColumnAction action) {
         importModel.setColumnBinding(action, getSelectedColumn().getIndex());
         dataGrid.refreshColumnStyles(getSelectedColumn().getIndex());
     }
@@ -119,7 +121,7 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
 
     @Override
     public void nextStep() {
-        if(importModel.getColumnBinding(getSelectedColumn().getIndex()) != null) {
+        if(importModel.getColumnAction(getSelectedColumn().getIndex()) != null) {
             SourceColumn nextColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() + 1);
             columnSelectionModel.setSelected(nextColumn, true);
             onNextPage();
@@ -130,7 +132,7 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     }
 
     private void onNextPage() {
-        fieldSelector.setFocus();
+        actionSelector.setFocus();
     }
 
     @Override

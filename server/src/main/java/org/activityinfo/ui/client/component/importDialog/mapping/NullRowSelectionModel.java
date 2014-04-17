@@ -1,7 +1,7 @@
 package org.activityinfo.ui.client.component.importDialog.mapping;
 
 import com.google.gwt.view.client.SelectionModel.AbstractSelectionModel;
-import org.activityinfo.core.shared.importing.SourceRow;
+import org.activityinfo.core.shared.importing.source.SourceRow;
 
 /**
  * Disables row selection. For the ColumnMappingGrid, we want the user to

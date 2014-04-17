@@ -196,15 +196,15 @@ public class FormField implements FormElement {
         superProperties.add(propertyId);
     }
 
-    public boolean isSubPropertyOf(Cuid propertyId) {
-        return superProperties.contains(propertyId);
-    }
-
     public void setSuperProperties(Set<Cuid> superProperties) {
         this.superProperties = superProperties;
     }
 
     public void setSuperProperty(Cuid superProperty) {
         this.superProperties = Collections.singleton(superProperty);
+    }
+
+    public boolean isSubPropertyOf(Cuid parentProperty) {
+        return this.superProperties.contains(parentProperty);
     }
 }

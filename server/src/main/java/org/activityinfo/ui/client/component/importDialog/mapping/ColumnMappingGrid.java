@@ -11,9 +11,10 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import org.activityinfo.core.shared.importing.SourceColumn;
-import org.activityinfo.core.shared.importing.SourceRow;
-import org.activityinfo.core.shared.importing.model.ColumnTarget;
+import org.activityinfo.core.shared.importing.model.ColumnAction;
+import org.activityinfo.core.shared.importing.model.IgnoreAction;
+import org.activityinfo.core.shared.importing.source.SourceColumn;
+import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.ui.client.style.table.DataGridResources;
 
@@ -38,7 +39,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
 
     private int lastSelectedColumn = -1;
 
-    public ColumnMappingGrid(ImportModel model, FieldChoicePresenter options,
+    public ColumnMappingGrid(ImportModel model,
                              SingleSelectionModel<SourceColumn> columnSelectionModel) {
 
 
@@ -50,7 +51,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
         this.model = model;
         this.columnSelectionModel = columnSelectionModel;
 
-        headerCell = new GridHeaderCell(model, options);
+        headerCell = new GridHeaderCell(model);
 
         this.addStyleName(ColumnMappingStyles.INSTANCE.grid());
         this.setWidth("100%");
@@ -108,10 +109,13 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
      */
     public void refreshColumnStyles(int columnIndex) {
         // update the column styles
-        ColumnTarget binding = model.getColumnBinding(columnIndex);
+        ColumnAction binding = model.getColumnAction(columnIndex);
 
-        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateIgnored(), binding != null && !binding.isImported());
-        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateBound(), binding != null && binding.isImported());
+        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateIgnored(), binding != null &&
+                binding == IgnoreAction.INSTANCE);
+        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateBound(), binding != null &&
+                binding != IgnoreAction.INSTANCE);
+
         toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateUnset(), binding == null);
 
         // update the mapping description

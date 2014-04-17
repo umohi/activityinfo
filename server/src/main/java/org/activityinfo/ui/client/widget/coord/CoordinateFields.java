@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import org.activityinfo.core.shared.model.AiLatLng;
-import org.activityinfo.core.shared.model.CoordinateAxis;
+import org.activityinfo.core.shared.type.converter.CoordinateAxis;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 

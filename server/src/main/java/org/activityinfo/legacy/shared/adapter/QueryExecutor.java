@@ -6,7 +6,6 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.application.ApplicationProperties;
 import org.activityinfo.core.shared.application.FolderClass;
 import org.activityinfo.core.shared.criteria.Criteria;
-import org.activityinfo.core.shared.criteria.CriteriaAnalysis;
 import org.activityinfo.core.shared.criteria.CriteriaIntersection;
 import org.activityinfo.core.shared.criteria.FieldCriteria;
 import org.activityinfo.core.shared.form.FormInstance;

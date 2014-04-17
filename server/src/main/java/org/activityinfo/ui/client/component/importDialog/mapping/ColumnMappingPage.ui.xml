@@ -25,7 +25,7 @@
                 <g:Label ui:field="fieldSelectorHeading"/>
                 <g:HTMLPanel>
                     <p><small><ui:text from="{i18n.chooseDestinationField}"/></small></p>
-                    <m:FieldSelector ui:field="fieldSelector"/>
+                    <m:ColumnActionSelector ui:field="actionSelector"/>
                 </g:HTMLPanel>
             </a:Panel>
         </g:east>

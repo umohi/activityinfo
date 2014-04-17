@@ -18,11 +18,11 @@ public class ConverterFactory {
     private static final Logger LOGGER = Logger.getLogger(ConverterFactory.class.getName());
 
     private final DateToStringConverter dateToStringConverter;
-    private final QuantityToStringConverter quantityToStringConverter;
+    private final QuantityToStringConverter quantityParser;
     private final StringToQuantityConverter stringToQuantityFormatter;
 
     public ConverterFactory(QuantityFormatterFactory quantityFormatterFactory, DateFormatter dateFormatter) {
-        quantityToStringConverter = new QuantityToStringConverter(quantityFormatterFactory.create());
+        quantityParser = new QuantityToStringConverter(quantityFormatterFactory.create());
         stringToQuantityFormatter = new StringToQuantityConverter(quantityFormatterFactory.create());
         dateToStringConverter = new DateToStringConverter(dateFormatter);
 
@@ -80,7 +80,7 @@ public class ConverterFactory {
                 return NullConverter.INSTANCE;
             case FREE_TEXT:
             case NARRATIVE:
-                return quantityToStringConverter;
+                return quantityParser;
             case LOCAL_DATE:
             case GEOGRAPHIC_POINT:
             case REFERENCE:

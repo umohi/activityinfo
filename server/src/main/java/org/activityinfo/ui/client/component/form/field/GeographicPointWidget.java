@@ -27,11 +27,9 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.shared.model.AiLatLng;
-import org.activityinfo.core.shared.model.CoordinateAxis;
 import org.activityinfo.ui.client.widget.coord.CoordinateBox;
 
 /**
