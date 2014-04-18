@@ -46,7 +46,7 @@ public class PastedTableParserTest {
         final List<SourceColumn> columns = pastedTable.getColumns();
         final List<SourceRow> rows = pastedTable.getRows();
 
-        Assert.assertEquals(columns.size(), 46);
+        Assert.assertEquals(columns.size(), 47);
         Assert.assertEquals(rows.size(), 63);
     }
 }

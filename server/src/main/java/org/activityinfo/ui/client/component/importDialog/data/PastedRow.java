@@ -46,6 +46,9 @@ public class PastedRow implements SourceRow {
     }
 
     private String parseQuotedValue(int start, int end) {
+        if(source.charAt(end-1) == '\r' || source.charAt(end-1) == '\n') {
+            end--;
+        }
         if(source.charAt(end-1) == RowParser.QUOTE_CHAR) {
             end--;
         }
