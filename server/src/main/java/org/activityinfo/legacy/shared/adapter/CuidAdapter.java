@@ -64,6 +64,8 @@ public class CuidAdapter {
     public static final int DATE_FIELD = 9;
     public static final int FULL_NAME_FIELD = 10;
     public static final int LOCATION_FIELD = 11;
+    public static final int START_DATE_FIELD = 12;
+    public static final int END_DATE_FIELD = 13;
 
     public static final int BLOCK_SIZE = 6;
 

@@ -32,8 +32,8 @@ public class SiteBindingFactory implements Function<SchemaDTO, SiteBinding> {
         binding.addNestedField(partnerField(activity.getId()), PARTNER_DOMAIN, "partner");
         binding.addNestedField(projectField(activity.getId()), PROJECT_DOMAIN, "project");
 
-        binding.addField(field(CuidAdapter.activityFormClass(activityId), DATE_FIELD), "date1");
-        binding.addField(field(CuidAdapter.activityFormClass(activityId), DATE_FIELD), "date2");
+        binding.addField(field(CuidAdapter.activityFormClass(activityId), START_DATE_FIELD), "date1");
+        binding.addField(field(CuidAdapter.activityFormClass(activityId), END_DATE_FIELD), "date2");
 
         if(activity.getLocationType().isAdminLevel()) {
             binding.addField(new AdminLevelLocationBinding(activity.getLocationType().getBoundAdminLevelId()));
