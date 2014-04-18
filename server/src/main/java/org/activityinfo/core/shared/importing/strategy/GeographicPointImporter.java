@@ -5,7 +5,6 @@ import org.activityinfo.core.client.type.converter.JsCoordinateNumberFormatter;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.importing.source.SourceRow;
-import org.activityinfo.core.shared.importing.validation.ValidatedColumn;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.core.shared.type.converter.CoordinateAxis;
 import org.activityinfo.core.shared.type.converter.CoordinateParser;
@@ -22,7 +21,7 @@ public class GeographicPointImporter implements FieldImporter {
     private final Cuid fieldId;
     private final ColumnAccessor[] sourceColumns;
     private final CoordinateParser[] coordinateParsers;
-    private final List<ValidatedColumn> validationColumns;
+    private final List<FieldImporterColumn> fieldImporterColumns;
 
     public GeographicPointImporter(Cuid fieldId, ColumnAccessor[] sourceColumns, ImportTarget[] targetSites) {
         this.fieldId = fieldId;
@@ -31,9 +30,9 @@ public class GeographicPointImporter implements FieldImporter {
                 new CoordinateParser(CoordinateAxis.LATITUDE, JsCoordinateNumberFormatter.INSTANCE),
                 new CoordinateParser(CoordinateAxis.LONGITUDE, JsCoordinateNumberFormatter.INSTANCE)
         };
-        this.validationColumns = Arrays.asList(
-                new ValidatedColumn(targetSites[0], sourceColumns[0]),
-                new ValidatedColumn(targetSites[1], sourceColumns[1]));
+        this.fieldImporterColumns = Arrays.asList(
+                new FieldImporterColumn(targetSites[0], sourceColumns[0]),
+                new FieldImporterColumn(targetSites[1], sourceColumns[1]));
     }
 
     @Override
@@ -42,8 +41,8 @@ public class GeographicPointImporter implements FieldImporter {
     }
 
     @Override
-    public List<ValidatedColumn> getColumns() {
-        return validationColumns;
+    public List<FieldImporterColumn> getColumns() {
+        return fieldImporterColumns;
     }
 
     @Override

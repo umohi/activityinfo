@@ -11,7 +11,6 @@ import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.importing.match.names.LatinPlaceNameScorer;
 import org.activityinfo.core.shared.importing.source.SourceRow;
-import org.activityinfo.core.shared.importing.validation.ValidatedColumn;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.fp.client.Promise;
 
@@ -31,7 +30,7 @@ public class SingleClassImporter implements FieldImporter {
      */
     private List<ColumnAccessor> sources;
 
-    private List<ValidatedColumn> validationColumns = Lists.newArrayList();
+    private List<FieldImporterColumn> fieldImporterColumns = Lists.newArrayList();
 
     private int numColumns;
 
@@ -51,12 +50,12 @@ public class SingleClassImporter implements FieldImporter {
     public SingleClassImporter(Cuid rangeClassId,
                                List<ColumnAccessor> sourceColumns,
                                Map<FieldPath, Integer> referenceFields,
-                               List<ValidatedColumn> columns) {
+                               List<FieldImporterColumn> fieldImporterColumns) {
         this.rangeClassId = rangeClassId;
         this.sources = sourceColumns;
         this.numColumns = sources.size();
         this.referenceFields = referenceFields;
-        this.validationColumns = columns;
+        this.fieldImporterColumns = fieldImporterColumns;
     }
 
     public Promise<Void> prepare(ResourceLocator locator, List<SourceRow> batch) {
@@ -67,7 +66,7 @@ public class SingleClassImporter implements FieldImporter {
         return locator.query(query).then(new Function<List<Projection>, Void>() {
             @Nullable
             @Override
-            public Void apply(@Nullable List<Projection> projections) {
+            public Void apply(List<Projection> projections) {
                 referenceInstanceIds = Lists.newArrayList();
                 referenceValues = Lists.newArrayList();
 
@@ -169,7 +168,7 @@ public class SingleClassImporter implements FieldImporter {
     }
 
     @Override
-    public List<ValidatedColumn> getColumns() {
-        return validationColumns;
+    public List<FieldImporterColumn> getColumns() {
+        return fieldImporterColumns;
     }
 }

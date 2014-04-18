@@ -11,8 +11,8 @@ import org.activityinfo.core.shared.importing.model.MapExistingAction;
 import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.strategy.FieldImporterColumn;
 import org.activityinfo.core.shared.importing.strategy.ImportTarget;
-import org.activityinfo.core.shared.importing.validation.ValidatedColumn;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
 import org.activityinfo.core.shared.importing.validation.ValidatedTable;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
@@ -57,10 +57,10 @@ public class AbstractImporterTest extends CommandTestCase2 {
         while(scheduler.executeCommands()) {}
     }
 
-    protected void dumpHeaders(List<ValidatedColumn> importColumns) {
+    protected void dumpHeaders(List<FieldImporterColumn> importColumns) {
 
         System.out.print("  ");
-        for(ValidatedColumn col : importColumns) {
+        for(FieldImporterColumn col : importColumns) {
             System.out.print("  " + cell(col.getAccessor().getHeading()));
         }
         System.out.println();
@@ -86,7 +86,7 @@ public class AbstractImporterTest extends CommandTestCase2 {
             ValidatedRow resultRow = table.getRows().get(i);
 
             for(int j=0;j!=numColumns;++j) {
-                ValidatedColumn column = table.getColumns().get(j);
+                FieldImporterColumn column = table.getColumns().get(j);
                 String importedValue = Strings.nullToEmpty(column.getAccessor().getValue(sourceRow));
                 ValidationResult result = resultRow.getResult(j);
 

@@ -7,11 +7,10 @@ import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.strategy.*;
-import org.activityinfo.core.shared.importing.validation.ValidatedColumn;
+import org.activityinfo.core.shared.importing.validation.ValidatedRow;
 import org.activityinfo.core.shared.importing.validation.ValidatedTable;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.fp.client.Promise;
-import org.activityinfo.core.shared.importing.validation.ValidatedRow;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -19,8 +18,8 @@ import java.util.Map;
 
 
 public class Importer {
-    private ResourceLocator resourceLocator;
 
+    private ResourceLocator resourceLocator;
 
     private class TargetField {
         private FormTree.Node node;
@@ -56,21 +55,9 @@ public class Importer {
 
     public Promise<ValidatedTable> validate(final ImportModel model) {
 
-        final List<FieldImporter> importers = Lists.newArrayList();
-        final List<ValidatedColumn> columns = Lists.newArrayList();
+        final List<FieldImporter> importers = createImporters(model);
+        final List<FieldImporterColumn> columns = collectImporterColumns(importers);
         final List<ValidatedRow> rows = Lists.newArrayList();
-
-        for(TargetField field : fields) {
-            Map<TargetSiteId,ColumnAccessor> mappedColumns = model.getMappedColumns(field.node.getFieldId());
-            if(!mappedColumns.isEmpty()) {
-                System.out.println(field + " => " + mappedColumns);
-
-                FieldImporter importer = field.strategy.createImporter(field.node, mappedColumns);
-                columns.addAll(importer.getColumns());
-
-                importers.add(importer);
-            }
-        }
 
         return Promise.forEach(importers, new Function<FieldImporter, Promise<Void>>() {
             @Nullable
@@ -88,6 +75,29 @@ public class Importer {
         });
     }
 
+    private List<FieldImporter> createImporters(final ImportModel model) {
+        final List<FieldImporter> importers = Lists.newArrayList();
+        for(TargetField field : fields) {
+            Map<TargetSiteId,ColumnAccessor> mappedColumns = model.getMappedColumns(field.node.getFieldId());
+            if(!mappedColumns.isEmpty()) {
+                System.out.println(field + " => " + mappedColumns);
+
+                FieldImporter importer = field.strategy.createImporter(field.node, mappedColumns);
+
+                importers.add(importer);
+            }
+        }
+        return importers;
+    }
+
+    private List<FieldImporterColumn> collectImporterColumns(List<FieldImporter> importers) {
+        final List<FieldImporterColumn> collectTo = Lists.newArrayList();
+        for (FieldImporter importer : importers) {
+            collectTo.addAll(importer.getColumns());
+        }
+        return collectTo;
+    }
+
     private void doValidation(ImportModel model, List<FieldImporter> importers, List<ValidatedRow> rows) {
 
         for(SourceRow row : model.getSource().getRows()) {
@@ -100,6 +110,10 @@ public class Importer {
     }
 
     public Promise<Void> persist(final ImportModel model) {
+
+        final List<FieldImporter> importers = createImporters(model);
+        final List<FieldImporterColumn> columns = collectImporterColumns(importers);
+
         throw new UnsupportedOperationException("TODO!");
     }
 }

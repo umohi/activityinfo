@@ -3,7 +3,6 @@ package org.activityinfo.core.shared.importing.strategy;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.importing.source.SourceRow;
-import org.activityinfo.core.shared.importing.validation.ValidatedColumn;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.core.shared.type.converter.Converter;
 import org.activityinfo.fp.client.Promise;
@@ -54,7 +53,7 @@ public class DataFieldImporter implements FieldImporter {
     }
 
     @Override
-    public List<ValidatedColumn> getColumns() {
-        return Collections.singletonList(new ValidatedColumn(target, source));
+    public List<FieldImporterColumn> getColumns() {
+        return Collections.singletonList(new FieldImporterColumn(target, source));
     }
 }

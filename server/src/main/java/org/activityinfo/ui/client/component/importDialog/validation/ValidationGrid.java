@@ -3,7 +3,7 @@ package org.activityinfo.ui.client.component.importDialog.validation;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.ResizeComposite;
-import org.activityinfo.core.shared.importing.validation.ValidatedColumn;
+import org.activityinfo.core.shared.importing.strategy.FieldImporterColumn;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
 import org.activityinfo.core.shared.importing.validation.ValidatedTable;
 import org.activityinfo.ui.client.style.table.DataGridResources;
@@ -29,7 +29,7 @@ public class ValidationGrid extends ResizeComposite {
         while (dataGrid.getColumnCount() > 0) {
             dataGrid.removeColumn(0);
         }
-        for(ValidatedColumn column : table.getColumns()) {
+        for(FieldImporterColumn column : table.getColumns()) {
             dataGrid.addColumn(new ValidationGridColumn(column.getAccessor()),
                     new TextHeader(column.getAccessor().getHeading()));
         }

@@ -6,7 +6,6 @@ import org.activityinfo.core.shared.criteria.FormClassSet;
 import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
-import org.activityinfo.core.shared.importing.validation.ValidatedColumn;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,24 +69,24 @@ public class SingleClassTargetBuilder {
     public SingleClassImporter newImporter(Map<TargetSiteId, ColumnAccessor> mappings) {
         List<ColumnAccessor> sourceColumns = Lists.newArrayList();
         Map<FieldPath, Integer> referenceValues = pathMap(mappings, sourceColumns);
-        List<ValidatedColumn> validatedColumns = validatedColumns(mappings);
+        List<FieldImporterColumn> fieldImporterColumns = fieldImporterColumnsColumns(mappings);
 
         Cuid rangeClassId = FormClassSet.of(rootField.getRange()).unique();
 
-        return new SingleClassImporter(rangeClassId, sourceColumns, referenceValues, validatedColumns);
+        return new SingleClassImporter(rangeClassId, sourceColumns, referenceValues, fieldImporterColumns);
     }
 
-    private List<ValidatedColumn> validatedColumns(Map<TargetSiteId, ColumnAccessor> mappings) {
-        List<ValidatedColumn> columns = Lists.newArrayList();
+    private List<FieldImporterColumn> fieldImporterColumnsColumns(Map<TargetSiteId, ColumnAccessor> mappings) {
+        List<FieldImporterColumn> columns = Lists.newArrayList();
         for(Map.Entry<TargetSiteId, ColumnAccessor> entry : mappings.entrySet()) {
-            columns.add(new ValidatedColumn(targetMap.get(entry.getKey()), entry.getValue()));
+            columns.add(new FieldImporterColumn(targetMap.get(entry.getKey()), entry.getValue()));
         }
         return columns;
     }
 
     private Map<FieldPath, Integer> pathMap(Map<TargetSiteId, ColumnAccessor> mappings, List<ColumnAccessor> sourceColumns) {
         Map<FieldPath, Integer> referenceValues = new HashMap<>();
-        List<ValidatedColumn> validatedColumns = Lists.newArrayList();
+        List<FieldImporterColumn> importerColumns = Lists.newArrayList();
 
         int columnIndex = 0;
         for(Map.Entry<TargetSiteId, ColumnAccessor> entry : mappings.entrySet()) {
@@ -95,7 +94,7 @@ public class SingleClassTargetBuilder {
             ImportTarget target = targetMap.get(entry.getKey());
             ColumnAccessor source = entry.getValue();
 
-            validatedColumns.add(new ValidatedColumn(target, source));
+            importerColumns.add(new FieldImporterColumn(target, source));
 
             sourceColumns.add(entry.getValue());
 

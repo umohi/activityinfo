@@ -1,5 +1,7 @@
 package org.activityinfo.core.shared.importing.validation;
 
+import org.activityinfo.core.shared.importing.strategy.FieldImporterColumn;
+
 import java.util.List;
 
 /**
@@ -7,15 +9,15 @@ import java.util.List;
  */
 public class ValidatedTable {
 
-    private List<ValidatedColumn> columns;
+    private List<FieldImporterColumn> columns;
     private List<ValidatedRow> rows;
 
-    public ValidatedTable(List<ValidatedColumn> columns, List<ValidatedRow> rows) {
+    public ValidatedTable(List<FieldImporterColumn> columns, List<ValidatedRow> rows) {
         this.columns = columns;
         this.rows = rows;
     }
 
-    public List<ValidatedColumn> getColumns() {
+    public List<FieldImporterColumn> getColumns() {
         return columns;
     }
 
