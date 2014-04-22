@@ -1,21 +1,17 @@
 package org.activityinfo.core.shared.importing.model;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.form.FormClass;
-import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.core.shared.importing.source.SourceColumnAccessor;
 import org.activityinfo.core.shared.importing.source.SourceTable;
-import org.activityinfo.core.shared.importing.strategy.TargetSiteId;
 import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
+import org.activityinfo.core.shared.importing.strategy.TargetSiteId;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A model which defines the mapping from an {@code SourceTable}
@@ -63,7 +59,7 @@ public class ImportModel {
     }
 
     public ColumnAction getColumnAction(int columnIndex) {
-        ColumnAction action = columnActions.get(columnIndex);
+        ColumnAction action = columnActions.get(columnIndex); // todo check ! map has key SourceColumn not integer
         return action;
     }
 

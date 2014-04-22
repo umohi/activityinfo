@@ -53,7 +53,7 @@ public class SingleClassTargetBuilder {
 
     private ImportTarget target(FormTree.Node dataField) {
         TargetSiteId site = new TargetSiteId(dataField.getFieldId().asString());
-        return new ImportTarget(rootField.getFieldId(), site, label(dataField));
+        return new ImportTarget(rootField.getFieldId(), site, label(dataField), rootField.getDefiningFormClass().getId());
     }
 
     public List<ImportTarget> getTargets() {

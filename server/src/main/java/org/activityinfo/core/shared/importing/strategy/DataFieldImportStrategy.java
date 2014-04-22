@@ -1,11 +1,8 @@
 package org.activityinfo.core.shared.importing.strategy;
 
-import org.activityinfo.core.client.type.converter.JsConverterFactory;
 import org.activityinfo.core.shared.form.tree.FormTree;
-import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.type.converter.Converter;
 import org.activityinfo.core.shared.type.converter.ConverterFactory;
-import org.activityinfo.fp.client.Promise;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,6 +53,6 @@ public class DataFieldImportStrategy implements FieldImportStrategy {
     }
 
     private ImportTarget target(FormTree.Node node) {
-        return new ImportTarget(node.getFieldId(), VALUE, node.getField().getLabel().getValue());
+        return new ImportTarget(node.getFieldId(), VALUE, node.getField().getLabel().getValue(), node.getDefiningFormClass().getId());
     }
 }

@@ -27,11 +27,11 @@ public class GeographicPointImportStrategy implements FieldImportStrategy {
     }
 
     private ImportTarget longitudeTarget(FormTree.Node node) {
-        return new ImportTarget(node.getFieldId(), LONGITUDE, I18N.CONSTANTS.longitude());
+        return new ImportTarget(node.getFieldId(), LONGITUDE, I18N.CONSTANTS.longitude(), node.getDefiningFormClass().getId());
     }
 
     private ImportTarget latitudeTarget(FormTree.Node node) {
-        return new ImportTarget(node.getFieldId(), LATITUDE, I18N.CONSTANTS.latitude());
+        return new ImportTarget(node.getFieldId(), LATITUDE, I18N.CONSTANTS.latitude(), node.getDefiningFormClass().getId());
     }
 
     @Override

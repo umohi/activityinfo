@@ -12,11 +12,17 @@ public class ImportTarget {
     private final Cuid fieldId;
     private final TargetSiteId site;
     private final String label;
+    private final Cuid formClassId;
 
-    public ImportTarget(Cuid fieldId, TargetSiteId site, String label) {
+    public ImportTarget(Cuid fieldId, TargetSiteId site, String label, Cuid formClassId) {
         this.fieldId = fieldId;
         this.site = site;
         this.label = label;
+        this.formClassId = formClassId;
+    }
+
+    public Cuid getFormClassId() {
+        return formClassId;
     }
 
     public Cuid getFieldId() {
@@ -30,7 +36,6 @@ public class ImportTarget {
     public String getLabel() {
         return label;
     }
-
 
     @Override
     public String toString() {

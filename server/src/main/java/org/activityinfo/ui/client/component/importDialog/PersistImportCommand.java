@@ -21,10 +21,13 @@ package org.activityinfo.ui.client.component.importDialog;
  * #L%
  */
 
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.model.MapExistingAction;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.strategy.FieldImporter;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 
 import javax.annotation.Nullable;
 
@@ -38,17 +41,18 @@ public class PersistImportCommand implements ImportCommand<Void> {
     @Nullable
     @Override
     public Void apply(Void input) {
-        FormInstance formInstance = null; // its seems we can't find out instance here ??? it's wrong level !
-        if (true) { // todo
-            throw new UnsupportedOperationException("TODO!");
+        final ImportModel model = commandExecutor.getImportModel();
+
+        final Cuid formClassId = ((MapExistingAction)model.getColumnActions().values().iterator().next()).getTarget().getFormClassId();
+        for (SourceRow row : model.getSource().getRows()) {
+            // new instance per row
+            FormInstance newInstance = new FormInstance(CuidAdapter.newFormInstance(formClassId), formClassId);
+            for (FieldImporter importer : commandExecutor.getImporters()) {
+                importer.updateInstance(row, newInstance);
+            }
+            commandExecutor.getResourceLocator().persist(newInstance);
         }
 
-        final ImportModel model = commandExecutor.getImportModel();
-        for (SourceRow row : model.getSource().getRows()) {
-            for (FieldImporter importer : commandExecutor.getImporters()) {
-                importer.updateInstance(row, formInstance);
-            }
-        }
         return null;
     }
 

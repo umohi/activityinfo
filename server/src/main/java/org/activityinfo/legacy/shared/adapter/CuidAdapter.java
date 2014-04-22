@@ -76,20 +76,12 @@ public class CuidAdapter {
     }
 
     // todo yuriyz -> alex : please check it
-    public static Cuid newSectionField() {
-        return CuidAdapter.cuid('x', new KeyGenerator().generateInt());
-    }
-
-    // todo yuriyz -> alex : please check it
-    public static Cuid newFormField() {
-        return CuidAdapter.cuid('x', new KeyGenerator().generateInt());
-    }
-
-    // todo yuriyz -> alex : please check it
     public static Cuid newFormInstance(Cuid formClassId) {
         if (formClassId != null) {
             final int newId = new KeyGenerator().generateInt();
             switch (formClassId.getDomain()) {
+                case ACTIVITY_DOMAIN:
+                    return cuid(SITE_DOMAIN, newId);
                 case LOCATION_TYPE_DOMAIN:
                     return locationInstanceId(newId);
                 case ATTRIBUTE_GROUP_DOMAIN:
@@ -300,5 +292,4 @@ public class CuidAdapter {
     public static Cuid generateLocationCuid() {
         return locationInstanceId(new KeyGenerator().generateInt());
     }
-
 }

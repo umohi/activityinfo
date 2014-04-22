@@ -103,4 +103,8 @@ class ImportCommandExecutor {
     public ImportModel getImportModel() {
         return importModel;
     }
+
+    public ResourceLocator getResourceLocator() {
+        return resourceLocator;
+    }
 }
