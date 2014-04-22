@@ -28,7 +28,7 @@ public class GeographicPointImporter implements FieldImporter {
     public GeographicPointImporter(Cuid fieldId, ColumnAccessor[] sourceColumns, ImportTarget[] targetSites) {
         this.fieldId = fieldId;
         this.sourceColumns = sourceColumns;
-        this.coordinateParsers = new CoordinateParser[] {
+        this.coordinateParsers = new CoordinateParser[]{
                 new CoordinateParser(CoordinateAxis.LATITUDE, JsCoordinateNumberFormatter.INSTANCE),
                 new CoordinateParser(CoordinateAxis.LONGITUDE, JsCoordinateNumberFormatter.INSTANCE)
         };
@@ -52,7 +52,7 @@ public class GeographicPointImporter implements FieldImporter {
         boolean latitudeMissing = sourceColumns[0].isMissing(row);
         boolean longitudeMissing = sourceColumns[1].isMissing(row);
 
-        if(latitudeMissing && longitudeMissing) {
+        if (latitudeMissing && longitudeMissing) {
             results.add(ValidationResult.MISSING);
             results.add(ValidationResult.MISSING);
         } else {
@@ -63,7 +63,7 @@ public class GeographicPointImporter implements FieldImporter {
 
     private ValidationResult validateCoordinate(SourceRow row, int i) {
 
-        if(sourceColumns[i].isMissing(row)) {
+        if (sourceColumns[i].isMissing(row)) {
             return ValidationResult.error("Both latitude and longitude are required");
         }
 
@@ -71,7 +71,7 @@ public class GeographicPointImporter implements FieldImporter {
             double coordinate = parseCoordinate(row, i);
             // we reformat the coordinate make clear the conversion
             return ValidationResult.converted(coordinateParsers[i].format(coordinate), 1);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ValidationResult.error(e.getMessage());
         }
     }
@@ -83,13 +83,14 @@ public class GeographicPointImporter implements FieldImporter {
 
     @Override
     public boolean updateInstance(SourceRow row, FormInstance instance) {
-        try {
+        final boolean isLatOk = validateCoordinate(row, 0).getState() == ValidationResult.State.OK;
+        final boolean isLonOk = validateCoordinate(row, 1).getState() == ValidationResult.State.OK;
+        if (isLatOk && isLonOk) {
             double latitude = parseCoordinate(row, 0);
             double longitude = parseCoordinate(row, 1);
             instance.set(fieldId, new AiLatLng(latitude, longitude));
             return true;
-        } catch (Exception e) {
-            return false;
         }
+        return false;
     }
 }
