@@ -6,7 +6,9 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
+import org.activityinfo.core.shared.model.AiLatLng;
 import org.activityinfo.core.shared.type.converter.CoordinateAxis;
+import org.activityinfo.core.shared.type.converter.CoordinateFormatException;
 import org.activityinfo.core.shared.type.converter.CoordinateParser;
 import org.activityinfo.fp.client.Promise;
 
@@ -64,19 +66,30 @@ public class GeographicPointImporter implements FieldImporter {
         if(sourceColumns[i].isMissing(row)) {
             return ValidationResult.error("Both latitude and longitude are required");
         }
-        String string = sourceColumns[i].getValue(row);
-        double coordinate;
+
         try {
-            coordinate = coordinateParsers[i].parse(string);
+            double coordinate = parseCoordinate(row, i);
+            // we reformat the coordinate make clear the conversion
+            return ValidationResult.converted(coordinateParsers[i].format(coordinate), 1);
         } catch(Exception e) {
             return ValidationResult.error(e.getMessage());
         }
-        // we reformat the coordinate make clear the conversion
-        return ValidationResult.converted(coordinateParsers[i].format(coordinate), 1);
+    }
+
+    private double parseCoordinate(SourceRow row, int i) throws CoordinateFormatException {
+        String string = sourceColumns[i].getValue(row);
+        return coordinateParsers[i].parse(string);
     }
 
     @Override
     public boolean updateInstance(SourceRow row, FormInstance instance) {
-        return false;
+        try {
+            double latitude = parseCoordinate(row, 0);
+            double longitude = parseCoordinate(row, 1);
+            instance.set(fieldId, new AiLatLng(latitude, longitude));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

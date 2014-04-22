@@ -49,7 +49,8 @@ public class DataFieldImporter implements FieldImporter {
 
     @Override
     public boolean updateInstance(SourceRow row, FormInstance instance) {
-        return false;
+        instance.set(target.getFieldId(), converter.convert(source.getValue(row)));
+        return true;
     }
 
     @Override
