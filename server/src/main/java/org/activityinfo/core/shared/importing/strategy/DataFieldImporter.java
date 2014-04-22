@@ -50,7 +50,7 @@ public class DataFieldImporter implements FieldImporter {
     @Override
     public boolean updateInstance(SourceRow row, FormInstance instance) {
         final ValidationResult validateResult = validate(row);
-        if (validateResult.getState() == ValidationResult.State.OK) {
+        if (validateResult.shouldPersist()) {
             instance.set(target.getFieldId(), converter.convert(source.getValue(row)));
             return true;
         }

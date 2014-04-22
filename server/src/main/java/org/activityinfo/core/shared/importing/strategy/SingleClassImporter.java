@@ -21,9 +21,10 @@ import java.util.Map;
 
 public class SingleClassImporter implements FieldImporter {
 
-    private static final double MINIMUM_SCORE = 0.5;
+    public static final double MINIMUM_SCORE = 0.5;
 
     private Cuid rangeClassId;
+    private Cuid fieldId;
 
     /**
      * List of columns to match against name properties of potential reference matches.
@@ -50,12 +51,14 @@ public class SingleClassImporter implements FieldImporter {
     public SingleClassImporter(Cuid rangeClassId,
                                List<ColumnAccessor> sourceColumns,
                                Map<FieldPath, Integer> referenceFields,
-                               List<FieldImporterColumn> fieldImporterColumns) {
+                               List<FieldImporterColumn> fieldImporterColumns,
+                               Cuid fieldId) {
         this.rangeClassId = rangeClassId;
         this.sources = sourceColumns;
         this.numColumns = sources.size();
         this.referenceFields = referenceFields;
         this.fieldImporterColumns = fieldImporterColumns;
+        this.fieldId = fieldId;
     }
 
     public Promise<Void> prepare(ResourceLocator locator, List<SourceRow> batch) {
@@ -133,7 +136,9 @@ public class SingleClassImporter implements FieldImporter {
                 results.add(ValidationResult.error("No match"));
             } else {
                 String matched = referenceValues.get(bestMatchIndex)[i];
-                results.add(ValidationResult.converted(matched, bestScores[i]));
+                final ValidationResult converted = ValidationResult.converted(matched, bestScores[i]);
+                converted.setInstanceId(referenceInstanceIds.get(bestMatchIndex));
+                results.add(converted);
             }
         }
     }
@@ -164,6 +169,17 @@ public class SingleClassImporter implements FieldImporter {
 
     @Override
     public boolean updateInstance(SourceRow row, FormInstance instance) {
+        // root
+        final List<ValidationResult> validationResults = Lists.newArrayList();
+        validateInstance(row, validationResults);
+        for (ValidationResult result : validationResults) {
+            if (result.shouldPersist() && result.getInstanceId() != null) {
+                instance.set(fieldId, result.getInstanceId());
+            }
+        }
+
+        // nested data
+        // todo ???
         return false;
     }
 

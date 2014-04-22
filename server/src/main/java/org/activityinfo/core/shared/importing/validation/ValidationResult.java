@@ -1,9 +1,12 @@
 package org.activityinfo.core.shared.importing.validation;
 
+import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.importing.strategy.SingleClassImporter;
+
 public class ValidationResult {
 
     public static enum State {
-        OK, MISSING, ERROR
+        OK, MISSING, ERROR, CONFIDENCE
     }
 
     public static final ValidationResult MISSING = new ValidationResult(State.MISSING) {};
@@ -11,6 +14,7 @@ public class ValidationResult {
     public static final ValidationResult OK = new ValidationResult(State.OK) {};
 
     private final State state;
+    private Cuid instanceId;
     private String typeConversionErrorMessage;
     private String convertedValue;
     private double confidence;
@@ -26,7 +30,7 @@ public class ValidationResult {
     }
 
     public static ValidationResult converted(String value, double confidence) {
-        ValidationResult result = new ValidationResult(State.OK);
+        ValidationResult result = new ValidationResult(State.CONFIDENCE);
         result.convertedValue = value;
         result.confidence = confidence;
         return result;
@@ -52,7 +56,15 @@ public class ValidationResult {
         return convertedValue != null;
     }
 
-    public State getState() {
-        return state;
+    public boolean shouldPersist() {
+        return state == State.OK || (state == State.CONFIDENCE && confidence >= SingleClassImporter.MINIMUM_SCORE);
+    }
+
+    public Cuid getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(Cuid instanceId) {
+        this.instanceId = instanceId;
     }
 }

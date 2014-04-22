@@ -83,8 +83,8 @@ public class GeographicPointImporter implements FieldImporter {
 
     @Override
     public boolean updateInstance(SourceRow row, FormInstance instance) {
-        final boolean isLatOk = validateCoordinate(row, 0).getState() == ValidationResult.State.OK;
-        final boolean isLonOk = validateCoordinate(row, 1).getState() == ValidationResult.State.OK;
+        final boolean isLatOk = validateCoordinate(row, 0).shouldPersist();
+        final boolean isLonOk = validateCoordinate(row, 1).shouldPersist();
         if (isLatOk && isLonOk) {
             double latitude = parseCoordinate(row, 0);
             double longitude = parseCoordinate(row, 1);

@@ -65,6 +65,7 @@ public class ImportSimpleTest extends AbstractImporterTest {
         dumpList("FIELDS", importer.getImportTargets());
         importModel.setColumnAction(columnIndex("MEMBER_NO_ADULT_FEMALE"), target("NumAdultMale"));
         importModel.setColumnAction(columnIndex("MEMBER_NO_ADULT_FEMALE"), target("NumAdultFemale"));
+        importModel.setColumnAction(columnIndex("_CREATION_DATE"), target("Start Date"));
         importModel.setColumnAction(columnIndex("_SUBMISSION_DATE"), target("End Date"));
         importModel.setColumnAction(columnIndex("district"), target("District Name"));
         importModel.setColumnAction(columnIndex("upazila"), target("Upzilla Name"));

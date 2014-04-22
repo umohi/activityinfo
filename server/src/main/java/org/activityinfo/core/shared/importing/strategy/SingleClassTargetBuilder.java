@@ -73,7 +73,7 @@ public class SingleClassTargetBuilder {
 
         Cuid rangeClassId = FormClassSet.of(rootField.getRange()).unique();
 
-        return new SingleClassImporter(rangeClassId, sourceColumns, referenceValues, fieldImporterColumns);
+        return new SingleClassImporter(rangeClassId, sourceColumns, referenceValues, fieldImporterColumns, rootField.getFieldId());
     }
 
     private List<FieldImporterColumn> fieldImporterColumnsColumns(Map<TargetSiteId, ColumnAccessor> mappings) {
