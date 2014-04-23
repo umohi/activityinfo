@@ -2,7 +2,6 @@ package org.activityinfo.ui.client.component.report.editor.map.symbols;
 
 import com.google.common.base.Objects;
 import com.google.gwt.http.client.*;
-import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.model.BaseMap;
 import org.activityinfo.legacy.shared.model.TileBaseMap;
@@ -14,6 +13,8 @@ import org.activityinfo.legacy.shared.reports.model.MapReportElement;
 import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import org.activityinfo.ui.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.Options;
+import org.discotools.gwt.leaflet.client.events.Event;
+import org.discotools.gwt.leaflet.client.events.handler.EventHandler;
 import org.discotools.gwt.leaflet.client.layers.ILayer;
 import org.discotools.gwt.leaflet.client.layers.others.GeoJSON;
 import org.discotools.gwt.leaflet.client.layers.others.GeoJSONOptions;
@@ -70,10 +71,10 @@ public class LeafletReportOverlays {
         }
     }
 
-    public Extents addMarkers(List<MapMarker> markers, Dispatcher dispatcher) {
+    public Extents addMarkers(List<MapMarker> markers, EventHandler<Event> markerEventHandler) {
         Extents extents = Extents.emptyExtents();
         for (MapMarker marker : markers) {
-            markerLayer.addLayer(LeafletMarkerFactory.create(marker, dispatcher));
+            markerLayer.addLayer(LeafletMarkerFactory.create(marker, markerEventHandler));
             extents.grow(marker.getLat(), marker.getLng());
         }
         return extents;

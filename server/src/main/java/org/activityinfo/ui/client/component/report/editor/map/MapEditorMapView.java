@@ -41,6 +41,7 @@ import org.activityinfo.legacy.shared.reports.content.AdminOverlay;
 import org.activityinfo.legacy.shared.reports.content.MapContent;
 import org.activityinfo.legacy.shared.reports.model.MapReportElement;
 import org.activityinfo.ui.client.EventBus;
+import org.activityinfo.ui.client.component.report.editor.map.symbols.LeafletMarkerDrilldownEventHandler;
 import org.activityinfo.ui.client.component.report.editor.map.symbols.LeafletReportOverlays;
 import org.activityinfo.ui.client.page.report.HasReportElement;
 import org.activityinfo.ui.client.page.report.ReportChangeHandler;
@@ -73,6 +74,7 @@ public class MapEditorMapView extends ContentPanel implements
     private BaseMap currentBaseMap = null;
 
     private final Status statusWidget;
+    private final LeafletMarkerDrilldownEventHandler markerDrilldownEventHandler;
 
     private MapReportElement model = new MapReportElement();
     private LeafletReportOverlays overlays;
@@ -100,6 +102,7 @@ public class MapEditorMapView extends ContentPanel implements
                 loadContent();
             }
         });
+        this.markerDrilldownEventHandler = new LeafletMarkerDrilldownEventHandler(dispatcher);
 
         setLayout(new FitLayout());
         setHeaderVisible(false);
@@ -197,11 +200,11 @@ public class MapEditorMapView extends ContentPanel implements
         }
         overlays.clear();
         overlays.setBaseMap(result.getBaseMap());
-        overlays.addMarkers(result.getMarkers(), dispatcher);
+        overlays.addMarkers(result.getMarkers(), markerDrilldownEventHandler);
+
         for (AdminOverlay overlay : result.getAdminOverlays()) {
             overlays.addAdminLayer(overlay);
         }
-
 
         if (!zoomSet) {
             if (model.getZoomLevel() != -1 && model.getCenter() != null) {

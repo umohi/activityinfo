@@ -1,19 +1,13 @@
 package org.activityinfo.ui.client.component.report.editor.map.symbols;
 
-import com.google.common.collect.Lists;
-import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.shared.command.DimensionType;
-import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.reports.content.BubbleMapMarker;
 import org.activityinfo.legacy.shared.reports.content.IconMapMarker;
 import org.activityinfo.legacy.shared.reports.content.MapMarker;
 import org.activityinfo.legacy.shared.reports.content.PieMapMarker;
 import org.activityinfo.legacy.shared.reports.content.PieMapMarker.SliceValue;
 import org.activityinfo.legacy.shared.reports.model.MapIcon;
-import org.activityinfo.ui.client.component.report.view.DrillDownEditor;
 import org.activityinfo.ui.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.Options;
-import org.discotools.gwt.leaflet.client.events.Event;
 import org.discotools.gwt.leaflet.client.events.handler.EventHandler;
 import org.discotools.gwt.leaflet.client.events.handler.EventHandlerManager;
 import org.discotools.gwt.leaflet.client.jsobject.JSObject;
@@ -31,11 +25,7 @@ public class LeafletMarkerFactory {
 
     public static final String SITES_JS_FIELD_NAME = "sites";
 
-    public static Marker create(MapMarker mapMarker) {
-        return create(mapMarker, null);
-    }
-
-    public static Marker create(MapMarker mapMarker, final Dispatcher dispatcher) {
+    public static Marker create(MapMarker mapMarker, final EventHandler... markerEventHandlers) {
         final Marker marker;
         if (mapMarker instanceof IconMapMarker) {
             marker = createIconMapMarker((IconMapMarker) mapMarker);
@@ -49,18 +39,10 @@ public class LeafletMarkerFactory {
             marker = new Marker(toLatLng(mapMarker), options);
         }
 
-        if (dispatcher != null) {
-            EventHandlerManager.addEventHandler(marker, EventHandler.Events.click, new EventHandler<Event>() {
-                @Override
-                public void handle(Event event) {
-                    final Filter effectiveFilter = new Filter();
-                    final JSObject options = marker.getJSObject().getProperty("options");
-                    final JSObject siteIdJsObject = options.getProperty(SITES_JS_FIELD_NAME);
-                    effectiveFilter.addRestriction(DimensionType.Site, getSiteIds(siteIdJsObject));
-                    final DrillDownEditor drillDownEditor = new DrillDownEditor(dispatcher);
-                    drillDownEditor.drillDown(effectiveFilter);
-                }
-            });
+        if (markerEventHandlers != null) {
+            for (EventHandler handler : markerEventHandlers) {
+                EventHandlerManager.addEventHandler(marker, EventHandler.Events.click, handler);
+            }
         }
         return marker;
     }
@@ -73,19 +55,6 @@ public class LeafletMarkerFactory {
         return sitesJson;
     }
 
-    private static List<Integer> getSiteIds(JSObject jsObject) {
-        final List<Integer> siteIds = Lists.newArrayList();
-        final String propertyNames = jsObject.getPropertyNames();
-        final String[] propertyNamesArray = propertyNames.split(",");
-        for (String propertyName : propertyNamesArray) {
-            try {
-                siteIds.add(Integer.parseInt(propertyName));
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-        return siteIds;
-    }
 
     /**
      * Creates a Leaflet marker based on an ActivityInfo MapIcon
