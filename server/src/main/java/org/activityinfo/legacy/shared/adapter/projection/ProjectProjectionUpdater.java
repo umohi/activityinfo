@@ -24,31 +24,30 @@ package org.activityinfo.legacy.shared.adapter.projection;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
-import org.activityinfo.legacy.shared.model.PartnerDTO;
+import org.activityinfo.legacy.shared.model.ProjectDTO;
 
 /**
- * @author yuriyz on 4/15/14.
+ * @author yuriyz on 4/23/14.
  */
-public class PartnerProjectionUpdater implements ProjectionUpdater<PartnerDTO> {
+public class ProjectProjectionUpdater<T> implements ProjectionUpdater<ProjectDTO> {
 
     private FieldPath path;
-    private int databaseId;
     private int fieldIndex;
 
-    public PartnerProjectionUpdater(FieldPath path, int databaseId, int fieldIndex) {
+    ProjectProjectionUpdater(FieldPath path, int fieldIndex) {
         this.path = path;
-        this.databaseId = databaseId;
         this.fieldIndex = fieldIndex;
     }
 
     @Override
-    public void update(Projection projection, PartnerDTO dto) {
+    public void update(Projection projection, ProjectDTO dto) {
+        if (dto == null) {
+            return;
+        }
+
         switch (fieldIndex) {
             case CuidAdapter.NAME_FIELD:
                 projection.setValue(path, dto.getName());
-                break;
-            case CuidAdapter.FULL_NAME_FIELD:
-                projection.setValue(path, dto.getFullName());
                 break;
         }
     }

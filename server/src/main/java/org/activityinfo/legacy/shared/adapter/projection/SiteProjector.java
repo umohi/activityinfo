@@ -21,6 +21,7 @@ public class SiteProjector implements Function<ListResult<SiteDTO>, List<Project
     private final List<ProjectionUpdater<Double>> indicatorProjectors = Lists.newArrayList();
     private final List<ProjectionUpdater<SiteDTO>> siteProjectors = Lists.newArrayList();
     private final List<ProjectionUpdater<Boolean>> attributeProjectors = Lists.newArrayList();
+    private final List<ProjectionUpdater<ProjectDTO>> projectProjectors = Lists.newArrayList();
 
     private Criteria criteria;
 
@@ -41,6 +42,9 @@ public class SiteProjector implements Function<ListResult<SiteDTO>, List<Project
                 siteProjectors.add(new SiteProjectionUpdater(path, fieldIndex));
             } else if (fieldId.getDomain() == CuidAdapter.ATTRIBUTE_GROUP_DOMAIN) {
                 attributeProjectors.add(new PrimitiveProjectionUpdater<Boolean>(path));
+            } else if (fieldId.getDomain() == CuidAdapter.PROJECT_CLASS_DOMAIN) {
+                int fieldIndex = CuidAdapter.getBlock(fieldId, 1);
+                projectProjectors.add(new ProjectProjectionUpdater<ProjectDTO>(path, fieldIndex));
             }
         }
     }
@@ -55,6 +59,9 @@ public class SiteProjector implements Function<ListResult<SiteDTO>, List<Project
             }
             for (ProjectionUpdater<LocationDTO> projector : locationProjectors) {
                 projector.update(projection, site.getLocation());
+            }
+            for (ProjectionUpdater<ProjectDTO> projector : projectProjectors) {
+                projector.update(projection, site.getProject());
             }
 
             for (String propertyName : site.getPropertyNames()) {
