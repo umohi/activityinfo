@@ -12,10 +12,7 @@ import org.activityinfo.legacy.shared.model.*;
 
 import java.util.List;
 
-/**
- * The LocationDTO is actually already a projection, so we have a special case adapter which relies on
- * GetLocations for the heavy lifting.
- */
+
 public class SiteProjector implements Function<ListResult<SiteDTO>, List<Projection>> {
 
 

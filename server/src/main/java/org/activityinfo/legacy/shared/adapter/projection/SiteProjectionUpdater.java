@@ -48,6 +48,9 @@ public class SiteProjectionUpdater implements ProjectionUpdater<SiteDTO> {
             case CuidAdapter.END_DATE_FIELD:
                 projection.setValue(path, dto.getDate2());
                 break;
+            case CuidAdapter.COMMENT_FIELD:
+                projection.setValue(path, dto.getComments());
+                break;
         }
     }
 }
