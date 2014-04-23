@@ -495,7 +495,7 @@
             <configuration>
               <extraJvmArgs>-Xmx4048M -Xss1024k</extraJvmArgs>
               <logLevel>INFO</logLevel>
-              <compileReport>true</compileReport>
+              <compileReport>false</compileReport>
               <modules>
                 <module>org.activityinfo.ui.ActivityInfoCI</module>
                 <module>org.activityinfo.ui.Embed</module>
@@ -520,36 +520,53 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-
-            <configuration>
-              <failOnError>false</failOnError>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
   <profiles>
+
+    <!-- This Continuous Integration (CI) profile is used when building
+         from Jenkins and includes the build number in the version displayed
+         to the user -->
     <profile>
-      <!-- This Continuous Integration (CI) profile is used when building 
-           from Jenkins and includes the build number in the version displayed
-           to the user -->
       <id>ci</id>
       <properties>
         <display.version>Build ${BUILD_NUMBER}</display.version>
         <gae.application>ai-staging</gae.application>
         <gae.application.version>ci</gae.application.version>
       </properties>
+    </profile>
+
+
+    <!-- Run a more time-intensive check periodically to
+         monitor code quality -->
+    <profile>
+      <id>quality</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <failOnError>false</failOnError>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>gwt-maven-plugin</artifactId>
+            <configuration>
+              <compileReport>true</compileReport>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
     <profile>
