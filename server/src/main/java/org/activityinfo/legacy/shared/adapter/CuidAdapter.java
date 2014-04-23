@@ -66,6 +66,7 @@ public class CuidAdapter {
     public static final int LOCATION_FIELD = 11;
     public static final int START_DATE_FIELD = 12;
     public static final int END_DATE_FIELD = 13;
+    public static final int COMMENT_FIELD = 14;
 
     public static final int BLOCK_SIZE = 6;
 
@@ -195,7 +196,8 @@ public class CuidAdapter {
      * @return the {@code FormClass} Cuid for a given Activity
      */
     public static Cuid commentsField(int activityId) {
-        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
+//        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
+        return field(activityFormClass(activityId), COMMENT_FIELD);
     }
 
     /**
