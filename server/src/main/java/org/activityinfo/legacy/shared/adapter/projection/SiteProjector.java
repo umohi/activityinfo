@@ -8,10 +8,7 @@ import org.activityinfo.core.shared.criteria.Criteria;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.command.result.ListResult;
-import org.activityinfo.legacy.shared.model.IndicatorDTO;
-import org.activityinfo.legacy.shared.model.LocationDTO;
-import org.activityinfo.legacy.shared.model.PartnerDTO;
-import org.activityinfo.legacy.shared.model.SiteDTO;
+import org.activityinfo.legacy.shared.model.*;
 
 import java.util.List;
 
@@ -26,6 +23,7 @@ public class SiteProjector implements Function<ListResult<SiteDTO>, List<Project
     private final List<ProjectionUpdater<PartnerDTO>> partnerProjectors = Lists.newArrayList();
     private final List<ProjectionUpdater<Double>> indicatorProjectors = Lists.newArrayList();
     private final List<ProjectionUpdater<SiteDTO>> siteProjectors = Lists.newArrayList();
+    private final List<ProjectionUpdater<Boolean>> attributeProjectors = Lists.newArrayList();
 
     private Criteria criteria;
 
@@ -40,10 +38,12 @@ public class SiteProjector implements Function<ListResult<SiteDTO>, List<Project
                 int fieldIndex = CuidAdapter.getBlock(fieldId, 1);
                 partnerProjectors.add(new PartnerProjectionUpdater(path, databaseId, fieldIndex));
             } else if (fieldId.getDomain() == CuidAdapter.INDICATOR_DOMAIN) {
-                indicatorProjectors.add(new IndicatorProjectionUpdater(path));
+                indicatorProjectors.add(new PrimitiveProjectionUpdater<Double>(path));
             } else if (fieldId.getDomain() == CuidAdapter.ACTIVITY_DOMAIN) {
                 int fieldIndex = CuidAdapter.getBlock(fieldId, 1);
                 siteProjectors.add(new SiteProjectionUpdater(path, fieldIndex));
+            } else if (fieldId.getDomain() == CuidAdapter.ATTRIBUTE_GROUP_DOMAIN) {
+                attributeProjectors.add(new PrimitiveProjectionUpdater<Boolean>(path));
             }
         }
     }
@@ -68,6 +68,11 @@ public class SiteProjector implements Function<ListResult<SiteDTO>, List<Project
                         for (ProjectionUpdater<Double> projector : indicatorProjectors) {
                             projector.update(projection, doubleValue);
                         }
+                    }
+                } else if (propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
+                    Object value = site.get(propertyName);
+                    for (ProjectionUpdater<Boolean> projector : attributeProjectors) {
+                        projector.update(projection, value == Boolean.TRUE);
                     }
                 }
             }

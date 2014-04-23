@@ -27,16 +27,16 @@ import org.activityinfo.core.shared.form.tree.FieldPath;
 /**
  * @author yuriyz on 4/15/14.
  */
-public class IndicatorProjectionUpdater implements ProjectionUpdater<Double> {
+public class PrimitiveProjectionUpdater<T> implements ProjectionUpdater<T> {
 
     private FieldPath path;
 
-    public IndicatorProjectionUpdater(FieldPath path) {
+    public PrimitiveProjectionUpdater(FieldPath path) {
         this.path = path;
     }
 
     @Override
-    public void update(Projection projection, Double indicatorValue) {
-        projection.setValue(path, indicatorValue);
+    public void update(Projection projection, T value) {
+        projection.setValue(path, value);
     }
 }
