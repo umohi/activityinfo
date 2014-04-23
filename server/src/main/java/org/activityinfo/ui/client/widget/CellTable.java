@@ -42,7 +42,6 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
         void onScroll(ScrollEvent event);
     }
 
-
     public static class ScrollEvent extends GwtEvent<ScrollHandler> {
 
         public static final Type<ScrollHandler> TYPE = new Type<>();
@@ -131,6 +130,17 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
 
     public ScrollPanel getScrollAncestor() {
         return getScrollAncestor(this);
+    }
+
+    public void saveColumnWidthInformation() {
+        if (affixer != null) {
+            Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                @Override
+                public void execute() {
+                    affixer.getWidthApplier().saveHeaderWidthInformation();
+                }
+            });
+        }
     }
 
     public static ScrollPanel getScrollAncestor(Widget widget) {

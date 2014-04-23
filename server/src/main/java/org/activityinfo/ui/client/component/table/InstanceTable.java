@@ -115,6 +115,7 @@ public class InstanceTable implements IsWidget {
         }
 
         reload();
+        table.saveColumnWidthInformation();
     }
 
     private void removeAllColumns() {
