@@ -21,8 +21,8 @@ package org.activityinfo.ui.client.widget;
  * #L%
  */
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.TableSectionElement;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
 /**
@@ -37,14 +37,12 @@ public class CellTableAffixer {
 
     private final CellTable table;
     private final ScrollPanel scrollAncestor;
-    private final TableSectionElement tableHeadElement;
     private final CellTableHeaderWidthApplier widthApplier;
 
     private boolean affixed = false;
 
     public CellTableAffixer(final CellTable table) {
         this.table = table;
-        this.tableHeadElement = table.getTableHeadElement();
         this.scrollAncestor = table.getScrollAncestor();
         this.widthApplier = new CellTableHeaderWidthApplier(table);
 
@@ -74,14 +72,32 @@ public class CellTableAffixer {
 
         affixed = shouldAffix;
         if (shouldAffix) {
-            tableHeadElement.addClassName(AFFIX_CLASS_NAME);
-            tableHeadElement.getStyle().setTop(scrollAncestor != null ? scrollAncestor.getAbsoluteTop() : 0, Style.Unit.PX);
-            widthApplier.restoreHeaderWidthInformation();
+            setAffix();
         } else {
-            tableHeadElement.removeClassName(AFFIX_CLASS_NAME);
-            tableHeadElement.getStyle().clearTop();
-            widthApplier.clearHeaderWidthInformation();
+            clearAffix();
         }
     }
 
+    private void setAffix() {
+        table.getTableHeadElement().addClassName(AFFIX_CLASS_NAME);
+        table.getTableHeadElement().getStyle().setTop(scrollAncestor != null ? scrollAncestor.getAbsoluteTop() : 0, Style.Unit.PX);
+        widthApplier.restoreHeaderWidthInformation();
+    }
+
+    private void clearAffix() {
+        table.getTableHeadElement().removeClassName(AFFIX_CLASS_NAME);
+        table.getTableHeadElement().getStyle().clearTop();
+        widthApplier.clearHeaderWidthInformation();
+    }
+
+    public void forceAffix() {
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                if (affixed) {
+                    setAffix();
+                }
+            }
+        });
+    }
 }
