@@ -27,6 +27,7 @@ import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Status;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -102,7 +103,17 @@ public class MapEditorMapView extends ContentPanel implements
                 loadContent();
             }
         });
+
         this.markerDrilldownEventHandler = new LeafletMarkerDrilldownEventHandler(dispatcher);
+
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                int bottomX = getAbsoluteLeft() + getOffsetWidth();
+                int bottomY = getAbsoluteTop() + getOffsetHeight();
+                markerDrilldownEventHandler.setPosition(bottomX, bottomY);
+            }
+        });
 
         setLayout(new FitLayout());
         setHeaderVisible(false);

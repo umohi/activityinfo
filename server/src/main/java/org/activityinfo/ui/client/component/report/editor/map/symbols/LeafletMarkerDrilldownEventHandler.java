@@ -65,4 +65,8 @@ public class LeafletMarkerDrilldownEventHandler implements EventHandler<Event> {
         }
         return siteIds;
     }
+
+    public void setPosition(int bottomX, int bottomY) {
+        drillDownEditor.setPosition(bottomX - DrillDownEditor.WIDTH, bottomY - DrillDownEditor.HEIGHT);
+    }
 }

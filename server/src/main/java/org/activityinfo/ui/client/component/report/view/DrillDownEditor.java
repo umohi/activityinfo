@@ -24,6 +24,10 @@ package org.activityinfo.ui.client.component.report.view;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.WindowListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -51,11 +55,18 @@ public class DrillDownEditor implements Shutdownable {
 
     private static final DateUtil DATES = new DateUtilGWTImpl();
 
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 500;
+
     private Dispatcher dispatcher;
     private Dialog dialog;
     private DrillDownProxy proxy;
     private Grid<DrillDownRow> grid;
     private ListStore<DrillDownRow> store;
+
+    // position
+    private int left;
+    private int top;
 
 
     public DrillDownEditor(Dispatcher dispatcher) {
@@ -67,6 +78,9 @@ public class DrillDownEditor implements Shutdownable {
             createDialog();
         }
         store.removeAll();
+        if (left > 0 && top > 0) {
+            dialog.setPosition(left, top);
+        }
         dialog.show();
     }
 
@@ -123,8 +137,17 @@ public class DrillDownEditor implements Shutdownable {
     	dialog.setHeadingText(I18N.CONSTANTS.sites());
     	dialog.setButtons(Dialog.CLOSE);
     	dialog.setLayout(new FitLayout());
-    	dialog.setSize(600, 500);
+    	dialog.setSize(WIDTH, HEIGHT);
         dialog.add(grid);
+
+        dialog.addWindowListener(new WindowListener());
+        dialog.addListener(Events.Move, new Listener<BaseEvent>() {
+            @Override
+            public void handleEvent(BaseEvent baseEvent) {
+                left = -1;
+                top = -1;
+            }
+        });
     }
 
     private ColumnModel buildColumnModel() {
@@ -143,5 +166,10 @@ public class DrillDownEditor implements Shutdownable {
         config.add(valueColumn);
 
         return new ColumnModel(config);
+    }
+
+    public void setPosition(int left, int top) {
+        this.left = left;
+        this.top = top;
     }
 }
