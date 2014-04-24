@@ -592,50 +592,6 @@
       </build>
     </profile>
 
-    <!-- Development profile for fast UI development when you don't need backend -->
-    <profile>
-      <id>dev-no-backend</id>
-      <activation>
-        <property>
-          <name>env</name>
-          <value>test</value>
-        </property>
-      </activation>
-      <build>
-        <!--<resources>-->
-          <!--<resource>-->
-            <!--<directory>${basedir}/src/dev/java</directory>-->
-          <!--</resource>-->
-        <!--</resources>-->
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>generate-sources</phase>
-                <goals>
-                  <goal>add-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>src/test/dev/java</source>
-                  </sources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-              <warSourceDirectory>src/test/dev/webapp</warSourceDirectory>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <profile>
       <id>bracinfo</id>
       <properties>
