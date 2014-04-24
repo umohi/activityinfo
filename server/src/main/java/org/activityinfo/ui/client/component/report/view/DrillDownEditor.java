@@ -27,7 +27,6 @@ import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.WindowListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -140,7 +139,6 @@ public class DrillDownEditor implements Shutdownable {
     	dialog.setSize(WIDTH, HEIGHT);
         dialog.add(grid);
 
-        dialog.addWindowListener(new WindowListener());
         dialog.addListener(Events.Move, new Listener<BaseEvent>() {
             @Override
             public void handleEvent(BaseEvent baseEvent) {
