@@ -90,7 +90,7 @@ public class RowParser {
                 }
                 char nextChar = text.charAt(currentPos++);
                 if(nextChar == '\n' || nextChar == '\r') {
-                    currentPos++;
+                    //currentPos++;
                     return false;
                 } else if(nextChar == delimiter) {
                     return true;
