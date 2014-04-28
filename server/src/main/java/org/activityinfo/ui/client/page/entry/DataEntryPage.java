@@ -77,7 +77,7 @@ import java.util.Set;
 public class DataEntryPage extends LayoutContainer implements Page,
         ActionListener {
 
-    private static final boolean IMPORT_FUNCTION_ENABLED = false;
+    private static final boolean IMPORT_FUNCTION_ENABLED = FeatureSwitch.enableImport();
 
     public static final PageId PAGE_ID = new PageId("data-entry");
 

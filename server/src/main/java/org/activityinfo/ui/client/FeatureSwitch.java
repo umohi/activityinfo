@@ -13,6 +13,10 @@ public class FeatureSwitch {
         return isEnabled("newForm");
     }
 
+    public static boolean enableImport() {
+        return isEnabled("newImport");
+    }
+
     public static boolean useInMemStore() {
         return isEnabled("inmem");
     }
