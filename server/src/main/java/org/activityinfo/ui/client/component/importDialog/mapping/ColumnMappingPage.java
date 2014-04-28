@@ -86,8 +86,9 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     }
 
     private void updateColumnMapping(ColumnAction action) {
-        importModel.setColumnBinding(action, getSelectedColumn().getIndex());
+        importModel.setColumnBinding(action, getSelectedColumn());
         dataGrid.refreshColumnStyles(getSelectedColumn().getIndex());
+        dataGrid.redrawHeaders();
     }
 
     @Override
@@ -122,11 +123,10 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
 
     @Override
     public void nextStep() {
-        if(importModel.getColumnAction(getSelectedColumn().getIndex()) != null) {
+        if (importModel.getColumnAction(getSelectedColumn()) != null) {
             SourceColumn nextColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() + 1);
             columnSelectionModel.setSelected(nextColumn, true);
             onNextPage();
-
         } else {
             fieldSelectorPanel.addStyleName(ColumnMappingStyles.INSTANCE.incomplete());
         }

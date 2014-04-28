@@ -25,7 +25,7 @@ class GridHeaderCell extends AbstractCell<SourceColumn> {
         if(context.getIndex() == ColumnMappingGrid.SOURCE_COLUMN_HEADER_ROW) {
             sb.appendEscaped(column.getHeader());
         } else {
-            ColumnAction action = model.getColumnAction(column.getIndex());
+            ColumnAction action = model.getColumnAction(column);
             if(action == null) {
                 sb.appendHtmlConstant(I18N.CONSTANTS.chooseFieldHeading());
             } else if(action == IgnoreAction.INSTANCE) {

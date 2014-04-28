@@ -39,11 +39,7 @@ public class ImportModel {
         return source;
     }
 
-
-    public void setColumnBinding(ColumnAction action, Integer columnIndex) {
-
-        SourceColumn sourceColumn = source.getColumns().get(columnIndex);
-
+    public void setColumnBinding(ColumnAction action, SourceColumn sourceColumn) {
         Iterator<Map.Entry<SourceColumn, ColumnAction>> it = columnActions.entrySet().iterator();
         while (it.hasNext()) {
             final ColumnAction value = it.next().getValue();
@@ -57,11 +53,6 @@ public class ImportModel {
 
     public FormTree getFormTree() {
         return formTree;
-    }
-
-    public ColumnAction getColumnAction(int columnIndex) {
-        ColumnAction action = columnActions.get(columnIndex); // todo check ! map has key SourceColumn not integer
-        return action;
     }
 
     public SourceColumn getSourceColumn(int columnIndex) {

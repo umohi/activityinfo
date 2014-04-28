@@ -4,6 +4,7 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.Command;
@@ -109,7 +110,8 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
      */
     public void refreshColumnStyles(int columnIndex) {
         // update the column styles
-        ColumnAction binding = model.getColumnAction(columnIndex);
+        final SourceColumn sourceColumn = model.getSourceColumn(columnIndex);
+        ColumnAction binding = model.getColumnAction(sourceColumn);
 
         toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateIgnored(), binding != null &&
                 binding == IgnoreAction.INSTANCE);
@@ -121,7 +123,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
         // update the mapping description
         Cell.Context context = new Cell.Context(MAPPING_HEADER_ROW, columnIndex, null);
         SafeHtmlBuilder html = new SafeHtmlBuilder();
-        headerCell.render(context, model.getSourceColumn(columnIndex), html);
+        headerCell.render(context, sourceColumn, html);
 
         getTableHead(MAPPING_HEADER_ROW, columnIndex).setInnerSafeHtml(html.toSafeHtml());
     }
@@ -142,7 +144,8 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
     }
 
     private Element getTableHead(int rowIndex, int columnIndex) {
-        return getTableHeadElement().getRows().getItem(rowIndex).getChild(columnIndex).cast();
+        final TableRowElement row = getTableHeadElement().getRows().getItem(rowIndex);
+        return row.getCells().getItem(columnIndex);
     }
 
     private void toggleColumnStyle(int index, String className, boolean enabled) {
