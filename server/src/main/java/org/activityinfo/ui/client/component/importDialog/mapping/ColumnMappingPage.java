@@ -88,7 +88,6 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     private void updateColumnMapping(ColumnAction action) {
         importModel.setColumnBinding(action, getSelectedColumn());
         dataGrid.refreshColumnStyles(getSelectedColumn().getIndex());
-        dataGrid.redrawHeaders();
     }
 
     @Override
