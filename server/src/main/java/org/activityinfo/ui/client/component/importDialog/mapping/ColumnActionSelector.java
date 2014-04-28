@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import org.activityinfo.core.shared.importing.model.ColumnAction;
 import org.activityinfo.core.shared.importing.model.IgnoreAction;
+import org.activityinfo.core.shared.importing.model.MapExistingAction;
+import org.activityinfo.core.shared.importing.strategy.ImportTarget;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.widget.RadioButton;
 
@@ -32,7 +34,7 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
     private final RadioButton ignoreButton;
 
 
-    public ColumnActionSelector(List<ColumnAction> actions) {
+    public ColumnActionSelector(List<MapExistingAction> actions) {
 
         FlowPanel panel = new FlowPanel();
 
@@ -41,8 +43,9 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
         ignoreButton.setValue(true);
         panel.add(ignoreButton);
 
-        for(final ColumnAction action : actions) {
-            RadioButton button = createRadioButton(action.toString(), action);
+        for(final MapExistingAction action : actions) {
+            final ImportTarget target = action.getTarget();
+            RadioButton button = createRadioButton(target.getLabel(), action);
             panel.add(button);
         }
 

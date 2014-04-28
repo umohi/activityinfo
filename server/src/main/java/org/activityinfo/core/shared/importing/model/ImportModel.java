@@ -46,7 +46,8 @@ public class ImportModel {
 
         Iterator<Map.Entry<SourceColumn, ColumnAction>> it = columnActions.entrySet().iterator();
         while (it.hasNext()) {
-            if (it.next().getValue().equals(action)) {
+            final ColumnAction value = it.next().getValue();
+            if (value != null && value.equals(action)) {
                 it.remove();
             }
         }

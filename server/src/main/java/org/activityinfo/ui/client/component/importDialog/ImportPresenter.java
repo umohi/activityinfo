@@ -12,19 +12,20 @@ import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.FormTree;
-import org.activityinfo.core.shared.importing.model.ColumnAction;
 import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.model.MapExistingAction;
+import org.activityinfo.core.shared.importing.strategy.ImportTarget;
 import org.activityinfo.ui.client.component.importDialog.mapping.ColumnMappingPage;
 import org.activityinfo.ui.client.component.importDialog.source.ChooseSourcePage;
 import org.activityinfo.ui.client.component.importDialog.validation.ValidationPage;
 import org.activityinfo.ui.client.widget.FullScreenOverlay;
 
+import java.util.List;
 import java.util.ListIterator;
 
 public class ImportPresenter {
 
-    private EventBus eventBus = GWT.create(SimpleEventBus.class);
-
+    private final EventBus eventBus = GWT.create(SimpleEventBus.class);
 
     private final ImportModel importModel;
     private final Importer importer;
@@ -43,9 +44,7 @@ public class ImportPresenter {
 
         ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
 
-
-        // TODO: enumerate potential column actions
-        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, Lists.<ColumnAction>newArrayList());
+        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions());
         ValidationPage validationPage = new ValidationPage(importModel, importer);
 
         pages = Lists.<ImportPage>newArrayList(chooseSourcePage, matchingPage, validationPage).listIterator();
@@ -84,11 +83,19 @@ public class ImportPresenter {
         dialogBox.getTitleWidget().setText("Import data from a spreadsheet");
     }
 
+    private List<MapExistingAction> createMatchingColumnActions() {
+        final List<MapExistingAction> columnActions = Lists.newArrayList();
+        final List<ImportTarget> importTargets = importer.getImportTargets();
+        for (ImportTarget target : importTargets) {
+            columnActions.add(new MapExistingAction(target));
+        }
+        return columnActions;
+    }
+
     protected void submitData() {
 
         dialogBox.getFinishButton().setEnabled(false);
         dialogBox.setStatusText("Importing...");
-
 
 
 //        BatchCommand batch = new BatchCommand();
@@ -129,17 +136,17 @@ public class ImportPresenter {
     }
 
     private void nextPage() {
-        if(currentPage.hasNextStep()) {
+        if (currentPage.hasNextStep()) {
             currentPage.nextStep();
-        } else if(pages.hasNext()) {
+        } else if (pages.hasNext()) {
             gotoPage(pages.next());
         }
     }
 
     private void previousPage() {
-        if(currentPage.hasPreviousStep()) {
+        if (currentPage.hasPreviousStep()) {
             currentPage.previousStep();
-        } else if(pages.previousIndex() > 0) {
+        } else if (pages.previousIndex() > 0) {
             pages.previous();
             gotoPage(pages.previous());
         }
@@ -157,9 +164,7 @@ public class ImportPresenter {
 
             @Override
             public void onSuccess(FormTree result) {
-                ImportPresenter presenter = new ImportPresenter(
-                        resourceLocator,
-                        result);
+                ImportPresenter presenter = new ImportPresenter(resourceLocator, result);
                 presenter.show();
             }
         });

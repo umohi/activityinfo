@@ -11,8 +11,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import org.activityinfo.core.shared.importing.model.ColumnAction;
-import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.model.MapExistingAction;
+import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
 import org.activityinfo.ui.client.widget.Panel;
 
@@ -48,7 +49,7 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     private final ImportModel importModel;
     private final SingleSelectionModel<SourceColumn> columnSelectionModel;
 
-    public ColumnMappingPage(ImportModel importModel, List<ColumnAction> actions) {
+    public ColumnMappingPage(ImportModel importModel, List<MapExistingAction> actions) {
         this.importModel = importModel;
 
         columnSelectionModel = new SingleSelectionModel<>();
