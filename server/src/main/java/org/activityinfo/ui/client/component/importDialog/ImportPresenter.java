@@ -1,12 +1,16 @@
 package org.activityinfo.ui.client.component.importDialog;
 
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.core.client.ResourceLocator;
+import org.activityinfo.core.client.form.tree.AsyncFormTreeBuilder;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ColumnAction;
 import org.activityinfo.core.shared.importing.model.ImportModel;
@@ -141,4 +145,23 @@ public class ImportPresenter {
         }
     }
 
+    public static void showPresenter(Cuid activityId, final ResourceLocator resourceLocator) {
+
+        AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(resourceLocator);
+
+        treeBuilder.apply(activityId).then(new AsyncCallback<FormTree>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                MessageBox.alert("Failure", caught.getMessage(), null);
+            }
+
+            @Override
+            public void onSuccess(FormTree result) {
+                ImportPresenter presenter = new ImportPresenter(
+                        resourceLocator,
+                        result);
+                presenter.show();
+            }
+        });
+    }
 }

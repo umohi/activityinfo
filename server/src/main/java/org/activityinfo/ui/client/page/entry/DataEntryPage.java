@@ -36,9 +36,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
-import org.activityinfo.core.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.KeyGenerator;
@@ -244,6 +242,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
         boolean permissionToEdit = activity.getDatabase().isAllowedToEdit(site);
         toolBar.setActionEnabled(UIActions.EDIT, permissionToEdit && !site.isLinked());
         toolBar.setActionEnabled(UIActions.DELETE, permissionToEdit && !site.isLinked());
+        toolBar.setActionEnabled(UIActions.IMPORT, true);
 
         detailTab.setSite(site);
         attachmentsTab.setSite(site);
@@ -263,13 +262,13 @@ public class DataEntryPage extends LayoutContainer implements Page,
     private void onNoSelection() {
         toolBar.setActionEnabled(UIActions.EDIT, false);
         toolBar.setActionEnabled(UIActions.DELETE, false);
+        toolBar.setActionEnabled(UIActions.IMPORT, false);
         monthlyPanel.onNoSelection();
     }
 
     @Override
     public void shutdown() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -446,26 +445,8 @@ public class DataEntryPage extends LayoutContainer implements Page,
     protected void doImport() {
         final int activityId = currentPlace.getFilter().getRestrictedCategory(
                 DimensionType.Activity);
-
-
         final ResourceLocatorAdaptor resourceLocator = new ResourceLocatorAdaptor(dispatcher);
-        AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(resourceLocator);
-
-        treeBuilder.apply(CuidAdapter.activityFormClass(activityId)).then(new AsyncCallback<FormTree>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                MessageBox.alert("Failure", caught.getMessage(), null);
-            }
-
-            @Override
-            public void onSuccess(FormTree result) {
-                ImportPresenter presenter = new ImportPresenter(
-                        resourceLocator,
-                        result);
-
-                presenter.show();
-            }
-        });
+        ImportPresenter.showPresenter(CuidAdapter.activityFormClass(activityId), resourceLocator);
     }
 
     private void delete() {

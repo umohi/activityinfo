@@ -281,7 +281,7 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
     }
 
     public void addImportButton() {
-        addButton(UIActions.IMPORT, "Import", IconImageBundle.ICONS.importIcon());
+        addButton(UIActions.IMPORT, I18N.CONSTANTS.importText(), IconImageBundle.ICONS.importIcon());
     }
 
 }

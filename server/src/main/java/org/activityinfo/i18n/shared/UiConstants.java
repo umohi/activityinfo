@@ -3495,4 +3495,6 @@ public interface UiConstants extends Constants {
     @DefaultStringValue("Retry loading")
     String retryLoading();
 
+    @DefaultStringValue("Import")
+    String importText();
 }
