@@ -67,17 +67,25 @@ public class ImportModel {
 
     public Map<TargetSiteId, ColumnAccessor> getMappedColumns(Cuid fieldId) {
         Map<TargetSiteId, ColumnAccessor> mappings = Maps.newHashMap();
-        for(Map.Entry<SourceColumn, ColumnAction> entry : columnActions.entrySet()) {
-            if(entry.getValue() instanceof MapExistingAction) {
+        for (Map.Entry<SourceColumn, MapExistingAction> entry : getMapExistingActions(fieldId).entrySet()) {
+            TargetSiteId site = entry.getValue().getTarget().getSite();
+            ColumnAccessor column = new SourceColumnAccessor(entry.getKey());
+            mappings.put(site, column);
+        }
+        return mappings;
+    }
+
+    public Map<SourceColumn, MapExistingAction> getMapExistingActions(Cuid fieldId) {
+        Map<SourceColumn, MapExistingAction> existingActions = Maps.newHashMap();
+        for (Map.Entry<SourceColumn, ColumnAction> entry : columnActions.entrySet()) {
+            if (entry.getValue() instanceof MapExistingAction) {
                 MapExistingAction action = (MapExistingAction) entry.getValue();
-                if(action.getTarget().getFieldId().equals(fieldId)) {
-                    TargetSiteId site = action.getTarget().getSite();
-                    ColumnAccessor column = new SourceColumnAccessor(entry.getKey());
-                    mappings.put(site, column);
+                if (action.getTarget().getFieldId().equals(fieldId)) {
+                    existingActions.put(entry.getKey(), action);
                 }
             }
         }
-        return mappings;
+        return existingActions;
     }
 
     public void setColumnAction(int columnIndex, ColumnAction target) {

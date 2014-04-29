@@ -22,6 +22,7 @@ package org.activityinfo.ui.client.component.importDialog;
  */
 
 import com.google.common.collect.Lists;
+import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.strategy.FieldImporter;
@@ -49,12 +50,22 @@ public class ValidateImportCommand implements ImportCommand<ValidatedTable> {
 
     private void doValidation(List<ValidatedRow> rows) {
         final ImportModel model = commandExecutor.getImportModel();
+
+        // Row based validation
         for(SourceRow row : model.getSource().getRows()) {
             List<ValidationResult> results = Lists.newArrayList();
             for(FieldImporter importer : commandExecutor.getImporters()) {
                 importer.validateInstance(row, results);
             }
             rows.add(new ValidatedRow(row, results));
+        }
+
+        // Class based validation : check whether all mandatory fields has mapped
+        for (FormTree.Node node : model.getFormTree().getRootFields()) {
+            if (node.getField().isRequired() && model.getMapExistingActions(node.getField().getId()).isEmpty()) {
+                ValidationResult result = ValidationResult.error("Field is mandatory but not mapped: '" + node.getField().getLabel() + "'");
+                rows.add(new ValidatedRow(null, Lists.newArrayList(result)));
+            }
         }
     }
 

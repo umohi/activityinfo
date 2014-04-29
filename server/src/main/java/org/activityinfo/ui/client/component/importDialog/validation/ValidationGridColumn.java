@@ -21,6 +21,7 @@ public class ValidationGridColumn extends Column<ValidatedRow, String> {
 
     @Override
     public String getValue(ValidatedRow row) {
-        return accessor.getValue(row.getSourceRow());
+        // todo temporary ugly workaround
+        return row.getSourceRow() != null ? accessor.getValue(row.getSourceRow()) : row.getResult(0).getTypeConversionErrorMessage();
     }
 }
