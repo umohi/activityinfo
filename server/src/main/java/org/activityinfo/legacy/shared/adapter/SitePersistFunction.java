@@ -2,7 +2,6 @@ package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
-import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.shared.BiFunction;
@@ -39,8 +38,7 @@ public class SitePersistFunction extends BiFunction<SiteBinding, FormInstance, P
 
         CreateSite createSite = new CreateSite(siteProperties);
 
-        final Cuid adminEntityCuid = instance.getInstanceId(siteBinding.getLocationField());
-        if (siteBinding.getLocationType().isAdminLevel() && adminEntityCuid != null) { // we may get admin null during import
+        if (siteBinding.getLocationType().isAdminLevel()) {
             // we need to create the dummy location as well
 
             Promise<Command> createLocation = Promise.resolved(siteBinding.getAdminEntityId(instance))

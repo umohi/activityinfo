@@ -21,6 +21,7 @@ package org.activityinfo.ui.client.component.importDialog;
  * #L%
  */
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.importing.model.ImportModel;
@@ -30,11 +31,15 @@ import org.activityinfo.core.shared.importing.strategy.FieldImporter;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 
 import javax.annotation.Nullable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author yuriyz on 4/18/14.
  */
 public class PersistImportCommand implements ImportCommand<Void> {
+
+    private static final Logger LOGGER = Logger.getLogger(PersistImportCommand.class.getName());
 
     private ImportCommandExecutor commandExecutor;
 
@@ -50,7 +55,17 @@ public class PersistImportCommand implements ImportCommand<Void> {
             for (FieldImporter importer : commandExecutor.getImporters()) {
                 importer.updateInstance(row, newInstance);
             }
-            commandExecutor.getResourceLocator().persist(newInstance);
+            commandExecutor.getResourceLocator().persist(newInstance).then(new AsyncCallback<Void>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    LOGGER.log(Level.FINE, caught.getMessage(), caught);
+                }
+
+                @Override
+                public void onSuccess(Void result) {
+                    // do nothing
+                }
+            });
         }
 
         return null;
