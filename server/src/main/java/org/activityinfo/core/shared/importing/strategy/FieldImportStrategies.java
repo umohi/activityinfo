@@ -1,9 +1,7 @@
 package org.activityinfo.core.shared.importing.strategy;
 
 import com.google.common.collect.Lists;
-import com.google.gwt.core.client.GWT;
 import org.activityinfo.core.client.type.converter.JsConverterFactory;
-import org.activityinfo.core.server.type.converter.JvmConverterFactory;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.type.converter.ConverterFactory;
 
@@ -16,15 +14,7 @@ public class FieldImportStrategies {
 
     private List<FieldImportStrategy> strategies = Lists.newArrayList();
 
-    private FieldImportStrategies() {
-
-        ConverterFactory converterFactory;
-        if(GWT.isClient()) {
-            converterFactory = JsConverterFactory.get();
-        } else {
-            converterFactory = JvmConverterFactory.get();
-        }
-
+    private FieldImportStrategies(ConverterFactory converterFactory) {
         strategies.add(new SingleClassReferenceStrategy());
         strategies.add(new DataFieldImportStrategy(converterFactory));
         strategies.add(new GeographicPointImportStrategy());
@@ -39,10 +29,16 @@ public class FieldImportStrategies {
         throw new UnsupportedOperationException();
     }
 
-    public static FieldImportStrategies get() {
+    // server side may provide own convertor here explicitly : JvmConverterFactory.get()
+    public static FieldImportStrategies get(ConverterFactory converterFactory) {
         if(INSTANCE == null) {
-            INSTANCE = new FieldImportStrategies();
+            INSTANCE = new FieldImportStrategies(converterFactory);
         }
         return INSTANCE;
     }
+
+    public static FieldImportStrategies get() {
+        return get(JsConverterFactory.get());
+    }
+
 }
