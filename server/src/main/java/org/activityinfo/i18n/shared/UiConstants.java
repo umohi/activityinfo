@@ -3497,4 +3497,13 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Import")
     String importText();
+
+    @DefaultStringValue("Importing...")
+    String importing();
+
+    @DefaultStringValue("Import failed")
+    String importFailed();
+
+    @DefaultStringValue("Import data from a spreadsheet")
+    String importDialogTitle();
 }

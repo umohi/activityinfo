@@ -36,10 +36,21 @@
       font-style: italic;
       color: @input-color-placeholder;
 
-      &.state-ignored { color: @state-danger-text; }
-      &.state-unset { font-style: italic; color: @input-color-placeholder; }
-      &.state-bound { background-color: @state-success-text; }
-      &.selected { background-color: white; }
+      &.state-ignored {
+        font-style: normal;
+        color: @state-danger-text;
+      }
+      &.state-unset {
+        font-style: italic;
+        color: @input-color-placeholder;
+      }
+      &.state-bound {
+        font-style: normal;
+        color: @state-success-text;
+      }
+      &.selected {
+        background-color: white;
+      }
     }
   }
 

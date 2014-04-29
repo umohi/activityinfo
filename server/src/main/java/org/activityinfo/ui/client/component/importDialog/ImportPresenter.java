@@ -15,6 +15,7 @@ import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.model.MapExistingAction;
 import org.activityinfo.core.shared.importing.strategy.ImportTarget;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.component.importDialog.mapping.ColumnMappingPage;
 import org.activityinfo.ui.client.component.importDialog.source.ChooseSourcePage;
 import org.activityinfo.ui.client.component.importDialog.validation.ValidationPage;
@@ -80,7 +81,7 @@ public class ImportPresenter {
             }
         });
 
-        dialogBox.getTitleWidget().setText("Import data from a spreadsheet");
+        dialogBox.getTitleWidget().setText(I18N.CONSTANTS.importDialogTitle());
     }
 
     private List<MapExistingAction> createMatchingColumnActions() {
@@ -95,8 +96,20 @@ public class ImportPresenter {
     protected void submitData() {
 
         dialogBox.getFinishButton().setEnabled(false);
-        dialogBox.setStatusText("Importing...");
+        dialogBox.setStatusText(I18N.CONSTANTS.importing());
 
+        importer.persist(importModel).then(new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                dialogBox.setStatusText(I18N.CONSTANTS.importFailed());
+                dialogBox.getFinishButton().setText(I18N.CONSTANTS.retry());
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                overlay.hide();
+            }
+        });
 
 //        BatchCommand batch = new BatchCommand();
 //        for (DraftModel draftModel : importer.getDraftModels()) {
