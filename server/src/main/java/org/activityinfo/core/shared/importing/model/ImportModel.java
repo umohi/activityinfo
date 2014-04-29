@@ -10,7 +10,6 @@ import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
 import org.activityinfo.core.shared.importing.strategy.TargetSiteId;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -39,15 +38,17 @@ public class ImportModel {
         return source;
     }
 
-    public void setColumnBinding(ColumnAction action, SourceColumn sourceColumn) {
-        Iterator<Map.Entry<SourceColumn, ColumnAction>> it = columnActions.entrySet().iterator();
-        while (it.hasNext()) {
-            final ColumnAction value = it.next().getValue();
-            if (value != null && value.equals(action)) {
-                it.remove();
+    public SourceColumn setColumnBinding(ColumnAction action, SourceColumn sourceColumn) {
+        SourceColumn removedColumn = null;
+        for (Map.Entry<SourceColumn, ColumnAction> entry : columnActions.entrySet()) {
+            final ColumnAction value = entry.getValue();
+            if (value != null && value.equals(action) && value != IgnoreAction.INSTANCE) {
+                removedColumn = entry.getKey();
+                columnActions.remove(removedColumn);
             }
         }
         columnActions.put(sourceColumn, action);
+        return removedColumn;
     }
 
 

@@ -86,8 +86,11 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     }
 
     private void updateColumnMapping(ColumnAction action) {
-        importModel.setColumnBinding(action, getSelectedColumn());
+        final SourceColumn removedColumn = importModel.setColumnBinding(action, getSelectedColumn());
         dataGrid.refreshColumnStyles(getSelectedColumn().getIndex());
+        if (removedColumn != null) {
+            dataGrid.refreshColumnStyles(removedColumn.getIndex());
+        }
     }
 
     @Override
