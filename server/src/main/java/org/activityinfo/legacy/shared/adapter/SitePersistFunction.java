@@ -2,11 +2,11 @@ package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.shared.BiFunction;
 import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.adapter.bindings.SiteBinding;
 import org.activityinfo.legacy.shared.command.*;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
@@ -26,7 +26,6 @@ import java.util.Map;
 public class SitePersistFunction extends BiFunction<SiteBinding, FormInstance, Promise<? extends CommandResult>> {
 
     private final Dispatcher dispatcher;
-    private final KeyGenerator keyGenerator = new KeyGenerator();
 
     public SitePersistFunction(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
@@ -40,8 +39,10 @@ public class SitePersistFunction extends BiFunction<SiteBinding, FormInstance, P
 
         CreateSite createSite = new CreateSite(siteProperties);
 
-        if(siteBinding.getLocationType().isAdminLevel()) {
+        final Cuid adminEntityCuid = instance.getInstanceId(siteBinding.getLocationField());
+        if (siteBinding.getLocationType().isAdminLevel() && adminEntityCuid != null) { // we may get admin null during import
             // we need to create the dummy location as well
+
             Promise<Command> createLocation = Promise.resolved(siteBinding.getAdminEntityId(instance))
                     .join(new FetchEntityFunction())
                     .then(new CreateDummyLocation(createSite.getLocationId(), siteBinding.getLocationType()));
