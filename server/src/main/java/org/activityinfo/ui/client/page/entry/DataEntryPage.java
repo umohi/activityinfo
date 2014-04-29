@@ -40,6 +40,7 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.KeyGenerator;
+import org.activityinfo.legacy.client.callback.SuccessCallback;
 import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
@@ -446,7 +447,12 @@ public class DataEntryPage extends LayoutContainer implements Page,
         final int activityId = currentPlace.getFilter().getRestrictedCategory(
                 DimensionType.Activity);
         final ResourceLocatorAdaptor resourceLocator = new ResourceLocatorAdaptor(dispatcher);
-        ImportPresenter.showPresenter(CuidAdapter.activityFormClass(activityId), resourceLocator);
+        ImportPresenter.showPresenter(CuidAdapter.activityFormClass(activityId), resourceLocator).then(new SuccessCallback<ImportPresenter>() {
+            @Override
+            public void onSuccess(ImportPresenter result) {
+                result.show();
+            }
+        });
     }
 
     private void delete() {

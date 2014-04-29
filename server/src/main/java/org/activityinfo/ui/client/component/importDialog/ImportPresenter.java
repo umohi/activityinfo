@@ -1,6 +1,6 @@
 package org.activityinfo.ui.client.component.importDialog;
 
-import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
@@ -16,6 +16,7 @@ import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.model.MapExistingAction;
 import org.activityinfo.core.shared.importing.strategy.ImportTarget;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.component.importDialog.mapping.ColumnMappingPage;
 import org.activityinfo.ui.client.component.importDialog.source.ChooseSourcePage;
@@ -32,13 +33,11 @@ public class ImportPresenter {
     private final ImportModel importModel;
     private final Importer importer;
 
-
     private ImportDialog dialogBox = new ImportDialog();
     private FullScreenOverlay overlay = new FullScreenOverlay();
 
     private ListIterator<ImportPage> pages;
     private ImportPage currentPage;
-
 
     public ImportPresenter(ResourceLocator resourceLocator, FormTree formTree) {
         this.importModel = new ImportModel(formTree);
@@ -108,6 +107,7 @@ public class ImportPresenter {
             @Override
             public void onSuccess(Void result) {
                 overlay.hide();
+                eventBus.fireEvent(new ImportResultEvent(true));
             }
         });
     }
@@ -122,6 +122,7 @@ public class ImportPresenter {
                 dialogBox.setStatusText(I18N.CONSTANTS.importFailed());
                 dialogBox.getFinishButton().setText(I18N.CONSTANTS.retry());
                 dialogBox.getFinishButton().setEnabled(true);
+                eventBus.fireEvent(new ImportResultEvent(false));
                 return false;
             }
         }, 500);
@@ -163,20 +164,16 @@ public class ImportPresenter {
         dialogBox.setStatusText(""); // clear status text
     }
 
-    public static void showPresenter(Cuid activityId, final ResourceLocator resourceLocator) {
+    public EventBus getEventBus() {
+        return eventBus;
+    }
 
+    public static Promise<ImportPresenter> showPresenter(Cuid activityId, final ResourceLocator resourceLocator) {
         AsyncFormTreeBuilder treeBuilder = new AsyncFormTreeBuilder(resourceLocator);
-
-        treeBuilder.apply(activityId).then(new AsyncCallback<FormTree>() {
+        return treeBuilder.apply(activityId).then(new Function<FormTree, ImportPresenter>() {
             @Override
-            public void onFailure(Throwable caught) {
-                MessageBox.alert("Failure", caught.getMessage(), null);
-            }
-
-            @Override
-            public void onSuccess(FormTree result) {
-                ImportPresenter presenter = new ImportPresenter(resourceLocator, result);
-                presenter.show();
+            public ImportPresenter apply(FormTree input) {
+                return new ImportPresenter(resourceLocator, input);
             }
         });
     }

@@ -26,7 +26,9 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.client.callback.SuccessCallback;
 import org.activityinfo.ui.client.component.importDialog.ImportPresenter;
+import org.activityinfo.ui.client.component.importDialog.ImportResultEvent;
 import org.activityinfo.ui.client.component.table.InstanceTable;
 import org.activityinfo.ui.client.style.Icons;
 
@@ -46,7 +48,18 @@ public class ImportHeaderAction implements TableHeaderAction {
     @Override
     public void execute() {
         final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
-        ImportPresenter.showPresenter(selectedProjection.getRootClassId(), table.getResourceLocator());
+        ImportPresenter.showPresenter(selectedProjection.getRootClassId(), table.getResourceLocator()).then(new SuccessCallback<ImportPresenter>() {
+            @Override
+            public void onSuccess(ImportPresenter result) {
+                result.getEventBus().addHandler(ImportResultEvent.TYPE, new ImportResultEvent.Handler() {
+                    @Override
+                    public void onResultChanged(ImportResultEvent event) {
+                        table.reload();
+                    }
+                });
+                result.show();
+            }
+        });
     }
 
     @Override
