@@ -180,7 +180,7 @@ public class SingleClassImporter implements FieldImporter {
 
         // nested data
         // todo ???
-        return false;
+        return true;
     }
 
     @Override

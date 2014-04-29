@@ -2,6 +2,7 @@ package org.activityinfo.ui.client.component.importDialog;
 
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.common.collect.Lists;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -77,7 +78,7 @@ public class ImportPresenter {
 
             @Override
             public void onClick(ClickEvent event) {
-                submitData();
+                persistData();
             }
         });
 
@@ -93,7 +94,7 @@ public class ImportPresenter {
         return columnActions;
     }
 
-    protected void submitData() {
+    protected void persistData() {
 
         dialogBox.getFinishButton().setEnabled(false);
         dialogBox.setStatusText(I18N.CONSTANTS.importing());
@@ -101,8 +102,7 @@ public class ImportPresenter {
         importer.persist(importModel).then(new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
-                dialogBox.setStatusText(I18N.CONSTANTS.importFailed());
-                dialogBox.getFinishButton().setText(I18N.CONSTANTS.retry());
+                showDelayedFailure(caught);
             }
 
             @Override
@@ -110,24 +110,21 @@ public class ImportPresenter {
                 overlay.hide();
             }
         });
+    }
 
-//        BatchCommand batch = new BatchCommand();
-//        for (DraftModel draftModel : importer.getDraftModels()) {
-//            //batch.add(importer.getBinder().createCommand(draftModel));
-//        }
-//
-//        dispatcher.execute(batch, new AsyncCallback<BatchResult>() {
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                dialogBox.setStatusText("Import failed: " + caught.getMessage());
-//            }
-//
-//            @Override
-//            public void onSuccess(BatchResult result) {
-//                overlay.hide();
-//            }
-//        });
+    private void showDelayedFailure(final Throwable caught) {
+        // Show failure message only after a short fixed delay to ensure that
+        // the progress stage is displayed. Otherwise if we have a synchronous error, clicking
+        // the retry button will look like it's not working.
+        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+            @Override
+            public boolean execute() {
+                dialogBox.setStatusText(I18N.CONSTANTS.importFailed());
+                dialogBox.getFinishButton().setText(I18N.CONSTANTS.retry());
+                dialogBox.getFinishButton().setEnabled(true);
+                return false;
+            }
+        }, 500);
     }
 
     public void show() {
@@ -163,6 +160,7 @@ public class ImportPresenter {
             pages.previous();
             gotoPage(pages.previous());
         }
+        dialogBox.setStatusText(""); // clear status text
     }
 
     public static void showPresenter(Cuid activityId, final ResourceLocator resourceLocator) {
