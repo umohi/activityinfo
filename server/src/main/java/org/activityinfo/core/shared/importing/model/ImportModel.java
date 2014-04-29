@@ -1,6 +1,7 @@
 package org.activityinfo.core.shared.importing.model;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.source.SourceColumn;
@@ -40,7 +41,7 @@ public class ImportModel {
 
     public SourceColumn setColumnBinding(ColumnAction action, SourceColumn sourceColumn) {
         SourceColumn removedColumn = null;
-        for (Map.Entry<SourceColumn, ColumnAction> entry : columnActions.entrySet()) {
+        for (Map.Entry<SourceColumn, ColumnAction> entry : Sets.newHashSet(columnActions.entrySet())) {
             final ColumnAction value = entry.getValue();
             if (value != null && value.equals(action) && value != IgnoreAction.INSTANCE) {
                 removedColumn = entry.getKey();
