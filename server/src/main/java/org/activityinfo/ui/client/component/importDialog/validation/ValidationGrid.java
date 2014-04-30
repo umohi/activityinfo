@@ -5,7 +5,7 @@ import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import org.activityinfo.core.shared.importing.strategy.FieldImporterColumn;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
-import org.activityinfo.core.shared.importing.validation.ValidatedTable;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.ui.client.style.table.DataGridResources;
 
 /**
@@ -25,12 +25,12 @@ public class ValidationGrid extends ResizeComposite {
 
     }
 
-    public void refresh(ValidatedTable table) {
+    public void refresh(ValidatedRowTable table) {
         while (dataGrid.getColumnCount() > 0) {
             dataGrid.removeColumn(0);
         }
         for(FieldImporterColumn column : table.getColumns()) {
-            dataGrid.addColumn(new ValidationGridColumn(column.getAccessor()),
+            dataGrid.addColumn(new ValidationRowGridColumn(column.getAccessor()),
                     new TextHeader(column.getAccessor().getHeading()));
         }
         dataGrid.setRowData(table.getRows());

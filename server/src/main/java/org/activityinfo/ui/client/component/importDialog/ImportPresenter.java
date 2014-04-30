@@ -143,6 +143,7 @@ public class ImportPresenter {
 
         dialogBox.getNextButton().setVisible(hasNext);
         dialogBox.getFinishButton().setVisible(!hasNext);
+        dialogBox.getFinishButton().setEnabled(currentPage.isValid());
         dialogBox.getPreviousButton().setEnabled(hasPrev);
     }
 

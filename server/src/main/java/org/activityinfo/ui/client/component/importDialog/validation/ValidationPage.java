@@ -9,7 +9,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.shared.importing.model.ImportModel;
-import org.activityinfo.core.shared.importing.validation.ValidatedTable;
+import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.client.PromiseMonitor;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
@@ -24,26 +24,29 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
 
     private static ValidationPageUiBinder uiBinder = GWT
             .create(ValidationPageUiBinder.class);
-    private ImportModel model;
-    private Importer importer;
-
 
     interface ValidationPageUiBinder extends UiBinder<Widget, ValidationPage> {
     }
 
+    private ImportModel model;
+    private Importer importer;
+
     @UiField(provided = true)
     ValidationGrid dataGrid;
+    @UiField(provided = true)
+    ValidationMappingGrid mappingGrid;
 
     @UiField
     Element loadingElement;
-
     @UiField
     Element loadingErrorElement;
+
 
     public ValidationPage(ImportModel model, Importer importer) {
         this.model = model;
         this.importer = importer;
 
+        mappingGrid = new ValidationMappingGrid();
         dataGrid = new ValidationGrid();
 
         initWidget(uiBinder.createAndBindUi(this));
@@ -54,10 +57,11 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
     public void start() {
         importer.validate(model)
                 .withMonitor(this)
-                .then(new Function<ValidatedTable, Void>() {
+                .then(new Function<ValidatedResult, Void>() {
                     @Override
-                    public Void apply(ValidatedTable input) {
-                        dataGrid.refresh(input);
+                    public Void apply(ValidatedResult input) {
+                        dataGrid.refresh(input.getRowTable());
+                        mappingGrid.refresh(input.getClassValidation());
                         return null;
                     }
                 });

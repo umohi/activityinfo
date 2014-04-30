@@ -13,8 +13,9 @@ import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.strategy.FieldImporterColumn;
 import org.activityinfo.core.shared.importing.strategy.ImportTarget;
+import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
-import org.activityinfo.core.shared.importing.validation.ValidatedTable;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.ResourceLocatorAdaptor;
@@ -77,7 +78,7 @@ public class AbstractImporterTest extends CommandTestCase2 {
         }
     }
 
-    protected void dumpRows(ValidatedTable table) {
+    protected void dumpRows(ValidatedRowTable table) {
         int numRows = table.getRows().size();
         int numColumns = table.getColumns().size();
 
@@ -154,9 +155,10 @@ public class AbstractImporterTest extends CommandTestCase2 {
         System.out.println();
     }
 
-    protected void showValidationGrid(ValidatedTable table) {
-        dumpHeaders(table.getColumns());
-        dumpRows(table);
+    protected void showValidationGrid(ValidatedResult result) {
+        final ValidatedRowTable rowTable = result.getRowTable();
+        dumpHeaders(rowTable.getColumns());
+        dumpRows(rowTable);
     }
 
     protected void validateRows() {

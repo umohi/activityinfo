@@ -26,9 +26,11 @@ import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.strategy.FieldImporter;
+import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
-import org.activityinfo.core.shared.importing.validation.ValidatedTable;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
+import org.activityinfo.i18n.shared.I18N;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,37 +38,45 @@ import java.util.List;
 /**
  * @author yuriyz on 4/18/14.
  */
-public class ValidateImportCommand implements ImportCommand<ValidatedTable> {
+public class ValidateImportCommand implements ImportCommand<ValidatedResult> {
 
-    private final List<ValidatedRow> rows = Lists.newArrayList();
     private ImportCommandExecutor commandExecutor;
 
     @Nullable
     @Override
-    public ValidatedTable apply(@Nullable Void input) {
-        doValidation(rows);
-        return new ValidatedTable(commandExecutor.getColumns(), rows);
+    public ValidatedResult apply(@Nullable Void input) {
+        final List<ValidationResult> classValidation = doClassValidation();
+        final ValidatedRowTable rowTable = doRowValidation();
+        return new ValidatedResult(rowTable, classValidation);
     }
 
-    private void doValidation(List<ValidatedRow> rows) {
+    private List<ValidationResult> doClassValidation() {
         final ImportModel model = commandExecutor.getImportModel();
-
-        // Row based validation
-        for(SourceRow row : model.getSource().getRows()) {
-            List<ValidationResult> results = Lists.newArrayList();
-            for(FieldImporter importer : commandExecutor.getImporters()) {
-                importer.validateInstance(row, results);
-            }
-            rows.add(new ValidatedRow(row, results));
-        }
+        final List<ValidationResult> validationResults = Lists.newArrayList();
 
         // Class based validation : check whether all mandatory fields has mapped
         for (FormTree.Node node : model.getFormTree().getRootFields()) {
             if (node.getField().isRequired() && model.getMapExistingActions(node.getField().getId()).isEmpty()) {
-                ValidationResult result = ValidationResult.error("Field is mandatory but not mapped: '" + node.getField().getLabel() + "'");
-                rows.add(new ValidatedRow(null, Lists.newArrayList(result)));
+                final String fieldLabel = node.getField().getLabel().getValue();
+                validationResults.add(ValidationResult.error(I18N.MESSAGES.fieldIsMandatory(fieldLabel)));
             }
         }
+        return validationResults;
+    }
+
+    private ValidatedRowTable doRowValidation() {
+        final List<ValidatedRow> rows = Lists.newArrayList();
+        final ImportModel model = commandExecutor.getImportModel();
+
+        // Row based validation
+        for (SourceRow row : model.getSource().getRows()) {
+            List<ValidationResult> results = Lists.newArrayList();
+            for (FieldImporter importer : commandExecutor.getImporters()) {
+                importer.validateInstance(row, results);
+            }
+            rows.add(new ValidatedRow(row, results));
+        }
+        return new ValidatedRowTable(commandExecutor.getColumns(), rows);
     }
 
     public void setCommandExecutor(ImportCommandExecutor commandExecutor) {

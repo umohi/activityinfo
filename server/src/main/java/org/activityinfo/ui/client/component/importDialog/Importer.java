@@ -7,7 +7,7 @@ import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategy;
 import org.activityinfo.core.shared.importing.strategy.ImportTarget;
-import org.activityinfo.core.shared.importing.validation.ValidatedTable;
+import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.fp.client.Promise;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class Importer {
         return targets;
     }
 
-    public Promise<ValidatedTable> validate(final ImportModel model) {
+    public Promise<ValidatedResult> validate(final ImportModel model) {
         final ImportCommandExecutor modeller = new ImportCommandExecutor(model, fields, resourceLocator);
         return modeller.execute(new ValidateImportCommand());
     }

@@ -5,7 +5,7 @@ import com.google.gwt.user.cellview.client.Column;
 import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
 
-public class ValidationGridColumn extends Column<ValidatedRow, String> {
+public class ValidationRowGridColumn extends Column<ValidatedRow, String> {
 
     private final ColumnAccessor accessor;
 
@@ -14,14 +14,13 @@ public class ValidationGridColumn extends Column<ValidatedRow, String> {
      *
      * @param accessor
      */
-    public ValidationGridColumn(ColumnAccessor accessor) {
+    public ValidationRowGridColumn(ColumnAccessor accessor) {
         super(new TextCell());
         this.accessor = accessor;
     }
 
     @Override
     public String getValue(ValidatedRow row) {
-        // todo temporary ugly workaround
-        return row.getSourceRow() != null ? accessor.getValue(row.getSourceRow()) : row.getResult(0).getTypeConversionErrorMessage();
+        return accessor.getValue(row.getSourceRow());
     }
 }

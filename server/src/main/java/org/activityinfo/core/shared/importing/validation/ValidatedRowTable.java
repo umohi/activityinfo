@@ -7,12 +7,12 @@ import java.util.List;
 /**
  * Created by alex on 4/4/14.
  */
-public class ValidatedTable {
+public class ValidatedRowTable {
 
     private List<FieldImporterColumn> columns;
     private List<ValidatedRow> rows;
 
-    public ValidatedTable(List<FieldImporterColumn> columns, List<ValidatedRow> rows) {
+    public ValidatedRowTable(List<FieldImporterColumn> columns, List<ValidatedRow> rows) {
         this.columns = columns;
         this.rows = rows;
     }
