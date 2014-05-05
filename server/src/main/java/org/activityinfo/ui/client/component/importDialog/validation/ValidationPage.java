@@ -12,6 +12,7 @@ import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.client.PromiseMonitor;
+import org.activityinfo.ui.client.component.importDialog.ImportDialog;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
 import org.activityinfo.ui.client.component.importDialog.Importer;
 
@@ -30,6 +31,7 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
 
     private ImportModel model;
     private Importer importer;
+    private ImportDialog dialogBox;
 
     @UiField(provided = true)
     ValidationGrid dataGrid;
@@ -41,17 +43,16 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
     @UiField
     Element loadingErrorElement;
 
-
-    public ValidationPage(ImportModel model, Importer importer) {
+    public ValidationPage(ImportModel model, Importer importer, ImportDialog dialogBox) {
         this.model = model;
         this.importer = importer;
+        this.dialogBox = dialogBox;
 
         mappingGrid = new ValidationMappingGrid();
         dataGrid = new ValidationGrid();
 
         initWidget(uiBinder.createAndBindUi(this));
     }
-
 
     @Override
     public void start() {
@@ -62,6 +63,7 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
                     public Void apply(ValidatedResult input) {
                         dataGrid.refresh(input.getRowTable());
                         mappingGrid.refresh(input.getClassValidation());
+                        dialogBox.getFinishButton().setEnabled(input.getClassValidation().isEmpty());
                         return null;
                     }
                 });

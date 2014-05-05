@@ -46,7 +46,7 @@ public class ImportPresenter {
         ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
 
         ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions());
-        ValidationPage validationPage = new ValidationPage(importModel, importer);
+        ValidationPage validationPage = new ValidationPage(importModel, importer, dialogBox);
 
         pages = Lists.<ImportPage>newArrayList(chooseSourcePage, matchingPage, validationPage).listIterator();
 
