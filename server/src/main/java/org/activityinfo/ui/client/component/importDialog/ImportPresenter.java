@@ -15,6 +15,7 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.model.MapExistingAction;
+import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
 import org.activityinfo.core.shared.importing.strategy.ImportTarget;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.i18n.shared.I18N;
@@ -41,7 +42,7 @@ public class ImportPresenter {
 
     public ImportPresenter(ResourceLocator resourceLocator, FormTree formTree) {
         this.importModel = new ImportModel(formTree);
-        this.importer = new Importer(resourceLocator, formTree);
+        this.importer = new Importer(resourceLocator, formTree, FieldImportStrategies.get());
 
         ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
 

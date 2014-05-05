@@ -34,10 +34,10 @@ public class Importer {
 
     private List<TargetField> fields = Lists.newArrayList();
 
-    public Importer(ResourceLocator resourceLocator, FormTree formTree) {
+    public Importer(ResourceLocator resourceLocator, FormTree formTree, FieldImportStrategies fieldImportStrategies) {
         this.resourceLocator = resourceLocator;
-        for(FormTree.Node rootField : formTree.getRootFields()) {
-            fields.add(new TargetField(rootField, FieldImportStrategies.get().forField(rootField)));
+        for (FormTree.Node rootField : formTree.getRootFields()) {
+            fields.add(new TargetField(rootField, fieldImportStrategies.forField(rootField)));
         }
     }
 
