@@ -24,7 +24,7 @@ package org.activityinfo.ui.client.component.table.action;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import org.activityinfo.core.shared.Projection;
+import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.callback.SuccessCallback;
 import org.activityinfo.ui.client.component.importDialog.ImportPresenter;
@@ -47,8 +47,8 @@ public class ImportHeaderAction implements TableHeaderAction {
 
     @Override
     public void execute() {
-        final Projection selectedProjection = table.getSelectionModel().getSelectedSet().iterator().next();
-        ImportPresenter.showPresenter(selectedProjection.getRootClassId(), table.getResourceLocator()).then(new SuccessCallback<ImportPresenter>() {
+        final FormClass rootFormClass = table.getRootFormClass();
+        ImportPresenter.showPresenter(rootFormClass.getId(), table.getResourceLocator()).then(new SuccessCallback<ImportPresenter>() {
             @Override
             public void onSuccess(ImportPresenter result) {
                 result.getEventBus().addHandler(ImportResultEvent.TYPE, new ImportResultEvent.Handler() {
@@ -64,12 +64,12 @@ public class ImportHeaderAction implements TableHeaderAction {
 
     @Override
     public void render(Cell.Context context, String value, SafeHtmlBuilder sb) {
-        final boolean isOneSelected = table.getSelectionModel().getSelectedSet().size() == 1;
-        if (isOneSelected) {
-            sb.append(TEMPLATE.enabled(uniqueId, Icons.INSTANCE.importIcon(), I18N.CONSTANTS.importText()));
-        } else {
-            sb.append(TEMPLATE.disabled(uniqueId, Icons.INSTANCE.importIcon(), I18N.CONSTANTS.importText()));
-        }
+//        final boolean isOneSelected = table.getSelectionModel().getSelectedSet().size() == 1;
+//        if (isOneSelected) {
+        sb.append(TEMPLATE.enabled(uniqueId, Icons.INSTANCE.importIcon(), I18N.CONSTANTS.importText()));
+//        } else {
+//            sb.append(TEMPLATE.disabled(uniqueId, Icons.INSTANCE.importIcon(), I18N.CONSTANTS.importText()));
+//        }
     }
 
     @Override
