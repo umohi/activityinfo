@@ -8,7 +8,7 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.form.tree.FormTreePrettyPrinter;
 import org.activityinfo.core.shared.importing.model.ImportModel;
-import org.activityinfo.core.shared.importing.validation.ValidatedTable;
+import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.command.DimensionType;
@@ -29,6 +29,7 @@ import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+//@SuppressWarnings("GwtClientClassFromNonInheritedModule")
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/brac-import.db.xml")
 public class ImportSimpleTest extends AbstractImporterTest {
@@ -41,7 +42,6 @@ public class ImportSimpleTest extends AbstractImporterTest {
     private static final Cuid BRAC_PARTNER_CUID = CuidAdapter.partnerInstanceId(1);
 
     public static final int MODHUPUR = 24;
-
 
     @Test
     public void test() throws IOException {
@@ -56,6 +56,7 @@ public class ImportSimpleTest extends AbstractImporterTest {
         // Step 1: User pastes in data to import
         PastedTable source = new PastedTable(
                 Resources.toString(getResource("org/activityinfo/core/shared/importing/qis.csv"), Charsets.UTF_8));
+
         importModel.setSource(source);
         importer = new Importer(resourceLocator, formTree);
 
@@ -73,9 +74,8 @@ public class ImportSimpleTest extends AbstractImporterTest {
 
 
         // Step 3: Validate for user
-        ValidatedTable validatedTable = assertResolves(importer.validate(importModel));
-        showValidationGrid(validatedTable);
-
+        ValidatedResult validatedResult = assertResolves(importer.validate(importModel));
+        showValidationGrid(validatedResult);
 
         assertResolves(importer.persist(importModel));
 
