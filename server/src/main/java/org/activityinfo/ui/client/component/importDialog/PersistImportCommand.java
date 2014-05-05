@@ -25,7 +25,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.importing.model.ImportModel;
-import org.activityinfo.core.shared.importing.model.MapExistingAction;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.strategy.FieldImporter;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
@@ -48,7 +47,7 @@ public class PersistImportCommand implements ImportCommand<Void> {
     public Void apply(Void input) {
         final ImportModel model = commandExecutor.getImportModel();
 
-        final Cuid formClassId = ((MapExistingAction)model.getColumnActions().values().iterator().next()).getTarget().getFormClassId();
+        final Cuid formClassId = model.getFormTree().getRootFields().iterator().next().getDefiningFormClass().getId();
         for (SourceRow row : model.getSource().getRows()) {
             // new instance per row
             FormInstance newInstance = new FormInstance(CuidAdapter.newFormInstance(formClassId), formClassId);
