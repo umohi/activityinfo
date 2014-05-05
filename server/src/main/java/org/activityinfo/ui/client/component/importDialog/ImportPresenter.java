@@ -108,7 +108,12 @@ public class ImportPresenter {
             @Override
             public void onSuccess(Void result) {
                 overlay.hide();
-                eventBus.fireEvent(new ImportResultEvent(true));
+                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                    @Override
+                    public void execute() {
+                        eventBus.fireEvent(new ImportResultEvent(true));
+                    }
+                });
             }
         });
     }
