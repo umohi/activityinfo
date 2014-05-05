@@ -3,11 +3,7 @@ package org.activityinfo.core.shared.importing.source;
 import com.google.common.base.Strings;
 import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 public class SourceColumnAccessor implements ColumnAccessor {
-
 
     private final SourceColumn column;
     private final int columnIndex;

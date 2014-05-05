@@ -56,6 +56,10 @@ public class ValidationResult {
         return convertedValue != null;
     }
 
+    public State getState() {
+        return state;
+    }
+
     public boolean shouldPersist() {
         return state == State.OK || (state == State.CONFIDENCE && confidence >= SingleClassImporter.MINIMUM_SCORE);
     }

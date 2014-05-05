@@ -48,6 +48,8 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
         this.importer = importer;
         this.dialogBox = dialogBox;
 
+        ValidationPageStyles.INSTANCE.ensureInjected();
+
         mappingGrid = new ValidationMappingGrid();
         dataGrid = new ValidationGrid();
 

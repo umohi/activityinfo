@@ -1,26 +1,23 @@
 package org.activityinfo.ui.client.component.importDialog.validation;
 
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Column;
 import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
+import org.activityinfo.ui.client.component.importDialog.validation.cells.ValidationResultCell;
 
-public class ValidationRowGridColumn extends Column<ValidatedRow, String> {
-
-    private final ColumnAccessor accessor;
+public class ValidationRowGridColumn extends Column<ValidatedRow, ValidatedRow> {
 
     /**
      * Construct a new Column with a given {@link com.google.gwt.cell.client.Cell}.
      *
      * @param accessor
      */
-    public ValidationRowGridColumn(ColumnAccessor accessor) {
-        super(new TextCell());
-        this.accessor = accessor;
+    public ValidationRowGridColumn(ColumnAccessor accessor, int columnIndex) {
+        super(new ValidationResultCell(accessor, columnIndex));
     }
 
     @Override
-    public String getValue(ValidatedRow row) {
-        return accessor.getValue(row.getSourceRow());
+    public ValidatedRow getValue(ValidatedRow row) {
+        return row;
     }
 }

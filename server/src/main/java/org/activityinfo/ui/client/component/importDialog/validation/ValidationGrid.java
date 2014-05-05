@@ -29,8 +29,9 @@ public class ValidationGrid extends ResizeComposite {
         while (dataGrid.getColumnCount() > 0) {
             dataGrid.removeColumn(0);
         }
-        for(FieldImporterColumn column : table.getColumns()) {
-            dataGrid.addColumn(new ValidationRowGridColumn(column.getAccessor()),
+        for(int i = 0; i< table.getColumns().size(); i++) {
+            final FieldImporterColumn column = table.getColumns().get(i);
+            dataGrid.addColumn(new ValidationRowGridColumn(column.getAccessor(), i),
                     new TextHeader(column.getAccessor().getHeading()));
         }
         dataGrid.setRowData(table.getRows());
