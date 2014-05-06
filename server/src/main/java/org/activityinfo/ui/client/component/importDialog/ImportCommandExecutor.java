@@ -62,7 +62,7 @@ class ImportCommandExecutor {
             public Promise<Void> apply(FieldImporter input) {
                 return input.prepare(resourceLocator, importModel.getSource().getRows());
             }
-        }).then(command);
+        }).join(command);
     }
 
     private List<FieldImporter> createImporters(final ImportModel model) {

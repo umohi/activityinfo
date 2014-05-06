@@ -22,10 +22,11 @@ package org.activityinfo.ui.client.component.importDialog;
  */
 
 import com.google.common.base.Function;
+import org.activityinfo.fp.client.Promise;
 
 /**
  * @author yuriyz on 4/18/14.
  */
-public interface ImportCommand<T> extends Function<Void, T> {
+public interface ImportCommand<T> extends Function<Void, Promise<T>> {
     public void setCommandExecutor(ImportCommandExecutor commandExecutor);
 }

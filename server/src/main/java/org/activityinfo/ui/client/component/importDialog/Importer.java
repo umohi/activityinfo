@@ -36,7 +36,7 @@ public class Importer {
 
     public Importer(ResourceLocator resourceLocator, FormTree formTree, FieldImportStrategies fieldImportStrategies) {
         this.resourceLocator = resourceLocator;
-        for (FormTree.Node rootField : formTree.getRootFields()) {
+        for(FormTree.Node rootField : formTree.getRootFields()) {
             fields.add(new TargetField(rootField, fieldImportStrategies.forField(rootField)));
         }
     }

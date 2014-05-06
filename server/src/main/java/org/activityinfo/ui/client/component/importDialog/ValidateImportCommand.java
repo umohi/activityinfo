@@ -30,6 +30,7 @@ import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
 import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.i18n.shared.I18N;
 
 import javax.annotation.Nullable;
@@ -44,10 +45,10 @@ public class ValidateImportCommand implements ImportCommand<ValidatedResult> {
 
     @Nullable
     @Override
-    public ValidatedResult apply(@Nullable Void input) {
+    public Promise<ValidatedResult> apply(@Nullable Void input) {
         final List<ValidationResult> classValidation = doClassValidation();
         final ValidatedRowTable rowTable = doRowValidation();
-        return new ValidatedResult(rowTable, classValidation);
+        return Promise.resolved(new ValidatedResult(rowTable, classValidation));
     }
 
     private List<ValidationResult> doClassValidation() {
