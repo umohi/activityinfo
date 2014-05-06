@@ -1,6 +1,7 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
+import com.google.common.base.Supplier;
 import com.google.common.collect.*;
 import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.shared.Cuid;
@@ -17,10 +18,9 @@ import org.activityinfo.fp.shared.BiFunction;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.adapter.projection.LocationProjector;
 import org.activityinfo.legacy.shared.adapter.projection.SiteProjector;
-import org.activityinfo.legacy.shared.command.DimensionType;
-import org.activityinfo.legacy.shared.command.Filter;
-import org.activityinfo.legacy.shared.command.GetLocations;
-import org.activityinfo.legacy.shared.command.GetSites;
+import org.activityinfo.legacy.shared.command.*;
+import org.activityinfo.legacy.shared.command.result.SiteResult;
+import org.activityinfo.legacy.shared.model.SchemaDTO;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -130,7 +130,7 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         return results;
     }
 
-    private Promise<List<Projection>> projectSites(CriteriaAnalysis criteriaAnalysis, List<FieldPath> fieldPaths) {
+    private Promise<List<Projection>> projectSites(CriteriaAnalysis criteriaAnalysis, final List<FieldPath> fieldPaths) {
         Cuid activityClass = criteriaAnalysis.getClassRestriction();
         int activityId = CuidAdapter.getLegacyIdFromCuid(activityClass);
 
@@ -140,8 +140,16 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         GetSites query = new GetSites();
         query.setFilter(filter);
 
-        return dispatcher.execute(query)
-                .then(new SiteProjector(criteria, fieldPaths));
+        final Promise<SchemaDTO> schemaPromise = dispatcher.execute(new GetSchema());
+        final Promise<SiteResult> sitePromise = dispatcher.execute(query);
+        return Promise.waitAll(schemaPromise, sitePromise).then(new Supplier<List<Projection>>() {
+            @Override
+            public List<Projection> get() {
+                final SchemaDTO schemaDTO = schemaPromise.get();
+                final SiteProjector siteProjector = new SiteProjector(schemaDTO, criteria, fieldPaths);
+                return siteProjector.apply(sitePromise.get());
+            }
+        });
     }
 
     private Promise<List<Projection>> projectLocations(CriteriaAnalysis criteriaAnalysis, List<FieldPath> fieldPaths) {
