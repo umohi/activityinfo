@@ -1,6 +1,7 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Functions;
+import com.google.common.collect.Lists;
 import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.QueryResult;
 import org.activityinfo.core.client.ResourceLocator;
@@ -72,15 +73,13 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     // todo there should be better way to persist list of resources
     @Override
     public Promise<Void> persist(List<? extends Resource> resources) {
+        final List<Promise<Void>> promises = Lists.newArrayList();
         if (resources != null && !resources.isEmpty()) {
-            for (Resource resource : resources) {
-                final Promise<Void> intermediatePromise = persist(resource);
-                if (intermediatePromise.getState() != Promise.State.FULFILLED) {
-                    return intermediatePromise;
-                }
+            for (final Resource resource : resources) {
+                promises.add(persist(resource));
             }
         }
-        return Promise.resolved(null);
+        return Promise.waitAll(promises);
     }
 
     @Override
