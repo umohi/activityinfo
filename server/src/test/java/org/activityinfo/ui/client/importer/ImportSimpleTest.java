@@ -12,6 +12,7 @@ import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
 import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.fixtures.InjectionSupport;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
@@ -93,6 +94,30 @@ public class ImportSimpleTest extends AbstractImporterTest {
         assertThat(site.getDate2(), equalTo(new LocalDate(2012,12,19)));
     }
 
+    @Test
+    public void testExceptionHandling() throws IOException {
+
+
+        FormTree formTree = assertResolves(formTreeBuilder.apply(HOUSEHOLD_SURVEY_FORM_CLASS));
+        importModel = new ImportModel(formTree);
+
+        // Step 1: User pastes in data to import
+        PastedTable source = new PastedTable(
+                Resources.toString(getResource("org/activityinfo/core/shared/importing/qis.csv"), Charsets.UTF_8));
+
+        importModel.setSource(source);
+        importer = new Importer(resourceLocator, formTree, FieldImportStrategies.get(JvmConverterFactory.get()));
+        importModel.setColumnAction(columnIndex("MEMBER_NO_ADULT_FEMALE"), target("NumAdultMale"));
+        importModel.setColumnAction(columnIndex("MEMBER_NO_ADULT_FEMALE"), target("NumAdultFemale"));
+        importModel.setColumnAction(columnIndex("_CREATION_DATE"), target("Start Date"));
+        importModel.setColumnAction(columnIndex("_SUBMISSION_DATE"), target("End Date"));
+        importModel.setColumnAction(columnIndex("district"), target("District Name"));
+        importModel.setColumnAction(columnIndex("upazila"), target("Upzilla Name"));
+       // importModel.setColumnAction(columnIndex("Partner"), target("Partner Name"));
+
+        Promise<Void> result = importer.persist(importModel);
+        assertThat(result.getState(), equalTo(Promise.State.REJECTED));
+    }
 
 
 }

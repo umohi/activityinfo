@@ -1,17 +1,17 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
-import org.activityinfo.fp.shared.BiFunction;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.adapter.bindings.SiteBinding;
+import org.activityinfo.legacy.shared.adapter.bindings.SiteBindingFactory;
 import org.activityinfo.legacy.shared.command.*;
+import org.activityinfo.legacy.shared.command.result.BatchResult;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
-import org.activityinfo.legacy.shared.model.AdminEntityDTO;
-import org.activityinfo.legacy.shared.model.AdminLevelDTO;
-import org.activityinfo.legacy.shared.model.LocationTypeDTO;
+import org.activityinfo.legacy.shared.model.*;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -22,33 +22,48 @@ import java.util.Map;
 /**
  * Persists a FormInstance as a Site
  */
-public class SitePersistFunction extends BiFunction<SiteBinding, FormInstance, Promise<? extends CommandResult>> {
+public class SitePersister {
 
     private final Dispatcher dispatcher;
 
-    public SitePersistFunction(Dispatcher dispatcher) {
+    public SitePersister(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
-    @Override
-    public Promise<? extends CommandResult> apply(SiteBinding siteBinding, FormInstance instance) {
+    public Promise<Void> persist(final FormInstance siteInstance) {
+
+        int activityId = CuidAdapter.getLegacyIdFromCuid(siteInstance.getClassId());
+        return dispatcher.execute(new GetSchema())
+          .then(new SiteBindingFactory(activityId))
+          .join(new Function<SiteBinding, Promise<Void>>() {
+              @Nullable
+              @Override
+              public Promise<Void> apply(@Nullable SiteBinding binding) {
+                  return persist(binding, siteInstance).thenDiscardResult();
+              }
+          });
+    }
+
+    private Promise<? extends CommandResult> persist(SiteBinding siteBinding, FormInstance instance) {
 
         Map<String, Object> siteProperties = siteBinding.toChangePropertyMap(instance);
         siteProperties.put("activityId", siteBinding.getActivity().getId());
 
-        CreateSite createSite = new CreateSite(siteProperties);
+        final CreateSite createSite = new CreateSite(siteProperties);
 
         if (siteBinding.getLocationType().isAdminLevel()) {
             // we need to create the dummy location as well
-
             Promise<Command> createLocation = Promise.resolved(siteBinding.getAdminEntityId(instance))
                     .join(new FetchEntityFunction())
                     .then(new CreateDummyLocation(createSite.getLocationId(), siteBinding.getLocationType()));
 
-            return Promise.fmap(new BatchConstructor()
-                    .apply(createSite))
-                    .apply(createLocation)
-                    .join(dispatcher);
+            return createLocation.join(new Function<Command, Promise<BatchResult>>() {
+                @Nullable
+                @Override
+                public Promise<BatchResult> apply(@Nullable Command createLocation) {
+                    return dispatcher.execute(new BatchCommand(createLocation, createSite));
+                }
+            });
 
         } else {
             return dispatcher.execute(createSite);
@@ -112,14 +127,6 @@ public class SitePersistFunction extends BiFunction<SiteBinding, FormInstance, P
             }
 
             return new CreateLocation(properties);
-        }
-    }
-
-    private class BatchConstructor extends BiFunction<Command, Command, Command> {
-
-        @Override
-        public Command apply(Command createSite, Command createLocation) {
-            return new BatchCommand(createSite, createLocation);
         }
     }
 }

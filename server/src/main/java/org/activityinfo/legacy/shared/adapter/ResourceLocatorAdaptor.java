@@ -50,22 +50,11 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         if (resource instanceof FormInstance) {
             FormInstance instance = (FormInstance) resource;
             if (instance.getId().getDomain() == CuidAdapter.SITE_DOMAIN) {
-                int activityId = CuidAdapter.getLegacyIdFromCuid(instance.getClassId());
-
-                Promise<SiteBinding> siteBinding = dispatcher
-                        .execute(new GetSchema())
-                        .then(new SiteBindingFactory(activityId));
-
-                return Promise.fmap(new SitePersistFunction(dispatcher))
-                        .apply(siteBinding, Promise.resolved(instance))
-                        .then(Functions.<Void>constant(null));
+                return new SitePersister(dispatcher).persist(instance);
 
             } else if (instance.getId().getDomain() == CuidAdapter.LOCATION_DOMAIN) {
                 return new LocationPersister(dispatcher, instance).persist();
             }
-        } else if (resource instanceof FormClass) {
-            FormClass formClass = (FormClass) resource;
-            // todo
         }
         return Promise.rejected(new UnsupportedOperationException());
     }

@@ -135,8 +135,12 @@ public class CommandTestCase2 {
             @Override
             public <T extends CommandResult> void execute(Command<T> command,
                                                           AsyncCallback<T> callback) {
-                T result = CommandTestCase2.this.execute(command);
-                callback.onSuccess(result);
+                try {
+                    T result = CommandTestCase2.this.execute(command);
+                    callback.onSuccess(result);
+                } catch(Exception e) {
+                    callback.onFailure(e);
+                }
             }
 
         };

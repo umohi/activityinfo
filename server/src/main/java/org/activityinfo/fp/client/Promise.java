@@ -254,19 +254,6 @@ public final class Promise<T> implements AsyncCallback<T> {
     }
 
     /**
-     * Transforms a function {@code T → R} to a function which operates on the equivalent
-     * Promised values: {@code Promise<T> → Promise<R> }
-     */
-    public static <T, R> Function<Promise<T>, Promise<R>> fmap(final Function<T, R> function) {
-        return new Function<Promise<T>, Promise<R>>() {
-            @Override
-            public Promise<R> apply(Promise<T> input) {
-                return input.then(function);
-            }
-        };
-    }
-
-    /**
      * Transforms a binary function {@code (T, U) → R} to a function which operates on the equivalent
      * Promised values: {@code ( Promise<T>, Promise<U> ) → Promise<R> }
      */

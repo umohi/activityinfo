@@ -5,6 +5,7 @@ import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.client.InstanceQuery;
+import org.activityinfo.core.client.PromiseMatchers;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.application.ApplicationProperties;
@@ -14,6 +15,7 @@ import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.model.AiLatLng;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fp.client.Promise;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.command.GetLocations;
 import org.activityinfo.legacy.shared.command.result.LocationResult;
 import org.activityinfo.legacy.shared.model.LocationDTO;
@@ -25,6 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -100,6 +103,21 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
         Set<Cuid> adminUnits = instance.getReferences(field(classId, ADMIN_FIELD));
         System.out.println(adminUnits);
 
+    }
+
+    @Test
+    public void persistSiteException() {
+
+        FormInstance instance = new FormInstance(CuidAdapter.cuid(SITE_DOMAIN, new KeyGenerator().generateInt()),
+                NFI_DIST_FORM_CLASS);
+
+        Promise<Void> result;
+
+        result = resourceLocator.persist(instance);
+        assertThat(result.getState(), equalTo(Promise.State.REJECTED));
+
+        result = resourceLocator.persist(Arrays.asList(instance, instance));
+        assertThat(result.getState(), equalTo(Promise.State.REJECTED));
     }
 
     @Test
