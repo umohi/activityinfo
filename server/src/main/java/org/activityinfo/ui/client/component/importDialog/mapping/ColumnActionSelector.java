@@ -3,6 +3,7 @@ package org.activityinfo.ui.client.component.importDialog.mapping;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -16,7 +17,9 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.importing.model.ColumnAction;
 import org.activityinfo.core.shared.importing.model.IgnoreAction;
+import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.model.MapExistingAction;
+import org.activityinfo.core.shared.importing.strategy.ImportTarget;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.widget.RadioButton;
 
@@ -44,9 +47,11 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
     private Map<ColumnAction, RadioButton> buttons = Maps.newHashMap();
     private ColumnAction value = IgnoreAction.INSTANCE;
     private final RadioButton ignoreButton;
+    private final ImportModel importModel;
 
 
-    public ColumnActionSelector(List<MapExistingAction> actions) {
+    public ColumnActionSelector(List<MapExistingAction> actions, ImportModel importModel) {
+        this.importModel = importModel;
 
         FlowPanel panel = new FlowPanel();
 
@@ -55,7 +60,7 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
         ignoreButton.setValue(true);
         panel.add(ignoreButton);
 
-        for(final MapExistingAction action : actions) {
+        for (final MapExistingAction action : actions) {
             final FormField formField = action.getTarget().getFormField();
             final String plainLabel = action.getTarget().getLabel();
             SafeHtml label = !formField.isRequired() ?
@@ -72,7 +77,7 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
         RadioButton button = new RadioButton(group, label);
         button.setTabIndex(buttons.size() + 1);
 
-        if(action == IgnoreAction.INSTANCE) {
+        if (action == IgnoreAction.INSTANCE) {
             button.addStyleName(ColumnMappingStyles.INSTANCE.stateIgnored());
         }
 
@@ -83,6 +88,12 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
                 if (!Objects.equal(action, value)) {
                     value = action;
                     ValueChangeEvent.fire(ColumnActionSelector.this, value);
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                        @Override
+                        public void execute() {
+                            updateStyles();
+                        }
+                    });
                 }
             }
         });
@@ -92,7 +103,7 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
 
 
     public void setFocus() {
-        if(ignoreButton.getValue()) {
+        if (ignoreButton.getValue()) {
             ignoreButton.setFocus(true);
         }
     }
@@ -117,7 +128,7 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
     public void setValue(ColumnAction newValue, boolean fireEvents) {
         if (!Objects.equal(this.value, newValue)) {
 
-            if(newValue == null) {
+            if (newValue == null) {
                 // clear the old selection
                 buttons.get(value).setValue(false);
                 this.value = newValue;
@@ -141,4 +152,21 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
         }
     }
 
+    public void updateStyles() {
+        for (Map.Entry<ColumnAction, RadioButton> entry : buttons.entrySet()) {
+            final ColumnAction columnAction = entry.getKey();
+            if (columnAction instanceof MapExistingAction) {
+                final ImportTarget target = ((MapExistingAction) columnAction).getTarget();
+                final RadioButton button = entry.getValue();
+                button.removeStyleName(ColumnMappingStyles.INSTANCE.stateBound());
+                button.removeStyleName(ColumnMappingStyles.INSTANCE.stateUnset());
+
+                if (!importModel.getMappedColumns(target.getFormField().getId()).isEmpty()) {
+                    button.addStyleName(ColumnMappingStyles.INSTANCE.stateBound());
+                } else if (target.getFormField().isRequired()) {
+                    button.addStyleName(ColumnMappingStyles.INSTANCE.stateUnset());
+                }
+            }
+        }
+    }
 }

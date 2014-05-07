@@ -46,7 +46,7 @@ public class ImportPresenter {
 
         ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
 
-        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions());
+        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions(), eventBus);
         ValidationPage validationPage = new ValidationPage(importModel, importer);
 
         pages = Lists.<ImportPage>newArrayList(chooseSourcePage, matchingPage, validationPage).listIterator();
@@ -84,6 +84,17 @@ public class ImportPresenter {
 
         dialogBox.getTitleWidget().setText(I18N.CONSTANTS.importDialogTitle());
 
+        eventBus.addHandler(PageChangedEvent.TYPE, new PageChangedEventHandler() {
+            @Override
+            public void onPageChanged(PageChangedEvent event) {
+                if (event.isValid()) {
+                    dialogBox.getStatusText().removeClassName("alert");
+                } else {
+                    dialogBox.getStatusText().addClassName("alert");
+                }
+                dialogBox.setStatusText(event.getStatusMessage());
+            }
+        });
         setButtonsState();
     }
 
@@ -174,14 +185,7 @@ public class ImportPresenter {
     }
 
     private void setButtonsState() {
-        eventBus.addHandler(PageChangedEvent.TYPE, new PageChangedEventHandler() {
-            @Override
-            public void onPageChanged(PageChangedEvent event) {
-                //dialogBox.getNextButton().setEnabled(event.isValid());
-                dialogBox.setStatusText(event.getStatusMessage());
-            }
-        });
-        dialogBox.getPreviousButton().setEnabled(pages.hasPrevious());
+        dialogBox.getPreviousButton().setEnabled(pages.hasPrevious() && pages.previousIndex() > 0);
         dialogBox.getNextButton().setEnabled(pages.hasNext());
         dialogBox.getFinishButton().setVisible(!pages.hasNext() && currentPage.isValid());
     }
