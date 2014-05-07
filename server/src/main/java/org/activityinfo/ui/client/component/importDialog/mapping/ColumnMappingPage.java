@@ -124,6 +124,11 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
     }
 
     @Override
+    public void fireStateChanged() {
+        // todo
+    }
+
+    @Override
     public void nextStep() {
         if (importModel.getColumnAction(getSelectedColumn()) != null) {
             SourceColumn nextColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() + 1);

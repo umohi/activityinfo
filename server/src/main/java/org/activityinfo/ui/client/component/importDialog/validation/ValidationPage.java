@@ -63,6 +63,10 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
                 });
     }
 
+    @Override
+    public void fireStateChanged() {
+    }
+
 
     @Override
     public void onPromiseStateChanged(Promise.State state) {

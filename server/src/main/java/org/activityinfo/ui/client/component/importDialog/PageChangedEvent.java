@@ -7,10 +7,12 @@ public class PageChangedEvent extends Event<PageChangedEventHandler> {
     public static Type<PageChangedEventHandler> TYPE = new Type<PageChangedEventHandler>();
 
     private boolean valid;
+    private String statusMessage;
 
-    public PageChangedEvent(boolean valid) {
+    public PageChangedEvent(boolean valid, String statusMessage) {
         super();
         this.valid = valid;
+        this.statusMessage = statusMessage;
     }
 
     @Override
@@ -29,5 +31,13 @@ public class PageChangedEvent extends Event<PageChangedEventHandler> {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 }

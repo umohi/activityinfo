@@ -83,6 +83,8 @@ public class ImportPresenter {
         });
 
         dialogBox.getTitleWidget().setText(I18N.CONSTANTS.importDialogTitle());
+
+        setButtonsState();
     }
 
     private List<MapExistingAction> createMatchingColumnActions() {
@@ -143,28 +145,45 @@ public class ImportPresenter {
         currentPage = page;
         currentPage.start();
         dialogBox.setPage(currentPage);
-
-        boolean hasNext = pages.hasNext();
-        boolean hasPrev = pages.hasPrevious();
-
-        dialogBox.getNextButton().setVisible(hasNext);
-        dialogBox.getFinishButton().setVisible(!hasNext);
-        dialogBox.getFinishButton().setEnabled(currentPage.isValid());
-        dialogBox.getPreviousButton().setEnabled(hasPrev);
+        setButtonsState();
     }
 
     private void nextPage() {
         if (pages.hasNext()) {
-            gotoPage(pages.next());
+            if (currentPage.isValid()) {
+                ImportPage next = pages.next();
+                if (next.equals(currentPage)) {
+                    next = pages.next();
+                }
+                gotoPage(next);
+            } else {
+                currentPage.fireStateChanged();
+            }
         }
     }
 
     private void previousPage() {
-        if (pages.previousIndex() > 0) {
-            pages.previous();
-            gotoPage(pages.previous());
+        if (pages.hasPrevious()) {
+            ImportPage previous = pages.previous();
+            if (previous.equals(currentPage)) {
+                previous = pages.previous();
+            }
+            gotoPage(previous);
         }
         dialogBox.setStatusText(""); // clear status text
+    }
+
+    private void setButtonsState() {
+        eventBus.addHandler(PageChangedEvent.TYPE, new PageChangedEventHandler() {
+            @Override
+            public void onPageChanged(PageChangedEvent event) {
+                //dialogBox.getNextButton().setEnabled(event.isValid());
+                dialogBox.setStatusText(event.getStatusMessage());
+            }
+        });
+        dialogBox.getPreviousButton().setEnabled(pages.hasPrevious());
+        dialogBox.getNextButton().setEnabled(pages.hasNext());
+        dialogBox.getFinishButton().setVisible(!pages.hasNext() && currentPage.isValid());
     }
 
     public EventBus getEventBus() {
