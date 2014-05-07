@@ -2,17 +2,21 @@ package org.activityinfo.ui.client.component.importDialog.mapping;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import org.activityinfo.core.shared.form.FormField;
 import org.activityinfo.core.shared.importing.model.ColumnAction;
 import org.activityinfo.core.shared.importing.model.IgnoreAction;
 import org.activityinfo.core.shared.importing.model.MapExistingAction;
-import org.activityinfo.core.shared.importing.strategy.ImportTarget;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.widget.RadioButton;
 
@@ -24,6 +28,14 @@ import java.util.Map;
  * to which to map the column as a list of radioButton buttons.
  */
 public class ColumnActionSelector extends Composite implements HasValue<ColumnAction> {
+
+    public interface Template extends SafeHtmlTemplates {
+        @SafeHtmlTemplates.Template("<span class='mandatory'> * </span> " +
+                "{0}")
+        SafeHtml html(String label);
+    }
+
+    private static final Template TEMPLATE = GWT.create(Template.class);
 
     private static int nextUniqueGroupNum = 1;
 
@@ -38,23 +50,27 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
 
         FlowPanel panel = new FlowPanel();
 
-        ignoreButton = createRadioButton(I18N.CONSTANTS.ignoreColumnAction(), IgnoreAction.INSTANCE);
+        ignoreButton = createRadioButton(SafeHtmlUtils.fromString(I18N.CONSTANTS.ignoreColumnAction()), IgnoreAction.INSTANCE);
         ignoreButton.addStyleName(ColumnMappingStyles.INSTANCE.stateIgnored());
         ignoreButton.setValue(true);
         panel.add(ignoreButton);
 
         for(final MapExistingAction action : actions) {
-            final ImportTarget target = action.getTarget();
-            RadioButton button = createRadioButton(target.getLabel(), action);
+            final FormField formField = action.getTarget().getFormField();
+            final String plainLabel = action.getTarget().getLabel();
+            SafeHtml label = !formField.isRequired() ?
+                    SafeHtmlUtils.fromString(plainLabel) :
+                    TEMPLATE.html(plainLabel);
+            RadioButton button = createRadioButton(label, action);
             panel.add(button);
         }
 
         initWidget(new ScrollPanel(panel));
     }
 
-    private RadioButton createRadioButton(String label, final ColumnAction action) {
+    private RadioButton createRadioButton(SafeHtml label, final ColumnAction action) {
         RadioButton button = new RadioButton(group, label);
-        button.setTabIndex(buttons.size()+1);
+        button.setTabIndex(buttons.size() + 1);
 
         if(action == IgnoreAction.INSTANCE) {
             button.addStyleName(ColumnMappingStyles.INSTANCE.stateIgnored());

@@ -47,7 +47,7 @@ public class ImportPresenter {
         ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
 
         ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions());
-        ValidationPage validationPage = new ValidationPage(importModel, importer, dialogBox);
+        ValidationPage validationPage = new ValidationPage(importModel, importer);
 
         pages = Lists.<ImportPage>newArrayList(chooseSourcePage, matchingPage, validationPage).listIterator();
 
@@ -144,8 +144,8 @@ public class ImportPresenter {
         currentPage.start();
         dialogBox.setPage(currentPage);
 
-        boolean hasNext = currentPage.hasNextStep() || pages.hasNext();
-        boolean hasPrev = currentPage.hasPreviousStep() || pages.hasPrevious();
+        boolean hasNext = pages.hasNext();
+        boolean hasPrev = pages.hasPrevious();
 
         dialogBox.getNextButton().setVisible(hasNext);
         dialogBox.getFinishButton().setVisible(!hasNext);
@@ -154,17 +154,13 @@ public class ImportPresenter {
     }
 
     private void nextPage() {
-        if (currentPage.hasNextStep()) {
-            currentPage.nextStep();
-        } else if (pages.hasNext()) {
+        if (pages.hasNext()) {
             gotoPage(pages.next());
         }
     }
 
     private void previousPage() {
-        if (currentPage.hasPreviousStep()) {
-            currentPage.previousStep();
-        } else if (pages.previousIndex() > 0) {
+        if (pages.previousIndex() > 0) {
             pages.previous();
             gotoPage(pages.previous());
         }

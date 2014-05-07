@@ -7,7 +7,8 @@ import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategy;
 import org.activityinfo.core.shared.importing.strategy.ImportTarget;
-import org.activityinfo.core.shared.importing.validation.ValidatedResult;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
+import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.fp.client.Promise;
 
 import java.util.List;
@@ -49,9 +50,14 @@ public class Importer {
         return targets;
     }
 
-    public Promise<ValidatedResult> validate(final ImportModel model) {
+    public Promise<ValidatedRowTable> validateRows(final ImportModel model) {
         final ImportCommandExecutor modeller = new ImportCommandExecutor(model, fields, resourceLocator);
-        return modeller.execute(new ValidateImportCommand());
+        return modeller.execute(new ValidateRowsImportCommand());
+    }
+
+    public Promise<List<ValidationResult>> validateClass(final ImportModel model) {
+        final ImportCommandExecutor modeller = new ImportCommandExecutor(model, fields, resourceLocator);
+        return modeller.execute(new ValidateClassImportCommand());
     }
 
     public Promise<Void> persist(final ImportModel model) {

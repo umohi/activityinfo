@@ -80,7 +80,7 @@ public class ImportModel {
         for (Map.Entry<SourceColumn, ColumnAction> entry : columnActions.entrySet()) {
             if (entry.getValue() instanceof MapExistingAction) {
                 MapExistingAction action = (MapExistingAction) entry.getValue();
-                if (action.getTarget().getFieldId().equals(fieldId)) {
+                if (action.getTarget().getFormField().getId().equals(fieldId)) {
                     existingActions.put(entry.getKey(), action);
                 }
             }

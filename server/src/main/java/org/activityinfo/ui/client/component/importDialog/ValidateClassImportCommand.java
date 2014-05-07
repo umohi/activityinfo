@@ -24,11 +24,6 @@ package org.activityinfo.ui.client.component.importDialog;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.importing.model.ImportModel;
-import org.activityinfo.core.shared.importing.source.SourceRow;
-import org.activityinfo.core.shared.importing.strategy.FieldImporter;
-import org.activityinfo.core.shared.importing.validation.ValidatedResult;
-import org.activityinfo.core.shared.importing.validation.ValidatedRow;
-import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.i18n.shared.I18N;
@@ -37,18 +32,16 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * @author yuriyz on 4/18/14.
+ * @author yuriyz on 5/7/14.
  */
-public class ValidateImportCommand implements ImportCommand<ValidatedResult> {
+public class ValidateClassImportCommand implements ImportCommand<List<ValidationResult>> {
 
     private ImportCommandExecutor commandExecutor;
 
     @Nullable
     @Override
-    public Promise<ValidatedResult> apply(@Nullable Void input) {
-        final List<ValidationResult> classValidation = doClassValidation();
-        final ValidatedRowTable rowTable = doRowValidation();
-        return Promise.resolved(new ValidatedResult(rowTable, classValidation));
+    public Promise<List<ValidationResult>> apply(@Nullable Void input) {
+        return Promise.resolved(doClassValidation());
     }
 
     private List<ValidationResult> doClassValidation() {
@@ -65,22 +58,10 @@ public class ValidateImportCommand implements ImportCommand<ValidatedResult> {
         return validationResults;
     }
 
-    private ValidatedRowTable doRowValidation() {
-        final List<ValidatedRow> rows = Lists.newArrayList();
-        final ImportModel model = commandExecutor.getImportModel();
-
-        // Row based validation
-        for (SourceRow row : model.getSource().getRows()) {
-            List<ValidationResult> results = Lists.newArrayList();
-            for (FieldImporter importer : commandExecutor.getImporters()) {
-                importer.validateInstance(row, results);
-            }
-            rows.add(new ValidatedRow(row, results));
-        }
-        return new ValidatedRowTable(commandExecutor.getColumns(), rows);
-    }
-
     public void setCommandExecutor(ImportCommandExecutor commandExecutor) {
         this.commandExecutor = commandExecutor;
     }
+
 }
+
+

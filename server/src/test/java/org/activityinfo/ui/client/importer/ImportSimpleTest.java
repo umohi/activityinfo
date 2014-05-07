@@ -10,7 +10,7 @@ import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.form.tree.FormTreePrettyPrinter;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
-import org.activityinfo.core.shared.importing.validation.ValidatedResult;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
@@ -77,7 +77,7 @@ public class ImportSimpleTest extends AbstractImporterTest {
 
 
         // Step 3: Validate for user
-        ValidatedResult validatedResult = assertResolves(importer.validate(importModel));
+        ValidatedRowTable validatedResult = assertResolves(importer.validateRows(importModel));
         showValidationGrid(validatedResult);
 
         assertResolves(importer.persist(importModel));

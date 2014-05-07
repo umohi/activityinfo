@@ -51,7 +51,7 @@ public class DataFieldImporter implements FieldImporter {
     public boolean updateInstance(SourceRow row, FormInstance instance) {
         final ValidationResult validateResult = validate(row);
         if (validateResult.shouldPersist()) {
-            instance.set(target.getFieldId(), converter.convert(source.getValue(row)));
+            instance.set(target.getFormField().getId(), converter.convert(source.getValue(row)));
             return true;
         }
         return false;
