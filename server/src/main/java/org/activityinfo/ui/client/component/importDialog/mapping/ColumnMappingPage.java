@@ -2,6 +2,7 @@ package org.activityinfo.ui.client.component.importDialog.mapping;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -116,18 +117,24 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
 
     @Override
     public boolean isValid() {
-        return collectNotMappedMandatoryColumns().isEmpty();
+        return collectNotMappedMandatoryColumns(true).isEmpty();
     }
 
-    public List<ImportTarget> collectNotMappedMandatoryColumns() {
+    /**
+     * @param mandatory if true - then only mandatory, if false then ALL
+     * @return
+     */
+    public List<ImportTarget> collectNotMappedMandatoryColumns(boolean mandatory) {
         List<ImportTarget> list = Lists.newArrayList();
         for (final MapExistingAction action : actions) {
             final FormField formField = action.getTarget().getFormField();
-            if (formField.isRequired()) {
-                final Map<TargetSiteId, ColumnAccessor> mappedColumns = importModel.getMappedColumns(formField.getId());
-                if (mappedColumns.isEmpty()) {
-                    list.add(action.getTarget());
-                }
+            if (mandatory && !formField.isRequired()) {
+                continue;
+            }
+
+            final Map<TargetSiteId, ColumnAccessor> mappedColumns = importModel.getMappedColumns(formField.getId());
+            if (mappedColumns.isEmpty()) {
+                list.add(action.getTarget());
             }
         }
         return list;
@@ -136,7 +143,7 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
 
     @Override
     public void fireStateChanged() {
-        final List<ImportTarget> importTargets = collectNotMappedMandatoryColumns();
+        final List<ImportTarget> importTargets = collectNotMappedMandatoryColumns(true);
         if (importTargets.isEmpty()) {
             eventBus.fireEvent(new PageChangedEvent(true, ""));
         } else {
@@ -171,23 +178,40 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
 
     @Override
     public void start() {
+        ColumnMappingGuesser guesser = new ColumnMappingGuesser(importModel, collectNotMappedMandatoryColumns(false));
+        guesser.guess();
+
         dataGrid.refresh();
         if (columnSelectionModel.getSelectedSet().isEmpty() ||
                 columnSelectionModel.getSelectedObject().getIndex() != 0) {
             columnSelectionModel.setSelected(importModel.getSourceColumn(0), true);
         }
         onNextPage();
+
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                refreshGuessedColumns();
+            }
+        });
+    }
+
+    private void refreshGuessedColumns() {
+        for (SourceColumn sourceColumn : importModel.getColumnActions().keySet()) {
+            dataGrid.refreshColumnStyles(sourceColumn.getIndex());
+        }
+        actionSelector.updateStyles();
     }
 
     @Override
     public void nextStep() {
-        if (importModel.getColumnAction(getSelectedColumn()) != null) {
-            SourceColumn nextColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() + 1);
-            columnSelectionModel.setSelected(nextColumn, true);
-            onNextPage();
-        } else {
-            fieldSelectorPanel.addStyleName(ColumnMappingStyles.INSTANCE.incomplete());
-        }
+//        if (importModel.getColumnAction(getSelectedColumn()) != null) {
+//            SourceColumn nextColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() + 1);
+//            columnSelectionModel.setSelected(nextColumn, true);
+//            onNextPage();
+//        } else {
+//            fieldSelectorPanel.addStyleName(ColumnMappingStyles.INSTANCE.incomplete());
+//        }
     }
 
     private void onNextPage() {
@@ -196,7 +220,7 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
 
     @Override
     public void previousStep() {
-        SourceColumn prevColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() - 1);
-        columnSelectionModel.setSelected(prevColumn, true);
+//        SourceColumn prevColumn = importModel.getSourceColumn(getSelectedColumn().getIndex() - 1);
+//        columnSelectionModel.setSelected(prevColumn, true);
     }
 }
