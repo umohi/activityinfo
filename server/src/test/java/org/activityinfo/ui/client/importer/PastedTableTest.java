@@ -23,6 +23,8 @@ package org.activityinfo.ui.client.importer;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import org.activityinfo.core.server.type.converter.JvmConverterFactory;
+import org.activityinfo.core.shared.form.FormFieldType;
 import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.ui.client.component.importDialog.data.PastedTable;
@@ -37,7 +39,7 @@ import static com.google.common.io.Resources.getResource;
 /**
  * @author yuriyz on 4/18/14.
  */
-public class PastedTableParserTest {
+public class PastedTableTest {
 
     @Test
     public void parser() throws IOException {
@@ -48,5 +50,27 @@ public class PastedTableParserTest {
 
         Assert.assertEquals(columns.size(), 47);
         Assert.assertEquals(rows.size(), 63);
+    }
+
+    @Test
+    public void columnTypeGuesser() throws IOException {
+        PastedTable pastedTable = new PastedTable(
+                Resources.toString(getResource("org/activityinfo/core/shared/importing/qis.csv"), Charsets.UTF_8));
+
+        // guess column types
+        pastedTable.guessColumnsType(JvmConverterFactory.get());
+
+        Assert.assertEquals(column(pastedTable, "Partner").getGuessedType(), FormFieldType.FREE_TEXT);
+        Assert.assertEquals(column(pastedTable, "_CREATION_DATE").getGuessedType(), FormFieldType.LOCAL_DATE);
+        Assert.assertEquals(column(pastedTable, "_MODEL_VERSION").getGuessedType(), FormFieldType.QUANTITY);
+    }
+
+    protected SourceColumn column(PastedTable pastedTable, String header) {
+        for (SourceColumn column : pastedTable.getColumns()) {
+            if (column.getHeader().equals(header)) {
+                return column;
+            }
+        }
+        throw new RuntimeException("No column with header " + header);
     }
 }

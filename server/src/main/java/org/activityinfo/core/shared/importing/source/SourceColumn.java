@@ -1,5 +1,7 @@
 package org.activityinfo.core.shared.importing.source;
 
+import org.activityinfo.core.shared.form.FormFieldType;
+
 /**
  * Describes a column in the imported table
  */
@@ -7,7 +9,7 @@ public class SourceColumn {
 
     private String header;
     private int index;
-
+    private FormFieldType guessedType = FormFieldType.FREE_TEXT;
 
     public String getHeader() {
         return header;
@@ -23,6 +25,14 @@ public class SourceColumn {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public FormFieldType getGuessedType() {
+        return guessedType;
+    }
+
+    public void setGuessedType(FormFieldType guessedType) {
+        this.guessedType = guessedType;
     }
 
     @Override

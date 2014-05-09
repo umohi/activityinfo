@@ -23,6 +23,9 @@ public enum FormFieldType {
 
     /**
      * A longish block of text
+     *
+     * Note: Defined exact length to differ between FREE_TEXT type.
+     * {@link #FREE_TEXT_LENGTH}
      */
     NARRATIVE {
         @Override
@@ -33,6 +36,10 @@ public enum FormFieldType {
 
     /**
      * Short free text field
+     *
+     * Note: Defined exact length to differ between NARRATIVE type.
+     * {@link #FREE_TEXT_LENGTH}
+     *
      */
     FREE_TEXT {
         @Override
@@ -70,6 +77,12 @@ public enum FormFieldType {
             return Sets.newHashSet();
         }
     };
+
+    /**
+     * Defined exact length of string to differ between FREE_TEXT and NARRATIVE types.
+     * If string length less than #FREE_TEXT_LENGTH then type is #FREE_TEXT otherwise it is NARRATIVE.
+     */
+    public static final int FREE_TEXT_LENGTH = 80;
 
     FormFieldType() {
     }

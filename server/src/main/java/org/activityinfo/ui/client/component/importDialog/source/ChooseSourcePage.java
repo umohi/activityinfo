@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.core.client.type.converter.JsConverterFactory;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
@@ -51,7 +52,9 @@ public class ChooseSourcePage extends ResizeComposite implements ImportPage {
 
     public void fireStateChanged() {
         if (isValid()) {
-            model.setSource(new PastedTable(textArea.getValue()));
+            final PastedTable source = new PastedTable(textArea.getValue());
+            source.guessColumnsType(JsConverterFactory.get());
+            model.setSource(source);
             eventBus.fireEvent(new PageChangedEvent(true, ""));
         } else {
             eventBus.fireEvent(new PageChangedEvent(false, I18N.CONSTANTS.pleaseProvideCommaSeparatedText()));

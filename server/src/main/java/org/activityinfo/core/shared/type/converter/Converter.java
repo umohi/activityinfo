@@ -11,6 +11,5 @@ public interface Converter<K, V> {
     /**
      * Converts the non-null {@code value} to the correct type
      */
-    @Nonnull
     public V convert(@Nonnull K value);
 }

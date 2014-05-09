@@ -96,6 +96,7 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
         fieldSelectorPanel.removeStyleName(ColumnMappingStyles.INSTANCE.incomplete());
         fieldSelectorHeading.setText(column.getHeader());
         actionSelector.setValue(importModel.getColumnAction(column));
+        actionSelector.updateTypeStyles(column.getGuessedType());
     }
 
     private SourceColumn getSelectedColumn() {
