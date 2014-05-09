@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import org.activityinfo.core.shared.form.FormField;
+import org.activityinfo.core.shared.importing.match.ColumnMappingGuesser;
 import org.activityinfo.core.shared.importing.model.ColumnAction;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.model.MapExistingAction;

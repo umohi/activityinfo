@@ -24,7 +24,7 @@ import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.ui.client.component.importDialog.Importer;
 import org.activityinfo.ui.client.component.importDialog.data.PastedTable;
-import org.activityinfo.ui.client.component.importDialog.mapping.ColumnMappingGuesser;
+import org.activityinfo.core.shared.importing.match.ColumnMappingGuesser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

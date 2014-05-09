@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.component.importDialog.mapping;
+package org.activityinfo.core.shared.importing.match;
 /*
  * #%L
  * ActivityInfo Server
