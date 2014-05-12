@@ -529,6 +529,14 @@
          from Jenkins and includes the build number in the version displayed
          to the user -->
     <profile>
+      <id>ci-dev</id>
+      <properties>
+        <display.version>Build ${BUILD_NUMBER}</display.version>
+        <gae.application>bdd-dev</gae.application>
+        <gae.application.version>ci</gae.application.version>
+      </properties>
+    </profile>
+    <profile>
       <id>ci</id>
       <properties>
         <display.version>Build ${BUILD_NUMBER}</display.version>
