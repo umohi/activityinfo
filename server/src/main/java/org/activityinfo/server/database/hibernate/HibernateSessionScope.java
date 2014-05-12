@@ -61,16 +61,18 @@ public class HibernateSessionScope implements Scope {
                 "No hibernate session block in progress");
 
         // close session
-        if (values.get().containsKey(Key.get(EntityManager.class))) {
-            EntityManager em = (EntityManager) values.get().get(
-                    Key.get(EntityManager.class));
-            values.remove();
-            try {
+        try {
+            if (values.get().containsKey(Key.get(EntityManager.class))) {
+                EntityManager em = (EntityManager) values.get().get(
+                        Key.get(EntityManager.class));
                 em.close();
-
-            } catch(Exception caught) {
-                LOGGER.log(Level.SEVERE, "Error closing connection", caught);
             }
+
+        } catch(Exception caught) {
+            LOGGER.log(Level.SEVERE, "Error closing connection", caught);
+
+        } finally {
+            values.remove();
         }
 
     }
