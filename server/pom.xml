@@ -533,7 +533,7 @@
       <properties>
         <display.version>Build ${BUILD_NUMBER}</display.version>
         <gae.application>bdd-dev</gae.application>
-        <gae.application.version>ci</gae.application.version>
+        <gae.application.version>ci-dev</gae.application.version>
       </properties>
     </profile>
     <profile>
