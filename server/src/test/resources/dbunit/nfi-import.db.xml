@@ -12231,86 +12231,167 @@
   <locationadminlink AdminEntityId="213187" LocationId="2138399818"/>
   <userdatabase DatabaseId="4" FullName="Cluster NFI / Abri" lastSchemaUpdate="2012-07-28 07:54:22.0" Name="Cluster NFI" StartDate="2007-01-01" CountryId="1" OwnerUserId="3" version="1367225236719"/>
   <partner PartnerId="1" Name="AAA"/>
+<partnerInDatabase partnerId="1" databaseId="4"/>
   <partner PartnerId="2" Name="Action Aid"/>
+<partnerInDatabase partnerId="2" databaseId="4"/>
   <partner PartnerId="3" FullName="Adventist Development and Relief Agency" Name="ADRA"/>
+<partnerInDatabase partnerId="3" databaseId="4"/>
   <partner PartnerId="6" Name="CAFOD"/>
+<partnerInDatabase partnerId="6" databaseId="4"/>
   <partner PartnerId="7" FullName="Cooperative for Assistance and Relief Everywhere" Name="CARE"/>
+<partnerInDatabase partnerId="7" databaseId="4"/>
   <partner PartnerId="8" FullName="Caritas" Name="Caritas"/>
+<partnerInDatabase partnerId="8" databaseId="4"/>
   <partner PartnerId="9" Name="CEH"/>
+<partnerInDatabase partnerId="9" databaseId="4"/>
   <partner PartnerId="10" Name="CEPAC"/>
+<partnerInDatabase partnerId="10" databaseId="4"/>
   <partner PartnerId="11" Name="CONCERN"/>
+<partnerInDatabase partnerId="11" databaseId="4"/>
   <partner PartnerId="12" Name="CRONGD"/>
+<partnerInDatabase partnerId="12" databaseId="4"/>
   <partner PartnerId="13" FullName="Catholic Relief Service" Name="CRS"/>
+<partnerInDatabase partnerId="13" databaseId="4"/>
   <partner PartnerId="15" Name="HIA"/>
+<partnerInDatabase partnerId="15" databaseId="4"/>
   <partner PartnerId="17" Name="Islamic Relief"/>
+<partnerInDatabase partnerId="17" databaseId="4"/>
   <partner PartnerId="21" Name="OCHA"/>
+<partnerInDatabase partnerId="21" databaseId="4"/>
   <partner PartnerId="22" FullName="Organisation International pour la Migration" Name="OIM"/>
+<partnerInDatabase partnerId="22" databaseId="4"/>
   <partner PartnerId="24" Name="PAP RDC"/>
+<partnerInDatabase partnerId="24" databaseId="4"/>
   <partner PartnerId="25" Name="Premi&#232;re Urgence"/>
+<partnerInDatabase partnerId="25" databaseId="4"/>
   <partner PartnerId="27" Name="SCF"/>
+<partnerInDatabase partnerId="27" databaseId="4"/>
   <partner PartnerId="29" FullName="UN High Commissioner for Refugees" Name="UNHCR"/>
+<partnerInDatabase partnerId="29" databaseId="4"/>
   <partner PartnerId="30" FullName="United Nations Children&apos;s Funds" Name="UNICEF"/>
+<partnerInDatabase partnerId="30" databaseId="4"/>
   <partner PartnerId="31" Name="World Vision"/>
+<partnerInDatabase partnerId="31" databaseId="4"/>
   <partner PartnerId="33" FullName="Oxfam Quebec" Name="OXFAM-Q"/>
+<partnerInDatabase partnerId="33" databaseId="4"/>
   <partner PartnerId="36" FullName="Appui de Femmes diminu" Name="AFEDEM"/>
+<partnerInDatabase partnerId="36" databaseId="4"/>
   <partner PartnerId="37" FullName="Club des Amis de Developpement et l&apos;Environnement" Name="CADE"/>
+<partnerInDatabase partnerId="37" databaseId="4"/>
   <partner PartnerId="38" FullName="OXFAM Grand Bretagne" Name="OXFAM-GB"/>
+<partnerInDatabase partnerId="38" databaseId="4"/>
   <partner PartnerId="86" FullName="CARITAS Kindu" Name="CARITAS Kindu"/>
+<partnerInDatabase partnerId="86" databaseId="4"/>
   <partner PartnerId="89" FullName="CARITAS Kalemie" Name="CARITAS Kalemie"/>
+<partnerInDatabase partnerId="89" databaseId="4"/>
   <partner PartnerId="95" FullName="ADSSE" Name="ADSSE"/>
+<partnerInDatabase partnerId="95" databaseId="4"/>
   <partner PartnerId="96" FullName="Vision d&apos;Espoir" Name="VdE"/>
+<partnerInDatabase partnerId="96" databaseId="4"/>
   <partner PartnerId="97" FullName="Eglise du Christ au Congo" Name="ECC"/>
+<partnerInDatabase partnerId="97" databaseId="4"/>
   <partner PartnerId="112" Name="PNUD"/>
+<partnerInDatabase partnerId="112" databaseId="4"/>
   <partner PartnerId="113" FullName="United Nations Office for Project Services" Name="UNOPS"/>
+<partnerInDatabase partnerId="113" databaseId="4"/>
   <partner PartnerId="125" FullName="Caritas Developpement Goma" Name="Caritas Goma"/>
+<partnerInDatabase partnerId="125" databaseId="4"/>
   <partner PartnerId="126" FullName="Caritas Dungu Doruma" Name="Caritas Dungu"/>
+<partnerInDatabase partnerId="126" databaseId="4"/>
   <partner PartnerId="127" FullName="Solidarites Ituri - RRMP" Name="SOL ITURI RRMP"/>
+<partnerInDatabase partnerId="127" databaseId="4"/>
   <partner PartnerId="128" FullName="Solidarit&#233;s Haut et Bas Uele" Name="SOL HUBU RRMP"/>
+<partnerInDatabase partnerId="128" databaseId="4"/>
   <partner PartnerId="129" FullName="Solidarites Nord kivu - RRMP" Name="SOL KIVU RRMP"/>
+<partnerInDatabase partnerId="129" databaseId="4"/>
   <partner PartnerId="130" FullName="NRC Nord Kivu RRMP" Name="NRC RRMP"/>
+<partnerInDatabase partnerId="130" databaseId="4"/>
   <partner PartnerId="131" FullName="AVSI SUD KIVU RRMP" Name="AVSI RRMP"/>
+<partnerInDatabase partnerId="131" databaseId="4"/>
   <partner PartnerId="132" FullName="IRC RRMP" Name="IRC RRMP"/>
+<partnerInDatabase partnerId="132" databaseId="4"/>
   <partner PartnerId="138" FullName="ALDI Enterprise" Name="ALDI"/>
+<partnerInDatabase partnerId="138" databaseId="4"/>
   <partner PartnerId="146" FullName="Lutherian World Federation" Name="LWF"/>
+<partnerInDatabase partnerId="146" databaseId="4"/>
   <partner PartnerId="147" FullName="APETAMACO " Name="APETAMACO"/>
+<partnerInDatabase partnerId="147" databaseId="4"/>
   <partner PartnerId="148" FullName="CARITAS BUTEMBO-BENI" Name="CARITAS BUTEMBO"/>
+<partnerInDatabase partnerId="148" databaseId="4"/>
   <partner PartnerId="149" FullName="Comite International de la Croix Rouge" Name="CICR"/>
+<partnerInDatabase partnerId="149" databaseId="4"/>
   <partner PartnerId="150" FullName="Memisa Belgique" Name="Memisa Belgique"/>
+<partnerInDatabase partnerId="150" databaseId="4"/>
   <partner PartnerId="152" FullName="Food for the Hungry" Name="FH"/>
+<partnerInDatabase partnerId="152" databaseId="4"/>
   <partner PartnerId="157" FullName="Caritas Diocese de Bunia" Name="Caritas Bunia"/>
+<partnerInDatabase partnerId="157" databaseId="4"/>
   <partner PartnerId="198" FullName="Arm&#233;e du Salut Katanga" Name="Arm&#233;e du Salut"/>
+<partnerInDatabase partnerId="198" databaseId="4"/>
   <partner PartnerId="204" FullName="CARITAS KANANGA" Name="CARITAS KANANGA"/>
+<partnerInDatabase partnerId="204" databaseId="4"/>
   <partner PartnerId="211" FullName="CARITAS BUKAVU" Name="CARITAS BUKAVU"/>
+<partnerInDatabase partnerId="211" databaseId="4"/>
   <partner PartnerId="213" FullName="Action International pour le Developpement Social Katanga" Name="AIDES"/>
+<partnerInDatabase partnerId="213" databaseId="4"/>
   <partner PartnerId="214" Name="GTZ Katanga"/>
+<partnerInDatabase partnerId="214" databaseId="4"/>
   <partner PartnerId="215" FullName="Solidarite" Name="SOL Katanga"/>
+<partnerInDatabase partnerId="215" databaseId="4"/>
   <partner PartnerId="216" FullName="CARITAS UVIRA" Name="CARITAS UVIRA"/>
+<partnerInDatabase partnerId="216" databaseId="4"/>
   <partner PartnerId="241" FullName="Solidarit&#233;s Ituri - ARCC" Name="SOL ITURI ARCC"/>
+<partnerInDatabase partnerId="241" databaseId="4"/>
   <partner PartnerId="242" FullName="Solidarit&#233;s Nord Kivu - ARCC" Name="SOL KIVU ARCC"/>
+<partnerInDatabase partnerId="242" databaseId="4"/>
   <partner PartnerId="243" FullName="NRC Nord Kivu - ARCC" Name="NRC ARCC"/>
+<partnerInDatabase partnerId="243" databaseId="4"/>
   <partner PartnerId="244" FullName="CARITAS KINDU ARCC" Name="CARITAS ARCC"/>
+<partnerInDatabase partnerId="244" databaseId="4"/>
   <partner PartnerId="245" FullName="CRS KATANGA" Name="CRS ARCC"/>
+<partnerInDatabase partnerId="245" databaseId="4"/>
   <partner PartnerId="251" FullName="Arche d&apos;Alliance" Name="ARAL"/>
+<partnerInDatabase partnerId="251" databaseId="4"/>
   <partner PartnerId="260" FullName="Comitato Internazionale per lo Sviluppo dei Popoli" Name="CISP"/>
+<partnerInDatabase partnerId="260" databaseId="4"/>
   <partner PartnerId="267" FullName="People In Need" Name="PIN"/>
+<partnerInDatabase partnerId="267" databaseId="4"/>
   <partner PartnerId="268" FullName="OXFAM NOVIB" Name="OXFAM NOVIB"/>
+<partnerInDatabase partnerId="268" databaseId="4"/>
   <partner PartnerId="269" FullName="Act For gender" Name="AFG"/>
+<partnerInDatabase partnerId="269" databaseId="4"/>
   <partner PartnerId="296" FullName="Caritas Congo ASBL" Name="Caritas Congo"/>
+<partnerInDatabase partnerId="296" databaseId="4"/>
   <partner PartnerId="297" FullName="Caritas Mbandaka" Name="Caritas Mbandaka"/>
+<partnerInDatabase partnerId="297" databaseId="4"/>
   <partner PartnerId="298" FullName="Caritas Budjala" Name="Caritas Budjala"/>
+<partnerInDatabase partnerId="298" databaseId="4"/>
   <partner PartnerId="299" FullName="CRAIDI (Kalemie/Katanga)" Name="CRAIDI"/>
+<partnerInDatabase partnerId="299" databaseId="4"/>
   <partner PartnerId="300" FullName="Caritas Kisantu" Name="Caritas Kisantu"/>
+<partnerInDatabase partnerId="300" databaseId="4"/>
   <partner PartnerId="301" FullName="Caritas Basankusu" Name="Caritas Basakusu"/>
+<partnerInDatabase partnerId="301" databaseId="4"/>
   <partner PartnerId="302" FullName="Ligue de la Zone Afrique pour la Defense des droits des Enfants" Name="LIZADEEL"/>
+<partnerInDatabase partnerId="302" databaseId="4"/>
   <partner PartnerId="313" FullName="Rebuilt Hope for Africa" Name="RHA"/>
+<partnerInDatabase partnerId="313" databaseId="4"/>
   <partner PartnerId="317" FullName="Action d&apos;espoir" Name="ADE"/>
+<partnerInDatabase partnerId="317" databaseId="4"/>
   <partner PartnerId="497" FullName="Department for International Development" Name="DFID"/>
+<partnerInDatabase partnerId="497" databaseId="4"/>
   <partner PartnerId="498" FullName="Rebuilt Hope for Africa" Name="R.H.A"/>
+<partnerInDatabase partnerId="498" databaseId="4"/>
   <partner PartnerId="521" Name="Femme Plus Tembo"/>
+<partnerInDatabase partnerId="521" databaseId="4"/>
   <partner PartnerId="522" Name="CCPN"/>
+<partnerInDatabase partnerId="522" databaseId="4"/>
   <partner PartnerId="523" Name="AJID"/>
+<partnerInDatabase partnerId="523" databaseId="4"/>
   <partner PartnerId="630" FullName="International Emergency and Developpement Aid" Name="IEDA"/>
+<partnerInDatabase partnerId="630" databaseId="4"/>
   <partner PartnerId="634" FullName="Caritas Province Eccl&#233;siastique de Mbandaka" Name="Caritas PEM"/>
+<partnerInDatabase partnerId="634" databaseId="4"/>
   <activity ActivityId="33" AllowEdit="true" Name="Distribution NFI" ReportingFrequency="0" SortOrder="1" DatabaseId="4" LocationTypeId="1" published="1"/>
   <indicator IndicatorId="118" Aggregation="0" Category="NFI - B&#233;n&#233;ficiaires (m&#233;nages)" ListHeader="NFI" name="Nombre de m&#233;nages ayant re&#231;u une assistance en NFI" SortOrder="0" Units="m&#233;nages" ActivityId="33" mandatory="false"/>
   <indicator IndicatorId="119" Aggregation="0" Category="NFI - B&#233;n&#233;ficiaires (m&#233;nages)" name="dont d&#233;plac&#233;s" SortOrder="1" Units="m&#233;nages" ActivityId="33" mandatory="false"/>
