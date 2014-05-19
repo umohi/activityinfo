@@ -244,9 +244,7 @@ public class GetSchemaHandler implements
                         loadAttributes();
                         joinAttributesToActivities();
                         loadLockedPeriods();
-                        loadLinkIndicators();
                     }
-
                 }
             });
         }
@@ -341,52 +339,6 @@ public class GetSchemaHandler implements
                                             + lockedPeriod.getId());
                                 }
                             }
-                        }
-                    });
-        }
-
-        protected void loadLinkIndicators() {
-            SqlQuery.select("l.SourceIndicatorId", "l.DestinationIndicatorId")
-                    .appendColumn("i.Name", "name")
-                    .from(Tables.INDICATOR_LINK, "l")
-                    .leftJoin(Tables.INDICATOR, "i")
-                    .on("l.DestinationIndicatorId = i.indicatorId")
-
-                    .execute(tx, new SqlResultCallback() {
-                        @Override
-                        public void onSuccess(SqlTransaction tx,
-                                              SqlResultSet results) {
-
-                            HashMap<Integer, IndicatorLinksDTO> linksMap = new HashMap<Integer, IndicatorLinksDTO>();
-
-                            for (SqlResultSetRow row : results.getRows()) {
-                                IndicatorLinksDTO destinations = linksMap.get(row
-                                        .getInt("SourceIndicatorId"));
-                                if (destinations == null
-                                        || destinations.getDestinationIndicators() == null) {
-                                    destinations = new IndicatorLinksDTO();
-                                }
-                                destinations.setSourceIndicator(row
-                                        .getInt("SourceIndicatorId"));
-                                if (destinations.getDestinationIndicators() == null) {
-                                    destinations
-                                            .setDestinationIndicator(new HashMap<Integer, String>());
-                                }
-                                destinations.getDestinationIndicators().put(
-                                        row.getInt("DestinationIndicatorId"),
-                                        row.getString("name"));
-                                linksMap.put(row.getInt("SourceIndicatorId"),
-                                        destinations);
-                            }
-
-                            for (ActivityDTO activity : activities.values()) {
-                                for (IndicatorDTO indicator : activity
-                                        .getIndicators()) {
-                                    indicator.setIndicatorLinks(linksMap
-                                            .get(indicator.getId()));
-                                }
-                            }
-
                         }
                     });
         }
