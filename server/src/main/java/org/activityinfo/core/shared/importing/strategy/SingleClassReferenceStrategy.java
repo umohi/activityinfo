@@ -10,7 +10,7 @@ import java.util.Map;
  * Strategy for importing reference fields whose ranges include a single class. In this
  * case, we also know the class of the value that will be imported, but we still need to
  * deal with transient references that might include more complex reference fields, such
- * as point-in-hierarchies.
+ * as point-in-hierarcuhies.
  *
  * <p>In the example below, both the Partner and Localite fields would be accepted by this
  * strategy, but we consider each unique field as a single target site, even if it is

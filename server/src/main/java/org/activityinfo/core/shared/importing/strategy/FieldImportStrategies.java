@@ -18,6 +18,7 @@ public class FieldImportStrategies {
         strategies.add(new SingleClassReferenceStrategy());
         strategies.add(new DataFieldImportStrategy(converterFactory));
         strategies.add(new GeographicPointImportStrategy());
+        strategies.add(new HierarchyReferenceStrategy());
     }
 
     public FieldImportStrategy forField(FormTree.Node fieldNode) {

@@ -2,11 +2,15 @@ package org.activityinfo.ui.client.importer;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import org.activityinfo.core.server.type.converter.JvmConverterFactory;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.*;
+import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.server.database.OnDataSet;
+import org.activityinfo.ui.client.component.importDialog.Importer;
 import org.activityinfo.ui.client.component.importDialog.data.PastedTable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,9 +37,9 @@ public class ImportWithMultiClassRangeTest extends AbstractImporterTest {
         Hierarchy hierarchy = new Hierarchy(formTree.getNodeByPath(new FieldPath(CuidAdapter.locationField(33))));
         HierarchyPrettyPrinter.prettyPrint(hierarchy);
 
-
+        importModel = new ImportModel(formTree);
+        importer = new Importer(resourceLocator, formTree, FieldImportStrategies.get(JvmConverterFactory.get()));
 //        ColumnChoicePresenter choicePresenter = new ColumnChoicePresenter(
-//                importModel = new ImportModel(formTree));
 //
 //        for (FieldModel fieldModel : choicePresenter.getOptions()) {
 //            System.out.println(fieldModel.getLabel());
