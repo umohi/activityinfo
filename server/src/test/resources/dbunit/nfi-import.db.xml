@@ -8772,6 +8772,7 @@
   <adminentity AdminEntityId="213382" Name="Binza" AdminEntityParentId="141801" AdminLevelId="7"/>
   <adminentity AdminEntityId="213383" Name="Masereka" AdminEntityParentId="141801" AdminLevelId="7"/>
   <locationtype locationtypeid="1" Name="Localit&#233;" Reuse="false" CountryId="1" workflowId="open"/>
+  <locationtype locationtypeid="2" Name="School" Reuse="false" CountryId="1" workflowId="open"/>
   <location LocationID="1133" Axe="Sake" Name="BAMBU" X="29.21814" Y="-1.115042" LocationTypeID="1" timeEdited="1276121933348" workflowStatusId="validated"/>
   <location LocationID="1134" Name="mungote" X="29.067078" Y="-1.2550876" LocationTypeID="1" timeEdited="1276121934396" workflowStatusId="validated"/>
   <location LocationID="1135" Name="kahe" X="29.086304" Y="-1.2509687" LocationTypeID="1" timeEdited="1276121935032" workflowStatusId="validated"/>
