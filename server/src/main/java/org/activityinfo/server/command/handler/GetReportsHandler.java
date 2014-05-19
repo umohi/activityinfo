@@ -70,7 +70,7 @@ public class GetReportsHandler implements
                         .where("d.ownerUserId").equalTo(context.getUser().getUserId())
                         .or("p.AllowView").equalTo(1);
 
-        SqlQuery.select()
+        SqlQuery query = SqlQuery.select()
                 .appendColumn("r.reportTemplateId", "reportId")
                 .appendColumn("r.title", "title")
                 .appendColumn("r.ownerUserId", "ownerUserId")
@@ -86,50 +86,58 @@ public class GetReportsHandler implements
                         "defaultDashboard")
                 .from(Tables.REPORT_TEMPLATE, "r")
                 .leftJoin(Tables.USER_LOGIN, "o").on("o.userid=r.ownerUserId")
-                .leftJoin(mySubscriptions, "s").on("r.reportTemplateId=s.reportId")
-                .whereTrue("r.title is not null")
-                .where("r.ownerUserId").equalTo(context.getUser().getId())
-                .or("r.reportTemplateId").in(
-                SqlQuery.select("reportId")
-                        .from(Tables.REPORT_VISIBILITY, "v")
-                        .where("v.databaseid").in(myDatabases))
-                .execute(context.getTransaction(), new SqlResultCallback() {
+                .leftJoin(mySubscriptions, "s").on("r.reportTemplateId=s.reportId");
 
-                    @Override
-                    public void onSuccess(final SqlTransaction tx,
-                                          final SqlResultSet results) {
-                        List<ReportMetadataDTO> dtos = Lists.newArrayList();
+        // build where clause manually to ensure proper grouping of and/or
+        int ownerUserId = context.getUser().getId();
+        SqlQuery sharedReports = SqlQuery.select("reportId")
+                .from(Tables.REPORT_VISIBILITY, "v")
+                .where("v.databaseid").in(myDatabases);
 
-                        for (SqlResultSetRow row : results.getRows()) {
-                            ReportMetadataDTO dto = new ReportMetadataDTO();
-                            dto.setId(row.getInt("reportId"));
-                            dto.setAmOwner(row.getInt("ownerUserId") == context
-                                    .getUser().getId());
-                            dto.setOwnerName(row.getString("ownerName"));
-                            dto.setTitle(row.getString("title"));
-                            dto.setEditAllowed(dto.getAmOwner());
-                            if (!row.isNull("emaildelivery")) {
-                                dto.setEmailDelivery(EmailDelivery.valueOf(row
-                                        .getString("emaildelivery")));
-                            }
-                            if (row.isNull("emailday")) {
-                                dto.setDay(1);
-                            } else {
-                                dto.setDay(row.getInt("emailday"));
-                            }
-                            if (row.isNull("dashboard")) {
-                                // inherited from database-wide visibility
-                                dto.setDashboard(!row.isNull("defaultDashboard")
-                                        && row.getBoolean("defaultDashboard"));
-                            } else {
-                                dto.setDashboard(row.getBoolean("dashboard"));
-                            }
-                            dtos.add(dto);
-                        }
+        query.whereTrue("r.title is not null AND (r.ownerUserId=" + ownerUserId +
+                " OR r.reportTemplateId in (" + sharedReports.sql() + "))");
 
-                        callback.onSuccess(new ReportsResult(dtos));
+        for(Object param : sharedReports.parameters()) {
+            query.appendParameter(param);
+        }
+
+        query.execute(context.getTransaction(), new SqlResultCallback() {
+
+            @Override
+            public void onSuccess(final SqlTransaction tx,
+                                  final SqlResultSet results) {
+                List<ReportMetadataDTO> dtos = Lists.newArrayList();
+
+                for (SqlResultSetRow row : results.getRows()) {
+                    ReportMetadataDTO dto = new ReportMetadataDTO();
+                    dto.setId(row.getInt("reportId"));
+                    dto.setAmOwner(row.getInt("ownerUserId") == context
+                            .getUser().getId());
+                    dto.setOwnerName(row.getString("ownerName"));
+                    dto.setTitle(row.getString("title"));
+                    dto.setEditAllowed(dto.getAmOwner());
+                    if (!row.isNull("emaildelivery")) {
+                        dto.setEmailDelivery(EmailDelivery.valueOf(row
+                                .getString("emaildelivery")));
                     }
-                });
+                    if (row.isNull("emailday")) {
+                        dto.setDay(1);
+                    } else {
+                        dto.setDay(row.getInt("emailday"));
+                    }
+                    if (row.isNull("dashboard")) {
+                        // inherited from database-wide visibility
+                        dto.setDashboard(!row.isNull("defaultDashboard")
+                                && row.getBoolean("defaultDashboard"));
+                    } else {
+                        dto.setDashboard(row.getBoolean("dashboard"));
+                    }
+                    dtos.add(dto);
+                }
+
+                callback.onSuccess(new ReportsResult(dtos));
+            }
+        });
 
     }
 }
