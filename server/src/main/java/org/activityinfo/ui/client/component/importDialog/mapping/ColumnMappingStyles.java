@@ -38,4 +38,11 @@ public interface ColumnMappingStyles extends Stylesheet {
 
     @ClassName("incomplete")
     String incomplete();
+
+    @ClassName("type-matched")
+    String typeMatched();
+
+    @ClassName("type-not-matched")
+    String typeNotMatched();
+
 }

@@ -10,7 +10,6 @@ import org.activityinfo.core.shared.importing.source.SourceTable;
 import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
 import org.activityinfo.core.shared.importing.strategy.TargetSiteId;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,7 +22,7 @@ public class ImportModel {
     private FormTree formTree;
 
 
-    private Map<SourceColumn, ColumnAction> columnActions = Maps.newHashMap();
+    private final Map<SourceColumn, ColumnAction> columnActions = Maps.newHashMap();
 
 
     public ImportModel(FormTree formTree) {
@@ -32,7 +31,7 @@ public class ImportModel {
 
     public void setSource(SourceTable source) {
         this.source = source;
-        this.columnActions = new HashMap<>();
+        this.columnActions.clear();
     }
 
     public SourceTable getSource() {
@@ -80,7 +79,7 @@ public class ImportModel {
         for (Map.Entry<SourceColumn, ColumnAction> entry : columnActions.entrySet()) {
             if (entry.getValue() instanceof MapExistingAction) {
                 MapExistingAction action = (MapExistingAction) entry.getValue();
-                if (action.getTarget().getFieldId().equals(fieldId)) {
+                if (action.getTarget().getFormField().getId().equals(fieldId)) {
                     existingActions.put(entry.getKey(), action);
                 }
             }

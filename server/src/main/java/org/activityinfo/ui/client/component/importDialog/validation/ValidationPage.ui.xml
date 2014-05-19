@@ -6,10 +6,16 @@
   <ui:with field="i18n" type="org.activityinfo.i18n.shared.UiConstants"/>
 
   <g:HeaderPanel>
-
     <g:HTMLPanel>
-      <p><ui:text from='{i18n.correctProblems}'/></p>
-      <p ui:field="loadingElement"><ui:text from='{i18n.matchingReferences}'/></p>
+      <h3>
+        <ui:text from='{i18n.rowsValidationResult}'/>
+      </h3>
+      <p>
+        <ui:text from='{i18n.correctProblems}'/>
+      </p>
+      <p ui:field="loadingElement">
+        <ui:text from='{i18n.matchingReferences}'/>
+      </p>
       <p ui:field="loadingErrorElement">
         <ui:text from='{i18n.errorMatchingReferences}'/>
         <g:InlineHyperlink ui:field="retryLink">
@@ -17,19 +23,6 @@
         </g:InlineHyperlink>
       </p>
     </g:HTMLPanel>
-
-    <g:HTMLPanel>
-      <!-- class validation -->
-      <g:HTMLPanel>
-        <h3><ui:text from='{i18n.mappingValidationResult}'/></h3>
-      </g:HTMLPanel>
-      <validation:ValidationMappingGrid ui:field="mappingGrid" width="100%" height="350px"/>
-
-      <!-- row validation -->
-      <g:HTMLPanel>
-        <h3><ui:text from='{i18n.rowsValidationResult}'/></h3>
-      </g:HTMLPanel>
-      <validation:ValidationGrid ui:field="dataGrid" width="100%" height="350px"/>
-    </g:HTMLPanel>
+    <validation:ValidationGrid ui:field="dataGrid" width="100%" height="100%"/>
   </g:HeaderPanel>
 </ui:UiBinder>

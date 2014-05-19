@@ -1,9 +1,11 @@
 package org.activityinfo.ui.client.component.importDialog.data;
 
 import com.google.common.collect.Lists;
+import org.activityinfo.core.shared.importing.match.ColumnTypeGuesser;
 import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.source.SourceTable;
+import org.activityinfo.core.shared.type.converter.ConverterFactory;
 
 import java.util.List;
 
@@ -51,6 +53,23 @@ public class PastedTable implements SourceTable {
             column.setHeader(headerRow.getColumnValue(i));
             columns.add(column);
         }
+    }
+
+    public void guessColumnsType(ConverterFactory converterFactory) {
+        ensureParsed();
+        for (int i = 0; i < columns.size(); i++) {
+            columns.get(i).setGuessedType(new ColumnTypeGuesser(columnRowValues(i), converterFactory).guessType());
+        }
+    }
+
+    private List<String> columnRowValues(int columnIndex) {
+        List<String> rowValues = Lists.newArrayList();
+
+        // start from 1 because 0 is header row
+        for (int i = 1; i < rows.size(); i++) {
+            rowValues.add(rows.get(i).getColumnValue(columnIndex));
+        }
+        return rowValues;
     }
 
     @Override

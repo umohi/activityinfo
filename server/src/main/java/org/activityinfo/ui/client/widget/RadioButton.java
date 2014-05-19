@@ -1,5 +1,6 @@
 package org.activityinfo.ui.client.widget;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiConstructor;
 
 /**
@@ -14,6 +15,11 @@ public class RadioButton extends com.google.gwt.user.client.ui.RadioButton {
     }
 
     public RadioButton(String name, String label) {
+        super(name, label);
+        setStyleName("radio");
+    }
+
+    public RadioButton(String name, SafeHtml label) {
         super(name, label);
         setStyleName("radio");
     }

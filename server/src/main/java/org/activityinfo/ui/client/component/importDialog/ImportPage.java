@@ -23,6 +23,8 @@ public interface ImportPage extends IsWidget {
 
     void start();
 
+    void fireStateChanged();
+
     void nextStep();
 
     void previousStep();

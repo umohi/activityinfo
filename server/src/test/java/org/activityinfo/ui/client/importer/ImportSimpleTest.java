@@ -9,8 +9,10 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.FormTree;
 import org.activityinfo.core.shared.form.tree.FormTreePrettyPrinter;
 import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.model.MapExistingAction;
+import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
-import org.activityinfo.core.shared.importing.validation.ValidatedResult;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
@@ -22,6 +24,7 @@ import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.ui.client.component.importDialog.Importer;
 import org.activityinfo.ui.client.component.importDialog.data.PastedTable;
+import org.activityinfo.core.shared.importing.match.ColumnMappingGuesser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -30,7 +33,7 @@ import java.io.IOException;
 import static com.google.common.io.Resources.getResource;
 import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 //@SuppressWarnings("GwtClientClassFromNonInheritedModule")
 @RunWith(InjectionSupport.class)
@@ -77,7 +80,7 @@ public class ImportSimpleTest extends AbstractImporterTest {
 
 
         // Step 3: Validate for user
-        ValidatedResult validatedResult = assertResolves(importer.validate(importModel));
+        ValidatedRowTable validatedResult = assertResolves(importer.validateRows(importModel));
         showValidationGrid(validatedResult);
 
         assertResolves(importer.persist(importModel));
@@ -119,5 +122,38 @@ public class ImportSimpleTest extends AbstractImporterTest {
         assertThat(result.getState(), equalTo(Promise.State.REJECTED));
     }
 
+    @Test
+    public void columnMappingGuesser() throws IOException {
+        FormTree formTree = assertResolves(formTreeBuilder.apply(HOUSEHOLD_SURVEY_FORM_CLASS));
+        FormTreePrettyPrinter.print(formTree);
+
+        importModel = new ImportModel(formTree);
+
+        // Step 1: User pastes in data to import
+        PastedTable source = new PastedTable(
+                Resources.toString(getResource("org/activityinfo/core/shared/importing/qis.csv"), Charsets.UTF_8));
+
+        importModel.setSource(source);
+        importer = new Importer(resourceLocator, formTree, FieldImportStrategies.get(JvmConverterFactory.get()));
+
+        dumpList("COLUMNS", source.getColumns());
+        dumpList("FIELDS", importer.getImportTargets());
+
+        // Step 2: Guesser guess mapping
+        final ColumnMappingGuesser guesser = new ColumnMappingGuesser(importModel, importer.getImportTargets());
+        guesser.guess();
+
+        assertMapping("Partner", "Partner Name");
+        assertMapping("district", "District Name");
+        //assertMapping("upazila", "Upzilla Name");
+    }
+
+    private void assertMapping(String sourceColumnLabel, String targetColumnLabel) {
+        final SourceColumn sourceColumn = importModel.getSourceColumn(columnIndex(sourceColumnLabel));
+        assertNotNull(sourceColumn);
+
+        final MapExistingAction columnAction = (MapExistingAction) importModel.getColumnAction(sourceColumn);
+        assertTrue(columnAction.getTarget().getLabel().equals(targetColumnLabel));
+    }
 
 }

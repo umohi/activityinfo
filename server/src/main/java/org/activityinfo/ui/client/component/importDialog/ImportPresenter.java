@@ -46,8 +46,8 @@ public class ImportPresenter {
 
         ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
 
-        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions());
-        ValidationPage validationPage = new ValidationPage(importModel, importer, dialogBox);
+        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions(), eventBus);
+        ValidationPage validationPage = new ValidationPage(importModel, importer);
 
         pages = Lists.<ImportPage>newArrayList(chooseSourcePage, matchingPage, validationPage).listIterator();
 
@@ -83,6 +83,19 @@ public class ImportPresenter {
         });
 
         dialogBox.getTitleWidget().setText(I18N.CONSTANTS.importDialogTitle());
+
+        eventBus.addHandler(PageChangedEvent.TYPE, new PageChangedEventHandler() {
+            @Override
+            public void onPageChanged(PageChangedEvent event) {
+                if (event.isValid()) {
+                    dialogBox.getStatusText().removeClassName("alert");
+                } else {
+                    dialogBox.getStatusText().addClassName("alert");
+                }
+                dialogBox.setStatusText(event.getStatusMessage());
+            }
+        });
+        setButtonsState();
     }
 
     private List<MapExistingAction> createMatchingColumnActions() {
@@ -143,32 +156,38 @@ public class ImportPresenter {
         currentPage = page;
         currentPage.start();
         dialogBox.setPage(currentPage);
-
-        boolean hasNext = currentPage.hasNextStep() || pages.hasNext();
-        boolean hasPrev = currentPage.hasPreviousStep() || pages.hasPrevious();
-
-        dialogBox.getNextButton().setVisible(hasNext);
-        dialogBox.getFinishButton().setVisible(!hasNext);
-        dialogBox.getFinishButton().setEnabled(currentPage.isValid());
-        dialogBox.getPreviousButton().setEnabled(hasPrev);
+        setButtonsState();
     }
 
     private void nextPage() {
-        if (currentPage.hasNextStep()) {
-            currentPage.nextStep();
-        } else if (pages.hasNext()) {
-            gotoPage(pages.next());
+        if (pages.hasNext()) {
+            if (currentPage.isValid()) {
+                ImportPage next = pages.next();
+                if (next.equals(currentPage)) {
+                    next = pages.next();
+                }
+                gotoPage(next);
+            } else {
+                currentPage.fireStateChanged();
+            }
         }
     }
 
     private void previousPage() {
-        if (currentPage.hasPreviousStep()) {
-            currentPage.previousStep();
-        } else if (pages.previousIndex() > 0) {
-            pages.previous();
-            gotoPage(pages.previous());
+        if (pages.hasPrevious()) {
+            ImportPage previous = pages.previous();
+            if (previous.equals(currentPage)) {
+                previous = pages.previous();
+            }
+            gotoPage(previous);
         }
         dialogBox.setStatusText(""); // clear status text
+    }
+
+    private void setButtonsState() {
+        dialogBox.getPreviousButton().setEnabled(pages.hasPrevious() && pages.previousIndex() > 0);
+        dialogBox.getNextButton().setEnabled(pages.hasNext());
+        dialogBox.getFinishButton().setVisible(!pages.hasNext() && currentPage.isValid());
     }
 
     public EventBus getEventBus() {

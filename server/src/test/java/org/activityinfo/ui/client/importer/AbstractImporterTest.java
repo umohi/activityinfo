@@ -155,8 +155,7 @@ public class AbstractImporterTest extends CommandTestCase2 {
         System.out.println();
     }
 
-    protected void showValidationGrid(ValidatedResult result) {
-        final ValidatedRowTable rowTable = result.getRowTable();
+    protected void showValidationGrid(ValidatedRowTable rowTable) {
         dumpHeaders(rowTable.getColumns());
         dumpRows(rowTable);
     }

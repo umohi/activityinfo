@@ -9,10 +9,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import org.activityinfo.core.shared.importing.model.ImportModel;
-import org.activityinfo.core.shared.importing.validation.ValidatedResult;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.client.PromiseMonitor;
-import org.activityinfo.ui.client.component.importDialog.ImportDialog;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
 import org.activityinfo.ui.client.component.importDialog.Importer;
 
@@ -31,26 +30,21 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
 
     private ImportModel model;
     private Importer importer;
-    private ImportDialog dialogBox;
 
     @UiField(provided = true)
     ValidationGrid dataGrid;
-    @UiField(provided = true)
-    ValidationMappingGrid mappingGrid;
 
     @UiField
     Element loadingElement;
     @UiField
     Element loadingErrorElement;
 
-    public ValidationPage(ImportModel model, Importer importer, ImportDialog dialogBox) {
+    public ValidationPage(ImportModel model, Importer importer) {
         this.model = model;
         this.importer = importer;
-        this.dialogBox = dialogBox;
 
         ValidationPageStyles.INSTANCE.ensureInjected();
 
-        mappingGrid = new ValidationMappingGrid();
         dataGrid = new ValidationGrid();
 
         initWidget(uiBinder.createAndBindUi(this));
@@ -58,17 +52,19 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
 
     @Override
     public void start() {
-        importer.validate(model)
+        importer.validateRows(model)
                 .withMonitor(this)
-                .then(new Function<ValidatedResult, Void>() {
+                .then(new Function<ValidatedRowTable, Void>() {
                     @Override
-                    public Void apply(ValidatedResult input) {
-                        dataGrid.refresh(input.getRowTable());
-                        mappingGrid.refresh(input.getClassValidation());
-                        dialogBox.getFinishButton().setEnabled(input.getClassValidation().isEmpty());
+                    public Void apply(ValidatedRowTable input) {
+                        dataGrid.refresh(input);
                         return null;
                     }
                 });
+    }
+
+    @Override
+    public void fireStateChanged() {
     }
 
 
@@ -82,7 +78,7 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
 
     @Override
     public boolean isValid() {
-        return false;
+        return true;
     }
 
     @Override

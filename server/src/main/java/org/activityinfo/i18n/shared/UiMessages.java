@@ -335,4 +335,7 @@ public interface UiMessages extends com.google.gwt.i18n.client.Messages {
 
     @DefaultMessage("Field is mandatory but not mapped: {0}")
     String fieldIsMandatory(String fieldLabel);
+
+    @DefaultMessage("Please map all mandatory columns, missed mapping for {0}")
+    String pleaseMapAllMandatoryColumns(String columnLabels);
 }
