@@ -31,6 +31,8 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionModel;
 
 /**
  * @author yuriyz on 4/7/14.
@@ -41,7 +43,6 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
 
         void onScroll(ScrollEvent event);
     }
-
 
     public static class ScrollEvent extends GwtEvent<ScrollHandler> {
 
@@ -89,6 +90,16 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
                         @Override
                         public void execute() {
                             affixer = new CellTableAffixer(CellTable.this);
+                            final SelectionModel<? super T> selectionModel = CellTable.this.getSelectionModel();
+                            if (selectionModel != null) {
+                                selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+                                    @Override
+                                    public void onSelectionChange(SelectionChangeEvent event) {
+                                        // AI-535 : Affixed table headers don't work in IE10
+                                        affixer.forceAffix();
+                                    }
+                                });
+                            }
                         }
                     });
                     addScrollHandlers();
@@ -131,6 +142,17 @@ public class CellTable<T> extends com.google.gwt.user.cellview.client.CellTable<
 
     public ScrollPanel getScrollAncestor() {
         return getScrollAncestor(this);
+    }
+
+    public void saveColumnWidthInformation() {
+        if (affixer != null) {
+            Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                @Override
+                public void execute() {
+                    affixer.getWidthApplier().saveHeaderWidthInformation();
+                }
+            });
+        }
     }
 
     public static ScrollPanel getScrollAncestor(Widget widget) {

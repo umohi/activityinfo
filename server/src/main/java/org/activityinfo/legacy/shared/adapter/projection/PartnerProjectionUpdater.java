@@ -47,6 +47,9 @@ public class PartnerProjectionUpdater implements ProjectionUpdater<PartnerDTO> {
             case CuidAdapter.NAME_FIELD:
                 projection.setValue(path, dto.getName());
                 break;
+            case CuidAdapter.FULL_NAME_FIELD:
+                projection.setValue(path, dto.getFullName());
+                break;
         }
     }
 }

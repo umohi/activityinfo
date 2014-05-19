@@ -95,8 +95,8 @@ public class InMemResourceLocator implements ResourceLocator {
         return matching;
     }
 
-    public Promise<InstanceQueryResult> queryProjection(InstanceQuery query) {
-        return query(query).then(new InstanceQueryResultAdapter());
+    public Promise<QueryResult<Projection>> queryProjection(InstanceQuery query) {
+        return query(query).then(new InstanceQueryResultAdapter(query));
     }
 
     @Override

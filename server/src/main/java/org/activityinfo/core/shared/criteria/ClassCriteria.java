@@ -33,9 +33,6 @@ public class ClassCriteria implements Criteria {
         visitor.visitClassCriteria(this);
     }
 
-    public Cuid getClassId() {
-        return classId;
-    }
 
     @Override
     public boolean apply(FormInstance input) {
@@ -57,5 +54,9 @@ public class ClassCriteria implements Criteria {
             }
             return new CriteriaUnion(criteriaList);
         }
+    }
+
+    public Cuid getClassId() {
+        return classId;
     }
 }

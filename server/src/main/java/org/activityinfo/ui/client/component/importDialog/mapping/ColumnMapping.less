@@ -36,15 +36,27 @@
       font-style: italic;
       color: @input-color-placeholder;
 
-      &.state-ignored { color: @state-danger-text; }
-      &.state-unset { font-style: italic; color: @input-color-placeholder; }
-      &.state-bound { background-color: @state-success-bg; }
-      &.selected { background-color: white; }
+      &.state-ignored {
+        font-style: normal;
+        color: @state-danger-text;
+      }
+      &.state-unset {
+        font-style: italic;
+        color: @input-color-placeholder;
+      }
+      &.state-bound {
+        font-style: normal;
+        color: @state-success-text;
+      }
+      &.selected {
+        background-color: white;
+      }
     }
   }
 
   // Body Columns
   col {
+    &.state-ignored { background-color: @state-danger-bg; }
     &.state-bound { background-color: @state-success-bg; }
     &.selected { background-color: @table-bg-active; }
   }
@@ -60,7 +72,8 @@
   // to match table
   margin-left: 1.5em;
 
-  font-size: @datagrid-font-size;
+  // need correct reference to this variable
+  //font-size: @datagrid-font-size;
 
   .radio.state-ignored {
     margin-bottom: 1.5em;

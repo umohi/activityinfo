@@ -1,10 +1,15 @@
 package org.activityinfo.ui.client.component.importDialog.data;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
+import com.google.common.io.Resources;
+import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
+import static com.google.common.io.Resources.getResource;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -53,4 +58,13 @@ public class RowParserTest {
 
     }
 
+    @Test
+    public void qisCsvColumns() throws IOException {
+        PastedTable source = new PastedTable(
+                Resources.toString(getResource("org/activityinfo/core/shared/importing/qis.csv"), Charsets.UTF_8));
+
+        final List<SourceColumn> columns = source.getColumns();
+        System.out.println(Joiner.on('\n').join(columns));
+        assertThat(columns.size(), equalTo(47));
+    }
 }

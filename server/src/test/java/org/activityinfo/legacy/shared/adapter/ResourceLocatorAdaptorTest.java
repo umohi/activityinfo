@@ -1,9 +1,11 @@
 package org.activityinfo.legacy.shared.adapter;
 
 
+import com.bedatadriven.rebar.time.calendar.LocalDate;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.client.InstanceQuery;
+import org.activityinfo.core.client.PromiseMatchers;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.application.ApplicationProperties;
@@ -13,6 +15,7 @@ import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.model.AiLatLng;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.fp.client.Promise;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.command.GetLocations;
 import org.activityinfo.legacy.shared.command.result.LocationResult;
 import org.activityinfo.legacy.shared.model.LocationDTO;
@@ -24,6 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +38,7 @@ import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.getAdminFieldId;
 import static org.activityinfo.legacy.shared.adapter.LocationClassAdapter.getNameFieldId;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
@@ -98,6 +103,21 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
         Set<Cuid> adminUnits = instance.getReferences(field(classId, ADMIN_FIELD));
         System.out.println(adminUnits);
 
+    }
+
+    @Test
+    public void persistSiteException() {
+
+        FormInstance instance = new FormInstance(CuidAdapter.cuid(SITE_DOMAIN, new KeyGenerator().generateInt()),
+                NFI_DIST_FORM_CLASS);
+
+        Promise<Void> result;
+
+        result = resourceLocator.persist(instance);
+        assertThat(result.getState(), equalTo(Promise.State.REJECTED));
+
+        result = resourceLocator.persist(Arrays.asList(instance, instance));
+        assertThat(result.getState(), equalTo(Promise.State.REJECTED));
     }
 
     @Test
@@ -222,17 +242,22 @@ public class ResourceLocatorAdaptorTest extends CommandTestCase2 {
         FieldPath provinceName = new FieldPath(getAdminFieldId(VILLAGE_CLASS), field(PROVINCE_CLASS, CuidAdapter.NAME_FIELD));
         FieldPath partnerName = new FieldPath(partnerField(NFI_DIST_ID), field(partnerClassId, NAME_FIELD));
         FieldPath indicator1 = new FieldPath(indicatorField(1));
+        FieldPath startDate = new FieldPath(field(NFI_DIST_FORM_CLASS, CuidAdapter.START_DATE_FIELD));
+        FieldPath endDate = new FieldPath(field(NFI_DIST_FORM_CLASS, CuidAdapter.END_DATE_FIELD));
 
 
         List<Projection> projections = assertResolves(adapter.query(
                 new InstanceQuery(
-                        asList(partnerName, villageName, provinceName, indicator1),
+                        asList(partnerName, villageName, provinceName, indicator1, endDate),
                         new ClassCriteria(NFI_DIST_FORM_CLASS))));
 
         System.out.println(Joiner.on("\n").join(projections));
 
+        final Projection firstProjection = projections.get(0);
         assertThat(projections.size(), equalTo(3));
-        assertThat(projections.get(0).getStringValue(provinceName), equalTo("Sud Kivu"));
+        assertThat(firstProjection.getStringValue(provinceName), equalTo("Sud Kivu"));
+        assertEquals(firstProjection.getValue(startDate), null);
+        assertEquals(firstProjection.getValue(endDate), new LocalDate(2009, 1, 2));
     }
 
     @Test

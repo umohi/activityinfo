@@ -332,4 +332,7 @@ public interface UiMessages extends com.google.gwt.i18n.client.Messages {
 
     @DefaultMessage("<b>Showing {0} of {1} columns.</b> You can choose visible columns with ''{2}'' button")
     SafeHtml  notAllColumnsAreShown(int visibleColumns, int allColumns, String chooseColumnButtonName);
+
+    @DefaultMessage("Field is mandatory but not mapped: {0}")
+    String fieldIsMandatory(String fieldLabel);
 }

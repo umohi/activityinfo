@@ -24,7 +24,7 @@ public class JavaTextQuantityFormatterFactory implements QuantityFormatterFactor
                 try {
                     return format.parse(valueAsString).doubleValue();
                 } catch (ParseException e) {
-                    e.printStackTrace(); // todo log exception
+                 //  e.printStackTrace(); // todo log exception
                     return null;
                 }
             }

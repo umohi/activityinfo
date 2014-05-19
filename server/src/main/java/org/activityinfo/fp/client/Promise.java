@@ -233,16 +233,24 @@ public final class Promise<T> implements AsyncCallback<T> {
     }
 
     /**
-     * Transforms a function {@code T → R} to a function which operates on the equivalent
-     * Promised values: {@code Promise<T> → Promise<R> }
+     * Applies an asynchronous function to each of the elements in {@code items},
+     * @param items
+     * @param function
+     * @param <T>
+     * @return
      */
-    public static <T, R> Function<Promise<T>, Promise<R>> fmap(final Function<T, R> function) {
-        return new Function<Promise<T>, Promise<R>>() {
-            @Override
-            public Promise<R> apply(Promise<T> input) {
-                return input.then(function);
-            }
-        };
+    public static <T> Promise<Void> forEach(Iterable<T> items, final Function<? super T, Promise<Void>> function) {
+        Promise<Void> promise = Promise.resolved(null);
+        for(final T item : items) {
+            promise = promise.join(new Function<Void, Promise<Void>>() {
+                @Nullable
+                @Override
+                public Promise<Void> apply(@Nullable Void input) {
+                    return function.apply(item);
+                }
+            });
+        }
+        return promise;
     }
 
     /**
@@ -313,6 +321,7 @@ public final class Promise<T> implements AsyncCallback<T> {
 
         List<Promise<List<R>>> promisedItems = Lists.newArrayList();
         for(T item : items) {
+
             promisedItems.add(function.apply(item).then(Functions2.<R>singletonList()));
         }
 
@@ -354,6 +363,20 @@ public final class Promise<T> implements AsyncCallback<T> {
             promises.get(i).then(callback);
         }
         return result;
+    }
+
+    public static <T, R> Promise<List<R>> map(Promise<List<T>> promisedItems, final Function<T, R> function) {
+        return promisedItems.then(new Function<List<T>, List<R>>() {
+            @Nullable
+            @Override
+            public List<R> apply(List<T> items) {
+                List<R> results = Lists.newArrayList();
+                for(T item : items) {
+                    results.add(function.apply(item));
+                }
+                return results;
+            }
+        });
     }
 
 

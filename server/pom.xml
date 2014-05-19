@@ -495,7 +495,7 @@
             <configuration>
               <extraJvmArgs>-Xmx4048M -Xss1024k</extraJvmArgs>
               <logLevel>INFO</logLevel>
-              <compileReport>true</compileReport>
+              <compileReport>false</compileReport>
               <modules>
                 <module>org.activityinfo.ui.ActivityInfoCI</module>
                 <module>org.activityinfo.ui.Embed</module>
@@ -520,36 +520,53 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-
-            <configuration>
-              <failOnError>false</failOnError>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
   <profiles>
+
+    <!-- This Continuous Integration (CI) profile is used when building
+         from Jenkins and includes the build number in the version displayed
+         to the user -->
     <profile>
-      <!-- This Continuous Integration (CI) profile is used when building 
-           from Jenkins and includes the build number in the version displayed
-           to the user -->
       <id>ci</id>
       <properties>
         <display.version>Build ${BUILD_NUMBER}</display.version>
         <gae.application>ai-staging</gae.application>
         <gae.application.version>ci</gae.application.version>
       </properties>
+    </profile>
+
+
+    <!-- Run a more time-intensive check periodically to
+         monitor code quality -->
+    <profile>
+      <id>quality</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <failOnError>false</failOnError>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>gwt-maven-plugin</artifactId>
+            <configuration>
+              <compileReport>true</compileReport>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
     <profile>
@@ -575,50 +592,6 @@
       </build>
     </profile>
 
-    <!-- Development profile for fast UI development when you don't need backend -->
-    <profile>
-      <id>dev-no-backend</id>
-      <activation>
-        <property>
-          <name>env</name>
-          <value>test</value>
-        </property>
-      </activation>
-      <build>
-        <!--<resources>-->
-          <!--<resource>-->
-            <!--<directory>${basedir}/src/dev/java</directory>-->
-          <!--</resource>-->
-        <!--</resources>-->
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>generate-sources</phase>
-                <goals>
-                  <goal>add-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>src/test/dev/java</source>
-                  </sources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-              <warSourceDirectory>src/test/dev/webapp</warSourceDirectory>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <profile>
       <id>bracinfo</id>
       <properties>
@@ -627,6 +600,7 @@
         <gae.application.version>1</gae.application.version>
         <display.version>build ${BUILD_NUMBER}</display.version>
         <gae.version>1.8.0</gae.version>
+        <display.version>Build ${BUILD_NUMBER}</display.version>
       </properties>
 
       <build>

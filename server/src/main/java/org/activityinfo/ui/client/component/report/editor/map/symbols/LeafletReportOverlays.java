@@ -13,6 +13,8 @@ import org.activityinfo.legacy.shared.reports.model.MapReportElement;
 import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import org.activityinfo.ui.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.Options;
+import org.discotools.gwt.leaflet.client.events.Event;
+import org.discotools.gwt.leaflet.client.events.handler.EventHandler;
 import org.discotools.gwt.leaflet.client.layers.ILayer;
 import org.discotools.gwt.leaflet.client.layers.others.GeoJSON;
 import org.discotools.gwt.leaflet.client.layers.others.GeoJSONOptions;
@@ -69,10 +71,10 @@ public class LeafletReportOverlays {
         }
     }
 
-    public Extents addMarkers(List<MapMarker> markers) {
+    public Extents addMarkers(List<MapMarker> markers, EventHandler<Event> markerEventHandler) {
         Extents extents = Extents.emptyExtents();
         for (MapMarker marker : markers) {
-            markerLayer.addLayer(LeafletMarkerFactory.create(marker));
+            markerLayer.addLayer(LeafletMarkerFactory.create(marker, markerEventHandler));
             extents.grow(marker.getLat(), marker.getLng());
         }
         return extents;
@@ -84,7 +86,7 @@ public class LeafletReportOverlays {
 
     public void syncWith(MapReportElement element) {
         clear();
-        addMarkers(element.getContent().getMarkers());
+        addMarkers(element.getContent().getMarkers(), null);
         setBaseMap(element.getContent().getBaseMap());
         for (AdminOverlay overlay : element.getContent().getAdminOverlays()) {
             addAdminLayer(overlay);

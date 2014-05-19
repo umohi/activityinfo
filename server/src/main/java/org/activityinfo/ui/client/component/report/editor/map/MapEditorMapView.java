@@ -27,6 +27,7 @@ import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Status;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -41,6 +42,7 @@ import org.activityinfo.legacy.shared.reports.content.AdminOverlay;
 import org.activityinfo.legacy.shared.reports.content.MapContent;
 import org.activityinfo.legacy.shared.reports.model.MapReportElement;
 import org.activityinfo.ui.client.EventBus;
+import org.activityinfo.ui.client.component.report.editor.map.symbols.LeafletMarkerDrilldownEventHandler;
 import org.activityinfo.ui.client.component.report.editor.map.symbols.LeafletReportOverlays;
 import org.activityinfo.ui.client.page.report.HasReportElement;
 import org.activityinfo.ui.client.page.report.ReportChangeHandler;
@@ -73,6 +75,7 @@ public class MapEditorMapView extends ContentPanel implements
     private BaseMap currentBaseMap = null;
 
     private final Status statusWidget;
+    private final LeafletMarkerDrilldownEventHandler markerDrilldownEventHandler;
 
     private MapReportElement model = new MapReportElement();
     private LeafletReportOverlays overlays;
@@ -98,6 +101,17 @@ public class MapEditorMapView extends ContentPanel implements
             @Override
             public void onChanged() {
                 loadContent();
+            }
+        });
+
+        this.markerDrilldownEventHandler = new LeafletMarkerDrilldownEventHandler(dispatcher);
+
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                int bottomX = getAbsoluteLeft() + getOffsetWidth();
+                int bottomY = getAbsoluteTop() + getOffsetHeight();
+                markerDrilldownEventHandler.setPosition(bottomX, bottomY);
             }
         });
 
@@ -197,11 +211,11 @@ public class MapEditorMapView extends ContentPanel implements
         }
         overlays.clear();
         overlays.setBaseMap(result.getBaseMap());
-        overlays.addMarkers(result.getMarkers());
+        overlays.addMarkers(result.getMarkers(), markerDrilldownEventHandler);
+
         for (AdminOverlay overlay : result.getAdminOverlays()) {
             overlays.addAdminLayer(overlay);
         }
-
 
         if (!zoomSet) {
             if (model.getZoomLevel() != -1 && model.getCenter() != null) {

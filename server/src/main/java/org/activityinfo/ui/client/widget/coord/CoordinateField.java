@@ -23,7 +23,7 @@ package org.activityinfo.ui.client.widget.coord;
  */
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import org.activityinfo.core.shared.model.CoordinateAxis;
+import org.activityinfo.core.shared.type.converter.CoordinateAxis;
 import org.activityinfo.i18n.shared.I18N;
 
 /**

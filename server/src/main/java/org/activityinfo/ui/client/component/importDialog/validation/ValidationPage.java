@@ -8,12 +8,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.validation.ValidatedResult;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.fp.client.PromiseMonitor;
+import org.activityinfo.ui.client.component.importDialog.ImportDialog;
 import org.activityinfo.ui.client.component.importDialog.ImportPage;
 import org.activityinfo.ui.client.component.importDialog.Importer;
-
-import javax.annotation.Nullable;
 
 /**
  * Presents the result of the matching to the user and provides
@@ -24,40 +25,47 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
 
     private static ValidationPageUiBinder uiBinder = GWT
             .create(ValidationPageUiBinder.class);
-    private Importer importer;
-
 
     interface ValidationPageUiBinder extends UiBinder<Widget, ValidationPage> {
     }
 
+    private ImportModel model;
+    private Importer importer;
+    private ImportDialog dialogBox;
+
     @UiField(provided = true)
     ValidationGrid dataGrid;
+    @UiField(provided = true)
+    ValidationMappingGrid mappingGrid;
 
     @UiField
     Element loadingElement;
-
     @UiField
     Element loadingErrorElement;
 
-    public ValidationPage(Importer importer) {
+    public ValidationPage(ImportModel model, Importer importer, ImportDialog dialogBox) {
+        this.model = model;
         this.importer = importer;
+        this.dialogBox = dialogBox;
 
-        dataGrid = new ValidationGrid(importer);
+        ValidationPageStyles.INSTANCE.ensureInjected();
+
+        mappingGrid = new ValidationMappingGrid();
+        dataGrid = new ValidationGrid();
 
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-
     @Override
     public void start() {
-        importer.updateBindings();
-        importer.matchReferences()
+        importer.validate(model)
                 .withMonitor(this)
-                .then(new Function<Void, Void>() {
-                    @Nullable
+                .then(new Function<ValidatedResult, Void>() {
                     @Override
-                    public Void apply(@Nullable Void input) {
-                        dataGrid.refreshRows();
+                    public Void apply(ValidatedResult input) {
+                        dataGrid.refresh(input.getRowTable());
+                        mappingGrid.refresh(input.getClassValidation());
+                        dialogBox.getFinishButton().setEnabled(input.getClassValidation().isEmpty());
                         return null;
                     }
                 });

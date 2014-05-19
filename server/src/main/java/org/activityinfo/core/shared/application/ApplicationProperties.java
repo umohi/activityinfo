@@ -34,4 +34,5 @@ public class ApplicationProperties {
 
     public static final Cuid COUNTRY_NAME_FIELD = new Cuid("_country_name");
 
+    public static final Cuid GEOREF_PROPERTY = new Cuid("_georef");
 }

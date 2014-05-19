@@ -21,6 +21,12 @@
 
     <table:InstanceTable ui:field="table"/>
 
-    <g:Button ui:field="loadMoreButton" styleName="btn btn-default center-block" enabled="false" text="{i18n.loadMore}"/>
+    <g:Button ui:field="loadMoreButton" styleName="btn btn-default center-block" enabled="false"
+              text="{i18n.loadMore}"/>
+    <g:HTML ui:field="loadFailureMessageContainer">
+      <div class="text-warning">
+        <ui:text from='{i18n.failedToLoadEntries}'/>
+      </div>
+    </g:HTML>
   </g:HTMLPanel>
 </ui:UiBinder>

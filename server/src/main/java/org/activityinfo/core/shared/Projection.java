@@ -81,4 +81,7 @@ public class Projection {
         return "[" + Joiner.on(", ").withKeyValueSeparator("=").join(values) + "]";
     }
 
+    public Map<FieldPath, Object> getValueMap() {
+        return values;
+    }
 }

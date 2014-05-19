@@ -34,6 +34,7 @@
   <adminLevel countryId="1" adminLevelId="3" name="Upzilla" ParentId="2" deleted="0"/>
 
   <locationType locationTypeId="1" countryId="1" name="Upzilla" boundAdminLevelId="3" reuse="1"/>
+  <locationType locationTypeId="2" countryId="1" name="Village" reuse="0"/>
 
   <adminEntity adminLevelId="2" adminEntityId="1" name="Bogra"/>
   <adminEntity adminLevelId="2" adminEntityId="10" name="Rajbari"/>
@@ -96,5 +97,18 @@
              sortOrder="2"
              mandatory="0"/>
 
+  <activity activityId="2" name="Training" databaseId="1" locationTypeId="2" reportingFrequency="0"
+            allowEdit="1"
+            sortOrder="2"/>
+
+
+  <indicator indicatorId="3"
+             name="NumberTrained"
+             description="Number of people trained"
+             activityId="2"
+             aggregation="0"
+             units="individuals"
+             sortOrder="1"
+             mandatory="0"/>
 
 </dataset>

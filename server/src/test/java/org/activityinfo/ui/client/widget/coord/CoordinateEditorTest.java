@@ -23,7 +23,9 @@ package org.activityinfo.ui.client.widget.coord;
  */
 
 import com.teklabs.gwt.i18n.server.LocaleProxy;
-import org.activityinfo.core.shared.model.CoordinateAxis;
+import org.activityinfo.core.shared.type.converter.CoordinateAxis;
+import org.activityinfo.core.shared.type.converter.CoordinateFormatException;
+import org.activityinfo.core.shared.type.converter.CoordinateParser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +35,7 @@ import java.util.Locale;
 
 public class CoordinateEditorTest {
     private static final double DELTA = 0.00001;
-    private CoordinateEditor editor;
+    private CoordinateParser editor;
 
     @Before
     public void before() {
@@ -51,7 +53,7 @@ public class CoordinateEditorTest {
     }
 
     private void createLatitudeEditor() {
-        editor = new CoordinateEditor(CoordinateAxis.LATITUDE, new JreNumberFormats());
+        editor = new CoordinateParser(CoordinateAxis.LATITUDE, new JreNumberFormats());
     }
 
     @Test(expected = CoordinateFormatException.class)
@@ -76,7 +78,7 @@ public class CoordinateEditorTest {
     }
 
     private void createLongitudeEditor() {
-        editor = new CoordinateEditor(CoordinateAxis.LONGITUDE, new JreNumberFormats());
+        editor = new CoordinateParser(CoordinateAxis.LONGITUDE, new JreNumberFormats());
     }
 
     @Test
@@ -104,7 +106,7 @@ public class CoordinateEditorTest {
 
         createLatitudeEditor();
 
-        editor.setNotation(CoordinateEditor.Notation.DDd);
+        editor.setNotation(CoordinateParser.Notation.DDd);
         Assert.assertEquals("+2.405000", editor.format(2.405));
     }
 
@@ -116,7 +118,7 @@ public class CoordinateEditorTest {
                 "0° 56' 21.44\" S");
     }
 
-    public class JreNumberFormats implements CoordinateEditor.NumberFormats {
+    public class JreNumberFormats implements CoordinateParser.NumberFormatter {
 
         @Override
         public double parseDouble(String s) {
@@ -138,7 +140,7 @@ public class CoordinateEditorTest {
         }
 
         @Override
-        public String formatShortFrac(double value) {
+        public String formatShortFraction(double value) {
             NumberFormat fmt = NumberFormat.getInstance();
             fmt.setMinimumFractionDigits(2);
             fmt.setMaximumFractionDigits(2);

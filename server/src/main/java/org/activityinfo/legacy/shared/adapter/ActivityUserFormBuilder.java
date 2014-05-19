@@ -51,11 +51,18 @@ public class ActivityUserFormBuilder {
         projectField.setCardinality(FormFieldCardinality.SINGLE);
         siteForm.addElement(projectField);
 
-        FormField dateField = new FormField(CuidAdapter.field(classId, CuidAdapter.DATE_FIELD));
-        dateField.setLabel(new LocalizedString(I18N.CONSTANTS.endDate()));
-        dateField.setType(FormFieldType.LOCAL_DATE);
-        dateField.setRequired(true);
-        siteForm.addElement(dateField);
+        FormField endDateField = new FormField(CuidAdapter.field(classId, CuidAdapter.END_DATE_FIELD));
+        endDateField.setLabel(new LocalizedString(I18N.CONSTANTS.endDate()));
+        endDateField.setType(FormFieldType.LOCAL_DATE);
+        endDateField.setRequired(true);
+        siteForm.addElement(endDateField);
+
+        FormField startDateField = new FormField(CuidAdapter.field(classId, CuidAdapter.START_DATE_FIELD));
+        startDateField.setLabel(new LocalizedString(I18N.CONSTANTS.startDate()));
+        startDateField.setType(FormFieldType.LOCAL_DATE);
+        startDateField.setRequired(true);
+        siteForm.addElement(startDateField);
+
 
         FormField locationField = new FormField(CuidAdapter.locationField(activity.getId()));
         locationField.setLabel(new LocalizedString(activity.getLocationType().getName()));

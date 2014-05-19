@@ -1,20 +1,17 @@
 package org.activityinfo.core.shared.importing.model;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.form.FormClass;
-import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
-import org.activityinfo.core.shared.form.tree.FormTree.SearchOrder;
-import org.activityinfo.core.shared.importing.SourceColumn;
-import org.activityinfo.core.shared.importing.SourceTable;
+import org.activityinfo.core.shared.importing.source.SourceColumn;
+import org.activityinfo.core.shared.importing.source.SourceColumnAccessor;
+import org.activityinfo.core.shared.importing.source.SourceTable;
+import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
+import org.activityinfo.core.shared.importing.strategy.TargetSiteId;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A model which defines the mapping from an {@code SourceTable}
@@ -26,11 +23,7 @@ public class ImportModel {
     private FormTree formTree;
 
 
-    /**
-     * Defines the binding of property path
-     */
-    private Map<Integer, ColumnTarget> columnBindings = Maps.newHashMap();
-    private Map<FieldPath, Object> providedValues = Maps.newHashMap();
+    private Map<SourceColumn, ColumnAction> columnActions = Maps.newHashMap();
 
 
     public ImportModel(FormTree formTree) {
@@ -39,110 +32,67 @@ public class ImportModel {
 
     public void setSource(SourceTable source) {
         this.source = source;
-
-        // clear calculations based on this source
-        this.columnBindings = Maps.newHashMap();
+        this.columnActions = new HashMap<>();
     }
 
     public SourceTable getSource() {
         return source;
     }
 
-
-    public FormClass getRootFormClasses() {
-        throw new UnsupportedOperationException();
-    }
-
-    public Set<ColumnTarget> getMappedFieldPaths() {
-        return Sets.newHashSet(columnBindings.values());
-    }
-
-    public Map<Integer, ColumnTarget> getColumnBindings() {
-        return columnBindings;
-    }
-
-    public void setColumnBinding(ColumnTarget action, Integer columnIndex) {
-
-        Iterator<Map.Entry<Integer, ColumnTarget>> it = columnBindings.entrySet().iterator();
-        while (it.hasNext()) {
-            if (it.next().getValue().equals(action)) {
-                it.remove();
+    public SourceColumn setColumnBinding(ColumnAction action, SourceColumn sourceColumn) {
+        SourceColumn removedColumn = null;
+        for (Map.Entry<SourceColumn, ColumnAction> entry : Sets.newHashSet(columnActions.entrySet())) {
+            final ColumnAction value = entry.getValue();
+            if (value != null && value.equals(action) && value != IgnoreAction.INSTANCE) {
+                removedColumn = entry.getKey();
+                columnActions.remove(removedColumn);
             }
         }
-        columnBindings.put(columnIndex, action);
+        columnActions.put(sourceColumn, action);
+        return removedColumn;
     }
-
-    /**
-     *
-     * @return all Fields that have been mapped to a column to import
-     */
-    public Set<FieldPath> getMappedFields() {
-        Set<FieldPath> paths = Sets.newHashSet();
-
-        for(ColumnTarget action : columnBindings.values()) {
-            if(action.isMapped()) {
-                paths.add(action.getFieldPath());
-            }
-        }
-        return paths;
-    }
-
-    public Set<Cuid> getMappedRootFields() {
-        Set<Cuid> mappedRootFields = Sets.newHashSet();
-        for(FieldPath mappedPath : getMappedFields()) {
-            mappedRootFields.add(mappedPath.getRoot());
-        }
-        return mappedRootFields;
-    }
-
-    /**
-     *
-     * @return all reference Fields that have been mapped to a column to import
-     */
-    public Set<FieldPath> getMappedReferenceFields() {
-        Set<FieldPath> referenceFields = Sets.newHashSet();
-        for(FieldPath path : getMappedFields()) {
-            if(path.isNested()) {
-                referenceFields.add(new FieldPath(path.getRoot()));
-            }
-        }
-        return referenceFields;
-    }
-
-    private String composeLabel(FormTree.Node node) {
-        if(node.getPath().isNested()) {
-            return node.getParent().getField().getLabel().getValue() + " " + node.getField().getLabel().getValue();
-        } else {
-            return node.getField().getLabel().getValue();
-        }
-    }
-
-
-    public List<FieldPath> getFieldsToMatch() {
-        return formTree.search(SearchOrder.BREADTH_FIRST,
-                // descend if...
-                FormTree.pathNotIn(providedValues.keySet()),
-                // match if...
-                Predicates.and(
-                        FormTree.isDataTypeProperty(),
-                        FormTree.pathNotIn(providedValues.keySet())));
-    }
-
 
 
     public FormTree getFormTree() {
         return formTree;
     }
 
-    public ColumnTarget getColumnBinding(int columnIndex) {
-        return columnBindings.get(columnIndex);
-    }
-
     public SourceColumn getSourceColumn(int columnIndex) {
         return source.getColumns().get(columnIndex);
     }
 
-    public ColumnTarget getColumnBinding(SourceColumn column) {
-        return getColumnBinding(column.getIndex());
+    public Map<SourceColumn, ColumnAction> getColumnActions() {
+        return columnActions;
+    }
+
+    public Map<TargetSiteId, ColumnAccessor> getMappedColumns(Cuid fieldId) {
+        Map<TargetSiteId, ColumnAccessor> mappings = Maps.newHashMap();
+        for (Map.Entry<SourceColumn, MapExistingAction> entry : getMapExistingActions(fieldId).entrySet()) {
+            TargetSiteId site = entry.getValue().getTarget().getSite();
+            ColumnAccessor column = new SourceColumnAccessor(entry.getKey());
+            mappings.put(site, column);
+        }
+        return mappings;
+    }
+
+    public Map<SourceColumn, MapExistingAction> getMapExistingActions(Cuid fieldId) {
+        Map<SourceColumn, MapExistingAction> existingActions = Maps.newHashMap();
+        for (Map.Entry<SourceColumn, ColumnAction> entry : columnActions.entrySet()) {
+            if (entry.getValue() instanceof MapExistingAction) {
+                MapExistingAction action = (MapExistingAction) entry.getValue();
+                if (action.getTarget().getFieldId().equals(fieldId)) {
+                    existingActions.put(entry.getKey(), action);
+                }
+            }
+        }
+        return existingActions;
+    }
+
+    public void setColumnAction(int columnIndex, ColumnAction target) {
+        columnActions.put(source.getColumns().get(columnIndex), target);
+    }
+
+    public ColumnAction getColumnAction(SourceColumn column) {
+        return columnActions.get(column);
     }
 }

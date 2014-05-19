@@ -64,6 +64,9 @@ public class CuidAdapter {
     public static final int DATE_FIELD = 9;
     public static final int FULL_NAME_FIELD = 10;
     public static final int LOCATION_FIELD = 11;
+    public static final int START_DATE_FIELD = 12;
+    public static final int END_DATE_FIELD = 13;
+    public static final int COMMENT_FIELD = 14;
 
     public static final int BLOCK_SIZE = 6;
 
@@ -74,20 +77,12 @@ public class CuidAdapter {
     }
 
     // todo yuriyz -> alex : please check it
-    public static Cuid newSectionField() {
-        return CuidAdapter.cuid('x', new KeyGenerator().generateInt());
-    }
-
-    // todo yuriyz -> alex : please check it
-    public static Cuid newFormField() {
-        return CuidAdapter.cuid('x', new KeyGenerator().generateInt());
-    }
-
-    // todo yuriyz -> alex : please check it
     public static Cuid newFormInstance(Cuid formClassId) {
         if (formClassId != null) {
             final int newId = new KeyGenerator().generateInt();
             switch (formClassId.getDomain()) {
+                case ACTIVITY_DOMAIN:
+                    return cuid(SITE_DOMAIN, newId);
                 case LOCATION_TYPE_DOMAIN:
                     return locationInstanceId(newId);
                 case ATTRIBUTE_GROUP_DOMAIN:
@@ -201,7 +196,8 @@ public class CuidAdapter {
      * @return the {@code FormClass} Cuid for a given Activity
      */
     public static Cuid commentsField(int activityId) {
-        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
+//        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
+        return field(activityFormClass(activityId), COMMENT_FIELD);
     }
 
     /**
@@ -298,5 +294,4 @@ public class CuidAdapter {
     public static Cuid generateLocationCuid() {
         return locationInstanceId(new KeyGenerator().generateInt());
     }
-
 }

@@ -1,7 +1,8 @@
 package org.activityinfo.ui.client.component.importDialog.data;
 
 
-import org.activityinfo.core.shared.importing.SourceRow;
+import com.google.common.base.Strings;
+import org.activityinfo.core.shared.importing.source.SourceRow;
 
 import java.util.List;
 
@@ -39,7 +40,15 @@ public class PastedRow implements SourceRow {
         }
     }
 
+    @Override
+    public boolean isColumnValueMissing(int columnIndex) {
+        return Strings.isNullOrEmpty(getColumnValue(columnIndex));
+    }
+
     private String parseQuotedValue(int start, int end) {
+        if(source.charAt(end-1) == '\r' || source.charAt(end-1) == '\n') {
+            end--;
+        }
         if(source.charAt(end-1) == RowParser.QUOTE_CHAR) {
             end--;
         }

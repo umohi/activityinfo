@@ -3488,4 +3488,40 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Load more")
     String loadMore();
+
+    @DefaultStringValue("Failed to load entries")
+    String failedToLoadEntries();
+
+    @DefaultStringValue("Retry loading")
+    String retryLoading();
+
+    @DefaultStringValue("Import")
+    String importText();
+
+    @DefaultStringValue("Importing...")
+    String importing();
+
+    @DefaultStringValue("Import failed")
+    String importFailed();
+
+    @DefaultStringValue("Import data from a spreadsheet")
+    String importDialogTitle();
+
+    @DefaultStringValue("Mapping validation result")
+    String mappingValidationResult();
+
+    @DefaultStringValue("Rows validation result")
+    String rowsValidationResult();
+
+    @DefaultStringValue("There was an error matching references.")
+    String errorMatchingReferences();
+
+    @DefaultStringValue("Correct any problems with the imported rows and fill in missing columns")
+    String correctProblems();
+
+    @DefaultStringValue("Matching references...")
+    String matchingReferences();
+
+    @DefaultStringValue("Message")
+    String message();
 }

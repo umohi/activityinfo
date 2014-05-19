@@ -187,7 +187,7 @@ public class ChooseColumnsDialog {
         };
         labelColumn.setSortable(false);
 
-        final DataGrid<FieldColumn> table = new DataGrid<>(10, DataGridResources.INSTANCE);
+        final DataGrid<FieldColumn> table = new DataGrid<>(1000, DataGridResources.INSTANCE);
         table.setHeight("300px"); // need to avoid height hardcode
         table.setEmptyTableWidget(new Label());
         table.setAutoHeaderRefreshDisabled(true);

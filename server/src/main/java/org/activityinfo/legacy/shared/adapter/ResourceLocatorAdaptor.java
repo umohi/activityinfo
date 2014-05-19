@@ -1,8 +1,9 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Functions;
+import com.google.common.collect.Lists;
 import org.activityinfo.core.client.InstanceQuery;
-import org.activityinfo.core.client.InstanceQueryResult;
+import org.activityinfo.core.client.QueryResult;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.Projection;
@@ -49,22 +50,11 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         if (resource instanceof FormInstance) {
             FormInstance instance = (FormInstance) resource;
             if (instance.getId().getDomain() == CuidAdapter.SITE_DOMAIN) {
-                int activityId = CuidAdapter.getLegacyIdFromCuid(instance.getClassId());
-
-                Promise<SiteBinding> siteBinding = dispatcher
-                        .execute(new GetSchema())
-                        .then(new SiteBindingFactory(activityId));
-
-                return Promise.fmap(new SitePersistFunction(dispatcher))
-                        .apply(siteBinding, Promise.resolved(instance))
-                        .then(Functions.<Void>constant(null));
+                return new SitePersister(dispatcher).persist(instance);
 
             } else if (instance.getId().getDomain() == CuidAdapter.LOCATION_DOMAIN) {
                 return new LocationPersister(dispatcher, instance).persist();
             }
-        } else if (resource instanceof FormClass) {
-            FormClass formClass = (FormClass) resource;
-            // todo
         }
         return Promise.rejected(new UnsupportedOperationException());
     }
@@ -72,15 +62,13 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
     // todo there should be better way to persist list of resources
     @Override
     public Promise<Void> persist(List<? extends Resource> resources) {
+        final List<Promise<Void>> promises = Lists.newArrayList();
         if (resources != null && !resources.isEmpty()) {
-            for (Resource resource : resources) {
-                final Promise<Void> intermediatePromise = persist(resource);
-                if (intermediatePromise.getState() != Promise.State.FULFILLED) {
-                    return intermediatePromise;
-                }
+            for (final Resource resource : resources) {
+                promises.add(persist(resource));
             }
         }
-        return Promise.resolved(null);
+        return Promise.waitAll(promises);
     }
 
     @Override
@@ -98,8 +86,8 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
         return new Joiner(dispatcher, query.getFieldPaths(), query.getCriteria()).apply(query);
     }
 
-    public Promise<InstanceQueryResult> queryProjection(InstanceQuery query) {
-        return query(query).then(new InstanceQueryResultAdapter());
+    public Promise<QueryResult<Projection>> queryProjection(InstanceQuery query) {
+        return query(query).then(new InstanceQueryResultAdapter(query));
     }
 
 

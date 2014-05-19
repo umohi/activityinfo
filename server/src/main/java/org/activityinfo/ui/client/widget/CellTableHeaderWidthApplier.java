@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class CellTableHeaderWidthApplier {
 
-    private final TableSectionElement tableHeadElement;
+    private final CellTable table;
 
     // width information
     private final Map<Integer, Integer> headerRowToWidthMap = Maps.newHashMap();
@@ -42,7 +42,7 @@ public class CellTableHeaderWidthApplier {
     private int headerWidth;
 
     public CellTableHeaderWidthApplier(final CellTable table) {
-        this.tableHeadElement = table.getTableHeadElement();
+        this.table = table;
     }
 
     public void restoreHeaderWidthInformation() {
@@ -57,12 +57,12 @@ public class CellTableHeaderWidthApplier {
 
         // header
         if (shouldAffix) {
-            tableHeadElement.getStyle().setWidth(headerWidth, Style.Unit.PX);
+            table.getTableHeadElement().getStyle().setWidth(headerWidth, Style.Unit.PX);
         } else {
-            tableHeadElement.getStyle().clearWidth();
+            table.getTableHeadElement().getStyle().clearWidth();
         }
 
-        final NodeList<TableRowElement> headerRows = tableHeadElement.getRows();
+        final NodeList<TableRowElement> headerRows = table.getTableHeadElement().getRows();
         for (int i = 0; i < headerRows.getLength(); i++) {
             final TableRowElement row = headerRows.getItem(i);
 
@@ -88,8 +88,8 @@ public class CellTableHeaderWidthApplier {
     }
 
     public void saveHeaderWidthInformation() {
-        headerWidth = tableHeadElement.getOffsetWidth();
-        final NodeList<TableRowElement> headerRows = tableHeadElement.getRows();
+        headerWidth = table.getTableHeadElement().getOffsetWidth();
+        final NodeList<TableRowElement> headerRows = table.getTableHeadElement().getRows();
         for (int i = 0; i < headerRows.getLength(); i++) {
             final TableRowElement row = headerRows.getItem(i);
             headerRowToWidthMap.put(i, row.getOffsetWidth());

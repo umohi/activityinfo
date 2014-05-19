@@ -4,6 +4,7 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.Command;
@@ -11,9 +12,10 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import org.activityinfo.core.shared.importing.SourceColumn;
-import org.activityinfo.core.shared.importing.SourceRow;
-import org.activityinfo.core.shared.importing.model.ColumnTarget;
+import org.activityinfo.core.shared.importing.model.ColumnAction;
+import org.activityinfo.core.shared.importing.model.IgnoreAction;
+import org.activityinfo.core.shared.importing.source.SourceColumn;
+import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.ui.client.style.table.DataGridResources;
 
@@ -38,7 +40,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
 
     private int lastSelectedColumn = -1;
 
-    public ColumnMappingGrid(ImportModel model, FieldChoicePresenter options,
+    public ColumnMappingGrid(ImportModel model,
                              SingleSelectionModel<SourceColumn> columnSelectionModel) {
 
 
@@ -50,7 +52,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
         this.model = model;
         this.columnSelectionModel = columnSelectionModel;
 
-        headerCell = new GridHeaderCell(model, options);
+        headerCell = new GridHeaderCell(model);
 
         this.addStyleName(ColumnMappingStyles.INSTANCE.grid());
         this.setWidth("100%");
@@ -108,16 +110,20 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
      */
     public void refreshColumnStyles(int columnIndex) {
         // update the column styles
-        ColumnTarget binding = model.getColumnBinding(columnIndex);
+        final SourceColumn sourceColumn = model.getSourceColumn(columnIndex);
+        ColumnAction binding = model.getColumnAction(sourceColumn);
 
-        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateIgnored(), binding != null && !binding.isImported());
-        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateBound(), binding != null && binding.isImported());
+        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateIgnored(), binding != null &&
+                binding == IgnoreAction.INSTANCE);
+        toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateBound(), binding != null &&
+                binding != IgnoreAction.INSTANCE);
+
         toggleColumnStyle(columnIndex, ColumnMappingStyles.INSTANCE.stateUnset(), binding == null);
 
         // update the mapping description
         Cell.Context context = new Cell.Context(MAPPING_HEADER_ROW, columnIndex, null);
         SafeHtmlBuilder html = new SafeHtmlBuilder();
-        headerCell.render(context, model.getSourceColumn(columnIndex), html);
+        headerCell.render(context, sourceColumn, html);
 
         getTableHead(MAPPING_HEADER_ROW, columnIndex).setInnerSafeHtml(html.toSafeHtml());
     }
@@ -138,7 +144,8 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
     }
 
     private Element getTableHead(int rowIndex, int columnIndex) {
-        return getTableHeadElement().getRows().getItem(rowIndex).getChild(columnIndex).cast();
+        final TableRowElement row = getTableHeadElement().getRows().getItem(rowIndex);
+        return row.getCells().getItem(columnIndex);
     }
 
     private void toggleColumnStyle(int index, String className, boolean enabled) {

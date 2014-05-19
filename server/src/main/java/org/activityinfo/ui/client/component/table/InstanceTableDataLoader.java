@@ -28,7 +28,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import org.activityinfo.core.client.InstanceQuery;
-import org.activityinfo.core.client.InstanceQueryResult;
+import org.activityinfo.core.client.QueryResult;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.fp.client.Promise;
@@ -44,11 +44,12 @@ import java.util.logging.Logger;
  */
 public class InstanceTableDataLoader {
 
+    private static final int PAGE_SIZE = 100;
+
     public static interface DataLoadHandler extends EventHandler {
 
         void onLoad(DataLoadEvent event);
     }
-
 
     public static class DataLoadEvent extends GwtEvent<DataLoadHandler> {
 
@@ -56,11 +57,11 @@ public class InstanceTableDataLoader {
 
         private final int totalCount;
         private final int loadedDataCount;
-
+        private boolean failed = false;
 
         public DataLoadEvent(int totalCount, int loadedDataCount) {
             this.totalCount = totalCount;
-            this.loadedDataCount= loadedDataCount;
+            this.loadedDataCount = loadedDataCount;
         }
 
         public int getTotalCount() {
@@ -69,6 +70,14 @@ public class InstanceTableDataLoader {
 
         public int getLoadedDataCount() {
             return loadedDataCount;
+        }
+
+        public boolean isFailed() {
+            return failed;
+        }
+
+        public void setFailed(boolean failed) {
+            this.failed = failed;
         }
 
         @Override
@@ -126,13 +135,13 @@ public class InstanceTableDataLoader {
         final int offset = tableDataProvider.getList().size();
         // load data only if offset is less then total count (and totalCount is initialized)
         if (offset < instanceTotalCount && instanceTotalCount != -1) {
-            final int count = Math.min(InstanceTable.PAGE_SIZE, instanceTotalCount - offset);
+            final int count = Math.min(PAGE_SIZE, instanceTotalCount - offset);
             load(offset, count);
         }
     }
 
 
-    private Promise<InstanceQueryResult> query(int offset, int count) {
+    private Promise<QueryResult<Projection>> query(int offset, int count) {
         table.getLoadingIndicator().onLoadingStateChanged(LoadingState.LOADING, null);
         InstanceQuery query = new InstanceQuery(Lists.newArrayList(fields), table.buildQueryCriteria(), offset, count);
         return table.getResourceLocator().queryProjection(query);
@@ -147,25 +156,29 @@ public class InstanceTableDataLoader {
     private void load(int offset, int count) {
         LOGGER.log(Level.FINE, "Loading instances... offset = " +
                 offset + ", count = " + count + ", fields = " + fields);
-        query(offset, count).then(new AsyncCallback<InstanceQueryResult>() {
+        query(offset, count).then(new AsyncCallback<QueryResult<Projection>>() {
             @Override
             public void onFailure(Throwable caught) {
                 LOGGER.log(Level.SEVERE, "Failed to load instances. fields = " + fields, caught);
                 table.getLoadingIndicator().onLoadingStateChanged(LoadingState.FAILED, caught);
+
+                final DataLoadEvent dataLoadEvent = new DataLoadEvent(instanceTotalCount, tableDataProvider.getList().size());
+                dataLoadEvent.setFailed(true);
+                table.getTable().getEventBus().fireEvent(dataLoadEvent);
             }
 
             @Override
-            public void onSuccess(InstanceQueryResult result) {
+            public void onSuccess(QueryResult<Projection> result) {
                 tableDataProvider.getList().addAll(result.getProjections());
                 instanceTotalCount = result.getTotalCount();
-                table.getTable().fireEvent(new DataLoadEvent(instanceTotalCount, tableDataProvider.getList().size()));
+                table.getTable().getEventBus().fireEvent(new DataLoadEvent(instanceTotalCount, tableDataProvider.getList().size()));
             }
         });
     }
 
     public void reload() {
         tableDataProvider.getList().clear();
-        load(0, InstanceTable.PAGE_SIZE);
+        load(0, PAGE_SIZE);
     }
 
     public Set<FieldPath> getFields() {

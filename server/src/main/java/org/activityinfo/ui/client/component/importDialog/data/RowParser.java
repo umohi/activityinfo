@@ -45,8 +45,22 @@ public class RowParser {
             offsets.add(currentPos);
         }
         offsets.add(currentPos);
+
+        if (isEmptyRow(offsets)) { // skip if row is empty
+            return;
+        }
         PastedRow row = new PastedRow(text, offsets, rowIndex++);
         rows.add(row);
+    }
+
+    private boolean isEmptyRow(List<Integer> offsets) {
+        final int size = offsets.size();
+        if (size > 2) {
+            return false;
+        } else if (size == 2 && (offsets.get(0) + 1) == offsets.get(1)) {
+            return true;
+        }
+        return true;
     }
 
     private boolean advanceToNextColumn() {
@@ -89,7 +103,8 @@ public class RowParser {
                     return false;
                 }
                 char nextChar = text.charAt(currentPos++);
-                if(nextChar == '\n') {
+                if(nextChar == '\n' || nextChar == '\r') {
+                    //currentPos++;
                     return false;
                 } else if(nextChar == delimiter) {
                     return true;

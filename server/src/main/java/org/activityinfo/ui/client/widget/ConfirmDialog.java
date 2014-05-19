@@ -21,12 +21,9 @@ package org.activityinfo.ui.client.widget;
  * #L%
  */
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import org.activityinfo.fp.client.Promise;
@@ -101,19 +98,6 @@ public class ConfirmDialog  {
     public static enum State {
         CONFIRM, PROGRESS, FAILED
     }
-
-    public interface WarningTemplate extends SafeHtmlTemplates {
-        @SafeHtmlTemplates.Template("<p class='text-warning'>{0}</p>")
-        SafeHtml html(String message);
-    }
-
-    public interface OkButtonTemplate extends SafeHtmlTemplates {
-        @SafeHtmlTemplates.Template("<img src='ActivityInfo/gxt231/images/default/grid/loading.gif'/>{0}")
-        SafeHtml html(String progressState);
-    }
-
-    private static final WarningTemplate WARNING_TEMPLATE = GWT.create(WarningTemplate.class);
-    private static final OkButtonTemplate OK_BTN_TEMPLATE = GWT.create(OkButtonTemplate.class);
 
     private final ModalDialog dialog;
     private final HTML failedMessageContainer = new HTML();
@@ -198,7 +182,7 @@ public class ConfirmDialog  {
 
             case FAILED:
                 updateMessages(action.getFailureMessages());
-                failedMessageContainer.setHTML(WARNING_TEMPLATE.html(ExceptionOracle.getExplanation(caught)));
+                failedMessageContainer.setHTML(Templates.WARNING_MESSAGE_TEMPLATE.html(ExceptionOracle.getExplanation(caught)));
                 break;
 
             case PROGRESS:
@@ -212,7 +196,7 @@ public class ConfirmDialog  {
         messageContainer.setHTML(messages.getMessageText());
 
         if(state == State.PROGRESS) {
-            dialog.getOkButton().setHTML(OK_BTN_TEMPLATE.html(messages.getPrimaryButtonText()));
+            dialog.getOkButton().setHTML(Templates.OK_BTN_TEMPLATE.html(messages.getPrimaryButtonText()));
         } else {
             dialog.getOkButton().setText(messages.getPrimaryButtonText());
         }
