@@ -7,6 +7,7 @@ import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.form.tree.*;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.server.database.OnDataSet;
@@ -58,17 +59,14 @@ public class ImportWithMultiClassRangeTest extends AbstractImporterTest {
         importModel.setColumnAction(columnIndex("Province"), target("Province Name"));
         importModel.setColumnAction(columnIndex("District"), target("District Name"));
         importModel.setColumnAction(columnIndex("Territoire"), target("Territoire Name"));
-        importModel.setColumnAction(columnIndex("Territoire"), target("Territoire Name"));
         importModel.setColumnAction(columnIndex("Secteur"), target("Secteur Name"));
         importModel.setColumnAction(columnIndex("Groupement"), target("Groupement Name"));
         importModel.setColumnAction(columnIndex("Zone de Santé"), target("Zone de Santé Name"));
         importModel.setColumnAction(columnIndex("Nombre de ménages ayant reçu une assistance en NFI"), target("Nombre de ménages ayant reçu une assistance en NFI"));
 
+        ValidatedRowTable validatedResult = assertResolves(importer.validateRows(importModel));
+        showValidationGrid(validatedResult);
 
         matchReferences();
-        validateRows();
-//        showValidationGrid();
-
-
     }
 }
