@@ -292,6 +292,8 @@ public final class ActivityDTO
     /**
      * @return this Activity's category
      */
+    @JsonProperty
+    @JsonView(DTOViews.Schema.class)
     public String getCategory() {
         return get("category");
     }

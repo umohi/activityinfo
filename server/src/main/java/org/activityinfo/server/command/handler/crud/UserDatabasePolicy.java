@@ -91,6 +91,10 @@ public class UserDatabasePolicy implements EntityPolicy<UserDatabase> {
         if (properties.containsKey("fullName")) {
             database.setFullName((String) properties.get("fullName"));
         }
+
+        if (properties.containsKey("description")) {
+            database.setFullName((String) properties.get("description"));
+        }
     }
 
 }

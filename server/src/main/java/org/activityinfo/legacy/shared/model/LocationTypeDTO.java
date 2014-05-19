@@ -48,12 +48,13 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
         setName(name);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+
     public void setId(int id) {
         set("id", id);
     }
 
+    @JsonProperty
+    @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }

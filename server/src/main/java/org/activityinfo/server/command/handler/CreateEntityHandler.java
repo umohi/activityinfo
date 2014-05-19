@@ -79,6 +79,7 @@ public class CreateEntityHandler extends BaseEntityHandler implements
     private CommandResult createAttributeGroup(CreateEntity cmd,
                                                Map<String, Object> properties) {
         AttributeGroup group = new AttributeGroup();
+
         updateAttributeGroupProperties(group, properties);
 
         entityManager().persist(group);
@@ -88,6 +89,8 @@ public class CreateEntityHandler extends BaseEntityHandler implements
         activity.getAttributeGroups().add(group);
 
         activity.getDatabase().setLastSchemaUpdate(new Date());
+
+        group.setSortOrder(activity.getAttributeGroups().size()+1);
 
         return new CreateResult(group.getId());
     }
@@ -108,6 +111,8 @@ public class CreateEntityHandler extends BaseEntityHandler implements
 
         entityManager().persist(attribute);
         activity.getDatabase().setLastSchemaUpdate(new Date());
+
+        attribute.setSortOrder(ag.getAttributes().size());
 
         return new CreateResult(attribute.getId());
     }
