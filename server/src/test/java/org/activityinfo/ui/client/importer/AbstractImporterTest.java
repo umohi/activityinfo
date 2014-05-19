@@ -140,7 +140,7 @@ public class AbstractImporterTest extends CommandTestCase2 {
 
     protected int columnIndex(String header) {
         for(SourceColumn column : importModel.getSource().getColumns()) {
-            if(column.getHeader().equals(header)) {
+            if(column.getHeader().trim().equals(header)) {
                 return column.getIndex();
             }
         }

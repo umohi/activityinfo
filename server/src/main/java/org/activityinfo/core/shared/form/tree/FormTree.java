@@ -1,12 +1,9 @@
 package org.activityinfo.core.shared.form.tree;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.LocalizedString;
 import org.activityinfo.core.shared.criteria.Criteria;
@@ -17,7 +14,6 @@ import org.activityinfo.core.shared.form.FormFieldType;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Contains a tree of fields based on references to other {@code FormClasses}
@@ -34,6 +30,7 @@ public class FormTree {
         private FieldPath path;
         private FormClass formClass;
         private List<Node> children = Lists.newArrayList();
+        private int depth;
 
         public boolean isRoot() {
             return parent == null;
@@ -53,6 +50,9 @@ public class FormTree {
             childNode.formClass = declaringClass;
             children.add(childNode);
             nodeMap.put(childNode.path, childNode);
+            if (childNode.parent != null) {
+                childNode.depth = childNode.parent.depth + 1;
+            }
             return childNode;
         }
 
@@ -152,6 +152,10 @@ public class FormTree {
 
         public boolean isLeaf() {
             return children.isEmpty();
+        }
+
+        public int getDepth() {
+            return depth;
         }
     }
 

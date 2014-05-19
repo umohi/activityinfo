@@ -21,7 +21,8 @@ package org.activityinfo.core.shared.importing.strategy;
  * #L%
  */
 
-import org.activityinfo.core.shared.criteria.FormClassSet;
+import com.google.common.collect.Lists;
+import org.activityinfo.core.shared.form.tree.FieldPath;
 import org.activityinfo.core.shared.form.tree.FormTree;
 
 import java.util.List;
@@ -30,20 +31,24 @@ import java.util.Map;
 /**
  * @author yuriyz on 5/19/14.
  */
-public class HierarchyReferenceStrategy implements FieldImportStrategy {
+public class HierarchyClassTargetBuilder {
 
-    @Override
-    public boolean accept(FormTree.Node fieldNode) {
-        return fieldNode.isReference() && FormClassSet.of(fieldNode.getRange()).getElements().size() > 1;
+    private final FormTree.Node rootField;
+    private final TargetCollector targetCollector;
+
+    public HierarchyClassTargetBuilder(FormTree.Node referenceField) {
+        rootField = referenceField;
+        targetCollector= new TargetCollector(referenceField);
     }
 
-    @Override
-    public List<ImportTarget> getImportSites(FormTree.Node node) {
-        return new HierarchyClassTargetBuilder(node).getTargets();
+    public List<ImportTarget> getTargets() {
+        return targetCollector.getTargets();
     }
 
-    @Override
-    public HierarchyClassImporter createImporter(FormTree.Node node, Map<TargetSiteId, ColumnAccessor> mappings) {
-        return new HierarchyClassTargetBuilder(node).newImporter(mappings);
+    public HierarchyClassImporter newImporter(Map<TargetSiteId, ColumnAccessor> mappings) {
+        List<ColumnAccessor> sourceColumns = Lists.newArrayList();
+        Map<FieldPath, Integer> referenceValues = targetCollector.getPathMap(mappings, sourceColumns);
+        List<FieldImporterColumn> fieldImporterColumns = targetCollector.fieldImporterColumns(mappings);
+        return new HierarchyClassImporter(rootField, sourceColumns, referenceValues, fieldImporterColumns);
     }
 }

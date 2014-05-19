@@ -1,7 +1,11 @@
 package org.activityinfo.core.shared.importing.validation;
 
+import com.google.common.collect.Maps;
 import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.importing.strategy.SingleClassImporter;
+import org.activityinfo.core.shared.importing.strategy.InstanceScorer;
+
+import java.util.Map;
+import java.util.Set;
 
 public class ValidationResult {
 
@@ -14,6 +18,7 @@ public class ValidationResult {
     public static final ValidationResult OK = new ValidationResult(State.OK) {};
 
     private final State state;
+    private Map<Cuid,Set<Cuid>> rangeInstanceIds = Maps.newHashMap();
     private Cuid instanceId;
     private String typeConversionErrorMessage;
     private String convertedValue;
@@ -61,7 +66,7 @@ public class ValidationResult {
     }
 
     public boolean shouldPersist() {
-        return state == State.OK || (state == State.CONFIDENCE && confidence >= SingleClassImporter.MINIMUM_SCORE);
+        return state == State.OK || (state == State.CONFIDENCE && confidence >= InstanceScorer.MINIMUM_SCORE);
     }
 
     public Cuid getInstanceId() {
@@ -70,5 +75,9 @@ public class ValidationResult {
 
     public void setInstanceId(Cuid instanceId) {
         this.instanceId = instanceId;
+    }
+
+    public Map<Cuid, Set<Cuid>> getRangeInstanceIds() {
+        return rangeInstanceIds;
     }
 }
