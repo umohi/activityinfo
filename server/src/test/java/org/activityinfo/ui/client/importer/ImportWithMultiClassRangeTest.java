@@ -165,7 +165,7 @@ public class ImportWithMultiClassRangeTest extends AbstractImporterTest {
         importModel.setColumnAction(columnIndex("District"), target("District Name"));
         importModel.setColumnAction(columnIndex("Territoire"), target("Territoire Name"));
         importModel.setColumnAction(columnIndex("Secteur"), target("Secteur Name"));
-        importModel.setColumnAction(columnIndex("Groupement"), target("Secteur Name"));
+        importModel.setColumnAction(columnIndex("Groupement"), target("Groupement Name"));
 
         // health ministry hierarchy
         importModel.setColumnAction(columnIndex("Zone de Santé"), target("Zone de Santé Name"));
