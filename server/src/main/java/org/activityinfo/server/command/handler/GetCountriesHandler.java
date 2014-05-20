@@ -61,6 +61,7 @@ public class GetCountriesHandler implements CommandHandler<GetCountries> {
             CountryDTO dto = new CountryDTO();
             dto.setId(country.getId());
             dto.setName(country.getName());
+            dto.setCodeISO(country.getCodeISO());
             dtos.add(dto);
         }
         return dtos;
