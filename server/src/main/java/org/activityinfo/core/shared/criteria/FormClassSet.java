@@ -2,10 +2,7 @@ package org.activityinfo.core.shared.criteria;
 
 import com.google.common.collect.Sets;
 import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.form.FormClass;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -71,7 +68,7 @@ public class FormClassSet {
         return closed.iterator().next();
     }
 
-    public Collection<Cuid> getElements() {
+    public Set<Cuid> getElements() {
         assert isClosed();
         return closed;
     }

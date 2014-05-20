@@ -16,22 +16,15 @@ import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.strategy.FieldImportStrategies;
 import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.fixtures.InjectionSupport;
-import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.adapter.LocationClassAdapter;
 import org.activityinfo.legacy.shared.command.Filter;
-import org.activityinfo.legacy.shared.command.GetLocations;
-import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.command.GetSites;
-import org.activityinfo.legacy.shared.command.result.LocationResult;
 import org.activityinfo.legacy.shared.command.result.SiteResult;
-import org.activityinfo.legacy.shared.model.ActivityDTO;
-import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.server.database.OnDataSet;
 import org.activityinfo.ui.client.component.importDialog.Importer;
 import org.activityinfo.ui.client.component.importDialog.data.PastedTable;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,8 +35,6 @@ import java.util.Set;
 import static com.google.common.io.Resources.getResource;
 import static org.activityinfo.core.client.PromiseMatchers.assertResolves;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 @RunWith(InjectionSupport.class)
@@ -185,7 +176,7 @@ public class ImportWithMultiClassRangeTest extends AbstractImporterTest {
         assertResolves(importer.persist(importModel));
 
         instances = assertResolves(resourceLocator.queryInstances(new ClassCriteria(SCHOOL_FORM_CLASS)));
-        assertThat(instances.size(), equalTo(3));
+        assertThat(instances.size(), equalTo(8)); // we have 8 rows in school-import.csv
 
         assertThat(school("P"), equalTo(set(PROVINCE_KATANGA)));
         assertThat(school("D"), equalTo(set(DISTRICT_TANGANIKA)));
