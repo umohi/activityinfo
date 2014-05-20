@@ -28,6 +28,7 @@ import com.google.common.collect.Sets;
 import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Pair;
 import org.activityinfo.core.shared.Projection;
 import org.activityinfo.core.shared.criteria.ClassCriteria;
 import org.activityinfo.core.shared.criteria.FormClassSet;
@@ -39,7 +40,8 @@ import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author yuriyz on 5/19/14.
@@ -80,52 +82,44 @@ public class HierarchyClassImporter implements FieldImporter {
         return Promise.waitAll(promises);
     }
 
+    private FieldImporterColumn getImportedColumn(ColumnAccessor columnAccessor) {
+        for (FieldImporterColumn c : fieldImporterColumns) {
+            if (c.getAccessor().equals(columnAccessor)) {
+                return c;
+            }
+        }
+        return null; // bug?
+    }
 
     @Override
     public void validateInstance(SourceRow row, List<ValidationResult> results) {
-        ValidationResult[] tempResult = new ValidationResult[sourceColumns.size()];
+        for (int i = 0; i < sourceColumns.size(); i++) {
+            ColumnAccessor columnAccessor = sourceColumns.get(i);
+            if (!columnAccessor.isMissing(row)) {
+                FieldImporterColumn importedColumn = getImportedColumn(columnAccessor);
+                Cuid targetSiteId = new Cuid(importedColumn.getTarget().getSite().asString());
+                if (targetSiteId.getDomain() == CuidAdapter.ADMIN_LEVEL_DOMAIN) {
+                    final int levelId = CuidAdapter.getBlock(targetSiteId, 0);
+                    // todo : recreation of admin level cuid seems to be error prone, check later !
+                    Cuid range = CuidAdapter.adminLevelFormClass(levelId);
+                    InstanceScoreSource scoreSource = scoreSources.get(range);
+                    InstanceScorer instanceScorer = new InstanceScorer(scoreSource);
+                    final InstanceScorer.Score score = instanceScorer.score(row);
+                    final int bestMatchIndex = score.getBestMatchIndex();
 
-        for (final Cuid range : FormClassSet.of(rootField.getRange()).getElements()) {
-            InstanceScoreSource scoreSource = scoreSources.get(range);
-            InstanceScorer instanceScorer = new InstanceScorer(scoreSource);
-            final InstanceScorer.Score score = instanceScorer.score(row);
-            final int bestMatchIndex = score.getBestMatchIndex();
-            final Cuid bestMatchCuid = scoreSource.getReferenceInstanceIds().get(bestMatchIndex);
-
-            for (int i = 0; i != sourceColumns.size(); ++i) {
-                ValidationResult currentResult = tempResult[i];
-                if (currentResult != null && currentResult.getState() == ValidationResult.State.OK) {
-                    continue;
-                }
-
-                if (score.getImported()[i] == null && shouldOverride(currentResult)) {
-                    tempResult[i] = (ValidationResult.MISSING);
-                } else if (bestMatchIndex == -1 && shouldOverride(currentResult)) {
-                    tempResult[i] = ValidationResult.error("No match");
-                } else {
-                    // if not confidence or confidence is greater then existing one then override result
-                    double confidence = score.getBestScores()[i];
-                    if (confidence > InstanceScorer.MINIMUM_SCORE) {
-
-                        if (currentResult == null || currentResult.getState() != ValidationResult.State.CONFIDENCE || currentResult.getConfidence() < confidence ||
-                                tempResult[i].getRangeInstanceIds().get(range) == null) {
-                            String matched = scoreSource.getReferenceValues().get(bestMatchIndex)[i];
-                            final ValidationResult converted = ValidationResult.converted(matched, score.getBestScores()[i]);
-                            converted.getRangeInstanceIds().put(range, Sets.newHashSet(bestMatchCuid));
-                            tempResult[i] = converted;
-                        } else {
-
-                            // if ok add cuid
-                            tempResult[i].getRangeInstanceIds().get(range).add(scoreSource.getReferenceInstanceIds().get(bestMatchIndex));
-                        }
+                    if (score.getImported()[i] == null) {
+                        results.add(ValidationResult.MISSING);
+                    } else if (bestMatchIndex == -1) {
+                        results.add(ValidationResult.error("No match"));
+                    } else {
+                        String matched = scoreSource.getReferenceValues().get(bestMatchIndex)[i];
+                        final ValidationResult converted = ValidationResult.converted(matched, score.getBestScores()[i]);
+                        converted.setRangeWithInstanceId(new Pair<>(range, scoreSource.getReferenceInstanceIds().get(bestMatchIndex)));
+                        results.add(converted);
                     }
+                } else {
+                    throw new UnsupportedOperationException("Not supported");
                 }
-            }
-        }
-
-        for (ValidationResult currentResult : tempResult) {
-            if (currentResult != null) {
-                results.add(currentResult);
             } else {
                 results.add(ValidationResult.MISSING);
             }
@@ -133,51 +127,25 @@ public class HierarchyClassImporter implements FieldImporter {
 
     }
 
-    private boolean shouldOverride(ValidationResult currentResult) {
-        return currentResult == null ||
-                currentResult.getState() == ValidationResult.State.ERROR || currentResult.getState() == ValidationResult.State.MISSING;
-    }
-
     @Override
     public boolean updateInstance(SourceRow row, FormInstance instance) {
         final List<ValidationResult> validationResults = Lists.newArrayList();
         validateInstance(row, validationResults);
 
-        final Map<Cuid, Integer> levelOfSavedValue = Maps.newHashMap();
+        final Map<Cuid, Cuid> toSave = Maps.newHashMap();
         for (ValidationResult result : validationResults) {
-            if (result.shouldPersist() && !result.getRangeInstanceIds().isEmpty()) {
-                final Set<Cuid> toSave = Sets.newHashSet();
-
-                Cuid mostGranularWithinRange = null;
-                int mostGranularLevel = -1;
-
-                for (Map.Entry<Cuid, Set<Cuid>> entry : Sets.newHashSet(result.getRangeInstanceIds().entrySet())) {
-                    final Set<Cuid> valueSet = entry.getValue();
-                    final Cuid range = entry.getKey();
-
-                    if (range.getDomain() == CuidAdapter.ADMIN_LEVEL_DOMAIN) {
-                        for (Cuid value : valueSet) {
-                            final int levelId = CuidAdapter.getBlock(range, 0);
-//                            final int fieldIndex = CuidAdapter.getBlock(range, 0);
-                            if (levelId > mostGranularLevel) {
-                                mostGranularLevel = levelId;
-                                mostGranularWithinRange = value;
-                            }
-
-                        }
-                        toSave.add(mostGranularWithinRange);
-                    } else {
-                        toSave.addAll(entry.getValue());
-                    }
-                }
-                Integer integer = levelOfSavedValue.get(rootField.getFieldId());
-                if (integer == null || integer < mostGranularLevel) {
-                    instance.set(rootField.getFieldId(), toSave);
-                    levelOfSavedValue.put(rootField.getFieldId(), mostGranularLevel);
+            if (result.shouldPersist() && result.getRangeWithInstanceId() != null) {
+                Cuid range = result.getRangeWithInstanceId().getA();
+                Cuid value = toSave.get(range);
+                if (value == null) {
+                    toSave.put(range, result.getRangeWithInstanceId().getB());
                 }
             }
         }
-
+        if (!toSave.isEmpty()) {
+            instance.set(rootField.getFieldId(), Sets.newHashSet(toSave.values()));
+            return true;
+        }
 
         return false;
     }

@@ -1,11 +1,8 @@
 package org.activityinfo.core.shared.importing.validation;
 
-import com.google.common.collect.Maps;
 import org.activityinfo.core.shared.Cuid;
+import org.activityinfo.core.shared.Pair;
 import org.activityinfo.core.shared.importing.strategy.InstanceScorer;
-
-import java.util.Map;
-import java.util.Set;
 
 public class ValidationResult {
 
@@ -13,12 +10,14 @@ public class ValidationResult {
         OK, MISSING, ERROR, CONFIDENCE
     }
 
-    public static final ValidationResult MISSING = new ValidationResult(State.MISSING) {};
+    public static final ValidationResult MISSING = new ValidationResult(State.MISSING) {
+    };
 
-    public static final ValidationResult OK = new ValidationResult(State.OK) {};
+    public static final ValidationResult OK = new ValidationResult(State.OK) {
+    };
 
     private final State state;
-    private Map<Cuid,Set<Cuid>> rangeInstanceIds = Maps.newHashMap();
+    private Pair<Cuid, Cuid> rangeWithInstanceId;
     private Cuid instanceId;
     private String typeConversionErrorMessage;
     private String convertedValue;
@@ -77,7 +76,11 @@ public class ValidationResult {
         this.instanceId = instanceId;
     }
 
-    public Map<Cuid, Set<Cuid>> getRangeInstanceIds() {
-        return rangeInstanceIds;
+    public Pair<Cuid, Cuid> getRangeWithInstanceId() {
+        return rangeWithInstanceId;
+    }
+
+    public void setRangeWithInstanceId(Pair<Cuid, Cuid> rangeWithInstanceId) {
+        this.rangeWithInstanceId = rangeWithInstanceId;
     }
 }

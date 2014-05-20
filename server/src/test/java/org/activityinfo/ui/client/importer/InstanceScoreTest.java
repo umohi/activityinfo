@@ -124,14 +124,6 @@ public class InstanceScoreTest extends AbstractImporterTest {
         assertScore(score, "Kalemie");
         assertThat(scoreSource.getReferenceInstanceIds().get(score.getBestMatchIndex()), equalTo(ImportWithMultiClassRangeTest.TERRITOIRE_KALEMIE));
 
-        // ATTENTION : matching row with level 4
-        projections = assertResolves(query(referenceFields, ImportWithMultiClassRangeTest.SECTEUR_LEVEL));
-        scoreSource = new InstanceScoreSourceBuilder(referenceFields, sourceColumns).build(projections);
-        score = score(source.getRows().get(2), scoreSource);
-        assertScore(score, "Katanga");
-        assertScore(score, "Tanganika");
-        assertScore(score, "Kalemie");
-        assertThat(scoreSource.getReferenceInstanceIds().get(score.getBestMatchIndex()), equalTo(ImportWithMultiClassRangeTest.TERRITOIRE_KALEMIE));
     }
 
     private Promise<List<Projection>> query(Map<FieldPath, Integer> referenceFields, int adminLevel) {
