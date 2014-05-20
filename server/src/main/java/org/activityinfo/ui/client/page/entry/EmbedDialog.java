@@ -107,7 +107,7 @@ public class EmbedDialog extends Dialog {
 
     private void showPublished(final ActivityDTO activity, final String url) {
         if (activity.getPublished() != Published.ALL_ARE_PUBLISHED.getIndex()) {
-            if (activity.getDatabase().isDesignAllowed()) {
+            if (activity.isDesignAllowed()) {
                 MessageBox.confirm(I18N.CONSTANTS.embed(),
                         I18N.MESSAGES.promptPublishActivity(activity.getName()),
                         new Listener<MessageBoxEvent>() {

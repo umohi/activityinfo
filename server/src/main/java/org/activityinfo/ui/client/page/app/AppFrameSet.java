@@ -43,7 +43,6 @@ import org.activityinfo.ui.client.page.config.DbListPageState;
 import org.activityinfo.ui.client.page.dashboard.DashboardPlace;
 import org.activityinfo.ui.client.page.entry.place.DataEntryPlace;
 import org.activityinfo.ui.client.page.report.ReportsPlace;
-import org.activityinfo.ui.client.page.search.SearchPageState;
 import org.activityinfo.ui.client.widget.legacy.LoadingPlaceHolder;
 
 @Singleton
@@ -127,9 +126,6 @@ public class AppFrameSet implements Frame {
 
     }
 
-    protected void search(String value) {
-        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new SearchPageState(value)));
-    }
 
     public void setWidget(Widget widget) {
 

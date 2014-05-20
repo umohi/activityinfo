@@ -22,6 +22,7 @@ package org.activityinfo.legacy.client.remote.cache;
  * #L%
  */
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.activityinfo.legacy.client.CommandCache;
@@ -29,8 +30,10 @@ import org.activityinfo.legacy.client.DispatchEventSource;
 import org.activityinfo.legacy.client.DispatchListener;
 import org.activityinfo.legacy.shared.command.*;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
+import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -41,16 +44,18 @@ import java.util.Set;
  *
  * @author Alex Bertram
  */
-public class SchemaCache implements CommandCache<GetSchema>, DispatchListener {
+public class SchemaCache implements DispatchListener {
 
     private SchemaDTO schema = null;
-
     private Set<String> schemaEntityTypes = Sets.newHashSet();
+    private Map<Integer, ActivityDTO> activityMap = Maps.newHashMap();
+    
 
     @Inject
     public SchemaCache(DispatchEventSource source) {
 
-        source.registerProxy(GetSchema.class, this);
+        source.registerProxy(GetSchema.class, new SchemaProxy());
+        source.registerProxy(GetFormViewModel.class, new FormViewProxy());
         source.registerListener(GetSchema.class, this);
         source.registerListener(UpdateEntity.class, this);
         source.registerListener(CreateEntity.class, this);
@@ -58,6 +63,7 @@ public class SchemaCache implements CommandCache<GetSchema>, DispatchListener {
         source.registerListener(RemovePartner.class, this);
         source.registerListener(RequestChange.class, this);
         source.registerListener(BatchCommand.class, this);
+        source.registerListener(GetFormViewModel.class, this);
 
         schemaEntityTypes.add("UserDatabase");
         schemaEntityTypes.add("Activity");
@@ -67,32 +73,29 @@ public class SchemaCache implements CommandCache<GetSchema>, DispatchListener {
         schemaEntityTypes.add("Partner");
         schemaEntityTypes.add("Project");
         schemaEntityTypes.add("LockedPeriod");
-
     }
 
-    @Override
-    public CacheResult maybeExecute(GetSchema command) {
-        if (schema == null) {
-            return CacheResult.couldNotExecute();
-        } else {
-            return new CacheResult(schema);
-        }
-    }
 
     @Override
     public void beforeDispatched(Command command) {
         if (command instanceof UpdateEntity && isSchemaEntity(((UpdateEntity) command).getEntityName())) {
-            schema = null;
+            clearCache();
         } else if (command instanceof CreateEntity && isSchemaEntity(((CreateEntity) command).getEntityName())) {
-            schema = null;
+            clearCache();
         } else if (command instanceof AddPartner || command instanceof RemovePartner) {
-            schema = null;
+            clearCache();
         } else if (command instanceof RequestChange && isSchemaEntity(((RequestChange) command).getEntityType())) {
+            clearCache();
         } else if (command instanceof BatchCommand) {
             for (Command element : ((BatchCommand) command).getCommands()) {
                 beforeDispatched(element);
             }
         }
+    }
+
+    private void clearCache() {
+        schema = null;
+        activityMap.clear();
     }
 
     private boolean isSchemaEntity(String entityName) {
@@ -103,8 +106,12 @@ public class SchemaCache implements CommandCache<GetSchema>, DispatchListener {
     public void onSuccess(Command command, CommandResult result) {
         if (command instanceof GetSchema) {
             cache((SchemaDTO) result);
+        } else if (command instanceof GetFormViewModel) {
+            ActivityDTO activity = (ActivityDTO) result;
+            activityMap.put(activity.getId(), activity);
         } else if (schema != null) {
             if (command instanceof AddPartner) {
+                clearCache();
             }
         }
     }
@@ -124,8 +131,39 @@ public class SchemaCache implements CommandCache<GetSchema>, DispatchListener {
 
     }
 
-    @Override
-    public void clear() {
-        schema = null;
+
+    private class FormViewProxy implements CommandCache<GetFormViewModel> {
+        @Override
+        public CacheResult maybeExecute(GetFormViewModel command) {
+            int activityId = command.getActivityId();
+            if(schema != null) {
+                return new CacheResult<>(schema.getActivityById(activityId));
+            } else if(activityMap.containsKey(activityId)) {
+                return new CacheResult<>(activityMap.get(activityId));
+            } else {
+                return CacheResult.couldNotExecute();
+            }
+        }
+
+        @Override
+        public void clear() {
+            clearCache();
+        }
+    }
+
+    private class SchemaProxy implements CommandCache<GetSchema> {
+        @Override
+        public CacheResult maybeExecute(GetSchema command) {
+            if (schema == null) {
+                return CacheResult.couldNotExecute();
+            } else {
+                return new CacheResult<>(schema);
+            }
+        }
+
+        @Override
+        public void clear() {
+
+        }
     }
 }

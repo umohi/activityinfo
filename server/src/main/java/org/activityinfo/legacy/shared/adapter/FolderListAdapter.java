@@ -62,9 +62,9 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
 
                 if (!Strings.isNullOrEmpty(activity.getCategory())) {
                     categories.add(activity.getCategory());
-                    activityClass.setParentId(activityCategoryFolderId(db, activity.getCategory()));
+                    activityClass.setParentId(activityCategoryFolderId(db.getId(), activity.getCategory()));
                 } else {
-                    activityClass.setParentId(databaseId(db));
+                    activityClass.setParentId(databaseId(db.getId()));
                 }
 
                 activityClass.set(FormClass.LABEL_FIELD_ID, activity.getName());
@@ -75,7 +75,7 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
             }
 
             for (String category : categories) {
-                FormInstance categoryFolder = new FormInstance(activityCategoryFolderId(db, category),
+                FormInstance categoryFolder = new FormInstance(activityCategoryFolderId(db.getId(), category),
                         FolderClass.CLASS_ID);
                 categoryFolder.setParentId(dbFolder.getId());
                 categoryFolder.set(FolderClass.LABEL_FIELD_ID, category);

@@ -39,9 +39,11 @@ import org.junit.runner.RunWith;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(InjectionSupport.class)
 @OnDataSet("/dbunit/schema1.db.xml")
-public class ActivityTest extends CommandTestCase {
+public class ActivityTest extends CommandTestCase2 {
 
     @Before
     public void setUser() {
@@ -63,12 +65,11 @@ public class ActivityTest extends CommandTestCase {
          * Create a new activity
          */
 
-        LocationTypeDTO locType = schema.getCountryById(1).getLocationTypes()
-                .get(0);
+        LocationTypeDTO locType = schema.getCountryById(1).getLocationTypes().get(0);
 
         ActivityDTO act = new ActivityDTO();
         act.setName("Warshing the dishes");
-        act.setLocationTypeId(locType.getId());
+        act.setLocationType(locType);
         act.setReportingFrequency(ActivityDTO.REPORT_MONTHLY);
 
         CreateResult cresult = execute(CreateEntity.Activity(db, act));
@@ -83,13 +84,10 @@ public class ActivityTest extends CommandTestCase {
 
         act = schema.getActivityById(newId);
 
-        Assert.assertEquals("name", "Warshing the dishes", act.getName());
-        Assert.assertEquals("locationType", locType.getName(), act
-                .getLocationType().getName());
-        Assert.assertEquals("reportingFrequency", ActivityDTO.REPORT_MONTHLY,
-                act.getReportingFrequency());
-        Assert.assertEquals("public", Published.NOT_PUBLISHED.getIndex(),
-                act.getPublished());
+        assertEquals("name", "Warshing the dishes", act.getName());
+        assertEquals("locationType", locType.getName(), act.getLocationType().getName());
+        assertEquals("reportingFrequency", ActivityDTO.REPORT_MONTHLY, act.getReportingFrequency());
+        assertEquals("public", Published.NOT_PUBLISHED.getIndex(), act.getPublished());
 
     }
 
@@ -109,10 +107,8 @@ public class ActivityTest extends CommandTestCase {
         /* Confirm the order is changed */
 
         SchemaDTO schema = execute(new GetSchema());
-        Assert.assertEquals(2, schema.getDatabaseById(1).getActivities().get(0)
-                .getId());
-        Assert.assertEquals(1, schema.getDatabaseById(1).getActivities().get(1)
-                .getId());
+        assertEquals(2, schema.getDatabaseById(1).getActivities().get(0).getId());
+        assertEquals(1, schema.getDatabaseById(1).getActivities().get(1).getId());
     }
 
     @Test
@@ -127,7 +123,6 @@ public class ActivityTest extends CommandTestCase {
         /* Confirm the order is changed */
 
         SchemaDTO schema = execute(new GetSchema());
-        Assert.assertEquals(Published.ALL_ARE_PUBLISHED.getIndex(), schema
-                .getActivityById(1).getPublished());
+        assertEquals(Published.ALL_ARE_PUBLISHED.getIndex(), schema.getActivityById(1).getPublished());
     }
 }

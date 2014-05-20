@@ -23,7 +23,6 @@ package org.activityinfo.legacy.shared.model;
  */
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
-import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
 import org.junit.Assert;
 import org.junit.Test;
 

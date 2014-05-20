@@ -47,7 +47,8 @@ public class HandlerRegistryProvider implements Provider<HandlerRegistry> {
                                    GeneratePivotTableHandler generatePivotTableHandler,
                                    GetLocationsHandler getLocationsHandler,
                                    DeleteSiteHandler deleteSiteHandler,
-                                   GetSiteAttachmentsHandler getSiteAttachmentsHandler) {
+                                   GetSiteAttachmentsHandler getSiteAttachmentsHandler,
+                                   GetFormViewModelHandler getFormViewModelHandler) {
 
         registry = new HandlerRegistry();
         registry.registerHandler(GetSchema.class, schemaHandler);
@@ -65,6 +66,9 @@ public class HandlerRegistryProvider implements Provider<HandlerRegistry> {
         registry.registerHandler(GetLocations.class, getLocationsHandler);
         registry.registerHandler(DeleteSite.class, deleteSiteHandler);
         registry.registerHandler(GetSiteAttachments.class, getSiteAttachmentsHandler);
+
+        // new
+        registry.registerHandler(GetFormViewModel.class, getFormViewModelHandler);
     }
 
     @Override

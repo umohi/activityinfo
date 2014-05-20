@@ -32,7 +32,7 @@ import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
  *
  * @author Alex Bertram
  */
-public final class AdminEntityDTO extends BaseModelData implements DTO {
+public final class AdminEntityDTO extends BaseModelData implements EntityDTO {
     private Extents bounds;
 
     public AdminEntityDTO() {
@@ -104,6 +104,11 @@ public final class AdminEntityDTO extends BaseModelData implements DTO {
         return (Integer) get("id");
     }
 
+    @Override
+    public String getEntityName() {
+        return "AdminEntity";
+    }
+
     /**
      * @return this AdminEntity's name
      */
@@ -124,6 +129,14 @@ public final class AdminEntityDTO extends BaseModelData implements DTO {
      */
     public int getLevelId() {
         return (Integer) get("levelId");
+    }
+
+    public String getLevelName() {
+        return (String) get("levelName");
+    }
+
+    public void setLevelName(String name) {
+        set("levelName", name);
     }
 
     /**

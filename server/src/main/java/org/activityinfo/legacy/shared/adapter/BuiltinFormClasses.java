@@ -41,7 +41,7 @@ public class BuiltinFormClasses {
     }
 
 
-    static class ActivityAdapter implements Function<SchemaDTO, FormClass> {
+    static class ActivityAdapter implements Function<ActivityDTO, FormClass> {
 
         private int activityId;
 
@@ -50,8 +50,7 @@ public class BuiltinFormClasses {
         }
 
         @Nullable @Override
-        public FormClass apply(@Nullable SchemaDTO schemaDTO) {
-            ActivityDTO activity = schemaDTO.getActivityById(activityId);
+        public FormClass apply(@Nullable ActivityDTO activity) {
             ActivityUserFormBuilder builder = new ActivityUserFormBuilder(activity);
             return builder.build();
         }

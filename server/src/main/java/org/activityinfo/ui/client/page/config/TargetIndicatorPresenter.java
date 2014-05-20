@@ -203,7 +203,7 @@ public class TargetIndicatorPresenter extends AbstractEditorGridPresenter<ModelD
     }
 
     private String categoryKey(ActivityDTO activity, Map<String, Link> categories) {
-        return "category" + activity.getDatabase().getId() + activity.getCategory() + categories.size();
+        return "category" + activity.getDatabaseId() + activity.getCategory() + categories.size();
     }
 
     private String categoryKey(IndicatorDTO indicatorNode, Map<String, Link> categories) {

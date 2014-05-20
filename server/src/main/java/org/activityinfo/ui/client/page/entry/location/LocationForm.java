@@ -144,8 +144,8 @@ public class LocationForm extends LayoutContainer {
 
     private void addAdminCombos(Dispatcher dispatcher, final LocationSearchPresenter searchPresenter) {
         adminPresenter = new AdminFieldSetPresenter(dispatcher,
-                searchPresenter.getCountry(),
-                searchPresenter.getCountry().getAdminLevels());
+                searchPresenter.getCountryBounds(),
+                searchPresenter.getLocationType().getAdminLevels());
 
         comboBoxes = new SearchAdminComboBoxSet(this, adminPresenter);
 
@@ -177,7 +177,6 @@ public class LocationForm extends LayoutContainer {
                 if (value != null) {
                     newLocationPresenter.setLatLng(value);
                 }
-
             }
         });
     }

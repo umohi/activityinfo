@@ -36,6 +36,8 @@ import java.util.Set;
  */
 public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
 
+    public static final int ROOT = -1;
+
     private Collection<Integer> countryIds;
     private Integer levelId;
     private Integer parentId;
@@ -57,18 +59,6 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
         this.parentId = parentId;
     }
 
-    public GetAdminEntities(int countryId, Filter filter) {
-        super();
-        this.countryIds = Arrays.asList(countryId);
-        this.filter = filter;
-    }
-
-    public GetAdminEntities(Collection<Integer> countryIds, Filter filter) {
-        super();
-        this.countryIds = countryIds;
-        this.filter = filter;
-    }
-
     public Integer getLevelId() {
         return levelId;
     }
@@ -83,14 +73,6 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
-    }
-
-    public Collection<Integer> getCountryIds() {
-        return countryIds;
-    }
-
-    public void setCountryId(Integer countryId) {
-        this.countryIds = Arrays.asList(countryId);
     }
 
     public Set<Integer> getEntityIds() {
@@ -119,55 +101,43 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((filter == null) ? 0 : filter.hashCode());
-        result = prime * result + ((levelId == null) ? 0 : levelId.hashCode());
-        result = prime * result + ((entityIds == null) ? 0 : entityIds.hashCode());
-        result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        GetAdminEntities that = (GetAdminEntities) o;
+
+        if (countryIds != null ? !countryIds.equals(that.countryIds) : that.countryIds != null) {
+            return false;
+        }
+        if (entityIds != null ? !entityIds.equals(that.entityIds) : that.entityIds != null) {
+            return false;
+        }
+        if (filter != null ? !filter.equals(that.filter) : that.filter != null) {
+            return false;
+        }
+        if (levelId != null ? !levelId.equals(that.levelId) : that.levelId != null) {
+            return false;
+        }
+        if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj == null) {
-            return false;
-        } else if (getClass() != obj.getClass()) {
-            return false;
-        }
-        GetAdminEntities other = (GetAdminEntities) obj;
-        if (filter == null) {
-            if (other.filter != null) {
-                return false;
-            }
-        } else if (!filter.equals(other.filter)) {
-            return false;
-        }
-        if (levelId == null) {
-            if (other.levelId != null) {
-                return false;
-            }
-        } else if (!levelId.equals(other.levelId)) {
-            return false;
-        }
-        if (entityIds == null) {
-            if (other.entityIds != null) {
-                return false;
-            }
-        } else if (!entityIds.equals(other.entityIds)) {
-            return false;
-        }
-        if (parentId == null) {
-            if (other.parentId != null) {
-                return false;
-            }
-        } else if (!parentId.equals(other.parentId)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        int result = countryIds != null ? countryIds.hashCode() : 0;
+        result = 31 * result + (levelId != null ? levelId.hashCode() : 0);
+        result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+        result = 31 * result + (entityIds != null ? entityIds.hashCode() : 0);
+        result = 31 * result + (filter != null ? filter.hashCode() : 0);
+        return result;
     }
 
     @Override

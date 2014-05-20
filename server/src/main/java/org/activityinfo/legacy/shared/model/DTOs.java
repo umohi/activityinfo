@@ -37,8 +37,17 @@ public class DTOs {
     public static final AdminLevelDTO TERRITOIRE = new AdminLevelDTO(2, 1, "Territoire");
     public static final AdminLevelDTO SECTEUR = new AdminLevelDTO(3, 2, "Secteur");
 
-    public static final LocationTypeDTO ECOLE = new LocationTypeDTO(2, "Ecole");
-    public static final LocationTypeDTO LOCALITE = new LocationTypeDTO(1, "Localite");
+    private static LocationTypeDTO createLocationType(int id, String name) {
+        LocationTypeDTO type = new LocationTypeDTO(id, name);
+        type.setCountryBounds(Extents.maxGeoBounds());
+        type.setAdminLevels(Arrays.asList(PROVINCE, TERRITOIRE, SECTEUR));
+        return type;
+    }
+
+
+    public static final LocationTypeDTO ECOLE = createLocationType(2, "Ecole");
+
+    public static final LocationTypeDTO LOCALITE = createLocationType(1, "Localite");
 
     public static final AdminEntityDTO NORD_KIVU = rootEntity().atLevel(PROVINCE)
                                                                .named("North Kivu")
@@ -116,12 +125,12 @@ public class DTOs {
 
             NFI_DISTRIBUTION = new ActivityDTO(91, "NFI Distributions");
             NFI_DISTRIBUTION.setDatabase(DATABASE);
-            NFI_DISTRIBUTION.setLocationTypeId(LOCALITE.getId());
+            NFI_DISTRIBUTION.setLocationType(LOCALITE);
             DATABASE.getActivities().add(NFI_DISTRIBUTION);
 
             SCHOOL_REHAB = new ActivityDTO(92, "School Rehab");
             SCHOOL_REHAB.setDatabase(DATABASE);
-            SCHOOL_REHAB.setLocationTypeId(ECOLE.getId());
+            SCHOOL_REHAB.setLocationType(ECOLE);
             DATABASE.getActivities().add(SCHOOL_REHAB);
 
             REHAB_TYPE = new AttributeGroupDTO(71);
@@ -266,7 +275,7 @@ public class DTOs {
 
         ActivityDTO activity = new ActivityDTO(11, "Reunificiation des Enfants");
         activity.setDatabase(pearPlus);
-        activity.setLocationTypeId(1);
+        activity.setLocationType(aireSante);
         activity.setReportingFrequency(ActivityDTO.REPORT_MONTHLY);
         pearPlus.getActivities().add(activity);
 

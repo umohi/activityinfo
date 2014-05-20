@@ -80,7 +80,7 @@ public class LocalSchemaChangeTest extends LocalHandlerTestCase {
         ActivityDTO activity = new ActivityDTO();
         activity.setName("New Activity");
         activity.setReportingFrequency(0);
-        activity.setLocationTypeId(1);
+        activity.setLocationType(schema.getLocationTypeById(1));
 
         CreateResult createResult = executeRemotely(CreateEntity.Activity(
                 schema.getDatabaseById(1), activity));

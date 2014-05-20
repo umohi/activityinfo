@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.server.authentication.ServerSideAuthProvider;
 import org.activityinfo.server.command.DispatcherSync;
+import org.activityinfo.server.command.handler.PermissionOracle;
 import org.activityinfo.server.database.hibernate.dao.UserPermissionDAO;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.util.config.DeploymentConfiguration;
@@ -28,6 +29,9 @@ public abstract class ODKResource {
     protected final ServerSideAuthProvider auth = null;
     @Inject
     protected final DeploymentConfiguration config = null;
+
+    @Inject
+    protected PermissionOracle permissionOracle;
 
     protected boolean enforceAuthorization() {
         if (getUser().isAnonymous()) {

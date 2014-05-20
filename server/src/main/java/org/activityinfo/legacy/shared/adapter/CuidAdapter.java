@@ -225,9 +225,17 @@ public class CuidAdapter {
                         Integer.toString(group.getId(), Cuids.RADIX));
     }
 
+    /**
+     * @return the {@code FormField} Cuid for the field of a given Activity {@code FormClass} that
+     * references the given AttributeGroup FormClass
+     */
+    public static Cuid attributeGroupField(int activityId, int attributeGroupId) {
+        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "a" +
+                        Integer.toString(attributeGroupId, Cuids.RADIX));
+    }
 
-    public static Cuid activityCategoryFolderId(UserDatabaseDTO db, String category) {
-        return new Cuid(ACTIVITY_CATEGORY_DOMAIN + block(db.getId()) + block(category.hashCode()));
+    public static Cuid activityCategoryFolderId(int dbId, String category) {
+        return new Cuid(ACTIVITY_CATEGORY_DOMAIN + block(dbId) + block(category.hashCode()));
     }
 
     /**
@@ -287,8 +295,8 @@ public class CuidAdapter {
         return cuid(domain, entityDTO.getId());
     }
 
-    public static Cuid databaseId(UserDatabaseDTO database) {
-        return cuid(DATABASE_DOMAIN, database);
+    public static Cuid databaseId(int databaseId) {
+        return cuid(DATABASE_DOMAIN, databaseId);
     }
 
     public static Cuid generateLocationCuid() {

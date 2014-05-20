@@ -28,7 +28,10 @@ import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
 import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.bedatadriven.rebar.sql.client.util.RowHandler;
+import com.google.common.base.Functions;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.*;
@@ -58,20 +61,21 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
         private final Map<Integer, ActivityDTO> activities = new HashMap<Integer, ActivityDTO>();
         private final Map<Integer, AttributeGroupDTO> attributeGroups = new HashMap<Integer, AttributeGroupDTO>();
         private final Map<Integer, ProjectDTO> projects = new HashMap<Integer, ProjectDTO>();
+        private final Map<Integer, LocationTypeDTO> locationTypes = new HashMap<>();
 
         private SqlTransaction tx;
         private ExecutionContext context;
 
-        public void loadCountries() {
-            SqlQuery.select()
+        public Promise<Void> loadCountries() {
+            return execute(SqlQuery.select()
                     .appendColumn("CountryId", "id")
                     .appendColumn("Name", "name")
                     .appendColumn("X1", "x1")
                     .appendColumn("y1", "y1")
                     .appendColumn("x2", "x2")
                     .appendColumn("y2", "y2")
-                    .from("country")
-                    .execute(tx, new RowHandler() {
+                    .from("country"),
+                    new RowHandler() {
                         @Override
                         public void handleRow(SqlResultSetRow rs) {
                             CountryDTO country = new CountryDTO();
@@ -91,38 +95,62 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                     });
         }
 
-        public void loadLocationTypes() {
-            SqlQuery.select("locationTypeId", "name", "boundAdminLevelId", "countryId", "workflowId", "databaseId")
-                    .from("locationtype")
-                    .execute(tx, new RowHandler() {
+        public Promise<Void> loadLocationTypes() {
+            return execute(SqlQuery.select("locationTypeId",
+                    "name",
+                    "boundAdminLevelId",
+                    "countryId",
+                    "workflowId",
+                    "databaseId").from("locationtype"), new RowHandler() {
 
-                        @Override
-                        public void handleRow(SqlResultSetRow row) {
-                            LocationTypeDTO type = new LocationTypeDTO();
-                            type.setId(row.getInt("locationTypeId"));
-                            type.setName(row.getString("name"));
-                            type.setWorkflowId(row.getString("workflowId"));
+                @Override
+                public void handleRow(SqlResultSetRow row) {
+                    LocationTypeDTO type = new LocationTypeDTO();
+                    type.setId(row.getInt("locationTypeId"));
+                    type.setName(row.getString("name"));
+                    type.setWorkflowId(row.getString("workflowId"));
 
-                            if (!row.isNull("databaseId")) {
-                                type.setDatabaseId(row.getInt("databaseId"));
-                            }
+                    if (!row.isNull("databaseId")) {
+                        type.setDatabaseId(row.getInt("databaseId"));
+                    }
 
-                            if (!row.isNull("boundAdminLevelId")) {
-                                type.setBoundAdminLevelId(row.getInt("boundAdminLevelId"));
-                            }
+                    if (!row.isNull("boundAdminLevelId")) {
+                        type.setBoundAdminLevelId(row.getInt("boundAdminLevelId"));
+                    }
 
-                            int countryId = row.getInt("countryId");
-                            countries.get(countryId).getLocationTypes().add(type);
+                    int countryId = row.getInt("countryId");
+                    CountryDTO country = countries.get(countryId);
+                    country.getLocationTypes().add(type);
 
-                        }
-                    });
+                    type.setAdminLevels(levelsForLocationType(country, type));
+                    type.setCountryBounds(country.getBounds());
+
+                    locationTypes.put(type.getId(), type);
+                }
+            });
         }
 
-        public void loadAdminLevels() {
-            SqlQuery.select("adminLevelId", "name", "parentId", "countryId")
+        private List<AdminLevelDTO> levelsForLocationType(CountryDTO country, LocationTypeDTO type) {
+
+            if (type.isAdminLevel()) {
+                // if this activity is bound to an administrative
+                // level, then we need only as far down as this goes
+                return country.getAdminLevelAncestors(type.getBoundAdminLevelId());
+
+            } else if (type.isNationwide()) {
+                return Lists.newArrayList();
+
+            } else {
+                // all admin levels
+                return country.getAdminLevels();
+            }
+        }
+
+        public Promise<Void> loadAdminLevels() {
+            return execute(SqlQuery.select("adminLevelId", "name", "parentId", "countryId")
                     .from("adminlevel")
-                    .whereTrue("deleted=0")
-                    .execute(tx, new RowHandler() {
+                    .whereTrue("deleted=0"),
+                    new RowHandler() {
 
                         @Override
                         public void handleRow(SqlResultSetRow row) {
@@ -140,7 +168,8 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                     });
         }
 
-        public void loadDatabases() {
+        public Promise<Void> loadDatabases() {
+            final Promise<Void> promise = new Promise<>();
             SqlQuery query = SqlQuery.select("d.DatabaseId")
                                      .appendColumn("d.Name")
                                      .appendColumn("d.FullName")
@@ -227,28 +256,32 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                         databaseList.add(db);
                     }
 
-                    if (!databaseMap.isEmpty()) {
-                        joinPartnersToDatabases();
 
-                        loadProjects();
-                        loadActivities();
-                        loadIndicators();
-                        loadAttributeGroups();
-                        loadAttributes();
-                        joinAttributesToActivities();
-                        loadLockedPeriods();
+                    if (databaseMap.isEmpty()) {
+                        promise.resolve(null);
+                    } else {
+                        Promise.waitAll(
+                                joinPartnersToDatabases(),
+                                loadProjects(),
+                                loadActivities(),
+                                loadIndicators(),
+                                loadAttributeGroups(),
+                                loadAttributes(),
+                                joinAttributesToActivities(),
+                                loadLockedPeriods())
+                               .then(promise);
                     }
                 }
             });
+            return promise;
         }
 
-        protected void loadProjects() {
+        protected Promise<Void> loadProjects() {
+            final Promise<Void> promise = new Promise<>();
             SqlQuery.select("name", "projectId", "description", "databaseId")
                     .from("project")
-                    .where("databaseId")
-                    .in(databaseMap.keySet())
-                    .where("dateDeleted")
-                    .isNull()
+                    .where("databaseId").in(databaseMap.keySet())
+                    .where("dateDeleted").isNull()
                     .execute(tx, new SqlResultCallback() {
                         @Override
                         public void onSuccess(SqlTransaction tx, SqlResultSet results) {
@@ -264,12 +297,14 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                                 project.setUserDatabase(database);
                                 projects.put(project.getId(), project);
                             }
+                            promise.resolve(null);
                         }
                     });
+            return promise;
         }
 
-        protected void loadLockedPeriods() {
-            // TODO(ruud): load only what is visible to user
+        protected Promise<Void> loadLockedPeriods() {
+            final Promise<Void> promise = new Promise<>();
             SqlQuery.select("fromDate",
                     "toDate",
                     "enabled",
@@ -331,11 +366,13 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                                             lockedPeriod.getId());
                                 }
                             }
+                            promise.resolve(null);
                         }
                     });
+            return promise;
         }
 
-        private void joinPartnersToDatabases() {
+        private Promise<Void> joinPartnersToDatabases() {
             SqlQuery query = SqlQuery.select("d.databaseId", "d.partnerId", "p.name", "p.fullName")
                                      .from(Tables.PARTNER_IN_DATABASE, "d")
                                      .leftJoin(Tables.PARTNER, "p")
@@ -349,7 +386,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                 query.where("d.databaseId").in(databaseMap.keySet());
             }
 
-            query.execute(tx, new RowHandler() {
+            return execute(query, new RowHandler() {
 
                 @Override
                 public void handleRow(SqlResultSetRow row) {
@@ -370,10 +407,9 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                     }
                 }
             });
-
         }
 
-        public void loadActivities() {
+        public Promise<Void> loadActivities() {
             SqlQuery query = SqlQuery.select("activityId",
                     "name",
                     "category",
@@ -387,7 +423,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                 query.where("DatabaseId").in(databaseMap.keySet());
             }
 
-            query.execute(tx, new RowHandler() {
+            return execute(query, new RowHandler() {
 
                 @Override
                 public void handleRow(SqlResultSetRow row) {
@@ -395,7 +431,6 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                     activity.setId(row.getInt("activityId"));
                     activity.setName(row.getString("name"));
                     activity.setCategory(row.getString("category"));
-                    activity.setLocationTypeId(row.getInt("locationTypeId"));
                     activity.setReportingFrequency(row.getInt("reportingFrequency"));
                     activity.setPublished(row.getInt("published"));
 
@@ -403,12 +438,20 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                     UserDatabaseDTO database = databaseMap.get(databaseId);
                     activity.setDatabase(database);
                     database.getActivities().add(activity);
+
+                    int locationTypeId = row.getInt("locationTypeId");
+                    LocationTypeDTO locationType = locationTypes.get(locationTypeId);
+                    if(locationType == null) {
+                        throw new IllegalStateException("No location type for " + locationTypeId);
+                    }
+                    activity.setLocationType(locationType);
+
                     activities.put(activity.getId(), activity);
                 }
             });
         }
 
-        public void loadIndicators() {
+        public Promise<Void> loadIndicators() {
             SqlQuery query = SqlQuery.select("indicatorId",
                     "name",
                     "category",
@@ -426,7 +469,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
 
             }
 
-            query.execute(tx, new RowHandler() {
+            return execute(query, new RowHandler() {
 
                 @Override
                 public void handleRow(SqlResultSetRow rs) {
@@ -449,7 +492,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
             });
         }
 
-        public void loadAttributeGroups() {
+        public Promise<Void> loadAttributeGroups() {
             SqlQuery query = SqlQuery.select()
                                      .appendColumn("AttributeGroupId", "id")
                                      .appendColumn("Name", "name")
@@ -471,7 +514,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
 
             }
 
-            query.execute(tx, new RowHandler() {
+            return execute(query, new RowHandler() {
 
                 @Override
                 public void handleRow(SqlResultSetRow rs) {
@@ -487,7 +530,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
             });
         }
 
-        public void loadAttributes() {
+        public Promise<Void> loadAttributes() {
             SqlQuery query = SqlQuery.select("attributeId", "name", "attributeGroupId")
                                      .from("attribute")
                                      .orderBy("SortOrder");
@@ -505,7 +548,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
 
             }
 
-            query.execute(tx, new RowHandler() {
+            return execute(query, new RowHandler() {
 
                 @Override
                 public void handleRow(SqlResultSetRow row) {
@@ -523,7 +566,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
             });
         }
 
-        public void joinAttributesToActivities() {
+        public Promise<Void> joinAttributesToActivities() {
             SqlQuery query = SqlQuery.select("J.activityId", "J.attributeGroupId")
                                      .from("attributegroupinactivity J " +
                                            "INNER JOIN attributegroup G ON (J.attributeGroupId = G.attributeGroupId)")
@@ -537,7 +580,7 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
 
             }
 
-            query.execute(tx, new RowHandler() {
+            return execute(query, new RowHandler() {
                 @Override
                 public void handleRow(SqlResultSetRow row) {
 
@@ -547,25 +590,42 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                     if (activity != null) { // it may have been deleted
                         activity.getAttributeGroups().add(attributeGroups.get(groupId));
                     }
+
                 }
             });
+        }
+
+        private Promise<Void> execute(SqlQuery query, final RowHandler rowHandler) {
+            final Promise<Void> promise = new Promise<>();
+            query.execute(tx, new SqlResultCallback() {
+                @Override
+                public void onSuccess(SqlTransaction tx, SqlResultSet results) {
+                    rowHandler.onSuccess(tx, results);
+                    promise.resolve(null);
+                }
+            });
+            return promise;
         }
 
         public void build(ExecutionContext context, final AsyncCallback<SchemaDTO> callback) {
             this.context = context;
             this.tx = context.getTransaction();
 
-            loadCountries();
-            loadLocationTypes();
-            loadAdminLevels();
+            List<Promise<Void>> tasks = Lists.newArrayList();
 
-            loadDatabases();
+            tasks.add(loadCountries());
+            tasks.add(loadAdminLevels());
+            tasks.add(loadLocationTypes());
+
+            tasks.add(loadDatabases());
 
             SchemaDTO schemaDTO = new SchemaDTO();
             schemaDTO.setCountries(countryList);
             schemaDTO.setDatabases(databaseList);
 
-            callback.onSuccess(schemaDTO);
+            Promise.waitAll(tasks)
+                   .then(Functions.constant(schemaDTO))
+                   .then(callback);
         }
     }
 }

@@ -66,11 +66,11 @@ public class LocationDialog extends Window {
 
     private Callback callback;
 
-    public LocationDialog(Dispatcher dispatcher, CountryDTO country, LocationTypeDTO locationType) {
+    public LocationDialog(Dispatcher dispatcher, LocationTypeDTO locationType) {
 
         this.dispatcher = dispatcher;
-        this.searchPresenter = new LocationSearchPresenter(dispatcher, country, locationType);
-        this.newLocationPresenter = new NewLocationPresenter(country);
+        this.searchPresenter = new LocationSearchPresenter(dispatcher, locationType);
+        this.newLocationPresenter = new NewLocationPresenter(locationType.getCountryBounds());
         this.locationType = locationType;
 
         setHeadingText(I18N.CONSTANTS.chooseLocation());

@@ -23,10 +23,13 @@ package org.activityinfo.legacy.shared.model;
  */
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonView;
+
+import java.util.List;
 
 /**
  * One-to-one DTO of the
@@ -39,6 +42,8 @@ import org.codehaus.jackson.map.annotate.JsonView;
 public final class LocationTypeDTO extends BaseModelData implements DTO {
 
     private Integer databaseId;
+    private List<AdminLevelDTO> adminLevels;
+    private Extents countryBounds;
 
     public LocationTypeDTO() {
     }
@@ -101,4 +106,19 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
         this.databaseId = databaseId;
     }
 
+    public List<AdminLevelDTO> getAdminLevels() {
+        return adminLevels;
+    }
+
+    public void setAdminLevels(List<AdminLevelDTO> adminLevels) {
+        this.adminLevels = adminLevels;
+    }
+
+    public Extents getCountryBounds() {
+        return countryBounds;
+    }
+
+    public void setCountryBounds(Extents countryBounds) {
+        this.countryBounds = countryBounds;
+    }
 }

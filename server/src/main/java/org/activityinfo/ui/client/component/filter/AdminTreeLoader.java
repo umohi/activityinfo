@@ -35,7 +35,7 @@ class AdminTreeLoader extends BaseTreeLoader<AdminEntityDTO> {
 
     @Override
     public boolean hasChildren(AdminEntityDTO parent) {
-        return ((AdminTreeProxy) this.proxy).hasChildren(parent);
+        return true;
     }
 
     public void setFilter(Filter filter) {

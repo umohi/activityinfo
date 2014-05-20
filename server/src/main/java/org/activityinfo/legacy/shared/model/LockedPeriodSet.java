@@ -1,4 +1,4 @@
-package org.activityinfo.ui.client.page.entry;
+package org.activityinfo.legacy.shared.model;
 
 /*
  * #%L

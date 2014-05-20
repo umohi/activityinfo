@@ -77,7 +77,7 @@ public final class AdminBoundsHelper {
      * @return the normative lat/lng bounds
      */
     public static Extents calculate(ActivityDTO activity, HasAdminEntityValues entityAccessor) {
-        return calculate(activity.getDatabase().getCountry(), activity.getAdminLevels(), entityAccessor);
+        return calculate(activity.getBounds(), activity.getAdminLevels(), entityAccessor);
     }
 
     /**
@@ -90,17 +90,17 @@ public final class AdminBoundsHelper {
      * {@link org.activityinfo.legacy.shared.model.AdminEntityDTO#getBounds()} and
      * {@link org.activityinfo.legacy.shared.model.CountryDTO#getBounds()}
      *
-     * @param country        TODO
+     *
+     * @param formClassBounds
      * @param entityAccessor an adapter class that provides AdminEntity membership for some
      *                       representation of a site.
      * @return the normative lat/lng bounds
      */
-    public static Extents calculate(CountryDTO country,
-                                    Collection<AdminLevelDTO> levels,
+    public static Extents calculate(Extents formClassBounds, Collection<AdminLevelDTO> levels,
                                     HasAdminEntityValues entityAccessor) {
         Extents bounds = null;
-        if (country != null) {
-            bounds = new Extents(country.getBounds());
+        if (formClassBounds != null) {
+            bounds = new Extents(formClassBounds);
         }
         if (bounds == null) {
             bounds = Extents.maxGeoBounds();

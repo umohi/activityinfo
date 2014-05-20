@@ -26,6 +26,7 @@ import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.activityinfo.legacy.shared.model.LockedPeriodDTO.HasLockedPeriod;
+import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -57,6 +58,8 @@ public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLo
 
     // to ensure serializer
     private Published _published;
+    private List<PartnerDTO> partners;
+    private LocationTypeDTO locationType;
 
     public ActivityDTO() {
         setAssessment(false);
@@ -77,7 +80,8 @@ public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLo
      */
     public ActivityDTO(ActivityDTO model) {
         super(model.getProperties());
-        this.database = model.getDatabase();
+        this.database = model.database;
+        this.setLocationType(model.getLocationType());
         this.setIndicators(model.getIndicators());
         this.setAttributeGroups(model.getAttributeGroups());
     }
@@ -134,6 +138,10 @@ public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLo
      */
     public UserDatabaseDTO getDatabase() {
         return database;
+    }
+
+    public int getDatabaseId() {
+        return database.getId();
     }
 
     /**
@@ -193,10 +201,6 @@ public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLo
         set("assessment", value);
     }
 
-    public boolean isAssessment() {
-        return (Boolean) get("assessment");
-    }
-
     /**
      * Sets the ReportingFrequency of this Activity, either
      * <code>REPORT_ONCE</code> or <code>REPORT_MONTHLY</code>
@@ -229,15 +233,16 @@ public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLo
      */
 
     public int getLocationTypeId() {
-        return (Integer) get("locationTypeId");
+        return locationType.getId();
     }
 
-    /**
-     * @return the
-     */
+    public void setLocationType(LocationTypeDTO locationType) {
+        this.locationType = locationType;
+    }
+
     @JsonProperty @JsonView(DTOViews.Schema.class)
     public LocationTypeDTO getLocationType() {
-        return getDatabase().getCountry().getLocationTypeById(getLocationTypeId());
+        return locationType;
     }
 
     /**
@@ -333,22 +338,7 @@ public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLo
      * LocationType.
      */
     public List<AdminLevelDTO> getAdminLevels() {
-        if (getLocationType().isAdminLevel()) {
-
-            // if this activity is bound to an administrative
-            // level, then we need only as far down as this goes
-
-            return getDatabase().getCountry().getAdminLevelAncestors(getLocationType().getBoundAdminLevelId());
-        } else if (getLocationType().isNationwide()) {
-
-            return Lists.newArrayList();
-
-        } else {
-
-            // all admin levels
-
-            return getDatabase().getCountry().getAdminLevels();
-        }
+        return locationType.getAdminLevels();
     }
 
     /**
@@ -400,5 +390,42 @@ public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLo
         }
 
         return enabled;
+    }
+
+    public String getDatabaseName() {
+        return database.getName();
+    }
+
+    public boolean isEditAllowed() {
+        return database.isEditAllowed();
+    }
+
+    public boolean isAllowedToEdit(SiteDTO site) {
+        return database.isAllowedToEdit(site);
+    }
+
+
+    public boolean isDesignAllowed() {
+        return database.isEditAllowed();
+    }
+
+    public List<ProjectDTO> getProjects() {
+        return database.getProjects();
+    }
+
+    public CountryDTO getCountry() {
+        return database.getCountry();
+    }
+
+    public Extents getBounds() {
+        return database.getCountry().getBounds();
+    }
+
+    public List<PartnerDTO> getPartners() {
+        return partners;
+    }
+
+    public LockedPeriodSet getLockedPeriodSet() {
+        return new LockedPeriodSet(this);
     }
 }

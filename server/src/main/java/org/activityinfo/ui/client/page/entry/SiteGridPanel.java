@@ -106,7 +106,7 @@ public final class SiteGridPanel extends ContentPanel {
                 if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
                     int activityId = filter.getRestrictedCategory(DimensionType.Activity);
                     ActivityDTO activity = result.getActivityById(activityId);
-                    setHeadingText(activity.getDatabase().getName() + " - " + activity.getName());
+                    setHeadingText(activity.getDatabaseName() + " - " + activity.getName());
                 } else if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Database)) {
                     int databaseId = filter.getRestrictedCategory(DimensionType.Database);
                     UserDatabaseDTO db = result.getDatabaseById(databaseId);

@@ -28,6 +28,7 @@ import org.activityinfo.legacy.shared.command.result.AdminEntityResult;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 import org.activityinfo.fixtures.InjectionSupport;
 import org.activityinfo.server.database.OnDataSet;
+import org.activityinfo.ui.client.page.entry.admin.AdminEntityProxy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -70,6 +71,7 @@ public class GetAdminEntitiesHandlerTest extends CommandTestCase2 {
         assertThat(kalehe.getBounds().getMaxLat(), equalTo(40d));
     }
 
+
     @Test
     public void testIdQuery() {
         GetAdminEntities cmd = new GetAdminEntities();
@@ -77,9 +79,7 @@ public class GetAdminEntitiesHandlerTest extends CommandTestCase2 {
 
         AdminEntityResult result = execute(cmd);
 
-
         assertThat(result.getData().size(), equalTo(2));
-
     }
 
     @Test
@@ -92,4 +92,5 @@ public class GetAdminEntitiesHandlerTest extends CommandTestCase2 {
 
         assertThat(result.getData().size(), equalTo(2));
     }
+
 }

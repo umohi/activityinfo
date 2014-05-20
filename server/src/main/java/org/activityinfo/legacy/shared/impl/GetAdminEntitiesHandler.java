@@ -27,6 +27,7 @@ import com.bedatadriven.rebar.sql.client.SqlResultSet;
 import com.bedatadriven.rebar.sql.client.SqlResultSetRow;
 import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
+import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.GetAdminEntities;
@@ -37,6 +38,7 @@ import org.activityinfo.legacy.shared.util.CollectionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class GetAdminEntitiesHandler implements CommandHandlerAsync<GetAdminEntities, AdminEntityResult> {
 
@@ -54,21 +56,15 @@ public class GetAdminEntitiesHandler implements CommandHandlerAsync<GetAdminEnti
                 "x2",
                 "y2").from(Tables.ADMIN_ENTITY, "AdminEntity").whereTrue("not AdminEntity.deleted");
 
-        if (CollectionUtil.isNotEmpty(cmd.getCountryIds())) {
-            query.leftJoin(Tables.ADMIN_LEVEL, "AdminLevel").on("AdminLevel.AdminLevelId=AdminEntity.AdminLevelId");
-            query.where("AdminLevel.CountryId").in(cmd.getCountryIds());
-
-            if (cmd.getParentId() == null && cmd.getLevelId() == null) {
-                query.where("AdminLevel.ParentId is null");
-            }
-
-            query.orderBy("AdminLevel.CountryId");
-        }
 
         query.orderBy("AdminEntity.name");
 
         if (cmd.getLevelId() != null) {
             query.where("AdminEntity.AdminLevelId").equalTo(cmd.getLevelId());
+        } else {
+            query.leftJoin(Tables.ADMIN_LEVEL, "level")
+                 .on("AdminEntity.AdminLevelID=level.AdminLevelId");
+            query.appendColumn("level.name", "levelName");
         }
 
         if (cmd.getEntityIds() != null && !cmd.getEntityIds().isEmpty()) {
@@ -76,18 +72,23 @@ public class GetAdminEntitiesHandler implements CommandHandlerAsync<GetAdminEnti
         }
 
         if (cmd.getParentId() != null) {
-            query.where("AdminEntity.AdminEntityParentId").equalTo(cmd.getParentId());
+            if(cmd.getParentId() == GetAdminEntities.ROOT) {
+                query.where("AdminEntity.AdminEntityParentId IS NULL");
+            } else {
+                query.where("AdminEntity.AdminEntityParentId").equalTo(cmd.getParentId());
+            }
         }
 
         if (cmd.getFilter() != null && cmd.getFilter().isRestricted(DimensionType.Activity)) {
-            SqlQuery subQuery = SqlQuery.select("link.AdminEntityId")
-                                        .from(Tables.SITE, "site")
-                                        .leftJoin(Tables.LOCATION, "Location")
-                                        .on("Location.LocationId = site.LocationId")
-                                        .leftJoin(Tables.LOCATION_ADMIN_LINK, "link")
-                                        .on("link.LocationId = Location.LocationId")
-                                        .where("site.ActivityId")
-                                        .in(cmd.getFilter().getRestrictions(DimensionType.Activity));
+            SqlQuery subQuery = SqlQuery
+                    .select("link.AdminEntityId")
+                    .from(Tables.SITE, "site")
+                    .leftJoin(Tables.LOCATION, "Location")
+                       .on("Location.LocationId = site.LocationId")
+                    .leftJoin(Tables.LOCATION_ADMIN_LINK, "link")
+                        .on("link.LocationId = Location.LocationId")
+                    .where("site.ActivityId")
+                        .in(cmd.getFilter().getRestrictions(DimensionType.Activity));
 
             query.where("AdminEntity.AdminEntityId").in(subQuery);
         }
@@ -110,8 +111,21 @@ public class GetAdminEntitiesHandler implements CommandHandlerAsync<GetAdminEnti
             @Override
             public void onSuccess(SqlTransaction tx, SqlResultSet results) {
                 final List<AdminEntityDTO> entities = new ArrayList<AdminEntityDTO>();
+                Set<String> names = Sets.newHashSet();
+                Set<String> duplicates = Sets.newHashSet();
                 for (SqlResultSetRow row : results.getRows()) {
-                    entities.add(toEntity(row));
+                    AdminEntityDTO entity = toEntity(row);
+                    if(!names.add(entity.getName())) {
+                        duplicates.add(entity.getName());
+                    }
+                    entities.add(entity);
+                }
+                for(int i=0;i!=entities.size();++i) {
+                    if(duplicates.contains(entities.get(i).getName())) {
+                        String levelName = results.getRow(i).getString("levelName");
+                        entities.get(i).setName(entities.get(i).getName() +
+                                                " [" + levelName + "]");
+                    }
                 }
                 callback.onSuccess(new AdminEntityResult(entities));
             }
@@ -124,6 +138,7 @@ public class GetAdminEntitiesHandler implements CommandHandlerAsync<GetAdminEnti
         entity.setId(row.getInt("adminEntityId"));
         entity.setName(row.getString("name"));
         entity.setLevelId(row.getInt("adminLevelId"));
+        entity.setLevelName(row.getString("levelName"));
         if (!row.isNull("adminEntityParentId")) {
             entity.setParentId(row.getInt("adminEntityParentId"));
         }

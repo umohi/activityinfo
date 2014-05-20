@@ -56,7 +56,7 @@ public class LocationSection extends FormSectionWithFormLayout<SiteDTO> implemen
         this.activity = activity;
 
         levelFields = Maps.newHashMap();
-        for (AdminLevelDTO level : activity.getDatabase().getCountry().getAdminLevels()) {
+        for (AdminLevelDTO level : activity.getAdminLevels()) {
             LabelField levelField = new LabelField();
             levelField.setFieldLabel(level.getName());
             add(levelField);
@@ -145,9 +145,7 @@ public class LocationSection extends FormSectionWithFormLayout<SiteDTO> implemen
     }
 
     private void changeLocation() {
-        LocationDialog dialog = new LocationDialog(dispatcher,
-                activity.getDatabase().getCountry(),
-                activity.getLocationType());
+        LocationDialog dialog = new LocationDialog(dispatcher, activity.getLocationType());
         dialog.show(new Callback() {
 
             @Override

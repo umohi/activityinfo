@@ -44,8 +44,6 @@ import org.activityinfo.ui.client.page.entry.EntryModule;
 import org.activityinfo.ui.client.page.home.PageLoader;
 import org.activityinfo.ui.client.page.report.ReportLoader;
 import org.activityinfo.ui.client.page.report.ReportModule;
-import org.activityinfo.ui.client.page.search.SearchLoader;
-import org.activityinfo.ui.client.page.search.SearchModule;
 
 /**
  * GIN injector.
@@ -58,8 +56,7 @@ import org.activityinfo.ui.client.page.search.SearchModule;
         EntryModule.class,
         MapModule.class,
         ConfigModule.class,
-        LocalModule.class,
-        SearchModule.class})
+        LocalModule.class})
 public interface AppInjector extends Ginjector {
     EventBus getEventBus();
 
@@ -74,8 +71,6 @@ public interface AppInjector extends Ginjector {
     LocalController createOfflineController();
 
     UsageTracker getUsageTracker();
-
-    SearchLoader createSearchLoader();
 
     DashboardLoader createDashboardLoader();
 

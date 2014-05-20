@@ -33,7 +33,7 @@ public class ProjectComboBox extends ComboBox<ProjectDTO> {
     public ProjectComboBox(ActivityDTO activity) {
 
         ListStore<ProjectDTO> store = new ListStore<ProjectDTO>();
-        store.add(activity.getDatabase().getProjects());
+        store.add(activity.getProjects());
 
         setName("project");
         setDisplayField("name");

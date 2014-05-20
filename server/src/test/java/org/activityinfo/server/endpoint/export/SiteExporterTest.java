@@ -23,7 +23,10 @@ public class SiteExporterTest {
         LocaleProxy.initialize();
 
         CountryDTO somalia = new CountryDTO(1, "Somalia");
-        somalia.getLocationTypes().add(new LocationTypeDTO(1, "Village"));
+        LocationTypeDTO locationType = new LocationTypeDTO(1, "Village");
+        locationType.setAdminLevels(somalia.getAdminLevels());
+
+        somalia.getLocationTypes().add(locationType);
 
         UserDatabaseDTO syli = new UserDatabaseDTO();
         syli.setName("SYLI");
@@ -33,19 +36,19 @@ public class SiteExporterTest {
         activity.setId(1);
         activity.setDatabase(syli);
         activity.setName("Construction/Rehabilitation of Sec. Schools");
-        activity.setLocationTypeId(1);
+        activity.setLocationType(locationType);
 
         ActivityDTO activity2 = new ActivityDTO();
         activity2.setId(2);
         activity2.setDatabase(syli);
         activity2.setName("Construction/Rehabilitation of Primary Schools");
-        activity2.setLocationTypeId(1);
+        activity2.setLocationType(locationType);
 
         ActivityDTO activity3 = new ActivityDTO();
         activity3.setId(3);
         activity3.setDatabase(syli);
         activity3.setName("Construction Rehabil (2)");
-        activity3.setLocationTypeId(1);
+        activity3.setLocationType(locationType);
 
 
         DispatcherSync dispatcher = createMock(DispatcherSync.class);

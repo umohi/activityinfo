@@ -80,7 +80,7 @@ public class LocationMap extends Html {
     protected void afterRender() {
         super.afterRender();
 
-        Extents countryBounds = searchPresenter.getCountry().getBounds();
+        Extents countryBounds = searchPresenter.getCountryBounds();
 
         MapOptions mapOptions = new MapOptions();
         mapOptions.setCenter(new LatLng(countryBounds.getCenterY(), countryBounds.getCenterX()));
@@ -174,10 +174,10 @@ public class LocationMap extends Html {
         }
 
         if (empty) {
-            if (searchPresenter.getBounds() != null) {
-                bounds = LeafletUtil.newLatLngBounds(searchPresenter.getBounds());
+            if (searchPresenter.getSearchBounds() != null) {
+                bounds = LeafletUtil.newLatLngBounds(searchPresenter.getSearchBounds());
             } else {
-                bounds = LeafletUtil.newLatLngBounds(searchPresenter.getCountry().getBounds());
+                bounds = LeafletUtil.newLatLngBounds(searchPresenter.getSearchBounds());
             }
         }
         int effectiveZoom = Math.min(8, map.getBoundsZoom(bounds, false));

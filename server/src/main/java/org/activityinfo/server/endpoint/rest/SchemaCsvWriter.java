@@ -60,8 +60,8 @@ public class SchemaCsvWriter {
     }
 
     private void writeElementLine(ActivityDTO activity, IndicatorDTO indicator) {
-        writeLine(activity.getDatabase().getId(),
-                activity.getDatabase().getName(),
+        writeLine(activity.getDatabaseId(),
+                activity.getDatabaseName(),
                 activity.getId(),
                 activity.getCategory(),
                 activity.getName(),
@@ -76,8 +76,8 @@ public class SchemaCsvWriter {
     }
 
     private void writeElementLine(ActivityDTO activity, AttributeGroupDTO attribGroup, AttributeDTO attrib) {
-        writeLine(activity.getDatabase().getId(),
-                activity.getDatabase().getName(),
+        writeLine(activity.getDatabaseId(),
+                activity.getDatabaseName(),
                 activity.getId(),
                 activity.getCategory(),
                 activity.getName(),

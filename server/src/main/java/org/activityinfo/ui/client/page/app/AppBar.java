@@ -36,7 +36,6 @@ import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.local.LocalController;
 import org.activityinfo.ui.client.page.NavigationEvent;
 import org.activityinfo.ui.client.page.NavigationHandler;
-import org.activityinfo.ui.client.page.search.SearchPageState;
 
 public class AppBar extends Composite {
 
@@ -85,7 +84,4 @@ public class AppBar extends Composite {
         settingsPopup.show();
     }
 
-    @UiHandler("searchButton") void handleSearchClick(ClickEvent e) {
-        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new SearchPageState()));
-    }
 }

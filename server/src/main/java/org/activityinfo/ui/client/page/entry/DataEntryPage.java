@@ -228,7 +228,7 @@ public class DataEntryPage extends LayoutContainer implements Page, ActionListen
 
     private void updateSelection(ActivityDTO activity, SiteDTO site) {
 
-        boolean permissionToEdit = activity.getDatabase().isAllowedToEdit(site);
+        boolean permissionToEdit = activity.isAllowedToEdit(site);
         toolBar.setActionEnabled(UIActions.EDIT, permissionToEdit && !site.isLinked());
         toolBar.setActionEnabled(UIActions.DELETE, permissionToEdit && !site.isLinked());
         toolBar.setActionEnabled(UIActions.IMPORT, true);
@@ -350,7 +350,7 @@ public class DataEntryPage extends LayoutContainer implements Page, ActionListen
 
             @Override
             public void onSuccess(SchemaDTO result) {
-                boolean isAllowed = result.getActivityById(activityId).getDatabase().isEditAllowed();
+                boolean isAllowed = result.getActivityById(activityId).isEditAllowed();
                 toolBar.setActionEnabled(UIActions.ADD, isAllowed);
                 if (IMPORT_FUNCTION_ENABLED) {
                     toolBar.setActionEnabled("IMPORT", isAllowed);

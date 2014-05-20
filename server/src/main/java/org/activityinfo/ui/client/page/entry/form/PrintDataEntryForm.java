@@ -39,7 +39,7 @@ import com.google.gwt.user.client.ui.Frame;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
-import org.activityinfo.legacy.shared.command.GetSchema;
+import org.activityinfo.legacy.shared.command.GetFormViewModel;
 import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.ui.client.page.entry.form.resources.SiteFormResources;
 
@@ -81,9 +81,9 @@ public class PrintDataEntryForm extends Window {
 
     public void print(final int activityId) {
         setVisible(true);
-        dispatcher.execute(new GetSchema(),
+        dispatcher.execute(new GetFormViewModel(activityId),
                 new MaskingAsyncMonitor(this, I18N.CONSTANTS.loading()),
-                new AsyncCallback<SchemaDTO>() {
+                new AsyncCallback<ActivityDTO>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -91,16 +91,15 @@ public class PrintDataEntryForm extends Window {
                     }
 
                     @Override
-                    public void onSuccess(SchemaDTO result) {
-                        renderForm(activityId, result);
+                    public void onSuccess(ActivityDTO result) {
+                        renderForm(result);
                     }
 
                 });
     }
 
-    private void renderForm(final int activityId, SchemaDTO result) {
+    private void renderForm(ActivityDTO activity) {
         try {
-            ActivityDTO activity = result.getActivityById(activityId);
             String html = render(activity);
 
             getFrameElement().getStyle().setBackgroundColor("white");
@@ -143,7 +142,7 @@ public class PrintDataEntryForm extends Window {
         String contents = getFormContents();
 
         contents = contents.replace("{$activityName}", activity.getName())
-                           .replace("{$databaseName}", activity.getDatabase().getName())
+                           .replace("{$databaseName}", activity.getDatabaseName())
                            .replace("{$activityName}", activity.getName())
                            .replace("{$indicators}", addIndicators(activity))
                            .replace("{$attributes}", addAttributes(activity));

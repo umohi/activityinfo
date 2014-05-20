@@ -36,15 +36,7 @@ import java.util.List;
 public class PartnerComboBox extends ComboBox<PartnerDTO> {
 
     public PartnerComboBox(ActivityDTO activity) {
-        this(allowablePartners(activity));
-    }
-
-    private static List<PartnerDTO> allowablePartners(ActivityDTO activity) {
-        if (activity.getDatabase().isEditAllAllowed()) {
-            return activity.getDatabase().getPartners();
-        } else {
-            return Collections.singletonList(activity.getDatabase().getMyPartner());
-        }
+        this(activity.getPartners());
     }
 
     public PartnerComboBox(List<PartnerDTO> partners) {

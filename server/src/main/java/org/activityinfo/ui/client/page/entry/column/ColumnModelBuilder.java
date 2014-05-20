@@ -33,9 +33,9 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
 import org.activityinfo.legacy.shared.model.*;
+import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.ui.client.page.common.columns.EditableLocalDateColumn;
 import org.activityinfo.ui.client.page.common.columns.ReadTextColumn;
-import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
 
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class ColumnModelBuilder {
                                  Grid<SiteDTO> grid) {
 
                 ActivityDTO activity = schema.getActivityById(model.getActivityId());
-                return activity == null ? "" : activity.getDatabase().getName();
+                return activity == null ? "" : activity.getDatabaseName();
             }
         });
         columns.add(config);
@@ -113,17 +113,8 @@ public class ColumnModelBuilder {
         return new ColumnModel(columns);
     }
 
-    public void createGeographyColumn(ActivityDTO activity) {
-        if (activity.getDatabase().isViewAllAllowed()) {
-            ColumnConfig columnGeography = new ColumnConfig();
-            columnGeography.setHeaderText(I18N.CONSTANTS.geography());
-            columnGeography.setWidth(100);
-            columns.add(columnGeography);
-        }
-    }
-
-    protected ColumnModelBuilder maybeAddProjectColumn(UserDatabaseDTO userDatabase) {
-        if (!userDatabase.getProjects().isEmpty()) {
+    protected ColumnModelBuilder maybeAddProjectColumn(ActivityDTO activity) {
+        if (!activity.getProjects().isEmpty()) {
             addProjectColumn();
         }
         return this;
@@ -136,7 +127,7 @@ public class ColumnModelBuilder {
     public ColumnModelBuilder maybeAddLockColumn(final ActivityDTO activity) {
         if (activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
             ColumnConfig columnLocked = new ColumnConfig("x", "", 28);
-            columnLocked.setRenderer(new LockedColumnRenderer(new LockedPeriodSet(activity)));
+            columnLocked.setRenderer(new LockedColumnRenderer(activity.getLockedPeriodSet()));
             columnLocked.setSortable(false);
             columnLocked.setMenuDisabled(true);
             columns.add(columnLocked);
@@ -247,10 +238,15 @@ public class ColumnModelBuilder {
 
     }
 
-    public ColumnModelBuilder maybeAddPartnerColumn(UserDatabaseDTO database) {
-        if (database.isViewAllAllowed()) {
+    public ColumnModelBuilder maybeAddPartnerColumn(ActivityDTO activity) {
+        if (activity.getPartners().size() > 1) {
             addPartnerColumn();
         }
+        return this;
+    }
+
+    public ColumnModelBuilder maybeAddPartnerColumn(UserDatabaseDTO activity) {
+        addPartnerColumn();
         return this;
     }
 
@@ -334,4 +330,10 @@ public class ColumnModelBuilder {
         return this;
     }
 
+    public ColumnModelBuilder maybeAddProjectColumn(UserDatabaseDTO database) {
+        if(database.getProjects().size() > 1) {
+            addProjectColumn();;
+        }
+        return this;
+    }
 }

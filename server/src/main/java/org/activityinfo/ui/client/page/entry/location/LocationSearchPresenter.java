@@ -41,9 +41,9 @@ import java.util.List;
 public class LocationSearchPresenter extends BaseObservable {
 
     public static final EventType ACCEPTED = new EventType();
+    private final Extents countryBounds;
 
     private Dispatcher dispatcher;
-    private CountryDTO country;
     private LocationTypeDTO locationType;
 
     private final ListLoader<ListLoadResult<LocationDTO>> loader;
@@ -54,21 +54,19 @@ public class LocationSearchPresenter extends BaseObservable {
 
     private LocationDTO selection;
 
-    public LocationSearchPresenter(Dispatcher dispatcher, CountryDTO country, LocationTypeDTO locationType) {
+    public LocationSearchPresenter(Dispatcher dispatcher, LocationTypeDTO locationType) {
         this.dispatcher = dispatcher;
-        this.country = country;
+        this.countryBounds = locationType.getCountryBounds();
         this.locationType = locationType;
 
-        loader = new BaseListLoader<ListLoadResult<LocationDTO>>(new Proxy());
-        store = new ListStore<LocationDTO>(loader);
+        loader = new BaseListLoader<>(new Proxy());
+        store = new ListStore<>(loader);
 
         currentSearch = new SearchLocations().setLocationTypeId(locationType.getId());
         loader.load();
     }
 
-    public CountryDTO getCountry() {
-        return country;
-    }
+    public Extents getCountryBounds() { return countryBounds; }
 
     public LocationTypeDTO getLocationType() {
         return locationType;
@@ -78,9 +76,10 @@ public class LocationSearchPresenter extends BaseObservable {
         return store;
     }
 
-    public Extents getBounds() {
+    public Extents getSearchBounds() {
         return searchBounds;
     }
+
 
     public void search(String name, Collection<Integer> collection, Extents bounds) {
         searchBounds = bounds;

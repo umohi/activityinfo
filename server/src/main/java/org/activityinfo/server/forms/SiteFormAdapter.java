@@ -1,44 +1,53 @@
-package org.activityinfo.legacy.shared.adapter;
+package org.activityinfo.server.forms;
 
 import com.google.common.base.Strings;
 import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.LocalizedString;
 import org.activityinfo.core.shared.form.*;
 import org.activityinfo.i18n.shared.I18N;
-import org.activityinfo.legacy.shared.model.*;
+import org.activityinfo.legacy.shared.adapter.CuidAdapter;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
+import org.activityinfo.legacy.shared.model.IndicatorGroup;
+import org.activityinfo.legacy.shared.model.LocationTypeDTO;
+import org.activityinfo.server.database.hibernate.entity.Activity;
+import org.activityinfo.server.database.hibernate.entity.AttributeGroup;
+import org.activityinfo.server.database.hibernate.entity.LocationType;
+
+import javax.inject.Provider;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.activityCategoryFolderId;
-
-/**
- * Adapts a Legacy "Activity" model to a FormClass
- */
-public class ActivityUserFormBuilder {
+import static org.activityinfo.legacy.shared.adapter.CuidAdapter.attributeGroupField;
 
 
-    private final ActivityDTO activity;
+public class SiteFormAdapter extends FormClassAdapter {
 
+    private final Provider<EntityManager> entityManager;
     private FormClass siteForm;
 
-    public ActivityUserFormBuilder(ActivityDTO activity) {
-        assert activity != null;
-        this.activity = activity;
+    public SiteFormAdapter(Provider<EntityManager> entityManager) {
+        this.entityManager = entityManager;
     }
 
-    public FormClass build() {
-        Cuid classId = CuidAdapter.activityFormClass(activity.getId());
+    public FormClass get(int activityId) {
 
+        Activity activity = entityManager.get().find(Activity.class, activityId);
+
+        Cuid classId = CuidAdapter.activityFormClass(activityId);
         siteForm = new FormClass(classId);
         siteForm.setLabel(new LocalizedString(activity.getName()));
 
         if (!Strings.isNullOrEmpty(activity.getCategory())) {
-            siteForm.setParentId(activityCategoryFolderId(activity.getDatabaseId(), activity.getCategory()));
+            siteForm.setParentId(activityCategoryFolderId(activity.getDatabase().getId(), activity.getCategory()));
         } else {
-            siteForm.setParentId(CuidAdapter.databaseId(activity.getDatabaseId()));
+            siteForm.setParentId(CuidAdapter.databaseId(activity.getDatabase().getId()));
         }
 
         FormField partnerField = new FormField(CuidAdapter.field(classId, CuidAdapter.PARTNER_FIELD));
         partnerField.setLabel(new LocalizedString(I18N.CONSTANTS.partner()));
-        partnerField.setRange(CuidAdapter.partnerFormClass(activity.getDatabaseId()));
+        partnerField.setRange(CuidAdapter.partnerFormClass(activity.getDatabase().getId()));
         partnerField.setType(FormFieldType.REFERENCE);
         partnerField.setCardinality(FormFieldCardinality.SINGLE);
         partnerField.setRequired(true);
@@ -46,7 +55,7 @@ public class ActivityUserFormBuilder {
 
         FormField projectField = new FormField(CuidAdapter.field(classId, CuidAdapter.PROJECT_FIELD));
         projectField.setLabel(new LocalizedString(I18N.CONSTANTS.project()));
-        projectField.setRange(CuidAdapter.projectFormClass(activity.getDatabaseId()));
+        projectField.setRange(CuidAdapter.projectFormClass(activity.getDatabase().getId()));
         projectField.setType(FormFieldType.REFERENCE);
         projectField.setCardinality(FormFieldCardinality.SINGLE);
         siteForm.addElement(projectField);
@@ -72,10 +81,10 @@ public class ActivityUserFormBuilder {
         locationField.setCardinality(FormFieldCardinality.SINGLE);
         siteForm.addElement(locationField);
 
-        for (AttributeGroupDTO group : activity.getAttributeGroups()) {
-            FormField attributeField = new FormField(CuidAdapter.attributeGroupField(activity, group));
+        for (AttributeGroup group : activity.getAttributeGroups()) {
+            FormField attributeField = new FormField(attributeGroupField(activity.getId(), group.getId()));
             attributeField.setLabel(new LocalizedString(group.getName()));
-            attributeField.setRange(CuidAdapter.attributeGroupFormClass(group));
+            attributeField.setRange(CuidAdapter.attributeGroupFormClass(group.getId()));
             attributeField.setType(FormFieldType.REFERENCE);
             attributeField.setRequired(group.isMandatory());
             if (group.isMultipleAllowed()) {
@@ -85,20 +94,20 @@ public class ActivityUserFormBuilder {
             }
             siteForm.addElement(attributeField);
         }
-
-        for (IndicatorGroup group : activity.groupIndicators()) {
-            if (Strings.isNullOrEmpty(group.getName())) {
-                addIndicators(siteForm, group);
-            } else {
-                FormSection section = new FormSection(CuidAdapter.activityFormSection(activity.getId(),
-                        group.getName()));
-                section.setLabel(new LocalizedString(group.getName()));
-
-                addIndicators(section, group);
-
-                siteForm.addElement(section);
-            }
-        }
+//
+//        for (IndicatorGroup group : activity.groupIndicators()) {
+//            if (Strings.isNullOrEmpty(group.getName())) {
+//                addIndicators(siteForm, group);
+//            } else {
+//                FormSection section = new FormSection(CuidAdapter.activityFormSection(activity.getId(),
+//                        group.getName()));
+//                section.setLabel(new LocalizedString(group.getName()));
+//
+//                addIndicators(section, group);
+//
+//                siteForm.addElement(section);
+//            }
+//        }
 
         FormField commentsField = new FormField(CuidAdapter.commentsField(activity.getId()));
         commentsField.setType(FormFieldType.NARRATIVE);
@@ -108,9 +117,10 @@ public class ActivityUserFormBuilder {
         return siteForm;
     }
 
-    private static Cuid locationClass(LocationTypeDTO locationType) {
-        if (locationType.isAdminLevel()) {
-            return CuidAdapter.adminLevelFormClass(locationType.getBoundAdminLevelId());
+
+    private static Cuid locationClass(LocationType locationType) {
+        if (locationType.getBoundAdminLevel() != null) {
+            return CuidAdapter.adminLevelFormClass(locationType.getBoundAdminLevel().getId());
         } else {
             return CuidAdapter.locationFormClass(locationType.getId());
         }
@@ -126,4 +136,5 @@ public class ActivityUserFormBuilder {
             container.addElement(field);
         }
     }
+
 }

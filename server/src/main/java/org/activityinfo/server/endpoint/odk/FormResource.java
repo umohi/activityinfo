@@ -7,6 +7,8 @@ import org.activityinfo.legacy.shared.model.PartnerDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.server.database.hibernate.entity.Partner;
+import org.activityinfo.server.database.hibernate.entity.User;
+import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 import org.activityinfo.server.database.hibernate.entity.UserPermission;
 
 import javax.ws.rs.*;
@@ -31,36 +33,10 @@ public class FormResource extends ODKResource {
         if (activity == null) {
             throw new WebApplicationException(Status.NOT_FOUND);
         }
-        if (!activity.getDatabase().isEditAllowed()) {
+        if (!activity.isEditAllowed()) {
             throw new WebApplicationException(Status.FORBIDDEN);
         }
 
-        purgePartners(activity);
-
         return Response.ok(new Viewable("/odk/form.ftl", activity)).build();
-    }
-
-    private void purgePartners(ActivityDTO activity) {
-        UserDatabaseDTO database = activity.getDatabase();
-        if (!database.getAmOwner() && !database.isEditAllAllowed()) {
-            UserPermission userPermission = userPermissionDAO.get()
-                                                             .findUserPermissionByUserIdAndDatabaseId(getUser().getId(),
-                                                                     database.getId());
-            if (userPermission == null) {
-                // user shouldn't be here if this is the case
-                throw new WebApplicationException(Status.FORBIDDEN);
-            } else {
-                // only keep matching partner
-                Partner allowedPartner = userPermission.getPartner();
-                ListIterator<PartnerDTO> it = database.getPartners().listIterator();
-                while (it.hasNext()) {
-                    PartnerDTO cur = it.next();
-                    if (cur.getId() != allowedPartner.getId()) {
-                        it.remove();
-                    }
-                }
-            }
-        }
-
     }
 }

@@ -181,7 +181,7 @@ public class ActivityFilterPanel extends ContentPanel implements FilterPanel {
         }
 
         private String categoryKey(ActivityDTO activity, Map<String, Link> categories) {
-            return "category" + activity.getDatabase().getId() + activity.getCategory() + categories.size();
+            return "category" + activity.getDatabaseId() + activity.getCategory() + categories.size();
         }
 
         private String databaseKey(UserDatabaseDTO db) {

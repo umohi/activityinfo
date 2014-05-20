@@ -30,12 +30,13 @@ import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
+import org.activityinfo.legacy.shared.command.GetFormViewModel;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
+import org.activityinfo.legacy.shared.model.LockedPeriodSet;
 import org.activityinfo.ui.client.page.entry.location.LocationDialog;
 
 public class SiteDialogLauncher {
@@ -49,19 +50,18 @@ public class SiteDialogLauncher {
 
     public void addSite(final Filter filter, final SiteDialogCallback callback) {
         if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
-            dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
+            int activityId = filter.getRestrictedCategory(DimensionType.Activity);
+
+            dispatcher.execute(new GetFormViewModel(activityId), new AsyncCallback<ActivityDTO>() {
 
                 @Override
-                public void onFailure(Throwable arg0) {
-                    Log.error("Unable to add site", arg0);
+                public void onFailure(Throwable caught) {
+                    Log.error("Unable to add site", caught);
                 }
 
                 @Override
-                public void onSuccess(SchemaDTO schema) {
-                    final ActivityDTO activity = schema.getActivityById(filter.getRestrictedCategory(DimensionType
-                            .Activity));
-                    Log.trace(
-                            "adding site for activity " + activity + ", locationType = " + activity.getLocationType());
+                public void onSuccess(ActivityDTO activity) {
+                    Log.trace("adding site for activity " + activity + ", locationType = " + activity.getLocationType());
 
                     if (activity.getLocationType().isAdminLevel()) {
                         addNewSiteWithBoundLocation(activity, callback);
@@ -107,7 +107,6 @@ public class SiteDialogLauncher {
 
     private void chooseLocationThenAddSite(final ActivityDTO activity, final SiteDialogCallback callback) {
         LocationDialog dialog = new LocationDialog(dispatcher,
-                activity.getDatabase().getCountry(),
                 activity.getLocationType());
 
         dialog.show(new LocationDialog.Callback() {

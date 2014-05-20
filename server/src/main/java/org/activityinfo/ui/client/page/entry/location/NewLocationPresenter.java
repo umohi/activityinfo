@@ -27,7 +27,6 @@ import com.extjs.gxt.ui.client.event.BaseObservable;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Listener;
 import org.activityinfo.core.shared.model.AiLatLng;
-import org.activityinfo.legacy.shared.model.CountryDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 
@@ -43,10 +42,10 @@ public class NewLocationPresenter extends BaseObservable {
     private boolean active;
     private Extents bounds;
 
-    public NewLocationPresenter(CountryDTO country) {
+    public NewLocationPresenter(Extents bounds) {
         provisional = true;
-        bounds = country.getBounds();
-        latLng = bounds.center();
+        this.bounds = bounds;
+        latLng = this.bounds.center();
     }
 
     public AiLatLng getLatLng() {

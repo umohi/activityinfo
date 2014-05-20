@@ -46,6 +46,7 @@ import java.util.*;
  */
 public class AdminFieldSetPresenter extends BaseObservable implements HasAdminEntityValues {
 
+
     private class Level {
         private AdminLevelDTO level;
         private AdminEntityProxy proxy;
@@ -171,18 +172,19 @@ public class AdminFieldSetPresenter extends BaseObservable implements HasAdminEn
     }
 
     private final Dispatcher dispatcher;
-    private CountryDTO country;
+    private final Extents countryBounds;
     private List<AdminLevelDTO> levels;
     private Map<Integer, Level> levelMap;
 
     private Extents bounds;
     private String boundsName = "";
 
-    public AdminFieldSetPresenter(Dispatcher dispatcher, CountryDTO country, List<AdminLevelDTO> levels) {
+    public AdminFieldSetPresenter(Dispatcher dispatcher, Extents countryBounds, List<AdminLevelDTO> levels) {
         this.dispatcher = dispatcher;
         this.levels = Lists.newArrayList(sort(levels));
         this.levelMap = Maps.newHashMap();
-        this.bounds = country.getBounds();
+        this.bounds = countryBounds;
+        this.countryBounds = countryBounds;
 
         for (AdminLevelDTO level : levels) {
             levelMap.put(level.getId(), new Level(level));
@@ -289,7 +291,7 @@ public class AdminFieldSetPresenter extends BaseObservable implements HasAdminEn
 
     private void updateBounds() {
         Extents oldBounds = bounds;
-        bounds = AdminBoundsHelper.calculate(country, levels, new HasAdminEntityValues() {
+        bounds = AdminBoundsHelper.calculate(countryBounds, levels, new HasAdminEntityValues() {
             @Override
             public AdminEntityDTO getAdminEntity(int levelId) {
                 return level(levelId).getSelection();

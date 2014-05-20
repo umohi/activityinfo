@@ -51,7 +51,7 @@ public class BoundLocationSection extends FormSectionWithFormLayout<SiteDTO> imp
         this.dispatcher = dispatcher;
 
         adminFieldSet = new AdminFieldSetPresenter(dispatcher,
-                activity.getDatabase().getCountry(),
+                activity.getCountry().getBounds(),
                 activity.getAdminLevels());
 
         comboBoxes = new AdminComboBoxSet(adminFieldSet, new BoundAdminComboBox.Factory());

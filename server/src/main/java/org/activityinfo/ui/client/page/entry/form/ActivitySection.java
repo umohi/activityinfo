@@ -29,7 +29,7 @@ import com.extjs.gxt.ui.client.widget.form.Validator;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
+import org.activityinfo.legacy.shared.model.LockedPeriodSet;
 import org.activityinfo.ui.client.page.entry.form.field.PartnerComboBox;
 import org.activityinfo.ui.client.page.entry.form.field.ProjectComboBox;
 
@@ -53,7 +53,7 @@ public class ActivitySection extends FormSectionWithFormLayout<SiteDTO> {
         getFormLayout().setDefaultWidth(200);
 
         TextField<String> databaseField = new TextField<String>();
-        databaseField.setValue(activity.getDatabase().getName());
+        databaseField.setValue(activity.getDatabaseName());
         databaseField.setFieldLabel(I18N.CONSTANTS.database());
         databaseField.setReadOnly(true);
         add(databaseField);
@@ -68,7 +68,7 @@ public class ActivitySection extends FormSectionWithFormLayout<SiteDTO> {
         add(partnerCombo);
 
         projectCombo = new ProjectComboBox(activity);
-        if (!activity.getDatabase().getProjects().isEmpty()) {
+        if (!activity.getProjects().isEmpty()) {
             add(projectCombo);
         }
 

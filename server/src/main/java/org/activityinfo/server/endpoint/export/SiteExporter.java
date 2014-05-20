@@ -161,7 +161,7 @@ public class SiteExporter {
     }
 
     private String composeUniqueSheetName(ActivityDTO activity) {
-        String sheetName = activity.getDatabase().getName() + " - " + activity.getName();
+        String sheetName = activity.getDatabaseName() + " - " + activity.getName();
 
         // to avoid conflict with our own disambiguation scheme, remove any trailing "(n)" 
         // from sheet names
@@ -198,7 +198,7 @@ public class SiteExporter {
         // Create a title cell with the complete database + activity name
         Cell titleCell = headerRow1.createCell(0);
         titleCell.setCellValue(creationHelper.createRichTextString(
-                activity.getDatabase().getName() + " - " + activity.getName()));
+                activity.getDatabaseName() + " - " + activity.getName()));
         titleCell.setCellStyle(titleStyle);
 
         int column = 0;
@@ -235,7 +235,7 @@ public class SiteExporter {
                 }
             }
         }
-        attributes = new ArrayList<Integer>();
+        attributes = new ArrayList<>();
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
             if (group.getAttributes().size() != 0) {
                 createHeaderCell(headerRow1, column, group.getName(), CellStyle.ALIGN_CENTER);
@@ -250,7 +250,7 @@ public class SiteExporter {
             }
         }
 
-        levels = new ArrayList<Integer>();
+        levels = new ArrayList<>();
         for (AdminLevelDTO level : activity.getAdminLevels()) {
             createHeaderCell(headerRow2, column++, "Code " + level.getName());
             createHeaderCell(headerRow2, column++, level.getName());

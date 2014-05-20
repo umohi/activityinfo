@@ -304,9 +304,9 @@ public class AdminFieldSetPresenterTest {
     }
 
     private void presenterForActivity(ActivityDTO activity) {
-        CountryDTO country = activity.getDatabase().getCountry();
-        presenter = new AdminFieldSetPresenter(dispatcher, country,
-                country.getAdminLevels());
+        presenter = new AdminFieldSetPresenter(dispatcher,
+                activity.getLocationType().getCountryBounds(),
+                activity.getAdminLevels());
         presenter.addListener(AdminLevelSelectionEvent.TYPE, selectionListener);
         presenter.addListener(LevelStateChangeEvent.TYPE,
                 levelStateChangeListener);

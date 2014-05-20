@@ -86,8 +86,8 @@ public class DefaultColumnModelProvider implements ColumnModelProvider {
             return new ColumnModelBuilder().addMapColumn()
                                            .maybeAddLockColumn(activity)
                                            .maybeAddDateColumn(activity)
-                                           .maybeAddPartnerColumn(activity.getDatabase())
-                                           .maybeAddProjectColumn(activity.getDatabase())
+                                           .maybeAddPartnerColumn(activity)
+                                           .maybeAddProjectColumn(activity)
                                            .maybeAddKeyIndicatorColumns(activity)
                                            .maybeAddTwoLineLocationColumn(activity)
                                            .addAdminLevelColumns(activity)
@@ -97,17 +97,16 @@ public class DefaultColumnModelProvider implements ColumnModelProvider {
             return new ColumnModelBuilder().maybeAddLockColumn(activity)
                                            .addTreeNameColumn()
                                            .maybeAddDateColumn(activity)
-                                           .maybeAddPartnerColumn(activity.getDatabase())
-                                           .maybeAddProjectColumn(activity.getDatabase())
-
+                                           .maybeAddPartnerColumn(activity)
+                                           .maybeAddProjectColumn(activity)
                                            .build();
         } else if (grouping instanceof TimeGroupingModel) {
 
             return new ColumnModelBuilder().maybeAddLockColumn(activity)
                                            .addTreeNameColumn()
                                            .maybeAddDateColumn(activity)
-                                           .maybeAddPartnerColumn(activity.getDatabase())
-                                           .maybeAddProjectColumn(activity.getDatabase())
+                                           .maybeAddPartnerColumn(activity)
+                                           .maybeAddProjectColumn(activity)
                                            .maybeAddSingleLineLocationColumn(activity)
                                            .addAdminLevelColumns(activity)
                                            .build();

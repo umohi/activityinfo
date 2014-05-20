@@ -7,6 +7,7 @@ import org.activityinfo.core.shared.application.ApplicationClassProvider;
 import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.GetFormViewModel;
 import org.activityinfo.legacy.shared.command.GetSchema;
 
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
@@ -24,7 +25,8 @@ public class ClassProvider implements Function<Cuid, Promise<FormClass>> {
         switch (classId.getDomain()) {
             case ACTIVITY_DOMAIN:
                 int activityId = getLegacyIdFromCuid(classId);
-                return dispatcher.execute(new GetSchema()).then(new BuiltinFormClasses.ActivityAdapter(activityId));
+                return dispatcher.execute(new GetFormViewModel(activityId))
+                                 .then(new BuiltinFormClasses.ActivityAdapter(activityId));
 
             case PARTNER_FORM_CLASS_DOMAIN:
                 return Promise.resolved(PartnerClassAdapter.create(getLegacyIdFromCuid(classId)));

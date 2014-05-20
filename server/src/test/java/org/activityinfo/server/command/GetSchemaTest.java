@@ -54,7 +54,7 @@ import org.activityinfo.ui.client.component.importDialog.data.PastedTable;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter.ProgressListener;
 import org.activityinfo.ui.client.page.config.design.importer.SchemaImporter.Warning;
-import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
+import org.activityinfo.legacy.shared.model.LockedPeriodSet;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;

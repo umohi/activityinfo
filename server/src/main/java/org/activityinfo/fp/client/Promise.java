@@ -274,30 +274,6 @@ public final class Promise<T> implements AsyncCallback<T> {
         };
     }
 
-    private static <T, R, Q> Function<T, Promise<Q>> join(final Function<T, Promise<R>> f, final Function<R, Q> g) {
-        return new Function<T, Promise<Q>>() {
-            @Nullable
-            @Override
-            public Promise<Q> apply(@Nullable T t) {
-                return f.apply(t).then(g);
-            }
-        };
-    }
-
-    /**
-     * Convenience function for applying an asynchronous consumer to all elements of a list in sequence.
-     * Equivalent to {@code fmap(foldLeft) ( unit(null), void operator, transform(items, consumer) ) }
-     *
-     */
-    public static <T> Promise<Void> applyAll(Iterable<T> items, Function<T, Promise<Void>> consumer) {
-        try {
-            return BiFunctions.foldLeft(Promise.<Void>resolved(null), fmap(BinaryOperator.VOID),
-                    Iterables.transform(items, consumer));
-        } catch(Throwable caught) {
-            return Promise.rejected(caught);
-        }
-    }
-
     /**
      * Convenience function for applying an fmap'd foldLeft to a list of Promises.
      */
@@ -311,10 +287,6 @@ public final class Promise<T> implements AsyncCallback<T> {
     public static <T> Promise<List<T>> prepend(Promise<T> a, Promise<List<T>> b) {
         Promise<List<T>> aList = a.then(Functions2.<T>singletonList());
         return fmap(new ConcatList<T>()).apply(aList, b);
-    }
-
-    public static <T> Promise<List<T>> concatenate(Promise<List<T>> a, Promise<List<T>> b) {
-        return fmap(new ConcatList<T>()).apply(a, b);
     }
 
     public static <T, R> Promise<List<R>> map(Iterable<T> items, Function<T, Promise<R>> function) {
@@ -337,7 +309,7 @@ public final class Promise<T> implements AsyncCallback<T> {
         return waitAll(Arrays.asList(promises));
     }
 
-    public static Promise<Void> waitAll(List<? extends Promise<?>> promises) {
+    public static Promise<Void> waitAll(final List<? extends Promise<?>> promises) {
 
         if(promises.isEmpty()) {
             return Promise.done();

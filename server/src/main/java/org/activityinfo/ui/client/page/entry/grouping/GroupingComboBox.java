@@ -92,10 +92,9 @@ public class GroupingComboBox extends ComboBox<GroupingModelData> {
                     for (AdminLevelDTO level : adminLevels(result)) {
                         models.add(new GroupingModelData(level.getName(), new AdminGroupingModel(level.getId())));
                     }
-                    callback.onSuccess(new BaseListLoadResult<GroupingModelData>(models));
+                    callback.onSuccess(new BaseListLoadResult<>(models));
                 }
             });
-
         }
 
         private List<AdminLevelDTO> adminLevels(SchemaDTO schema) {
@@ -106,7 +105,7 @@ public class GroupingComboBox extends ComboBox<GroupingModelData> {
                 if (activity.getLocationType().isAdminLevel()) {
                     // since the location type is actually bound to the leaf
                     // here,
-                    // we don't want to repeat it in the hieararhcy
+                    // we don't want to repeat it in the hierarchy
                     levels.remove(levels.size() - 1);
                 }
                 return levels;
