@@ -48,8 +48,7 @@ public class LocationUpdateBuilder implements UpdateBuilder {
     }
 
     @Override
-    public SyncRegionUpdate build(User user, GetSyncRegionUpdates request)
-            throws Exception {
+    public SyncRegionUpdate build(User user, GetSyncRegionUpdates request) throws Exception {
 
         typeId = parseTypeId(request);
         localState = new LocalState(request.getLocalVersion());
@@ -70,56 +69,54 @@ public class LocationUpdateBuilder implements UpdateBuilder {
 
     private int parseTypeId(GetSyncRegionUpdates request) {
         if (!request.getRegionId().startsWith(REGION_PREFIX)) {
-            throw new AssertionError("Expected region prefixed by '"
-                    + REGION_PREFIX +
-                    "', got '" + request.getRegionId() + "'");
+            throw new AssertionError("Expected region prefixed by '" + REGION_PREFIX +
+                                     "', got '" + request.getRegionId() + "'");
         }
-        return Integer.parseInt(request.getRegionId().substring(
-                REGION_PREFIX.length()));
+        return Integer.parseInt(request.getRegionId().substring(REGION_PREFIX.length()));
     }
 
     private void queryChanged() {
 
         SqlQuery query = SqlQuery.select()
-                .appendColumn("LocationId")
-                .appendColumn("Name")
-                .appendColumn("Axe")
-                .appendColumn("X")
-                .appendColumn("Y")
-                .appendColumn("LocationTypeId")
-                .from(Tables.LOCATION)
-                .where("locationTypeId").equalTo(typeId)
-                .where("timeEdited").greaterThan(localState.lastDate);
+                                 .appendColumn("LocationId")
+                                 .appendColumn("Name")
+                                 .appendColumn("Axe")
+                                 .appendColumn("X")
+                                 .appendColumn("Y")
+                                 .appendColumn("LocationTypeId")
+                                 .from(Tables.LOCATION)
+                                 .where("locationTypeId")
+                                 .equalTo(typeId)
+                                 .where("timeEdited")
+                                 .greaterThan(localState.lastDate);
 
-        batch.insert()
-                .into(Tables.LOCATION)
-                .from(query)
-                .execute(em);
+        batch.insert().into(Tables.LOCATION).from(query).execute(em);
     }
 
     private void linkAdminEntities() throws JSONException {
 
         SqlQuery query = SqlQuery.select()
-                .appendColumn("K.AdminEntityId")
-                .appendColumn("K.LocationId")
-                .from(Tables.LOCATION, "L")
-                .innerJoin(Tables.LOCATION_ADMIN_LINK, "K")
-                .on("L.LocationId=K.LocationId")
-                .where("L.locationTypeId").equalTo(typeId)
-                .where("L.timeEdited").greaterThan(localState.lastDate);
+                                 .appendColumn("K.AdminEntityId")
+                                 .appendColumn("K.LocationId")
+                                 .from(Tables.LOCATION, "L")
+                                 .innerJoin(Tables.LOCATION_ADMIN_LINK, "K")
+                                 .on("L.LocationId=K.LocationId")
+                                 .where("L.locationTypeId")
+                                 .equalTo(typeId)
+                                 .where("L.timeEdited")
+                                 .greaterThan(localState.lastDate);
 
-        batch.insert()
-                .into(Tables.LOCATION_ADMIN_LINK)
-                .from(query)
-                .execute(em);
+        batch.insert().into(Tables.LOCATION_ADMIN_LINK).from(query).execute(em);
     }
 
     private long queryLatestVersion() throws JSONException {
         SqlQuery query = SqlQuery.select()
-                .appendColumn("MAX(timeEdited)", "latest")
-                .from(Tables.LOCATION)
-                .where("locationTypeId").equalTo(typeId)
-                .where("timeEdited").greaterThan(localState.lastDate);
+                                 .appendColumn("MAX(timeEdited)", "latest")
+                                 .from(Tables.LOCATION)
+                                 .where("locationTypeId")
+                                 .equalTo(typeId)
+                                 .where("timeEdited")
+                                 .greaterThan(localState.lastDate);
 
         return SqlQueryUtil.queryLong(em, query);
     }

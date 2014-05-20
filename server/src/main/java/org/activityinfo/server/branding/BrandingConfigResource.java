@@ -16,9 +16,7 @@ import java.util.Map;
 @Path("/admin/branding")
 public class BrandingConfigResource {
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    @Path("{host}")
+    @GET @Produces(MediaType.TEXT_HTML) @Path("{host}")
     public Viewable getPage(@InjectParam EntityManager em, @PathParam("host") String host) {
 
         Domain domain = em.find(Domain.class, host);
@@ -33,15 +31,13 @@ public class BrandingConfigResource {
         return new Viewable("/page/BrandingConfig.ftl", model);
     }
 
-    @POST
-    @Path("{host}")
-    public Response updateConfig(
-            @InjectParam EntityManager em,
-            @Context UriInfo uri,
-            @PathParam("host") String host,
-            @FormParam("title") String updatedTitle,
-            @FormParam("scaffolding") String updatedScaffolding,
-            @FormParam("homePageBody") String updatedHomePageBody) {
+    @POST @Path("{host}")
+    public Response updateConfig(@InjectParam EntityManager em,
+                                 @Context UriInfo uri,
+                                 @PathParam("host") String host,
+                                 @FormParam("title") String updatedTitle,
+                                 @FormParam("scaffolding") String updatedScaffolding,
+                                 @FormParam("homePageBody") String updatedHomePageBody) {
 
         em.getTransaction().begin();
 

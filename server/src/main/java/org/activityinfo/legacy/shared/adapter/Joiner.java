@@ -71,9 +71,9 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         // territory.province
 
         Set<FieldPath> referenceFields = Sets.newHashSet();
-        for(FieldPath path : paths) {
-            if(path.isNested()) {
-                for(int i=1;i<path.getDepth();i++) {
+        for (FieldPath path : paths) {
+            if (path.isNested()) {
+                for (int i = 1; i < path.getDepth(); i++) {
                     referenceFields.add(path.ancestor(i));
                 }
             }
@@ -108,18 +108,17 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         Promise<List<Projection>> results = Promise.fmap(new ProjectFunction(null)).apply(classes, instances);
 
         // now schedule the joins
-        for(FieldPath fieldToJoin : joinFields) {
+        for (FieldPath fieldToJoin : joinFields) {
             results = results.join(new FetchAndJoinFunction(fieldToJoin));
         }
 
         // filter
         results = results.then(new Function<List<Projection>, List<Projection>>() {
-            @Nullable
-            @Override
+            @Nullable @Override
             public List<Projection> apply(@Nullable List<Projection> input) {
                 List<Projection> matching = new ArrayList<Projection>();
-                for(Projection projection : input) {
-                    if(criteria.apply(projection)) {
+                for (Projection projection : input) {
+                    if (criteria.apply(projection)) {
                         matching.add(projection);
                     }
                 }
@@ -130,7 +129,8 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         return results;
     }
 
-    private Promise<List<Projection>> projectSites(CriteriaAnalysis criteriaAnalysis, final List<FieldPath> fieldPaths) {
+    private Promise<List<Projection>> projectSites(CriteriaAnalysis criteriaAnalysis,
+                                                   final List<FieldPath> fieldPaths) {
         Cuid activityClass = criteriaAnalysis.getClassRestriction();
         int activityId = CuidAdapter.getLegacyIdFromCuid(activityClass);
 
@@ -160,15 +160,14 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         query.setLocationTypeId(locationTypeId);
         query.setLocationIds(criteriaAnalysis.getIds(CuidAdapter.LOCATION_TYPE_DOMAIN));
 
-        return dispatcher.execute(query)
-                .then(new LocationProjector(criteria, fieldPaths));
+        return dispatcher.execute(query).then(new LocationProjector(criteria, fieldPaths));
     }
 
     private Promise<List<FormInstance>> query(Criteria criteria) {
         return new QueryExecutor(dispatcher, criteria).execute();
     }
 
-    private class ProjectFunction extends BiFunction<List<FormClass>,List<FormInstance>,List<Projection>> {
+    private class ProjectFunction extends BiFunction<List<FormClass>, List<FormInstance>, List<Projection>> {
 
         private FieldPath prefix;
 
@@ -179,13 +178,13 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         @Override
         public List<Projection> apply(List<FormClass> formClasses, List<FormInstance> instances) {
 
-            if(prefix != null) {
+            if (prefix != null) {
                 throw new UnsupportedOperationException();
             }
 
             // build a map from property id -> projected field path
             Multimap<Cuid, FieldPath> map = HashMultimap.create();
-            for(FieldPath path : fields) {
+            for (FieldPath path : fields) {
                 map.put(path.getRoot(), new FieldPath(path.getRoot()));
             }
 
@@ -196,10 +195,10 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
             // we now look at super properties to
             // additional bindings
 
-            for(FormClass formClass : formClasses) {
-                for(FormField field : formClass.getFields()) {
-                    for(Cuid superPropertyId : field.getSuperProperties()) {
-                        if(map.containsKey(superPropertyId)) {
+            for (FormClass formClass : formClasses) {
+                for (FormField field : formClass.getFields()) {
+                    for (Cuid superPropertyId : field.getSuperProperties()) {
+                        if (map.containsKey(superPropertyId)) {
                             map.putAll(field.getId(), map.get(superPropertyId));
                         }
                     }
@@ -208,16 +207,16 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
             // now create our projections based on these mappings
             List<Projection> projections = Lists.newArrayList();
-            for(FormInstance instance : instances) {
+            for (FormInstance instance : instances) {
 
                 Projection projection = new Projection(instance.getId(), instance.getClassId());
 
-                for(FieldPath classPath : map.get(ApplicationProperties.CLASS_PROPERTY)) {
+                for (FieldPath classPath : map.get(ApplicationProperties.CLASS_PROPERTY)) {
                     projection.setValue(classPath, instance.getClassId());
                 }
 
-                for(Map.Entry<Cuid, Object> entry : instance.getValueMap().entrySet()) {
-                    for(FieldPath targetPath : map.get(entry.getKey())) {
+                for (Map.Entry<Cuid, Object> entry : instance.getValueMap().entrySet()) {
+                    for (FieldPath targetPath : map.get(entry.getKey())) {
                         projection.setValue(targetPath, entry.getValue());
                     }
                 }
@@ -232,7 +231,7 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         @Override
         public Promise<List<FormClass>> apply(List<FormInstance> instances) {
             Set<Cuid> classIds = Sets.newHashSet();
-            for(FormInstance instance : instances) {
+            for (FormInstance instance : instances) {
                 classIds.add(instance.getClassId());
             }
 
@@ -256,16 +255,16 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
             // first collect the ids of the nested FormInstances
             Set<Cuid> instanceIds = Sets.newHashSet();
-            for(Projection projection : projections) {
+            for (Projection projection : projections) {
                 instanceIds.addAll(projection.getReferenceValue(referenceField));
             }
 
-            if(instanceIds.isEmpty()) {
+            if (instanceIds.isEmpty()) {
                 return Promise.resolved(projections);
             } else {
-                return new QueryExecutor(dispatcher, new IdCriteria(instanceIds))
-                    .execute()
-                    .then(new JoinFunction(referenceField, projections));
+                return new QueryExecutor(dispatcher, new IdCriteria(instanceIds)).execute()
+                                                                                 .then(new JoinFunction(referenceField,
+                                                                                         projections));
             }
         }
     }
@@ -283,14 +282,15 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
         @Override
         public List<Projection> apply(List<FormInstance> instances) {
             Map<Cuid, FormInstance> instanceMap = indexJoinedInstances(instances);
-            for(Projection projection : projections) {
+            for (Projection projection : projections) {
                 Set<Cuid> referencedIds = projection.getReferenceValue(referenceField);
-                for(Cuid referencedId : referencedIds) {
+                for (Cuid referencedId : referencedIds) {
                     FormInstance referenceInstance = instanceMap.get(referencedId);
-                    if(referenceInstance == null) {
+                    if (referenceInstance == null) {
                         throw new IllegalStateException("Missing referenced instance " + referencedId +
-                            " (legacy id: " + CuidAdapter.getLegacyIdFromCuid(referencedId) + ") for field " +
-                                    referenceField);
+                                                        " (legacy id: " +
+                                                        CuidAdapter.getLegacyIdFromCuid(referencedId) + ") for field " +
+                                                        referenceField);
                     }
                     populateReferencedFields(projection, referenceInstance);
                 }
@@ -300,16 +300,16 @@ class Joiner implements Function<InstanceQuery, Promise<List<Projection>>> {
 
         private Map<Cuid, FormInstance> indexJoinedInstances(List<FormInstance> instances) {
             Map<Cuid, FormInstance> instanceMap = Maps.newHashMap();
-            for(FormInstance instance : instances) {
+            for (FormInstance instance : instances) {
                 instanceMap.put(instance.getId(), instance);
             }
             return instanceMap;
         }
 
         private void populateReferencedFields(Projection projection, FormInstance referencedInstance) {
-            for(Map.Entry<Cuid, Object> entry : referencedInstance.getValueMap().entrySet()) {
+            for (Map.Entry<Cuid, Object> entry : referencedInstance.getValueMap().entrySet()) {
                 FieldPath path = new FieldPath(referenceField, entry.getKey());
-                if(fields.contains(path)) {
+                if (fields.contains(path)) {
                     projection.setValue(path, entry.getValue());
                 }
             }

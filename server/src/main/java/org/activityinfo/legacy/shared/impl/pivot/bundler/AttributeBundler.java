@@ -10,8 +10,7 @@ public class AttributeBundler implements Bundler {
     private final String valueColumnAlias;
     private final String orderColumnAlias;
 
-    public AttributeBundler(Dimension dimension, String valueColumnAlias,
-                            String orderColumnAlias) {
+    public AttributeBundler(Dimension dimension, String valueColumnAlias, String orderColumnAlias) {
         super();
         this.dimension = dimension;
         this.valueColumnAlias = valueColumnAlias;
@@ -21,10 +20,8 @@ public class AttributeBundler implements Bundler {
     @Override
     public void bundle(SqlResultSetRow row, Bucket bucket) {
         if (!row.isNull(valueColumnAlias)) {
-            bucket.setCategory(
-                    dimension,
-                    new AttributeCategory(row.getString(valueColumnAlias), row
-                            .getInt(orderColumnAlias)));
+            bucket.setCategory(dimension,
+                    new AttributeCategory(row.getString(valueColumnAlias), row.getInt(orderColumnAlias)));
         }
     }
 

@@ -51,11 +51,9 @@ import java.util.logging.Logger;
  * all indicators from Activity are removed, then we need to remove the
  * dimension.
  */
-public class DimensionPruner implements
-        HasReportElement<PivotTableReportElement> {
+public class DimensionPruner implements HasReportElement<PivotTableReportElement> {
 
-    private static final Logger LOGGER = Logger.getLogger(DimensionPruner.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(DimensionPruner.class.getName());
 
     private final ReportEventBus reportEventBus;
     private PivotTableReportElement model;
@@ -96,8 +94,7 @@ public class DimensionPruner implements
         boolean dirty = false;
         for (AttributeGroupDimension dim : dimensions) {
             if (!isApplicable(schema, activityIds, dim)) {
-                LOGGER.fine("Removing attribute group "
-                        + dim.getAttributeGroupId());
+                LOGGER.fine("Removing attribute group " + dim.getAttributeGroupId());
                 model.getRowDimensions().remove(dim);
                 model.getColumnDimensions().remove(dim);
                 dirty = true;
@@ -108,8 +105,7 @@ public class DimensionPruner implements
         }
     }
 
-    private boolean isApplicable(SchemaDTO schema,
-                                 Set<ActivityDTO> activities, AttributeGroupDimension dim) {
+    private boolean isApplicable(SchemaDTO schema, Set<ActivityDTO> activities, AttributeGroupDimension dim) {
 
         String attributeName = schema.getAttributeGroupNameSafe(dim.getAttributeGroupId());
 
@@ -133,8 +129,7 @@ public class DimensionPruner implements
 
     private Set<ActivityDTO> getSelectedActivities(SchemaDTO schema) {
         Set<ActivityDTO> activities = Sets.newHashSet();
-        Set<Integer> indicatorIds = Sets.newHashSet(
-                model.getFilter().getRestrictions(DimensionType.Indicator));
+        Set<Integer> indicatorIds = Sets.newHashSet(model.getFilter().getRestrictions(DimensionType.Indicator));
         for (UserDatabaseDTO db : schema.getDatabases()) {
             for (ActivityDTO activity : db.getActivities()) {
                 for (IndicatorDTO indicator : activity.getIndicators()) {

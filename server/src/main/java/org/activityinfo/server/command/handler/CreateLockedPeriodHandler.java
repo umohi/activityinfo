@@ -33,8 +33,7 @@ import org.activityinfo.server.database.hibernate.entity.*;
 import javax.persistence.EntityManager;
 import java.util.Date;
 
-public class CreateLockedPeriodHandler implements
-        CommandHandler<CreateLockedPeriod> {
+public class CreateLockedPeriodHandler implements CommandHandler<CreateLockedPeriod> {
     private EntityManager em;
 
     @Inject
@@ -43,8 +42,7 @@ public class CreateLockedPeriodHandler implements
     }
 
     @Override
-    public CommandResult execute(CreateLockedPeriod cmd, User user)
-            throws CommandException {
+    public CommandResult execute(CreateLockedPeriod cmd, User user) throws CommandException {
 
         Activity activity = null;
         UserDatabase database = null;
@@ -52,10 +50,8 @@ public class CreateLockedPeriodHandler implements
 
         LockedPeriod lockedPeriod = new LockedPeriod();
         LockedPeriodDTO lockedPeriodDTO = cmd.getLockedPeriod();
-        lockedPeriod.setFromDate(lockedPeriodDTO.getFromDate()
-                .atMidnightInMyTimezone());
-        lockedPeriod.setToDate(lockedPeriodDTO.getToDate()
-                .atMidnightInMyTimezone());
+        lockedPeriod.setFromDate(lockedPeriodDTO.getFromDate().atMidnightInMyTimezone());
+        lockedPeriod.setToDate(lockedPeriodDTO.getToDate().atMidnightInMyTimezone());
         lockedPeriod.setName(lockedPeriodDTO.getName());
         lockedPeriod.setEnabled(lockedPeriodDTO.isEnabled());
 
@@ -73,8 +69,7 @@ public class CreateLockedPeriodHandler implements
             lockedPeriod.setActivity(activity);
             databaseId = activity.getDatabase().getId();
         } else {
-            throw new CommandException(
-                    "One of the following must be provdied: userDatabaseId, projectId, activityId");
+            throw new CommandException("One of the following must be provdied: userDatabaseId, projectId, activityId");
         }
 
         UserDatabase db = em.find(UserDatabase.class, databaseId);

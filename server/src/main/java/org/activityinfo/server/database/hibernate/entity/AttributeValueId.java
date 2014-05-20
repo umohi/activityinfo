@@ -73,8 +73,7 @@ public class AttributeValueId implements java.io.Serializable {
         }
         AttributeValueId castOther = (AttributeValueId) other;
 
-        return (this.getSiteId() == castOther.getSiteId())
-                && (this.getAttributeId() == castOther.getAttributeId());
+        return (this.getSiteId() == castOther.getSiteId()) && (this.getAttributeId() == castOther.getAttributeId());
     }
 
     @Override

@@ -35,11 +35,9 @@ import javax.persistence.EntityManager;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class UpdateTargetValueHandler extends BaseEntityHandler implements
-        CommandHandler<UpdateTargetValue> {
+public class UpdateTargetValueHandler extends BaseEntityHandler implements CommandHandler<UpdateTargetValue> {
 
-    private final static Logger LOG = Logger
-            .getLogger(UpdateTargetValueHandler.class.getName());
+    private final static Logger LOG = Logger.getLogger(UpdateTargetValueHandler.class.getName());
 
     private final Injector injector;
 
@@ -50,8 +48,7 @@ public class UpdateTargetValueHandler extends BaseEntityHandler implements
     }
 
     @Override
-    public CommandResult execute(UpdateTargetValue cmd, User user)
-            throws CommandException {
+    public CommandResult execute(UpdateTargetValue cmd, User user) throws CommandException {
 
         LOG.fine("[execute] Update command for entity: TargetValue");
 
@@ -62,8 +59,7 @@ public class UpdateTargetValueHandler extends BaseEntityHandler implements
             TargetValue targetValue = entityManager().find(TargetValue.class,
                     new TargetValueId(cmd.getTargetId(), cmd.getIndicatorId()));
             if (cmd.getChanges().get("value") != null) {
-                targetValue.setValue((Double.valueOf((String) cmd.getChanges()
-                        .get("value"))));
+                targetValue.setValue((Double.valueOf((String) cmd.getChanges().get("value"))));
                 entityManager().persist(targetValue);
 
                 return new VoidResult();
@@ -76,14 +72,11 @@ public class UpdateTargetValueHandler extends BaseEntityHandler implements
         }
 
         Target target = entityManager().find(Target.class, cmd.getTargetId());
-        Indicator indicator = entityManager().find(Indicator.class,
-                cmd.getIndicatorId());
+        Indicator indicator = entityManager().find(Indicator.class, cmd.getIndicatorId());
 
         TargetValue targetValue = new TargetValue();
-        targetValue.setId(new TargetValueId(cmd.getTargetId(), cmd
-                .getIndicatorId()));
-        targetValue.setValue((Double.valueOf((String) cmd.getChanges().get(
-                "value"))));
+        targetValue.setId(new TargetValueId(cmd.getTargetId(), cmd.getIndicatorId()));
+        targetValue.setValue((Double.valueOf((String) cmd.getChanges().get("value"))));
         targetValue.setTarget(target);
         targetValue.setIndicator(indicator);
 

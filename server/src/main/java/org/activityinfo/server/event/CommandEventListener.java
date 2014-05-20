@@ -33,8 +33,7 @@ public abstract class CommandEventListener {
 
     private Class<? extends Command>[] triggers;
 
-    public CommandEventListener(ServerEventBus serverEventBus,
-                                Class<? extends Command>... triggers) {
+    public CommandEventListener(ServerEventBus serverEventBus, Class<? extends Command>... triggers) {
         serverEventBus.register(this);
         this.triggers = triggers;
     }
@@ -45,15 +44,13 @@ public abstract class CommandEventListener {
 
         for (Class<?> trigger : triggers) {
             if (trigger.isAssignableFrom(commandClass)) {
-                LOGGER.fine("handler " + this.getClass().getSimpleName()
-                        + " triggered by command " + event.getCommand());
+                LOGGER.fine(
+                        "handler " + this.getClass().getSimpleName() + " triggered by command " + event.getCommand());
                 try {
                     onEvent(event);
                 } catch (Exception e) {
-                    LOGGER.warning("couldn't handle command "
-                            + commandClass.getSimpleName() + ": " + e.getMessage());
-                    LOGGER.throwing(this.getClass().getSimpleName(),
-                            "handleEvent", e);
+                    LOGGER.warning("couldn't handle command " + commandClass.getSimpleName() + ": " + e.getMessage());
+                    LOGGER.throwing(this.getClass().getSimpleName(), "handleEvent", e);
                 }
             }
         }

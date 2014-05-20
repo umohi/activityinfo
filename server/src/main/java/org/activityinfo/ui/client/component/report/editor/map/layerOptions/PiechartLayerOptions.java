@@ -58,8 +58,7 @@ import java.util.List;
 /**
  * Displays a list of options to configure a PiechartMapLayer
  */
-public class PiechartLayerOptions extends LayoutContainer implements
-        LayerOptionsWidget<PiechartMapLayer> {
+public class PiechartLayerOptions extends LayoutContainer implements LayerOptionsWidget<PiechartMapLayer> {
     private Dispatcher service;
     private PiechartMapLayer piechartMapLayer;
     private SchemaDTO schema;
@@ -138,8 +137,7 @@ public class PiechartLayerOptions extends LayoutContainer implements
                     sliderMinSize.setValue(sliderMaxSize.getValue());
                 }
                 piechartMapLayer.setMinRadius(sliderMinSize.getValue());
-                ValueChangeEvent.fire(PiechartLayerOptions.this,
-                        piechartMapLayer);
+                ValueChangeEvent.fire(PiechartLayerOptions.this, piechartMapLayer);
             }
         };
         timerMaxSlider = new Timer() {
@@ -149,8 +147,7 @@ public class PiechartLayerOptions extends LayoutContainer implements
                     sliderMaxSize.setValue(sliderMinSize.getValue());
                 }
                 piechartMapLayer.setMaxRadius(sliderMaxSize.getValue());
-                ValueChangeEvent.fire(PiechartLayerOptions.this,
-                        piechartMapLayer);
+                ValueChangeEvent.fire(PiechartLayerOptions.this, piechartMapLayer);
             }
         };
     }
@@ -159,29 +156,24 @@ public class PiechartLayerOptions extends LayoutContainer implements
         List<ColumnConfig> columnConfigs = new ArrayList<ColumnConfig>();
 
         columnConfigs.add(new EditColorColumn());
-        columnConfigs.add(new ReadTextColumn("name", I18N.CONSTANTS
-                .indicators(), 50));
+        columnConfigs.add(new ReadTextColumn("name", I18N.CONSTANTS.indicators(), 50));
 
         ColumnModel columnmodelIndicators = new ColumnModel(columnConfigs);
 
-        indicatorOptionGrid = new EditorGrid<NamedSlice>(indicatorsStore,
-                columnmodelIndicators);
+        indicatorOptionGrid = new EditorGrid<NamedSlice>(indicatorsStore, columnmodelIndicators);
         indicatorOptionGrid.setBorders(false);
         indicatorOptionGrid.setAutoExpandColumn("name");
         indicatorOptionGrid.setAutoWidth(true);
         indicatorOptionGrid.setHeight(100);
         indicatorOptionGrid.getView().setShowDirtyCells(false);
-        indicatorOptionGrid
-                .setSelectionModel(new CellSelectionModel<PiechartLayerOptions.NamedSlice>());
-        indicatorOptionGrid.addListener(Events.AfterEdit,
-                new Listener<GridEvent<NamedSlice>>() {
-                    @Override
-                    public void handleEvent(GridEvent<NamedSlice> be) {
-                        be.getModel().getSlice().setColor(be.getModel().getColor());
-                        ValueChangeEvent.fire(PiechartLayerOptions.this,
-                                piechartMapLayer);
-                    }
-                });
+        indicatorOptionGrid.setSelectionModel(new CellSelectionModel<PiechartLayerOptions.NamedSlice>());
+        indicatorOptionGrid.addListener(Events.AfterEdit, new Listener<GridEvent<NamedSlice>>() {
+            @Override
+            public void handleEvent(GridEvent<NamedSlice> be) {
+                be.getModel().getSlice().setColor(be.getModel().getColor());
+                ValueChangeEvent.fire(PiechartLayerOptions.this, piechartMapLayer);
+            }
+        });
 
         VBoxLayoutData vbld = new VBoxLayoutData();
         vbld.setFlex(1);
@@ -207,13 +199,11 @@ public class PiechartLayerOptions extends LayoutContainer implements
     private void populateColorPickerWidget() {
         indicatorsStore.removeAll();
         if (piechartMapLayer != null &&
-                piechartMapLayer.getIndicatorIds() != null &&
-                piechartMapLayer.getIndicatorIds().size() > 0) {
+            piechartMapLayer.getIndicatorIds() != null &&
+            piechartMapLayer.getIndicatorIds().size() > 0) {
             for (Slice slice : piechartMapLayer.getSlices()) {
-                String name = schema.getIndicatorById(slice.getIndicatorId())
-                        .getName();
-                indicatorsStore.add(new NamedSlice(slice.getColor(), slice
-                        .getIndicatorId(), name, slice));
+                String name = schema.getIndicatorById(slice.getIndicatorId()).getName();
+                indicatorsStore.add(new NamedSlice(slice.getColor(), slice.getIndicatorId(), name, slice));
             }
         }
         layout(true);
@@ -242,8 +232,7 @@ public class PiechartLayerOptions extends LayoutContainer implements
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<PiechartMapLayer> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<PiechartMapLayer> handler) {
         return this.addHandler(handler, ValueChangeEvent.getType());
     }
 
@@ -253,8 +242,7 @@ public class PiechartLayerOptions extends LayoutContainer implements
         public NamedSlice() {
         }
 
-        public NamedSlice(String color, int indicatorId, String name,
-                          Slice slice) {
+        public NamedSlice(String color, int indicatorId, String name, Slice slice) {
             super();
 
             setColor(color);

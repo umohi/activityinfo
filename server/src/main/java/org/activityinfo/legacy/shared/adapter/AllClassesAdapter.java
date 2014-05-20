@@ -50,7 +50,8 @@ public class AllClassesAdapter implements Function<SchemaDTO, List<FormClass>> {
 
                 final LocationTypeDTO locationType = activityDTO.getLocationType();
                 if (locationType.isAdminLevel()) {
-                    final AdminLevelClassAdapter adminLevelClassAdapter = new AdminLevelClassAdapter(locationType.getBoundAdminLevelId());
+                    final AdminLevelClassAdapter adminLevelClassAdapter = new AdminLevelClassAdapter(locationType
+                            .getBoundAdminLevelId());
                     result.add(adminLevelClassAdapter.apply(schema));
                 } else {
                     final LocationClassAdapter locationClassAdapter = new LocationClassAdapter(locationType.getId());

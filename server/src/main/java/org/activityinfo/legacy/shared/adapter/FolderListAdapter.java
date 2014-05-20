@@ -32,37 +32,35 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
         this.criteria = criteria;
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public List<FormInstance> apply(SchemaDTO schemaDTO) {
         List<FormInstance> instances = Lists.newArrayList();
 
         FormInstance root = new FormInstance(HOME_ID, FolderClass.CLASS_ID);
         root.set(FolderClass.LABEL_FIELD_ID, I18N.CONSTANTS.home());
-        if(criteria.apply(root)) {
+        if (criteria.apply(root)) {
             instances.add(root);
         }
 
         FormInstance geodb = new FormInstance(GEODB_ID, FolderClass.CLASS_ID);
         root.set(FolderClass.LABEL_FIELD_ID, "Geographic Reference Database");
-        if(criteria.apply(geodb)) {
+        if (criteria.apply(geodb)) {
             instances.add(geodb);
         }
 
-        for(UserDatabaseDTO db : schemaDTO.getDatabases()) {
+        for (UserDatabaseDTO db : schemaDTO.getDatabases()) {
             FormInstance dbFolder = newFolder(db);
-            if(criteria.apply(dbFolder)) {
+            if (criteria.apply(dbFolder)) {
                 instances.add(dbFolder);
             }
 
             Set<String> categories = new HashSet<>();
 
-            for(ActivityDTO activity : db.getActivities()) {
+            for (ActivityDTO activity : db.getActivities()) {
 
-                FormInstance activityClass = new FormInstance(activityFormClass(activity.getId()),
-                        FormClass.CLASS_ID);
+                FormInstance activityClass = new FormInstance(activityFormClass(activity.getId()), FormClass.CLASS_ID);
 
-                if(!Strings.isNullOrEmpty(activity.getCategory())) {
+                if (!Strings.isNullOrEmpty(activity.getCategory())) {
                     categories.add(activity.getCategory());
                     activityClass.setParentId(activityCategoryFolderId(db, activity.getCategory()));
                 } else {
@@ -71,33 +69,33 @@ public class FolderListAdapter implements Function<SchemaDTO, List<FormInstance>
 
                 activityClass.set(FormClass.LABEL_FIELD_ID, activity.getName());
 
-                if(criteria.apply(activityClass)) {
+                if (criteria.apply(activityClass)) {
                     instances.add(activityClass);
                 }
             }
 
-            for(String category : categories) {
-                FormInstance categoryFolder = new FormInstance(
-                        activityCategoryFolderId(db, category), FolderClass.CLASS_ID);
+            for (String category : categories) {
+                FormInstance categoryFolder = new FormInstance(activityCategoryFolderId(db, category),
+                        FolderClass.CLASS_ID);
                 categoryFolder.setParentId(dbFolder.getId());
                 categoryFolder.set(FolderClass.LABEL_FIELD_ID, category);
 
-                if(criteria.apply(categoryFolder)) {
+                if (criteria.apply(categoryFolder)) {
                     instances.add(categoryFolder);
                 }
             }
         }
 
         // Add LocationTypes which have been assigned to a database
-        for(CountryDTO country : schemaDTO.getCountries()) {
-            for(LocationTypeDTO locationType : country.getLocationTypes()) {
-                if(!locationType.isAdminLevel() && locationType.getDatabaseId() != null) {
+        for (CountryDTO country : schemaDTO.getCountries()) {
+            for (LocationTypeDTO locationType : country.getLocationTypes()) {
+                if (!locationType.isAdminLevel() && locationType.getDatabaseId() != null) {
                     FormInstance instance = new FormInstance(CuidAdapter.locationFormClass(locationType.getId()),
                             FormClass.CLASS_ID);
                     instance.set(FormClass.LABEL_FIELD_ID, locationType.getName());
                     instance.setParentId(CuidAdapter.cuid(DATABASE_DOMAIN, locationType.getDatabaseId()));
 
-                    if(criteria.apply(instance)) {
+                    if (criteria.apply(instance)) {
                         instances.add(instance);
                     }
                 }

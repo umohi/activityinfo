@@ -61,8 +61,7 @@ public class Authentication implements java.io.Serializable {
      *
      * @return the id of this authentication
      */
-    @Id
-    @Column(name = "AuthToken", unique = true, nullable = false, length = 32)
+    @Id @Column(name = "AuthToken", unique = true, nullable = false, length = 32)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SecureSequenceGenerator")
     @org.hibernate.annotations.GenericGenerator(name = "SecureSequenceGenerator",
             strategy = "org.activityinfo.server.authentication.SecureSequenceGenerator")
@@ -74,8 +73,7 @@ public class Authentication implements java.io.Serializable {
         this.id = sessionId;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "UserId", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "UserId", nullable = false)
     public User getUser() {
         return this.user;
     }
@@ -84,8 +82,7 @@ public class Authentication implements java.io.Serializable {
         this.user = user;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
+    @Temporal(TemporalType.TIMESTAMP) @Column
     public Date getDateCreated() {
         return this.dateCreated;
     }
@@ -94,8 +91,7 @@ public class Authentication implements java.io.Serializable {
         this.dateCreated = dateCreated;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
+    @Temporal(TemporalType.TIMESTAMP) @Column
     public Date getDateLastActive() {
         return this.dateLastActive;
     }

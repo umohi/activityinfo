@@ -54,29 +54,27 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
     }
 
     @Override
-    public CommandResult execute(GetUsers cmd, User currentUser)
-            throws CommandException {
+    public CommandResult execute(GetUsers cmd, User currentUser) throws CommandException {
 
         UserDatabase db = em.getReference(UserDatabase.class, cmd.getDatabaseId());
 
-        UserPermission currentUserPermission = PermissionOracle.using(em)
-                .getPermissionByUser(db, currentUser);
+        UserPermission currentUserPermission = PermissionOracle.using(em).getPermissionByUser(db, currentUser);
 
         assertAuthorized(currentUserPermission);
 
-        String whereClause =
-                "up.database.id = :dbId and " +
-                "up.user.id <> :currentUserId and " +
-                "up.allowView = true";
+        String whereClause = "up.database.id = :dbId and " +
+                             "up.user.id <> :currentUserId and " +
+                             "up.allowView = true";
 
-        if(!currentUserPermission.isAllowManageAllUsers()) {
+        if (!currentUserPermission.isAllowManageAllUsers()) {
             whereClause += " and up.partner.id = " + currentUserPermission.getPartner().getId();
         }
 
         TypedQuery<UserPermission> query = em.createQuery("select up from UserPermission up where " +
-               whereClause + " " + composeOrderByClause(cmd), UserPermission.class)
-                .setParameter("dbId", cmd.getDatabaseId())
-                .setParameter("currentUserId", currentUser.getId());
+                                                          whereClause + " " + composeOrderByClause(cmd),
+                UserPermission.class)
+                                             .setParameter("dbId", cmd.getDatabaseId())
+                                             .setParameter("currentUserId", currentUser.getId());
 
         if (cmd.getOffset() > 0) {
             query.setFirstResult(cmd.getOffset());
@@ -103,33 +101,30 @@ public class GetUsersHandler implements CommandHandler<GetUsers> {
             models.add(dto);
         }
 
-        return new UserResult(models, cmd.getOffset(),
-                queryTotalCount(cmd, currentUser, whereClause));
+        return new UserResult(models, cmd.getOffset(), queryTotalCount(cmd, currentUser, whereClause));
     }
 
     private void assertAuthorized(UserPermission currentUserPermission) {
-        if(!currentUserPermission.isAllowManageUsers()) {
+        if (!currentUserPermission.isAllowManageUsers()) {
             throw new IllegalAccessCommandException(String.format(
                     "User %d does not have permission to view user permissions in database %d",
-                    currentUserPermission.getUser().getId(), currentUserPermission.getDatabase().getId()));
+                    currentUserPermission.getUser().getId(),
+                    currentUserPermission.getDatabase().getId()));
         }
     }
 
     private int queryTotalCount(GetUsers cmd, User currentUser, String whereClause) {
-        return ((Number) em
-                    .createQuery("select count(up) from UserPermission up where " + whereClause)
-                    .setParameter("dbId", cmd.getDatabaseId())
-                    .setParameter("currentUserId", currentUser.getId())
-                    .getSingleResult())
-                    .intValue();
+        return ((Number) em.createQuery("select count(up) from UserPermission up where " + whereClause)
+                           .setParameter("dbId", cmd.getDatabaseId())
+                           .setParameter("currentUserId", currentUser.getId())
+                           .getSingleResult()).intValue();
     }
 
     private String composeOrderByClause(GetUsers cmd) {
         String orderByClause = " ";
 
         if (cmd.getSortInfo().getSortDir() != Style.SortDir.NONE) {
-            String dir = cmd.getSortInfo().getSortDir() == Style.SortDir.ASC ? "asc"
-                    : "desc";
+            String dir = cmd.getSortInfo().getSortDir() == Style.SortDir.ASC ? "asc" : "desc";
             String property = null;
             String field = cmd.getSortInfo().getSortField();
 

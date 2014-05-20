@@ -40,8 +40,7 @@ import java.util.*;
  *
  * @author Alex Bertram
  */
-public final class SiteDTO extends BaseModelData implements EntityDTO,
-        HasAdminEntityValues {
+public final class SiteDTO extends BaseModelData implements EntityDTO, HasAdminEntityValues {
 
     public static final String ENTITY_NAME = "Site";
 
@@ -95,7 +94,6 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
     public Cuid getInstanceId() {
         return CuidAdapter.cuid(CuidAdapter.SITE_DOMAIN, getId());
     }
-
 
 
     /**
@@ -455,8 +453,7 @@ public final class SiteDTO extends BaseModelData implements EntityDTO,
      * Returns the location in the format of [LocationName (LocationAxe)]
      */
     public String getPrettyLocationName() {
-        return getLocationName() + getLocationAxe() != null ? " ("
-                + getLocationAxe() + ")" : "";
+        return getLocationName() + getLocationAxe() != null ? " (" + getLocationAxe() + ")" : "";
     }
 
     public void setLocationId(int locationId) {

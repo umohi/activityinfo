@@ -36,15 +36,13 @@ import org.activityinfo.ui.client.page.common.toolbar.UIActions;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractGridPresenter<ModelT extends ModelData>
-        implements GridPresenter<ModelT>, Page {
+public abstract class AbstractGridPresenter<ModelT extends ModelData> implements GridPresenter<ModelT>, Page {
 
     private final EventBus eventBus;
     private final StateProvider stateMgr;
     private final GridView<GridPresenter, ModelT> view;
 
-    protected AbstractGridPresenter(EventBus eventBus, StateProvider stateMgr,
-                                    GridView view) {
+    protected AbstractGridPresenter(EventBus eventBus, StateProvider stateMgr, GridView view) {
         this.eventBus = eventBus;
         this.stateMgr = stateMgr;
         this.view = view;
@@ -57,8 +55,7 @@ public abstract class AbstractGridPresenter<ModelT extends ModelData>
         if (a == null || b == null) {
             return false;
         }
-        return a.getSortField().equals(b.getSortField()) &&
-                a.getSortDir() == b.getSortDir();
+        return a.getSortField().equals(b.getSortField()) && a.getSortDir() == b.getSortDir();
     }
 
     @Override
@@ -114,16 +111,14 @@ public abstract class AbstractGridPresenter<ModelT extends ModelData>
         return (pagenum - 1) * getPageSize();
     }
 
-    protected void initLoaderDefaults(PagingLoader loader,
-                                      AbstractPagingGridPageState place, SortInfo defaultSort) {
+    protected void initLoaderDefaults(PagingLoader loader, AbstractPagingGridPageState place, SortInfo defaultSort) {
         Map<String, Object> stateMap = getState();
         if (place.getSortInfo() != null) {
             loader.setSortField(place.getSortInfo().getSortField());
             loader.setSortDir(place.getSortInfo().getSortDir());
         } else if (stateMap.containsKey("sortField")) {
             loader.setSortField((String) stateMap.get("sortField"));
-            loader.setSortDir("DESC".equals(stateMap.get("sortDir")) ?
-                    Style.SortDir.DESC : Style.SortDir.ASC);
+            loader.setSortDir("DESC".equals(stateMap.get("sortDir")) ? Style.SortDir.DESC : Style.SortDir.ASC);
         } else {
             loader.setSortField(defaultSort.getSortField());
             loader.setSortDir(defaultSort.getSortDir());
@@ -180,8 +175,7 @@ public abstract class AbstractGridPresenter<ModelT extends ModelData>
         if (config instanceof ListLoadConfig) {
             SortInfo si = ((ListLoadConfig) config).getSortInfo();
             stateMap.put("sortField", si.getSortField());
-            stateMap.put("sortDir",
-                    si.getSortDir() == Style.SortDir.ASC ? "ASC" : "DESC");
+            stateMap.put("sortDir", si.getSortDir() == Style.SortDir.ASC ? "ASC" : "DESC");
         }
         if (config instanceof PagingLoadConfig) {
             int offset = ((PagingLoadConfig) config).getOffset();
@@ -196,25 +190,19 @@ public abstract class AbstractGridPresenter<ModelT extends ModelData>
         if (config instanceof ListLoadConfig) {
             place.setSortInfo(((ListLoadConfig) config).getSortInfo());
         }
-        if (config instanceof PagingLoadConfig
-                && place instanceof AbstractPagingGridPageState) {
+        if (config instanceof PagingLoadConfig && place instanceof AbstractPagingGridPageState) {
             int offset = ((PagingLoadConfig) config).getOffset();
-            ((AbstractPagingGridPageState) place)
-                    .setPageNum(pageFromOffset(offset));
+            ((AbstractPagingGridPageState) place).setPageNum(pageFromOffset(offset));
         }
 
-        eventBus.fireEvent(new NavigationEvent(
-                NavigationHandler.NAVIGATION_AGREED, place));
+        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_AGREED, place));
     }
 
-    protected void handleGridNavigation(ListLoader loader,
-                                        AbstractGridPageState gridPlace) {
+    protected void handleGridNavigation(ListLoader loader, AbstractGridPageState gridPlace) {
         boolean reloadRequired = false;
 
-        if (gridPlace.getSortInfo() != null
-                &&
-                !equalSortInfo(gridPlace.getSortInfo(),
-                        new SortInfo(loader.getSortField(), loader.getSortDir()))) {
+        if (gridPlace.getSortInfo() != null &&
+            !equalSortInfo(gridPlace.getSortInfo(), new SortInfo(loader.getSortField(), loader.getSortDir()))) {
 
             loader.setSortField(gridPlace.getSortInfo().getSortField());
             loader.setSortDir(gridPlace.getSortInfo().getSortDir());
@@ -227,8 +215,7 @@ public abstract class AbstractGridPresenter<ModelT extends ModelData>
             if (pgPlace.getPageNum() > 0) {
                 int offset = offsetFromPage(pgPlace.getPageNum());
                 if (offset != ((PagingLoader) loader).getOffset()) {
-                    ((PagingLoader) loader)
-                            .setOffset((pgPlace.getPageNum() - 1) * getPageSize());
+                    ((PagingLoader) loader).setOffset((pgPlace.getPageNum() - 1) * getPageSize());
                     reloadRequired = true;
                 }
             }
@@ -240,8 +227,7 @@ public abstract class AbstractGridPresenter<ModelT extends ModelData>
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
 
     }

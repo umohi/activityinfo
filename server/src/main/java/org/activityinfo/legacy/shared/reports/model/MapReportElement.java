@@ -99,13 +99,10 @@ public class MapReportElement extends ReportElement<MapContent> {
         this.maximumZoomLevel = maximumZoomLevel;
     }
 
-    @XmlElementWrapper(name = "layers")
-    @XmlElements({
-            @XmlElement(name = "bubbles", type = BubbleMapLayer.class),
+    @XmlElementWrapper(name = "layers") @XmlElements({@XmlElement(name = "bubbles", type = BubbleMapLayer.class),
             @XmlElement(name = "pie", type = PiechartMapLayer.class),
             @XmlElement(name = "icons", type = IconMapLayer.class),
-            @XmlElement(name = "polygons", type = PolygonMapLayer.class)
-    })
+            @XmlElement(name = "polygons", type = PolygonMapLayer.class)})
     public List<MapLayer> getLayers() {
         return layers;
     }
@@ -150,8 +147,7 @@ public class MapReportElement extends ReportElement<MapContent> {
         this.zoomLevel = zoomLevel;
     }
 
-    @Override
-    @XmlTransient
+    @Override @XmlTransient
     public Set<Integer> getIndicators() {
         Set<Integer> ids = Sets.newHashSet();
         for (MapLayer layer : layers) {
@@ -162,7 +158,6 @@ public class MapReportElement extends ReportElement<MapContent> {
 
     @Override
     public String toString() {
-        return "MapReportElement [baseMapId=" + baseMapId + ", layers="
-                + layers + "]";
+        return "MapReportElement [baseMapId=" + baseMapId + ", layers=" + layers + "]";
     }
 }

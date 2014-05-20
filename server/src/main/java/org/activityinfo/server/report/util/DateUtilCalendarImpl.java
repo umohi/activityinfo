@@ -35,8 +35,7 @@ public class DateUtilCalendarImpl extends DateUtil {
     @Override
     public Month getCurrentMonth() {
         Calendar calendar = Calendar.getInstance();
-        return new Month(calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH) + 1);
+        return new Month(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
     }
 
     @Override
@@ -109,10 +108,8 @@ public class DateUtilCalendarImpl extends DateUtil {
         calendar.set(Calendar.MILLISECOND, 0);
 
         if (dateUnit == DateUnit.YEAR) {
-            calendar.set(Calendar.MONTH,
-                    calendar.getActualMinimum(Calendar.MONTH));
-            calendar.set(Calendar.DATE,
-                    calendar.getActualMinimum(Calendar.MONTH));
+            calendar.set(Calendar.MONTH, calendar.getActualMinimum(Calendar.MONTH));
+            calendar.set(Calendar.DATE, calendar.getActualMinimum(Calendar.MONTH));
 
         } else if (dateUnit == DateUnit.QUARTER) {
 
@@ -121,8 +118,7 @@ public class DateUtilCalendarImpl extends DateUtil {
 
         } else if (dateUnit == DateUnit.MONTH) {
 
-            calendar.set(Calendar.DATE,
-                    calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+            calendar.set(Calendar.DATE, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
 
         } else if (dateUnit == DateUnit.WEEK_MON) {
 
@@ -140,10 +136,8 @@ public class DateUtilCalendarImpl extends DateUtil {
         calendar.setTime(date);
 
         if (dateUnit == DateUnit.YEAR) {
-            calendar.set(Calendar.MONTH,
-                    calendar.getActualMaximum(Calendar.MONTH));
-            calendar.set(Calendar.DATE,
-                    calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+            calendar.set(Calendar.MONTH, calendar.getActualMaximum(Calendar.MONTH));
+            calendar.set(Calendar.DATE, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
 
         } else if (dateUnit == DateUnit.QUARTER) {
 
@@ -152,8 +146,7 @@ public class DateUtilCalendarImpl extends DateUtil {
 
         } else if (dateUnit == DateUnit.MONTH) {
 
-            calendar.set(Calendar.DATE,
-                    calendar.getActualMaximum(Calendar.DATE));
+            calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
 
         } else if (dateUnit == DateUnit.WEEK_MON) {
 
@@ -197,7 +190,6 @@ public class DateUtilCalendarImpl extends DateUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        return calendar.get(Calendar.DATE) == calendar
-                .getActualMaximum(Calendar.DATE);
+        return calendar.get(Calendar.DATE) == calendar.getActualMaximum(Calendar.DATE);
     }
 }

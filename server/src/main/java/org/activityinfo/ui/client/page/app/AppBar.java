@@ -42,17 +42,13 @@ public class AppBar extends Composite {
 
     private static AppBarUiBinder uiBinder = GWT.create(AppBarUiBinder.class);
 
-    @UiField
-    SectionTabStrip sectionTabStrip;
+    @UiField SectionTabStrip sectionTabStrip;
 
-    @UiField
-    Label logo;
+    @UiField Label logo;
 
-    @UiField
-    Label settingsButton;
+    @UiField Label settingsButton;
 
-    @UiField
-    Label searchButton;
+    @UiField Label searchButton;
 
     private SettingsPopup settingsPopup;
 
@@ -77,24 +73,19 @@ public class AppBar extends Composite {
         return sectionTabStrip;
     }
 
-    @UiHandler("logo")
-    void handleLogoClick(ClickEvent e) {
+    @UiHandler("logo") void handleLogoClick(ClickEvent e) {
         Window.open("http://about.activityinfo.org/", "_blank", null);
     }
 
-    @UiHandler("settingsButton")
-    void handleSettingsClick(ClickEvent e) {
+    @UiHandler("settingsButton") void handleSettingsClick(ClickEvent e) {
         if (settingsPopup == null) {
             settingsPopup = new SettingsPopup(eventBus, offlineController);
         }
-        settingsPopup.setPopupPosition(Window.getClientWidth()
-                - SettingsPopup.WIDTH, HEIGHT - 3);
+        settingsPopup.setPopupPosition(Window.getClientWidth() - SettingsPopup.WIDTH, HEIGHT - 3);
         settingsPopup.show();
     }
 
-    @UiHandler("searchButton")
-    void handleSearchClick(ClickEvent e) {
-        eventBus.fireEvent(new NavigationEvent(
-                NavigationHandler.NAVIGATION_REQUESTED, new SearchPageState()));
+    @UiHandler("searchButton") void handleSearchClick(ClickEvent e) {
+        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new SearchPageState()));
     }
 }

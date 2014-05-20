@@ -25,11 +25,11 @@ package org.activityinfo.ui.client.page.dashboard;
 import com.extjs.gxt.ui.client.widget.custom.Portal;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.GetReports;
 import org.activityinfo.legacy.shared.command.result.ReportsResult;
 import org.activityinfo.legacy.shared.model.ReportMetadataDTO;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.ui.client.page.NavigationCallback;
 import org.activityinfo.ui.client.page.Page;
 import org.activityinfo.ui.client.page.PageId;
@@ -63,30 +63,28 @@ public class DashboardPage extends Portal implements Page {
     }
 
     private void loadReports() {
-        dispatcher.execute(new GetReports(),
-                new AsyncCallback<ReportsResult>() {
+        dispatcher.execute(new GetReports(), new AsyncCallback<ReportsResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
+            @Override
+            public void onFailure(Throwable caught) {
 
+            }
+
+            @Override
+            public void onSuccess(ReportsResult result) {
+                boolean haveReports = false;
+                for (ReportMetadataDTO report : result.getData()) {
+                    if (report.isDashboard()) {
+                        add(new ReportPortlet(dispatcher, eventBus, report), 0);
+                        haveReports = true;
                     }
-
-                    @Override
-                    public void onSuccess(ReportsResult result) {
-                        boolean haveReports = false;
-                        for (ReportMetadataDTO report : result.getData()) {
-                            if (report.isDashboard()) {
-                                add(new ReportPortlet(dispatcher, eventBus, report),
-                                        0);
-                                haveReports = true;
-                            }
-                        }
-                        if (!haveReports) {
-                            add(new ChooseReportsPortlet(), 0);
-                        }
-                        layout();
-                    }
-                });
+                }
+                if (!haveReports) {
+                    add(new ChooseReportsPortlet(), 0);
+                }
+                layout();
+            }
+        });
     }
 
     @Override
@@ -100,8 +98,7 @@ public class DashboardPage extends Portal implements Page {
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 

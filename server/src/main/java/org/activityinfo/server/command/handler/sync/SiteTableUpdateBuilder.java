@@ -36,8 +36,7 @@ public class SiteTableUpdateBuilder implements UpdateBuilder {
     private final JpaUpdateBuilder builder = new JpaUpdateBuilder();
 
     @Override
-    public SyncRegionUpdate build(User user, GetSyncRegionUpdates request)
-            throws JSONException {
+    public SyncRegionUpdate build(User user, GetSyncRegionUpdates request) throws JSONException {
         SyncRegionUpdate update = new SyncRegionUpdate();
         update.setComplete(true);
         update.setVersion(CURRENT_VERSION);
@@ -46,16 +45,18 @@ public class SiteTableUpdateBuilder implements UpdateBuilder {
 
             builder.createTableIfNotExists(Site.class);
             builder.createTableIfNotExists(ReportingPeriod.class);
-            builder
-                    .executeStatement("create index if not exists site_activity on site (ActivityId)");
+            builder.executeStatement("create index if not exists site_activity on site (ActivityId)");
 
             // TODO: fix rebar to handle these types of classes correctly
-            builder
-                    .executeStatement("create table if not exists AttributeValue (SiteId integer, AttributeId integer, Value integer)");
-            builder
-                    .executeStatement("create table if not exists IndicatorValue (ReportingPeriodId integer, IndicatorId integer, Value real)");
-            builder
-                    .executeStatement("create table if not exists sitehistory (id integer, siteid integer, userid integer, timecreated real, initial integer, json text)");
+            builder.executeStatement(
+                    "create table if not exists AttributeValue (SiteId integer, AttributeId integer, Value integer)");
+            builder.executeStatement(
+                    "create table if not exists IndicatorValue (ReportingPeriodId integer, IndicatorId integer, " +
+                    "Value real)");
+
+            builder.executeStatement(
+                    "create table if not exists sitehistory (id integer, siteid integer, userid integer, " +
+                    "timecreated real, initial integer, json text)");
             update.setSql(builder.asJson());
         }
 

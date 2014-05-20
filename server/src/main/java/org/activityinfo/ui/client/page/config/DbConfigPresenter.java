@@ -23,9 +23,9 @@ package org.activityinfo.ui.client.page.config;
  */
 
 import com.google.inject.Inject;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.page.NavigationCallback;
 import org.activityinfo.ui.client.page.PageId;
 import org.activityinfo.ui.client.page.PageState;
@@ -47,8 +47,7 @@ public class DbConfigPresenter implements DbPage {
 
     @Override
     public void go(UserDatabaseDTO db) {
-        view.setHeading(db.getFullName() == null ? db.getName() : db
-                .getFullName());
+        view.setHeading(db.getFullName() == null ? db.getName() : db.getFullName());
 
         if (db.isDesignAllowed()) {
             view.add(I18N.CONSTANTS.design(),
@@ -69,10 +68,10 @@ public class DbConfigPresenter implements DbPage {
                     new DbPageState(DbUserEditor.PAGE_ID, db.getId()));
         }
         if (db.isDesignAllowed()) {
-            view.add(I18N.CONSTANTS.timeLocks(), I18N.CONSTANTS
-                    .lockPeriodsDescription(),
-                    "db-lockedperiods.png", new DbPageState(
-                    LockedPeriodsPresenter.PAGE_ID, db.getId()));
+            view.add(I18N.CONSTANTS.timeLocks(),
+                    I18N.CONSTANTS.lockPeriodsDescription(),
+                    "db-lockedperiods.png",
+                    new DbPageState(LockedPeriodsPresenter.PAGE_ID, db.getId()));
         }
         if (db.isDesignAllowed()) {
             view.add(I18N.CONSTANTS.project(),
@@ -103,8 +102,7 @@ public class DbConfigPresenter implements DbPage {
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 

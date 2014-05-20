@@ -28,8 +28,8 @@ import com.bedatadriven.rebar.async.AsyncFunction;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.ui.client.local.command.CommandQueue;
 import org.activityinfo.ui.client.local.command.CommandQueue.QueueEntry;
 
@@ -43,8 +43,7 @@ public class UpdateSynchronizer implements AsyncCommand {
     private Dispatcher dispatcher;
 
     @Inject
-    public UpdateSynchronizer(CommandQueue commandQueue,
-                              SynchronizerDispatcher dispatcher) {
+    public UpdateSynchronizer(CommandQueue commandQueue, SynchronizerDispatcher dispatcher) {
         super();
         this.commandQueue = commandQueue;
         this.dispatcher = dispatcher;
@@ -54,8 +53,7 @@ public class UpdateSynchronizer implements AsyncCommand {
         return new AsyncFunction<CommandQueue.QueueEntry, CommandResult>() {
 
             @Override
-            protected void doApply(QueueEntry argument,
-                                   AsyncCallback<CommandResult> callback) {
+            protected void doApply(QueueEntry argument, AsyncCallback<CommandResult> callback) {
                 dispatcher.execute(argument.getCommand(), callback);
             }
         };
@@ -63,11 +61,7 @@ public class UpdateSynchronizer implements AsyncCommand {
 
     @Override
     public void execute(AsyncCallback<Void> callback) {
-        commandQueue.get().map(
-                Async.sequence(dispatch(),
-                        commandQueue.remove()))
-                .discardResult()
-                .apply(null, callback);
+        commandQueue.get().map(Async.sequence(dispatch(), commandQueue.remove())).discardResult().apply(null, callback);
     }
 
 }

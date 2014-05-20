@@ -58,8 +58,7 @@ public class CreateSite implements MutatingCommand<CreateResult>, SiteCommand {
                 if (site.getProject() != null) {
                     properties.put("projectId", site.getProject().getId());
                 }
-            } else if (!property.getKey().startsWith(
-                    AdminLevelDTO.PROPERTY_PREFIX)) {
+            } else if (!property.getKey().startsWith(AdminLevelDTO.PROPERTY_PREFIX)) {
                 properties.put(property.getKey(), property.getValue());
             }
         }

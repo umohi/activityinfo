@@ -38,15 +38,11 @@ public class GcsBlobService {
         String bucketName = path.substring(0, bucketEnd);
         String keyName = path.substring(bucketEnd + 1);
 
-        GSFileOptions options = new GSFileOptionsBuilder()
-                .setBucket(bucketName)
-                .setKey(keyName)
-                .build();
+        GSFileOptions options = new GSFileOptionsBuilder().setBucket(bucketName).setKey(keyName).build();
         return options;
     }
 
-    public InputSupplier<InputStream> get(final String key)
-            throws BlobNotFoundException {
+    public InputSupplier<InputStream> get(final String key) throws BlobNotFoundException {
         return new InputSupplier<InputStream>() {
 
             @Override

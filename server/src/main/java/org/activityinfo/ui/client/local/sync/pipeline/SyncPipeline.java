@@ -31,10 +31,9 @@ import org.activityinfo.ui.client.local.sync.UpdateSynchronizer;
 public class SyncPipeline extends AsyncPipeline {
 
     @Inject
-    public SyncPipeline(
-            AppCacheSynchronizer appCacheSynchronizer,
-            UpdateSynchronizer updateSynchronizer,
-            DownSynchronizer downSychronizer) {
+    public SyncPipeline(AppCacheSynchronizer appCacheSynchronizer,
+                        UpdateSynchronizer updateSynchronizer,
+                        DownSynchronizer downSychronizer) {
         super(appCacheSynchronizer, updateSynchronizer, downSychronizer);
     }
 }

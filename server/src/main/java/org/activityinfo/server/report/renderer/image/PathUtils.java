@@ -16,23 +16,20 @@ public class PathUtils {
             Polygon polygon = (Polygon) geometry.getGeometryN(i);
             PathUtils.addRingToPath(map, path, polygon.getExteriorRing().getCoordinates());
             for (int j = 0; j != polygon.getNumInteriorRing(); ++j) {
-                PathUtils.addRingToPath(map, path, polygon.getInteriorRingN(j)
-                        .getCoordinates());
+                PathUtils.addRingToPath(map, path, polygon.getInteriorRingN(j).getCoordinates());
             }
             break;
         }
         return path;
     }
 
-    private static void addRingToPath(TiledMap map, GeneralPath path,
-                                      Coordinate[] coordinates) {
+    private static void addRingToPath(TiledMap map, GeneralPath path, Coordinate[] coordinates) {
         System.out.println("--ring--");
 
         float lastX = Float.NaN;
         float lastY = Float.NaN;
         for (int j = 0; j != coordinates.length; ++j) {
-            Point point = map.fromLatLngToPixel(new AiLatLng(coordinates[j].y,
-                    coordinates[j].x));
+            Point point = map.fromLatLngToPixel(new AiLatLng(coordinates[j].y, coordinates[j].x));
             float x = point.getX();
             float y = point.getY();
 

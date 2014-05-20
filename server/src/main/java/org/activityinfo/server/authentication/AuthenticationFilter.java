@@ -61,17 +61,22 @@ public class AuthenticationFilter implements Filter {
     private final ServerSideAuthProvider authProvider;
     private final BasicAuthentication basicAuthenticator;
 
-    private final LoadingCache<String, AuthenticatedUser> authTokenCache = CacheBuilder
-            .newBuilder()
-            .maximumSize(10000)
-            .expireAfterAccess(6, TimeUnit.HOURS)
-            .build(new CacheLoader<String, AuthenticatedUser>() {
+    private final LoadingCache<String, AuthenticatedUser> authTokenCache = CacheBuilder.newBuilder()
+                                                                                       .maximumSize(10000)
+                                                                                       .expireAfterAccess(6,
+                                                                                               TimeUnit.HOURS)
+                                                                                       .build(new CacheLoader<String,
+                                                                                               AuthenticatedUser>() {
 
-                @Override
-                public AuthenticatedUser load(String authToken) throws Exception {
-                    return queryAuthToken(authToken);
-                }
-            });
+                                                                                           @Override
+                                                                                           public AuthenticatedUser
+                                                                                           load(
+                                                                                                   String authToken)
+                                                                                                   throws Exception {
+                                                                                               return queryAuthToken(
+                                                                                                       authToken);
+                                                                                           }
+                                                                                       });
 
     @Inject
     public AuthenticationFilter(Provider<HttpServletRequest> request,
@@ -85,7 +90,8 @@ public class AuthenticationFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response,
+    public void doFilter(ServletRequest request,
+                         ServletResponse response,
                          FilterChain filterChain) throws IOException, ServletException {
 
         allowCrossOriginRequests((HttpServletResponse) response);
@@ -119,7 +125,7 @@ public class AuthenticationFilter implements Filter {
         response.addHeader("Access-Control-Allow-Origin", "*");
 
         // cache cor permission for a full day
-        response.addHeader("Access-Control-Max-Age", Integer.toString(24*60*60));
+        response.addHeader("Access-Control-Max-Age", Integer.toString(24 * 60 * 60));
     }
 
     @Override
@@ -131,8 +137,7 @@ public class AuthenticationFilter implements Filter {
     }
 
     private AuthenticatedUser queryAuthToken(String authToken) {
-        Authentication entity = entityManager.get().find(Authentication.class,
-                authToken);
+        Authentication entity = entityManager.get().find(Authentication.class, authToken);
         if (entity == null) {
             // try as basic authentication
             entity = basicAuthenticator.tryAuthenticate(authToken);
@@ -141,7 +146,8 @@ public class AuthenticationFilter implements Filter {
             throw new IllegalArgumentException();
         }
         AuthenticatedUser authenticatedUser = new AuthenticatedUser(authToken,
-                entity.getUser().getId(), entity.getUser().getEmail());
+                entity.getUser().getId(),
+                entity.getUser().getEmail());
         authenticatedUser.setUserLocale(entity.getUser().getLocale());
         return authenticatedUser;
     }

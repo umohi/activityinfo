@@ -71,34 +71,25 @@ public class SignUpController {
     @Inject
     private Provider<Domain> domainProvider;
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    @LogException(emailAlert = true)
-    public Viewable getPage(@Context HttpServletRequest req)
-            throws ServletException, IOException {
+    @GET @Produces(MediaType.TEXT_HTML) @LogException(emailAlert = true)
+    public Viewable getPage(@Context HttpServletRequest req) throws ServletException, IOException {
         return new SignUpPageModel().asViewable();
     }
 
-    @GET
-    @Path("/sent")
-    @Produces(MediaType.TEXT_HTML)
+    @GET @Path("/sent") @Produces(MediaType.TEXT_HTML)
     public Viewable getPage() {
         return new Viewable("/page/SignUpEmailSent.ftl", Maps.newHashMap());
     }
 
-    @POST
-    @Produces(MediaType.TEXT_HTML)
-    @LogException(emailAlert = true)
-    @Transactional
-    public Response signUp(
-            @FormParam("name") String name,
-            @FormParam("organization") String organization,
-            @FormParam("jobtitle") String jobtitle,
-            @FormParam("email") String email,
-            @FormParam("locale") String locale) {
+    @POST @Produces(MediaType.TEXT_HTML) @LogException(emailAlert = true) @Transactional
+    public Response signUp(@FormParam("name") String name,
+                           @FormParam("organization") String organization,
+                           @FormParam("jobtitle") String jobtitle,
+                           @FormParam("email") String email,
+                           @FormParam("locale") String locale) {
 
-        LOGGER.info("New user signing up! [name: " + name + ", email: " + email
-                + ", locale: " + locale + ", organization: " + organization + ", job title: " + jobtitle + "]");
+        LOGGER.info("New user signing up! [name: " + name + ", email: " + email + ", locale: " + locale +
+                    ", organization: " + organization + ", job title: " + jobtitle + "]");
 
         if (!domainProvider.get().isSignUpAllowed()) {
             LOGGER.severe("Blocked attempt to signup via " + domainProvider.get().getHost());
@@ -115,15 +106,16 @@ public class SignUpController {
         } catch (IllegalArgumentException e) {
             LOGGER.log(Level.INFO, "User " + name + " (" + email + ") failed to sign up", e);
             return Response.ok(SignUpPageModel.formErrorModel()
-                    .set(email, name, organization, jobtitle, locale)
-                    .asViewable()).build();
+                                              .set(email, name, organization, jobtitle, locale)
+                                              .asViewable()).build();
         }
 
         try {
             // check duplicate email
             if (userDAO.get().doesUserExist(email)) {
                 return Response.ok(new SignUpAddressExistsPageModel(email).asViewable())
-                        .type(MediaType.TEXT_HTML).build();
+                               .type(MediaType.TEXT_HTML)
+                               .build();
             }
 
             // persist new user
@@ -139,11 +131,9 @@ public class SignUpController {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "User " + name + " (" + email + ") failed to sign up", e);
             entityManager.getTransaction().rollback();
-            return Response
-                    .ok(SignUpPageModel.genericErrorModel()
-                            .set(email, name, organization, jobtitle, locale)
-                            .asViewable())
-                    .build();
+            return Response.ok(SignUpPageModel.genericErrorModel()
+                                              .set(email, name, organization, jobtitle, locale)
+                                              .asViewable()).build();
         }
     }
 

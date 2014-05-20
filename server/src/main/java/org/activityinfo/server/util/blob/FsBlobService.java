@@ -25,8 +25,7 @@ public class FsBlobService implements BlobService {
     }
 
     @Override
-    public void put(String key, InputSupplier<? extends InputStream> blob)
-            throws IOException {
+    public void put(String key, InputSupplier<? extends InputStream> blob) throws IOException {
         File file = getFile(key);
         file.getParentFile().mkdirs();
         Files.copy(blob, file);
@@ -39,8 +38,7 @@ public class FsBlobService implements BlobService {
     }
 
     @Override
-    public InputSupplier<FileInputStream> get(String key)
-            throws BlobNotFoundException {
+    public InputSupplier<FileInputStream> get(String key) throws BlobNotFoundException {
         File file = getFile(key);
         if (!file.exists()) {
             LOGGER.severe("Couldn't find '" + key + "' at " + file.getAbsolutePath());

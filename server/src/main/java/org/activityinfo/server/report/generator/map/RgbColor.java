@@ -60,8 +60,7 @@ public class RgbColor implements Serializable {
     }
 
     public static RgbColor interpolate(RgbColor from, RgbColor to, double p) {
-        return new RgbColor(
-                interpolate(from.red, to.red, p),
+        return new RgbColor(interpolate(from.red, to.red, p),
                 interpolate(from.green, to.green, p),
                 interpolate(from.blue, to.blue, p));
     }

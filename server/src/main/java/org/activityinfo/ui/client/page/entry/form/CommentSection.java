@@ -24,8 +24,8 @@ package org.activityinfo.ui.client.page.entry.form;
 
 import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
-import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.shared.model.SiteDTO;
 
 public class CommentSection extends FormSectionWithFormLayout<SiteDTO> {
 

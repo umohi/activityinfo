@@ -36,21 +36,10 @@ import org.activityinfo.ui.client.page.config.mvp.CanUpdate.*;
 import java.util.List;
 
 @Deprecated
-public class ListPresenterBase<M extends DTO, L extends List<M>, P extends DTO, V extends CrudView<M, P>>
-        extends
-        PresenterBase<V, M>
-        implements
-        UpdateHandler,
-        CancelUpdateHandler,
-        ConfirmDeleteHandler,
-        CreateHandler,
-        FilterHandler,
-        RefreshHandler,
-        RequestDeleteHandler,
-        StartCreateHandler,
-        CancelCreateHandler,
-        RequestUpdateHandler,
-        CancelDeleteHandler {
+public class ListPresenterBase<M extends DTO, L extends List<M>, P extends DTO, V extends CrudView<M,
+        P>> extends PresenterBase<V, M> implements UpdateHandler, CancelUpdateHandler, ConfirmDeleteHandler,
+        CreateHandler, FilterHandler, RefreshHandler, RequestDeleteHandler, StartCreateHandler, CancelCreateHandler,
+        RequestUpdateHandler, CancelDeleteHandler {
 
     protected P parentModel;
 

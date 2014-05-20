@@ -56,15 +56,15 @@ public class RemovePartnerHandler implements CommandHandler<RemovePartner> {
         PermissionOracle.using(em).isManagePartnersAllowed(db, user);
 
         // check to see if there are already sites associated with this partner
-        int siteCount = ((Number) em.createQuery(
-                "select count(s) " +
-                        "from Site s " +
-                        "where s.activity.id in (select a.id from Activity a where a.database.id = :dbId) " +
-                        "and s.partner.id = :partnerId " +
-                        "and s.dateDeleted is null")
-                .setParameter("dbId", cmd.getDatabaseId())
-                .setParameter("partnerId", cmd.getPartnerId())
-                .getSingleResult()).intValue();
+        int siteCount = ((Number) em.createQuery("select count(s) " +
+                                                 "from Site s " +
+                                                 "where s.activity.id in (select a.id from Activity a where a" +
+                                                 ".database.id = :dbId) " +
+                                                 "and s.partner.id = :partnerId " +
+                                                 "and s.dateDeleted is null")
+                                    .setParameter("dbId", cmd.getDatabaseId())
+                                    .setParameter("partnerId", cmd.getPartnerId())
+                                    .getSingleResult()).intValue();
 
         if (siteCount > 0) {
             return new RemoveFailedResult();

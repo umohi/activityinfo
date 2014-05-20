@@ -23,6 +23,7 @@ package org.activityinfo.legacy.shared.impl;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.GetPartnersDimension;
 import org.activityinfo.legacy.shared.command.PivotSites;
@@ -32,21 +33,20 @@ import org.activityinfo.legacy.shared.command.result.PartnerResult;
 import org.activityinfo.legacy.shared.model.PartnerDTO;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
 import org.activityinfo.legacy.shared.reports.model.Dimension;
-import org.activityinfo.legacy.shared.Log;
 
 import java.util.*;
 
-public class GetPartnersDimensionHandler implements
-        CommandHandlerAsync<GetPartnersDimension, PartnerResult> {
+public class GetPartnersDimensionHandler implements CommandHandlerAsync<GetPartnersDimension, PartnerResult> {
 
     @Override
-    public void execute(GetPartnersDimension cmd, ExecutionContext context,
+    public void execute(GetPartnersDimension cmd,
+                        ExecutionContext context,
                         final AsyncCallback<PartnerResult> callback) {
 
         // if the filter doesn't contain any activity, database or indicator values, just return an empty list
         if (!cmd.getFilter().isRestricted(DimensionType.Database) &&
-                !cmd.getFilter().isRestricted(DimensionType.Activity) &&
-                !cmd.getFilter().isRestricted(DimensionType.Indicator)) {
+            !cmd.getFilter().isRestricted(DimensionType.Activity) &&
+            !cmd.getFilter().isRestricted(DimensionType.Indicator)) {
 
             callback.onSuccess(new PartnerResult());
             return;
@@ -66,8 +66,7 @@ public class GetPartnersDimensionHandler implements
                 Set<PartnerDTO> partners = new HashSet<PartnerDTO>();
 
                 for (Bucket bucket : result.getBuckets()) {
-                    EntityCategory category = (EntityCategory) bucket
-                            .getCategory(dimension);
+                    EntityCategory category = (EntityCategory) bucket.getCategory(dimension);
                     if (category == null) {
                         Log.debug("Partner is null: " + bucket.toString());
                     } else {

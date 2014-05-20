@@ -47,7 +47,6 @@ public interface ExecutionContext {
      * @param command  the command to execute
      * @param callback callback on the command's completion
      */
-    <C extends Command<R>, R extends CommandResult> void execute(C command,
-                                                                 AsyncCallback<R> callback);
+    <C extends Command<R>, R extends CommandResult> void execute(C command, AsyncCallback<R> callback);
 
 }

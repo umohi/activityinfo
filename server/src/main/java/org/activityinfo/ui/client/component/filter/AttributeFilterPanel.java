@@ -48,19 +48,17 @@ public class AttributeFilterPanel extends ContentPanel implements FilterPanel {
 
     @Inject
     public AttributeFilterPanel(Dispatcher service) {
-        this.widgets = new AttributeGroupFilterWidgets(this, service,
-                new ValueChangeHandler<Filter>() {
-                    @Override
-                    public void onValueChange(ValueChangeEvent<Filter> event) {
-                        applyFilter();
-                    }
-                },
-                new SuccessCallback<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        layout();
-                    }
-                }
+        this.widgets = new AttributeGroupFilterWidgets(this, service, new ValueChangeHandler<Filter>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Filter> event) {
+                applyFilter();
+            }
+        }, new SuccessCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                layout();
+            }
+        }
         );
 
         setLayout(new RowLayout(Orientation.VERTICAL));

@@ -102,16 +102,13 @@ public class SiteExporter {
 
     private void declareStyles() {
         dateStyle = book.createCellStyle();
-        dateStyle.setDataFormat(creationHelper.createDataFormat().getFormat(
-                "m/d/yy"));
+        dateStyle.setDataFormat(creationHelper.createDataFormat().getFormat("m/d/yy"));
 
         coordStyle = book.createCellStyle();
-        coordStyle.setDataFormat(creationHelper.createDataFormat().getFormat(
-                "0.000000"));
+        coordStyle.setDataFormat(creationHelper.createDataFormat().getFormat("0.000000"));
 
         indicatorValueStyle = book.createCellStyle();
-        indicatorValueStyle.setDataFormat(creationHelper.createDataFormat()
-                .getFormat("#,##0"));
+        indicatorValueStyle.setDataFormat(creationHelper.createDataFormat().getFormat("#,##0"));
 
         Font headerFont = book.createFont();
         headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -212,8 +209,7 @@ public class SiteExporter {
         sheet.setColumnWidth(column, characters(PARTNER_COLUMN_WIDTH));
         column++;
 
-        createHeaderCell(headerRow2, column, activity.getLocationType()
-                .getName());
+        createHeaderCell(headerRow2, column, activity.getLocationType().getName());
         sheet.setColumnWidth(column, characters(LOCATION_COLUMN_WIDTH));
         column++;
 
@@ -226,15 +222,15 @@ public class SiteExporter {
                     // create a merged cell on the top row spanning all members
                     // of the group
                     createHeaderCell(headerRow1, column, group.getName());
-                    sheet.addMergedRegion(new CellRangeAddress(0, 0, column,
+                    sheet.addMergedRegion(new CellRangeAddress(0,
+                            0,
+                            column,
                             column + group.getIndicators().size() - 1));
                 }
                 for (IndicatorDTO indicator : group.getIndicators()) {
                     indicators.add(indicator.getId());
-                    createHeaderCell(headerRow2, column, indicator.getName(),
-                            indicatorHeaderStyle);
-                    sheet.setColumnWidth(column,
-                            characters(INDICATOR_COLUMN_WIDTH));
+                    createHeaderCell(headerRow2, column, indicator.getName(), indicatorHeaderStyle);
+                    sheet.setColumnWidth(column, characters(INDICATOR_COLUMN_WIDTH));
                     column++;
                 }
             }
@@ -242,17 +238,13 @@ public class SiteExporter {
         attributes = new ArrayList<Integer>();
         for (AttributeGroupDTO group : activity.getAttributeGroups()) {
             if (group.getAttributes().size() != 0) {
-                createHeaderCell(headerRow1, column, group.getName(),
-                        CellStyle.ALIGN_CENTER);
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, column, column
-                        + group.getAttributes().size() - 1));
+                createHeaderCell(headerRow1, column, group.getName(), CellStyle.ALIGN_CENTER);
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, column, column + group.getAttributes().size() - 1));
 
                 for (AttributeDTO attrib : group.getAttributes()) {
                     attributes.add(attrib.getId());
-                    createHeaderCell(headerRow2, column, attrib.getName(),
-                            attribHeaderStyle);
-                    sheet.setColumnWidth(column,
-                            characters(ATTRIBUTE_COLUMN_WIDTH));
+                    createHeaderCell(headerRow2, column, attrib.getName(), attribHeaderStyle);
+                    sheet.setColumnWidth(column, characters(ATTRIBUTE_COLUMN_WIDTH));
                     column++;
                 }
             }
@@ -279,8 +271,7 @@ public class SiteExporter {
     private List<SiteDTO> querySites(ActivityDTO activity, Filter filter) {
 
         Filter effectiveFilter = new Filter(filter);
-        effectiveFilter
-                .addRestriction(DimensionType.Activity, activity.getId());
+        effectiveFilter.addRestriction(DimensionType.Activity, activity.getId());
 
         GetSites query = new GetSites();
         query.setFilter(effectiveFilter);
@@ -306,8 +297,7 @@ public class SiteExporter {
             createCell(row, column++, site.getLocationAxe());
 
             for (Integer indicatorId : indicators) {
-                createIndicatorValueCell(row, column++,
-                        site.getIndicatorValue(indicatorId));
+                createIndicatorValueCell(row, column++, site.getIndicatorValue(indicatorId));
             }
 
             for (Integer attribId : attributes) {
@@ -342,8 +332,7 @@ public class SiteExporter {
         }
     }
 
-    private Cell createHeaderCell(Row headerRow, int columnIndex, String text,
-                                  CellStyle style) {
+    private Cell createHeaderCell(Row headerRow, int columnIndex, String text, CellStyle style) {
         Cell cell = headerRow.createCell(columnIndex);
         cell.setCellValue(creationHelper.createRichTextString(text));
         cell.setCellStyle(style);
@@ -352,12 +341,10 @@ public class SiteExporter {
     }
 
     private Cell createHeaderCell(Row headerRow, int columnIndex, String text) {
-        return createHeaderCell(headerRow, columnIndex, text,
-                CellStyle.ALIGN_LEFT);
+        return createHeaderCell(headerRow, columnIndex, text, CellStyle.ALIGN_LEFT);
     }
 
-    private Cell createHeaderCell(Row headerRow, int columnIndex, String text,
-                                  int align) {
+    private Cell createHeaderCell(Row headerRow, int columnIndex, String text, int align) {
         Cell cell = headerRow.createCell(columnIndex);
         cell.setCellValue(creationHelper.createRichTextString(text));
 

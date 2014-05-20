@@ -1,6 +1,5 @@
 package org.activityinfo.legacy.shared.adapter;
 
-import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.client.InstanceQuery;
 import org.activityinfo.core.client.QueryResult;
@@ -14,9 +13,6 @@ import org.activityinfo.core.shared.form.FormClass;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.shared.adapter.bindings.SiteBinding;
-import org.activityinfo.legacy.shared.adapter.bindings.SiteBindingFactory;
-import org.activityinfo.legacy.shared.command.GetSchema;
 
 import java.util.Collection;
 import java.util.List;
@@ -41,8 +37,7 @@ public class ResourceLocatorAdaptor implements ResourceLocator {
 
     @Override
     public Promise<FormInstance> getFormInstance(Cuid instanceId) {
-        return queryInstances(new IdCriteria(instanceId))
-               .then(new SelectSingle());
+        return queryInstances(new IdCriteria(instanceId)).then(new SelectSingle());
     }
 
     @Override

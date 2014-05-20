@@ -42,26 +42,23 @@ public class BlobServiceStorageProvider implements StorageProvider {
     private final Provider<Domain> domainProvider;
 
     @Inject
-    public BlobServiceStorageProvider(BlobService blobService,
-                                      Provider<Domain> domainProvider) {
+    public BlobServiceStorageProvider(BlobService blobService, Provider<Domain> domainProvider) {
         this.blobService = blobService;
         this.domainProvider = domainProvider;
     }
 
     @Override
-    public TempStorage allocateTemporaryFile(String mimeType, String filename)
-            throws IOException {
+    public TempStorage allocateTemporaryFile(String mimeType, String filename) throws IOException {
 
         String id = Long.toString(Math.abs(random.nextLong()), 16);
 
         URI uri = UriBuilder.fromUri("https://" + domainProvider.get().getHost())
-                .path("generated")
-                .path(id)
-                .path(filename)
-                .build();
+                            .path("generated")
+                            .path(id)
+                            .path(filename)
+                            .build();
 
-        return new TempStorage(uri.toString(),
-                new TempOutputStream(id));
+        return new TempStorage(uri.toString(), new TempOutputStream(id));
     }
 
     private class TempOutputStream extends OutputStream {

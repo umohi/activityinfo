@@ -34,8 +34,7 @@ import java.util.Set;
 /**
  * @author Alex Bertram
  */
-@Entity
-@JsonAutoDetect(JsonMethod.NONE)
+@Entity @JsonAutoDetect(JsonMethod.NONE)
 public class LocationType implements Serializable {
 
     private int id;
@@ -53,9 +52,7 @@ public class LocationType implements Serializable {
     public LocationType() {
     }
 
-    @Id
-    @JsonProperty
-    @Column(name = "LocationTypeId", unique = true, nullable = false)
+    @Id @JsonProperty @Column(name = "LocationTypeId", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -73,8 +70,7 @@ public class LocationType implements Serializable {
         this.reuse = reuse;
     }
 
-    @JsonProperty
-    @Column(name = "Name", nullable = false, length = 50)
+    @JsonProperty @Column(name = "Name", nullable = false, length = 50)
     public String getName() {
         return this.name;
     }
@@ -83,8 +79,7 @@ public class LocationType implements Serializable {
         this.name = name;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CountryId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "CountryId", nullable = false)
     public Country getCountry() {
         return this.country;
     }
@@ -93,11 +88,14 @@ public class LocationType implements Serializable {
         this.country = country;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DatabaseId", nullable = false)
-    public UserDatabase getDatabase() { return this.database; }
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "DatabaseId", nullable = false)
+    public UserDatabase getDatabase() {
+        return this.database;
+    }
 
-    public void setDatabase(UserDatabase database) { this.database = database; }
+    public void setDatabase(UserDatabase database) {
+        this.database = database;
+    }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "locationType")
     public Set<Location> getLocations() {
@@ -117,8 +115,7 @@ public class LocationType implements Serializable {
         this.activities = activities;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BoundAdminLevelId", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "BoundAdminLevelId", nullable = true)
     public AdminLevel getBoundAdminLevel() {
         return boundAdminLevel;
     }
@@ -128,7 +125,6 @@ public class LocationType implements Serializable {
     }
 
     /**
-     *
      * @return the id of the workflow associated with this LocationType.
      */
     public String getWorkflowId() {

@@ -36,8 +36,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.xml.bind.JAXBException;
 
-public class UpdateReportModelHandler implements
-        CommandHandler<UpdateReportModel> {
+public class UpdateReportModelHandler implements CommandHandler<UpdateReportModel> {
 
     private final EntityManager em;
 
@@ -47,18 +46,14 @@ public class UpdateReportModelHandler implements
     }
 
     @Override
-    public CommandResult execute(final UpdateReportModel cmd, final User user)
-            throws CommandException {
+    public CommandResult execute(final UpdateReportModel cmd, final User user) throws CommandException {
 
-        Query query = em
-                .createQuery(
-                        "select r from ReportDefinition r where r.id in (:id)")
-                .setParameter("id", cmd.getModel().getId());
+        Query query = em.createQuery("select r from ReportDefinition r where r.id in (:id)")
+                        .setParameter("id", cmd.getModel().getId());
 
         ReportDefinition result = (ReportDefinition) query.getSingleResult();
         if (result.getOwner().getId() != user.getId()) {
-            throw new IllegalAccessCommandException(
-                    "Current user does not have the right to edit this report");
+            throw new IllegalAccessCommandException("Current user does not have the right to edit this report");
         }
 
         result.setTitle(cmd.getModel().getTitle());

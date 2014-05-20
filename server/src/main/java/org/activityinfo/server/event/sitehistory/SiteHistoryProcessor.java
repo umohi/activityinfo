@@ -62,8 +62,7 @@ public class SiteHistoryProcessor {
         assert (cmd instanceof SiteCommand);
 
 
-        LOGGER.fine("persisting site history (site: " + siteId + ", user: "
-                + userId + ")");
+        LOGGER.fine("persisting site history (site: " + siteId + ", user: " + userId + ")");
         EntityManager em = entityManager.get();
 
 
@@ -75,20 +74,16 @@ public class SiteHistoryProcessor {
         ChangeType type = ChangeType.getType(cmd);
 
         if (!type.isNew()) {
-            Query q = em
-                    .createQuery("select count(*) from SiteHistory where site = :site");
+            Query q = em.createQuery("select count(*) from SiteHistory where site = :site");
             q.setParameter("site", site);
             Long count = (Long) q.getSingleResult();
             if (count == 0) {
                 // update, but first entry -> repair history by adding baseline
                 // record with complete site json
-                LOGGER
-                        .fine("site is not new, but history was empty. Adding baseline record..");
-                SiteResult siteResult = dispatcher.execute(GetSites
-                        .byId(siteId));
+                LOGGER.fine("site is not new, but history was empty. Adding baseline record..");
+                SiteResult siteResult = dispatcher.execute(GetSites.byId(siteId));
                 SiteDTO siteDTO = siteResult.getData().get(0);
-                String fulljson = JsonUtil.encodeMap(siteDTO.getProperties())
-                        .toString();
+                String fulljson = JsonUtil.encodeMap(siteDTO.getProperties()).toString();
 
                 SiteHistory baseline = new SiteHistory();
                 baseline.setSite(site);

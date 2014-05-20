@@ -38,8 +38,7 @@ import org.activityinfo.ui.client.page.report.ReportEventBus;
 /**
  * Keeps a report view in sync with a ReportElement being edited.
  */
-public class ReportViewBinder<C extends Content, R extends ReportElement<C>>
-        implements HasReportElement<R> {
+public class ReportViewBinder<C extends Content, R extends ReportElement<C>> implements HasReportElement<R> {
 
     private static final int UPDATE_DELAY = 100;
 
@@ -53,13 +52,13 @@ public class ReportViewBinder<C extends Content, R extends ReportElement<C>>
 
     private GenerateElement<C> lastRequest;
 
-    public static <C extends Content, R extends ReportElement<C>> ReportViewBinder<C, R>
-    create(EventBus eventBus, Dispatcher dispatcher, ReportView<R> view) {
+    public static <C extends Content, R extends ReportElement<C>> ReportViewBinder<C, R> create(EventBus eventBus,
+                                                                                                Dispatcher dispatcher,
+                                                                                                ReportView<R> view) {
         return new ReportViewBinder<C, R>(eventBus, dispatcher, view);
     }
 
-    public ReportViewBinder(EventBus eventBus, Dispatcher dispatcher,
-                            ReportView<R> view) {
+    public ReportViewBinder(EventBus eventBus, Dispatcher dispatcher, ReportView<R> view) {
         this.reportEventBus = new ReportEventBus(eventBus, this);
         this.dispatcher = dispatcher;
         this.view = view;
@@ -97,25 +96,23 @@ public class ReportViewBinder<C extends Content, R extends ReportElement<C>>
     }
 
     private void load() {
-        if (!elementModel.getFilter().getRestrictions(DimensionType.Indicator)
-                .isEmpty()) {
+        if (!elementModel.getFilter().getRestrictions(DimensionType.Indicator).isEmpty()) {
             GenerateElement<C> request = new GenerateElement<C>(elementModel);
 
-            dispatcher.execute(request,
-                    new AsyncCallback<C>() {
+            dispatcher.execute(request, new AsyncCallback<C>() {
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            // TODO Auto-generated method stub
+                @Override
+                public void onFailure(Throwable caught) {
+                    // TODO Auto-generated method stub
 
-                        }
+                }
 
-                        @Override
-                        public void onSuccess(C result) {
-                            elementModel.setContent(result);
-                            view.show(elementModel);
-                        }
-                    });
+                @Override
+                public void onSuccess(C result) {
+                    elementModel.setContent(result);
+                    view.show(elementModel);
+                }
+            });
         }
     }
 

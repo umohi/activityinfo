@@ -58,8 +58,7 @@ public class MergingDispatcher extends AbstractDispatcher {
     private List<CommandRequest> executingCommands = new ArrayList<CommandRequest>();
 
     @Inject
-    public MergingDispatcher(Dispatcher dispatcher,
-                             Scheduler scheduler) {
+    public MergingDispatcher(Dispatcher dispatcher, Scheduler scheduler) {
         this.dispatcher = dispatcher;
 
         scheduler.scheduleFinally(new RepeatingCommand() {
@@ -71,9 +70,7 @@ public class MergingDispatcher extends AbstractDispatcher {
                         dispatchPending();
                     }
                 } catch (Exception e) {
-                    Log.error(
-                            "Uncaught exception while dispatching in MergingDispatcher",
-                            e);
+                    Log.error("Uncaught exception while dispatching in MergingDispatcher", e);
                 }
                 return true;
             }
@@ -81,8 +78,7 @@ public class MergingDispatcher extends AbstractDispatcher {
     }
 
     @Override
-    public <T extends CommandResult> void execute(Command<T> command,
-                                                  AsyncCallback<T> callback) {
+    public <T extends CommandResult> void execute(Command<T> command, AsyncCallback<T> callback) {
 
         CommandRequest request = new CommandRequest(command, callback);
 
@@ -92,14 +88,12 @@ public class MergingDispatcher extends AbstractDispatcher {
 
             queue(request);
         } else {
-            if (!request.mergeSuccessfulInto(pendingCommands) &&
-                    !request.mergeSuccessfulInto(executingCommands)) {
+            if (!request.mergeSuccessfulInto(pendingCommands) && !request.mergeSuccessfulInto(executingCommands)) {
 
                 queue(request);
 
-                Log.debug("MergingDispatcher: Scheduled " + command.toString()
-                        + ", now " +
-                        pendingCommands.size() + " command(s) pending");
+                Log.debug("MergingDispatcher: Scheduled " + command.toString() + ", now " +
+                          pendingCommands.size() + " command(s) pending");
             }
         }
     }
@@ -109,11 +103,9 @@ public class MergingDispatcher extends AbstractDispatcher {
     }
 
     private void dispatchPending() {
-        Log.debug("MergingDispatcher: sending " + pendingCommands.size()
-                + " to server.");
+        Log.debug("MergingDispatcher: sending " + pendingCommands.size() + " to server.");
 
-        final List<CommandRequest> sent = new ArrayList<CommandRequest>(
-                pendingCommands);
+        final List<CommandRequest> sent = new ArrayList<CommandRequest>(pendingCommands);
         executingCommands.addAll(sent);
         pendingCommands.clear();
 

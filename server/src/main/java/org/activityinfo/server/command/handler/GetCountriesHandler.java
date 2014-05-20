@@ -38,8 +38,7 @@ import java.util.logging.Logger;
 
 public class GetCountriesHandler implements CommandHandler<GetCountries> {
 
-    private final static Logger LOG = Logger
-            .getLogger(GetCountriesHandler.class.getName());
+    private final static Logger LOG = Logger.getLogger(GetCountriesHandler.class.getName());
 
     private final CountryDAO countryDAO;
 
@@ -48,10 +47,8 @@ public class GetCountriesHandler implements CommandHandler<GetCountries> {
         this.countryDAO = countryDAO;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public CommandResult execute(GetCountries cmd, User user)
-            throws CommandException {
+    @SuppressWarnings("unchecked") @Override
+    public CommandResult execute(GetCountries cmd, User user) throws CommandException {
         return new CountryResult(mapToDtos(countryDAO.queryAllCountriesAlphabetically()));
     }
 

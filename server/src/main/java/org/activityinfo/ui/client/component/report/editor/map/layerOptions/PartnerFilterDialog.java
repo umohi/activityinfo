@@ -85,32 +85,29 @@ public class PartnerFilterDialog extends Dialog {
         return set;
     }
 
-    public void show(Filter baseFilter, final Filter currentFilter,
-                     SelectionCallback<Set<Integer>> callback) {
+    public void show(Filter baseFilter, final Filter currentFilter, SelectionCallback<Set<Integer>> callback) {
         show();
         this.callback = callback;
-        service.execute(new GetPartnersDimension(baseFilter),
-                new AsyncCallback<PartnerResult>() {
+        service.execute(new GetPartnersDimension(baseFilter), new AsyncCallback<PartnerResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
+            @Override
+            public void onFailure(Throwable caught) {
 
+            }
+
+            @Override
+            public void onSuccess(PartnerResult result) {
+                Set<Integer> ids = currentFilter.getRestrictions(DimensionType.Partner);
+
+                store.removeAll();
+                store.add(result.getData());
+                for (PartnerDTO partner : store.getModels()) {
+                    if (ids.contains(partner.getId())) {
+                        listView.setChecked(partner, true);
                     }
-
-                    @Override
-                    public void onSuccess(PartnerResult result) {
-                        Set<Integer> ids = currentFilter
-                                .getRestrictions(DimensionType.Partner);
-
-                        store.removeAll();
-                        store.add(result.getData());
-                        for (PartnerDTO partner : store.getModels()) {
-                            if (ids.contains(partner.getId())) {
-                                listView.setChecked(partner, true);
-                            }
-                        }
-                    }
-                });
+                }
+            }
+        });
     }
 
     @Override

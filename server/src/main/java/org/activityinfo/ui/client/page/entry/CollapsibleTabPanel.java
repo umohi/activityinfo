@@ -62,15 +62,14 @@ public class CollapsibleTabPanel extends TabPanel {
     public boolean add(TabItem tab) {
         if (super.add(tab)) {
 
-            tab.getHeader().addListener(Events.BrowserEvent,
-                    new Listener<ComponentEvent>() {
-                        @Override
-                        public void handleEvent(ComponentEvent be) {
-                            if (be.getEventTypeInt() == Event.ONCLICK) {
-                                onTabClicked((TabItem.HeaderItem) be.getComponent());
-                            }
-                        }
-                    });
+            tab.getHeader().addListener(Events.BrowserEvent, new Listener<ComponentEvent>() {
+                @Override
+                public void handleEvent(ComponentEvent be) {
+                    if (be.getEventTypeInt() == Event.ONCLICK) {
+                        onTabClicked((TabItem.HeaderItem) be.getComponent());
+                    }
+                }
+            });
             return true;
         } else {
             return false;
@@ -78,8 +77,7 @@ public class CollapsibleTabPanel extends TabPanel {
     }
 
     private void onTabClicked(TabItem.HeaderItem header) {
-        if (getSelectedItem() != null
-                && getSelectedItem().getHeader() == header) {
+        if (getSelectedItem() != null && getSelectedItem().getHeader() == header) {
             if (!tabPanelCollapsed) {
                 // "collapse" tab panel - show only the tab strip
                 collapseTabs();

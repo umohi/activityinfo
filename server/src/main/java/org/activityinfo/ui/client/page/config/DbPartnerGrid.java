@@ -46,9 +46,7 @@ import java.util.List;
 /**
  * @author Alex Bertram
  */
-public class DbPartnerGrid extends
-        AbstractGridView<PartnerDTO, DbPartnerEditor>
-        implements DbPartnerEditor.View {
+public class DbPartnerGrid extends AbstractGridView<PartnerDTO, DbPartnerEditor> implements DbPartnerEditor.View {
 
     private final UiConstants messages;
     private final IconImageBundle icons;
@@ -62,8 +60,7 @@ public class DbPartnerGrid extends
     }
 
     @Override
-    public void init(DbPartnerEditor editor, UserDatabaseDTO db,
-                     ListStore<PartnerDTO> store) {
+    public void init(DbPartnerEditor editor, UserDatabaseDTO db, ListStore<PartnerDTO> store) {
         super.init(editor, store);
         this.setHeadingText(db.getName() + " - " + messages.partners());
 
@@ -97,8 +94,7 @@ public class DbPartnerGrid extends
     }
 
     @Override
-    public FormDialogTether showAddDialog(PartnerDTO partner,
-                                          FormDialogCallback callback) {
+    public FormDialogTether showAddDialog(PartnerDTO partner, FormDialogCallback callback) {
 
         PartnerForm form = new PartnerForm();
         form.getBinding().bind(partner);

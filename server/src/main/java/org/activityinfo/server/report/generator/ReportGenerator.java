@@ -45,7 +45,8 @@ public class ReportGenerator extends BaseGenerator<Report> {
     public ReportGenerator(DispatcherSync dispatcher,
                            PivotTableGenerator pivotTableGenerator,
                            PivotChartGenerator pivotChartGenerator,
-                           TableGenerator tableGenerator, MapGenerator mapGenerator) {
+                           TableGenerator tableGenerator,
+                           MapGenerator mapGenerator) {
         super(dispatcher);
 
         this.pivotTableGenerator = pivotTableGenerator;
@@ -54,27 +55,21 @@ public class ReportGenerator extends BaseGenerator<Report> {
         this.mapGenerator = mapGenerator;
     }
 
-    public Content generateElement(User user, ReportElement element,
-                                   Filter inheritedFilter,
-                                   DateRange dateRange) {
+    public Content generateElement(User user, ReportElement element, Filter inheritedFilter, DateRange dateRange) {
         if (element instanceof PivotChartReportElement) {
-            pivotChartGenerator.generate(user,
-                    (PivotChartReportElement) element, inheritedFilter, dateRange);
+            pivotChartGenerator.generate(user, (PivotChartReportElement) element, inheritedFilter, dateRange);
             return element.getContent();
 
         } else if (element instanceof PivotTableReportElement) {
-            pivotTableGenerator.generate(user,
-                    (PivotTableReportElement) element, inheritedFilter, dateRange);
+            pivotTableGenerator.generate(user, (PivotTableReportElement) element, inheritedFilter, dateRange);
             return element.getContent();
 
         } else if (element instanceof MapReportElement) {
-            mapGenerator.generate(user, (MapReportElement) element,
-                    inheritedFilter, dateRange);
+            mapGenerator.generate(user, (MapReportElement) element, inheritedFilter, dateRange);
             return element.getContent();
 
         } else if (element instanceof TableElement) {
-            tableGenerator.generate(user, ((TableElement) element),
-                    inheritedFilter, dateRange);
+            tableGenerator.generate(user, ((TableElement) element), inheritedFilter, dateRange);
             return element.getContent();
 
         } else if (element instanceof Report) {
@@ -85,22 +80,18 @@ public class ReportGenerator extends BaseGenerator<Report> {
             return new NullContent();
 
         } else {
-            throw new RuntimeException("Unknown element type "
-                    + element.getClass().getName());
+            throw new RuntimeException("Unknown element type " + element.getClass().getName());
         }
     }
 
     @Override
-    public void generate(User user, Report report, Filter inheritedFilter,
-                         DateRange dateRange) {
+    public void generate(User user, Report report, Filter inheritedFilter, DateRange dateRange) {
         generateReport(user, report, inheritedFilter, dateRange);
     }
 
-    private void generateReport(User user, Report report,
-                                Filter inheritedFilter, DateRange dateRange) {
+    private void generateReport(User user, Report report, Filter inheritedFilter, DateRange dateRange) {
         GeneratorUtils.resolveElementFilter(report, dateRange);
-        Filter effectiveFilter = GeneratorUtils.resolveEffectiveFilter(report,
-                inheritedFilter, dateRange);
+        Filter effectiveFilter = GeneratorUtils.resolveEffectiveFilter(report, inheritedFilter, dateRange);
 
         for (ReportElement element : report.getElements()) {
             generateElement(user, element, effectiveFilter, dateRange);
@@ -108,9 +99,9 @@ public class ReportGenerator extends BaseGenerator<Report> {
 
         ReportContent content = new ReportContent();
         content.setFileName(generateFileName(report, dateRange, user));
-        content.setFilterDescriptions(generateFilterDescriptions(
-                effectiveFilter,
-                Collections.<DimensionType>emptySet(), user));
+        content.setFilterDescriptions(generateFilterDescriptions(effectiveFilter,
+                Collections.<DimensionType>emptySet(),
+                user));
 
         report.setContent(content);
     }
@@ -120,8 +111,7 @@ public class ReportGenerator extends BaseGenerator<Report> {
         StringBuilder name = new StringBuilder();
 
         if (report.getFileName() != null) {
-            name.append(resolveTemplate(report.getFileName(),
-                    dateRange, user));
+            name.append(resolveTemplate(report.getFileName(), dateRange, user));
         } else if (report.getTitle() != null) {
             name.append(report.getTitle());
         } else {

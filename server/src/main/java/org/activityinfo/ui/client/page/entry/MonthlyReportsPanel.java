@@ -95,7 +95,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
                 toolBar.setDirty(store.getModifiedRecords().size() != 0);
             }
         });
-        
+
         grid = new MonthlyGrid(store);
         add(grid);
 
@@ -139,19 +139,21 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
         this.currentSiteId = site.getId();
         this.grid.getStore().removeAll();
 
-        service.execute(new GetSchema(), new MaskingAsyncMonitor(this, I18N.CONSTANTS.loading()), new AsyncCallback<SchemaDTO>() {
+        service.execute(new GetSchema(),
+                new MaskingAsyncMonitor(this, I18N.CONSTANTS.loading()),
+                new AsyncCallback<SchemaDTO>() {
 
-            @Override
-            public void onFailure(Throwable caught) {
-                // caught by monitor
-            }
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        // caught by monitor
+                    }
 
-            @Override
-            public void onSuccess(SchemaDTO schema) {
-                currentActivity = schema.getActivityById(site.getActivityId());
-                populateGrid(site, currentActivity);
-            }
-        });
+                    @Override
+                    public void onSuccess(SchemaDTO schema) {
+                        currentActivity = schema.getActivityById(site.getActivityId());
+                        populateGrid(site, currentActivity);
+                    }
+                });
     }
 
     private void populateGrid(SiteDTO site, ActivityDTO activity) {
@@ -168,8 +170,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
         return new Predicate<Month>() {
             @Override
             public boolean apply(Month input) {
-                DateWrapper date = new DateWrapper(input.getYear(), input.getMonth()-1, 1)
-                            .getLastDateOfMonth();
+                DateWrapper date = new DateWrapper(input.getYear(), input.getMonth() - 1, 1).getLastDateOfMonth();
                 return lockedPeriodSet.isActivityLocked(currentActivity.getId(), date.asDate());
             }
         };
@@ -198,7 +199,7 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
     public void onUIAction(String actionId) {
         if (UIActions.SAVE.equals(actionId)) {
             save();
-        } else if(UIActions.DISCARD_CHANGES.equals(actionId)) {
+        } else if (UIActions.DISCARD_CHANGES.equals(actionId)) {
             store.rejectChanges();
         }
     }
@@ -234,14 +235,14 @@ public class MonthlyReportsPanel extends ContentPanel implements ActionListener 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         this.grid.setReadOnly(readOnly);
-//        this.toolBar.setActionEnabled(UIActions.SAVE, !readOnly);
+        //        this.toolBar.setActionEnabled(UIActions.SAVE, !readOnly);
     }
-    
+
     public void onNoSelection() {
         this.grid.getStore().removeAll();
         this.grid.getView().setEmptyText(I18N.MESSAGES.SelectSiteAbove());
     }
-    
+
     private class ReportingPeriodProxy extends RpcProxy<MonthlyReportResult> {
 
         private Month startMonth;

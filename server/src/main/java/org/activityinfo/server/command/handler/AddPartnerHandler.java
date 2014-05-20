@@ -50,10 +50,8 @@ public class AddPartnerHandler implements CommandHandler<AddPartner> {
         this.em = em;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public CommandResult execute(AddPartner cmd, User user)
-            throws CommandException {
+    @Override @SuppressWarnings("unchecked")
+    public CommandResult execute(AddPartner cmd, User user) throws CommandException {
 
         UserDatabase db = em.find(UserDatabase.class, cmd.getDatabaseId());
         PermissionOracle.using(em).assertManagePartnerAllowed(db, user);
@@ -68,10 +66,9 @@ public class AddPartnerHandler implements CommandHandler<AddPartner> {
         }
 
         // now try to match this partner by name
-        List<Partner> allPartners = em
-                .createQuery("select p from Partner p where p.name = ?1")
-                .setParameter(1, cmd.getPartner().getName())
-                .getResultList();
+        List<Partner> allPartners = em.createQuery("select p from Partner p where p.name = ?1")
+                                      .setParameter(1, cmd.getPartner().getName())
+                                      .getResultList();
 
         if (allPartners.size() != 0) {
             db.getPartners().add(allPartners.get(0));

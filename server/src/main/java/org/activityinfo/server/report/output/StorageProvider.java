@@ -34,7 +34,6 @@ public interface StorageProvider {
      * @return
      * @throws IOException
      */
-    TempStorage allocateTemporaryFile(String mimeType, String filename)
-            throws IOException;
+    TempStorage allocateTemporaryFile(String mimeType, String filename) throws IOException;
 
 }

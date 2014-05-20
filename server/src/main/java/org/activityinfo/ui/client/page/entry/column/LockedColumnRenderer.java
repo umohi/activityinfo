@@ -31,8 +31,7 @@ import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
 import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
-public class LockedColumnRenderer implements
-        GridCellRenderer<ModelData> {
+public class LockedColumnRenderer implements GridCellRenderer<ModelData> {
     private final LockedPeriodSet lockSet;
 
     public LockedColumnRenderer(LockedPeriodSet lockSet) {
@@ -41,8 +40,13 @@ public class LockedColumnRenderer implements
     }
 
     @Override
-    public Object render(ModelData model, String property, ColumnData config,
-                         int rowIndex, int colIndex, ListStore listStore, Grid grid) {
+    public Object render(ModelData model,
+                         String property,
+                         ColumnData config,
+                         int rowIndex,
+                         int colIndex,
+                         ListStore listStore,
+                         Grid grid) {
         if (model instanceof SiteDTO) {
             SiteDTO siteModel = (SiteDTO) model;
             StringBuilder builder = new StringBuilder();

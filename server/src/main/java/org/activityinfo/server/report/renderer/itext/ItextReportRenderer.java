@@ -52,25 +52,19 @@ public abstract class ItextReportRenderer implements Renderer {
     private final Map<Class, ItextRenderer> renderers = new HashMap<Class, ItextRenderer>();
 
     @Inject
-    protected ItextReportRenderer(AdminGeometryProvider geometryProvider,
-                                  @MapIconPath String mapIconPath) {
-        ItextMapRenderer itextMapRenderer = new ItextMapRenderer(
-                geometryProvider, mapIconPath, getImageCreator());
+    protected ItextReportRenderer(AdminGeometryProvider geometryProvider, @MapIconPath String mapIconPath) {
+        ItextMapRenderer itextMapRenderer = new ItextMapRenderer(geometryProvider, mapIconPath, getImageCreator());
 
-        renderers.put(PivotTableReportElement.class,
-                new ItextPivotTableRenderer());
-        renderers.put(PivotChartReportElement.class, new ItextChartRenderer(
-                getImageCreator()));
+        renderers.put(PivotTableReportElement.class, new ItextPivotTableRenderer());
+        renderers.put(PivotChartReportElement.class, new ItextChartRenderer(getImageCreator()));
         renderers.put(MapReportElement.class, itextMapRenderer);
-        renderers.put(TableElement.class, new ItextTableRenderer(
-                itextMapRenderer));
+        renderers.put(TableElement.class, new ItextTableRenderer(itextMapRenderer));
         renderers.put(TextReportElement.class, new ItextTextRenderer());
         renderers.put(ImageReportElement.class, new ItextImageRenderer());
     }
 
     @Override
-    public void render(ReportElement element, OutputStream os)
-            throws IOException {
+    public void render(ReportElement element, OutputStream os) throws IOException {
         try {
             Document document = new Document();
             DocWriter writer = createWriter(document, os);
@@ -103,25 +97,20 @@ public abstract class ItextReportRenderer implements Renderer {
      * @return
      * @throws DocumentException
      */
-    protected abstract DocWriter createWriter(Document document, OutputStream os)
-            throws DocumentException;
+    protected abstract DocWriter createWriter(Document document, OutputStream os) throws DocumentException;
 
-    private void renderReport(DocWriter writer, Document document,
-                              ReportElement element) throws DocumentException {
+    private void renderReport(DocWriter writer, Document document, ReportElement element) throws DocumentException {
         Report report = (Report) element;
         document.add(ThemeHelper.reportTitle(report.getTitle()));
-        ItextRendererHelper.addFilterDescription(document, report.getContent()
-                .getFilterDescriptions());
-        ItextRendererHelper.addDateFilterDescription(document, report
-                .getFilter().getDateRange());
+        ItextRendererHelper.addFilterDescription(document, report.getContent().getFilterDescriptions());
+        ItextRendererHelper.addDateFilterDescription(document, report.getFilter().getDateRange());
 
         for (ReportElement childElement : report.getElements()) {
             renderElement(writer, document, childElement);
         }
     }
 
-    private void renderElement(DocWriter writer, Document document,
-                               ReportElement element) throws DocumentException {
+    private void renderElement(DocWriter writer, Document document, ReportElement element) throws DocumentException {
         if (renderers.containsKey(element.getClass())) {
             ItextRenderer renderer = renderers.get(element.getClass());
             renderer.render(writer, document, element);

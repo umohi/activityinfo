@@ -70,7 +70,7 @@ public class TargetValueId implements java.io.Serializable {
         }
 
         TargetValueId i = (TargetValueId) obj;
-        return Objects.equal(i.getTargetId(), this.getTargetId())
-                && Objects.equal(i.getIndicatorId(), this.getIndicatorId());
+        return Objects.equal(i.getTargetId(), this.getTargetId()) &&
+               Objects.equal(i.getIndicatorId(), this.getIndicatorId());
     }
 }

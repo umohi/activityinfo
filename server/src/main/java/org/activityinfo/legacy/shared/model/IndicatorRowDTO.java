@@ -84,7 +84,7 @@ public final class IndicatorRowDTO extends BaseModelData implements DTO {
     public void setIndicatorName(String name) {
         set("indicatorName", name);
     }
-    
+
     /**
      * @return this Indicator's category
      */
@@ -98,14 +98,14 @@ public final class IndicatorRowDTO extends BaseModelData implements DTO {
     public void setCategory(String category) {
         set("category", category);
     }
-    
+
     /**
      * @return this Indicator's activity name
      */
     public String getActivityName() {
         return get("activityName");
     }
-    
+
     /**
      * Sets this Indicator's activity name
      */

@@ -45,8 +45,7 @@ public class ReportEventBus {
 
             @Override
             public void handleEvent(ReportChangeEvent be) {
-                if (be.getModel() == source.getModel()
-                        && be.getSource() != source) {
+                if (be.getModel() == source.getModel() && be.getSource() != source) {
                     handler.onChanged();
                 }
             }

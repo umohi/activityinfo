@@ -113,8 +113,7 @@ public class MarkerGraph {
      *
      * @param points
      */
-    public MarkerGraph(List<PointValue> points,
-                       IntersectionCalculator icalculator) {
+    public MarkerGraph(List<PointValue> points, IntersectionCalculator icalculator) {
 
         nodes = new ArrayList<Node>();
         edges = new ArrayList<Edge>();
@@ -136,9 +135,7 @@ public class MarkerGraph {
                     // if we leave in place
                     if (ni.getPoint().equals(nj.getPoint())) {
                         // merge nodes in the case of coincidence
-                        ni.getPointValue().setValue(
-                                ni.getPointValue().getValue()
-                                        + nj.getPointValue().getValue());
+                        ni.getPointValue().setValue(ni.getPointValue().getValue() + nj.getPointValue().getValue());
                         for (Edge edge : nj.getEdges()) {
                             edge.neighbor(nj).getEdges().remove(edge);
                             edges.remove(edge);

@@ -24,9 +24,9 @@ package org.activityinfo.legacy.shared.impl.search;
 
 import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
-import org.activityinfo.legacy.shared.Log;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -40,10 +40,8 @@ public class AllSearcher {
     private final SqlTransaction tx;
 
     static {
-        searchers.put(DimensionType.Partner, new GenericSearcher(
-                DimensionType.Partner));
-        searchers.put(DimensionType.Project, new GenericSearcher(
-                DimensionType.Project));
+        searchers.put(DimensionType.Partner, new GenericSearcher(DimensionType.Partner));
+        searchers.put(DimensionType.Project, new GenericSearcher(DimensionType.Project));
         // searchers.put(DimensionType.AttributeGroup, new
         // GenericSearcher(DimensionType.AttributeGroup));
         searchers.put(DimensionType.Location, new LocationSearcher());
@@ -57,80 +55,70 @@ public class AllSearcher {
     }
 
     public static List<Searcher> supportedSearchers() {
-        return Collections.unmodifiableList(new ArrayList<Searcher>(searchers
-                .values()));
+        return Collections.unmodifiableList(new ArrayList<Searcher>(searchers.values()));
     }
 
-    public void searchDimensions(Map<DimensionType, List<String>> searchTerms,
-                                 final AsyncCallback<Filter> callback) {
-        searchNextDimension(searchTerms.entrySet().iterator(), tx,
-                new AsyncCallback<Filter>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        callback.onFailure(caught);
-                    }
+    public void searchDimensions(Map<DimensionType, List<String>> searchTerms, final AsyncCallback<Filter> callback) {
+        searchNextDimension(searchTerms.entrySet().iterator(), tx, new AsyncCallback<Filter>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                callback.onFailure(caught);
+            }
 
-                    @Override
-                    public void onSuccess(Filter result) {
-                        callback.onSuccess(filter);
-                    }
-                });
+            @Override
+            public void onSuccess(Filter result) {
+                callback.onSuccess(filter);
+            }
+        });
     }
 
-    public void searchAll(final List<String> query,
-                          final AsyncCallback<Filter> callback) {
-        searchNext(query, searchers.values().iterator(), tx,
-                new AsyncCallback<Filter>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        callback.onFailure(caught);
-                    }
+    public void searchAll(final List<String> query, final AsyncCallback<Filter> callback) {
+        searchNext(query, searchers.values().iterator(), tx, new AsyncCallback<Filter>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                callback.onFailure(caught);
+            }
 
-                    @Override
-                    public void onSuccess(Filter result) {
-                        // TODO possible bug
-                        callback.onSuccess(filter);
-                    }
-                });
+            @Override
+            public void onSuccess(Filter result) {
+                // TODO possible bug
+                callback.onSuccess(filter);
+            }
+        });
     }
 
-    public void searchNextDimension(
-            final Iterator<Entry<DimensionType, List<String>>> iterator,
-            final SqlTransaction tx, final AsyncCallback<Filter> callback) {
+    public void searchNextDimension(final Iterator<Entry<DimensionType, List<String>>> iterator,
+                                    final SqlTransaction tx,
+                                    final AsyncCallback<Filter> callback) {
 
         final Entry<DimensionType, List<String>> entry = iterator.next();
         final Searcher searcher = searchers.get(entry.getKey());
 
-        searcher.search(entry.getValue(), tx,
-                new AsyncCallback<List<Integer>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        failedSearchers.add(searcher);
-                        Log.trace("Failed searcher: ");
-                        AllSearcher.this.continueOrYieldFilterSpecific(iterator,
-                                tx, callback);
-                    }
+        searcher.search(entry.getValue(), tx, new AsyncCallback<List<Integer>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                failedSearchers.add(searcher);
+                Log.trace("Failed searcher: ");
+                AllSearcher.this.continueOrYieldFilterSpecific(iterator, tx, callback);
+            }
 
-                    @Override
-                    public void onSuccess(List<Integer> result) {
-                        addRestrictions(result);
-                        AllSearcher.this.continueOrYieldFilterSpecific(iterator,
-                                tx, callback);
-                    }
+            @Override
+            public void onSuccess(List<Integer> result) {
+                addRestrictions(result);
+                AllSearcher.this.continueOrYieldFilterSpecific(iterator, tx, callback);
+            }
 
-                    private void addRestrictions(List<Integer> result) {
-                        for (Integer resultId : result) {
-                            AllSearcher.this.filter.addRestriction(
-                                    searcher.getDimensionType(), resultId);
-                        }
-                    }
-                });
+            private void addRestrictions(List<Integer> result) {
+                for (Integer resultId : result) {
+                    AllSearcher.this.filter.addRestriction(searcher.getDimensionType(), resultId);
+                }
+            }
+        });
     }
 
-    private void continueOrYieldFilterSpecific(
-            final Iterator<Entry<DimensionType, List<String>>> iterator,
-            final SqlTransaction tx,
-            final AsyncCallback<Filter> callback) {
+    private void continueOrYieldFilterSpecific(final Iterator<Entry<DimensionType, List<String>>> iterator,
+                                               final SqlTransaction tx,
+                                               final AsyncCallback<Filter> callback) {
 
         if (iterator.hasNext()) {
             searchNextDimension(iterator, tx, callback);
@@ -141,7 +129,8 @@ public class AllSearcher {
 
     public void searchNext(final List<String> q,
                            final Iterator<Searcher> iterator,
-                           final SqlTransaction tx, final AsyncCallback<Filter> callback) {
+                           final SqlTransaction tx,
+                           final AsyncCallback<Filter> callback) {
 
         final Searcher searcher = iterator.next();
         searcher.search(q, tx, new AsyncCallback<List<Integer>>() {
@@ -149,21 +138,18 @@ public class AllSearcher {
             public void onFailure(Throwable caught) {
                 failedSearchers.add(searcher);
                 Log.trace("Failed searcher: ");
-                AllSearcher.this.continueOrYieldFilter(q, iterator, tx,
-                        callback);
+                AllSearcher.this.continueOrYieldFilter(q, iterator, tx, callback);
             }
 
             @Override
             public void onSuccess(List<Integer> result) {
                 addRestrictions(result);
-                AllSearcher.this.continueOrYieldFilter(q, iterator, tx,
-                        callback);
+                AllSearcher.this.continueOrYieldFilter(q, iterator, tx, callback);
             }
 
             private void addRestrictions(List<Integer> result) {
                 for (Integer resultId : result) {
-                    AllSearcher.this.filter.addRestriction(
-                            searcher.getDimensionType(), resultId);
+                    AllSearcher.this.filter.addRestriction(searcher.getDimensionType(), resultId);
                 }
             }
         });

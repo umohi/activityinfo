@@ -69,8 +69,10 @@ public class SignUpConfirmationController {
     private final AuthTokenProvider authTokenProvider;
 
     @Inject
-    public SignUpConfirmationController(Provider<UserDAO> userDAO, Provider<UserDatabaseDAO> databaseDAO,
-                                        Provider<PartnerDAO> partnerDAO, Provider<UserPermissionDAO> permissionDAO,
+    public SignUpConfirmationController(Provider<UserDAO> userDAO,
+                                        Provider<UserDatabaseDAO> databaseDAO,
+                                        Provider<PartnerDAO> partnerDAO,
+                                        Provider<UserPermissionDAO> permissionDAO,
                                         MailingListClient mailChimp,
                                         AuthTokenProvider authTokenProvider) {
         super();
@@ -82,9 +84,7 @@ public class SignUpConfirmationController {
         this.mailingList = mailChimp;
     }
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    @LogException(emailAlert = true)
+    @GET @Produces(MediaType.TEXT_HTML) @LogException(emailAlert = true)
     public Viewable getPage(@Context UriInfo uri) throws Exception {
         try {
             User user = userDAO.get().findUserByChangePasswordKey(uri.getRequestUri().getQuery());
@@ -94,13 +94,11 @@ public class SignUpConfirmationController {
         }
     }
 
-    @POST
-    @LogException(emailAlert = true)
-    public Response confirm(
-            @Context UriInfo uri,
-            @FormParam("key") String key,
-            @FormParam("password") String password,
-            @FormParam("newsletter") boolean newsletter) {
+    @POST @LogException(emailAlert = true)
+    public Response confirm(@Context UriInfo uri,
+                            @FormParam("key") String key,
+                            @FormParam("password") String password,
+                            @FormParam("newsletter") boolean newsletter) {
 
         try {
             // check params
@@ -122,12 +120,14 @@ public class SignUpConfirmationController {
 
             // go to the home page
             return Response.seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
-                    .cookie(authTokenProvider.createNewAuthCookies(user)).build();
+                           .cookie(authTokenProvider.createNewAuthCookies(user))
+                           .build();
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception during signup process", e);
             return Response.ok(SignUpConfirmationPageModel.genericErrorModel(key).asViewable())
-                    .type(MediaType.TEXT_HTML).build();
+                           .type(MediaType.TEXT_HTML)
+                           .build();
         }
     }
 

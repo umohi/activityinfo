@@ -58,22 +58,14 @@ public class QueryParser {
 
     public QueryParser() {
         dimNameMap = Maps.newHashMap();
-        dimNameMap.put(I18N.CONSTANTS.searchPrefixActivity(),
-                DimensionType.Activity);
-        dimNameMap.put(I18N.CONSTANTS.searchPrefixProject(),
-                DimensionType.Project);
-        dimNameMap.put(I18N.CONSTANTS.searchPrefixPartner(),
-                DimensionType.Partner);
-        dimNameMap.put(I18N.CONSTANTS.searchPrefixDatabase(),
-                DimensionType.Database);
-        dimNameMap.put(I18N.CONSTANTS.searchPrefixAdminLevel(),
-                DimensionType.AdminLevel);
-        dimNameMap.put(I18N.CONSTANTS.searchPrefixIndicator(),
-                DimensionType.Indicator);
-        dimNameMap.put(I18N.CONSTANTS.searchPrefixLocation(),
-                DimensionType.Location);
-        dimNameMap.put(I18N.CONSTANTS.searchPrefixAttrib(),
-                DimensionType.AttributeGroup);
+        dimNameMap.put(I18N.CONSTANTS.searchPrefixActivity(), DimensionType.Activity);
+        dimNameMap.put(I18N.CONSTANTS.searchPrefixProject(), DimensionType.Project);
+        dimNameMap.put(I18N.CONSTANTS.searchPrefixPartner(), DimensionType.Partner);
+        dimNameMap.put(I18N.CONSTANTS.searchPrefixDatabase(), DimensionType.Database);
+        dimNameMap.put(I18N.CONSTANTS.searchPrefixAdminLevel(), DimensionType.AdminLevel);
+        dimNameMap.put(I18N.CONSTANTS.searchPrefixIndicator(), DimensionType.Indicator);
+        dimNameMap.put(I18N.CONSTANTS.searchPrefixLocation(), DimensionType.Location);
+        dimNameMap.put(I18N.CONSTANTS.searchPrefixAttrib(), DimensionType.AttributeGroup);
     }
 
     public void parse(String query) {
@@ -201,8 +193,7 @@ public class QueryParser {
     }
 
     private DimensionType fromString(String dimensionString) {
-        return Enum.valueOf(DimensionType.class,
-                capitalizeFirstLetter(dimensionString.toLowerCase().trim()));
+        return Enum.valueOf(DimensionType.class, capitalizeFirstLetter(dimensionString.toLowerCase().trim()));
     }
 
     private String capitalizeFirstLetter(String string) {
@@ -214,8 +205,7 @@ public class QueryParser {
     private void createPreciseDimensions() {
         for (Dimension dimension : dimensions) {
             if (dimension.isIdDimension()) {
-                preciseDimensions.put(dimension.getName(),
-                        uniqueDimensions.get(dimension));
+                preciseDimensions.put(dimension.getName(), uniqueDimensions.get(dimension));
             }
         }
     }
@@ -236,11 +226,9 @@ public class QueryParser {
         for (Dimension d : dimensions) {
             if (!d.isIdDimension()) {
                 if (uniqueDimensions.containsKey(d.getDimensionType())) {
-                    uniqueDimensions.get(d.getDimensionType()).addAll(
-                            d.getSearchTerms());
+                    uniqueDimensions.get(d.getDimensionType()).addAll(d.getSearchTerms());
                 } else {
-                    uniqueDimensions.put(d.getDimensionType(),
-                            d.getSearchTerms());
+                    uniqueDimensions.put(d.getDimensionType(), d.getSearchTerms());
                 }
             }
         }
@@ -266,9 +254,8 @@ public class QueryParser {
         int dimensionCount = dimensions.size();
         for (int dimensionIndex = 0; dimensionIndex < dimensionCount; dimensionIndex++) {
             Dimension dimension = dimensions.get(dimensionIndex);
-            int endPosition = dimensionIndex == dimensionCount - 1 ?
-                    query.length() :
-                    dimensions.get(dimensionIndex + 1).getStartPosition();
+            int endPosition = dimensionIndex == dimensionCount - 1 ? query.length() : dimensions.get(dimensionIndex + 1)
+                                                                                                .getStartPosition();
 
             int startPosSearchTerm = dimension.getEndPosition() + 1; // exclude
             // the
@@ -327,16 +314,14 @@ public class QueryParser {
                     String lookBehind = query.substring(pos, pos + 1);
                     // Quote/space/start of string means detection of
                     // begincharacter dimensiontype
-                    if (lookBehind.equals(QUOTE) || lookBehind.equals(SPACE)
-                            || pos == 0) {
+                    if (lookBehind.equals(QUOTE) || lookBehind.equals(SPACE) || pos == 0) {
                         dimension.startPosition = pos;
                         startNotFound = false;
                         break;
                     }
                 }
             }
-            dimension.setName(query.substring(dimension.getStartPosition(),
-                    dimension.getEndPosition()));
+            dimension.setName(query.substring(dimension.getStartPosition(), dimension.getEndPosition()));
             if (!dimension.isIdDimension()) {
                 dimension.setDimensionType(dimNameMap.get(dimension.getName()));
             }

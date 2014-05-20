@@ -39,7 +39,8 @@ public class ExcelReportRenderer implements ExcelRenderer<Report>, Renderer {
 
     @Inject
     public ExcelReportRenderer(ExcelPivotTableRenderer pivotTableRenderer,
-                               ExcelTableRenderer tableRenderer, ExcelChartRenderer chartRenderer) {
+                               ExcelTableRenderer tableRenderer,
+                               ExcelChartRenderer chartRenderer) {
         this.pivotTableRenderer = pivotTableRenderer;
         this.tableRenderer = tableRenderer;
         this.chartRenderer = chartRenderer;
@@ -52,8 +53,7 @@ public class ExcelReportRenderer implements ExcelRenderer<Report>, Renderer {
     }
 
     @Override
-    public void render(ReportElement element, OutputStream os)
-            throws IOException {
+    public void render(ReportElement element, OutputStream os) throws IOException {
 
         HSSFWorkbook book = new HSSFWorkbook();
 
@@ -93,8 +93,7 @@ public class ExcelReportRenderer implements ExcelRenderer<Report>, Renderer {
 
             if (element instanceof PivotTableReportElement) {
 
-                pivotTableRenderer.render(workbook,
-                        (PivotTableReportElement) element);
+                pivotTableRenderer.render(workbook, (PivotTableReportElement) element);
 
             } else if (element instanceof TableElement) {
 

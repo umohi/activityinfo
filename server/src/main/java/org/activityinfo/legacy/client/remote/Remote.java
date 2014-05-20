@@ -33,9 +33,7 @@ import static java.lang.annotation.ElementType.*;
 /**
  * Wires a {@code Dispatcher} to the Remote dispatcher
  */
-@BindingAnnotation
-@Target({FIELD, PARAMETER, METHOD})
-@Retention(RetentionPolicy.RUNTIME)
+@BindingAnnotation @Target({FIELD, PARAMETER, METHOD}) @Retention(RetentionPolicy.RUNTIME)
 public @interface Remote {
 
 }

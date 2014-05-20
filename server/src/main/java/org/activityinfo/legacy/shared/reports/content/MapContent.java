@@ -138,8 +138,7 @@ public class MapContent implements Content {
     public Map<Integer, String> siteLabelMap() {
         Map<Integer, String> map = new HashMap<Integer, String>();
         for (MapMarker marker : getMarkers()) {
-            if (marker instanceof BubbleMapMarker
-                    && ((BubbleMapMarker) marker).getLabel() != null) {
+            if (marker instanceof BubbleMapMarker && ((BubbleMapMarker) marker).getLabel() != null) {
                 for (Integer siteId : marker.getSiteIds()) {
                     map.put(siteId, ((BubbleMapMarker) marker).getLabel());
                 }

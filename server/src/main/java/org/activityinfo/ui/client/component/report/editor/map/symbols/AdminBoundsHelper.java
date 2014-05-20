@@ -76,10 +76,8 @@ public final class AdminBoundsHelper {
      *                       representation of a site.
      * @return the normative lat/lng bounds
      */
-    public static Extents calculate(ActivityDTO activity,
-                                    HasAdminEntityValues entityAccessor) {
-        return calculate(activity.getDatabase().getCountry(),
-                activity.getAdminLevels(), entityAccessor);
+    public static Extents calculate(ActivityDTO activity, HasAdminEntityValues entityAccessor) {
+        return calculate(activity.getDatabase().getCountry(), activity.getAdminLevels(), entityAccessor);
     }
 
     /**
@@ -98,7 +96,8 @@ public final class AdminBoundsHelper {
      * @return the normative lat/lng bounds
      */
     public static Extents calculate(CountryDTO country,
-                                    Collection<AdminLevelDTO> levels, HasAdminEntityValues entityAccessor) {
+                                    Collection<AdminLevelDTO> levels,
+                                    HasAdminEntityValues entityAccessor) {
         Extents bounds = null;
         if (country != null) {
             bounds = new Extents(country.getBounds());
@@ -108,8 +107,7 @@ public final class AdminBoundsHelper {
         }
 
         for (AdminLevelDTO level : levels) {
-            AdminEntityDTO entity = entityAccessor
-                    .getAdminEntity(level.getId());
+            AdminEntityDTO entity = entityAccessor.getAdminEntity(level.getId());
             if (entity != null && entity.hasBounds()) {
                 bounds = bounds.intersect(entity.getBounds());
             }
@@ -127,15 +125,13 @@ public final class AdminBoundsHelper {
      * @param site
      * @return
      */
-    public static String name(ActivityDTO activity, Extents bounds,
-                              final SiteDTO site) {
-        return name(bounds, activity.getAdminLevels(),
-                new HasAdminEntityValues() {
-                    @Override
-                    public AdminEntityDTO getAdminEntity(int levelId) {
-                        return site.getAdminEntity(levelId);
-                    }
-                });
+    public static String name(ActivityDTO activity, Extents bounds, final SiteDTO site) {
+        return name(bounds, activity.getAdminLevels(), new HasAdminEntityValues() {
+            @Override
+            public AdminEntityDTO getAdminEntity(int levelId) {
+                return site.getAdminEntity(levelId);
+            }
+        });
     }
 
     /**
@@ -144,8 +140,7 @@ public final class AdminBoundsHelper {
      * @param getter
      * @return
      */
-    public static String name(Extents bounds, Collection<AdminLevelDTO> levels,
-                              HasAdminEntityValues getter) {
+    public static String name(Extents bounds, Collection<AdminLevelDTO> levels, HasAdminEntityValues getter) {
         // find the entities that are the limiting bounds.
         // E.g., if the user selects North Kivu, distict de North Kivu, and
         // territoire

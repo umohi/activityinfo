@@ -32,19 +32,18 @@ public class CommandQueueStatus extends Status {
 
     @Inject
     public CommandQueueStatus(EventBus eventBus) {
-        eventBus.addListener(CommandQueueEvent.TYPE,
-                new Listener<CommandQueueEvent>() {
+        eventBus.addListener(CommandQueueEvent.TYPE, new Listener<CommandQueueEvent>() {
 
-                    @Override
-                    public void handleEvent(CommandQueueEvent be) {
-                        if (be.getEnqueuedItemCount() > 0) {
-                            setText(be.getEnqueuedItemCount() + " changes pending");
-                            setBox(true);
-                        } else {
-                            setText(null);
-                            setBox(false);
-                        }
-                    }
-                });
+            @Override
+            public void handleEvent(CommandQueueEvent be) {
+                if (be.getEnqueuedItemCount() > 0) {
+                    setText(be.getEnqueuedItemCount() + " changes pending");
+                    setBox(true);
+                } else {
+                    setText(null);
+                    setBox(false);
+                }
+            }
+        });
     }
 }

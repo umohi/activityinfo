@@ -48,14 +48,10 @@ public class FFPermissionsDialog extends Window {
 
         this.callback = callback;
 
-        add(new Html(
-                "<p>FireFox requires your permission before enabling offline mode:</p>"
-                        +
-                        "<p>Please click the 'Allow' button at the top of this window.</p>"
-                        +
-                        "<p>If you do not see an 'Allow' button, you may need to reload the page"
-                        +
-                        "before continuing.</p>"));
+        add(new Html("<p>FireFox requires your permission before enabling offline mode:</p>" +
+                     "<p>Please click the 'Allow' button at the top of this window.</p>" +
+                     "<p>If you do not see an 'Allow' button, you may need to reload the page" +
+                     "before continuing.</p>"));
 
         Scheduler.get().scheduleFinally(new RepeatingCommand() {
 
@@ -65,25 +61,22 @@ public class FFPermissionsDialog extends Window {
             }
         });
 
-        getButtonBar().add(
-                new Button("Reload page", new SelectionListener<ButtonEvent>() {
+        getButtonBar().add(new Button("Reload page", new SelectionListener<ButtonEvent>() {
 
-                    @Override
-                    public void componentSelected(ButtonEvent ce) {
-                        com.google.gwt.user.client.Window.Location.reload();
-                    }
-                }));
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                com.google.gwt.user.client.Window.Location.reload();
+            }
+        }));
 
-        getButtonBar().add(
-                new Button(I18N.CONSTANTS.cancel(),
-                        new SelectionListener<ButtonEvent>() {
+        getButtonBar().add(new Button(I18N.CONSTANTS.cancel(), new SelectionListener<ButtonEvent>() {
 
-                            @Override
-                            public void componentSelected(ButtonEvent ce) {
-                                hide();
-                                callback.onFailure(new PermissionRefusedException());
-                            }
-                        }));
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                hide();
+                callback.onFailure(new PermissionRefusedException());
+            }
+        }));
 
     }
 

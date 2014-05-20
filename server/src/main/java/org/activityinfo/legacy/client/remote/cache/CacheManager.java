@@ -46,22 +46,21 @@ import java.util.Map;
 @Singleton
 public class CacheManager implements DispatchEventSource {
 
-    private Map<Class<? extends Command>, List<DispatchListener>> listeners =
-            new HashMap<Class<? extends Command>, List<DispatchListener>>();
+    private Map<Class<? extends Command>, List<DispatchListener>> listeners = new HashMap<Class<? extends Command>,
+            List<DispatchListener>>();
 
-    private Map<Class<? extends Command>, List<CommandCache>> proxies =
-            new HashMap<Class<? extends Command>, List<CommandCache>>();
+    private Map<Class<? extends Command>, List<CommandCache>> proxies = new HashMap<Class<? extends Command>,
+            List<CommandCache>>();
 
     @Inject
     public CacheManager(EventBus eventBus) {
-        eventBus.addListener(SyncCompleteEvent.TYPE,
-                new Listener<SyncCompleteEvent>() {
+        eventBus.addListener(SyncCompleteEvent.TYPE, new Listener<SyncCompleteEvent>() {
 
-                    @Override
-                    public void handleEvent(SyncCompleteEvent be) {
-                        clearAllCaches();
-                    }
-                });
+            @Override
+            public void handleEvent(SyncCompleteEvent be) {
+                clearAllCaches();
+            }
+        });
     }
 
     private void clearAllCaches() {
@@ -73,8 +72,7 @@ public class CacheManager implements DispatchEventSource {
     }
 
     @Override
-    public <T extends Command> void registerListener(Class<T> commandClass,
-                                                     DispatchListener<T> listener) {
+    public <T extends Command> void registerListener(Class<T> commandClass, DispatchListener<T> listener) {
         List<DispatchListener> classListeners = listeners.get(commandClass);
         if (classListeners == null) {
             classListeners = new ArrayList<DispatchListener>();
@@ -84,8 +82,7 @@ public class CacheManager implements DispatchEventSource {
     }
 
     @Override
-    public <T extends Command> void registerProxy(Class<T> commandClass,
-                                                  CommandCache<T> proxy) {
+    public <T extends Command> void registerProxy(Class<T> commandClass, CommandCache<T> proxy) {
         List<CommandCache> classProxies = proxies.get(commandClass);
         if (classProxies == null) {
             classProxies = new ArrayList<CommandCache>();
@@ -102,9 +99,7 @@ public class CacheManager implements DispatchEventSource {
                 try {
                     listener.onSuccess(cmd, result);
                 } catch (Exception e) {
-                    Log.error(
-                            "ProxyManager: listener threw exception during onSuccess notification.",
-                            e);
+                    Log.error("ProxyManager: listener threw exception during onSuccess notification.", e);
                 }
             }
         }
@@ -118,9 +113,7 @@ public class CacheManager implements DispatchEventSource {
                 try {
                     listener.beforeDispatched(cmd);
                 } catch (Exception e) {
-                    Log.error(
-                            "ProxyManager: listener threw exception during beforeCalled notification",
-                            e);
+                    Log.error("ProxyManager: listener threw exception during beforeCalled notification", e);
                 }
             }
         }
@@ -145,22 +138,18 @@ public class CacheManager implements DispatchEventSource {
                     CacheResult r = proxy.maybeExecute(cmd);
                     if (r.isCouldExecute()) {
 
-                        Log.debug("ProxyManager: EXECUTED (!!) "
-                                + cmd.toString() + " locally with proxy "
-                                + proxy.getClass().getName());
+                        Log.debug("ProxyManager: EXECUTED (!!) " + cmd.toString() + " locally with proxy " +
+                                  proxy.getClass().getName());
 
                         return r;
                     } else {
-                        Log.debug("ProxyManager: Failed to execute "
-                                + cmd.toString() + " locally with proxy "
-                                + proxy.getClass().getName());
+                        Log.debug("ProxyManager: Failed to execute " + cmd.toString() + " locally with proxy " +
+                                  proxy.getClass().getName());
 
                         return r;
                     }
                 } catch (Exception e) {
-                    Log.error(
-                            "ProxyManager: proxy threw exception during call to execute",
-                            e);
+                    Log.error("ProxyManager: proxy threw exception during call to execute", e);
                 }
             }
         }

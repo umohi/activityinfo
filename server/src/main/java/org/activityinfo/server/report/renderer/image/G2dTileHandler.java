@@ -42,8 +42,7 @@ public class G2dTileHandler implements TileHandler {
         try {
             BufferedImage image = ImageIO.read(new URL(tileUrl));
             if (image != null) {
-                g2d.drawImage(image, x, y, image.getWidth(), image.getHeight(),
-                        null);
+                g2d.drawImage(image, x, y, image.getWidth(), image.getHeight(), null);
             }
         } catch (IOException e) {
             throw new RuntimeException("Exception drawing tile at " + tileUrl);

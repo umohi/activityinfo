@@ -59,9 +59,7 @@ public class ExcelTableRenderer implements ExcelRenderer<TableElement> {
 
                 int headerHeight = rowIndex;
 
-                sheet.createFreezePane(
-                        element.getFrozenColumns(),
-                        headerHeight);
+                sheet.createFreezePane(element.getFrozenColumns(), headerHeight);
 
                 /* Prepare the generators and indexes */
 
@@ -95,8 +93,7 @@ public class ExcelTableRenderer implements ExcelRenderer<TableElement> {
                         } else if (value instanceof Boolean) {
                             cell.setCellValue((Boolean) value);
                         } else if (value != null) {
-                            cell.setCellValue(factory
-                                    .createRichTextString(value.toString()));
+                            cell.setCellValue(factory.createRichTextString(value.toString()));
                         }
                     }
                 }

@@ -46,8 +46,7 @@ public class GetMonthlyReports extends GetListCommand<MonthlyReportResult> {
     public GetMonthlyReports(int siteId, Month startMonth, int monthCount) {
         this.siteId = siteId;
         this.startMonth = startMonth;
-        this.endMonth = new Month(startMonth.getYear(), startMonth.getMonth()
-                + monthCount - 1);
+        this.endMonth = new Month(startMonth.getYear(), startMonth.getMonth() + monthCount - 1);
     }
 
     public GetMonthlyReports(int siteId, Month startMonth, Month endMonth) {

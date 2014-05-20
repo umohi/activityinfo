@@ -41,14 +41,13 @@ public class RemoveProjectHandler implements CommandHandler<RemoveProject> {
     }
 
     @Override
-    public CommandResult execute(RemoveProject cmd, User user)
-            throws CommandException {
+    public CommandResult execute(RemoveProject cmd, User user) throws CommandException {
 
 
         changeHandler.execute(ChangeRequestBuilder.delete()
-                .setEntityType("Project")
-                .setEntityId(cmd.getId())
-                .setUser(user));
+                                                  .setEntityType("Project")
+                                                  .setEntityId(cmd.getId())
+                                                  .setUser(user));
 
 
         return new VoidResult();

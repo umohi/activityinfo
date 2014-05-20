@@ -34,17 +34,15 @@ import java.util.Map;
 public final class HandlerRegistry {
     private final Map<Class, CommandHandlerAsync> map = new HashMap<Class, CommandHandlerAsync>();
 
-    public <C extends Command<R>, R extends CommandResult> void registerHandler(
-            Class<C> commandClass, CommandHandlerAsync<C, R> handler) {
+    public <C extends Command<R>, R extends CommandResult> void registerHandler(Class<C> commandClass,
+                                                                                CommandHandlerAsync<C, R> handler) {
         map.put(commandClass, handler);
     }
 
-    public <C extends Command<R>, R extends CommandResult> CommandHandlerAsync<C, R> getHandler(
-            C c) {
+    public <C extends Command<R>, R extends CommandResult> CommandHandlerAsync<C, R> getHandler(C c) {
         CommandHandlerAsync<C, R> handler = map.get(c.getClass());
         if (handler == null) {
-            throw new IllegalArgumentException("No handler class for "
-                    + c.toString());
+            throw new IllegalArgumentException("No handler class for " + c.toString());
         }
 
         return handler;

@@ -31,7 +31,8 @@ import org.activityinfo.legacy.shared.model.UserProfileDTO;
 public class GetUserProfileHandler implements CommandHandlerAsync<GetUserProfile, UserProfileDTO> {
 
     @Override
-    public void execute(final GetUserProfile command, ExecutionContext context,
+    public void execute(final GetUserProfile command,
+                        ExecutionContext context,
                         final AsyncCallback<UserProfileDTO> callback) {
 
         final int userId = command.getUserId();
@@ -44,7 +45,8 @@ public class GetUserProfileHandler implements CommandHandlerAsync<GetUserProfile
                 .appendColumn("u.locale", "locale")
                 .appendColumn("u.emailNotification", "emailNotification")
                 .from("userlogin", "u")
-                .where("u.userid").equalTo(userId)
+                .where("u.userid")
+                .equalTo(userId)
 
                 .execute(context.getTransaction(), new SqlResultCallback() {
                     @Override

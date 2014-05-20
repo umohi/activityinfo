@@ -46,8 +46,7 @@ import java.net.URL;
 public class RtfReportRenderer extends ItextReportRenderer {
 
     @Inject
-    public RtfReportRenderer(AdminGeometryProvider geometryProvider,
-                             @MapIconPath String mapIconPath) {
+    public RtfReportRenderer(AdminGeometryProvider geometryProvider, @MapIconPath String mapIconPath) {
         super(geometryProvider, mapIconPath);
     }
 
@@ -68,8 +67,7 @@ public class RtfReportRenderer extends ItextReportRenderer {
 
     @Override
     protected void renderFooter(Document document) {
-        HeaderFooter footer = new HeaderFooter(new Phrase("Page",
-                ThemeHelper.footerFont()), true);
+        HeaderFooter footer = new HeaderFooter(new Phrase("Page", ThemeHelper.footerFont()), true);
         document.setFooter(footer);
     }
 
@@ -122,8 +120,7 @@ public class RtfReportRenderer extends ItextReportRenderer {
         }
 
         @Override
-        public void addImage(String imageUrl, int x, int y, int width,
-                             int height) {
+        public void addImage(String imageUrl, int x, int y, int width, int height) {
             BufferedImage image;
             try {
                 image = ImageIO.read(new URL(imageUrl));
@@ -165,8 +162,7 @@ public class RtfReportRenderer extends ItextReportRenderer {
         }
 
         @Override
-        public void addImage(String imageUrl, int x, int y, int width,
-                             int height) {
+        public void addImage(String imageUrl, int x, int y, int width, int height) {
             throw new UnsupportedOperationException();
         }
     }

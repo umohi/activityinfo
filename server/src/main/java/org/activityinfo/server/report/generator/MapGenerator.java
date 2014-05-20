@@ -59,8 +59,7 @@ public class MapGenerator extends ListGenerator<MapReportElement> {
 
     private final IndicatorDAO indicatorDAO;
 
-    private static final Logger LOGGER = Logger.getLogger(MapGenerator.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(MapGenerator.class.getName());
 
     @Inject
     public MapGenerator(DispatcherSync dispatcher, IndicatorDAO indicatorDAO) {
@@ -69,16 +68,13 @@ public class MapGenerator extends ListGenerator<MapReportElement> {
     }
 
     @Override
-    public void generate(User user, MapReportElement element,
-                         Filter inheritedFilter, DateRange dateRange) {
+    public void generate(User user, MapReportElement element, Filter inheritedFilter, DateRange dateRange) {
 
         Filter filter = GeneratorUtils.resolveElementFilter(element, dateRange);
-        Filter effectiveFilter = inheritedFilter == null ? filter : new Filter(
-                inheritedFilter, filter);
+        Filter effectiveFilter = inheritedFilter == null ? filter : new Filter(inheritedFilter, filter);
 
         MapContent content = new MapContent();
-        content.setFilterDescriptions(generateFilterDescriptions(filter,
-                Collections.<DimensionType>emptySet(), user));
+        content.setFilterDescriptions(generateFilterDescriptions(filter, Collections.<DimensionType>emptySet(), user));
 
         Map<Integer, Indicator> indicators = queryIndicators(element);
 
@@ -139,8 +135,7 @@ public class MapGenerator extends ListGenerator<MapReportElement> {
         content.setZoomLevel(zoom);
         if (baseMap == null) {
             baseMap = TileBaseMap.createNullMap(element.getBaseMapId());
-            LOGGER.log(Level.SEVERE,
-                    "Could not find base map id=" + element.getBaseMapId());
+            LOGGER.log(Level.SEVERE, "Could not find base map id=" + element.getBaseMapId());
         }
 
         // Generate the actual content
@@ -194,12 +189,10 @@ public class MapGenerator extends ListGenerator<MapReportElement> {
         return indicatorDTOs;
     }
 
-    private BaseMap findBaseMap(MapReportElement element,
-                                Collection<Indicator> indicators) {
+    private BaseMap findBaseMap(MapReportElement element, Collection<Indicator> indicators) {
         BaseMap baseMap = null;
         String baseMapId = element.getBaseMapId();
-        if (element.getBaseMapId() == null
-                || element.getBaseMapId().equals(MapReportElement.AUTO_BASEMAP)) {
+        if (element.getBaseMapId() == null || element.getBaseMapId().equals(MapReportElement.AUTO_BASEMAP)) {
             baseMapId = defaultBaseMap(indicators);
         }
         if (PredefinedBaseMaps.isPredefinedMap(baseMapId)) {

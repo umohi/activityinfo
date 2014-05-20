@@ -45,8 +45,7 @@ import java.util.logging.Logger;
  */
 public class RenderElementHandler implements CommandHandler<RenderElement> {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(RenderElementHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RenderElementHandler.class.getName());
 
     private final RendererFactory rendererFactory;
     private final ReportGenerator generator;
@@ -54,36 +53,31 @@ public class RenderElementHandler implements CommandHandler<RenderElement> {
 
     @Inject
     public RenderElementHandler(RendererFactory rendererFactory,
-                                ReportGenerator generator, StorageProvider storageProvider) {
+                                ReportGenerator generator,
+                                StorageProvider storageProvider) {
         this.rendererFactory = rendererFactory;
         this.generator = generator;
         this.storageProvider = storageProvider;
     }
 
     @Override
-    public CommandResult execute(RenderElement cmd, User user)
-            throws CommandException {
+    public CommandResult execute(RenderElement cmd, User user) throws CommandException {
 
         try {
             Renderer renderer = rendererFactory.get(cmd.getFormat());
-            TempStorage storage = storageProvider.allocateTemporaryFile(
-                    renderer.getMimeType(),
+            TempStorage storage = storageProvider.allocateTemporaryFile(renderer.getMimeType(),
                     cmd.getFilename() + renderer.getFileSuffix());
 
-            LOGGER.fine("Rendering element: " + cmd + "\nURL: "
-                    + storage.getUrl());
+            LOGGER.fine("Rendering element: " + cmd + "\nURL: " + storage.getUrl());
 
             try {
-                generator.generateElement(user, cmd.getElement(), new Filter(),
-                        new DateRange());
+                generator.generateElement(user, cmd.getElement(), new Filter(), new DateRange());
                 renderer.render(cmd.getElement(), storage.getOutputStream());
             } finally {
                 try {
                     storage.getOutputStream().close();
                 } catch (Exception e) {
-                    LOGGER
-                            .log(Level.WARNING, "Exception while closing storage: "
-                                    + e.getMessage(), e);
+                    LOGGER.log(Level.WARNING, "Exception while closing storage: " + e.getMessage(), e);
                 }
             }
 

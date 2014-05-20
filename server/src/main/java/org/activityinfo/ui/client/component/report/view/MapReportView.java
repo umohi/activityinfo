@@ -34,8 +34,7 @@ import org.activityinfo.ui.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.LeafletResourceInjector;
 import org.discotools.gwt.leaflet.client.map.MapOptions;
 
-public class MapReportView extends ContentPanel implements
-        ReportView<MapReportElement> {
+public class MapReportView extends ContentPanel implements ReportView<MapReportElement> {
 
     private LeafletMap map;
     private LeafletReportOverlays overlays;

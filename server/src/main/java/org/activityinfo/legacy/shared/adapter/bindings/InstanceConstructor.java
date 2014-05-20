@@ -7,8 +7,7 @@ import org.activityinfo.legacy.shared.model.EntityDTO;
 /**
  * Creates a FormInstance from a ModelBinding and a legacy Model
  */
-public class InstanceConstructor<T extends EntityDTO>
-        extends BiFunction<ModelBinding<T>, T, FormInstance> {
+public class InstanceConstructor<T extends EntityDTO> extends BiFunction<ModelBinding<T>, T, FormInstance> {
 
 
     @Override

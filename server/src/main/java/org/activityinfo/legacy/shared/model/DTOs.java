@@ -33,57 +33,49 @@ import java.util.*;
  */
 public class DTOs {
 
-    public static final AdminLevelDTO PROVINCE = new AdminLevelDTO(1,
-            "Province");
-    public static final AdminLevelDTO TERRITOIRE = new AdminLevelDTO(2, 1,
-            "Territoire");
-    public static final AdminLevelDTO SECTEUR = new AdminLevelDTO(3, 2,
-            "Secteur");
+    public static final AdminLevelDTO PROVINCE = new AdminLevelDTO(1, "Province");
+    public static final AdminLevelDTO TERRITOIRE = new AdminLevelDTO(2, 1, "Territoire");
+    public static final AdminLevelDTO SECTEUR = new AdminLevelDTO(3, 2, "Secteur");
 
     public static final LocationTypeDTO ECOLE = new LocationTypeDTO(2, "Ecole");
-    public static final LocationTypeDTO LOCALITE = new LocationTypeDTO(1,
-            "Localite");
+    public static final LocationTypeDTO LOCALITE = new LocationTypeDTO(1, "Localite");
 
-    public static final AdminEntityDTO NORD_KIVU = rootEntity()
-            .atLevel(PROVINCE).named("North Kivu")
-            .withBounds(Extents.create(0, 0, 100, 100)).build();
+    public static final AdminEntityDTO NORD_KIVU = rootEntity().atLevel(PROVINCE)
+                                                               .named("North Kivu")
+                                                               .withBounds(Extents.create(0, 0, 100, 100))
+                                                               .build();
 
-    public static final AdminEntityDTO BENI = childOf(NORD_KIVU)
-            .atLevel(TERRITOIRE).named("Beni")
-            .withBounds(Extents.create(0, 0, 25, 25)).build();
+    public static final AdminEntityDTO BENI = childOf(NORD_KIVU).atLevel(TERRITOIRE)
+                                                                .named("Beni")
+                                                                .withBounds(Extents.create(0, 0, 25, 25))
+                                                                .build();
 
-    public static final AdminEntityDTO WATALINA = childOf(BENI)
-            .atLevel(SECTEUR).named("Watalina")
-            .build();
+    public static final AdminEntityDTO WATALINA = childOf(BENI).atLevel(SECTEUR).named("Watalina").build();
 
-    public static final AdminEntityDTO RUIZI = childOf(BENI).atLevel(SECTEUR)
-            .named("Ruizi")
-            .build();
+    public static final AdminEntityDTO RUIZI = childOf(BENI).atLevel(SECTEUR).named("Ruizi").build();
 
-    public static final AdminEntityDTO MASISI = childOf(NORD_KIVU)
-            .atLevel(TERRITOIRE).named("Masisi")
-            .withBounds(Extents.create(0, 25, 25, 50)).build();
+    public static final AdminEntityDTO MASISI = childOf(NORD_KIVU).atLevel(TERRITOIRE)
+                                                                  .named("Masisi")
+                                                                  .withBounds(Extents.create(0, 25, 25, 50))
+                                                                  .build();
 
-    public static final AdminEntityResult NORD_KIVU_TERRITOIRES = new AdminEntityResult(
-            Lists.newArrayList(BENI, MASISI));
+    public static final AdminEntityResult NORD_KIVU_TERRITOIRES = new AdminEntityResult(Lists.newArrayList(BENI,
+            MASISI));
 
     public static final AdminEntityDTO SUD_KIVU = rootEntity().atLevel(PROVINCE)
-            .named("Sud Kivu")
-            .withBounds(Extents.create(0, 0, -100, -100)).build();
+                                                              .named("Sud Kivu")
+                                                              .withBounds(Extents.create(0, 0, -100, -100))
+                                                              .build();
 
-    public static final AdminEntityDTO SHABUNDA = childOf(SUD_KIVU)
-            .atLevel(TERRITOIRE).named("Shabunda")
-            .build();
+    public static final AdminEntityDTO SHABUNDA = childOf(SUD_KIVU).atLevel(TERRITOIRE).named("Shabunda").build();
 
-    public static final AdminEntityResult SUD_KIVU_TERRITOIRES = new AdminEntityResult(
-            Lists.newArrayList(SHABUNDA));
+    public static final AdminEntityResult SUD_KIVU_TERRITOIRES = new AdminEntityResult(Lists.newArrayList(SHABUNDA));
 
     public static final CountryDTO DRC;
 
     public static final PartnerDTO NRC = new PartnerDTO(88, "NRC");
 
-    public static final AdminEntityResult PROVINCES = new AdminEntityResult(
-            Lists.newArrayList(NORD_KIVU, SUD_KIVU));
+    public static final AdminEntityResult PROVINCES = new AdminEntityResult(Lists.newArrayList(NORD_KIVU, SUD_KIVU));
 
     static {
         DRC = new CountryDTO(1, "RDC");
@@ -149,8 +141,7 @@ public class DTOs {
             WATALINA_CENTER_IN_BENI = new SiteDTO(4);
             WATALINA_CENTER_IN_BENI.setActivityId(NFI_DISTRIBUTION.getId());
             WATALINA_CENTER_IN_BENI.setPartner(NRC);
-            WATALINA_CENTER_IN_BENI
-                    .setLocationName("Watalina Center (in Beni)");
+            WATALINA_CENTER_IN_BENI.setLocationName("Watalina Center (in Beni)");
             WATALINA_CENTER_IN_BENI.setAdminEntity(1, NORD_KIVU);
             WATALINA_CENTER_IN_BENI.setAdminEntity(2, BENI);
             WATALINA_CENTER_IN_BENI.setAdminEntity(3, WATALINA);

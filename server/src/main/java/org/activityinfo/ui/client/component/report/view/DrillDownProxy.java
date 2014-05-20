@@ -1,20 +1,8 @@
 package org.activityinfo.ui.client.component.report.view;
 
-import com.extjs.gxt.ui.client.Style;
-import com.extjs.gxt.ui.client.data.DataReader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
-import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.PivotSites;
@@ -63,28 +51,28 @@ public class DrillDownProxy extends RpcProxy<List<DrillDownRow>> {
     protected void load(Object loadConfig, final AsyncCallback<List<DrillDownRow>> callback) {
         PivotSites query = new PivotSites(dims, filter);
         dispatcher.execute(query, new AsyncCallback<PivotSites.PivotResult>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        callback.onFailure(caught);
-                    }
+            @Override
+            public void onFailure(Throwable caught) {
+                callback.onFailure(caught);
+            }
 
-                    @Override
-                    public void onSuccess(PivotSites.PivotResult result) {
-                        List<DrillDownRow> rows;
-                        try {
-                            rows = toRows(result);
-                        } catch (Throwable caught) {
-                            callback.onFailure(caught);
-                            return;
-                        }
-                        callback.onSuccess(rows);
-                    }
-                });
+            @Override
+            public void onSuccess(PivotSites.PivotResult result) {
+                List<DrillDownRow> rows;
+                try {
+                    rows = toRows(result);
+                } catch (Throwable caught) {
+                    callback.onFailure(caught);
+                    return;
+                }
+                callback.onSuccess(rows);
+            }
+        });
     }
 
     private List<DrillDownRow> toRows(PivotSites.PivotResult result) {
         List<DrillDownRow> rows = new ArrayList<>();
-        for(Bucket bucket : result.getBuckets()) {
+        for (Bucket bucket : result.getBuckets()) {
             DrillDownRow row = new DrillDownRow(getEntity(bucket, siteDimension).getId());
             row.set("partner", getEntity(bucket, partnerDimension).getLabel());
             row.set("location", getEntity(bucket, locationDimension).getLabel());
@@ -102,7 +90,7 @@ public class DrillDownProxy extends RpcProxy<List<DrillDownRow>> {
     }
 
     private EntityCategory getEntity(Bucket bucket, Dimension dim) {
-        return ((EntityCategory)bucket.getCategory(dim));
+        return ((EntityCategory) bucket.getCategory(dim));
     }
 
 }

@@ -53,11 +53,11 @@ public class BubbleLayerGenerator extends PointLayerGenerator<BubbleMapLayer> {
         Extents extents = Extents.emptyExtents();
         for (SiteDTO site : sites) {
             if (hasValue(site, layer.getIndicatorIds())) {
-                if(site.hasLatLong()) {
+                if (site.hasLatLong()) {
                     extents.grow(site.getLatitude(), site.getLongitude());
                 } else {
                     Extents siteExtents = getBounds(site);
-                    if(siteExtents != null) {
+                    if (siteExtents != null) {
                         extents.grow(siteExtents);
                     }
                 }
@@ -76,22 +76,20 @@ public class BubbleLayerGenerator extends PointLayerGenerator<BubbleMapLayer> {
     public void generate(TiledMap map, MapContent content) {
         // define our symbol scaling
         RadiiCalculator radiiCalculator;
-        if (layer.getScaling() == ScalingType.None ||
-                layer.getMinRadius() == layer.getMaxRadius()) {
+        if (layer.getScaling() == ScalingType.None || layer.getMinRadius() == layer.getMaxRadius()) {
             radiiCalculator = new FixedRadiiCalculator(layer.getMinRadius());
 
         } else if (layer.getScaling() == ScalingType.Graduated) {
-            radiiCalculator = new GsLogCalculator(layer.getMinRadius(),
-                    layer.getMaxRadius());
+            radiiCalculator = new GsLogCalculator(layer.getMinRadius(), layer.getMaxRadius());
 
         } else {
             radiiCalculator = new FixedRadiiCalculator(layer.getMinRadius());
         }
 
-        BubbleIntersectionCalculator intersectionCalculator = new BubbleIntersectionCalculator(
-                layer.getMaxRadius());
-        Clusterer clusterer = ClustererFactory.fromClustering(
-                layer.getClustering(), radiiCalculator, intersectionCalculator);
+        BubbleIntersectionCalculator intersectionCalculator = new BubbleIntersectionCalculator(layer.getMaxRadius());
+        Clusterer clusterer = ClustererFactory.fromClustering(layer.getClustering(),
+                radiiCalculator,
+                intersectionCalculator);
 
         // create the list of input point values
         List<PointValue> points = new ArrayList<PointValue>();
@@ -175,13 +173,12 @@ public class BubbleLayerGenerator extends PointLayerGenerator<BubbleMapLayer> {
         }
     }
 
-    public void generatePoints(
-            List<SiteDTO> sites,
-            TiledMap map,
-            BubbleMapLayer layer,
-            Clusterer clusterer,
-            List<PointValue> mapped,
-            List<PointValue> unmapped) {
+    public void generatePoints(List<SiteDTO> sites,
+                               TiledMap map,
+                               BubbleMapLayer layer,
+                               Clusterer clusterer,
+                               List<PointValue> mapped,
+                               List<PointValue> unmapped) {
 
         for (SiteDTO site : sites) {
 
@@ -195,9 +192,7 @@ public class BubbleLayerGenerator extends PointLayerGenerator<BubbleMapLayer> {
 
                 Double value = getValue(site, layer.getIndicatorIds());
                 if (value != null && value != 0) {
-                    PointValue pv = new PointValue(site,
-                            createSymbol(site, layer.getColorDimensions()),
-                            value, px);
+                    PointValue pv = new PointValue(site, createSymbol(site, layer.getColorDimensions()), value, px);
 
                     if (geoPoint != null || clusterer.isMapped(site)) {
                         mapped.add(pv);

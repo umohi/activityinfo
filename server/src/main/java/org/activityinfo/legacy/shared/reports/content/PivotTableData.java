@@ -112,8 +112,7 @@ public class PivotTableData implements Serializable {
 
         }
 
-        public Axis(Axis parent, Dimension dimension,
-                    DimensionCategory category, String label) {
+        public Axis(Axis parent, Dimension dimension, DimensionCategory category, String label) {
             this.parent = parent;
             this.dimension = dimension;
             this.category = category;
@@ -125,7 +124,8 @@ public class PivotTableData implements Serializable {
         }
 
         public Axis addChild(Dimension childDimension,
-                             DimensionCategory category, String categoryLabel,
+                             DimensionCategory category,
+                             String categoryLabel,
                              Comparator<Axis> comparator) {
 
             Axis child = new Axis(this, childDimension, category, categoryLabel);
@@ -250,8 +250,7 @@ public class PivotTableData implements Serializable {
 
             for (Entry<Axis, Cell> column : cells.entrySet()) {
                 sb.append(" | ");
-                sb.append(column.getKey().label).append("=")
-                        .append(column.getValue().getValue());
+                sb.append(column.getKey().label).append("=").append(column.getValue().getValue());
             }
             sb.append("\n");
             for (Axis child : getChildren()) {

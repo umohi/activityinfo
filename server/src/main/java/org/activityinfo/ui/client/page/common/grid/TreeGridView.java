@@ -24,7 +24,7 @@ package org.activityinfo.ui.client.page.common.grid;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
-public interface TreeGridView<PresenterT extends GridPresenter<ModelT>, ModelT extends ModelData>
-        extends GridView<PresenterT, ModelT> {
+public interface TreeGridView<PresenterT extends GridPresenter<ModelT>, ModelT extends ModelData> extends
+        GridView<PresenterT, ModelT> {
 
 }

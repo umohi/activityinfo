@@ -40,12 +40,10 @@ public class PostmarkMailSender extends MailSender {
 
     private final String apiKey;
 
-    private static final Logger LOGGER = Logger
-            .getLogger(PostmarkMailSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PostmarkMailSender.class.getName());
 
     @Inject
-    public PostmarkMailSender(DeploymentConfiguration deploymentConfig,
-                              Configuration templateCfg) {
+    public PostmarkMailSender(DeploymentConfiguration deploymentConfig, Configuration templateCfg) {
         super(templateCfg);
         this.apiKey = deploymentConfig.getProperty(POSTMARK_API_KEY);
     }
@@ -65,19 +63,16 @@ public class PostmarkMailSender extends MailSender {
         URLConnection conn = url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestProperty("X-Postmark-Server-Token", apiKey);
-        conn.setRequestProperty("Content-Type",
-                "application/json; charset=UTF-8");
+        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setRequestProperty("Accept", "application/json");
         conn.setConnectTimeout(5 * 60 * 1000);
         conn.setReadTimeout(5 * 60 * 1000);
 
-        OutputStreamWriter writer = new OutputStreamWriter(
-                conn.getOutputStream(), Charsets.UTF_8);
+        OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream(), Charsets.UTF_8);
         writer.write(node.toString());
         writer.flush();
         String line;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                conn.getInputStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
         }
@@ -85,8 +80,7 @@ public class PostmarkMailSender extends MailSender {
         reader.close();
     }
 
-    private JsonObject toJson(Message message) throws MessagingException,
-            IOException {
+    private JsonObject toJson(Message message) throws MessagingException, IOException {
         JsonObject json = new JsonObject();
         json.addProperty("From", "notifications@activityinfo.org");
         json.addProperty("To", toString(message.getTo()));
@@ -104,8 +98,7 @@ public class PostmarkMailSender extends MailSender {
             JsonObject attachment = new JsonObject();
             attachment.addProperty("Name", part.getFilename());
             attachment.addProperty("Content", toBase64(part));
-            attachment.addProperty("ContentType",
-                    stripContentType(part.getContentType()));
+            attachment.addProperty("ContentType", stripContentType(part.getContentType()));
             attachments.add(attachment);
         }
         if (attachments.size() > 0) {
@@ -113,8 +106,7 @@ public class PostmarkMailSender extends MailSender {
         }
 
         if (message.getReplyTo() != null) {
-            json.addProperty("ReplyTo",
-                    toString(Arrays.asList(message.getReplyTo())));
+            json.addProperty("ReplyTo", toString(Arrays.asList(message.getReplyTo())));
         }
         return json;
     }

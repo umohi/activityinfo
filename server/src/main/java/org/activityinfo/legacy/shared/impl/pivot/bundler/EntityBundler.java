@@ -41,9 +41,7 @@ public class EntityBundler implements Bundler {
     @Override
     public void bundle(SqlResultSetRow row, Bucket bucket) {
         if (!row.isNull(idAlias)) {
-            bucket.setCategory(dimension, new EntityCategory(
-                    row.getInt(idAlias),
-                    row.getString(labelAlias)));
+            bucket.setCategory(dimension, new EntityCategory(row.getInt(idAlias), row.getString(labelAlias)));
         }
     }
 

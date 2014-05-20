@@ -27,7 +27,6 @@ import org.activityinfo.legacy.shared.command.Command;
 
 public interface AuthorizationHandler<C extends Command<?>> {
 
-    void authorize(C command, ExecutionContext context,
-                   AsyncCallback<Void> callback);
+    void authorize(C command, ExecutionContext context, AsyncCallback<Void> callback);
 
 }

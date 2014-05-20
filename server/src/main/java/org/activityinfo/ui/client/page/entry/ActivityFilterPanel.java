@@ -63,22 +63,20 @@ public class ActivityFilterPanel extends ContentPanel implements FilterPanel {
         setLayout(new FitLayout());
 
         tree = new LinkTreePanel(new TreeProxy(dispatcher), "activityFilter");
-        tree.getSelectionModel().addSelectionChangedListener(
-                new SelectionChangedListener<Link>() {
+        tree.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<Link>() {
 
-                    @Override
-                    public void selectionChanged(SelectionChangedEvent<Link> se) {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<Link> se) {
 
-                        if (se.getSelectedItem() != null) {
-                            PageState pageState = se.getSelectedItem()
-                                    .getPageState();
-                            if (pageState instanceof DataEntryPlace) {
-                                currentFilter = ((DataEntryPlace) pageState).getFilter();
-                                ValueChangeEvent.fire(ActivityFilterPanel.this, currentFilter);
-                            }
-                        }
+                if (se.getSelectedItem() != null) {
+                    PageState pageState = se.getSelectedItem().getPageState();
+                    if (pageState instanceof DataEntryPlace) {
+                        currentFilter = ((DataEntryPlace) pageState).getFilter();
+                        ValueChangeEvent.fire(ActivityFilterPanel.this, currentFilter);
                     }
-                });
+                }
+            }
+        });
         tree.getStore().getLoader().load();
         add(tree);
     }
@@ -101,8 +99,7 @@ public class ActivityFilterPanel extends ContentPanel implements FilterPanel {
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 
@@ -121,21 +118,19 @@ public class ActivityFilterPanel extends ContentPanel implements FilterPanel {
         }
 
         @Override
-        public void load(DataReader<List<Link>> reader, Object parent,
-                         final AsyncCallback<List<Link>> callback) {
+        public void load(DataReader<List<Link>> reader, Object parent, final AsyncCallback<List<Link>> callback) {
             if (parent == null) {
-                dispatcher.execute(new GetSchema(),
-                        new AsyncCallback<SchemaDTO>() {
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                callback.onFailure(caught);
-                            }
+                dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        callback.onFailure(caught);
+                    }
 
-                            @Override
-                            public void onSuccess(SchemaDTO schema) {
-                                callback.onSuccess(buildTree(schema));
-                            }
-                        });
+                    @Override
+                    public void onSuccess(SchemaDTO schema) {
+                        callback.onSuccess(buildTree(schema));
+                    }
+                });
             } else {
                 List<Link> list = new ArrayList<Link>();
                 List<ModelData> children = ((Link) parent).getChildren();
@@ -152,29 +147,26 @@ public class ActivityFilterPanel extends ContentPanel implements FilterPanel {
                 if (db.getActivities().size() != 0) {
 
                     Link dbLink = Link.to(new DataEntryPlace(db))
-                            .labeled(db.getName())
-                            .usingKey(databaseKey(db))
-                            .withIcon(IconImageBundle.ICONS.database())
-                            .build();
+                                      .labeled(db.getName())
+                                      .usingKey(databaseKey(db))
+                                      .withIcon(IconImageBundle.ICONS.database())
+                                      .build();
 
                     Map<String, Link> categories = new HashMap<String, Link>();
                     for (ActivityDTO activity : db.getActivities()) {
 
-                        Link actLink = Link
-                                .to(new DataEntryPlace(activity))
-                                .labeled(activity.getName())
-                                .withIcon(IconImageBundle.ICONS.table()).build();
+                        Link actLink = Link.to(new DataEntryPlace(activity))
+                                           .labeled(activity.getName())
+                                           .withIcon(IconImageBundle.ICONS.table())
+                                           .build();
 
                         if (activity.getCategory() != null) {
-                            Link category = categories.get(activity
-                                    .getCategory());
+                            Link category = categories.get(activity.getCategory());
                             if (category == null) {
-                                category = Link
-                                        .folderLabelled(activity.getCategory())
-                                        .usingKey(categoryKey(activity, categories))
-                                        .build();
-                                categories
-                                        .put(activity.getCategory(), category);
+                                category = Link.folderLabelled(activity.getCategory())
+                                               .usingKey(categoryKey(activity, categories))
+                                               .build();
+                                categories.put(activity.getCategory(), category);
                                 dbLink.add(category);
                             }
                             category.add(actLink);
@@ -188,10 +180,8 @@ public class ActivityFilterPanel extends ContentPanel implements FilterPanel {
             return list;
         }
 
-        private String categoryKey(ActivityDTO activity,
-                                   Map<String, Link> categories) {
-            return "category" + activity.getDatabase().getId()
-                    + activity.getCategory() + categories.size();
+        private String categoryKey(ActivityDTO activity, Map<String, Link> categories) {
+            return "category" + activity.getDatabase().getId() + activity.getCategory() + categories.size();
         }
 
         private String databaseKey(UserDatabaseDTO db) {

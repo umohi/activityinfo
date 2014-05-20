@@ -55,8 +55,7 @@ public class PolygonMapLayer extends AbstractMapLayer {
 
     @Override
     public String toString() {
-        return "PolygonMapLayer [adminLevelId=" + adminLevelId + ", maxColor="
-                + maxColor + "]";
+        return "PolygonMapLayer [adminLevelId=" + adminLevelId + ", maxColor=" + maxColor + "]";
     }
 
 }

@@ -44,8 +44,7 @@ public class TemplateModule extends AbstractModule {
     protected void configure() {
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     public Configuration provideConfiguration(Provider<Domain> domainProvider) throws TemplateModelException {
 
         Configuration config = new Configuration();

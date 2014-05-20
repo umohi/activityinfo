@@ -46,7 +46,8 @@ public class DefaultColumnModelProvider implements ColumnModelProvider {
     }
 
     @Override
-    public void fetchColumnModels(final Filter filter, final GroupingModel grouping,
+    public void fetchColumnModels(final Filter filter,
+                                  final GroupingModel grouping,
                                   final AsyncCallback<ColumnModel> callback) {
 
         dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
@@ -59,13 +60,13 @@ public class DefaultColumnModelProvider implements ColumnModelProvider {
             @Override
             public void onSuccess(SchemaDTO result) {
                 if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
-                    ActivityDTO singleActivity = result.getActivityById(filter
-                            .getRestrictedCategory(DimensionType.Activity));
+                    ActivityDTO singleActivity = result.getActivityById(filter.getRestrictedCategory(DimensionType
+                            .Activity));
                     callback.onSuccess(forSingleActivity(grouping, singleActivity));
 
                 } else if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Database)) {
-                    UserDatabaseDTO singleDatabase = result
-                            .getDatabaseById(filter.getRestrictedCategory(DimensionType.Database));
+                    UserDatabaseDTO singleDatabase = result.getDatabaseById(filter.getRestrictedCategory
+                            (DimensionType.Database));
                     callback.onSuccess(forSingleDatabase(grouping, singleDatabase));
 
                 } else {
@@ -80,106 +81,89 @@ public class DefaultColumnModelProvider implements ColumnModelProvider {
      *
      * @param activity
      */
-    private ColumnModel forSingleActivity(GroupingModel grouping,
-                                          ActivityDTO activity) {
+    private ColumnModel forSingleActivity(GroupingModel grouping, ActivityDTO activity) {
         if (grouping == NullGroupingModel.INSTANCE) {
-            return new ColumnModelBuilder()
-                    .addMapColumn()
-                    .maybeAddLockColumn(activity)
-                    .maybeAddDateColumn(activity)
-                    .maybeAddPartnerColumn(activity.getDatabase())
-                    .maybeAddProjectColumn(activity.getDatabase())
-                    .maybeAddKeyIndicatorColumns(activity)
-                    .maybeAddTwoLineLocationColumn(activity)
-                    .addAdminLevelColumns(activity)
-                    .build();
+            return new ColumnModelBuilder().addMapColumn()
+                                           .maybeAddLockColumn(activity)
+                                           .maybeAddDateColumn(activity)
+                                           .maybeAddPartnerColumn(activity.getDatabase())
+                                           .maybeAddProjectColumn(activity.getDatabase())
+                                           .maybeAddKeyIndicatorColumns(activity)
+                                           .maybeAddTwoLineLocationColumn(activity)
+                                           .addAdminLevelColumns(activity)
+                                           .build();
         } else if (grouping instanceof AdminGroupingModel) {
 
-            return new ColumnModelBuilder()
-                    .maybeAddLockColumn(activity)
-                    .addTreeNameColumn()
-                    .maybeAddDateColumn(activity)
-                    .maybeAddPartnerColumn(activity.getDatabase())
-                    .maybeAddProjectColumn(activity.getDatabase())
+            return new ColumnModelBuilder().maybeAddLockColumn(activity)
+                                           .addTreeNameColumn()
+                                           .maybeAddDateColumn(activity)
+                                           .maybeAddPartnerColumn(activity.getDatabase())
+                                           .maybeAddProjectColumn(activity.getDatabase())
 
-                    .build();
+                                           .build();
         } else if (grouping instanceof TimeGroupingModel) {
 
-            return new ColumnModelBuilder()
-                    .maybeAddLockColumn(activity)
-                    .addTreeNameColumn()
-                    .maybeAddDateColumn(activity)
-                    .maybeAddPartnerColumn(activity.getDatabase())
-                    .maybeAddProjectColumn(activity.getDatabase())
-                    .maybeAddSingleLineLocationColumn(activity)
-                    .addAdminLevelColumns(activity)
-                    .build();
+            return new ColumnModelBuilder().maybeAddLockColumn(activity)
+                                           .addTreeNameColumn()
+                                           .maybeAddDateColumn(activity)
+                                           .maybeAddPartnerColumn(activity.getDatabase())
+                                           .maybeAddProjectColumn(activity.getDatabase())
+                                           .maybeAddSingleLineLocationColumn(activity)
+                                           .addAdminLevelColumns(activity)
+                                           .build();
         } else {
             throw new IllegalArgumentException(grouping.toString());
         }
     }
 
-    private ColumnModel forSingleDatabase(GroupingModel grouping,
-                                          UserDatabaseDTO database) {
+    private ColumnModel forSingleDatabase(GroupingModel grouping, UserDatabaseDTO database) {
         if (grouping == NullGroupingModel.INSTANCE) {
-            return new ColumnModelBuilder()
-                    .addMapColumn()
-                    .addActivityColumn(database)
-                    .addLocationColumn()
-                    .maybeAddPartnerColumn(database)
-                    .maybeAddProjectColumn(database)
-                    .addAdminLevelColumns(database)
-                    .build();
+            return new ColumnModelBuilder().addMapColumn()
+                                           .addActivityColumn(database)
+                                           .addLocationColumn()
+                                           .maybeAddPartnerColumn(database)
+                                           .maybeAddProjectColumn(database)
+                                           .addAdminLevelColumns(database)
+                                           .build();
 
         } else if (grouping instanceof AdminGroupingModel) {
 
-            return new ColumnModelBuilder()
-                    .addTreeNameColumn()
-                    .addActivityColumn(database)
-                    .maybeAddPartnerColumn(database)
-                    .maybeAddProjectColumn(database)
-                    .build();
+            return new ColumnModelBuilder().addTreeNameColumn()
+                                           .addActivityColumn(database)
+                                           .maybeAddPartnerColumn(database)
+                                           .maybeAddProjectColumn(database)
+                                           .build();
 
         } else if (grouping instanceof TimeGroupingModel) {
 
-            return new ColumnModelBuilder()
-                    .addTreeNameColumn()
-                    .addActivityColumn(database)
-                    .maybeAddPartnerColumn(database)
-                    .maybeAddProjectColumn(database)
-                    .addLocationColumn()
-                    .addAdminLevelColumns(database)
-                    .build();
+            return new ColumnModelBuilder().addTreeNameColumn()
+                                           .addActivityColumn(database)
+                                           .maybeAddPartnerColumn(database)
+                                           .maybeAddProjectColumn(database)
+                                           .addLocationColumn()
+                                           .addAdminLevelColumns(database)
+                                           .build();
         } else {
             throw new IllegalArgumentException(grouping.toString());
         }
     }
 
-    private ColumnModel forMultipleDatabases(GroupingModel grouping,
-                                             SchemaDTO schema) {
+    private ColumnModel forMultipleDatabases(GroupingModel grouping, SchemaDTO schema) {
         if (grouping == NullGroupingModel.INSTANCE) {
-            return new ColumnModelBuilder()
-                    .addMapColumn()
-                    .addDatabaseColumn(schema)
-                    .addActivityColumn(schema)
-                    .addLocationColumn()
-                    .addPartnerColumn()
-                    .build();
+            return new ColumnModelBuilder().addMapColumn()
+                                           .addDatabaseColumn(schema)
+                                           .addActivityColumn(schema)
+                                           .addLocationColumn()
+                                           .addPartnerColumn()
+                                           .build();
 
         } else if (grouping instanceof AdminGroupingModel) {
 
-            return new ColumnModelBuilder()
-                    .addTreeNameColumn()
-                    .addPartnerColumn()
-                    .build();
+            return new ColumnModelBuilder().addTreeNameColumn().addPartnerColumn().build();
 
         } else if (grouping instanceof TimeGroupingModel) {
 
-            return new ColumnModelBuilder()
-                    .addTreeNameColumn()
-                    .addPartnerColumn()
-                    .addLocationColumn()
-                    .build();
+            return new ColumnModelBuilder().addTreeNameColumn().addPartnerColumn().addLocationColumn().build();
         } else {
             throw new IllegalArgumentException(grouping.toString());
         }

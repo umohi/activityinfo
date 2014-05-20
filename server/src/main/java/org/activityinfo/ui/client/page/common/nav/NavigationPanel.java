@@ -63,9 +63,8 @@ public class NavigationPanel extends ContentPanel {
             @Override
             public void handleEvent(TreePanelEvent<Link> tpe) {
                 if (tpe.getItem().getPageState() != null) {
-                    eventBus.fireEvent(new NavigationEvent(
-                            NavigationHandler.NAVIGATION_REQUESTED, tpe.getItem()
-                            .getPageState()));
+                    eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
+                            tpe.getItem().getPageState()));
                 }
             }
         });
@@ -90,8 +89,7 @@ public class NavigationPanel extends ContentPanel {
     }
 
     public void shutdown() {
-        eventBus
-                .removeListener(NavigationHandler.NAVIGATION_AGREED, navListener);
+        eventBus.removeListener(NavigationHandler.NAVIGATION_AGREED, navListener);
         eventBus.removeListener(AppEvents.SCHEMA_CHANGED, changeListener);
     }
 

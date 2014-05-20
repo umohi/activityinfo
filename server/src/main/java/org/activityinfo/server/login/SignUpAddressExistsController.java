@@ -57,10 +57,7 @@ public class SignUpAddressExistsController {
     private Provider<UserDAO> userDAO;
 
 
-    @POST
-    @Produces(MediaType.TEXT_HTML)
-    @LogException(emailAlert = true)
-    @Transactional
+    @POST @Produces(MediaType.TEXT_HTML) @LogException(emailAlert = true) @Transactional
     public Viewable resetPassword(@FormParam("email") String email) {
         try {
             User user = userDAO.get().findUserByEmail(email);

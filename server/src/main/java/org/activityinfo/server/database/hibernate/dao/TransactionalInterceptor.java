@@ -39,8 +39,7 @@ import java.util.logging.Logger;
  */
 public class TransactionalInterceptor implements MethodInterceptor {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(TransactionalInterceptor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TransactionalInterceptor.class.getName());
 
     private Injector injector;
 
@@ -74,8 +73,7 @@ public class TransactionalInterceptor implements MethodInterceptor {
         return result;
     }
 
-    private Object attemptInvocation(MethodInvocation methodInvocation,
-                                     EntityTransaction tx) throws Throwable {
+    private Object attemptInvocation(MethodInvocation methodInvocation, EntityTransaction tx) throws Throwable {
         try {
             return methodInvocation.proceed();
         } catch (Exception e) {

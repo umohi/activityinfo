@@ -78,10 +78,8 @@ public class XmlBuilder {
     private XmlElement pendingTag = null;
     private Stack<State> openTags = new Stack<State>();
 
-    public XmlBuilder(StreamResult result)
-            throws TransformerConfigurationException, SAXException {
-        SAXTransformerFactory tf = (SAXTransformerFactory) SAXTransformerFactory
-                .newInstance();
+    public XmlBuilder(StreamResult result) throws TransformerConfigurationException, SAXException {
+        SAXTransformerFactory tf = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
 
         hd = tf.newTransformerHandler();
         Transformer serializer = hd.getTransformer();
@@ -113,8 +111,7 @@ public class XmlBuilder {
 
         for (int i = openTags.size() - 1; i >= 0; i--) {
 
-            prefix = openTags.get(i).getElement().getNamespacePrefixes()
-                    .get(namespace);
+            prefix = openTags.get(i).getElement().getNamespacePrefixes().get(namespace);
 
             if (prefix != null) {
                 return prefix;
@@ -147,8 +144,7 @@ public class XmlBuilder {
                 defaultNamespace = tag.getNamespace();
             }
 
-            for (Entry<String, String> entry : tag.getNamespacePrefixes()
-                    .entrySet()) {
+            for (Entry<String, String> entry : tag.getNamespacePrefixes().entrySet()) {
                 hd.startPrefixMapping(entry.getValue(), entry.getKey());
             }
 
@@ -167,8 +163,7 @@ public class XmlBuilder {
                     attrQName = attrPrefix + ":" + attr.getName();
                 }
 
-                atts.addAttribute(attrNs, attr.getName(), attrQName, "string",
-                        attr.getValue());
+                atts.addAttribute(attrNs, attr.getName(), attrQName, "string", attr.getValue());
             }
 
             // for(Entry<String, String> entry :
@@ -227,19 +222,16 @@ public class XmlBuilder {
 
         State openTag = openTags.pop();
 
-        hd.endElement(openTag.getElement().getNamespace(), openTag.getElement()
-                .getName(), openTag.getQname());
+        hd.endElement(openTag.getElement().getNamespace(), openTag.getElement().getName(), openTag.getQname());
 
-        for (Entry<String, String> entry : openTag.getElement()
-                .getNamespacePrefixes().entrySet()) {
+        for (Entry<String, String> entry : openTag.getElement().getNamespacePrefixes().entrySet()) {
             hd.endPrefixMapping(entry.getValue());
         }
 
         return this;
     }
 
-    public <XmlElementT extends XmlElement> XmlElementT start(XmlElementT tag)
-            throws SAXException {
+    public <XmlElementT extends XmlElement> XmlElementT start(XmlElementT tag) throws SAXException {
 
         writePendingTag();
 
@@ -254,8 +246,7 @@ public class XmlBuilder {
         return element;
     }
 
-    public XmlBuilder e(XmlElement tag, SimpleXmlElement... child)
-            throws SAXException {
+    public XmlBuilder e(XmlElement tag, SimpleXmlElement... child) throws SAXException {
         start(tag);
         for (SimpleXmlElement c : child) {
             e(c);
@@ -265,8 +256,7 @@ public class XmlBuilder {
     }
 
     public XmlBuilder e(SimpleXmlElement tag) throws SAXException {
-        e(new XmlElement(tag.getNamespace(), tag.getName())).text(
-                tag.getText().toString());
+        e(new XmlElement(tag.getNamespace(), tag.getName())).text(tag.getText().toString());
         return this;
     }
 

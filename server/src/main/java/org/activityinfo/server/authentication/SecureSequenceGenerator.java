@@ -39,8 +39,7 @@ import java.io.Serializable;
 public class SecureSequenceGenerator implements IdentifierGenerator {
 
     @Override
-    public Serializable generate(SessionImplementor session, Object object)
-            throws HibernateException {
+    public Serializable generate(SessionImplementor session, Object object) throws HibernateException {
         return SecureTokenGenerator.generate();
     }
 }

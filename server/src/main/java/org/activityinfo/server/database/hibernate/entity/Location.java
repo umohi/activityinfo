@@ -34,8 +34,7 @@ import java.util.Set;
 /**
  * @author Alex Bertram
  */
-@Entity
-@JsonAutoDetect(JsonMethod.NONE)
+@Entity @JsonAutoDetect(JsonMethod.NONE)
 public class Location implements java.io.Serializable {
 
     private int id;
@@ -52,9 +51,7 @@ public class Location implements java.io.Serializable {
     public Location() {
     }
 
-    @Id
-    @JsonProperty
-    @Column(name = "LocationID", unique = true, nullable = false)
+    @Id @JsonProperty @Column(name = "LocationID", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -63,8 +60,7 @@ public class Location implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "LocationTypeID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "LocationTypeID", nullable = false)
     public LocationType getLocationType() {
         return this.locationType;
     }
@@ -82,8 +78,7 @@ public class Location implements java.io.Serializable {
         this.locationGuid = locationGuid;
     }
 
-    @JsonProperty("longitude")
-    @Column(name = "X", precision = 7, scale = 0)
+    @JsonProperty("longitude") @Column(name = "X", precision = 7, scale = 0)
     public Double getX() {
         return this.x;
     }
@@ -92,8 +87,7 @@ public class Location implements java.io.Serializable {
         this.x = x;
     }
 
-    @JsonProperty("latitude")
-    @Column(name = "Y", precision = 7, scale = 0)
+    @JsonProperty("latitude") @Column(name = "Y", precision = 7, scale = 0)
     public Double getY() {
         return this.y;
     }
@@ -102,8 +96,7 @@ public class Location implements java.io.Serializable {
         this.y = y;
     }
 
-    @JsonProperty
-    @Column(name = "Name", nullable = false, length = 50)
+    @JsonProperty @Column(name = "Name", nullable = false, length = 50)
     public String getName() {
         return this.name;
     }
@@ -130,13 +123,9 @@ public class Location implements java.io.Serializable {
         this.sites = sites;
     }
 
-    @JsonProperty
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "LocationAdminLink",
-            joinColumns = {
-                    @JoinColumn(name = "LocationId", nullable = false, updatable = false)},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "AdminEntityId", nullable = false, updatable = false)})
+    @JsonProperty @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable(name = "LocationAdminLink",
+            joinColumns = {@JoinColumn(name = "LocationId", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "AdminEntityId", nullable = false, updatable = false)})
     public Set<AdminEntity> getAdminEntities() {
         return this.adminEntities;
     }

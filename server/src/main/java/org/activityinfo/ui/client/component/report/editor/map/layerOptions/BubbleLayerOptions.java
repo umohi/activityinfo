@@ -41,8 +41,7 @@ import org.activityinfo.legacy.shared.reports.model.layers.BubbleMapLayer;
  * Displays a list of options the user can choose to configure a BubbleMapLayer
  * TODO: replace the two min/max sliders with a RangeSlider (Slider with 2 knobs)
  */
-public class BubbleLayerOptions extends LayoutContainer implements
-        LayerOptionsWidget<BubbleMapLayer> {
+public class BubbleLayerOptions extends LayoutContainer implements LayerOptionsWidget<BubbleMapLayer> {
     private BubbleMapLayer bubbleMapLayer;
     private ColorPalette colorPicker = new ColorPalette();
     private Slider sliderMinSize = new Slider();
@@ -61,15 +60,13 @@ public class BubbleLayerOptions extends LayoutContainer implements
         colorPicker.setValue("000000");
 
         // Set the selected color to the maplayer
-        colorPicker.addListener(Events.Select,
-                new Listener<ColorPaletteEvent>() {
-                    @Override
-                    public void handleEvent(ColorPaletteEvent be) {
-                        bubbleMapLayer.setBubbleColor(colorPicker.getValue());
-                        ValueChangeEvent.fire(BubbleLayerOptions.this,
-                                bubbleMapLayer);
-                    }
-                });
+        colorPicker.addListener(Events.Select, new Listener<ColorPaletteEvent>() {
+            @Override
+            public void handleEvent(ColorPaletteEvent be) {
+                bubbleMapLayer.setBubbleColor(colorPicker.getValue());
+                ValueChangeEvent.fire(BubbleLayerOptions.this, bubbleMapLayer);
+            }
+        });
 
         LabelField labelColor = new LabelField(I18N.CONSTANTS.color());
         add(labelColor);
@@ -160,8 +157,7 @@ public class BubbleLayerOptions extends LayoutContainer implements
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<BubbleMapLayer> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<BubbleMapLayer> handler) {
         return this.addHandler(handler, ValueChangeEvent.getType());
     }
 }

@@ -71,10 +71,9 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
     private final Provider<EntityManager> entityManager;
 
     @Inject
-    public KmlDataServlet(
-            Provider<EntityManager> entityManager,
-            BasicAuthentication authenticator,
-            DispatcherSync dispatcher) {
+    public KmlDataServlet(Provider<EntityManager> entityManager,
+                          BasicAuthentication authenticator,
+                          DispatcherSync dispatcher) {
 
         this.entityManager = entityManager;
         this.authenticator = authenticator;
@@ -83,8 +82,7 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.getWriter();
 
         int activityId = Integer.valueOf(req.getParameter("activityId"));
@@ -97,8 +95,7 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
 
         if (user == null) {
             // Not allowed, or no password provided so report unauthorized
-            res.setHeader("WWW-Authenticate",
-                    "BASIC realm=\"Utilisateurs authorises\"");
+            res.setHeader("WWW-Authenticate", "BASIC realm=\"Utilisateurs authorises\"");
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -118,8 +115,9 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
 
     }
 
-    protected void writeDocument(User user, PrintWriter out, int actvityId)
-            throws TransformerConfigurationException, SAXException,
+    protected void writeDocument(User user,
+                                 PrintWriter out,
+                                 int actvityId) throws TransformerConfigurationException, SAXException,
             CommandException {
 
         // TODO: rewrite using FreeMarker
@@ -184,8 +182,7 @@ public class KmlDataServlet extends javax.servlet.http.HttpServlet {
     }
 
     private String renderSnippet(ActivityDTO activity, SiteDTO pm) {
-        return activity.getName() + " à " + pm.getLocationName() + " ("
-                + pm.getPartnerName() + ")";
+        return activity.getName() + " à " + pm.getLocationName() + " (" + pm.getPartnerName() + ")";
     }
 
     private List<SiteDTO> querySites(User user, SchemaDTO schema, int activityId) {

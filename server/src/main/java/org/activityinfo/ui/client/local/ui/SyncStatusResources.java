@@ -28,11 +28,9 @@ import com.google.gwt.resources.client.CssResource;
 
 public interface SyncStatusResources extends ClientBundle {
 
-    public static SyncStatusResources INSTANCE = GWT
-            .create(SyncStatusResources.class);
+    public static SyncStatusResources INSTANCE = GWT.create(SyncStatusResources.class);
 
-    @Source("SyncStatus.css")
-    Style style();
+    @Source("SyncStatus.css") Style style();
 
     public interface Style extends CssResource {
         String warningIcon();

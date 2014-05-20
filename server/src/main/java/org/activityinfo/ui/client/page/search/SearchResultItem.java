@@ -96,8 +96,7 @@ public class SearchResultItem extends LayoutContainer {
 
             EntityCategory activity = (EntityCategory) axis.getCategory();
             Hyperlink link = new Hyperlink(axis.getLabel(),
-                    PageStateSerializer.serialize(new DataEntryPlace(Filter
-                            .filter().onActivity(activity.getId()))));
+                    PageStateSerializer.serialize(new DataEntryPlace(Filter.filter().onActivity(activity.getId()))));
             link.setStylePrimaryName("link");
             panelChild.add(link);
 
@@ -107,8 +106,7 @@ public class SearchResultItem extends LayoutContainer {
                 HorizontalPanel spacerIndicator = new HorizontalPanel();
                 spacerIndicator.setWidth(40);
                 panelIndicator.add(spacerIndicator);
-                panelIndicator.add(IconImageBundle.ICONS.indicator()
-                        .createImage());
+                panelIndicator.add(IconImageBundle.ICONS.indicator().createImage());
 
                 // Hyperlink linkIndicator = new Hyperlink(childAxis.getLabel(),
                 // "site-grid/" +

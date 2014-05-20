@@ -55,16 +55,14 @@ public final class CircleMath {
             return area(r0); // the second circle completely contains the first
         }
 
-        double cba = Math.acos(((r1 * r1) + (c * c) - (r0 * r0))
-                / (2.0 * r1 * c));
+        double cba = Math.acos(((r1 * r1) + (c * c) - (r0 * r0)) / (2.0 * r1 * c));
         double cbd = cba * 2.0;
 
-        double cab = Math.acos(((r0 * r0) + (c * c) - (r1 * r1))
-                / (2.0 * r0 * c));
+        double cab = Math.acos(((r0 * r0) + (c * c) - (r1 * r1)) / (2.0 * r0 * c));
         double cad = cab * 2.0;
 
-        return (0.5) * (cbd) * (r1 * r1) - (0.5) * (r1 * r1) * Math.sin(cbd)
-                + (0.5) * (cad) * (r0 * r0) - (0.5) * (r0 * r0 * Math.sin(cad));
+        return (0.5) * (cbd) * (r1 * r1) - (0.5) * (r1 * r1) * Math.sin(cbd) + (0.5) * (cad) * (r0 * r0) -
+               (0.5) * (r0 * r0 * Math.sin(cad));
 
     }
 

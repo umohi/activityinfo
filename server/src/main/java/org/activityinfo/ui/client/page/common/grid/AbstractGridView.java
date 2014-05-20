@@ -39,19 +39,15 @@ import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.legacy.client.monitor.MaskingAsyncMonitor;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
 
-public abstract class AbstractGridView<M extends ModelData, P extends GridPresenter<M>>
-        extends
-        ContentPanel
-        implements
-        GridView<P, M> {
+public abstract class AbstractGridView<M extends ModelData, P extends GridPresenter<M>> extends ContentPanel
+        implements GridView<P, M> {
 
     protected ActionToolBar toolBar;
     protected P presenter;
     protected PagingToolBar pagingBar;
     private Grid<M> grid;
 
-    protected abstract <D extends ModelData> Grid<D> createGridAndAddToContainer(
-            Store store);
+    protected abstract <D extends ModelData> Grid<D> createGridAndAddToContainer(Store store);
 
     protected abstract void initToolBar();
 
@@ -84,13 +80,12 @@ public abstract class AbstractGridView<M extends ModelData, P extends GridPresen
     }
 
     protected void initGridListeners(Grid<M> grid) {
-        grid.getSelectionModel().addSelectionChangedListener(
-                new SelectionChangedListener<M>() {
-                    @Override
-                    public void selectionChanged(SelectionChangedEvent<M> se) {
-                        presenter.onSelectionChanged(se.getSelectedItem());
-                    }
-                });
+        grid.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<M>() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<M> se) {
+                presenter.onSelectionChanged(se.getSelectedItem());
+            }
+        });
     }
 
     protected void createToolBar() {
@@ -116,8 +111,7 @@ public abstract class AbstractGridView<M extends ModelData, P extends GridPresen
     public M getSelection() {
         GridSelectionModel<M> sm = grid.getSelectionModel();
         if (sm instanceof CellSelectionModel) {
-            CellSelectionModel<M>.CellSelection cell = ((CellSelectionModel<M>) sm)
-                    .getSelectCell();
+            CellSelectionModel<M>.CellSelection cell = ((CellSelectionModel<M>) sm).getSelectCell();
             return cell == null ? null : cell.model;
         } else {
             return sm.getSelectedItem();

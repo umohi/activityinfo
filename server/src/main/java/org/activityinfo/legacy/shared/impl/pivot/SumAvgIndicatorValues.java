@@ -39,16 +39,11 @@ public class SumAvgIndicatorValues extends BaseTable {
     @Override
     public void setupQuery(PivotSites command, SqlQuery query) {
         query.from(Tables.INDICATOR_VALUE, "V");
-        query.leftJoin(Tables.REPORTING_PERIOD, "Period")
-                .on("Period.ReportingPeriodId = V.ReportingPeriodId");
-        query.leftJoin(Tables.SITE, "Site")
-                .on("Period.SiteId = Site.SiteId");
-        query.leftJoin(Tables.INDICATOR, "Indicator")
-                .on("Indicator.IndicatorId = V.IndicatorId");
-        query.leftJoin(Tables.ACTIVITY, "Activity")
-                .on("Indicator.ActivityId = Activity.ActivityId");
-        query.leftJoin(Tables.USER_DATABASE, "UserDatabase")
-                .on("Activity.DatabaseId = UserDatabase.DatabaseId");
+        query.leftJoin(Tables.REPORTING_PERIOD, "Period").on("Period.ReportingPeriodId = V.ReportingPeriodId");
+        query.leftJoin(Tables.SITE, "Site").on("Period.SiteId = Site.SiteId");
+        query.leftJoin(Tables.INDICATOR, "Indicator").on("Indicator.IndicatorId = V.IndicatorId");
+        query.leftJoin(Tables.ACTIVITY, "Activity").on("Indicator.ActivityId = Activity.ActivityId");
+        query.leftJoin(Tables.USER_DATABASE, "UserDatabase").on("Activity.DatabaseId = UserDatabase.DatabaseId");
 
         query.where("Indicator.DateDeleted is NULL");
         query.where("Site.dateDeleted").isNull();

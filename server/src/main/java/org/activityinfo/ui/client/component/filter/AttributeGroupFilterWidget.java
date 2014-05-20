@@ -53,8 +53,9 @@ public class AttributeGroupFilterWidget extends FilterWidget {
         dialog.show(getBaseFilter(), getValue(), new SelectionCallback<Set<Integer>>() {
             @Override
             public void onSelected(Set<Integer> selection) {
-                boolean selectionChanged =
-                        CollectionUtil.notContainsEqual(getValue().getRestrictions(DimensionType.Attribute), selection);
+                boolean selectionChanged = CollectionUtil.notContainsEqual(getValue().getRestrictions(DimensionType
+                        .Attribute),
+                        selection);
 
                 if (selectionChanged) {
                     Filter newValue = new Filter();

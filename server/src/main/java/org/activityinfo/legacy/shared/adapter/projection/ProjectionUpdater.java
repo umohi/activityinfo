@@ -24,8 +24,8 @@ package org.activityinfo.legacy.shared.adapter.projection;
 import org.activityinfo.core.shared.Projection;
 
 /**
-* @author yuriyz on 4/15/14.
-*/
+ * @author yuriyz on 4/15/14.
+ */
 interface ProjectionUpdater<T> {
     void update(Projection projection, T dto);
 }

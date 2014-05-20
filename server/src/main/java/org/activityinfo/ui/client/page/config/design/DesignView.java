@@ -68,9 +68,7 @@ import java.util.List;
 /**
  * @author Alex Bertram
  */
-public class DesignView extends
-        AbstractEditorTreeGridView<ModelData, DesignPresenter>
-        implements DesignPresenter.View {
+public class DesignView extends AbstractEditorTreeGridView<ModelData, DesignPresenter> implements DesignPresenter.View {
 
     private final class DragDropListener extends DNDListener {
         private final TreeStore treeStore;
@@ -85,8 +83,7 @@ public class DesignView extends
             ModelData source = sourceData.get(0).get("model");
             TreeGrid.TreeNode target = tree.findNode(e.getTarget());
 
-            if (treeStore.getParent(target.getModel()) != treeStore
-                    .getParent(source)) {
+            if (treeStore.getParent(target.getModel()) != treeStore.getParent(source)) {
 
                 e.setCancelled(true);
                 e.getStatus().setStatus(false);
@@ -114,8 +111,7 @@ public class DesignView extends
     }
 
     @Override
-    public void init(DesignPresenter presenter, UserDatabaseDTO db,
-                     TreeStore store) {
+    public void init(DesignPresenter presenter, UserDatabaseDTO db, TreeStore store) {
 
         this.db = db;
 
@@ -173,10 +169,8 @@ public class DesignView extends
             @Override
             public void dragStart(DNDEvent e) {
 
-                ModelData sel = ((CellTreeGridSelectionModel) tree
-                        .getSelectionModel()).getSelectCell().model;
-                if (!db.isDesignAllowed() || sel == null
-                        || sel instanceof Folder) {
+                ModelData sel = ((CellTreeGridSelectionModel) tree.getSelectionModel()).getSelectCell().model;
+                if (!db.isDesignAllowed() || sel == null || sel instanceof Folder) {
                     e.setCancelled(true);
                     e.getStatus().setStatus(false);
                     return;
@@ -209,8 +203,7 @@ public class DesignView extends
         Menu newMenu = new Menu();
         initNewMenu(newMenu, listener);
 
-        Button newButtonMenu = new Button(I18N.CONSTANTS.newText(),
-                IconImageBundle.ICONS.add());
+        Button newButtonMenu = new Button(I18N.CONSTANTS.newText(), IconImageBundle.ICONS.add());
         newButtonMenu.setMenu(newMenu);
         newButtonMenu.setEnabled(db.isDesignAllowed());
         toolBar.add(newButtonMenu);
@@ -226,19 +219,24 @@ public class DesignView extends
 
     protected void initNewMenu(Menu menu, SelectionListener<MenuEvent> listener) {
 
-        MenuItem newActivity = new MenuItem(I18N.CONSTANTS.newActivity(),
-                IconImageBundle.ICONS.activity(), listener);
+        MenuItem newActivity = new MenuItem(I18N.CONSTANTS.newActivity(), IconImageBundle.ICONS.activity(), listener);
         newActivity.setItemId("Activity");
         menu.add(newActivity);
 
-        final MenuItem newAttributeGroup = newMenuItem("AttributeGroup", I18N.CONSTANTS.newAttributeGroup(), IconImageBundle.ICONS.attribute(), listener);
+        final MenuItem newAttributeGroup = newMenuItem("AttributeGroup",
+                I18N.CONSTANTS.newAttributeGroup(),
+                IconImageBundle.ICONS.attribute(),
+                listener);
         menu.add(newAttributeGroup);
 
-        final MenuItem newAttribute = newMenuItem("Attribute", I18N.CONSTANTS.newAttribute(), IconImageBundle.ICONS.attribute(), listener);
+        final MenuItem newAttribute = newMenuItem("Attribute",
+                I18N.CONSTANTS.newAttribute(),
+                IconImageBundle.ICONS.attribute(),
+                listener);
         menu.add(newAttribute);
 
-        final MenuItem newIndicator = new MenuItem(
-                I18N.CONSTANTS.newIndicator(), IconImageBundle.ICONS.indicator(),
+        final MenuItem newIndicator = new MenuItem(I18N.CONSTANTS.newIndicator(),
+                IconImageBundle.ICONS.indicator(),
                 listener);
         newIndicator.setItemId("Indicator");
         menu.add(newIndicator);
@@ -250,23 +248,23 @@ public class DesignView extends
                 ModelData sel = getSelection();
 
                 newAttributeGroup.setEnabled(sel != null);
-                newAttribute.setEnabled(sel instanceof AttributeGroupDTO
-                        || sel instanceof AttributeDTO);
+                newAttribute.setEnabled(sel instanceof AttributeGroupDTO || sel instanceof AttributeDTO);
                 newIndicator.setEnabled(sel != null);
             }
         });
     }
 
-    private MenuItem newMenuItem(String itemId, String label, AbstractImagePrototype icon, SelectionListener<MenuEvent> listener) {
-        final MenuItem newAttribute = new MenuItem(label, icon,
-                listener);
+    private MenuItem newMenuItem(String itemId,
+                                 String label,
+                                 AbstractImagePrototype icon,
+                                 SelectionListener<MenuEvent> listener) {
+        final MenuItem newAttribute = new MenuItem(label, icon, listener);
         newAttribute.setItemId(itemId);
         return newAttribute;
     }
 
     protected void initRemoveMenu(Menu menu) {
-        final MenuItem removeItem = new MenuItem(I18N.CONSTANTS.delete(),
-                IconImageBundle.ICONS.delete());
+        final MenuItem removeItem = new MenuItem(I18N.CONSTANTS.delete(), IconImageBundle.ICONS.delete());
         removeItem.setItemId(UIActions.DELETE);
         menu.add(removeItem);
 
@@ -304,8 +302,7 @@ public class DesignView extends
         TextField<String> nameField = new TextField<String>();
         nameField.setAllowBlank(false);
 
-        ColumnConfig nameColumn = new ColumnConfig("name",
-                I18N.CONSTANTS.name(), 150);
+        ColumnConfig nameColumn = new ColumnConfig("name", I18N.CONSTANTS.name(), 150);
         nameColumn.setEditor(new CellEditor(nameField));
         nameColumn.setRenderer(new TreeGridCellRenderer());
 
@@ -362,10 +359,7 @@ public class DesignView extends
             return;
         } else {
 
-            if (currentForm == null
-                    ||
-                    (currentForm != null && !formClass.equals(currentForm
-                            .getClass()))) {
+            if (currentForm == null || (currentForm != null && !formClass.equals(currentForm.getClass()))) {
 
                 if (currentForm != null) {
                     formContainer.removeAll();
@@ -386,8 +380,7 @@ public class DesignView extends
     }
 
     @Override
-    public FormDialogTether showNewForm(EntityDTO entity,
-                                        FormDialogCallback callback) {
+    public FormDialogTether showNewForm(EntityDTO entity, FormDialogCallback callback) {
 
         AbstractDesignForm form = createForm(entity);
         form.getBinding().bind(entity);

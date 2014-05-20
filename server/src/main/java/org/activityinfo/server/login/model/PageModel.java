@@ -28,15 +28,11 @@ public abstract class PageModel {
 
     private static final String SUFFIX = "PageModel";
 
-    public static <T extends PageModel> String getTemplateName(
-            Class<T> pageModelClass) {
+    public static <T extends PageModel> String getTemplateName(Class<T> pageModelClass) {
         String className = pageModelClass.getSimpleName();
-        assert className.endsWith(SUFFIX) : "Page Model classes should end in '"
-                + SUFFIX + "'";
+        assert className.endsWith(SUFFIX) : "Page Model classes should end in '" + SUFFIX + "'";
 
-        return "/page/"
-                + className.substring(0, className.length() - SUFFIX.length())
-                + ".ftl";
+        return "/page/" + className.substring(0, className.length() - SUFFIX.length()) + ".ftl";
     }
 
     public String getTemplateName() {

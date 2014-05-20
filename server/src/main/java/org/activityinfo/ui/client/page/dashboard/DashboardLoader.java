@@ -37,13 +37,11 @@ public class DashboardLoader implements PageLoader {
         this.welcomeProvider = welcomeProvider;
 
         pageManager.registerPageLoader(DashboardPage.PAGE_ID, this);
-        placeSerializer.registerStatelessPlace(DashboardPage.PAGE_ID,
-                new DashboardPlace());
+        placeSerializer.registerStatelessPlace(DashboardPage.PAGE_ID, new DashboardPlace());
     }
 
     @Override
-    public void load(PageId pageId, PageState pageState,
-                     AsyncCallback<Page> callback) {
+    public void load(PageId pageId, PageState pageState, AsyncCallback<Page> callback) {
         callback.onSuccess(welcomeProvider.get());
     }
 }

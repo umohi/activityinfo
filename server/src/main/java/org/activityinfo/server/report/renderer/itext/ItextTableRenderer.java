@@ -48,13 +48,10 @@ public class ItextTableRenderer implements ItextRenderer<TableElement> {
     }
 
     @Override
-    public void render(DocWriter writer, Document document, TableElement element)
-            throws DocumentException {
+    public void render(DocWriter writer, Document document, TableElement element) throws DocumentException {
         document.add(ThemeHelper.elementTitle(element.getTitle()));
-        ItextRendererHelper.addFilterDescription(document, element.getContent()
-                .getFilterDescriptions());
-        ItextRendererHelper.addDateFilterDescription(document, element
-                .getFilter().getDateRange());
+        ItextRendererHelper.addFilterDescription(document, element.getContent().getFilterDescriptions());
+        ItextRendererHelper.addDateFilterDescription(document, element.getFilter().getDateRange());
         TableData data = element.getContent().getData();
 
         if (data.isEmpty()) {
@@ -72,8 +69,7 @@ public class ItextTableRenderer implements ItextRenderer<TableElement> {
         document.add(new Paragraph("Aucune Données")); // TODO: i18n
     }
 
-    private void renderTable(Document document, TableData data)
-            throws DocumentException {
+    private void renderTable(Document document, TableData data) throws DocumentException {
         int colDepth = data.getRootColumn().getDepth();
         List<TableColumn> colLeaves = data.getRootColumn().getLeaves();
         int colBreadth = colLeaves.size();
@@ -86,12 +82,9 @@ public class ItextTableRenderer implements ItextRenderer<TableElement> {
         // first write the column headers
 
         for (int depth = 1; depth <= colDepth; ++depth) {
-            List<TableColumn> columns = data.getRootColumn()
-                    .getDescendantsAtDepth(depth);
+            List<TableColumn> columns = data.getRootColumn().getDescendantsAtDepth(depth);
             for (TableColumn column : columns) {
-                Cell cell = ThemeHelper.columnHeaderCell(column.getLabel(),
-                        column.isLeaf(),
-                        computeHAlign(column));
+                Cell cell = ThemeHelper.columnHeaderCell(column.getLabel(), column.isLeaf(), computeHAlign(column));
                 cell.setColspan(Math.max(1, column.getChildren().size()));
                 cell.setRowspan(colDepth - depth - column.getDepth() + 1);
                 table.addCell(cell);
@@ -117,8 +110,7 @@ public class ItextTableRenderer implements ItextRenderer<TableElement> {
                     label = value.toString();
                 }
 
-                table.addCell(ThemeHelper.bodyCell(label, false, 0, true,
-                        computeHAlign(column)));
+                table.addCell(ThemeHelper.bodyCell(label, false, 0, true, computeHAlign(column)));
             }
         }
         document.add(table);

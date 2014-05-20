@@ -31,8 +31,7 @@ import java.util.Set;
 /**
  * @author Alex Bertram
  */
-@Entity
-@org.hibernate.annotations.Filter(
+@Entity @org.hibernate.annotations.Filter(
         name = "hideDeleted",
         condition = "DateDeleted is null")
 public class AttributeGroup implements Serializable, Deleteable, Orderable {
@@ -58,9 +57,7 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
 
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "AttributeGroupId")
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "AttributeGroupId")
     public int getId() {
         return this.id;
     }
@@ -78,12 +75,9 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
         this.name = name;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "AttributeGroupInActivity",
-            joinColumns = {
-                    @JoinColumn(name = "AttributeGroupId", nullable = false, updatable = false)},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "ActivityId", nullable = false, updatable = false)})
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable(name = "AttributeGroupInActivity",
+            joinColumns = {@JoinColumn(name = "AttributeGroupId", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "ActivityId", nullable = false, updatable = false)})
     public Set<Activity> getActivities() {
         return this.activities;
     }
@@ -104,8 +98,7 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
         this.attributes = attributes;
     }
 
-    @Override
-    @Column(nullable = false)
+    @Override @Column(nullable = false)
     public int getSortOrder() {
         return sortOrder;
     }
@@ -124,8 +117,7 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
         this.multipleAllowed = allowed;
     }
 
-    @Column
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column @Temporal(value = TemporalType.TIMESTAMP)
     public Date getDateDeleted() {
         return this.dateDeleted;
     }
@@ -156,8 +148,7 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
     @Override
     public void delete() {
         this.setDateDeleted(new Date());
-        getActivities().iterator().next().getDatabase()
-                .setLastSchemaUpdate(new Date());
+        getActivities().iterator().next().getDatabase().setLastSchemaUpdate(new Date());
     }
 
     @Column(name = "category", length = 50, nullable = true)
@@ -169,8 +160,7 @@ public class AttributeGroup implements Serializable, Deleteable, Orderable {
         this.category = category;
     }
 
-    @Override
-    @Transient
+    @Override @Transient
     public boolean isDeleted() {
         return getDateDeleted() == null;
     }

@@ -26,9 +26,9 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.PartnerDTO;
-import org.activityinfo.i18n.shared.I18N;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,8 +43,7 @@ public class PartnerComboBox extends ComboBox<PartnerDTO> {
         if (activity.getDatabase().isEditAllAllowed()) {
             return activity.getDatabase().getPartners();
         } else {
-            return Collections.singletonList(activity.getDatabase()
-                    .getMyPartner());
+            return Collections.singletonList(activity.getDatabase().getMyPartner());
         }
     }
 

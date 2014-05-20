@@ -24,20 +24,18 @@ package org.activityinfo.server.command.handler;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.GetSyncRegionUpdates;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.exception.CommandException;
 import org.activityinfo.server.command.handler.sync.*;
 import org.activityinfo.server.database.hibernate.entity.User;
-import org.activityinfo.legacy.shared.Log;
 
 import java.util.logging.Logger;
 
-public class GetSyncRegionUpdatesHandler implements
-        CommandHandler<GetSyncRegionUpdates> {
+public class GetSyncRegionUpdatesHandler implements CommandHandler<GetSyncRegionUpdates> {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(GetSyncRegionsHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GetSyncRegionsHandler.class.getName());
 
     private final Injector injector;
 
@@ -47,11 +45,9 @@ public class GetSyncRegionUpdatesHandler implements
     }
 
     @Override
-    public CommandResult execute(GetSyncRegionUpdates cmd, User user)
-            throws CommandException {
+    public CommandResult execute(GetSyncRegionUpdates cmd, User user) throws CommandException {
 
-        Log.info("Fetching updates for " + cmd.getRegionId()
-                + ", localVersion = " + cmd.getLocalVersion());
+        Log.info("Fetching updates for " + cmd.getRegionId() + ", localVersion = " + cmd.getLocalVersion());
 
         UpdateBuilder builder;
 
@@ -71,8 +67,7 @@ public class GetSyncRegionUpdatesHandler implements
             builder = injector.getInstance(SiteTableUpdateBuilder.class);
 
         } else {
-            throw new CommandException("Unknown sync region: "
-                    + cmd.getRegionId());
+            throw new CommandException("Unknown sync region: " + cmd.getRegionId());
         }
 
         try {

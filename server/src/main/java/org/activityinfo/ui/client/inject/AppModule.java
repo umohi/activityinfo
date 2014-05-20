@@ -55,10 +55,8 @@ public class AppModule extends AbstractGinModule {
     @Override
     protected void configure() {
         bind(AuthenticatedUser.class).toProvider(ClientSideAuthProvider.class);
-        bind(RemoteCommandServiceAsync.class).toProvider(
-                RemoteServiceProvider.class).in(Singleton.class);
-        bind(Dispatcher.class).annotatedWith(Remote.class)
-                .to(RemoteDispatcher.class).in(Singleton.class);
+        bind(RemoteCommandServiceAsync.class).toProvider(RemoteServiceProvider.class).in(Singleton.class);
+        bind(Dispatcher.class).annotatedWith(Remote.class).to(RemoteDispatcher.class).in(Singleton.class);
         bind(DispatchEventSource.class).to(CacheManager.class);
         bind(PageStateSerializer.class).in(Singleton.class);
         bind(EventBus.class).to(LoggingEventBus.class).in(Singleton.class);
@@ -70,15 +68,13 @@ public class AppModule extends AbstractGinModule {
     }
 
     @Provides
-    public Dispatcher provideDispatcher(CacheManager proxyManager,
-                                        LocalController controller) {
-        return new CachingDispatcher(proxyManager,
-                new MergingDispatcher(controller, Scheduler.get()));
+    public Dispatcher provideDispatcher(CacheManager proxyManager, LocalController controller) {
+        return new CachingDispatcher(proxyManager, new MergingDispatcher(controller, Scheduler.get()));
     }
 
     @Provides @Singleton
     public ResourceLocator provideResourceLocator(Dispatcher dispatcher) {
-        if(FeatureSwitch.useInMemStore()) {
+        if (FeatureSwitch.useInMemStore()) {
             return new InMemResourceLocator();
         } else {
             return new ResourceLocatorAdaptor(dispatcher);

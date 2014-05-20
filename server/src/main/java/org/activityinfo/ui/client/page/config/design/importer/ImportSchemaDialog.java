@@ -20,58 +20,45 @@ import org.activityinfo.ui.client.style.BaseStylesheet;
 
 public class ImportSchemaDialog {
 
-    private static ImportSchemaUiBinder uiBinder = GWT
-            .create(ImportSchemaUiBinder.class);
+    private static ImportSchemaUiBinder uiBinder = GWT.create(ImportSchemaUiBinder.class);
 
     interface ImportSchemaUiBinder extends UiBinder<Widget, ImportSchemaDialog> {
     }
 
     interface Templates extends SafeHtmlTemplates {
 
-        @Template("<p class=\"{0}\">{1}: {2}</p>")
-        SafeHtml warning(String styleName, String severity, String message);
+        @Template("<p class=\"{0}\">{1}: {2}</p>") SafeHtml warning(String styleName, String severity, String message);
 
-        @Template("<div class=\"alert alert-danger\">{0}</div>")
-        SafeHtml alertDanger(String message);
+        @Template("<div class=\"alert alert-danger\">{0}</div>") SafeHtml alertDanger(String message);
 
         @Template("<div class=\"progress\">" +
-                "<div class=\"progress-bar progress-bar-info\" role=\"progressbar\" aria-valuenow=\"{0}\" "
-                + "aria-valuemin=\"{0}\" aria-valuemax=\"100\" style=\"width: {0}%\">" +
-                "<span class=\"sr-only\">{0}% Complete</span>" +
-                "</div>" +
-                "</div>")
-        SafeHtml progressBar(int percentComplete);
+                  "<div class=\"progress-bar progress-bar-info\" role=\"progressbar\" aria-valuenow=\"{0}\" " +
+                  "aria-valuemin=\"{0}\" aria-valuemax=\"100\" style=\"width: {0}%\">" +
+                  "<span class=\"sr-only\">{0}% Complete</span>" +
+                  "</div>" +
+                  "</div>") SafeHtml progressBar(int percentComplete);
     }
 
     private static final Templates TEMPLATES = GWT.create(Templates.class);
 
     private SchemaImporter importer;
 
-    @UiField
-    DeckPanel deckPanel;
+    @UiField DeckPanel deckPanel;
 
     // first page
-    @UiField
-    TextArea textArea;
-    @UiField
-    HTML warnings;
+    @UiField TextArea textArea;
+    @UiField HTML warnings;
 
     // second page
-    @UiField
-    DivElement submitStatus;
-    @UiField
-    HTML validationPanel;
+    @UiField DivElement submitStatus;
+    @UiField HTML validationPanel;
 
     // button bar
 
-    @UiField
-    Button closeButton;
-    @UiField
-    Button cancelButton;
-    @UiField
-    Button backButton;
-    @UiField
-    Button continueButton;
+    @UiField Button closeButton;
+    @UiField Button cancelButton;
+    @UiField Button backButton;
+    @UiField Button continueButton;
 
     private PopupPanel popupPanel;
 
@@ -83,7 +70,7 @@ public class ImportSchemaDialog {
         BaseStylesheet.INSTANCE.ensureInjected();
 
         Widget content = uiBinder.createAndBindUi(this);
-    
+
         showPage(currentPage);
 
         popupPanel = new PopupPanel(true);

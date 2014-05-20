@@ -30,8 +30,7 @@ import java.util.Date;
  *
  * @author Alex Bertram
  */
-@Entity
-@org.hibernate.annotations.Filter(
+@Entity @org.hibernate.annotations.Filter(
         name = "hideDeleted",
         condition = "DateDeleted is null")
 public class Indicator implements java.io.Serializable, Orderable, Deleteable {
@@ -59,9 +58,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     /**
      * @return the id of this Indicator
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "IndicatorId", unique = true, nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "IndicatorId", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -148,8 +145,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     /**
      * @return the Activity which is implemented at this Site
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ActivityId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "ActivityId", nullable = false)
     public Activity getActivity() {
         return this.activity;
     }
@@ -179,8 +175,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     /**
      * @return the sort order of this Indicator within its Activity
      */
-    @Override
-    @Column(name = "SortOrder", nullable = false)
+    @Override @Column(name = "SortOrder", nullable = false)
     public int getSortOrder() {
         return this.sortOrder;
     }
@@ -231,8 +226,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     /**
      * @return the time at which this Indicator was deleted
      */
-    @Column
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column @Temporal(value = TemporalType.TIMESTAMP)
     public Date getDateDeleted() {
         return this.dateDeleted;
     }
@@ -256,8 +250,7 @@ public class Indicator implements java.io.Serializable, Orderable, Deleteable {
     /**
      * @return true if this Indicator has been deleted.
      */
-    @Override
-    @Transient
+    @Override @Transient
     public boolean isDeleted() {
         return getDateDeleted() == null;
     }

@@ -17,14 +17,13 @@ import java.util.ListIterator;
 
 @Path("/activityForm")
 public class FormResource extends ODKResource {
-    @GET
-    @Produces(MediaType.TEXT_XML)
+    @GET @Produces(MediaType.TEXT_XML)
     public Response form(@QueryParam("id") int id) throws Exception {
         if (enforceAuthorization()) {
             return askAuthentication();
         }
         LOGGER.finer("ODK activityform " + id + " requested by " +
-                getUser().getEmail() + " (" + getUser().getId() + ")");
+                     getUser().getEmail() + " (" + getUser().getId() + ")");
 
         SchemaDTO schemaDTO = dispatcher.execute(new GetSchema());
         ActivityDTO activity = schemaDTO.getActivityById(id);
@@ -44,8 +43,9 @@ public class FormResource extends ODKResource {
     private void purgePartners(ActivityDTO activity) {
         UserDatabaseDTO database = activity.getDatabase();
         if (!database.getAmOwner() && !database.isEditAllAllowed()) {
-            UserPermission userPermission =
-                    userPermissionDAO.get().findUserPermissionByUserIdAndDatabaseId(getUser().getId(), database.getId());
+            UserPermission userPermission = userPermissionDAO.get()
+                                                             .findUserPermissionByUserIdAndDatabaseId(getUser().getId(),
+                                                                     database.getId());
             if (userPermission == null) {
                 // user shouldn't be here if this is the case
                 throw new WebApplicationException(Status.FORBIDDEN);

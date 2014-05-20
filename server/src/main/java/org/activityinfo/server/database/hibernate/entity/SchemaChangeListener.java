@@ -7,9 +7,7 @@ import java.util.Date;
 
 public class SchemaChangeListener {
 
-    @PreUpdate
-    @PrePersist
-    @PreRemove
+    @PreUpdate @PrePersist @PreRemove
     public void updateDatabaseTimestamp(SchemaElement element) {
         element.findOwningDatabase().setLastSchemaUpdate(new Date());
     }

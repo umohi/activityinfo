@@ -32,8 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class PivotTableReportElement extends PivotReportElement<PivotContent>
-        implements Serializable {
+public class PivotTableReportElement extends PivotReportElement<PivotContent> implements Serializable {
 
     private List<Dimension> columnDimensions = new ArrayList<Dimension>();
     private List<Dimension> rowDimensions = new ArrayList<Dimension>();
@@ -42,8 +41,7 @@ public class PivotTableReportElement extends PivotReportElement<PivotContent>
 
     }
 
-    @XmlElement(name = "dimension")
-    @XmlElementWrapper(name = "columns")
+    @XmlElement(name = "dimension") @XmlElementWrapper(name = "columns")
     public List<Dimension> getColumnDimensions() {
         return columnDimensions;
     }
@@ -57,8 +55,7 @@ public class PivotTableReportElement extends PivotReportElement<PivotContent>
 
     }
 
-    @XmlElement(name = "dimension")
-    @XmlElementWrapper(name = "rows")
+    @XmlElement(name = "dimension") @XmlElementWrapper(name = "rows")
     public List<Dimension> getRowDimensions() {
         return rowDimensions;
     }
@@ -82,9 +79,8 @@ public class PivotTableReportElement extends PivotReportElement<PivotContent>
 
     @Override
     public String toString() {
-        return "PivotTableReportElement [columnDimensions=" + columnDimensions
-                + ", rowDimensions=" + rowDimensions + ", getFilter()="
-                + getFilter() + "]";
+        return "PivotTableReportElement [columnDimensions=" + columnDimensions + ", rowDimensions=" + rowDimensions +
+               ", getFilter()=" + getFilter() + "]";
     }
 
 }

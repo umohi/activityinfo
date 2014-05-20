@@ -24,6 +24,7 @@ package org.activityinfo.server.command.handler;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.command.Month;
 import org.activityinfo.legacy.shared.command.UpdateMonthlyReports;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
@@ -34,7 +35,6 @@ import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.server.database.hibernate.entity.*;
 import org.activityinfo.server.event.sitehistory.ChangeType;
 import org.activityinfo.server.event.sitehistory.SiteHistoryProcessor;
-import org.activityinfo.legacy.client.KeyGenerator;
 
 import javax.persistence.EntityManager;
 import java.util.Calendar;
@@ -45,8 +45,7 @@ import java.util.Map;
  * @author Alex Bertram
  * @see org.activityinfo.legacy.shared.command.UpdateMonthlyReports
  */
-public class UpdateMonthlyReportsHandler implements
-        CommandHandler<UpdateMonthlyReports> {
+public class UpdateMonthlyReportsHandler implements CommandHandler<UpdateMonthlyReports> {
 
     private final EntityManager em;
     private final KeyGenerator keyGenerator;
@@ -55,7 +54,8 @@ public class UpdateMonthlyReportsHandler implements
 
     @Inject
     public UpdateMonthlyReportsHandler(EntityManager em,
-                                       KeyGenerator keyGenerator, SiteHistoryProcessor siteHistoryProcessor) {
+                                       KeyGenerator keyGenerator,
+                                       SiteHistoryProcessor siteHistoryProcessor) {
         this.em = em;
         this.keyGenerator = keyGenerator;
         this.siteHistoryProcessor = siteHistoryProcessor;
@@ -69,15 +69,14 @@ public class UpdateMonthlyReportsHandler implements
     }
 
     @Override
-    public CommandResult execute(UpdateMonthlyReports cmd, User user)
-            throws CommandException {
+    public CommandResult execute(UpdateMonthlyReports cmd, User user) throws CommandException {
 
         Site site = em.find(Site.class, cmd.getSiteId());
         if (site == null) {
             throw new CommandException(cmd, "site " + cmd.getSiteId() + " not found for user " + user.getEmail());
         }
 
-        if(!permissionOracle.isEditAllowed(site, user)) {
+        if (!permissionOracle.isEditAllowed(site, user)) {
             throw new IllegalAccessCommandException("Not authorized to modify sites");
         }
 
@@ -85,8 +84,7 @@ public class UpdateMonthlyReportsHandler implements
         Map<String, Object> siteHistoryChangeMap = createChangeMap();
 
         for (ReportingPeriod period : site.getReportingPeriods()) {
-            periods.put(HandlerUtil.monthFromRange(period.getDate1(),
-                    period.getDate2()), period);
+            periods.put(HandlerUtil.monthFromRange(period.getDate1(), period.getDate2()), period);
         }
 
         for (UpdateMonthlyReports.Change change : cmd.getChanges()) {
@@ -112,8 +110,7 @@ public class UpdateMonthlyReportsHandler implements
 
             updateIndicatorValue(em, period, change.getIndicatorId(), change.getValue(), false);
 
-            siteHistoryChangeMap.put(
-                    IndicatorDTO.getPropertyName(change.getIndicatorId(), change.getMonth()),
+            siteHistoryChangeMap.put(IndicatorDTO.getPropertyName(change.getIndicatorId(), change.getMonth()),
                     change.getValue());
         }
 
@@ -122,15 +119,18 @@ public class UpdateMonthlyReportsHandler implements
         return new VoidResult();
     }
 
-    public void updateIndicatorValue(EntityManager em, ReportingPeriod period,
-                                     int indicatorId, Double value, boolean creating) {
+    public void updateIndicatorValue(EntityManager em,
+                                     ReportingPeriod period,
+                                     int indicatorId,
+                                     Double value,
+                                     boolean creating) {
 
         if (value == null && !creating) {
             int rowsAffected = em.createQuery(
                     "delete IndicatorValue v where v.indicator.id = ?1 and v.reportingPeriod.id = ?2")
-                    .setParameter(1, indicatorId)
-                    .setParameter(2, period.getId())
-                    .executeUpdate();
+                                 .setParameter(1, indicatorId)
+                                 .setParameter(2, period.getId())
+                                 .executeUpdate();
 
             assert rowsAffected <= 1 : "whoops, deleted too many";
 
@@ -138,19 +138,19 @@ public class UpdateMonthlyReportsHandler implements
             int rowsAffected = 0;
 
             if (!creating) {
-                rowsAffected = em.createQuery(
-                        "update IndicatorValue v set v.value = ?1 where " +
-                                "v.indicator.id = ?2 and " +
-                                "v.reportingPeriod.id = ?3")
-                        .setParameter(1, value)
-                        .setParameter(2, indicatorId)
-                        .setParameter(3, period.getId())
-                        .executeUpdate();
+                rowsAffected = em.createQuery("update IndicatorValue v set v.value = ?1 where " +
+                                              "v.indicator.id = ?2 and " +
+                                              "v.reportingPeriod.id = ?3")
+                                 .setParameter(1, value)
+                                 .setParameter(2, indicatorId)
+                                 .setParameter(3, period.getId())
+                                 .executeUpdate();
             }
 
             if (rowsAffected == 0) {
-                IndicatorValue iValue =
-                        new IndicatorValue(period, em.getReference(Indicator.class, indicatorId), value);
+                IndicatorValue iValue = new IndicatorValue(period,
+                        em.getReference(Indicator.class, indicatorId),
+                        value);
                 em.persist(iValue);
             }
         }
@@ -161,8 +161,7 @@ public class UpdateMonthlyReportsHandler implements
             @Override
             // comparing eg. I345M2009-7, first part as string, part after the dash as number
             public int compare(String o1, String o2) {
-                int result =
-                        o1.substring(0, o1.indexOf('-')).compareToIgnoreCase(o2.substring(0, o2.indexOf('-')));
+                int result = o1.substring(0, o1.indexOf('-')).compareToIgnoreCase(o2.substring(0, o2.indexOf('-')));
                 if (result == 0) {
                     String m1 = o1.substring(o1.indexOf('-') + 1);
                     String m2 = o2.substring(o2.indexOf('-') + 1);

@@ -45,15 +45,15 @@ import java.io.IOException;
  * Renders a {@link org.activityinfo.legacy.shared.reports.model.MapReportElement
  * MapElement} into an iText document
  */
-public class ItextMapRenderer extends ImageMapRenderer implements
-        ItextRenderer<MapReportElement> {
+public class ItextMapRenderer extends ImageMapRenderer implements ItextRenderer<MapReportElement> {
 
     private ImageCreator imageCreator;
     private ItextGraphic graphic;
 
     @Inject
     public ItextMapRenderer(AdminGeometryProvider geometryProvider,
-                            @MapIconPath String mapIconPath, ImageCreator imageCreator) {
+                            @MapIconPath String mapIconPath,
+                            ImageCreator imageCreator) {
         super(geometryProvider, mapIconPath);
         this.imageCreator = imageCreator;
     }
@@ -63,10 +63,8 @@ public class ItextMapRenderer extends ImageMapRenderer implements
 
         try {
             doc.add(ThemeHelper.elementTitle(element.getTitle()));
-            ItextRendererHelper.addFilterDescription(doc, element.getContent()
-                    .getFilterDescriptions());
-            ItextRendererHelper.addDateFilterDescription(doc, element
-                    .getFilter().getDateRange());
+            ItextRendererHelper.addFilterDescription(doc, element.getContent().getFilterDescriptions());
+            ItextRendererHelper.addDateFilterDescription(doc, element.getFilter().getDateRange());
             renderMap(writer, element, doc);
             if (!element.getContent().getLegends().isEmpty()) {
                 renderLegend(element, doc);
@@ -77,11 +75,11 @@ public class ItextMapRenderer extends ImageMapRenderer implements
         }
     }
 
-    public void renderMap(DocWriter writer, MapReportElement element,
+    public void renderMap(DocWriter writer,
+                          MapReportElement element,
                           Document doc) throws BadElementException, DocumentException {
 
-        graphic = imageCreator.createMap(element.getWidth(),
-                element.getHeight());
+        graphic = imageCreator.createMap(element.getWidth(), element.getHeight());
         drawBasemap(element, new ItextTileHandler(graphic));
         drawOverlays(element, graphic.getGraphics());
 
@@ -98,15 +96,17 @@ public class ItextMapRenderer extends ImageMapRenderer implements
             Image image = Image.getInstance(imageFile.getAbsolutePath());
             image.setAbsolutePosition(x, y);
 
-            graphic.addImage(imageFile.toURI().toURL().toString(), x, y, marker
-                    .getIcon().getWidth(), marker.getIcon().getHeight());
+            graphic.addImage(imageFile.toURI().toURL().toString(),
+                    x,
+                    y,
+                    marker.getIcon().getWidth(),
+                    marker.getIcon().getHeight());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void renderLegend(MapReportElement element, Document doc)
-            throws DocumentException, IOException {
+    private void renderLegend(MapReportElement element, Document doc) throws DocumentException, IOException {
 
         Table table = new Table(2);
         table.setBorderWidth(1);
@@ -134,8 +134,7 @@ public class ItextMapRenderer extends ImageMapRenderer implements
             symbolCell.addElement(symbol);
 
             Cell descriptionCell = new Cell();
-            addLegendDescription(element, legend.getDefinition(),
-                    descriptionCell);
+            addLegendDescription(element, legend.getDefinition(), descriptionCell);
 
             table.addCell(symbolCell);
             table.addCell(descriptionCell);
@@ -144,12 +143,11 @@ public class ItextMapRenderer extends ImageMapRenderer implements
     }
 
     private void addLegendDescription(MapReportElement element,
-                                      MapLayer layer, Cell descriptionCell) throws BadElementException,
-            IOException {
+                                      MapLayer layer,
+                                      Cell descriptionCell) throws BadElementException, IOException {
 
         if (layer instanceof PiechartMapLayer) {
-            addPieChartDescription(element, descriptionCell,
-                    (PiechartMapLayer) layer);
+            addPieChartDescription(element, descriptionCell, (PiechartMapLayer) layer);
         } else if (layer.getIndicatorIds().size() == 1) {
             addSingleIndicatorDescription(element, layer, descriptionCell);
         } else {
@@ -159,12 +157,11 @@ public class ItextMapRenderer extends ImageMapRenderer implements
     }
 
     private void addPieChartDescription(MapReportElement element,
-                                        Cell descriptionCell, PiechartMapLayer layer)
-            throws BadElementException, IOException {
+                                        Cell descriptionCell,
+                                        PiechartMapLayer layer) throws BadElementException, IOException {
 
         for (Slice slice : layer.getSlices()) {
-            IndicatorDTO indicator = element.getContent().getIndicatorById(
-                    slice.getIndicatorId());
+            IndicatorDTO indicator = element.getContent().getIndicatorById(slice.getIndicatorId());
             Color color = ColorUtil.colorFromString(slice.getColor());
             ItextGraphic sliceImage = renderSlice(imageCreator, color, 10);
 
@@ -181,43 +178,35 @@ public class ItextMapRenderer extends ImageMapRenderer implements
         }
     }
 
-    private void addSingleIndicatorDescription(MapReportElement element,
-                                               MapLayer layer, Cell descriptionCell) {
+    private void addSingleIndicatorDescription(MapReportElement element, MapLayer layer, Cell descriptionCell) {
         int indicatorId = layer.getIndicatorIds().get(0);
-        IndicatorDTO indicator = element.getContent().getIndicatorById(
-                indicatorId);
+        IndicatorDTO indicator = element.getContent().getIndicatorById(indicatorId);
         if (indicator == null) {
             throw new NullPointerException("indicatorId:" + indicatorId);
         }
         descriptionCell.add(ThemeHelper.filterDescription(indicator.getName()));
     }
 
-    private void addIndicatorList(MapReportElement element, MapLayer layer,
-                                  Cell descriptionCell) {
+    private void addIndicatorList(MapReportElement element, MapLayer layer, Cell descriptionCell) {
         com.lowagie.text.List list = new List(List.UNORDERED);
 
         for (int indicatorId : layer.getIndicatorIds()) {
-            IndicatorDTO indicator = element.getContent().getIndicatorById(
-                    indicatorId);
+            IndicatorDTO indicator = element.getContent().getIndicatorById(indicatorId);
             list.add(new ListItem(indicator.getName()));
         }
 
         descriptionCell.add(list);
     }
 
-    public Image createLegendSymbol(MapLayerLegend<?> legend,
-                                    ImageCreator creator) throws BadElementException {
+    public Image createLegendSymbol(MapLayerLegend<?> legend, ImageCreator creator) throws BadElementException {
         if (legend instanceof BubbleLayerLegend) {
-            return new BubbleLegendRenderer((BubbleLayerLegend) legend)
-                    .createImage(creator).toItextImage();
+            return new BubbleLegendRenderer((BubbleLayerLegend) legend).createImage(creator).toItextImage();
         } else if (legend instanceof IconLayerLegend) {
             return createIconImage((IconLayerLegend) legend);
         } else if (legend instanceof PieChartLegend) {
-            return new PieChartLegendRenderer((PieChartLegend) legend)
-                    .createImage(creator).toItextImage();
+            return new PieChartLegendRenderer((PieChartLegend) legend).createImage(creator).toItextImage();
         } else if (legend instanceof PolygonLegend) {
-            return new PolygonLegendRenderer((PolygonLegend) legend)
-                    .createImage(creator).toItextImage();
+            return new PolygonLegendRenderer((PolygonLegend) legend).createImage(creator).toItextImage();
         } else {
             throw new IllegalArgumentException();
         }
@@ -225,11 +214,9 @@ public class ItextMapRenderer extends ImageMapRenderer implements
 
     private Image createIconImage(IconLayerLegend legend) {
         try {
-            return Image.getInstance(getImageFile(
-                    legend.getDefinition().getIcon()).getAbsolutePath());
+            return Image.getInstance(getImageFile(legend.getDefinition().getIcon()).getAbsolutePath());
         } catch (Exception e) {
-            throw new RuntimeException("Can't create image for "
-                    + legend.getDefinition().getIcon());
+            throw new RuntimeException("Can't create image for " + legend.getDefinition().getIcon());
         }
     }
 }

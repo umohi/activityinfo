@@ -51,7 +51,6 @@ public interface CommandHandler<CommandT extends Command> {
      * successful, an exception should be thrown.
      * @throws org.activityinfo.legacy.shared.exception.CommandException
      */
-    public CommandResult execute(CommandT cmd, User user)
-            throws CommandException;
+    public CommandResult execute(CommandT cmd, User user) throws CommandException;
 
 }

@@ -32,10 +32,8 @@ import java.util.Date;
 
 public class LockedPeriodSet {
 
-    private Multimap<Integer, LockedPeriodDTO> activityLocks = HashMultimap
-            .create();
-    private Multimap<Integer, LockedPeriodDTO> projectLocks = HashMultimap
-            .create();
+    private Multimap<Integer, LockedPeriodDTO> activityLocks = HashMultimap.create();
+    private Multimap<Integer, LockedPeriodDTO> projectLocks = HashMultimap.create();
 
     public LockedPeriodSet(SchemaDTO schema) {
         for (UserDatabaseDTO db : schema.getDatabases()) {
@@ -50,17 +48,14 @@ public class LockedPeriodSet {
     private void indexLocks(UserDatabaseDTO db) {
         for (ActivityDTO activity : db.getActivities()) {
             addEnabled(activityLocks, activity.getId(), db.getLockedPeriods());
-            addEnabled(activityLocks, activity.getId(),
-                    activity.getLockedPeriods());
+            addEnabled(activityLocks, activity.getId(), activity.getLockedPeriods());
         }
         for (ProjectDTO project : db.getProjects()) {
-            addEnabled(projectLocks, project.getId(),
-                    project.getLockedPeriods());
+            addEnabled(projectLocks, project.getId(), project.getLockedPeriods());
         }
     }
 
-    private void addEnabled(Multimap<Integer, LockedPeriodDTO> map, int key,
-                            Iterable<LockedPeriodDTO> periods) {
+    private void addEnabled(Multimap<Integer, LockedPeriodDTO> map, int key, Iterable<LockedPeriodDTO> periods) {
         for (LockedPeriodDTO lock : periods) {
             if (lock.isEnabled()) {
                 map.put(key, lock);
@@ -73,8 +68,7 @@ public class LockedPeriodSet {
             return true;
         }
         if (site.getProject() != null) {
-            if (dateRangeLocked(site.getDate2(),
-                    projectLocks.get(site.getProject().getId()))) {
+            if (dateRangeLocked(site.getDate2(), projectLocks.get(site.getProject().getId()))) {
                 return true;
             }
         }
@@ -97,8 +91,7 @@ public class LockedPeriodSet {
         return isProjectLocked(projectId, new LocalDate(date));
     }
 
-    private boolean dateRangeLocked(LocalDate date,
-                                    Collection<LockedPeriodDTO> locks) {
+    private boolean dateRangeLocked(LocalDate date, Collection<LockedPeriodDTO> locks) {
 
         for (LockedPeriodDTO lock : locks) {
             if (lock.fallsWithinPeriod(date)) {

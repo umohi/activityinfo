@@ -47,8 +47,7 @@ import org.activityinfo.ui.client.page.report.editor.ReportElementEditor;
 import java.util.Arrays;
 import java.util.List;
 
-public class PivotTableEditor extends LayoutContainer implements
-        ReportElementEditor<PivotTableReportElement> {
+public class PivotTableEditor extends LayoutContainer implements ReportElementEditor<PivotTableReportElement> {
 
     private final EventBus eventBus;
     private final Dispatcher service;
@@ -66,8 +65,7 @@ public class PivotTableEditor extends LayoutContainer implements
     private PivotTableReportElement model;
 
     @Inject
-    public PivotTableEditor(EventBus eventBus, Dispatcher service,
-                            StateProvider stateMgr) {
+    public PivotTableEditor(EventBus eventBus, Dispatcher service, StateProvider stateMgr) {
         this.eventBus = eventBus;
         this.service = service;
         this.stateMgr = stateMgr;
@@ -131,8 +129,7 @@ public class PivotTableEditor extends LayoutContainer implements
         gridPanel.setHeaderVisible(true);
         gridPanel.setHeadingText(I18N.CONSTANTS.preview());
 
-        center.add(gridPanel, new BorderLayoutData(
-                Style.LayoutRegion.CENTER));
+        center.add(gridPanel, new BorderLayoutData(Style.LayoutRegion.CENTER));
 
         viewBinder = ReportViewBinder.create(eventBus, service, gridPanel);
     }

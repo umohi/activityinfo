@@ -51,8 +51,7 @@ public class ProjectForm extends FormPanel {
         TextArea textareaDescription = new TextArea();
         textareaDescription.setFieldLabel(constants.fullName());
         textareaDescription.setMaxLength(250);
-        binding.addFieldBinding(new FieldBinding(textareaDescription,
-                "description"));
+        binding.addFieldBinding(new FieldBinding(textareaDescription, "description"));
         this.add(textareaDescription);
     }
 

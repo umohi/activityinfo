@@ -44,8 +44,7 @@ import java.nio.charset.Charset;
 
 public class AppEngineAttachmentService implements AttachmentService {
 
-    private BlobstoreService blobstoreService = BlobstoreServiceFactory
-            .getBlobstoreService();
+    private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     private final BlobService blobService;
     private final String attachmentRoot;
@@ -58,36 +57,30 @@ public class AppEngineAttachmentService implements AttachmentService {
 
 
     @Override
-    public void serveAttachment(String blobId, HttpServletResponse response)
-            throws IOException {
+    public void serveAttachment(String blobId, HttpServletResponse response) throws IOException {
         BlobKey blobKey = blobKey(blobId);
         blobstoreService.serve(blobKey, response);
     }
 
     private BlobKey blobKey(String blobId) {
-        BlobKey blobKey = blobstoreService
-                .createGsBlobKey("/gs/activityinfo-attachments/" + blobId);
+        BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/activityinfo-attachments/" + blobId);
         return blobKey;
     }
 
     @Override
-    public void upload(String key, FileItem fileItem,
-                       InputStream uploadingStream) {
+    public void upload(String key, FileItem fileItem, InputStream uploadingStream) {
         try {
 
-            GSFileOptionsBuilder builder = new GSFileOptionsBuilder()
-                    .setBucket("activityinfo-attachments")
-                    .setKey(key)
-                    .setContentDisposition(
-                            "attachment; filename=\"" + fileItem.getName() + "\"")
-                    .setMimeType(fileItem.getContentType());
+            GSFileOptionsBuilder builder = new GSFileOptionsBuilder().setBucket("activityinfo-attachments")
+                                                                     .setKey(key)
+                                                                     .setContentDisposition("attachment; filename=\"" +
+                                                                                            fileItem.getName() + "\"")
+                                                                     .setMimeType(fileItem.getContentType());
 
             FileService fileService = FileServiceFactory.getFileService();
-            AppEngineFile writableFile = fileService.createNewGSFile(builder
-                    .build());
+            AppEngineFile writableFile = fileService.createNewGSFile(builder.build());
             boolean lock = true;
-            FileWriteChannel writeChannel = fileService.openWriteChannel(
-                    writableFile, lock);
+            FileWriteChannel writeChannel = fileService.openWriteChannel(writableFile, lock);
             OutputStream os = Channels.newOutputStream(writeChannel);
             ByteStreams.copy(fileItem.getInputStream(), os);
             os.flush();
@@ -108,10 +101,8 @@ public class AppEngineAttachmentService implements AttachmentService {
         return new FileItemFactory() {
 
             @Override
-            public FileItem createItem(String fieldName, String contentType,
-                                       boolean isFormField, String fileName) {
-                return new InMemoryFileItem(fieldName, contentType,
-                        isFormField, fileName);
+            public FileItem createItem(String fieldName, String contentType, boolean isFormField, String fileName) {
+                return new InMemoryFileItem(fieldName, contentType, isFormField, fileName);
             }
         };
     }
@@ -124,8 +115,7 @@ public class AppEngineAttachmentService implements AttachmentService {
         private String contentType;
         private String fileName;
 
-        public InMemoryFileItem(String fieldName, String contentType,
-                                boolean isFormField, String fileName) {
+        public InMemoryFileItem(String fieldName, String contentType, boolean isFormField, String fileName) {
             this.fieldName = fieldName;
             this.contentType = contentType;
             this.formField = isFormField;
@@ -163,8 +153,7 @@ public class AppEngineAttachmentService implements AttachmentService {
         }
 
         @Override
-        public String getString(String encoding)
-                throws UnsupportedEncodingException {
+        public String getString(String encoding) throws UnsupportedEncodingException {
             return new String(baos.toByteArray(), Charset.forName(encoding));
         }
 

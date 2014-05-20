@@ -29,8 +29,7 @@ import java.util.Set;
 /**
  * @author Alex Bertram
  */
-@Entity
-@Table(name = "Partner")
+@Entity @Table(name = "Partner")
 public class Partner implements java.io.Serializable {
 
     private static final long serialVersionUID = -5985734789552797994L;
@@ -44,9 +43,7 @@ public class Partner implements java.io.Serializable {
     public Partner() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "PartnerId", unique = true, nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "PartnerId", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -78,8 +75,9 @@ public class Partner implements java.io.Serializable {
         return getName();
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "PartnerInDatabase", joinColumns = {@JoinColumn(name = "PartnerId", nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "DatabaseId", nullable = false, updatable = false)})
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable(name = "PartnerInDatabase",
+            joinColumns = {@JoinColumn(name = "PartnerId", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "DatabaseId", nullable = false, updatable = false)})
     public Set<UserDatabase> getDatabases() {
         return this.databases;
     }

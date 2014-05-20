@@ -33,12 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @JsonAutoDetect(JsonMethod.NONE)
-public final class ProjectDTO
-        extends
-        BaseModelData
-        implements
-        EntityDTO,
-        HasLockedPeriod {
+public final class ProjectDTO extends BaseModelData implements EntityDTO, HasLockedPeriod {
 
     private Set<LockedPeriodDTO> lockedPeriods = new HashSet<LockedPeriodDTO>(0);
     private UserDatabaseDTO userDatabase;
@@ -56,9 +51,7 @@ public final class ProjectDTO
         setName(name);
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }
@@ -67,9 +60,7 @@ public final class ProjectDTO
         set("id", id);
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getName() {
         return (String) get("name");
     }
@@ -82,8 +73,7 @@ public final class ProjectDTO
         set("description", description);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getDescription() {
         return (String) get("description");
     }

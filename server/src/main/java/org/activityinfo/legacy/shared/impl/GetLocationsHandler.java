@@ -38,8 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetLocationsHandler implements
-        CommandHandlerAsync<GetLocations, LocationResult> {
+public class GetLocationsHandler implements CommandHandlerAsync<GetLocations, LocationResult> {
 
     @Override
     public void execute(final GetLocations command,
@@ -53,17 +52,13 @@ public class GetLocationsHandler implements
 
         final Map<Integer, LocationDTO> dtos = new HashMap<>();
 
-        SqlQuery query = SqlQuery.select("locationID",
-                "name",
-                "axe", "x", "y",
-                "workflowStatusId",
-                "LocationTypeId")
-                .from(Tables.LOCATION, "Location");
+        SqlQuery query = SqlQuery.select("locationID", "name", "axe", "x", "y", "workflowStatusId", "LocationTypeId")
+                                 .from(Tables.LOCATION, "Location");
 
-        if(!command.getLocationIds().isEmpty()) {
+        if (!command.getLocationIds().isEmpty()) {
             query.where("LocationId").in(command.getLocationIds());
         }
-        if(command.getLocationTypeId() != null) {
+        if (command.getLocationTypeId() != null) {
             query.where("locationTypeId").equalTo(command.getLocationTypeId());
         }
         query.where("workflowstatusid").equalTo("validated");
@@ -85,50 +80,48 @@ public class GetLocationsHandler implements
                     dtos.put(dto.getId(), dto);
                 }
 
-                SqlQuery query = SqlQuery
-                        .select()
-                        .appendColumn("AdminEntity.AdminEntityId", "adminEntityId")
-                        .appendColumn("AdminEntity.Name", "name")
-                        .appendColumn("AdminEntity.AdminLevelId", "levelId")
-                        .appendColumn("AdminEntity.AdminEntityParentId", "parentId")
-                        .appendColumn("link.LocationID", "locationId")
-                        .from(Tables.LOCATION_ADMIN_LINK, "link")
-                        .leftJoin(Tables.ADMIN_ENTITY, "AdminEntity").on("link.AdminEntityId=AdminEntity.AdminEntityId")
-                        .whereTrue("AdminEntity.AdminEntityId is not null");
+                SqlQuery query = SqlQuery.select()
+                                         .appendColumn("AdminEntity.AdminEntityId", "adminEntityId")
+                                         .appendColumn("AdminEntity.Name", "name")
+                                         .appendColumn("AdminEntity.AdminLevelId", "levelId")
+                                         .appendColumn("AdminEntity.AdminEntityParentId", "parentId")
+                                         .appendColumn("link.LocationID", "locationId")
+                                         .from(Tables.LOCATION_ADMIN_LINK, "link")
+                                         .leftJoin(Tables.ADMIN_ENTITY, "AdminEntity")
+                                         .on("link.AdminEntityId=AdminEntity.AdminEntityId")
+                                         .whereTrue("AdminEntity.AdminEntityId is not null");
 
-                if(!command.getLocationIds().isEmpty()) {
+                if (!command.getLocationIds().isEmpty()) {
                     query.where("link.LocationId").in(command.getLocationIds());
                 }
 
-                if(command.getLocationTypeId() != null) {
+                if (command.getLocationTypeId() != null) {
                     query.leftJoin(Tables.LOCATION, "Location").on("link.LocationId=Location.LocationId");
                     query.where("Location.LocationTypeId").equalTo(command.getLocationTypeId());
                 }
 
 
-                query
-                        .execute(context.getTransaction(), new SqlResultCallback() {
-                            @Override
-                            public void onSuccess(SqlTransaction tx,
-                                                  SqlResultSet results) {
-                                for (SqlResultSetRow row : results.getRows()) {
-                                    AdminEntityDTO entity = new AdminEntityDTO();
-                                    entity.setId(row.getInt("adminEntityId"));
-                                    entity.setName(row.getString("name"));
-                                    entity.setLevelId(row.getInt("levelId"));
-                                    if (!row.isNull("parentId")) {
-                                        entity.setParentId(row.getInt("parentId"));
-                                    }
-                                    LocationDTO dto = dtos.get(row.getInt("locationId"));
-                                    if (dto != null) {
-                                        dto.setAdminEntity(entity.getLevelId(), entity);
-                                    }
-                                }
-
-                                List<LocationDTO> list = new ArrayList<>(dtos.values());
-                                callback.onSuccess(new LocationResult(list));
+                query.execute(context.getTransaction(), new SqlResultCallback() {
+                    @Override
+                    public void onSuccess(SqlTransaction tx, SqlResultSet results) {
+                        for (SqlResultSetRow row : results.getRows()) {
+                            AdminEntityDTO entity = new AdminEntityDTO();
+                            entity.setId(row.getInt("adminEntityId"));
+                            entity.setName(row.getString("name"));
+                            entity.setLevelId(row.getInt("levelId"));
+                            if (!row.isNull("parentId")) {
+                                entity.setParentId(row.getInt("parentId"));
                             }
-                        });
+                            LocationDTO dto = dtos.get(row.getInt("locationId"));
+                            if (dto != null) {
+                                dto.setAdminEntity(entity.getLevelId(), entity);
+                            }
+                        }
+
+                        List<LocationDTO> list = new ArrayList<>(dtos.values());
+                        callback.onSuccess(new LocationResult(list));
+                    }
+                });
             }
         });
     }

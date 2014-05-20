@@ -48,8 +48,7 @@ public class AddProjectHandler implements CommandHandler<AddProject> {
     }
 
     @Override
-    public CommandResult execute(AddProject cmd, User user)
-            throws CommandException {
+    public CommandResult execute(AddProject cmd, User user) throws CommandException {
 
         UserDatabase db = em.find(UserDatabase.class, cmd.getDatabaseId());
 

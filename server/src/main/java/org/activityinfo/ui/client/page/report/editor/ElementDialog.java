@@ -33,8 +33,7 @@ import org.activityinfo.ui.client.page.report.HasReportElement;
 import org.activityinfo.ui.client.page.report.ReportChangeHandler;
 import org.activityinfo.ui.client.page.report.ReportEventBus;
 
-public class ElementDialog extends Dialog implements
-        HasReportElement<ReportElement> {
+public class ElementDialog extends Dialog implements HasReportElement<ReportElement> {
     private ReportElement model;
     private ReportElementEditor editor;
     private EditorProvider editorProvider;

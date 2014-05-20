@@ -53,8 +53,7 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
         set("id", id);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }
@@ -63,8 +62,7 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
         set("name", value);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getName() {
         return get("name");
     }
@@ -74,8 +72,7 @@ public final class LocationTypeDTO extends BaseModelData implements DTO {
         return "Country".equals(getName()) && getId() != 20301;
     }
 
-    @JsonProperty("adminLevelId")
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty("adminLevelId") @JsonView(DTOViews.Schema.class)
     public Integer getBoundAdminLevelId() {
         return get("boundAdminLevelId");
     }

@@ -31,8 +31,7 @@ import org.activityinfo.legacy.shared.command.result.CommandResult;
  *
  * @author Alex Bertram (akbertram@gmail.com)
  */
-public class DefaultDispatchListener<T extends Command> implements
-        DispatchListener<T> {
+public class DefaultDispatchListener<T extends Command> implements DispatchListener<T> {
 
     @Override
     public void beforeDispatched(T command) {

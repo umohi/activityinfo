@@ -117,8 +117,7 @@ public class GetSites extends PagingGetCommand<SiteResult> implements Cloneable 
         if (!filter.equals(getSites.filter)) {
             return false;
         }
-        if (seekToSiteId != null ? !seekToSiteId.equals(getSites.seekToSiteId)
-                : getSites.seekToSiteId != null) {
+        if (seekToSiteId != null ? !seekToSiteId.equals(getSites.seekToSiteId) : getSites.seekToSiteId != null) {
             return false;
         }
         return true;
@@ -127,8 +126,7 @@ public class GetSites extends PagingGetCommand<SiteResult> implements Cloneable 
     @Override
     public int hashCode() {
         int result = filter.hashCode();
-        result = 31 * result
-                + (seekToSiteId != null ? seekToSiteId.hashCode() : 0);
+        result = 31 * result + (seekToSiteId != null ? seekToSiteId.hashCode() : 0);
         return result;
     }
 
@@ -161,8 +159,7 @@ public class GetSites extends PagingGetCommand<SiteResult> implements Cloneable 
     }
 
     public boolean fetchAnyIndicators() {
-        return fetchAllIndicators
-                || (fetchIndicators != null && !fetchIndicators.isEmpty());
+        return fetchAllIndicators || (fetchIndicators != null && !fetchIndicators.isEmpty());
     }
 
     public void setFetchAllIndicators(boolean fetchAllIndicators) {

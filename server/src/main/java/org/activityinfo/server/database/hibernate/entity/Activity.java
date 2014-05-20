@@ -41,8 +41,7 @@ import java.util.Set;
  *
  * @author Alex Bertram
  */
-@Entity
-@org.hibernate.annotations.Filter(name = "hideDeleted", condition = "DateDeleted is null")
+@Entity @org.hibernate.annotations.Filter(name = "hideDeleted", condition = "DateDeleted is null")
 @NamedQuery(name = "queryMaxSortOrder", query = "select max(e.sortOrder) from Activity e where e.database.id = ?1")
 public class Activity implements Serializable, Deleteable, Orderable {
 
@@ -80,9 +79,7 @@ public class Activity implements Serializable, Deleteable, Orderable {
 
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ActivityId", unique = true, nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "ActivityId", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -91,8 +88,7 @@ public class Activity implements Serializable, Deleteable, Orderable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "LocationTypeId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "LocationTypeId", nullable = false)
     public LocationType getLocationType() {
         return this.locationType;
     }
@@ -101,8 +97,7 @@ public class Activity implements Serializable, Deleteable, Orderable {
         this.locationType = locationType;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DatabaseId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "DatabaseId", nullable = false)
     public UserDatabase getDatabase() {
         return this.database;
     }
@@ -138,8 +133,7 @@ public class Activity implements Serializable, Deleteable, Orderable {
         this.allowEdit = allowEdit;
     }
 
-    @Override
-    @Column(name = "SortOrder", nullable = false)
+    @Override @Column(name = "SortOrder", nullable = false)
     public int getSortOrder() {
         return this.sortOrder;
     }
@@ -149,8 +143,9 @@ public class Activity implements Serializable, Deleteable, Orderable {
         this.sortOrder = sortOrder;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "AttributeGroupInActivity", joinColumns = {@JoinColumn(name = "ActivityId", nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "AttributeGroupId", nullable = false, updatable = false)})
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable(name = "AttributeGroupInActivity",
+            joinColumns = {@JoinColumn(name = "ActivityId", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "AttributeGroupId", nullable = false, updatable = false)})
     @org.hibernate.annotations.Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
     @org.hibernate.annotations.Filter(name = "hideDeleted", condition = "DateDeleted is null")
     public Set<AttributeGroup> getAttributeGroups() {
@@ -182,8 +177,7 @@ public class Activity implements Serializable, Deleteable, Orderable {
         this.sites = sites;
     }
 
-    @Column
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column @Temporal(value = TemporalType.TIMESTAMP)
     public Date getDateDeleted() {
         return this.dateDeleted;
     }
@@ -206,8 +200,7 @@ public class Activity implements Serializable, Deleteable, Orderable {
         this.category = category;
     }
 
-    @Override
-    @Transient
+    @Override @Transient
     public boolean isDeleted() {
         return getDateDeleted() == null;
     }

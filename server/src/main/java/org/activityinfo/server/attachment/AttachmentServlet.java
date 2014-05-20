@@ -51,8 +51,7 @@ public class AttachmentServlet extends HttpServlet {
     private DispatcherSync dispatcher;
     private Provider<EntityManager> entityManager;
 
-    private static final Logger LOGGER = Logger
-            .getLogger(AttachmentServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AttachmentServlet.class.getName());
 
     @Inject
     public AttachmentServlet(AttachmentService service,
@@ -64,23 +63,19 @@ public class AttachmentServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String key = req.getParameter("blobId");
-        SiteAttachment attachment = entityManager.get().find(
-                SiteAttachment.class, key);
+        SiteAttachment attachment = entityManager.get().find(SiteAttachment.class, key);
 
-        resp.setHeader("Content-Disposition", "attachment; filename=\""
-                + attachment.getFileName() + "\"");
+        resp.setHeader("Content-Disposition", "attachment; filename=\"" + attachment.getFileName() + "\"");
         resp.setContentType(attachment.getContentType());
 
         service.serveAttachment(key, resp);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
             String key = request.getParameter("blobId");
@@ -107,8 +102,7 @@ public class AttachmentServlet extends HttpServlet {
         }
     }
 
-    private FileItem getFirstUploadFile(HttpServletRequest request)
-            throws FileUploadException {
+    private FileItem getFirstUploadFile(HttpServletRequest request) throws FileUploadException {
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         if (isMultipart) {
 

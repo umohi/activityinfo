@@ -57,8 +57,7 @@ public class PolygonLayerGenerator implements LayerGenerator {
     @Override
     public void query(DispatcherSync dispatcher, Filter effectiveFilter) {
         Filter layerFilter = new Filter(effectiveFilter, layer.getFilter());
-        layerFilter.addRestriction(DimensionType.Indicator,
-                layer.getIndicatorIds());
+        layerFilter.addRestriction(DimensionType.Indicator, layer.getIndicatorIds());
 
         queryBounds(dispatcher, layerFilter);
         queryBuckets(dispatcher, layerFilter);
@@ -81,16 +80,14 @@ public class PolygonLayerGenerator implements LayerGenerator {
     private void queryBuckets(DispatcherSync dispatcher, Filter layerFilter) {
         PivotSites query = new PivotSites();
         query.setFilter(layerFilter);
-        AdminDimension adminDimension = new AdminDimension(
-                layer.getAdminLevelId());
+        AdminDimension adminDimension = new AdminDimension(layer.getAdminLevelId());
         query.setDimensions(adminDimension);
 
         MagnitudeScaleBuilder scaleBuilder = new MagnitudeScaleBuilder(layer);
 
         this.pivotResult = dispatcher.execute(query);
         for (Bucket bucket : pivotResult.getBuckets()) {
-            EntityCategory category = (EntityCategory) bucket
-                    .getCategory(adminDimension);
+            EntityCategory category = (EntityCategory) bucket.getCategory(adminDimension);
             if (category != null) {
                 int adminEntityId = category.getId();
                 AdminMarker polygon = overlay.getPolygon(adminEntityId);
@@ -106,8 +103,7 @@ public class PolygonLayerGenerator implements LayerGenerator {
     private void color() {
         for (AdminMarker polygon : overlay.getPolygons()) {
             if (polygon.hasValue()) {
-                polygon.setColor(colorScale.color(polygon.getValue())
-                        .toHexString());
+                polygon.setColor(colorScale.color(polygon.getValue()).toHexString());
             } else {
                 polygon.setColor(colorScale.color(null).toHexString());
             }

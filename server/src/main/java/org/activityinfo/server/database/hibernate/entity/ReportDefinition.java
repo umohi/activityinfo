@@ -35,20 +35,14 @@ import java.util.Set;
  *
  * @see org.activityinfo.legacy.shared.reports.model.Report
  */
-@Entity
-@Table(name = "ReportTemplate")
-@org.hibernate.annotations.Filters(
-        {
-                @org.hibernate.annotations.Filter(
-                        name = "userVisible",
-                        condition = "(:currentUserId = OwnerUserId or "
-                                +
-                                "(Visibility = 1 and (DatabaseId is null or "
-                                +
-                                ":currentUserId in (select p.UserId from userpermission p "
-                                +
-                                "where p.AllowView and p.UserId=:currentUserId and p.DatabaseId=DatabaseId))))"
-                ),
+@Entity @Table(name = "ReportTemplate") @org.hibernate.annotations.Filters(
+        {@org.hibernate.annotations.Filter(
+                name = "userVisible",
+                condition = "(:currentUserId = OwnerUserId or " +
+                            "(Visibility = 1 and (DatabaseId is null or " +
+                            ":currentUserId in (select p.UserId from userpermission p " +
+                            "where p.AllowView and p.UserId=:currentUserId and p.DatabaseId=DatabaseId))))"
+        ),
 
                 @org.hibernate.annotations.Filter(
                         name = "hideDeleted",
@@ -66,17 +60,14 @@ public class ReportDefinition implements Serializable {
     private String description;
     private EmailDelivery frequency;
     private Integer day;
-    private Set<ReportSubscription> subscriptions = new HashSet<ReportSubscription>(
-            0);
+    private Set<ReportSubscription> subscriptions = new HashSet<ReportSubscription>(0);
     private String json;
 
     public ReportDefinition() {
 
     }
 
-    @Id
-    @Column(name = "ReportTemplateId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @Column(name = "ReportTemplateId") @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -85,8 +76,7 @@ public class ReportDefinition implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OwnerUserId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "OwnerUserId", nullable = false)
     public User getOwner() {
         return owner;
     }
@@ -95,8 +85,7 @@ public class ReportDefinition implements Serializable {
         this.owner = owner;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DatabaseId", nullable = true, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "DatabaseId", nullable = true, updatable = false)
     public UserDatabase getDatabase() {
         return database;
     }
@@ -131,8 +120,7 @@ public class ReportDefinition implements Serializable {
         this.visibility = visibility;
     }
 
-    @Lob
-    @Column(nullable = false)
+    @Lob @Column(nullable = false)
     public String getXml() {
         return xml;
     }
@@ -151,8 +139,7 @@ public class ReportDefinition implements Serializable {
         this.subscriptions = subscriptions;
     }
 
-    @Column(nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = true) @Temporal(TemporalType.TIMESTAMP)
     public Date getDateDeleted() {
         return dateDeleted;
     }
@@ -161,8 +148,7 @@ public class ReportDefinition implements Serializable {
         this.dateDeleted = dateDeleted;
     }
 
-    @Lob
-    @Column(nullable = true)
+    @Lob @Column(nullable = true)
     public String getJson() {
         return json;
     }

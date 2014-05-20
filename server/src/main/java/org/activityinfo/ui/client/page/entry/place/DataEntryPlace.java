@@ -104,8 +104,7 @@ public class DataEntryPlace extends AbstractPagingGridPageState {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((filter == null) ? 0 : filter.hashCode());
-        result = prime * result
-                + ((grouping == null) ? 0 : grouping.hashCode());
+        result = prime * result + ((grouping == null) ? 0 : grouping.hashCode());
         return result;
     }
 

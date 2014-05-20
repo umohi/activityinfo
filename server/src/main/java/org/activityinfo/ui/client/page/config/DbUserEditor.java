@@ -68,8 +68,7 @@ import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbUserEditor extends ContentPanel implements DbPage,
-        ActionListener {
+public class DbUserEditor extends ContentPanel implements DbPage, ActionListener {
     public static final PageId PAGE_ID = new PageId("dbusers");
 
     private final EventBus eventBus;
@@ -84,8 +83,7 @@ public class DbUserEditor extends ContentPanel implements DbPage,
     private ActionToolBar toolBar;
 
     @Inject
-    public DbUserEditor(EventBus eventBus, Dispatcher service,
-                        StateProvider stateMgr) {
+    public DbUserEditor(EventBus eventBus, Dispatcher service, StateProvider stateMgr) {
         this.eventBus = eventBus;
         this.dispatcher = service;
 
@@ -106,16 +104,11 @@ public class DbUserEditor extends ContentPanel implements DbPage,
         toolBar.setActionEnabled(UIActions.ADD, db.isManageUsersAllowed());
         toolBar.setActionEnabled(UIActions.DELETE, false);
 
-        grid.getColumnModel().getColumnById("allowViewAll")
-                .setHidden(!db.isManageUsersAllowed());
-        grid.getColumnModel().getColumnById("allowEditAll")
-                .setHidden(!db.isManageUsersAllowed());
-        grid.getColumnModel().getColumnById("allowManageUsers")
-                .setHidden(!db.isManageAllUsersAllowed());
-        grid.getColumnModel().getColumnById("allowManageAllUsers")
-                .setHidden(!db.isManageAllUsersAllowed());
-        grid.getColumnModel().getColumnById("allowDesign")
-                .setHidden(!db.isDesignAllowed());
+        grid.getColumnModel().getColumnById("allowViewAll").setHidden(!db.isManageUsersAllowed());
+        grid.getColumnModel().getColumnById("allowEditAll").setHidden(!db.isManageUsersAllowed());
+        grid.getColumnModel().getColumnById("allowManageUsers").setHidden(!db.isManageAllUsersAllowed());
+        grid.getColumnModel().getColumnById("allowManageAllUsers").setHidden(!db.isManageAllUsersAllowed());
+        grid.getColumnModel().getColumnById("allowDesign").setHidden(!db.isDesignAllowed());
 
         loader.load();
     }
@@ -123,12 +116,9 @@ public class DbUserEditor extends ContentPanel implements DbPage,
     private void createToolBar() {
         toolBar = new ActionToolBar(this);
         toolBar.addSaveSplitButton();
-        toolBar.addButton(UIActions.ADD, I18N.CONSTANTS.addUser(),
-                IconImageBundle.ICONS.addUser());
-        toolBar.addButton(UIActions.DELETE, I18N.CONSTANTS.delete(),
-                IconImageBundle.ICONS.deleteUser());
-        toolBar.addButton(UIActions.EXPORT, I18N.CONSTANTS.export(),
-                IconImageBundle.ICONS.excel());
+        toolBar.addButton(UIActions.ADD, I18N.CONSTANTS.addUser(), IconImageBundle.ICONS.addUser());
+        toolBar.addButton(UIActions.DELETE, I18N.CONSTANTS.delete(), IconImageBundle.ICONS.deleteUser());
+        toolBar.addButton(UIActions.EXPORT, I18N.CONSTANTS.export(), IconImageBundle.ICONS.excel());
         toolBar.addButton(UIActions.MAILING_LIST,
                 I18N.CONSTANTS.CopyAddressToClipBoard(),
                 IconImageBundle.ICONS.dataEntry());
@@ -146,14 +136,13 @@ public class DbUserEditor extends ContentPanel implements DbPage,
                 return model.getEmail();
             }
         });
-        store.addListener(Store.Update,
-                new Listener<StoreEvent<UserPermissionDTO>>() {
+        store.addListener(Store.Update, new Listener<StoreEvent<UserPermissionDTO>>() {
 
-                    @Override
-                    public void handleEvent(StoreEvent<UserPermissionDTO> event) {
-                        toolBar.setDirty(!store.getModifiedRecords().isEmpty());
-                    }
-                });
+            @Override
+            public void handleEvent(StoreEvent<UserPermissionDTO> event) {
+                toolBar.setDirty(!store.getModifiedRecords().isEmpty());
+            }
+        });
 
         final List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
@@ -161,56 +150,53 @@ public class DbUserEditor extends ContentPanel implements DbPage,
         columns.add(new ColumnConfig("email", I18N.CONSTANTS.email(), 150));
         columns.add(new ColumnConfig("partner", I18N.CONSTANTS.partner(), 150));
 
-        PermissionCheckConfig allowView = new PermissionCheckConfig(
-                "allowViewSimple", I18N.CONSTANTS.allowView(), 75);
+        PermissionCheckConfig allowView = new PermissionCheckConfig("allowViewSimple", I18N.CONSTANTS.allowView(), 75);
         allowView.setDataIndex("allowView");
         allowView.setToolTip(I18N.CONSTANTS.allowViewLong());
         columns.add(allowView);
 
-        PermissionCheckConfig allowEdit = new PermissionCheckConfig(
-                "allowEditSimple", I18N.CONSTANTS.allowEdit(), 75);
+        PermissionCheckConfig allowEdit = new PermissionCheckConfig("allowEditSimple", I18N.CONSTANTS.allowEdit(), 75);
         allowEdit.setDataIndex("allowEdit");
         allowEdit.setToolTip(I18N.CONSTANTS.allowEditLong());
         columns.add(allowEdit);
 
-        PermissionCheckConfig allowViewAll = new PermissionCheckConfig(
-                "allowViewAll", I18N.CONSTANTS.allowViewAll(), 75);
+        PermissionCheckConfig allowViewAll = new PermissionCheckConfig("allowViewAll",
+                I18N.CONSTANTS.allowViewAll(),
+                75);
         allowViewAll.setToolTip(I18N.CONSTANTS.allowViewAllLong());
         columns.add(allowViewAll);
 
-        PermissionCheckConfig allowEditAll = new PermissionCheckConfig(
-                "allowEditAll", I18N.CONSTANTS.allowEditAll(), 75);
+        PermissionCheckConfig allowEditAll = new PermissionCheckConfig("allowEditAll",
+                I18N.CONSTANTS.allowEditAll(),
+                75);
         allowEditAll.setToolTip(I18N.CONSTANTS.allowEditAllLong());
         columns.add(allowEditAll);
 
         PermissionCheckConfig allowManageUsers = null;
-        allowManageUsers = new PermissionCheckConfig("allowManageUsers",
-                I18N.CONSTANTS.allowManageUsers(), 150);
+        allowManageUsers = new PermissionCheckConfig("allowManageUsers", I18N.CONSTANTS.allowManageUsers(), 150);
         columns.add(allowManageUsers);
 
-        PermissionCheckConfig allowManageAllUsers = new PermissionCheckConfig(
-                "allowManageAllUsers", I18N.CONSTANTS.manageAllUsers(), 150);
+        PermissionCheckConfig allowManageAllUsers = new PermissionCheckConfig("allowManageAllUsers",
+                I18N.CONSTANTS.manageAllUsers(),
+                150);
         columns.add(allowManageAllUsers);
 
         // only users with the right to design them selves can change the design
         // attribute
-        PermissionCheckConfig allowDesign = new PermissionCheckConfig(
-                "allowDesign", I18N.CONSTANTS.allowDesign(), 75);
+        PermissionCheckConfig allowDesign = new PermissionCheckConfig("allowDesign", I18N.CONSTANTS.allowDesign(), 75);
         allowDesign.setToolTip(I18N.CONSTANTS.allowDesignLong());
         columns.add(allowDesign);
 
         grid = new Grid<UserPermissionDTO>(store, new ColumnModel(columns));
         grid.setLoadMask(true);
         grid.setSelectionModel(new GridSelectionModel<UserPermissionDTO>());
-        grid.getSelectionModel().addSelectionChangedListener(
-                new SelectionChangedListener<UserPermissionDTO>() {
+        grid.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<UserPermissionDTO>() {
 
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<UserPermissionDTO> se) {
-                        onSelectionChanged(se.getSelectedItem());
-                    }
-                });
+            @Override
+            public void selectionChanged(SelectionChangedEvent<UserPermissionDTO> se) {
+                onSelectionChanged(se.getSelectedItem());
+            }
+        });
         grid.addPlugin(allowEdit);
         grid.addPlugin(allowViewAll);
         grid.addPlugin(allowEditAll);
@@ -246,8 +232,7 @@ public class DbUserEditor extends ContentPanel implements DbPage,
 
         // if the user is only allowed to manager their own partners, then make
         // sure they're changing someone from their own organisation
-        if (!db.isManageAllUsersAllowed()
-                && db.getMyPartner().getId() != user.getPartner().getId()) {
+        if (!db.isManageAllUsersAllowed() && db.getMyPartner().getId() != user.getPartner().getId()) {
             return false;
         }
 
@@ -267,8 +252,7 @@ public class DbUserEditor extends ContentPanel implements DbPage,
         if ("allowManageUsers".equals(property) && !db.isManageUsersAllowed()) {
             return false;
         }
-        if ("allowManageAllUsers".equals(property)
-                && !db.isManageAllUsersAllowed()) {
+        if ("allowManageAllUsers".equals(property) && !db.isManageAllUsersAllowed()) {
             return false;
         }
 
@@ -316,12 +300,9 @@ public class DbUserEditor extends ContentPanel implements DbPage,
         if (selectedItem != null) {
             PartnerDTO selectedPartner = selectedItem.getPartner();
 
-            toolBar
-                    .setActionEnabled(
-                            UIActions.DELETE,
-                            db.isManageAllUsersAllowed()
-                                    || (db.isManageUsersAllowed() && db.getMyPartnerId() == selectedPartner
-                                    .getId()));
+            toolBar.setActionEnabled(UIActions.DELETE,
+                    db.isManageAllUsersAllowed() ||
+                    (db.isManageUsersAllowed() && db.getMyPartnerId() == selectedPartner.getId()));
         }
         toolBar.setActionEnabled(UIActions.DELETE, selectedItem != null);
     }
@@ -381,8 +362,8 @@ public class DbUserEditor extends ContentPanel implements DbPage,
 
             @Override
             public void onValidated() {
-                dispatcher.execute(
-                        new UpdateUserPermissions(db, form.getUser(), host), dlg,
+                dispatcher.execute(new UpdateUserPermissions(db, form.getUser(), host),
+                        dlg,
                         new AsyncCallback<VoidResult>() {
 
                             @Override
@@ -400,8 +381,7 @@ public class DbUserEditor extends ContentPanel implements DbPage,
     }
 
     private void delete() {
-        final UserPermissionDTO model = grid.getSelectionModel()
-                .getSelectedItem();
+        final UserPermissionDTO model = grid.getSelectionModel().getSelectedItem();
         model.setAllowView(false);
         model.setAllowViewAll(false);
         model.setAllowEdit(false);
@@ -425,14 +405,11 @@ public class DbUserEditor extends ContentPanel implements DbPage,
     }
 
     private void export() {
-        Window.open(
-                GWT.getModuleBaseURL() + "export/users?dbUsers=" + db.getId(),
-                "_blank", null);
+        Window.open(GWT.getModuleBaseURL() + "export/users?dbUsers=" + db.getId(), "_blank", null);
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 
@@ -445,12 +422,11 @@ public class DbUserEditor extends ContentPanel implements DbPage,
         @Override
         protected void onMouseDown(GridEvent<ModelData> ge) {
             El el = ge.getTargetEl();
-            if (el != null && el.hasStyleName("x-grid3-cc-" + getId())
-                    && !el.hasStyleName("x-grid3-check-col-disabled")) {
+            if (el != null && el.hasStyleName("x-grid3-cc-" + getId()) &&
+                !el.hasStyleName("x-grid3-check-col-disabled")) {
                 ge.stopEvent();
                 UserPermissionDTO m = (UserPermissionDTO) ge.getModel();
-                String property = grid.getColumnModel().getColumnId(
-                        ge.getColIndex());
+                String property = grid.getColumnModel().getColumnId(ge.getColIndex());
                 Record r = store.getRecord(m);
                 Boolean b = (Boolean) m.get(getDataIndex());
                 if (validateChange(m, property)) {
@@ -465,8 +441,7 @@ public class DbUserEditor extends ContentPanel implements DbPage,
     private class UserProxy extends RpcProxy<UserResult> {
 
         @Override
-        protected void load(Object loadConfig,
-                            final AsyncCallback<UserResult> callback) {
+        protected void load(Object loadConfig, final AsyncCallback<UserResult> callback) {
 
             PagingLoadConfig config = (PagingLoadConfig) loadConfig;
             GetUsers command = new GetUsers(db.getId());

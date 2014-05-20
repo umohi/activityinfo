@@ -157,9 +157,7 @@ public final class DateRange implements Serializable {
     }
 
     public static DateRange intersection(DateRange a, DateRange b) {
-        return new DateRange(
-                max(a.getMinDate(), b.getMinDate()),
-                min(a.getMaxDate(), b.getMaxDate()));
+        return new DateRange(max(a.getMinDate(), b.getMinDate()), min(a.getMaxDate(), b.getMaxDate()));
     }
 
     private static Date min(Date a, Date b) {

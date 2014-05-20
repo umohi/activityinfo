@@ -50,8 +50,7 @@ public final class AdminGeometryProvider {
             @Override
             public void onResponseReceived(Request request, Response response) {
                 try {
-                    AdminGeometry geometry = AdminGeometry.fromJson(response
-                            .getText());
+                    AdminGeometry geometry = AdminGeometry.fromJson(response.getText());
                     cache.put(levelId, geometry);
                     callback.onSuccess(geometry);
                 } catch (Exception e) {

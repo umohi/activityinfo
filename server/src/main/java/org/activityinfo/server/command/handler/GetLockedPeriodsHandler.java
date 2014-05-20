@@ -30,6 +30,7 @@ import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.bedatadriven.rebar.sql.client.util.RowHandler;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.GetLockedPeriods;
 import org.activityinfo.legacy.shared.command.GetLockedPeriods.LockedPeriodsResult;
 import org.activityinfo.legacy.shared.impl.CommandHandlerAsync;
@@ -38,15 +39,14 @@ import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.LockedPeriodDTO;
 import org.activityinfo.legacy.shared.model.ProjectDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.legacy.shared.Log;
 
 import java.util.List;
 
-public class GetLockedPeriodsHandler implements
-        CommandHandlerAsync<GetLockedPeriods, LockedPeriodsResult> {
+public class GetLockedPeriodsHandler implements CommandHandlerAsync<GetLockedPeriods, LockedPeriodsResult> {
 
     @Override
-    public void execute(GetLockedPeriods command, ExecutionContext context,
+    public void execute(GetLockedPeriods command,
+                        ExecutionContext context,
                         final AsyncCallback<LockedPeriodsResult> callback) {
 
         final List<Integer> projectIds = Lists.newArrayList();
@@ -76,8 +76,13 @@ public class GetLockedPeriodsHandler implements
                 });
 
         // TODO(ruud): load only what is visible to user
-        SqlQuery.select("fromDate", "toDate", "enabled", "name",
-                "lockedPeriodId", "userDatabaseId", "activityId",
+        SqlQuery.select("fromDate",
+                "toDate",
+                "enabled",
+                "name",
+                "lockedPeriodId",
+                "userDatabaseId",
+                "activityId",
                 "projectId")
                 .from("lockedperiod")
                 .where("ActivityId")
@@ -127,8 +132,10 @@ public class GetLockedPeriodsHandler implements
                             }
 
                             if (!parentFound) {
-                                Log.debug("Orphan lockedPeriod: No parent (UserDatabase/Activity/Project) found for LockedPeriod with Id="
-                                        + lockedPeriod.getId());
+                                Log.debug(
+                                        "Orphan lockedPeriod: No parent (UserDatabase/Activity/Project) found for " +
+                                        "LockedPeriod with Id=" +
+                                        lockedPeriod.getId());
                             }
                             lockedPeriods.add(lockedPeriod);
                         }

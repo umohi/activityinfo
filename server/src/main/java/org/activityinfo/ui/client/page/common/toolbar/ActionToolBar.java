@@ -69,8 +69,7 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
      * @param icon     Icon of the button. See
      *                 {@link org.activityinfo.ui.client.style.legacy.icon.IconImageBundle}
      */
-    public Button addButton(String actionId, String text,
-                            AbstractImagePrototype icon) {
+    public Button addButton(String actionId, String text, AbstractImagePrototype icon) {
         Button button = new Button(text, icon);
         button.setItemId(actionId);
         button.addListener(Events.Select, this);
@@ -85,8 +84,7 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
         }
     }
 
-    public ToggleButton addToggleButton(String actionId, String text,
-                                        AbstractImagePrototype icon) {
+    public ToggleButton addToggleButton(String actionId, String text, AbstractImagePrototype icon) {
         ToggleButton button = new ToggleButton(text, icon);
         button.setItemId(actionId);
         button.addListener(Events.Select, this);
@@ -100,19 +98,16 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
     }
 
     public void addCreateButton() {
-        this.addButton = addButton(UIActions.ADD, I18N.CONSTANTS.addItem(),
-                IconImageBundle.ICONS.add());
+        this.addButton = addButton(UIActions.ADD, I18N.CONSTANTS.addItem(), IconImageBundle.ICONS.add());
 
     }
 
     public void addPrintButton() {
-        addButton(UIActions.PRINT,
-                I18N.CONSTANTS.printForm(), IconImageBundle.ICONS.printer());
+        addButton(UIActions.PRINT, I18N.CONSTANTS.printForm(), IconImageBundle.ICONS.printer());
     }
 
     public void addUploadButton() {
-        addButton(UIActions.UPLOAD,
-                I18N.CONSTANTS.upload(), IconImageBundle.ICONS.up());
+        addButton(UIActions.UPLOAD, I18N.CONSTANTS.upload(), IconImageBundle.ICONS.up());
 
     }
 
@@ -125,24 +120,19 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
     }
 
     public void addDeleteButton() {
-        this.removeButton = addButton(UIActions.DELETE,
-                I18N.CONSTANTS.delete(), IconImageBundle.ICONS.delete());
+        this.removeButton = addButton(UIActions.DELETE, I18N.CONSTANTS.delete(), IconImageBundle.ICONS.delete());
     }
 
     public void addDeleteButton(String text) {
-        this.removeButton = addButton(UIActions.DELETE, text,
-                IconImageBundle.ICONS.delete());
+        this.removeButton = addButton(UIActions.DELETE, text, IconImageBundle.ICONS.delete());
     }
 
     public void addExcelExportButton() {
-        addButton(UIActions.EXPORT, I18N.CONSTANTS.export(),
-                IconImageBundle.ICONS.excel());
+        addButton(UIActions.EXPORT, I18N.CONSTANTS.export(), IconImageBundle.ICONS.excel());
     }
 
     public void addRefreshButton() {
-        addButton(UIActions.REFRESH,
-                I18N.CONSTANTS.refreshPreview(),
-                IconImageBundle.ICONS.refresh());
+        addButton(UIActions.REFRESH, I18N.CONSTANTS.refreshPreview(), IconImageBundle.ICONS.refresh());
     }
 
     public void addSaveSplitButton() {
@@ -216,8 +206,7 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
         if (c != null) {
             c.setEnabled(enabled);
         } else {
-            Log.warn("ActionToolBar: setActionEnabled(" + actionId
-                    + ") was called, but button is not present");
+            Log.warn("ActionToolBar: setActionEnabled(" + actionId + ") was called, but button is not present");
         }
     }
 
@@ -245,8 +234,7 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
     }
 
     public void addLockedPeriodsButton() {
-        addButton(UIActions.SHOW_LOCKED_PERIODS, I18N.CONSTANTS.timeLocks(),
-                IconImageBundle.ICONS.lockedPeriod());
+        addButton(UIActions.SHOW_LOCKED_PERIODS, I18N.CONSTANTS.timeLocks(), IconImageBundle.ICONS.lockedPeriod());
     }
 
     public class ToggleButtonBuilder {
@@ -268,8 +256,7 @@ public class ActionToolBar extends ToolBar implements Listener<ButtonEvent> {
             return this;
         }
 
-        public ToggleButtonBuilder withListener(
-                SelectionListener<ButtonEvent> listener) {
+        public ToggleButtonBuilder withListener(SelectionListener<ButtonEvent> listener) {
             button.addSelectionListener(listener);
             return this;
         }

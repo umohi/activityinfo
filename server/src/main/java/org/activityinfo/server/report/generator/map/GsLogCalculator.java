@@ -75,8 +75,7 @@ public class GsLogCalculator implements RadiiCalculator {
                 p = 0.0;
             }
 
-            clusters.get(i)
-                    .setRadius(Math.round(minRadius + (symbolRange * p)));
+            clusters.get(i).setRadius(Math.round(minRadius + (symbolRange * p)));
         }
     }
 }

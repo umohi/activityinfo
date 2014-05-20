@@ -25,9 +25,9 @@ package org.activityinfo.ui.client.page.entry.location;
 import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.widget.Html;
-import org.activityinfo.legacy.shared.command.result.LocationResult;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.legacy.shared.command.result.LocationResult;
 import org.activityinfo.ui.client.page.entry.form.resources.SiteFormResources;
 
 public class SearchStatusView extends Html {
@@ -39,8 +39,7 @@ public class SearchStatusView extends Html {
             @Override
             public void loaderBeforeLoad(LoadEvent le) {
                 setHtml("");
-                addStyleName(SiteFormResources.INSTANCE.style()
-                        .locationDialogHelp());
+                addStyleName(SiteFormResources.INSTANCE.style().locationDialogHelp());
             }
 
             @Override
@@ -55,8 +54,7 @@ public class SearchStatusView extends Html {
                 if (data.getTotalLength() == 0) {
                     setHtml(I18N.CONSTANTS.locationSearchNoResults());
                 } else if (data.getTotalLength() > data.getData().size()) {
-                    setHtml(I18N.MESSAGES.matchingLocations(data
-                            .getTotalLength()) +
+                    setHtml(I18N.MESSAGES.matchingLocations(data.getTotalLength()) +
                             "<br>" +
                             I18N.CONSTANTS.tooManyLocationsToDisplay());
                 }

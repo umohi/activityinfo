@@ -47,21 +47,19 @@ public class DateFilterMenu extends Menu {
         addYearRange(1);
         add(new SeparatorMenuItem());
 
-        add(new MenuItem(I18N.CONSTANTS.customDateRange(),
-                new SelectionListener<MenuEvent>() {
-                    @Override
-                    public void componentSelected(MenuEvent ce) {
-                        showDateRangeDialog();
-                    }
-                }));
+        add(new MenuItem(I18N.CONSTANTS.customDateRange(), new SelectionListener<MenuEvent>() {
+            @Override
+            public void componentSelected(MenuEvent ce) {
+                showDateRangeDialog();
+            }
+        }));
         add(new SeparatorMenuItem());
 
         addRemoveDateFilter();
     }
 
     private void addRemoveDateFilter() {
-        add(new MenuItem(I18N.CONSTANTS.remove(),
-                IconImageBundle.ICONS.delete(), new SelectionListener<MenuEvent>() {
+        add(new MenuItem(I18N.CONSTANTS.remove(), IconImageBundle.ICONS.delete(), new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(MenuEvent ce) {
                 if (callback != null) {
@@ -81,8 +79,7 @@ public class DateFilterMenu extends Menu {
         DateWrapper from = new DateWrapper(year, 0, 1);
         DateWrapper to = new DateWrapper(year, 11, 31);
 
-        addFixedRange(Integer.toString(year),
-                new DateRange(from.asDate(), to.asDate()));
+        addFixedRange(Integer.toString(year), new DateRange(from.asDate(), to.asDate()));
     }
 
     private void addLastFourQuarters() {
@@ -105,8 +102,7 @@ public class DateFilterMenu extends Menu {
         DateWrapper from = new DateWrapper(year, quarter * 3, 1);
         DateWrapper to = from.addMonths(3).addDays(-1);
 
-        addFixedRange(I18N.MESSAGES.quarter(year, (quarter + 1)),
-                new DateRange(from.asDate(), to.asDate()));
+        addFixedRange(I18N.MESSAGES.quarter(year, (quarter + 1)), new DateRange(from.asDate(), to.asDate()));
     }
 
     private void addFixedRange(String label, final DateRange dateRange) {

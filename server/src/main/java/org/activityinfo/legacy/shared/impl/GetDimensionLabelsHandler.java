@@ -34,11 +34,11 @@ import org.activityinfo.legacy.shared.command.GetDimensionLabels.DimensionLabels
 
 import java.util.Map;
 
-public class GetDimensionLabelsHandler implements
-        CommandHandlerAsync<GetDimensionLabels, DimensionLabels> {
+public class GetDimensionLabelsHandler implements CommandHandlerAsync<GetDimensionLabels, DimensionLabels> {
 
     @Override
-    public void execute(GetDimensionLabels command, ExecutionContext context,
+    public void execute(GetDimensionLabels command,
+                        ExecutionContext context,
                         final AsyncCallback<DimensionLabels> callback) {
 
         SqlQuery query = composeQuery(command);
@@ -77,10 +77,10 @@ public class GetDimensionLabelsHandler implements
         }
 
         return SqlQuery.select()
-                .appendColumn("name")
-                .appendColumn(primaryKey, "id")
-                .from(tableName.toLowerCase(), "t")
-                .where(primaryKey)
-                .in(command.getIds());
+                       .appendColumn("name")
+                       .appendColumn(primaryKey, "id")
+                       .from(tableName.toLowerCase(), "t")
+                       .where(primaryKey)
+                       .in(command.getIds());
     }
 }

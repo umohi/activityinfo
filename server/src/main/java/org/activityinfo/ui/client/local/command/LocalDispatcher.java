@@ -53,9 +53,11 @@ public class LocalDispatcher extends AbstractDispatcher {
     private final EventBus eventBus;
 
     @Inject
-    public LocalDispatcher(EventBus eventBus, AuthenticatedUser auth,
+    public LocalDispatcher(EventBus eventBus,
+                           AuthenticatedUser auth,
                            SqlDatabase database,
-                           HandlerRegistry registry, @Remote Dispatcher remoteDispatcher,
+                           HandlerRegistry registry,
+                           @Remote Dispatcher remoteDispatcher,
                            CommandQueue commandQueue) {
         Log.trace("LocalDispatcher constructor starting...");
         this.eventBus = eventBus;
@@ -67,8 +69,7 @@ public class LocalDispatcher extends AbstractDispatcher {
     }
 
     @Override
-    public <R extends CommandResult> void execute(Command<R> command,
-                                                  final AsyncCallback<R> callback) {
+    public <R extends CommandResult> void execute(Command<R> command, final AsyncCallback<R> callback) {
 
         if (registry.hasHandler(command)) {
             executeOffline(command, callback);
@@ -84,8 +85,7 @@ public class LocalDispatcher extends AbstractDispatcher {
      * @param command
      * @param callback
      */
-    private <R extends CommandResult> void executeOffline(
-            final Command<R> command, final AsyncCallback<R> callback) {
+    private <R extends CommandResult> void executeOffline(final Command<R> command, final AsyncCallback<R> callback) {
         Log.debug("Executing command " + command + " OFFLINE.");
         try {
             final Collector<R> commandResult = Collector.newCollector();
@@ -93,8 +93,7 @@ public class LocalDispatcher extends AbstractDispatcher {
 
                 @Override
                 public void begin(SqlTransaction tx) {
-                    LocalExecutionContext context = new LocalExecutionContext(
-                            auth, tx, registry, commandQueue);
+                    LocalExecutionContext context = new LocalExecutionContext(auth, tx, registry, commandQueue);
                     context.execute(command, commandResult);
                 }
 
@@ -114,8 +113,7 @@ public class LocalDispatcher extends AbstractDispatcher {
         }
     }
 
-    private <R extends CommandResult> void executeRemotely(
-            final Command<R> command, final AsyncCallback<R> callback) {
+    private <R extends CommandResult> void executeRemotely(final Command<R> command, final AsyncCallback<R> callback) {
         Log.debug("No handler for " + command + ", executing remotely.");
 
         remoteDispatcher.execute(command, new ChainedCallback<R>(callback) {

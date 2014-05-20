@@ -31,24 +31,17 @@ import com.google.gwt.resources.client.TextResource;
 
 public interface SiteFormResources extends ClientBundle {
 
-    static final SiteFormResources INSTANCE = GWT
-            .create(SiteFormResources.class);
+    static final SiteFormResources INSTANCE = GWT.create(SiteFormResources.class);
 
-    @Source("LocationTemplate.html")
-    TextResource locationTemplate();
+    @Source("LocationTemplate.html") TextResource locationTemplate();
 
-    @Source("FormNavigationTemplate.html")
-    TextResource formNavigationTemplate();
+    @Source("FormNavigationTemplate.html") TextResource formNavigationTemplate();
 
-    @Source("collectionForm.html")
-    TextResource collectionForm();
+    @Source("collectionForm.html") TextResource collectionForm();
 
-    @Source("FormStyle.css")
-    @NotStrict
-    FormStyle style();
+    @Source("FormStyle.css") @NotStrict FormStyle style();
 
-    @Source("blankMarker.png")
-    ImageResource blankMarker();
+    @Source("blankMarker.png") ImageResource blankMarker();
 
     interface FormStyle extends CssResource {
 

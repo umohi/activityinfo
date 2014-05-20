@@ -47,33 +47,27 @@ public class HostController {
     private final ServerSideAuthProvider authProvider;
 
     @Inject
-    public HostController(DeploymentConfiguration deployConfig,
-                          ServerSideAuthProvider authProvider) {
+    public HostController(DeploymentConfiguration deployConfig, ServerSideAuthProvider authProvider) {
         super();
         this.deployConfig = deployConfig;
         this.authProvider = authProvider;
     }
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    @LogException(emailAlert = true)
+    @GET @Produces(MediaType.TEXT_HTML) @LogException(emailAlert = true)
     public Response getHostPage(@Context UriInfo uri,
                                 @Context HttpServletRequest req,
                                 @QueryParam("redirect") boolean redirect) throws Exception {
 
         if (!authProvider.isAuthenticated()) {
             // Otherwise, go to the default ActivityInfo root page
-            return Response
-                    .ok(new RootPageModel().asViewable())
-                    .type(MediaType.TEXT_HTML)
-                    .cacheControl(CacheControl.valueOf("no-cache"))
-                    .build();
+            return Response.ok(new RootPageModel().asViewable())
+                           .type(MediaType.TEXT_HTML)
+                           .cacheControl(CacheControl.valueOf("no-cache"))
+                           .build();
         }
 
         if (redirect) {
-            return Response.seeOther(
-                    uri.getAbsolutePathBuilder().replacePath(ENDPOINT).build())
-                    .build();
+            return Response.seeOther(uri.getAbsolutePathBuilder().replacePath(ENDPOINT).build()).build();
         }
 
         String appUri = uri.getAbsolutePathBuilder().replaceQuery("").build().toString();
@@ -82,9 +76,9 @@ public class HostController {
         model.setAppCacheEnabled(checkAppCacheEnabled(req));
 
         return Response.ok(model.asViewable())
-                .type(MediaType.TEXT_HTML)
-                .cacheControl(CacheControl.valueOf("no-cache"))
-                .build();
+                       .type(MediaType.TEXT_HTML)
+                       .cacheControl(CacheControl.valueOf("no-cache"))
+                       .build();
     }
 
     /**
@@ -93,8 +87,7 @@ public class HostController {
      * is done server-side when the javascript is requested, so all we can do
      * is redirect the user to this page.
      */
-    @GET
-    @Path("/unsupportedBrowser")
+    @GET @Path("/unsupportedBrowser")
     public Viewable getUnsupportedBrowserMessage() {
         return new Viewable("/page/UnsupportedBrowser.ftl", new HashMap());
     }

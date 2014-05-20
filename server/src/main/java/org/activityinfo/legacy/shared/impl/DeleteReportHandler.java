@@ -27,21 +27,19 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.legacy.shared.command.DeleteReport;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 
-public class DeleteReportHandler implements
-        CommandHandlerAsync<DeleteReport, VoidResult> {
+public class DeleteReportHandler implements CommandHandlerAsync<DeleteReport, VoidResult> {
 
     @Override
-    public void execute(DeleteReport command, ExecutionContext context,
-                        AsyncCallback<VoidResult> callback) {
+    public void execute(DeleteReport command, ExecutionContext context, AsyncCallback<VoidResult> callback) {
         SqlUpdate.delete(Tables.REPORT_TEMPLATE)
-                .where("reporttemplateid", command.getReportId())
-                .execute(context.getTransaction());
+                 .where("reporttemplateid", command.getReportId())
+                 .execute(context.getTransaction());
         SqlUpdate.delete(Tables.REPORT_SUBSCRIPTION)
-                .where("reportId", command.getReportId())
-                .execute(context.getTransaction());
+                 .where("reportId", command.getReportId())
+                 .execute(context.getTransaction());
         SqlUpdate.delete(Tables.REPORT_VISIBILITY)
-                .where("reportId", command.getReportId())
-                .execute(context.getTransaction());
+                 .where("reportId", command.getReportId())
+                 .execute(context.getTransaction());
 
         callback.onSuccess(null);
     }

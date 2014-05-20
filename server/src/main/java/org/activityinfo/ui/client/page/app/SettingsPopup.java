@@ -57,49 +57,36 @@ public class SettingsPopup extends PopupPanel {
 
     public static final int WIDTH = 250;
 
-    private static SettingsPopupUiBinder uiBinder = GWT
-            .create(SettingsPopupUiBinder.class);
+    private static SettingsPopupUiBinder uiBinder = GWT.create(SettingsPopupUiBinder.class);
 
     interface SettingsPopupUiBinder extends UiBinder<Widget, SettingsPopup> {
     }
 
-    @UiField
-    SpanElement versionLabel;
+    @UiField SpanElement versionLabel;
 
-    @UiField
-    SpanElement emailLabel;
+    @UiField SpanElement emailLabel;
 
-    @UiField
-    SpanElement versionStatus;
+    @UiField SpanElement versionStatus;
 
-    @UiField
-    SpanElement appCacheStatus;
+    @UiField SpanElement appCacheStatus;
 
-    @UiField
-    Label refreshLink;
+    @UiField Label refreshLink;
 
-    @UiField
-    Label logoutLink;
+    @UiField Label logoutLink;
 
-    @UiField
-    Label userProfileLink;
+    @UiField Label userProfileLink;
 
-    @UiField
-    Label offlineInstallLabel;
+    @UiField Label offlineInstallLabel;
 
-    @UiField
-    Label offlineStatusLabel;
+    @UiField Label offlineStatusLabel;
 
-    @UiField
-    Label lastSyncedLabel;
+    @UiField Label lastSyncedLabel;
 
     Date lastSyncTime = null;
 
-    @UiField
-    DivElement syncRow;
+    @UiField DivElement syncRow;
 
-    @UiField
-    Label syncNowLabel;
+    @UiField Label syncNowLabel;
 
     private boolean syncing = false;
 
@@ -109,8 +96,7 @@ public class SettingsPopup extends PopupPanel {
 
     private LocalController offlineController;
 
-    private LocalCapabilityProfile offlineCapabilityProfile = GWT
-            .create(LocalCapabilityProfile.class);
+    private LocalCapabilityProfile offlineCapabilityProfile = GWT.create(LocalCapabilityProfile.class);
 
     public SettingsPopup(EventBus eventBus, LocalController offlineController) {
         this.eventBus = eventBus;
@@ -126,36 +112,32 @@ public class SettingsPopup extends PopupPanel {
 
         syncRow.getStyle().setDisplay(Display.NONE);
 
-        eventBus.addListener(SyncStatusEvent.TYPE,
-                new Listener<SyncStatusEvent>() {
+        eventBus.addListener(SyncStatusEvent.TYPE, new Listener<SyncStatusEvent>() {
 
-                    @Override
-                    public void handleEvent(SyncStatusEvent be) {
-                        offlineStatusLabel.setText(be.getTask() + " "
-                                + ((int) (be.getPercentComplete())) + "%");
-                        syncing = true;
-                    }
-                });
-        eventBus.addListener(SyncCompleteEvent.TYPE,
-                new Listener<SyncCompleteEvent>() {
+            @Override
+            public void handleEvent(SyncStatusEvent be) {
+                offlineStatusLabel.setText(be.getTask() + " " + ((int) (be.getPercentComplete())) + "%");
+                syncing = true;
+            }
+        });
+        eventBus.addListener(SyncCompleteEvent.TYPE, new Listener<SyncCompleteEvent>() {
 
-                    @Override
-                    public void handleEvent(SyncCompleteEvent event) {
-                        syncing = false;
-                        syncRow.getStyle().setDisplay(Display.BLOCK);
-                        lastSyncTime = event.getTime();
-                        updateLastSyncLabel();
-                    }
+            @Override
+            public void handleEvent(SyncCompleteEvent event) {
+                syncing = false;
+                syncRow.getStyle().setDisplay(Display.BLOCK);
+                lastSyncTime = event.getTime();
+                updateLastSyncLabel();
+            }
 
-                });
-        eventBus.addListener(LocalStateChangeEvent.TYPE,
-                new Listener<LocalStateChangeEvent>() {
+        });
+        eventBus.addListener(LocalStateChangeEvent.TYPE, new Listener<LocalStateChangeEvent>() {
 
-                    @Override
-                    public void handleEvent(LocalStateChangeEvent be) {
-                        onOfflineStatusChange(be.getState());
-                    }
-                });
+            @Override
+            public void handleEvent(LocalStateChangeEvent be) {
+                onOfflineStatusChange(be.getState());
+            }
+        });
         onOfflineStatusChange(offlineController.getState());
     }
 
@@ -218,8 +200,7 @@ public class SettingsPopup extends PopupPanel {
 
     @UiHandler("userProfileLink")
     public void onUserProfileLink(ClickEvent e) {
-        eventBus.fireEvent(new NavigationEvent(
-                NavigationHandler.NAVIGATION_REQUESTED, new UserProfilePage.State()));
+        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new UserProfilePage.State()));
         super.hide();
     }
 
@@ -231,7 +212,8 @@ public class SettingsPopup extends PopupPanel {
                     offlineController.install();
                 } else {
                     MessageBox.info("Offline Mode not supported",
-                            offlineCapabilityProfile.getInstallInstructions(), null);
+                            offlineCapabilityProfile.getInstallInstructions(),
+                            null);
                 }
         }
     }
@@ -263,8 +245,7 @@ public class SettingsPopup extends PopupPanel {
 
     private void updateLastSyncLabel() {
         if (lastSyncTime != null) {
-            lastSyncedLabel.setText(I18N.MESSAGES
-                    .lastSynced(formatLastSyncTime(lastSyncTime)));
+            lastSyncedLabel.setText(I18N.MESSAGES.lastSynced(formatLastSyncTime(lastSyncTime)));
         }
     }
 

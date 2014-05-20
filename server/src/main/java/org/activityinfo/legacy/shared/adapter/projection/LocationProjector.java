@@ -28,17 +28,15 @@ public class LocationProjector implements Function<ListResult<LocationDTO>, List
 
     public static List<ProjectionUpdater<LocationDTO>> createLocationUpdaters(List<FieldPath> fields) {
         List<ProjectionUpdater<LocationDTO>> projectors = Lists.newArrayList();
-        for(FieldPath path : fields) {
+        for (FieldPath path : fields) {
             Cuid fieldId = path.getLeafId();
-            if(fieldId.getDomain() == CuidAdapter.ADMIN_LEVEL_DOMAIN) {
+            if (fieldId.getDomain() == CuidAdapter.ADMIN_LEVEL_DOMAIN) {
                 int levelId = CuidAdapter.getBlock(fieldId, 0);
                 int fieldIndex = CuidAdapter.getBlock(fieldId, 1);
                 projectors.add(new AdminNameProjectionUpdater(path, levelId, fieldIndex));
 
-            } else if(fieldId.getDomain() == CuidAdapter.LOCATION_TYPE_DOMAIN) {
-                projectors.add(new LocationFieldProjectionUpdater(
-                        path,
-                        CuidAdapter.getBlock(fieldId, 1)));
+            } else if (fieldId.getDomain() == CuidAdapter.LOCATION_TYPE_DOMAIN) {
+                projectors.add(new LocationFieldProjectionUpdater(path, CuidAdapter.getBlock(fieldId, 1)));
             }
         }
         return projectors;
@@ -47,13 +45,13 @@ public class LocationProjector implements Function<ListResult<LocationDTO>, List
     @Override
     public List<Projection> apply(ListResult<LocationDTO> input) {
         List<Projection> projections = Lists.newArrayList();
-        for(LocationDTO location : input.getData()) {
+        for (LocationDTO location : input.getData()) {
             Projection projection = new Projection(CuidAdapter.locationInstanceId(location.getId()),
                     CuidAdapter.locationFormClass(location.getLocationTypeId()));
-            for(ProjectionUpdater projector : projectors) {
+            for (ProjectionUpdater projector : projectors) {
                 projector.update(projection, location);
             }
-            if(criteria.apply(projection)) {
+            if (criteria.apply(projection)) {
                 projections.add(projection);
             }
         }

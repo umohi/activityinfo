@@ -44,14 +44,12 @@ public class PdfReportRenderer extends ItextReportRenderer {
     private PdfWriter writer;
 
     @Inject
-    public PdfReportRenderer(AdminGeometryProvider geometryProvider,
-                             @MapIconPath String mapIconPath) {
+    public PdfReportRenderer(AdminGeometryProvider geometryProvider, @MapIconPath String mapIconPath) {
         super(geometryProvider, mapIconPath);
     }
 
     @Override
-    protected DocWriter createWriter(Document document, OutputStream os)
-            throws DocumentException {
+    protected DocWriter createWriter(Document document, OutputStream os) throws DocumentException {
         writer = PdfWriter.getInstance(document, os);
         writer.setStrictImageSequence(true);
 
@@ -70,8 +68,7 @@ public class PdfReportRenderer extends ItextReportRenderer {
 
     @Override
     protected void renderFooter(Document document) {
-        HeaderFooter footer = new HeaderFooter(new Phrase("Page ",
-                ThemeHelper.footerFont()), true);
+        HeaderFooter footer = new HeaderFooter(new Phrase("Page ", ThemeHelper.footerFont()), true);
         document.setFooter(footer);
     }
 
@@ -86,8 +83,7 @@ public class PdfReportRenderer extends ItextReportRenderer {
             PdfContentByte cb = writer.getDirectContent();
             PdfTemplate template = cb.createTemplate(width, height);
 
-            return new PdfVectorImage(template, template.createGraphics(width,
-                    height), height);
+            return new PdfVectorImage(template, template.createGraphics(width, height), height);
         }
 
         @Override
@@ -123,8 +119,7 @@ public class PdfReportRenderer extends ItextReportRenderer {
         }
 
         @Override
-        public void addImage(String imageUrl, int x, int y, int width,
-                             int height) {
+        public void addImage(String imageUrl, int x, int y, int width, int height) {
             Image image;
             try {
                 image = Image.getInstance(new URL(imageUrl));

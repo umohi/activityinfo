@@ -27,26 +27,23 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.PivotSites;
 import org.activityinfo.legacy.shared.command.PivotSites.PivotResult;
-import org.activityinfo.legacy.shared.command.PivotSites.ValueType;
 import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.impl.pivot.*;
-import org.activityinfo.legacy.shared.Log;
 
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class PivotSitesHandler implements
-        CommandHandlerAsync<PivotSites, PivotSites.PivotResult> {
+public class PivotSitesHandler implements CommandHandlerAsync<PivotSites, PivotSites.PivotResult> {
 
     private final SqlDialect dialect;
 
-    private static final Logger LOGGER = Logger
-            .getLogger(PivotSitesHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PivotSitesHandler.class.getName());
 
     private List<BaseTable> baseTables = Lists.newArrayList();
 
@@ -64,8 +61,7 @@ public class PivotSitesHandler implements
     }
 
     @Override
-    public void execute(PivotSites command, ExecutionContext context,
-                        final AsyncCallback<PivotResult> callback) {
+    public void execute(PivotSites command, ExecutionContext context, final AsyncCallback<PivotResult> callback) {
 
         LOGGER.fine("Pivoting: " + command);
 
@@ -77,8 +73,7 @@ public class PivotSitesHandler implements
             return;
         }
 
-        final PivotQueryContext queryContext = new PivotQueryContext(command,
-                context, dialect);
+        final PivotQueryContext queryContext = new PivotQueryContext(command, context, dialect);
         final List<PivotQuery> queries = Lists.newArrayList();
 
         for (BaseTable baseTable : baseTables) {
@@ -124,16 +119,16 @@ public class PivotSitesHandler implements
      * with a query that returns everything!
      */
     private boolean filterIsToBroad(Filter filter) {
-        if(filter.isRestricted(DimensionType.Indicator)) {
+        if (filter.isRestricted(DimensionType.Indicator)) {
             return false;
         }
-        if(filter.isRestricted(DimensionType.Activity)) {
+        if (filter.isRestricted(DimensionType.Activity)) {
             return false;
         }
-        if(filter.isRestricted(DimensionType.Database)) {
+        if (filter.isRestricted(DimensionType.Database)) {
             return false;
         }
-        if(filter.isRestricted(DimensionType.Site)) {
+        if (filter.isRestricted(DimensionType.Site)) {
             return false;
         }
         return true;

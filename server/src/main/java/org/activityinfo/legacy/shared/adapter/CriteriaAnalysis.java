@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
-* Created by alex on 3/15/14.
-*/
+ * Created by alex on 3/15/14.
+ */
 public class CriteriaAnalysis extends CriteriaVisitor {
 
     /**
@@ -28,7 +28,7 @@ public class CriteriaAnalysis extends CriteriaVisitor {
     /**
      * Must be one of these ids
      */
-    private final Multimap<Character,Integer> ids = HashMultimap.create();
+    private final Multimap<Character, Integer> ids = HashMultimap.create();
 
     public Cuid getParentCriteria() {
         return parentCriteria.iterator().next();
@@ -49,7 +49,7 @@ public class CriteriaAnalysis extends CriteriaVisitor {
         // separate the instances out into domains
         for (Cuid id : criteria.getInstanceIds()) {
             assert id != null : "ids cannot be null";
-            if(id.getDomain() != CuidAdapter.ACTIVITY_CATEGORY_DOMAIN) {
+            if (id.getDomain() != CuidAdapter.ACTIVITY_CATEGORY_DOMAIN) {
                 ids.put(id.getDomain(), CuidAdapter.getLegacyIdFromCuid(id));
             }
         }
@@ -57,7 +57,7 @@ public class CriteriaAnalysis extends CriteriaVisitor {
 
     @Override
     public void visitParentCriteria(ParentCriteria criteria) {
-        if(criteria.selectsRoot()) {
+        if (criteria.selectsRoot()) {
             rootOnly = true;
         } else {
             parentCriteria.add(criteria.getParentId());
@@ -84,14 +84,13 @@ public class CriteriaAnalysis extends CriteriaVisitor {
     }
 
     public boolean isEmptySet() {
-        if(classCriteria.size() > 1 && !classUnion) {
+        if (classCriteria.size() > 1 && !classUnion) {
             // a single instance cannot (at this time) be a member of more than one
             // class, so the result of this query is logically the empty set
             return true;
         }
 
-        if(parentCriteria.size() > 1 ||
-                (rootOnly && !parentCriteria.isEmpty())) {
+        if (parentCriteria.size() > 1 || (rootOnly && !parentCriteria.isEmpty())) {
             // likewise, a single instance cannot be a child of multiple parents, so
             // the result of this query is logically the empty set
             return true;
@@ -113,13 +112,11 @@ public class CriteriaAnalysis extends CriteriaVisitor {
     }
 
     public boolean isLocationQuery() {
-        return isRestrictedToSingleClass() &&
-                getClassRestriction().getDomain() == CuidAdapter.LOCATION_TYPE_DOMAIN;
+        return isRestrictedToSingleClass() && getClassRestriction().getDomain() == CuidAdapter.LOCATION_TYPE_DOMAIN;
     }
 
     public boolean isSiteQuery() {
-        return isRestrictedToSingleClass() &&
-                getClassRestriction().getDomain() == CuidAdapter.ACTIVITY_DOMAIN;
+        return isRestrictedToSingleClass() && getClassRestriction().getDomain() == CuidAdapter.ACTIVITY_DOMAIN;
     }
 
     public boolean isAncestorQuery() {

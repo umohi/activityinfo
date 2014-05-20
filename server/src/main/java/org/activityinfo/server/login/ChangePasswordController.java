@@ -56,42 +56,36 @@ public class ChangePasswordController {
         this.authTokenProvider = authTokenProvider;
     }
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
+    @GET @Produces(MediaType.TEXT_HTML)
     public Viewable getPage(@Context UriInfo uri) throws Exception {
         try {
-            User user = userDAO.get().findUserByChangePasswordKey(
-                    uri.getRequestUri().getQuery());
+            User user = userDAO.get().findUserByChangePasswordKey(uri.getRequestUri().getQuery());
             return new ChangePasswordPageModel(user).asViewable();
         } catch (NoResultException e) {
             return new InvalidInvitePageModel().asViewable();
         }
     }
 
-    @POST
-    @LogException(emailAlert = true)
+    @POST @LogException(emailAlert = true)
     public Response changePassword(@Context UriInfo uri,
-                                   @FormParam("key") String key, @FormParam("password") String password)
-            throws IOException, ServletException {
+                                   @FormParam("key") String key,
+                                   @FormParam("password") String password) throws IOException, ServletException {
         User user = null;
         try {
             user = userDAO.get().findUserByChangePasswordKey(key);
         } catch (NoResultException e) {
-            return Response.ok()
-                    .entity(new InvalidInvitePageModel().asViewable())
-                    .type(MediaType.TEXT_HTML)
-                    .build();
+            return Response.ok().entity(new InvalidInvitePageModel().asViewable()).type(MediaType.TEXT_HTML).build();
         }
 
         changePassword(user, password);
 
         return Response.seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
-                .cookie(authTokenProvider.createNewAuthCookies(user)).build();
+                       .cookie(authTokenProvider.createNewAuthCookies(user))
+                       .build();
     }
 
     @Transactional
-    protected void changePassword(User user, String newPassword)
-            throws IncompleteFormException {
+    protected void changePassword(User user, String newPassword) throws IncompleteFormException {
         user.changePassword(newPassword);
         user.clearChangePasswordKey();
     }

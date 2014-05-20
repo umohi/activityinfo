@@ -43,11 +43,9 @@ public abstract class AbstractGridPageState implements PageState {
 
     public boolean parseGridStateTokens(String t) {
         if (t.startsWith("sort-desc:")) {
-            setSortInfo(new SortInfo(t.substring("sort-desc:".length()),
-                    Style.SortDir.DESC));
+            setSortInfo(new SortInfo(t.substring("sort-desc:".length()), Style.SortDir.DESC));
         } else if (t.startsWith("sort:")) {
-            setSortInfo(new SortInfo(t.substring("sort:".length()),
-                    Style.SortDir.DESC));
+            setSortInfo(new SortInfo(t.substring("sort:".length()), Style.SortDir.DESC));
         } else {
             return false;
         }

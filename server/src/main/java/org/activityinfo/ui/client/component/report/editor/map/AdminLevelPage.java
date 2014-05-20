@@ -58,8 +58,7 @@ public class AdminLevelPage extends WizardPage {
 
             @Override
             public void handleEvent(BaseEvent be) {
-                AdminLevelPage.this.fireEvent(Events.Change, new BaseEvent(
-                        Events.Change));
+                AdminLevelPage.this.fireEvent(Events.Change, new BaseEvent(Events.Change));
             }
         });
     }

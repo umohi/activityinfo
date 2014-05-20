@@ -51,8 +51,7 @@ public class ReportMailerHelper {
 
         } else if (report.getEmailDelivery() == EmailDelivery.MONTHLY) {
             if (report.getEmailDay() == Report.LAST_DAY_OF_MONTH) {
-                return today.get(Calendar.DATE) == today
-                        .getActualMaximum(Calendar.DATE);
+                return today.get(Calendar.DATE) == today.getActualMaximum(Calendar.DATE);
             } else {
                 return today.get(Calendar.DATE) == report.getEmailDay();
             }
@@ -60,36 +59,30 @@ public class ReportMailerHelper {
         return false;
     }
 
-    public static String frequencyString(ResourceBundle messages,
-                                         EmailDelivery frequency) {
+    public static String frequencyString(ResourceBundle messages, EmailDelivery frequency) {
         if (frequency == EmailDelivery.WEEKLY) {
             return messages.getString("weekly");
         } else if (frequency == EmailDelivery.MONTHLY) {
             return messages.getString("monthly");
         } else {
-            throw new IllegalArgumentException("Invalid frequency = "
-                    + frequency);
+            throw new IllegalArgumentException("Invalid frequency = " + frequency);
         }
     }
 
     public static String composeTextEmail(ReportSubscription sub, Report report) {
 
         // load our resource bundle with localized messages
-        ResourceBundle mailMessages =
-                ResourceBundle.getBundle(
-                        "org.activityinfo.server.mail.MailMessages",
-                        sub.getUser().getLocaleObject());
+        ResourceBundle mailMessages = ResourceBundle.getBundle("org.activityinfo.server.mail.MailMessages",
+                sub.getUser().getLocaleObject());
 
         StringBuilder sb = new StringBuilder();
 
-        String greeting = MessageFormat.format(
-                mailMessages.getString("greeting"), sub.getUser().getName());
+        String greeting = MessageFormat.format(mailMessages.getString("greeting"), sub.getUser().getName());
         sb.append(greeting).append("\n\n");
 
         String intro;
         if (sub.getInvitingUser() != null) {
-            intro = MessageFormat.format(
-                    mailMessages.getString("reportIntroInvited"),
+            intro = MessageFormat.format(mailMessages.getString("reportIntroInvited"),
                     sub.getInvitingUser().getName(),
                     sub.getInvitingUser().getEmail(),
                     report.getTitle(),
@@ -101,8 +94,7 @@ public class ReportMailerHelper {
 
         }
         sb.append(intro).append("\n\n");
-        sb.append(MessageFormat.format(mailMessages.getString("viewLive"), sub
-                .getTemplate().getId()));
+        sb.append(MessageFormat.format(mailMessages.getString("viewLive"), sub.getTemplate().getId()));
 
         return sb.toString();
     }
@@ -110,23 +102,19 @@ public class ReportMailerHelper {
     static String composeHtmlEmail(ReportSubscription sub, Report report) {
 
         // load our resource bundle with localized messages
-        ResourceBundle mailMessages =
-                ResourceBundle.getBundle(
-                        "org.activityinfo.server.mail.MailMessages",
-                        sub.getUser().getLocaleObject());
+        ResourceBundle mailMessages = ResourceBundle.getBundle("org.activityinfo.server.mail.MailMessages",
+                sub.getUser().getLocaleObject());
 
         HtmlWriter htmlWriter = new HtmlWriter();
 
         htmlWriter.startDocument();
         htmlWriter.startDocumentBody();
-        String greeting = MessageFormat.format(
-                mailMessages.getString("greeting"), sub.getUser().getName());
+        String greeting = MessageFormat.format(mailMessages.getString("greeting"), sub.getUser().getName());
         htmlWriter.paragraph(greeting);
 
         String intro;
         if (sub.getInvitingUser() != null) {
-            intro = MessageFormat.format(
-                    mailMessages.getString("reportIntroInvited"),
+            intro = MessageFormat.format(mailMessages.getString("reportIntroInvited"),
                     sub.getInvitingUser().getName(),
                     sub.getInvitingUser().getEmail(),
                     report.getTitle(),
@@ -139,8 +127,7 @@ public class ReportMailerHelper {
         }
         htmlWriter.paragraph(intro);
 
-        htmlWriter.paragraph(MessageFormat.format(
-                mailMessages.getString("viewLive"),
+        htmlWriter.paragraph(MessageFormat.format(mailMessages.getString("viewLive"),
                 Integer.toString(sub.getTemplate().getId())));
 
         htmlWriter.paragraph(mailMessages.getString("signature"));

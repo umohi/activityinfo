@@ -71,14 +71,13 @@ public class NewReportPanel extends ContentPanel {
         view.setOverStyle("over");
         view.setSelectStyle("over");
 
-        view.addListener(Events.Select,
-                new Listener<ListViewEvent<ReportTemplate>>() {
+        view.addListener(Events.Select, new Listener<ListViewEvent<ReportTemplate>>() {
 
-                    @Override
-                    public void handleEvent(ListViewEvent<ReportTemplate> event) {
-                        createNew(event.getModel());
-                    }
-                });
+            @Override
+            public void handleEvent(ListViewEvent<ReportTemplate> event) {
+                createNew(event.getModel());
+            }
+        });
         add(view);
     }
 
@@ -87,21 +86,19 @@ public class NewReportPanel extends ContentPanel {
 
             @Override
             public void onSuccess(Report report) {
-                dispatcher.execute(new CreateReport(report),
-                        new AsyncCallback<CreateResult>() {
+                dispatcher.execute(new CreateReport(report), new AsyncCallback<CreateResult>() {
 
-                            @Override
-                            public void onFailure(Throwable caught) {
+                    @Override
+                    public void onFailure(Throwable caught) {
 
-                            }
+                    }
 
-                            @Override
-                            public void onSuccess(CreateResult created) {
-                                eventBus.fireEvent(new NavigationEvent(
-                                        NavigationHandler.NAVIGATION_REQUESTED,
-                                        new ReportDesignPageState(created.getNewId())));
-                            }
-                        });
+                    @Override
+                    public void onSuccess(CreateResult created) {
+                        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
+                                new ReportDesignPageState(created.getNewId())));
+                    }
+                });
             }
 
             @Override
@@ -121,13 +118,13 @@ public class NewReportPanel extends ContentPanel {
     }
 
     private native String getTemplate(String base) /*-{
-        return ['<dl><tpl for=".">',
-            '<dd>',
-            '<img src="' + base + 'reports/{path}" title="{name}">',
-            '<div>',
-            '<h4>{name}</h4><p>{description}</p></div>',
-            '</tpl>',
-            '<div style="clear:left;"></div></dl>'].join("");
+      return ['<dl><tpl for=".">',
+        '<dd>',
+        '<img src="' + base + 'reports/{path}" title="{name}">',
+        '<div>',
+        '<h4>{name}</h4><p>{description}</p></div>',
+        '</tpl>',
+        '<div style="clear:left;"></div></dl>'].join("");
 
     }-*/;
 

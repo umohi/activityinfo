@@ -34,8 +34,7 @@ import org.activityinfo.legacy.shared.reports.model.TextReportElement;
 public class ItextTextRenderer implements ItextRenderer<TextReportElement> {
 
     @Override
-    public void render(DocWriter writer, Document doc, TextReportElement element)
-            throws DocumentException {
+    public void render(DocWriter writer, Document doc, TextReportElement element) throws DocumentException {
 
         doc.add(ThemeHelper.elementTitle(element.getTitle()));
         if (element.getText() != null) {

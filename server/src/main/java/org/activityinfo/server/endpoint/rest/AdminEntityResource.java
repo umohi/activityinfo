@@ -40,15 +40,12 @@ public class AdminEntityResource {
         this.entity = unit;
     }
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
+    @GET @Produces(MediaType.TEXT_HTML)
     public Viewable get() {
         return new Viewable("/resource/AdminEntity.ftl", entity);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/geometry")
+    @GET @Produces(MediaType.APPLICATION_JSON) @Path("/geometry")
     public Geometry getGeometry() {
         return entity.getGeometry();
     }

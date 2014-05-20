@@ -31,19 +31,19 @@ public final class AdminGeometry extends JavaScriptObject {
     }
 
     public native int getZoomFactor() /*-{
-        return this.zoomFactor;
+      return this.zoomFactor;
     }-*/;
 
     public native int getNumLevels() /*-{
-        return this.numLevels;
+      return this.numLevels;
     }-*/;
 
     public native JsArray<AdminEntityGeometry> getEntities() /*-{
-        return this.entities;
+      return this.entities;
     }-*/;
 
     public static final native AdminGeometry fromJson(String input) /*-{
-        return eval('(' + input + ')');
+      return eval('(' + input + ')');
     }-*/;
 
 }

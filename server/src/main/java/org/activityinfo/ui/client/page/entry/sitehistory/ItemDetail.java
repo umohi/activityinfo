@@ -22,11 +22,11 @@ package org.activityinfo.ui.client.page.entry.sitehistory;
  * #L%
  */
 
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.command.Month;
 import org.activityinfo.legacy.shared.model.AttributeDTO;
 import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
-import org.activityinfo.i18n.shared.I18N;
 
 import java.util.Map;
 
@@ -112,8 +112,7 @@ class ItemDetail {
         return d;
     }
 
-    private static void addValues(StringBuilder sb, String key,
-                                  Object oldValue, Object newValue) {
+    private static void addValues(StringBuilder sb, String key, Object oldValue, Object newValue) {
         addValues(sb, key, oldValue, newValue, null);
     }
 

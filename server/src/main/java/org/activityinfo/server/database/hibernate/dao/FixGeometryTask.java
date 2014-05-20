@@ -25,16 +25,16 @@ public class FixGeometryTask {
 
     private GeometryFactory gf = new GeometryFactory();
 
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @GET @Produces(MediaType.TEXT_PLAIN)
     public String correctGeometry(@InjectParam EntityManager em) {
 
         while (true) {
 
             em.getTransaction().begin();
 
-            List<AdminEntity> entities = em.createNativeQuery("select * from adminentity where GeometryType(Geometry) = 'GEOMETRYCOLLECTION' limit 50", AdminEntity.class)
-                    .getResultList();
+            List<AdminEntity> entities = em.createNativeQuery(
+                    "select * from adminentity where GeometryType(Geometry) = 'GEOMETRYCOLLECTION' limit 50",
+                    AdminEntity.class).getResultList();
 
             for (AdminEntity entity : entities) {
                 entity.setGeometry(fixGeometry((GeometryCollection) entity.getGeometry()));
@@ -64,8 +64,7 @@ public class FixGeometryTask {
         }
     }
 
-    private void findPolygons(GeometryCollection collection,
-                              List<Polygon> polygons) {
+    private void findPolygons(GeometryCollection collection, List<Polygon> polygons) {
 
         for (int i = 0; i != collection.getNumGeometries(); ++i) {
             Geometry geometry = collection.getGeometryN(i);

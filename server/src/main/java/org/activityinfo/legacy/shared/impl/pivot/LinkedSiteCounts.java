@@ -46,19 +46,13 @@ public class LinkedSiteCounts extends BaseTable {
     @Override
     public void setupQuery(PivotSites command, SqlQuery query) {
         query.from(Tables.INDICATOR_LINK, "IndicatorLink");
-        query.leftJoin(Tables.INDICATOR_VALUE, "V")
-                .on("IndicatorLink.SourceIndicatorId=V.IndicatorId");
-        query.leftJoin(Tables.INDICATOR, "Indicator")
-                .on("IndicatorLink.DestinationIndicatorId=Indicator.IndicatorId");
-        query.leftJoin(Tables.ACTIVITY, "Activity")
-                .on("Activity.ActivityId=Indicator.ActivityId");
-        query.leftJoin(Tables.USER_DATABASE, "UserDatabase")
-                .on("UserDatabase.DatabaseId=Activity.DatabaseId");
+        query.leftJoin(Tables.INDICATOR_VALUE, "V").on("IndicatorLink.SourceIndicatorId=V.IndicatorId");
+        query.leftJoin(Tables.INDICATOR, "Indicator").on("IndicatorLink.DestinationIndicatorId=Indicator.IndicatorId");
+        query.leftJoin(Tables.ACTIVITY, "Activity").on("Activity.ActivityId=Indicator.ActivityId");
+        query.leftJoin(Tables.USER_DATABASE, "UserDatabase").on("UserDatabase.DatabaseId=Activity.DatabaseId");
 
-        query.leftJoin(Tables.REPORTING_PERIOD, "Period")
-                .on("Period.ReportingPeriodId=V.ReportingPeriodId");
-        query.leftJoin(Tables.SITE, "Site")
-                .on("Site.SiteId=Period.SiteId");
+        query.leftJoin(Tables.REPORTING_PERIOD, "Period").on("Period.ReportingPeriodId=V.ReportingPeriodId");
+        query.leftJoin(Tables.SITE, "Site").on("Site.SiteId=Period.SiteId");
 
         query.appendColumn("COUNT(DISTINCT Site.SiteId)", ValueFields.COUNT);
         query.appendColumn(Integer.toString(IndicatorDTO.AGGREGATE_SITE_COUNT), ValueFields.AGGREGATION);

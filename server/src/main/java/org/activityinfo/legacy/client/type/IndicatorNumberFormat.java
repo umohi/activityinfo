@@ -27,8 +27,7 @@ import org.activityinfo.legacy.shared.type.IndicatorValueFormatter;
 
 public class IndicatorNumberFormat implements IndicatorValueFormatter {
 
-    public static final NumberFormat INSTANCE = NumberFormat
-            .getFormat("#,##0.####");
+    public static final NumberFormat INSTANCE = NumberFormat.getFormat("#,##0.####");
 
     @Override
     public String format(Double value) {

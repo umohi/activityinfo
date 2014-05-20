@@ -95,12 +95,11 @@ public class HibernateModule extends ServletModule {
         return hem.getSession();
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     public Validator provideValidator() {
         ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
-                .configure()
-                .buildValidatorFactory();
+                                                      .configure()
+                                                      .buildValidatorFactory();
         return validatorFactory.getValidator();
     }
 
@@ -143,8 +142,8 @@ public class HibernateModule extends ServletModule {
     public static List<Class> getPersistentClasses() {
         try {
             List<Class> list = Lists.newArrayList();
-            List<String> lines =
-                    Resources.readLines(HibernateModule.class.getResource("/persistent.classes"), Charsets.UTF_8);
+            List<String> lines = Resources.readLines(HibernateModule.class.getResource("/persistent.classes"),
+                    Charsets.UTF_8);
             for (String line : lines) {
                 list.add(Class.forName(line));
             }

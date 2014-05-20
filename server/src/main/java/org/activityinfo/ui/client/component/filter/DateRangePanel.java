@@ -45,8 +45,7 @@ import java.util.Date;
  *
  * @author Alex Bertram
  */
-public class DateRangePanel extends ContentPanel implements HasValue<Filter>,
-        FilterPanel {
+public class DateRangePanel extends ContentPanel implements HasValue<Filter>, FilterPanel {
     private DateField datefieldMinDate;
     private DateField datefieldMaxDate;
 
@@ -122,8 +121,7 @@ public class DateRangePanel extends ContentPanel implements HasValue<Filter>,
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 

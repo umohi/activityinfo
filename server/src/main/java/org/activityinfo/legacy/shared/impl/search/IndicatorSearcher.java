@@ -36,18 +36,13 @@ import java.util.List;
 public class IndicatorSearcher implements Searcher {
 
     @Override
-    public void search(List<String> testQuery, SqlTransaction tx,
-                       final AsyncCallback<List<Integer>> callback) {
+    public void search(List<String> testQuery, SqlTransaction tx, final AsyncCallback<List<Integer>> callback) {
 
         final String primaryKey = "IndicatorId";
         String tableName = "Indicator";
         String columnToSearch = "description";
 
-        SqlQuery
-                .select(primaryKey)
-                .from(tableName.toLowerCase())
-                .whereLikes(columnToSearch)
-                .likeMany(testQuery)
+        SqlQuery.select(primaryKey).from(tableName.toLowerCase()).whereLikes(columnToSearch).likeMany(testQuery)
 
                 .execute(tx, new SqlResultCallback() {
                     @Override

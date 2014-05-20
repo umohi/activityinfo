@@ -196,7 +196,7 @@ public class CuidAdapter {
      * @return the {@code FormClass} Cuid for a given Activity
      */
     public static Cuid commentsField(int activityId) {
-//        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
+        //        return new Cuid(ACTIVITY_DOMAIN + block(activityId) + "C");
         return field(activityFormClass(activityId), COMMENT_FIELD);
     }
 
@@ -222,7 +222,7 @@ public class CuidAdapter {
      */
     public static Cuid attributeGroupField(ActivityDTO activity, AttributeGroupDTO group) {
         return new Cuid(ACTIVITY_DOMAIN + block(activity) + "a" +
-                Integer.toString(group.getId(), Cuids.RADIX));
+                        Integer.toString(group.getId(), Cuids.RADIX));
     }
 
 

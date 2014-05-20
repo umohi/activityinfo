@@ -37,7 +37,7 @@ public class PermissionOracle {
 
     public boolean isManageUsersAllowed(UserDatabase database, User user) {
         return getPermissionByUser(database, user).isAllowDesign() ||
-                getPermissionByUser(database, user).isAllowManageUsers();
+               getPermissionByUser(database, user).isAllowManageUsers();
     }
 
 
@@ -47,19 +47,21 @@ public class PermissionOracle {
     }
 
     public void assertDesignPrivileges(UserDatabase database, User user) {
-        if(!isDesignAllowed(database, user)) {
-            throw new IllegalAccessCommandException(
-                    String.format("User %d does not have design privileges on database %d",
-                            user.getId(), database.getId()));
+        if (!isDesignAllowed(database, user)) {
+            throw new IllegalAccessCommandException(String.format(
+                    "User %d does not have design privileges on database %d",
+                    user.getId(),
+                    database.getId()));
         }
     }
 
 
     public void assertManagePartnerAllowed(UserDatabase database, User user) {
-        if(!isManagePartnersAllowed(database, user)) {
-            throw new IllegalAccessCommandException(
-                    String.format("User %d does not have design or manageAllUsers privileges on database %d",
-                            user.getId(), database.getId()));
+        if (!isManagePartnersAllowed(database, user)) {
+            throw new IllegalAccessCommandException(String.format(
+                    "User %d does not have design or manageAllUsers privileges on database %d",
+                    user.getId(),
+                    database.getId()));
         }
     }
 
@@ -70,11 +72,11 @@ public class PermissionOracle {
     public boolean isEditAllowed(Site site, User user) {
         UserPermission permission = getPermissionByUser(site.getActivity().getDatabase(), user);
 
-        if(permission.isAllowEditAll()) {
+        if (permission.isAllowEditAll()) {
             return true;
         }
 
-        if(permission.isAllowEdit()) {
+        if (permission.isAllowEdit()) {
             // without AllowEditAll, edit permission is contingent on the site's partner
             return site.getPartner().getId() == permission.getPartner().getId();
         }
@@ -89,7 +91,7 @@ public class PermissionOracle {
     @Nonnull
     public UserPermission getPermissionByUser(UserDatabase database, User user) {
 
-        if(database.getOwner().getId() == user.getId()) {
+        if (database.getOwner().getId() == user.getId()) {
             // owner has all rights
             UserPermission ownersPermission = new UserPermission();
             ownersPermission.setAllowView(true);
@@ -102,13 +104,16 @@ public class PermissionOracle {
             return ownersPermission;
         }
 
-        List<UserPermission> permissions = em.get().createQuery(
-                "select u from UserPermission u where u.user = :user and u.database = :db", UserPermission.class)
-                .setParameter("user", user)
-                .setParameter("db", database)
-                .getResultList();
+        List<UserPermission> permissions = em.get()
+                                             .createQuery(
+                                                     "select u from UserPermission u where u.user = :user and u" +
+                                                     ".database = :db",
+                                                     UserPermission.class)
+                                             .setParameter("user", user)
+                                             .setParameter("db", database)
+                                             .getResultList();
 
-        if(permissions.isEmpty()) {
+        if (permissions.isEmpty()) {
             // return a permission with nothing enabled
             return new UserPermission();
 

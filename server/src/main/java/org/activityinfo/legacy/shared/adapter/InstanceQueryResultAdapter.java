@@ -40,8 +40,7 @@ public class InstanceQueryResultAdapter implements Function<List<Projection>, Qu
         this.query = query;
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public QueryResult<Projection> apply(List<Projection> list) {
         final int size = list.size();
         final int startIndex = query.getOffset() >= 0 && query.getOffset() < size ? query.getOffset() : 0;

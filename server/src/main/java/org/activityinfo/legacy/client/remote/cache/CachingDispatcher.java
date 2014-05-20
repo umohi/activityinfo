@@ -40,8 +40,7 @@ public class CachingDispatcher extends AbstractDispatcher {
     }
 
     @Override
-    public <T extends CommandResult> void execute(final Command<T> command,
-                                                  final AsyncCallback<T> callback) {
+    public <T extends CommandResult> void execute(final Command<T> command, final AsyncCallback<T> callback) {
 
         cacheManager.notifyListenersBefore(command);
 

@@ -23,7 +23,6 @@ package org.activityinfo.server.database.hibernate.entity;
  */
 
 import com.google.common.base.Strings;
-import com.teklabs.gwt.i18n.server.LocaleProxy;
 import org.mindrot.bcrypt.BCrypt;
 
 import javax.persistence.*;
@@ -33,14 +32,13 @@ import java.util.Locale;
 /**
  * Describes a user
  */
-@Entity
-@Table(name = "UserLogin")
+@Entity @Table(name = "UserLogin")
 // We want to avoid calling this table 'User' as it is a reserved word in some
 // dialects
 // of SQL
-@NamedQueries({
-        @NamedQuery(name = "findUserByEmail", query = "select u from User u where u.email = :email"),
-        @NamedQuery(name = "findUserByChangePasswordKey", query = "select u from User u where u.changePasswordKey = :key")})
+@NamedQueries({@NamedQuery(name = "findUserByEmail", query = "select u from User u where u.email = :email"),
+        @NamedQuery(name = "findUserByChangePasswordKey",
+                query = "select u from User u where u.changePasswordKey = :key")})
 public class User implements java.io.Serializable {
 
     private static final long serialVersionUID = 6486007767204653799L;
@@ -63,9 +61,7 @@ public class User implements java.io.Serializable {
         dateCreated = new Date();
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "UserId", unique = true, nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "UserId", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -119,8 +115,7 @@ public class User implements java.io.Serializable {
         this.emailNotification = emailNotification;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "invitedBy", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "invitedBy", nullable = true)
     public User getInvitedBy() {
         return invitedBy;
     }
@@ -136,7 +131,7 @@ public class User implements java.io.Serializable {
 
     @Transient
     public Locale getLocaleObject() {
-        if(Strings.isNullOrEmpty(this.locale)) {
+        if (Strings.isNullOrEmpty(this.locale)) {
             return Locale.ENGLISH;
         }
         return Locale.forLanguageTag(this.locale);
@@ -196,8 +191,7 @@ public class User implements java.io.Serializable {
     }
 
     public void changePassword(String newPlaintextPassword) {
-        this.hashedPassword = BCrypt.hashpw(newPlaintextPassword,
-                BCrypt.gensalt());
+        this.hashedPassword = BCrypt.hashpw(newPlaintextPassword, BCrypt.gensalt());
     }
 
     @Override

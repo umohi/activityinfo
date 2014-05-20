@@ -73,7 +73,7 @@ public class DrillDownEditor implements Shutdownable {
     }
 
     private void show() {
-        if(dialog == null) {
+        if (dialog == null) {
             createDialog();
         }
         store.removeAll();
@@ -116,8 +116,7 @@ public class DrillDownEditor implements Shutdownable {
                             DATES.rangeFromCategory(axis.getCategory())));
 
                 } else if (axis.getCategory() instanceof EntityCategory) {
-                    filter.addRestriction(axis.getDimension().getType(),
-                            ((EntityCategory) axis.getCategory()).getId());
+                    filter.addRestriction(axis.getDimension().getType(), ((EntityCategory) axis.getCategory()).getId());
                 }
             }
             axis = axis.getParent();
@@ -132,11 +131,11 @@ public class DrillDownEditor implements Shutdownable {
         grid = new Grid<>(store, buildColumnModel());
         grid.setLoadMask(true);
 
-    	dialog = new Dialog();
-    	dialog.setHeadingText(I18N.CONSTANTS.sites());
-    	dialog.setButtons(Dialog.CLOSE);
-    	dialog.setLayout(new FitLayout());
-    	dialog.setSize(WIDTH, HEIGHT);
+        dialog = new Dialog();
+        dialog.setHeadingText(I18N.CONSTANTS.sites());
+        dialog.setButtons(Dialog.CLOSE);
+        dialog.setLayout(new FitLayout());
+        dialog.setSize(WIDTH, HEIGHT);
         dialog.add(grid);
 
         dialog.addListener(Events.Move, new Listener<BaseEvent>() {

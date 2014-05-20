@@ -46,19 +46,15 @@ import java.util.logging.Logger;
  * removed.
  */
 @Singleton
-public class CommandServlet2 extends RemoteServiceServlet implements
-        RemoteCommandService {
+public class CommandServlet2 extends RemoteServiceServlet implements RemoteCommandService {
 
     @Inject
     private Injector injector;
 
-    private static final Logger LOGGER = Logger.getLogger(CommandServlet2.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(CommandServlet2.class.getName());
 
-    @Override
-    @LogException
-    public List<CommandResult> execute(String authToken, List<Command> commands)
-            throws CommandException {
+    @Override @LogException
+    public List<CommandResult> execute(String authToken, List<Command> commands) throws CommandException {
         Authentication auth = retrieveAuthentication(authToken);
         try {
             return handleCommands(auth.getUser(), commands);
@@ -69,14 +65,12 @@ public class CommandServlet2 extends RemoteServiceServlet implements
         }
     }
 
-    public CommandResult execute(String authToken, Command command)
-            throws CommandException {
+    public CommandResult execute(String authToken, Command command) throws CommandException {
         Authentication auth = retrieveAuthentication(authToken);
         return handleCommand(auth.getUser(), command);
     }
 
-    private Authentication retrieveAuthentication(String authToken)
-            throws InvalidAuthTokenException {
+    private Authentication retrieveAuthentication(String authToken) throws InvalidAuthTokenException {
         // Authentication auth = userDAO.findAuthenticationByToken(authToken);
         // if (auth == null) {
         // throw new InvalidAuthTokenException();
@@ -109,8 +103,7 @@ public class CommandServlet2 extends RemoteServiceServlet implements
     }
 
     @LogException(emailAlert = true)
-    protected CommandResult handleCommand(User user, Command command)
-            throws CommandException {
+    protected CommandResult handleCommand(User user, Command command) throws CommandException {
         RemoteExecutionContext context = new RemoteExecutionContext(injector);
         return context.execute(command);
     }

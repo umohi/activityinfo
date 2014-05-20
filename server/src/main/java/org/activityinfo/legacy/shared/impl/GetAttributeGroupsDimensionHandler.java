@@ -38,17 +38,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class GetAttributeGroupsDimensionHandler implements
-        CommandHandlerAsync<GetAttributeGroupsDimension, AttributeGroupResult> {
+public class GetAttributeGroupsDimensionHandler implements CommandHandlerAsync<GetAttributeGroupsDimension,
+        AttributeGroupResult> {
 
     @Override
-    public void execute(GetAttributeGroupsDimension cmd, final ExecutionContext context,
+    public void execute(GetAttributeGroupsDimension cmd,
+                        final ExecutionContext context,
                         final AsyncCallback<AttributeGroupResult> callback) {
 
         // if the filter doesn't contain any activity, database or indicator values, just return an empty list
         if (!cmd.getFilter().isRestricted(DimensionType.Database) &&
-                !cmd.getFilter().isRestricted(DimensionType.Activity) &&
-                !cmd.getFilter().isRestricted(DimensionType.Indicator)) {
+            !cmd.getFilter().isRestricted(DimensionType.Activity) &&
+            !cmd.getFilter().isRestricted(DimensionType.Indicator)) {
 
             callback.onSuccess(new AttributeGroupResult());
             return;
@@ -68,8 +69,7 @@ public class GetAttributeGroupsDimensionHandler implements
 
                 // populate the resultlist
                 for (Bucket bucket : result.getBuckets()) {
-                    EntityCategory category =
-                            (EntityCategory) bucket.getCategory(dimension);
+                    EntityCategory category = (EntityCategory) bucket.getCategory(dimension);
                     if (category != null) {
                         AttributeGroupDTO attributeGroup = new AttributeGroupDTO();
                         attributeGroup.setId(category.getId());

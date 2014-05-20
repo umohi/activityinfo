@@ -22,7 +22,6 @@ package org.activityinfo.legacy.shared.command.result;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.data.ListLoadResult;
 import org.activityinfo.legacy.shared.model.CountryDTO;
 
 import java.util.ArrayList;

@@ -38,8 +38,7 @@ public class TargetValue implements Serializable, ReallyDeleteable {
     }
 
     @EmbeddedId
-    @AttributeOverrides({
-            @AttributeOverride(name = "targetId", column = @Column(name = "targetId", nullable = false)),
+    @AttributeOverrides({@AttributeOverride(name = "targetId", column = @Column(name = "targetId", nullable = false)),
             @AttributeOverride(name = "IndicatorId", column = @Column(name = "IndicatorId", nullable = false))})
     public TargetValueId getId() {
         return this.id;

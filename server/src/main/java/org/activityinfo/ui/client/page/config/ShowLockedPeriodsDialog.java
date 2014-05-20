@@ -31,8 +31,7 @@ import org.activityinfo.legacy.shared.model.LockedPeriodDTO;
 
 import java.util.List;
 
-public final class ShowLockedPeriodsDialog extends Dialog implements
-        ShowLockedPeriodsView {
+public final class ShowLockedPeriodsDialog extends Dialog implements ShowLockedPeriodsView {
     private final LockedPeriodGrid grid = new LockedPeriodGrid();
 
     public ShowLockedPeriodsDialog() {
@@ -63,8 +62,7 @@ public final class ShowLockedPeriodsDialog extends Dialog implements
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<List<LockedPeriodDTO>> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<List<LockedPeriodDTO>> handler) {
         // TODO Auto-generated method stub
         return null;
     }

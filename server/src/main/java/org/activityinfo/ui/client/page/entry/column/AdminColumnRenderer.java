@@ -54,8 +54,12 @@ public class AdminColumnRenderer implements GridCellRenderer<ModelData> {
     }
 
     @Override
-    public Object render(ModelData model, String property, ColumnData config,
-                         int rowIndex, int colIndex, ListStore<ModelData> store,
+    public Object render(ModelData model,
+                         String property,
+                         ColumnData config,
+                         int rowIndex,
+                         int colIndex,
+                         ListStore<ModelData> store,
                          Grid<ModelData> grid) {
         if (model instanceof SiteDTO) {
             return render((SiteDTO) model);
@@ -96,7 +100,6 @@ public class AdminColumnRenderer implements GridCellRenderer<ModelData> {
             }
         }
         // return summary.toSafeHtml().asString();
-        return ColumnTemplates.INSTANCE.adminCell(qtip.toString(),
-                summary.toSafeHtml()).asString();
+        return ColumnTemplates.INSTANCE.adminCell(qtip.toString(), summary.toSafeHtml()).asString();
     }
 }

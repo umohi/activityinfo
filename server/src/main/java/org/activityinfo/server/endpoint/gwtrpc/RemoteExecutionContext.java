@@ -52,8 +52,7 @@ import java.util.logging.Logger;
 
 public class RemoteExecutionContext implements ExecutionContext {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(RemoteExecutionContext.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RemoteExecutionContext.class.getName());
 
     private static final ThreadLocal<RemoteExecutionContext> CURRENT = new ThreadLocal<RemoteExecutionContext>();
 
@@ -69,8 +68,7 @@ public class RemoteExecutionContext implements ExecutionContext {
         super();
         this.injector = injector;
         this.user = injector.getInstance(AuthenticatedUser.class);
-        this.entityManager = (HibernateEntityManager) injector
-                .getInstance(EntityManager.class);
+        this.entityManager = (HibernateEntityManager) injector.getInstance(EntityManager.class);
         this.scheduler = new JdbcScheduler();
         this.scheduler.allowNestedProcessing();
         this.serverEventBus = injector.getInstance(ServerEventBus.class);
@@ -94,8 +92,7 @@ public class RemoteExecutionContext implements ExecutionContext {
     public static RemoteExecutionContext current() {
         RemoteExecutionContext current = CURRENT.get();
         if (current == null) {
-            throw new IllegalStateException(
-                    "No current command execution context");
+            throw new IllegalStateException("No current command execution context");
         }
         return current;
     }
@@ -107,12 +104,10 @@ public class RemoteExecutionContext implements ExecutionContext {
     /**
      * Executes the top-level command, starting a database transaction
      */
-    public <C extends Command<R>, R extends CommandResult> R startExecute(
-            final C command) {
+    public <C extends Command<R>, R extends CommandResult> R startExecute(final C command) {
 
         if (CURRENT.get() != null) {
-            throw new IllegalStateException(
-                    "Command execution context already in progress");
+            throw new IllegalStateException("Command execution context already in progress");
         }
 
         try {
@@ -126,9 +121,9 @@ public class RemoteExecutionContext implements ExecutionContext {
              * Setup an async transaction simply wrapping the hibernate
              * transaction
              */
-            this.tx = new SyncTransactionAdapter(new HibernateExecutor(
-                    this.entityManager),
-                    scheduler, new TransactionCallback());
+            this.tx = new SyncTransactionAdapter(new HibernateExecutor(this.entityManager),
+                    scheduler,
+                    new TransactionCallback());
             this.tx.withManualCommitting();
 
             /*
@@ -149,9 +144,7 @@ public class RemoteExecutionContext implements ExecutionContext {
                 try {
                     this.entityManager.getTransaction().rollback();
                 } catch (Exception rollbackException) {
-                    LOGGER.log(Level.SEVERE,
-                            "Exception rolling back failed transaction",
-                            rollbackException);
+                    LOGGER.log(Level.SEVERE, "Exception rolling back failed transaction", rollbackException);
                 }
 
                 /*
@@ -183,16 +176,13 @@ public class RemoteExecutionContext implements ExecutionContext {
      * Executes a (nested) command synchronously. This is called from within
      * CommandHandlers to execute nested commands
      */
-    public <C extends Command<R>, R extends CommandResult> R execute(
-            final C command) {
+    public <C extends Command<R>, R extends CommandResult> R execute(final C command) {
 
         if (tx == null) {
-            throw new IllegalStateException(
-                    "Command execution has not started yet");
+            throw new IllegalStateException("Command execution has not started yet");
         }
 
-        ResultCollector<R> collector = new ResultCollector<R>(command
-                .getClass().getSimpleName());
+        ResultCollector<R> collector = new ResultCollector<R>(command.getClass().getSimpleName());
         execute(command, collector);
 
         scheduler.process();
@@ -205,21 +195,18 @@ public class RemoteExecutionContext implements ExecutionContext {
      * within CommandHandlers to execute nested commands.
      */
     @Override
-    public <C extends Command<R>, R extends CommandResult> void execute(
-            final C command, final AsyncCallback<R> callback) {
+    public <C extends Command<R>, R extends CommandResult> void execute(final C command,
+                                                                        final AsyncCallback<R> callback) {
 
         if (command instanceof MutatingCommand) {
             // mutating commands MUST have a server-side AuthorizationHandler
-            Class<AuthorizationHandler<C>> authHandlerClass = HandlerUtil
-                    .authorizationHandlerForCommand(command);
+            Class<AuthorizationHandler<C>> authHandlerClass = HandlerUtil.authorizationHandlerForCommand(command);
 
             if (authHandlerClass == null) {
-                LOGGER.warning("No authorization handler for "
-                        + command.getClass());
+                LOGGER.warning("No authorization handler for " + command.getClass());
                 onAuthorized(command, callback);
             } else {
-                AuthorizationHandler<C> authHandler = injector.getInstance(
-                        authHandlerClass);
+                AuthorizationHandler<C> authHandler = injector.getInstance(authHandlerClass);
 
                 authHandler.authorize(command, this, new AsyncCallback<Void>() {
 
@@ -239,14 +226,13 @@ public class RemoteExecutionContext implements ExecutionContext {
         }
     }
 
-    private <C extends Command<R>, R extends CommandResult> void onAuthorized(
-            final C command, AsyncCallback<R> outerCallback) {
+    private <C extends Command<R>, R extends CommandResult> void onAuthorized(final C command,
+                                                                              AsyncCallback<R> outerCallback) {
 
         AsyncCallback<R> callback = new FiringCallback<R>(command, outerCallback);
 
 
-        Object handler = injector.getInstance(HandlerUtil
-                .asyncHandlerForCommand(command));
+        Object handler = injector.getInstance(HandlerUtil.asyncHandlerForCommand(command));
 
         if (handler instanceof CommandHandlerAsync) {
             /**
@@ -259,8 +245,7 @@ public class RemoteExecutionContext implements ExecutionContext {
              * Executes Synchronously
              */
             try {
-                callback.onSuccess((R) ((CommandHandler) handler)
-                        .execute(command, retrieveUserEntity()));
+                callback.onSuccess((R) ((CommandHandler) handler).execute(command, retrieveUserEntity()));
             } catch (Exception e) {
                 callback.onFailure(e);
             }
@@ -280,8 +265,7 @@ public class RemoteExecutionContext implements ExecutionContext {
         if (t instanceof RuntimeException) {
             return (RuntimeException) t;
         } else {
-            LOGGER.log(Level.SEVERE,
-                    "Unexpected command exception: " + t.getMessage(), t);
+            LOGGER.log(Level.SEVERE, "Unexpected command exception: " + t.getMessage(), t);
             return new RuntimeException(t);
         }
     }
@@ -356,16 +340,14 @@ public class RemoteExecutionContext implements ExecutionContext {
         public void onFailure(Throwable caught) {
             this.callbackCount++;
             if (callbackCount > 1) {
-                throw new RuntimeException("Callback for '" + name
-                        + "' called multiple times");
+                throw new RuntimeException("Callback for '" + name + "' called multiple times");
             }
             this.caught = caught;
         }
 
         public R get() throws CommandException {
             if (callbackCount != 1) {
-                throw new IllegalStateException("Callback for '" + name
-                        + "' called " + callbackCount + " times");
+                throw new IllegalStateException("Callback for '" + name + "' called " + callbackCount + " times");
             } else if (caught != null) {
                 throw wrapException(caught);
             }

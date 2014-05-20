@@ -67,9 +67,7 @@ public class BubbleMapLayer extends CircledMapLayer {
         return false;
     }
 
-    @Deprecated
-    @XmlElement(name = "dimension")
-    @XmlElementWrapper(name = "colors")
+    @Deprecated @XmlElement(name = "dimension") @XmlElementWrapper(name = "colors")
     public List<Dimension> getColorDimensions() {
         return colorDimensions;
     }

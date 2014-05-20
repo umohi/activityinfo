@@ -48,8 +48,7 @@ import org.activityinfo.legacy.shared.reports.model.clustering.Clustering;
 import org.activityinfo.legacy.shared.reports.model.layers.*;
 import org.activityinfo.ui.client.component.report.editor.map.MapResources;
 
-public final class LayerOptionsPanel extends LayoutContainer implements
-        HasValue<MapLayer> {
+public final class LayerOptionsPanel extends LayoutContainer implements HasValue<MapLayer> {
 
     public static final int WIDTH = 271;
     public static final int HEIGHT = 377;
@@ -91,18 +90,15 @@ public final class LayerOptionsPanel extends LayoutContainer implements
 
     private void createClusteringOptions(Dispatcher service) {
         clusteringOptions = new ClusteringOptionsWidget(service);
-        clusteringOptions
-                .addValueChangeHandler(new ValueChangeHandler<Clustering>() {
-                    @Override
-                    public void onValueChange(ValueChangeEvent<Clustering> event) {
-                        if (selectedMapLayer instanceof PointMapLayer) {
-                            ((PointMapLayer) selectedMapLayer).setClustering(event
-                                    .getValue());
-                            ValueChangeEvent.fire(LayerOptionsPanel.this,
-                                    selectedMapLayer);
-                        }
-                    }
-                });
+        clusteringOptions.addValueChangeHandler(new ValueChangeHandler<Clustering>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Clustering> event) {
+                if (selectedMapLayer instanceof PointMapLayer) {
+                    ((PointMapLayer) selectedMapLayer).setClustering(event.getValue());
+                    ValueChangeEvent.fire(LayerOptionsPanel.this, selectedMapLayer);
+                }
+            }
+        });
         clusteringPanel.add(clusteringOptions);
     }
 
@@ -122,14 +118,12 @@ public final class LayerOptionsPanel extends LayoutContainer implements
         layout = new AccordionLayout() {
 
             @Override
-            protected void renderComponent(Component component, int index,
-                                           El target) {
+            protected void renderComponent(Component component, int index, El target) {
                 super.renderComponent(component, index, target);
 
                 // keep the default style of rounded corners on the content
                 // panels
-                El.fly(((ContentPanel) component).getElement("header"))
-                        .removeStyleName("x-accordion-hd");
+                El.fly(((ContentPanel) component).getElement("header")).removeStyleName("x-accordion-hd");
             }
 
             @Override
@@ -145,8 +139,7 @@ public final class LayerOptionsPanel extends LayoutContainer implements
         // setFieldsetHeadingToLayerName();
         stylePanel = new ContentPanel();
         stylePanel.setHeadingText(I18N.CONSTANTS.style());
-        stylePanel.setIcon(AbstractImagePrototype.create(MapResources.INSTANCE
-                .styleIcon()));
+        stylePanel.setIcon(AbstractImagePrototype.create(MapResources.INSTANCE.styleIcon()));
         stylePanel.setCollapsible(true);
         stylePanel.setHideCollapseTool(true);
         stylePanel.setAnimCollapse(true);
@@ -163,8 +156,7 @@ public final class LayerOptionsPanel extends LayoutContainer implements
         add(stylePanel);
 
         clusteringPanel = new ContentPanel();
-        clusteringPanel.setIcon(AbstractImagePrototype
-                .create(MapResources.INSTANCE.clusterIcon()));
+        clusteringPanel.setIcon(AbstractImagePrototype.create(MapResources.INSTANCE.clusterIcon()));
         clusteringPanel.setHeadingText(I18N.CONSTANTS.clustering());
         clusteringPanel.setCollapsible(true);
         clusteringPanel.setHideCollapseTool(true);
@@ -196,8 +188,7 @@ public final class LayerOptionsPanel extends LayoutContainer implements
             return polygonLayerOptions;
         }
 
-        throw new IllegalArgumentException("layer: "
-                + mapLayer.getClass().getName());
+        throw new IllegalArgumentException("layer: " + mapLayer.getClass().getName());
     }
 
     private Filter baseFilterFromLayer(MapLayer layer) {
@@ -224,8 +215,7 @@ public final class LayerOptionsPanel extends LayoutContainer implements
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<MapLayer> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<MapLayer> handler) {
         return this.addHandler(handler, ValueChangeEvent.getType());
     }
 
@@ -244,15 +234,13 @@ public final class LayerOptionsPanel extends LayoutContainer implements
             setStyleOptions(layerOptionsWidget);
             clusteringOptions.loadForm(mapLayer);
             if (mapLayer instanceof PointMapLayer) {
-                clusteringOptions.setValue(
-                        ((PointMapLayer) mapLayer).getClustering(), false);
+                clusteringOptions.setValue(((PointMapLayer) mapLayer).getClustering(), false);
                 clusteringPanel.show();
             } else {
                 clusteringPanel.hide();
             }
 
-            filterPanel.getFilterPanelSet().applyBaseFilter(
-                    baseFilterFromLayer(mapLayer));
+            filterPanel.getFilterPanelSet().applyBaseFilter(baseFilterFromLayer(mapLayer));
             filterPanel.setValue(mapLayer.getFilter(), false);
         }
     }

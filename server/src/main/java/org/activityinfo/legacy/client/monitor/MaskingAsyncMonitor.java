@@ -49,8 +49,7 @@ public class MaskingAsyncMonitor implements AsyncMonitor {
         this.connectionText = connectionText;
     }
 
-    public MaskingAsyncMonitor(Component panel, String connectionText,
-                               int maxRetries) {
+    public MaskingAsyncMonitor(Component panel, String connectionText, int maxRetries) {
         this.panel = panel;
         this.connectionText = connectionText;
     }
@@ -72,8 +71,7 @@ public class MaskingAsyncMonitor implements AsyncMonitor {
         if (panel.isRendered()) {
             panel.el().mask(maskingText);
         } else {
-            panel.addListener(panel instanceof Container ? Events.AfterLayout
-                    : Events.Render,
+            panel.addListener(panel instanceof Container ? Events.AfterLayout : Events.Render,
                     new Listener<ComponentEvent>() {
                         @Override
                         public void handleEvent(ComponentEvent be) {
@@ -105,8 +103,7 @@ public class MaskingAsyncMonitor implements AsyncMonitor {
     @Override
     public void onServerError() {
 
-        MessageBox.alert(I18N.CONSTANTS.error(), I18N.CONSTANTS.serverError(),
-                null);
+        MessageBox.alert(I18N.CONSTANTS.error(), I18N.CONSTANTS.serverError(), null);
 
         unmask();
     }

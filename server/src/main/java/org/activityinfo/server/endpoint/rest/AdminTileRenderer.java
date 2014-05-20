@@ -53,15 +53,15 @@ public class AdminTileRenderer {
 
         mapPixelBounds = new Envelope(0, TileMath.TILE_SIZE, 0, TileMath.TILE_SIZE);
 
-        Envelope envelope = new Envelope(
-                extents.getMinLon(), extents.getMaxLon(),
-                extents.getMinLat(), extents.getMaxLat());
+        Envelope envelope = new Envelope(extents.getMinLon(),
+                extents.getMaxLon(),
+                extents.getMinLat(),
+                extents.getMaxLat());
         Geometry filter = gf.toGeometry(envelope);
 
         LOGGER.info("Creating Buffered Image...");
 
-        BufferedImage image = new BufferedImage(TileMath.TILE_SIZE, TileMath.TILE_SIZE,
-                ColorSpace.TYPE_RGB);
+        BufferedImage image = new BufferedImage(TileMath.TILE_SIZE, TileMath.TILE_SIZE, ColorSpace.TYPE_RGB);
         Graphics2D g2d = image.createGraphics();
         g2d.setPaint(Color.WHITE);
         g2d.fillRect(0, 0, TileMath.TILE_SIZE, TileMath.TILE_SIZE);
@@ -111,11 +111,11 @@ public class AdminTileRenderer {
         LOGGER.info("Drawing geometry...");
         for (AdminEntity entity : entities) {
             Geometry geom = projected.get(entity.getId());
-//            Polygon polygon = largestPolygon(geom);
-//
-//            if (polygon != null) {
-//                labelPolygon(g2d, polygon, entity.getName());
-//            }
+            //            Polygon polygon = largestPolygon(geom);
+            //
+            //            if (polygon != null) {
+            //                labelPolygon(g2d, polygon, entity.getName());
+            //            }
         }
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -194,13 +194,11 @@ public class AdminTileRenderer {
     private static void addPolygonToPath(GeneralPath path, Polygon polygon) {
         addRingToPath(path, polygon.getExteriorRing().getCoordinateSequence());
         for (int j = 0; j != polygon.getNumInteriorRing(); ++j) {
-            addRingToPath(path, polygon.getInteriorRingN(j)
-                    .getCoordinateSequence());
+            addRingToPath(path, polygon.getInteriorRingN(j).getCoordinateSequence());
         }
     }
 
-    private static void addRingToPath(GeneralPath path,
-                                      CoordinateSequence coordinates) {
+    private static void addRingToPath(GeneralPath path, CoordinateSequence coordinates) {
 
         for (int j = 0; j != coordinates.size(); ++j) {
             float x = (float) coordinates.getX(j);

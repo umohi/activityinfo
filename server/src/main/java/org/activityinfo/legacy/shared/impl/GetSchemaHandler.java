@@ -29,22 +29,20 @@ import com.bedatadriven.rebar.sql.client.SqlTransaction;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.bedatadriven.rebar.sql.client.util.RowHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.GetSchema;
 import org.activityinfo.legacy.shared.model.*;
 import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
-import org.activityinfo.legacy.shared.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetSchemaHandler implements
-        CommandHandlerAsync<GetSchema, SchemaDTO> {
+public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDTO> {
 
     @Override
-    public void execute(GetSchema command, ExecutionContext context,
-                        AsyncCallback<SchemaDTO> callback) {
+    public void execute(GetSchema command, ExecutionContext context, AsyncCallback<SchemaDTO> callback) {
 
         new SchemaBuilder().build(context, callback);
     }
@@ -65,10 +63,14 @@ public class GetSchemaHandler implements
         private ExecutionContext context;
 
         public void loadCountries() {
-            SqlQuery.select().appendColumn("CountryId", "id")
-                    .appendColumn("Name", "name").appendColumn("X1", "x1")
-                    .appendColumn("y1", "y1").appendColumn("x2", "x2")
-                    .appendColumn("y2", "y2").from("country")
+            SqlQuery.select()
+                    .appendColumn("CountryId", "id")
+                    .appendColumn("Name", "name")
+                    .appendColumn("X1", "x1")
+                    .appendColumn("y1", "y1")
+                    .appendColumn("x2", "x2")
+                    .appendColumn("y2", "y2")
+                    .from("country")
                     .execute(tx, new RowHandler() {
                         @Override
                         public void handleRow(SqlResultSetRow rs) {
@@ -76,9 +78,10 @@ public class GetSchemaHandler implements
                             country.setId(rs.getInt("id"));
                             country.setName(rs.getString("name"));
 
-                            Extents bounds = new Extents(
-                                    rs.getDouble("y1"), rs.getDouble("y2"),
-                                    rs.getDouble("x1"), rs.getDouble("x2"));
+                            Extents bounds = new Extents(rs.getDouble("y1"),
+                                    rs.getDouble("y2"),
+                                    rs.getDouble("x1"),
+                                    rs.getDouble("x2"));
 
                             country.setBounds(bounds);
 
@@ -89,8 +92,8 @@ public class GetSchemaHandler implements
         }
 
         public void loadLocationTypes() {
-            SqlQuery.select("locationTypeId", "name", "boundAdminLevelId",
-                    "countryId", "workflowId", "databaseId").from("locationtype")
+            SqlQuery.select("locationTypeId", "name", "boundAdminLevelId", "countryId", "workflowId", "databaseId")
+                    .from("locationtype")
                     .execute(tx, new RowHandler() {
 
                         @Override
@@ -100,13 +103,12 @@ public class GetSchemaHandler implements
                             type.setName(row.getString("name"));
                             type.setWorkflowId(row.getString("workflowId"));
 
-                            if(!row.isNull("databaseId")) {
+                            if (!row.isNull("databaseId")) {
                                 type.setDatabaseId(row.getInt("databaseId"));
                             }
 
                             if (!row.isNull("boundAdminLevelId")) {
-                                type.setBoundAdminLevelId(row
-                                        .getInt("boundAdminLevelId"));
+                                type.setBoundAdminLevelId(row.getInt("boundAdminLevelId"));
                             }
 
                             int countryId = row.getInt("countryId");
@@ -117,8 +119,7 @@ public class GetSchemaHandler implements
         }
 
         public void loadAdminLevels() {
-            SqlQuery
-                    .select("adminLevelId", "name", "parentId", "countryId")
+            SqlQuery.select("adminLevelId", "name", "parentId", "countryId")
                     .from("adminlevel")
                     .whereTrue("deleted=0")
                     .execute(tx, new RowHandler() {
@@ -134,40 +135,37 @@ public class GetSchemaHandler implements
                                 level.setParentLevelId(row.getInt("parentId"));
                             }
 
-                            countries.get(level.getCountryId())
-                                    .getAdminLevels().add(level);
+                            countries.get(level.getCountryId()).getAdminLevels().add(level);
                         }
                     });
         }
 
         public void loadDatabases() {
-            SqlQuery query = SqlQuery
-                    .select("d.DatabaseId")
-                    .appendColumn("d.Name")
-                    .appendColumn("d.FullName")
-                    .appendColumn("d.OwnerUserId")
-                    .appendColumn("d.CountryId")
-                    .appendColumn("o.Name", "OwnerName")
-                    .appendColumn("o.Email", "OwnerEmail")
-                    .appendColumn("p.AllowViewAll", "allowViewAll")
-                    .appendColumn("p.AllowEdit", "allowEdit")
-                    .appendColumn("p.AllowEditAll", "allowEditAll")
-                    .appendColumn("p.AllowManageUsers", "allowManageUsers")
-                    .appendColumn("p.AllowManageAllUsers",
-                            "allowManageAllUsers")
-                    .appendColumn("p.AllowDesign", "allowDesign")
-                    .appendColumn("p.PartnerId", "partnerId")
-                    .from("userdatabase d")
-                    .leftJoin(
-                            SqlQuery.selectAll()
-                                    .from("userpermission")
-                                    .where("userpermission.UserId")
-                                    .equalTo(context.getUser().getId()), "p")
-                    .on("p.DatabaseId = d.DatabaseId")
-                    .leftJoin("userlogin o")
-                    .on("d.OwnerUserId = o.UserId")
-                    .where("d.DateDeleted").isNull()
-                    .orderBy("d.Name");
+            SqlQuery query = SqlQuery.select("d.DatabaseId")
+                                     .appendColumn("d.Name")
+                                     .appendColumn("d.FullName")
+                                     .appendColumn("d.OwnerUserId")
+                                     .appendColumn("d.CountryId")
+                                     .appendColumn("o.Name", "OwnerName")
+                                     .appendColumn("o.Email", "OwnerEmail")
+                                     .appendColumn("p.AllowViewAll", "allowViewAll")
+                                     .appendColumn("p.AllowEdit", "allowEdit")
+                                     .appendColumn("p.AllowEditAll", "allowEditAll")
+                                     .appendColumn("p.AllowManageUsers", "allowManageUsers")
+                                     .appendColumn("p.AllowManageAllUsers", "allowManageAllUsers")
+                                     .appendColumn("p.AllowDesign", "allowDesign")
+                                     .appendColumn("p.PartnerId", "partnerId")
+                                     .from("userdatabase d")
+                                     .leftJoin(SqlQuery.selectAll()
+                                                       .from("userpermission")
+                                                       .where("userpermission.UserId")
+                                                       .equalTo(context.getUser().getId()), "p")
+                                     .on("p.DatabaseId = d.DatabaseId")
+                                     .leftJoin("userlogin o")
+                                     .on("d.OwnerUserId = o.UserId")
+                                     .where("d.DateDeleted")
+                                     .isNull()
+                                     .orderBy("d.Name");
 
             // this is quite hackesh. we ultimately need to split up GetSchema()
             // into
@@ -177,11 +175,9 @@ public class GetSchemaHandler implements
             // as the number
             // of public databases grow
             if (context.getUser().isAnonymous()) {
-                query
-                        .whereTrue("(d.DatabaseId in (select pa.DatabaseId from activity pa where pa.published>0))");
+                query.whereTrue("(d.DatabaseId in (select pa.DatabaseId from activity pa where pa.published>0))");
             } else {
-                query.whereTrue("(o.userId = ? or p.AllowView = 1)")
-                        .appendParameter(context.getUser().getId());
+                query.whereTrue("(o.userId = ? or p.AllowView = 1)").appendParameter(context.getUser().getId());
             }
 
             query.execute(tx, new SqlResultCallback() {
@@ -194,8 +190,7 @@ public class GetSchemaHandler implements
                         db.setId(row.getInt("DatabaseId"));
                         db.setName(row.getString("Name"));
                         db.setFullName(row.getString("FullName"));
-                        db.setAmOwner(row.getInt("OwnerUserId") == context
-                                .getUser().getId());
+                        db.setAmOwner(row.getInt("OwnerUserId") == context.getUser().getId());
                         db.setCountry(countries.get(row.getInt("CountryId")));
                         db.setOwnerName(row.getString("OwnerName"));
                         db.setOwnerEmail(row.getString("OwnerEmail"));
@@ -223,10 +218,8 @@ public class GetSchemaHandler implements
                             db.setViewAllAllowed(row.getBoolean("allowViewAll"));
                             db.setEditAllowed(row.getBoolean("allowEdit"));
                             db.setEditAllAllowed(row.getBoolean("allowEditAll"));
-                            db.setManageUsersAllowed(row
-                                    .getBoolean("allowManageUsers"));
-                            db.setManageAllUsersAllowed(row
-                                    .getBoolean("allowManageAllUsers"));
+                            db.setManageUsersAllowed(row.getBoolean("allowManageUsers"));
+                            db.setManageAllUsersAllowed(row.getBoolean("allowManageAllUsers"));
                             db.setDesignAllowed(row.getBoolean("allowDesign"));
                             db.setMyPartnerId(row.getInt("partnerId"));
                         }
@@ -252,22 +245,21 @@ public class GetSchemaHandler implements
         protected void loadProjects() {
             SqlQuery.select("name", "projectId", "description", "databaseId")
                     .from("project")
-                    .where("databaseId").in(databaseMap.keySet())
-                    .where("dateDeleted").isNull()
+                    .where("databaseId")
+                    .in(databaseMap.keySet())
+                    .where("dateDeleted")
+                    .isNull()
                     .execute(tx, new SqlResultCallback() {
                         @Override
-                        public void onSuccess(SqlTransaction tx,
-                                              SqlResultSet results) {
+                        public void onSuccess(SqlTransaction tx, SqlResultSet results) {
                             for (SqlResultSetRow row : results.getRows()) {
                                 ProjectDTO project = new ProjectDTO();
                                 project.setName(row.getString("name"));
                                 project.setId(row.getInt("projectId"));
-                                project.setDescription(row
-                                        .getString("description"));
+                                project.setDescription(row.getString("description"));
 
                                 int databaseId = row.getInt("databaseId");
-                                UserDatabaseDTO database = databaseMap
-                                        .get(databaseId);
+                                UserDatabaseDTO database = databaseMap.get(databaseId);
                                 database.getProjects().add(project);
                                 project.setUserDatabase(database);
                                 projects.put(project.getId(), project);
@@ -278,15 +270,19 @@ public class GetSchemaHandler implements
 
         protected void loadLockedPeriods() {
             // TODO(ruud): load only what is visible to user
-            SqlQuery.select("fromDate", "toDate", "enabled", "name",
-                    "lockedPeriodId", "userDatabaseId", "activityId",
+            SqlQuery.select("fromDate",
+                    "toDate",
+                    "enabled",
+                    "name",
+                    "lockedPeriodId",
+                    "userDatabaseId",
+                    "activityId",
                     "projectId").from("lockedperiod")
 
                     .execute(tx, new SqlResultCallback() {
 
                         @Override
-                        public void onSuccess(SqlTransaction tx,
-                                              SqlResultSet results) {
+                        public void onSuccess(SqlTransaction tx, SqlResultSet results) {
                             for (SqlResultSetRow row : results.getRows()) {
                                 LockedPeriodDTO lockedPeriod = new LockedPeriodDTO();
 
@@ -300,25 +296,20 @@ public class GetSchemaHandler implements
 
                                 if (!row.isNull("activityId")) {
                                     Integer activityId = row.getInt("activityId");
-                                    ActivityDTO activity = activities
-                                            .get(activityId);
+                                    ActivityDTO activity = activities.get(activityId);
                                     if (activity != null) { // activities can be
                                         // deleted...
-                                        activity.getLockedPeriods().add(
-                                                lockedPeriod);
+                                        activity.getLockedPeriods().add(lockedPeriod);
                                         lockedPeriod.setParent(activity);
                                     }
                                     parentFound = true;
                                 }
                                 if (!row.isNull("userDatabaseId")) {
-                                    Integer databaseId = row
-                                            .getInt("userDatabaseId");
-                                    UserDatabaseDTO database = databaseMap
-                                            .get(databaseId);
+                                    Integer databaseId = row.getInt("userDatabaseId");
+                                    UserDatabaseDTO database = databaseMap.get(databaseId);
                                     if (database != null) { // databases can be
                                         // deleted
-                                        database.getLockedPeriods().add(
-                                                lockedPeriod);
+                                        database.getLockedPeriods().add(lockedPeriod);
                                         lockedPeriod.setParent(database);
                                     }
                                     parentFound = true;
@@ -327,16 +318,17 @@ public class GetSchemaHandler implements
                                     Integer projectId = row.getInt("projectId");
                                     ProjectDTO project = projects.get(projectId);
                                     if (project != null) {
-                                        project.getLockedPeriods()
-                                                .add(lockedPeriod);
+                                        project.getLockedPeriods().add(lockedPeriod);
                                         lockedPeriod.setParent(project);
                                         parentFound = true;
                                     }
                                 }
 
                                 if (!parentFound) {
-                                    Log.debug("Orphan lockedPeriod: No parent (UserDatabase/Activity/Project) found for LockedPeriod with Id="
-                                            + lockedPeriod.getId());
+                                    Log.debug(
+                                            "Orphan lockedPeriod: No parent (UserDatabase/Activity/Project) found for" +
+                                            " LockedPeriod with Id=" +
+                                            lockedPeriod.getId());
                                 }
                             }
                         }
@@ -344,11 +336,10 @@ public class GetSchemaHandler implements
         }
 
         private void joinPartnersToDatabases() {
-            SqlQuery query = SqlQuery
-                    .select("d.databaseId", "d.partnerId", "p.name", "p.fullName")
-                    .from(Tables.PARTNER_IN_DATABASE, "d")
-                    .leftJoin(Tables.PARTNER, "p")
-                    .on("d.PartnerId = p.PartnerId");
+            SqlQuery query = SqlQuery.select("d.databaseId", "d.partnerId", "p.name", "p.fullName")
+                                     .from(Tables.PARTNER_IN_DATABASE, "d")
+                                     .leftJoin(Tables.PARTNER, "p")
+                                     .on("d.PartnerId = p.PartnerId");
 
             // Only allow results that are visible to this user if we are on the
             // server,
@@ -373,8 +364,7 @@ public class GetSchemaHandler implements
                         partners.put(partnerId, partner);
                     }
 
-                    UserDatabaseDTO db = databaseMap.get(row
-                            .getInt("databaseId"));
+                    UserDatabaseDTO db = databaseMap.get(row.getInt("databaseId"));
                     if (db != null) { // databases can be deleted
                         db.getPartners().add(partner);
                     }
@@ -384,10 +374,13 @@ public class GetSchemaHandler implements
         }
 
         public void loadActivities() {
-            SqlQuery query = SqlQuery
-                    .select("activityId", "name", "category", "locationTypeId",
-                            "reportingFrequency", "databaseId", "published")
-                    .from("activity").orderBy("SortOrder");
+            SqlQuery query = SqlQuery.select("activityId",
+                    "name",
+                    "category",
+                    "locationTypeId",
+                    "reportingFrequency",
+                    "databaseId",
+                    "published").from("activity").orderBy("SortOrder");
 
             if (context.isRemote()) {
                 query.where("DateDeleted IS NULL");
@@ -403,8 +396,7 @@ public class GetSchemaHandler implements
                     activity.setName(row.getString("name"));
                     activity.setCategory(row.getString("category"));
                     activity.setLocationTypeId(row.getInt("locationTypeId"));
-                    activity.setReportingFrequency(row
-                            .getInt("reportingFrequency"));
+                    activity.setReportingFrequency(row.getInt("reportingFrequency"));
                     activity.setPublished(row.getInt("published"));
 
                     int databaseId = row.getInt("databaseId");
@@ -417,16 +409,20 @@ public class GetSchemaHandler implements
         }
 
         public void loadIndicators() {
-            SqlQuery query = SqlQuery
-                    .select("indicatorId", "name", "category", "listHeader",
-                            "description", "aggregation", "units", "activityId", "mandatory")
-                    .from("indicator").orderBy("SortOrder");
+            SqlQuery query = SqlQuery.select("indicatorId",
+                    "name",
+                    "category",
+                    "listHeader",
+                    "description",
+                    "aggregation",
+                    "units",
+                    "activityId",
+                    "mandatory").from("indicator").orderBy("SortOrder");
 
             if (context.isRemote()) {
                 query.where("DateDeleted IS NULL");
-                query.where("activityId").in(
-                        SqlQuery.select("ActivityId").from("activity")
-                                .where("databaseId").in(databaseMap.keySet()));
+                query.where("activityId")
+                     .in(SqlQuery.select("ActivityId").from("activity").where("databaseId").in(databaseMap.keySet()));
 
             }
 
@@ -455,22 +451,23 @@ public class GetSchemaHandler implements
 
         public void loadAttributeGroups() {
             SqlQuery query = SqlQuery.select()
-                    .appendColumn("AttributeGroupId", "id")
-                    .appendColumn("Name", "name")
-                    .appendColumn("multipleAllowed")
-                    .appendColumn("mandatory")
-                    .from("attributegroup")
-                    .orderBy("SortOrder");
+                                     .appendColumn("AttributeGroupId", "id")
+                                     .appendColumn("Name", "name")
+                                     .appendColumn("multipleAllowed")
+                                     .appendColumn("mandatory")
+                                     .from("attributegroup")
+                                     .orderBy("SortOrder");
 
             if (context.isRemote()) {
                 query.where("DateDeleted IS NULL");
-                query.where("AttributeGroupId").in(
-                        SqlQuery.select("AttributeGroupId")
-                                .from("attributegroupinactivity")
-                                .where("ActivityId")
-                                .in(SqlQuery.select("ActivityId")
-                                        .from("activity").where("databaseId")
-                                        .in(databaseMap.keySet())));
+                query.where("AttributeGroupId")
+                     .in(SqlQuery.select("AttributeGroupId")
+                                 .from("attributegroupinactivity")
+                                 .where("ActivityId")
+                                 .in(SqlQuery.select("ActivityId")
+                                             .from("activity")
+                                             .where("databaseId")
+                                             .in(databaseMap.keySet())));
 
             }
 
@@ -491,19 +488,20 @@ public class GetSchemaHandler implements
         }
 
         public void loadAttributes() {
-            SqlQuery query = SqlQuery
-                    .select("attributeId", "name", "attributeGroupId")
-                    .from("attribute").orderBy("SortOrder");
+            SqlQuery query = SqlQuery.select("attributeId", "name", "attributeGroupId")
+                                     .from("attribute")
+                                     .orderBy("SortOrder");
 
             if (context.isRemote()) {
                 query.where("DateDeleted IS NULL");
-                query.where("AttributeGroupId").in(
-                        SqlQuery.select("AttributeGroupId")
-                                .from("attributegroupinactivity")
-                                .where("ActivityId")
-                                .in(SqlQuery.select("ActivityId")
-                                        .from("activity").where("databaseId")
-                                        .in(databaseMap.keySet())));
+                query.where("AttributeGroupId")
+                     .in(SqlQuery.select("AttributeGroupId")
+                                 .from("attributegroupinactivity")
+                                 .where("ActivityId")
+                                 .in(SqlQuery.select("ActivityId")
+                                             .from("activity")
+                                             .where("databaseId")
+                                             .in(databaseMap.keySet())));
 
             }
 
@@ -526,18 +524,16 @@ public class GetSchemaHandler implements
         }
 
         public void joinAttributesToActivities() {
-            SqlQuery query = SqlQuery
-                    .select("J.activityId", "J.attributeGroupId")
-                    .from(
-                            "attributegroupinactivity J "
-                                    + "INNER JOIN attributegroup G ON (J.attributeGroupId = G.attributeGroupId)")
-                    .orderBy("G.SortOrder")
-                    .where("G.dateDeleted").isNull();
+            SqlQuery query = SqlQuery.select("J.activityId", "J.attributeGroupId")
+                                     .from("attributegroupinactivity J " +
+                                           "INNER JOIN attributegroup G ON (J.attributeGroupId = G.attributeGroupId)")
+                                     .orderBy("G.SortOrder")
+                                     .where("G.dateDeleted")
+                                     .isNull();
 
             if (context.isRemote()) {
-                query.where("ActivityId").in(
-                        SqlQuery.select("ActivityId").from("activity")
-                                .where("databaseId").in(databaseMap.keySet()));
+                query.where("ActivityId")
+                     .in(SqlQuery.select("ActivityId").from("activity").where("databaseId").in(databaseMap.keySet()));
 
             }
 
@@ -547,18 +543,15 @@ public class GetSchemaHandler implements
 
                     int groupId = row.getInt("attributeGroupId");
 
-                    ActivityDTO activity = activities.get(row
-                            .getInt("activityId"));
+                    ActivityDTO activity = activities.get(row.getInt("activityId"));
                     if (activity != null) { // it may have been deleted
-                        activity.getAttributeGroups().add(
-                                attributeGroups.get(groupId));
+                        activity.getAttributeGroups().add(attributeGroups.get(groupId));
                     }
                 }
             });
         }
 
-        public void build(ExecutionContext context,
-                          final AsyncCallback<SchemaDTO> callback) {
+        public void build(ExecutionContext context, final AsyncCallback<SchemaDTO> callback) {
             this.context = context;
             this.tx = context.getTransaction();
 

@@ -56,18 +56,15 @@ import java.util.ArrayList;
 /**
  * @author Alex Bertram
  */
-public class DbPartnerEditor extends AbstractGridPresenter<PartnerDTO>
-        implements DbPage {
+public class DbPartnerEditor extends AbstractGridPresenter<PartnerDTO> implements DbPage {
     public static final PageId PAGE_ID = new PageId("partners");
 
     @ImplementedBy(DbPartnerGrid.class)
     public interface View extends GridView<DbPartnerEditor, PartnerDTO> {
 
-        public void init(DbPartnerEditor editor, UserDatabaseDTO db,
-                         ListStore<PartnerDTO> store);
+        public void init(DbPartnerEditor editor, UserDatabaseDTO db, ListStore<PartnerDTO> store);
 
-        public FormDialogTether showAddDialog(PartnerDTO partner,
-                                              FormDialogCallback callback);
+        public FormDialogTether showAddDialog(PartnerDTO partner, FormDialogCallback callback);
     }
 
     private final Dispatcher service;
@@ -78,8 +75,7 @@ public class DbPartnerEditor extends AbstractGridPresenter<PartnerDTO>
     private ListStore<PartnerDTO> store;
 
     @Inject
-    public DbPartnerEditor(EventBus eventBus, Dispatcher service,
-                           StateProvider stateMgr, View view) {
+    public DbPartnerEditor(EventBus eventBus, Dispatcher service, StateProvider stateMgr, View view) {
         super(eventBus, stateMgr, view);
         this.service = service;
         this.eventBus = eventBus;
@@ -116,29 +112,28 @@ public class DbPartnerEditor extends AbstractGridPresenter<PartnerDTO>
             @Override
             public void onValidated(final FormDialogTether dlg) {
 
-                service.execute(new AddPartner(db.getId(), newPartner), dlg,
-                        new AsyncCallback<CreateResult>() {
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                Log.debug("DbPartnerEditor caught exception while executing command AddPartner: ", caught);
-                            }
+                service.execute(new AddPartner(db.getId(), newPartner), dlg, new AsyncCallback<CreateResult>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Log.debug("DbPartnerEditor caught exception while executing command AddPartner: ", caught);
+                    }
 
-                            @Override
-                            public void onSuccess(CreateResult result) {
-                                if (result instanceof DuplicateCreateResult) {
-                                    Log.debug("DbPartnerEditor tried to add partner '" + newPartner.getName() +
-                                            "' to database " + db.getId() + " but it already exists");
-                                    MessageBox.alert(I18N.CONSTANTS.newPartner(), I18N.CONSTANTS.duplicatePartner(), null);
-                                } else {
-                                    Log.debug("DbPartnerEditor added new partner '" + newPartner.getName() +
-                                            "' to database " + db.getId());
-                                    newPartner.setId(result.getNewId());
-                                    store.add(newPartner);
-                                    eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
-                                    dlg.hide();
-                                }
-                            }
-                        });
+                    @Override
+                    public void onSuccess(CreateResult result) {
+                        if (result instanceof DuplicateCreateResult) {
+                            Log.debug("DbPartnerEditor tried to add partner '" + newPartner.getName() +
+                                      "' to database " + db.getId() + " but it already exists");
+                            MessageBox.alert(I18N.CONSTANTS.newPartner(), I18N.CONSTANTS.duplicatePartner(), null);
+                        } else {
+                            Log.debug("DbPartnerEditor added new partner '" + newPartner.getName() +
+                                      "' to database " + db.getId());
+                            newPartner.setId(result.getNewId());
+                            store.add(newPartner);
+                            eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
+                            dlg.hide();
+                        }
+                    }
+                });
             }
         });
     }
@@ -146,27 +141,28 @@ public class DbPartnerEditor extends AbstractGridPresenter<PartnerDTO>
     @Override
     protected void onDeleteConfirmed(final PartnerDTO model) {
         service.execute(new RemovePartner(db.getId(), model.getId()),
-                view.getDeletingMonitor(), new AsyncCallback<RemoveResult>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                Log.debug("DbPartnerEditor caught exception while executing command RemovePartner: ", caught);
-            }
+                view.getDeletingMonitor(),
+                new AsyncCallback<RemoveResult>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Log.debug("DbPartnerEditor caught exception while executing command RemovePartner: ", caught);
+                    }
 
-            @Override
-            public void onSuccess(RemoveResult result) {
-                if (result instanceof RemoveFailedResult) {
-                    Log.debug("DbPartnerEditor tried to remove partner '" + model.getName() +
-                            "' from database " + db.getId() + " but there's data associated with it");
-                    MessageBox.alert(I18N.CONSTANTS.removePartner(),
-                            I18N.MESSAGES.partnerHasDataWarning(model.getName()),
-                            null);
-                } else {
-                    Log.debug("DbPartnerEditor removed partner '" + model.getName() +
-                            "' from database " + db.getId());
-                    store.remove(model);
-                }
-            }
-        });
+                    @Override
+                    public void onSuccess(RemoveResult result) {
+                        if (result instanceof RemoveFailedResult) {
+                            Log.debug("DbPartnerEditor tried to remove partner '" + model.getName() +
+                                      "' from database " + db.getId() + " but there's data associated with it");
+                            MessageBox.alert(I18N.CONSTANTS.removePartner(),
+                                    I18N.MESSAGES.partnerHasDataWarning(model.getName()),
+                                    null);
+                        } else {
+                            Log.debug("DbPartnerEditor removed partner '" + model.getName() +
+                                      "' from database " + db.getId());
+                            store.remove(model);
+                        }
+                    }
+                });
 
     }
 

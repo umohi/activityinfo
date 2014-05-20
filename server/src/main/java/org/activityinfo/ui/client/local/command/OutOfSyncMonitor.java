@@ -54,38 +54,34 @@ public class OutOfSyncMonitor {
     private View view;
 
     @Inject
-    public OutOfSyncMonitor(EventBus eventBus,
-                            View view) {
+    public OutOfSyncMonitor(EventBus eventBus, View view) {
         super();
         this.eventBus = eventBus;
         this.view = view;
 
-        this.eventBus.addListener(SyncCompleteEvent.TYPE,
-                new Listener<SyncCompleteEvent>() {
+        this.eventBus.addListener(SyncCompleteEvent.TYPE, new Listener<SyncCompleteEvent>() {
 
-                    @Override
-                    public void handleEvent(SyncCompleteEvent be) {
-                        onSyncComplete();
-                    }
-                });
-        this.eventBus.addListener(SyncStatusEvent.TYPE,
-                new Listener<SyncStatusEvent>() {
+            @Override
+            public void handleEvent(SyncCompleteEvent be) {
+                onSyncComplete();
+            }
+        });
+        this.eventBus.addListener(SyncStatusEvent.TYPE, new Listener<SyncStatusEvent>() {
 
-                    @Override
-                    public void handleEvent(SyncStatusEvent be) {
-                        if (!syncing) {
-                            onSyncStarted();
-                        }
-                    }
-                });
-        this.eventBus.addListener(ServerStateChangeEvent.TYPE,
-                new Listener<ServerStateChangeEvent>() {
+            @Override
+            public void handleEvent(SyncStatusEvent be) {
+                if (!syncing) {
+                    onSyncStarted();
+                }
+            }
+        });
+        this.eventBus.addListener(ServerStateChangeEvent.TYPE, new Listener<ServerStateChangeEvent>() {
 
-                    @Override
-                    public void handleEvent(ServerStateChangeEvent be) {
-                        onServerStateMutated();
-                    }
-                });
+            @Override
+            public void handleEvent(ServerStateChangeEvent be) {
+                onServerStateMutated();
+            }
+        });
     }
 
     public void onServerStateMutated() {

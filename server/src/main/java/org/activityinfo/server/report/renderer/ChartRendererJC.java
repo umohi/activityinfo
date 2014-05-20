@@ -67,12 +67,14 @@ public class ChartRendererJC {
     private static final String SANS_SERIF = "SansSerif";
 
     public String renderToUrl(PivotChartReportElement element,
-                              boolean includeTitle, StorageProvider istorageProvider,
-                              int width, int height, int dpi) throws IOException {
+                              boolean includeTitle,
+                              StorageProvider istorageProvider,
+                              int width,
+                              int height,
+                              int dpi) throws IOException {
         try {
             Chart chart = createChart(element, includeTitle, width, height, dpi);
-            TempStorage storage = istorageProvider.allocateTemporaryFile(null,
-                    "activityinfo.jpg");
+            TempStorage storage = istorageProvider.allocateTemporaryFile(null, "activityinfo.jpg");
             JPEGEncoder.encode(chart, 0.75f, storage.getOutputStream());
             return storage.getUrl();
 
@@ -82,19 +84,20 @@ public class ChartRendererJC {
         }
     }
 
-    public void render(PivotChartReportElement element, OutputStream os)
-            throws IOException {
+    public void render(PivotChartReportElement element, OutputStream os) throws IOException {
         BufferedImage image = renderImage(element, true, 640, 480, 96);
         ImageIO.write(image, "PNG", os);
     }
 
     public BufferedImage renderImage(PivotChartReportElement element,
-                                     boolean includeTitle, int width, int height, int dpi) {
+                                     boolean includeTitle,
+                                     int width,
+                                     int height,
+                                     int dpi) {
 
         try {
             Chart chart = createChart(element, includeTitle, width, height, dpi);
-            BufferedImage bufferedImage = new BufferedImage(width, height,
-                    BufferedImage.TYPE_INT_RGB);
+            BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             chart.setGraphics2D(bufferedImage.createGraphics());
             chart.render();
 
@@ -109,15 +112,18 @@ public class ChartRendererJC {
         }
     }
 
-    public void render(PivotChartReportElement element, boolean includeTitle,
-                       Graphics2D g2d, int width, int height, int dpi) {
+    public void render(PivotChartReportElement element,
+                       boolean includeTitle,
+                       Graphics2D g2d,
+                       int width,
+                       int height,
+                       int dpi) {
         try {
             Chart chart = createChart(element, includeTitle, width, height, dpi);
             chart.setGraphics2D(g2d);
             chart.render();
         } catch (Exception e) {
-            throw new RuntimeException("Rendering of chart entitled '"
-                    + element.getTitle() + "' failed", e);
+            throw new RuntimeException("Rendering of chart entitled '" + element.getTitle() + "' failed", e);
         }
     }
 
@@ -136,8 +142,10 @@ public class ChartRendererJC {
      * @throws ChartDataException
      */
     protected Chart createChart(PivotChartReportElement element,
-                                boolean includeTitle, int width, int height, int dpi)
-            throws IOException, ChartDataException, PropertyException {
+                                boolean includeTitle,
+                                int width,
+                                int height,
+                                int dpi) throws IOException, ChartDataException, PropertyException {
         if (element.getType() == PivotChartReportElement.Type.Pie) {
             return createPieChart(element, includeTitle, width, height, dpi);
         } else {
@@ -149,30 +157,28 @@ public class ChartRendererJC {
      * Creates a JChart PieChart from our report element
      */
     protected Chart createPieChart(PivotChartReportElement element,
-                                   boolean includeTitle, int width, int height, int dpi)
-            throws IOException, ChartDataException {
+                                   boolean includeTitle,
+                                   int width,
+                                   int height,
+                                   int dpi) throws IOException, ChartDataException {
 
         PivotTableData table = element.getContent().getData();
-        List<PivotTableData.Axis> categories = table.getRootCategory()
-                .getLeaves();
+        List<PivotTableData.Axis> categories = table.getRootCategory().getLeaves();
         PivotTableData.Axis series = table.getRootSeries().getLeaves().get(0);
 
         PieChart2DProperties pieProps = new PieChart2DProperties();
-        pieProps.setValueLabelFont(new ChartFont(
-                new Font(SANS_SERIF, Font.PLAIN, fontSize(10, dpi)), Color.black));
+        pieProps.setValueLabelFont(new ChartFont(new Font(SANS_SERIF, Font.PLAIN, fontSize(10, dpi)), Color.black));
         pieProps.setShowGrouping(true);
         pieProps.setPieLabelType(PieLabelType.VALUE_LABELS);
         pieProps.setBorderChartStroke(ChartStroke.DEFAULT_ZERO_LINE);
 
-        PieChartDataSet dataSet = new PieChartDataSet(
-                includeTitle ? element.getTitle() : null,
+        PieChartDataSet dataSet = new PieChartDataSet(includeTitle ? element.getTitle() : null,
                 toDataArray(categories, series),
                 toLabelArray(element.getContent(), categories),
                 computePaints(categories),
                 pieProps);
 
-        LegendProperties legendProps = computeLegendProperties(element, dpi,
-                categories);
+        LegendProperties legendProps = computeLegendProperties(element, dpi, categories);
         ChartProperties chartProps = computeChartProperties(dpi);
 
         return new PieChart2D(dataSet, legendProps, chartProps, width, height);
@@ -187,8 +193,7 @@ public class ChartRendererJC {
         }
 
         for (int i = 0; i != categories.size(); ++i) {
-            CategoryProperties props = dim.getCategories().get(
-                    categories.get(i).getCategory());
+            CategoryProperties props = dim.getCategories().get(categories.get(i).getCategory());
             if (props != null && props.getColor() != null) {
                 paints[i] = new Color(props.getColor());
             }
@@ -198,8 +203,9 @@ public class ChartRendererJC {
 
     protected Chart createAxisChart(PivotChartReportElement element,
                                     boolean includeTitle,
-                                    int width, int height, int dpi)
-            throws IOException, ChartDataException, PropertyException {
+                                    int width,
+                                    int height,
+                                    int dpi) throws IOException, ChartDataException, PropertyException {
 
         PivotTableData table = element.getContent().getData();
 
@@ -207,25 +213,23 @@ public class ChartRendererJC {
         List<PivotTableData.Axis> categories = table.getRootRow().getLeaves();
         List<PivotTableData.Axis> series = table.getRootColumn().getLeaves();
 
-        IAxisDataSeries dataSeries = new DataSeries(
-                toLabelArray(element.getContent(), categories),
+        IAxisDataSeries dataSeries = new DataSeries(toLabelArray(element.getContent(), categories),
                 element.getContent().getXAxisTitle(),
                 element.getContent().getYAxisTitle(),
                 includeTitle ? element.getTitle() : null);
 
-        dataSeries.addIAxisPlotDataSet(
-                new AxisChartDataSet(
-                        toDataArray(categories, series),
-                        toLabelArray(element.getContent(), series),
-                        computePaints(series),
-                        computeChartType(element),
-                        computeAxisChartProperties(dpi, element)));
+        dataSeries.addIAxisPlotDataSet(new AxisChartDataSet(toDataArray(categories, series),
+                toLabelArray(element.getContent(), series),
+                computePaints(series),
+                computeChartType(element),
+                computeAxisChartProperties(dpi, element)));
 
-        return new AxisChart(
-                dataSeries,
+        return new AxisChart(dataSeries,
                 computeChartProperties(dpi),
                 computeAxisProperties(dpi, element.getContent()),
-                computeLegendProperties(element, dpi, series), width, height);
+                computeLegendProperties(element, dpi, series),
+                width,
+                height);
     }
 
     private ChartType computeChartType(PivotChartReportElement element) {
@@ -241,8 +245,7 @@ public class ChartRendererJC {
         }
     }
 
-    protected String[] toLabelArray(PivotChartContent content,
-                                    Collection<PivotTableData.Axis> leaves) {
+    protected String[] toLabelArray(PivotChartContent content, Collection<PivotTableData.Axis> leaves) {
         String[] labels = new String[leaves.size()];
         int i = 0;
         for (PivotTableData.Axis leaf : leaves) {
@@ -255,8 +258,7 @@ public class ChartRendererJC {
         return labels;
     }
 
-    protected double[][] toDataArray(List<PivotTableData.Axis> categories,
-                                     List<PivotTableData.Axis> series) {
+    protected double[][] toDataArray(List<PivotTableData.Axis> categories, List<PivotTableData.Axis> series) {
         double[][] seriesData = new double[series.size()][];
         for (int i = 0; i != series.size(); ++i) {
             double[] categoryData = new double[categories.size()];
@@ -281,8 +283,7 @@ public class ChartRendererJC {
      * @param series     Leaf series
      * @return A one dimensional data array.
      */
-    protected double[] toDataArray(List<PivotTableData.Axis> categories,
-                                   PivotTableData.Axis series) {
+    protected double[] toDataArray(List<PivotTableData.Axis> categories, PivotTableData.Axis series) {
         double[] data = new double[categories.size()];
         for (int i = 0; i != categories.size(); ++i) {
             PivotTableData.Cell cell = categories.get(i).getCell(series);
@@ -295,8 +296,7 @@ public class ChartRendererJC {
 
     protected ChartProperties computeChartProperties(int dpi) {
         ChartProperties p = new ChartProperties();
-        ChartFont titleFont = new ChartFont(
-                new Font(SANS_SERIF, Font.PLAIN, fontSize(12, dpi)), Color.black);
+        ChartFont titleFont = new ChartFont(new Font(SANS_SERIF, Font.PLAIN, fontSize(12, dpi)), Color.black);
         p.setTitleFont(titleFont);
         return p;
     }
@@ -322,14 +322,10 @@ public class ChartRendererJC {
         return (int) ((pt) / 72f * (dpi));
     }
 
-    protected AxisProperties computeAxisProperties(int dpi,
-                                                   PivotChartContent content)
-            throws PropertyException {
+    protected AxisProperties computeAxisProperties(int dpi, PivotChartContent content) throws PropertyException {
 
-        ChartFont axisScaleFont = new ChartFont(
-                new Font(SANS_SERIF, Font.PLAIN, fontSize(10, dpi)), Color.black);
-        ChartFont axisTitleFont = new ChartFont(
-                new Font(SANS_SERIF, Font.PLAIN, fontSize(11, dpi)), Color.black);
+        ChartFont axisScaleFont = new ChartFont(new Font(SANS_SERIF, Font.PLAIN, fontSize(10, dpi)), Color.black);
+        ChartFont axisTitleFont = new ChartFont(new Font(SANS_SERIF, Font.PLAIN, fontSize(11, dpi)), Color.black);
 
         AxisProperties p = new AxisProperties(false);
 
@@ -346,17 +342,16 @@ public class ChartRendererJC {
         return p;
     }
 
-    protected LegendProperties computeLegendProperties(
-            PivotChartReportElement element, int dpi,
-            List<PivotTableData.Axis> series) {
+    protected LegendProperties computeLegendProperties(PivotChartReportElement element,
+                                                       int dpi,
+                                                       List<PivotTableData.Axis> series) {
 
         // if there is only series, there is no need for a legend
         if (series.size() <= 1) {
             return null;
         }
 
-        ChartFont font = new ChartFont(
-                new Font(SANS_SERIF, Font.PLAIN, fontSize(10, dpi)), Color.BLACK);
+        ChartFont font = new ChartFont(new Font(SANS_SERIF, Font.PLAIN, fontSize(10, dpi)), Color.BLACK);
         LegendProperties p = new LegendProperties();
         p.setChartFont(font);
         p.setBorderStroke(null);
@@ -364,9 +359,7 @@ public class ChartRendererJC {
         if (element.getType() == Type.Pie) {
             p.setPlacement(LegendProperties.RIGHT);
         } else {
-            p.setPlacement(maxLegendTextLength(series) > 30 ?
-                    LegendProperties.BOTTOM :
-                    LegendProperties.RIGHT);
+            p.setPlacement(maxLegendTextLength(series) > 30 ? LegendProperties.BOTTOM : LegendProperties.RIGHT);
         }
         p.setNumColumns(1);
 
@@ -381,8 +374,7 @@ public class ChartRendererJC {
         return max;
     }
 
-    protected AxisChartTypeProperties computeAxisChartProperties(int dpi,
-                                                                 PivotChartReportElement element) {
+    protected AxisChartTypeProperties computeAxisChartProperties(int dpi, PivotChartReportElement element) {
         if (element.getType() == PivotChartReportElement.Type.Line) {
             return computeLineChartProperties(element, dpi);
         } else {
@@ -403,17 +395,14 @@ public class ChartRendererJC {
         }
     }
 
-    private AxisChartTypeProperties computeLineChartProperties(
-            PivotChartReportElement element, int dpi) {
-        List<PivotTableData.Axis> series = element.getContent().getData()
-                .getRootSeries().getLeaves();
+    private AxisChartTypeProperties computeLineChartProperties(PivotChartReportElement element, int dpi) {
+        List<PivotTableData.Axis> series = element.getContent().getData().getRootSeries().getLeaves();
         Stroke[] stroke = new Stroke[series.size()];
         Shape[] shape = new Shape[series.size()];
         int si = 0;
         for (PivotTableData.Axis s : series) {
             stroke[si] = new BasicStroke(2f / 72f * dpi);
-            shape[si] = new Rectangle2D.Double(0, 0, 4f / 72f * dpi,
-                    4f / 72f * dpi);
+            shape[si] = new Rectangle2D.Double(0, 0, 4f / 72f * dpi, 4f / 72f * dpi);
             si++;
         }
         return new LineChartProperties(stroke, shape);

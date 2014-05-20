@@ -38,22 +38,25 @@ public final class AuthCookieUtil {
 
     private static final String ROOT = "/";
 
-    public static void addAuthCookie(ResponseBuilder response,
-                                     Authentication auth, boolean remember) {
-        response.cookie(createCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE,
-                auth.getId(), remember));
+    public static void addAuthCookie(ResponseBuilder response, Authentication auth, boolean remember) {
+        response.cookie(createCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE, auth.getId(), remember));
 
         response.cookie(createCookie(AuthenticatedUser.USER_ID_COOKIE,
-                String.valueOf(auth.getUser().getId()), remember));
+                String.valueOf(auth.getUser().getId()),
+                remember));
 
-        response.cookie(createCookie(AuthenticatedUser.EMAIL_COOKIE, auth
-                .getUser().getEmail(), remember));
+        response.cookie(createCookie(AuthenticatedUser.EMAIL_COOKIE, auth.getUser().getEmail(), remember));
     }
 
-    public static NewCookie createCookie(String name, String value,
-                                         boolean remember) {
-        NewCookie cookie = new NewCookie(name, value, ROOT, null, 1, null,
-                remember ? THIRTY_DAYS : THIS_SESSION, false);
+    public static NewCookie createCookie(String name, String value, boolean remember) {
+        NewCookie cookie = new NewCookie(name,
+                value,
+                ROOT,
+                null,
+                1,
+                null,
+                remember ? THIRTY_DAYS : THIS_SESSION,
+                false);
 
         return cookie;
     }

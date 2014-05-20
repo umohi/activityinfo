@@ -57,7 +57,8 @@ class AdminTreeProxy implements DataProxy<List<AdminEntityDTO>> {
 
     @Override
     public void load(DataReader<List<AdminEntityDTO>> dataReader,
-                     final Object parent, final AsyncCallback<List<AdminEntityDTO>> callback) {
+                     final Object parent,
+                     final AsyncCallback<List<AdminEntityDTO>> callback) {
         if (filter == null) {
             callback.onSuccess(new ArrayList<AdminEntityDTO>());
             return;
@@ -80,27 +81,25 @@ class AdminTreeProxy implements DataProxy<List<AdminEntityDTO>> {
 
                 initLevelsWithChildren(countries);
 
-                GetAdminEntities request = new GetAdminEntities(
-                        toIdSet(countries), filter);
+                GetAdminEntities request = new GetAdminEntities(toIdSet(countries), filter);
 
                 if (parent != null) {
                     assert parent instanceof AdminEntityDTO : "expecting AdminEntityDTO";
                     request.setParentId(((AdminEntityDTO) parent).getId());
                 }
 
-                service.execute(request,
-                        new AsyncCallback<AdminEntityResult>() {
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                callback.onFailure(caught);
-                            }
+                service.execute(request, new AsyncCallback<AdminEntityResult>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        callback.onFailure(caught);
+                    }
 
-                            @Override
-                            public void onSuccess(AdminEntityResult result) {
-                                prepareData(countries, result.getData());
-                                callback.onSuccess(result.getData());
-                            }
-                        });
+                    @Override
+                    public void onSuccess(AdminEntityResult result) {
+                        prepareData(countries, result.getData());
+                        callback.onSuccess(result.getData());
+                    }
+                });
             }
         });
     }
@@ -108,24 +107,19 @@ class AdminTreeProxy implements DataProxy<List<AdminEntityDTO>> {
     private Set<CountryDTO> findCountries(SchemaDTO schema) {
         Set<CountryDTO> countries = new HashSet<CountryDTO>();
 
-        Set<Integer> activityIds = filter
-                .getRestrictions(DimensionType.Activity);
+        Set<Integer> activityIds = filter.getRestrictions(DimensionType.Activity);
         for (Integer activityId : activityIds) {
-            countries.add(schema.getActivityById(activityId).getDatabase()
-                    .getCountry());
+            countries.add(schema.getActivityById(activityId).getDatabase().getCountry());
         }
 
-        Set<Integer> databaseIds = filter
-                .getRestrictions(DimensionType.Database);
+        Set<Integer> databaseIds = filter.getRestrictions(DimensionType.Database);
         for (Integer databaseId : databaseIds) {
             countries.add(schema.getDatabaseById(databaseId).getCountry());
         }
 
-        Set<Integer> indicatorIds = filter
-                .getRestrictions(DimensionType.Indicator);
+        Set<Integer> indicatorIds = filter.getRestrictions(DimensionType.Indicator);
         for (Integer indicatorId : indicatorIds) {
-            countries.add(schema.getActivityByIndicatorId(indicatorId)
-                    .getDatabase().getCountry());
+            countries.add(schema.getActivityByIndicatorId(indicatorId).getDatabase().getCountry());
         }
 
         return countries;
@@ -148,24 +142,20 @@ class AdminTreeProxy implements DataProxy<List<AdminEntityDTO>> {
         }
     }
 
-    private void prepareData(Set<CountryDTO> countries,
-                             List<AdminEntityDTO> list) {
+    private void prepareData(Set<CountryDTO> countries, List<AdminEntityDTO> list) {
         if (!sameLevel(list)) {
             for (AdminEntityDTO entity : list) {
                 AdminLevelDTO level = findLevel(countries, entity);
                 if (level != null) {
-                    entity.setName(entity.getName() + " [" + level.getName()
-                            + "]");
+                    entity.setName(entity.getName() + " [" + level.getName() + "]");
                 }
             }
         }
     }
 
-    private AdminLevelDTO findLevel(Set<CountryDTO> countries,
-                                    AdminEntityDTO entity) {
+    private AdminLevelDTO findLevel(Set<CountryDTO> countries, AdminEntityDTO entity) {
         for (CountryDTO country : countries) {
-            AdminLevelDTO level = country
-                    .getAdminLevelById(entity.getLevelId());
+            AdminLevelDTO level = country.getAdminLevelById(entity.getLevelId());
             if (level != null) {
                 return level;
             }

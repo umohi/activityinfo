@@ -15,9 +15,7 @@ public class PartnerInstanceAdapter implements Function<PartnerDTO, FormInstance
 
     @Override
     public FormInstance apply(PartnerDTO input) {
-        FormInstance instance = new FormInstance(
-                CuidAdapter.partnerInstanceId(input.getId()),
-                classId);
+        FormInstance instance = new FormInstance(CuidAdapter.partnerInstanceId(input.getId()), classId);
 
         instance.set(PartnerClassAdapter.getNameField(classId), input.getName());
         instance.set(PartnerClassAdapter.getFullNameField(classId), input.getFullName());

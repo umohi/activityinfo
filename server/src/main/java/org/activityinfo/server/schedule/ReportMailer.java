@@ -49,8 +49,7 @@ import java.util.logging.Logger;
 
 public class ReportMailer {
 
-    private static final Logger LOGGER = Logger.getLogger(ReportMailer.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(ReportMailer.class.getName());
 
     private final EntityManager em;
     private final ReportGenerator reportGenerator;
@@ -61,8 +60,10 @@ public class ReportMailer {
 
 
     @Inject
-    public ReportMailer(EntityManager em, ReportGenerator reportGenerator,
-                        RtfReportRenderer rtfReportRenderer, MailSender mailer,
+    public ReportMailer(EntityManager em,
+                        ReportGenerator reportGenerator,
+                        RtfReportRenderer rtfReportRenderer,
+                        MailSender mailer,
                         ServerSideAuthProvider authProvider) {
         super();
         this.em = em;
@@ -80,30 +81,22 @@ public class ReportMailer {
 
         LOGGER.info("Starting nightly mailing job for " + today);
 
-        List<ReportSubscription> subscriptions = em.createQuery(
-                "select t from ReportSubscription t")
-                .getResultList();
+        List<ReportSubscription> subscriptions = em.createQuery("select t from ReportSubscription t").getResultList();
 
         for (ReportSubscription subscription : subscriptions) {
             try {
-                if (ReportMailerHelper.mailToday(today, subscription) &&
-                        filter.apply(subscription)) {
+                if (ReportMailerHelper.mailToday(today, subscription) && filter.apply(subscription)) {
 
-                    Report report = ReportParserJaxb.parseXml(subscription
-                            .getTemplate().getXml());
+                    Report report = ReportParserJaxb.parseXml(subscription.getTemplate().getXml());
                     execute(today, subscription, report);
                 }
             } catch (Exception caught) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Exception thrown while processing report "
-                                + subscription.getId(), caught);
+                LOGGER.log(Level.SEVERE, "Exception thrown while processing report " + subscription.getId(), caught);
             }
         }
     }
 
-    public void execute(Date today, ReportSubscription sub, Report report)
-            throws IOException {
+    public void execute(Date today, ReportSubscription sub, Report report) throws IOException {
 
         // set up authentication for the subscriber of this report
 
@@ -121,20 +114,20 @@ public class ReportMailer {
         try {
             mailReport(sub, report, today, rtf.toByteArray());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Report mailing of "
-                    + sub.getTemplate().getId() + " failed for user "
-                    + sub.getUser().getEmail(), e);
+            LOGGER.log(Level.SEVERE,
+                    "Report mailing of " + sub.getTemplate().getId() + " failed for user " + sub.getUser().getEmail(),
+                    e);
         }
     }
 
-    private void mailReport(ReportSubscription sub, Report report, Date today,
-                            byte[] content)
-            throws IOException, SAXException, MessagingException {
+    private void mailReport(ReportSubscription sub,
+                            Report report,
+                            Date today,
+                            byte[] content) throws IOException, SAXException, MessagingException {
 
         LOGGER.log(Level.INFO, "Sending email to " + sub.getUser().getEmail());
 
-        DateFormat reportDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM,
-                sub.getUser().getLocaleObject());
+        DateFormat reportDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, sub.getUser().getLocaleObject());
 
 
         Message email = new Message();
@@ -143,9 +136,9 @@ public class ReportMailer {
         email.body(ReportMailerHelper.composeTextEmail(sub, report));
 
         email.addAttachment()
-                .withContent(content, "text/enriched")
-                .withFileName(report.getContent().getFileName() + " " +
-                        reportDateFormat.format(today) + ".rtf");
+             .withContent(content, "text/enriched")
+             .withFileName(report.getContent().getFileName() + " " +
+                           reportDateFormat.format(today) + ".rtf");
 
         mailer.send(email);
     }

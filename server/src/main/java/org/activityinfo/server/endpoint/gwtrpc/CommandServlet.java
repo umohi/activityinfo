@@ -61,11 +61,9 @@ import java.util.logging.Logger;
  * org.activityinfo.server.command.handler.UpdateEntityHandler
  */
 @Singleton
-public class CommandServlet extends RemoteServiceServlet implements
-        RemoteCommandService {
+public class CommandServlet extends RemoteServiceServlet implements RemoteCommandService {
 
-    private static final Logger LOGGER = Logger.getLogger(CommandServlet.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(CommandServlet.class.getName());
 
     @Inject
     private Injector injector;
@@ -77,8 +75,7 @@ public class CommandServlet extends RemoteServiceServlet implements
     private PersistentPolicyProvider policyProvider;
 
 
-    @Override
-    @LogException
+    @Override @LogException
     public List<CommandResult> execute(String authToken, List<Command> commands) throws CommandException {
         if (!checkAuthentication(authToken)) {
             throw new InvalidAuthTokenException("Auth Tokens do not match, possible XSRF attack");
@@ -111,8 +108,7 @@ public class CommandServlet extends RemoteServiceServlet implements
         List<CommandResult> results = new ArrayList<CommandResult>();
         for (Command command : commands) {
 
-            LOGGER.log(Level.INFO, authProvider.get().getEmail() + ": "
-                    + command.getClass().getSimpleName());
+            LOGGER.log(Level.INFO, authProvider.get().getEmail() + ": " + command.getClass().getSimpleName());
 
             try {
                 results.add(handleCommand(command));
@@ -139,8 +135,7 @@ public class CommandServlet extends RemoteServiceServlet implements
 
             long timeElapsed = System.currentTimeMillis() - timeStart;
             if (timeElapsed > 1000) {
-                LOGGER.warning("Command " + command.toString() + " completed in "
-                        + timeElapsed + "ms");
+                LOGGER.warning("Command " + command.toString() + " completed in " + timeElapsed + "ms");
             }
 
             return result;
@@ -162,14 +157,13 @@ public class CommandServlet extends RemoteServiceServlet implements
     }
 
     @Override
-    protected SerializationPolicy doGetSerializationPolicy(
-            HttpServletRequest request, String moduleBaseURL, String strongName) {
+    protected SerializationPolicy doGetSerializationPolicy(HttpServletRequest request,
+                                                           String moduleBaseURL,
+                                                           String strongName) {
         if (policyProvider == null) {
-            return super.doGetSerializationPolicy(request, moduleBaseURL,
-                    strongName);
+            return super.doGetSerializationPolicy(request, moduleBaseURL, strongName);
         } else {
-            return policyProvider.getSerializationPolicy(moduleBaseURL,
-                    strongName);
+            return policyProvider.getSerializationPolicy(moduleBaseURL, strongName);
         }
     }
 

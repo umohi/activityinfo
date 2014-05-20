@@ -30,7 +30,9 @@ public class DrillDownColumnModelProvider implements ColumnModelProvider {
     }
 
     @Override
-    public void fetchColumnModels(final Filter filter, GroupingModel grouping, final AsyncCallback<ColumnModel> callback) {
+    public void fetchColumnModels(final Filter filter,
+                                  GroupingModel grouping,
+                                  final AsyncCallback<ColumnModel> callback) {
         dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -45,22 +47,21 @@ public class DrillDownColumnModelProvider implements ColumnModelProvider {
     }
 
     private ColumnModel buildModel(SchemaDTO schema, Filter filter) {
-        ColumnModelBuilder builder = new ColumnModelBuilder()
-                .addMapColumn()
-                .addDatabaseColumn(schema)
-                .addActivityColumn(schema)
-                .addLocationColumn()
-                .addPartnerColumn();
+        ColumnModelBuilder builder = new ColumnModelBuilder().addMapColumn()
+                                                             .addDatabaseColumn(schema)
+                                                             .addActivityColumn(schema)
+                                                             .addLocationColumn()
+                                                             .addPartnerColumn();
 
         Set<Integer> indicatorIds = filter.getRestrictions(DimensionType.Indicator);
-        for(UserDatabaseDTO db : schema.getDatabases()) {
-            for(ActivityDTO activity : db.getActivities()) {
-                for(IndicatorDTO indicator : activity.getIndicators()) {
-                    if(indicatorIds.contains(indicator.getId())) {
+        for (UserDatabaseDTO db : schema.getDatabases()) {
+            for (ActivityDTO activity : db.getActivities()) {
+                for (IndicatorDTO indicator : activity.getIndicators()) {
+                    if (indicatorIds.contains(indicator.getId())) {
                         String header;
-                        if(indicatorIds.size() == 1) {
+                        if (indicatorIds.size() == 1) {
                             header = I18N.CONSTANTS.value();
-                        } else if(!Strings.isNullOrEmpty(indicator.getListHeader())) {
+                        } else if (!Strings.isNullOrEmpty(indicator.getListHeader())) {
                             header = indicator.getListHeader();
                         } else {
                             header = indicator.getName();

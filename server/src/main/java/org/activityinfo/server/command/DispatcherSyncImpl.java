@@ -38,15 +38,13 @@ public class DispatcherSyncImpl implements DispatcherSync {
     private final Provider<AuthenticatedUser> userProvider;
 
     @Inject
-    public DispatcherSyncImpl(Injector injector,
-                              Provider<AuthenticatedUser> userProvider) {
+    public DispatcherSyncImpl(Injector injector, Provider<AuthenticatedUser> userProvider) {
         this.injector = injector;
         this.userProvider = userProvider;
     }
 
     @Override
-    public <C extends Command<R>, R extends CommandResult> R execute(C command)
-            throws CommandException {
+    public <C extends Command<R>, R extends CommandResult> R execute(C command) throws CommandException {
         if (RemoteExecutionContext.inProgress()) {
             return RemoteExecutionContext.current().execute(command);
         } else {
@@ -55,8 +53,7 @@ public class DispatcherSyncImpl implements DispatcherSync {
             user.setEmail(userProvider.get().getEmail());
             user.setLocale(userProvider.get().getUserLocale());
 
-            RemoteExecutionContext context = new RemoteExecutionContext(
-                    injector);
+            RemoteExecutionContext context = new RemoteExecutionContext(injector);
             return context.startExecute(command);
         }
     }

@@ -87,8 +87,7 @@ public class SiteDialog extends Window {
         setLayout(new BorderLayout());
 
         navigationListView = new FormNavigationListView();
-        BorderLayoutData navigationLayout = new BorderLayoutData(
-                LayoutRegion.WEST);
+        BorderLayoutData navigationLayout = new BorderLayoutData(LayoutRegion.WEST);
         navigationLayout.setSize(150);
         add(navigationListView, navigationLayout);
 
@@ -100,79 +99,74 @@ public class SiteDialog extends Window {
 
         if (activity.getLocationType().isAdminLevel()) {
             locationForm = new BoundLocationSection(dispatcher, activity);
-        } else if(activity.getLocationType().isNationwide()) {
+        } else if (activity.getLocationType().isNationwide()) {
             locationForm = new NullLocationFormSection(activity.getLocationType());
         } else {
             locationForm = new LocationSection(dispatcher, activity);
         }
 
         addSection(FormSectionModel.forComponent(new ActivitySection(activity))
-                .withHeader(I18N.CONSTANTS.siteDialogIntervention())
-                .withDescription(I18N.CONSTANTS.siteDialogInterventionDesc()));
+                                   .withHeader(I18N.CONSTANTS.siteDialogIntervention())
+                                   .withDescription(I18N.CONSTANTS.siteDialogInterventionDesc()));
 
-        if(!activity.getLocationType().isNationwide()) {
+        if (!activity.getLocationType().isNationwide()) {
             addSection(FormSectionModel.forComponent(locationForm)
-                    .withHeader(I18N.CONSTANTS.location())
-                    .withDescription(I18N.CONSTANTS.siteDialogSiteDesc()));
+                                       .withHeader(I18N.CONSTANTS.location())
+                                       .withDescription(I18N.CONSTANTS.siteDialogSiteDesc()));
         }
 
         if (!activity.getAttributeGroups().isEmpty()) {
 
-            addSection(FormSectionModel
-                    .forComponent(new AttributeSection(activity))
-                    .withHeader(I18N.CONSTANTS.attributes())
-                    .withDescription(I18N.CONSTANTS.siteDialogAttributes()));
+            addSection(FormSectionModel.forComponent(new AttributeSection(activity))
+                                       .withHeader(I18N.CONSTANTS.attributes())
+                                       .withDescription(I18N.CONSTANTS.siteDialogAttributes()));
 
         }
 
-        if (activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE &&
-                !activity.getIndicators().isEmpty()) {
+        if (activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE && !activity.getIndicators().isEmpty()) {
 
-            addSection(FormSectionModel
-                    .forComponent(new IndicatorSection(activity))
-                    .withHeader(I18N.CONSTANTS.indicators())
-                    .withDescription(I18N.CONSTANTS.siteDialogIndicators()));
+            addSection(FormSectionModel.forComponent(new IndicatorSection(activity))
+                                       .withHeader(I18N.CONSTANTS.indicators())
+                                       .withDescription(I18N.CONSTANTS.siteDialogIndicators()));
 
         }
 
         addSection(FormSectionModel.forComponent(new CommentSection(315, 330))
-                .withHeader(I18N.CONSTANTS.comments())
-                .withDescription(I18N.CONSTANTS.siteDialogComments()));
+                                   .withHeader(I18N.CONSTANTS.comments())
+                                   .withDescription(I18N.CONSTANTS.siteDialogComments()));
 
         SiteFormResources.INSTANCE.style().ensureInjected();
 
-        navigationListView.getSelectionModel().addSelectionChangedListener(
-                new SelectionChangedListener<FormSectionModel>() {
+        navigationListView.getSelectionModel()
+                          .addSelectionChangedListener(new SelectionChangedListener<FormSectionModel>() {
+
+                              @Override
+                              public void selectionChanged(SelectionChangedEvent<FormSectionModel> se) {
+                                  if (!se.getSelection().isEmpty()) {
+                                      sectionLayout.setActiveItem(se.getSelectedItem().getComponent());
+                                  }
+                              }
+                          });
+
+        finishButton = new Button(I18N.CONSTANTS.save(),
+                IconImageBundle.ICONS.save(),
+                new SelectionListener<ButtonEvent>() {
 
                     @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<FormSectionModel> se) {
-                        if (!se.getSelection().isEmpty()) {
-                            sectionLayout.setActiveItem(se.getSelectedItem()
-                                    .getComponent());
+                    public void componentSelected(ButtonEvent ce) {
+                        finishButton.disable();
+                        if (validateSections()) {
+                            saveLocation();
+                        } else {
+                            finishButton.enable();
                         }
                     }
                 });
 
-        finishButton = new Button(I18N.CONSTANTS.save(),
-                IconImageBundle.ICONS.save(), new SelectionListener<ButtonEvent>() {
-
-            @Override
-            public void componentSelected(ButtonEvent ce) {
-                finishButton.disable();
-                if (validateSections()) {
-                    saveLocation();
-                } else {
-                    finishButton.enable();
-                }
-            }
-        });
-
         getButtonBar().add(finishButton);
     }
 
-    public void showNew(SiteDTO site, LocationDTO location,
-                        boolean locationIsNew, SiteDialogCallback callback) {
+    public void showNew(SiteDTO site, LocationDTO location, boolean locationIsNew, SiteDialogCallback callback) {
         this.newSite = true;
         this.callback = callback;
         locationForm.updateForm(location, locationIsNew);
@@ -193,15 +187,13 @@ public class SiteDialog extends Window {
     }
 
     private void updateForms(SiteDTO site) {
-        for (FormSectionModel<SiteDTO> section : navigationListView.getStore()
-                .getModels()) {
+        for (FormSectionModel<SiteDTO> section : navigationListView.getStore().getModels()) {
             section.getSection().updateForm(site);
         }
     }
 
     private void updateModel(final SiteDTO newSite) {
-        for (FormSectionModel<SiteDTO> section : navigationListView.getStore()
-                .getModels()) {
+        for (FormSectionModel<SiteDTO> section : navigationListView.getStore().getModels()) {
             section.getSection().updateModel(newSite);
         }
 
@@ -282,30 +274,27 @@ public class SiteDialog extends Window {
         final SiteDTO updated = new SiteDTO(site);
         updateModel(updated);
 
-        dispatcher.execute(new UpdateSite(site, updated),
-                new AsyncCallback<VoidResult>() {
+        dispatcher.execute(new UpdateSite(site, updated), new AsyncCallback<VoidResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        showError(caught);
-                    }
+            @Override
+            public void onFailure(Throwable caught) {
+                showError(caught);
+            }
 
-                    @Override
-                    public void onSuccess(VoidResult result) {
-                        hide();
-                        callback.onSaved(updated);
-                    }
-                });
+            @Override
+            public void onSuccess(VoidResult result) {
+                hide();
+                callback.onSaved(updated);
+            }
+        });
     }
 
     private void showError(Throwable caught) {
         finishButton.enable();
         if (caught != null && caught instanceof NotAuthorizedException) {
-            MessageBox.alert(I18N.CONSTANTS.dataEntry(),
-                    I18N.CONSTANTS.notAuthorized(), null);
+            MessageBox.alert(I18N.CONSTANTS.dataEntry(), I18N.CONSTANTS.notAuthorized(), null);
         } else {
-            MessageBox.alert(I18N.CONSTANTS.dataEntry(),
-                    I18N.CONSTANTS.serverError(), null);
+            MessageBox.alert(I18N.CONSTANTS.dataEntry(), I18N.CONSTANTS.serverError(), null);
         }
     }
 }

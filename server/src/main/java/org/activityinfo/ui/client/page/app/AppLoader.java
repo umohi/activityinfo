@@ -32,10 +32,9 @@ public class AppLoader implements PageLoader {
     private final Provider<UserProfilePage> userProfilePageProvider;
 
     @Inject
-    public AppLoader(
-            NavigationHandler pageManager,
-            PageStateSerializer placeSerializer,
-            Provider<UserProfilePage> userProfilePageProvider) {
+    public AppLoader(NavigationHandler pageManager,
+                     PageStateSerializer placeSerializer,
+                     Provider<UserProfilePage> userProfilePageProvider) {
 
         this.userProfilePageProvider = userProfilePageProvider;
         pageManager.registerPageLoader(UserProfilePage.PAGE_ID, this);

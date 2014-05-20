@@ -32,8 +32,7 @@ import java.util.List;
  * P: the parent model containing the list of models
  */
 @Deprecated
-public interface ListView<M extends DTO, P extends DTO>
-        extends View<M> {
+public interface ListView<M extends DTO, P extends DTO> extends View<M> {
 
     public void setParent(P parent);
 

@@ -30,7 +30,6 @@ import org.activityinfo.legacy.shared.exception.CommandException;
 @ImplementedBy(DispatcherSyncImpl.class)
 public interface DispatcherSync {
 
-    <C extends Command<R>, R extends CommandResult> R execute(C command)
-            throws CommandException;
+    <C extends Command<R>, R extends CommandResult> R execute(C command) throws CommandException;
 
 }

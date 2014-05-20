@@ -64,11 +64,11 @@ public class GetLocations implements Command<LocationResult> {
     public Integer getLocationTypeId() {
         return locationTypeId;
     }
-    
+
     public Filter getFilter() {
         return filter;
     }
-    
+
     public void setFilter(Filter filter) {
         this.filter = filter;
     }

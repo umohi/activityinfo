@@ -44,8 +44,7 @@ public class GetReportDefHandler implements CommandHandler<GetReportDef> {
     }
 
     @Override
-    public CommandResult execute(GetReportDef cmd, User user)
-            throws CommandException {
+    public CommandResult execute(GetReportDef cmd, User user) throws CommandException {
         return new XmlResult(reportDAO.findById(cmd.getId()).getXml());
     }
 

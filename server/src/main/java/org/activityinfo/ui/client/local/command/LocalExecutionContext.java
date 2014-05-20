@@ -37,7 +37,8 @@ public class LocalExecutionContext implements ExecutionContext {
     private HandlerRegistry registry;
     private CommandQueue commandQueue;
 
-    public LocalExecutionContext(AuthenticatedUser user, SqlTransaction tx,
+    public LocalExecutionContext(AuthenticatedUser user,
+                                 SqlTransaction tx,
                                  HandlerRegistry registry,
                                  CommandQueue commandQueue) {
         super();
@@ -63,24 +64,23 @@ public class LocalExecutionContext implements ExecutionContext {
     }
 
     @Override
-    public <C extends Command<R>, R extends CommandResult> void execute(
-            final C command, final AsyncCallback<R> callback) {
+    public <C extends Command<R>, R extends CommandResult> void execute(final C command,
+                                                                        final AsyncCallback<R> callback) {
 
-        registry.getHandler(command).execute(command, this,
-                new AsyncCallback<R>() {
+        registry.getHandler(command).execute(command, this, new AsyncCallback<R>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        callback.onFailure(caught);
-                    }
+            @Override
+            public void onFailure(Throwable caught) {
+                callback.onFailure(caught);
+            }
 
-                    @Override
-                    public void onSuccess(R result) {
-                        if (command instanceof MutatingCommand) {
-                            commandQueue.queue(tx, command);
-                        }
-                        callback.onSuccess(result);
-                    }
-                });
+            @Override
+            public void onSuccess(R result) {
+                if (command instanceof MutatingCommand) {
+                    commandQueue.queue(tx, command);
+                }
+                callback.onSuccess(result);
+            }
+        });
     }
 }

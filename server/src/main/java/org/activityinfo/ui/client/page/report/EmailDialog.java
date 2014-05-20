@@ -106,8 +106,7 @@ public class EmailDialog extends Dialog {
         dayOfWeek.setEditable(false);
         dayOfWeek.setFieldLabel(I18N.CONSTANTS.dayOfWeek());
 
-        String[] weekDays = LocaleInfo.getCurrentLocale()
-                .getDateTimeConstants().weekdays();
+        String[] weekDays = LocaleInfo.getCurrentLocale().getDateTimeConstants().weekdays();
         for (int i = 0; i != weekDays.length; ++i) {
             dayOfWeek.add(i + 1, weekDays[i]);
         }
@@ -188,22 +187,23 @@ public class EmailDialog extends Dialog {
             } else {
                 update.setEmailDelivery(EmailDelivery.NONE);
             }
-            dispatcher.execute(update, new MaskingAsyncMonitor(this,
-                    I18N.CONSTANTS.saving()), new AsyncCallback<VoidResult>() {
+            dispatcher.execute(update,
+                    new MaskingAsyncMonitor(this, I18N.CONSTANTS.saving()),
+                    new AsyncCallback<VoidResult>() {
 
-                @Override
-                public void onFailure(Throwable caught) {
+                        @Override
+                        public void onFailure(Throwable caught) {
 
-                }
+                        }
 
-                @Override
-                public void onSuccess(VoidResult result) {
-                    hide();
-                    reportMetadata.setEmailDelivery(update.getEmailDelivery());
-                    reportMetadata.setDay(update.getEmailDay());
-                    callback.onUpdated();
-                }
-            });
+                        @Override
+                        public void onSuccess(VoidResult result) {
+                            hide();
+                            reportMetadata.setEmailDelivery(update.getEmailDelivery());
+                            reportMetadata.setDay(update.getEmailDay());
+                            callback.onUpdated();
+                        }
+                    });
         } else if (button.getItemId().equals(CANCEL)) {
             hide();
         }

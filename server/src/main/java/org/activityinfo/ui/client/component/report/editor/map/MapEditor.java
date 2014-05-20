@@ -49,8 +49,7 @@ import org.activityinfo.ui.client.page.report.editor.ReportElementEditor;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapEditor extends ContentPanel implements
-        ReportElementEditor<MapReportElement> {
+public class MapEditor extends ContentPanel implements ReportElementEditor<MapReportElement> {
 
     private static final int CONTROL_TOP_MARGIN = 10;
     private static final int LAYERS_STYLE_TOP_MARGIN = 50;
@@ -110,8 +109,7 @@ public class MapEditor extends ContentPanel implements
 
             @Override
             public void handleEvent(BaseEvent be) {
-                mapPanel.setZoomControlOffsetX(LayerOptionsPanel.WIDTH
-                        + ZOOM_CONTROL_LEFT_MARGIN);
+                mapPanel.setZoomControlOffsetX(LayerOptionsPanel.WIDTH + ZOOM_CONTROL_LEFT_MARGIN);
             }
         });
 
@@ -162,8 +160,7 @@ public class MapEditor extends ContentPanel implements
     @Override
     public void setSize(int width, int height) {
         // right align side bar
-        layout.setPosition(layersWidget, width - LayersWidget.WIDTH,
-                CONTROL_TOP_MARGIN);
+        layout.setPosition(layersWidget, width - LayersWidget.WIDTH, CONTROL_TOP_MARGIN);
 
         super.setSize(width, height);
     }
@@ -195,7 +192,6 @@ public class MapEditor extends ContentPanel implements
 
     @Override
     public List<Format> getExportFormats() {
-        return Arrays.asList(Format.PowerPoint, Format.Word, Format.PDF,
-                Format.PNG);
+        return Arrays.asList(Format.PowerPoint, Format.Word, Format.PDF, Format.PNG);
     }
 }

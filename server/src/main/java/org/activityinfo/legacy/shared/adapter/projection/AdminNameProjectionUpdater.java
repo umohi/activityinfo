@@ -28,8 +28,8 @@ import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 
 /**
-* @author yuriyz on 4/15/14.
-*/
+ * @author yuriyz on 4/15/14.
+ */
 class AdminNameProjectionUpdater implements ProjectionUpdater<LocationDTO> {
 
     private FieldPath path;
@@ -45,7 +45,7 @@ class AdminNameProjectionUpdater implements ProjectionUpdater<LocationDTO> {
     @Override
     public void update(Projection projection, LocationDTO locationDTO) {
         AdminEntityDTO entity = locationDTO.getAdminEntity(levelId);
-        if(entity != null) {
+        if (entity != null) {
             switch (fieldIndex) {
                 case CuidAdapter.NAME_FIELD:
                     projection.setValue(path, entity.getName());

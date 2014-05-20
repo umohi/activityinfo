@@ -77,8 +77,7 @@ public class DAOInvocationHandler implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args)
-            throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (method.getName().equals("persist")) {
             return invokePersist(args[0]);
         } else if (method.getName().equals("findById")) {
@@ -113,9 +112,7 @@ public class DAOInvocationHandler implements InvocationHandler {
             return em.createNamedQuery(name);
         } catch (IllegalArgumentException e) {
             throw new UnsupportedOperationException(
-                    "The hibernate DAO proxy does not know how to handle the method "
-                            +
-                            method.getName());
+                    "The hibernate DAO proxy does not know how to handle the method " + method.getName());
         }
     }
 

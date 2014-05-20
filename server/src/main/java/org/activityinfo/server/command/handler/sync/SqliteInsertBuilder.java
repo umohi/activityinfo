@@ -58,23 +58,22 @@ public class SqliteInsertBuilder {
     }
 
     public void execute(EntityManager entityManager) {
-        ((HibernateEntityManager) entityManager).getSession().doWork(
-                new Work() {
+        ((HibernateEntityManager) entityManager).getSession().doWork(new Work() {
 
-                    @Override
-                    public void execute(Connection connection) throws SQLException {
-                        rs = SqlQueryUtil.query(connection, query);
-                        numColumns = rs.getMetaData().getColumnCount();
-                        setupAppenders();
-                        composeInsertStatement();
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                rs = SqlQueryUtil.query(connection, query);
+                numColumns = rs.getMetaData().getColumnCount();
+                setupAppenders();
+                composeInsertStatement();
 
-                        try {
-                            appendRows();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
+                try {
+                    appendRows();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     private void composeInsertStatement() throws SQLException {
@@ -89,12 +88,10 @@ public class SqliteInsertBuilder {
         insert.append(") ");
     }
 
-    private void setupAppenders()
-            throws SQLException {
+    private void setupAppenders() throws SQLException {
         this.appenders = new ColumnAppender[numColumns];
         for (int i = 0; i != numColumns; ++i) {
-            appenders[i] = ColumnAppender.forType(rs.getMetaData()
-                    .getColumnType(i + 1));
+            appenders[i] = ColumnAppender.forType(rs.getMetaData().getColumnType(i + 1));
         }
     }
 

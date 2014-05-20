@@ -85,40 +85,41 @@ public class ShareReportDialog extends Dialog {
         icon.setRenderer(new GridCellRenderer<ReportVisibilityDTO>() {
 
             @Override
-            public Object render(ReportVisibilityDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
+            public Object render(ReportVisibilityDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
                                  ListStore<ReportVisibilityDTO> store,
                                  Grid<ReportVisibilityDTO> grid) {
                 return IconImageBundle.ICONS.group().getHTML();
             }
         });
 
-        ColumnConfig name = new ColumnConfig("databaseName",
-                I18N.CONSTANTS.group(), 150);
+        ColumnConfig name = new ColumnConfig("databaseName", I18N.CONSTANTS.group(), 150);
         name.setRenderer(new GridCellRenderer<ReportVisibilityDTO>() {
 
             @Override
-            public Object render(ReportVisibilityDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
+            public Object render(ReportVisibilityDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
                                  ListStore<ReportVisibilityDTO> store,
                                  Grid<ReportVisibilityDTO> grid) {
 
-                return
-                        model.getDatabaseName() + " Users";
+                return model.getDatabaseName() + " Users";
 
             }
         });
 
-        visibleColumn = new CheckColumnConfig("visible",
-                I18N.CONSTANTS.shared(), 75);
+        visibleColumn = new CheckColumnConfig("visible", I18N.CONSTANTS.shared(), 75);
         visibleColumn.setDataIndex("visible");
 
-        dashboardColumn = new CheckColumnConfig("defaultDashboard",
-                I18N.CONSTANTS.defaultDashboard(), 75);
+        dashboardColumn = new CheckColumnConfig("defaultDashboard", I18N.CONSTANTS.defaultDashboard(), 75);
         dashboardColumn.setDataIndex("defaultDashboard");
 
-        ColumnModel columnModel = new ColumnModel(Arrays.asList(icon, name,
-                visibleColumn, dashboardColumn));
+        ColumnModel columnModel = new ColumnModel(Arrays.asList(icon, name, visibleColumn, dashboardColumn));
         return columnModel;
     }
 
@@ -143,11 +144,9 @@ public class ShareReportDialog extends Dialog {
                     @Override
                     public void onSuccess(BatchResult batch) {
 
-                        currentReport = ((ReportDTO) batch.getResult(0))
-                                .getReport();
+                        currentReport = ((ReportDTO) batch.getResult(0)).getReport();
 
-                        populateGrid((SchemaDTO) batch.getResult(1),
-                                (ReportVisibilityResult) batch.getResult(2));
+                        populateGrid((SchemaDTO) batch.getResult(1), (ReportVisibilityResult) batch.getResult(2));
                     }
                 });
     }
@@ -176,14 +175,12 @@ public class ShareReportDialog extends Dialog {
 
                     @Override
                     public void onSuccess(BatchResult batch) {
-                        populateGrid((SchemaDTO) batch.getResult(0),
-                                (ReportVisibilityResult) batch.getResult(1));
+                        populateGrid((SchemaDTO) batch.getResult(0), (ReportVisibilityResult) batch.getResult(1));
                     }
                 });
     }
 
-    private void populateGrid(SchemaDTO schema,
-                              ReportVisibilityResult visibility) {
+    private void populateGrid(SchemaDTO schema, ReportVisibilityResult visibility) {
         gridStore.removeAll();
         Set<Integer> indicators = currentReport.getIndicators();
         Map<Integer, ReportVisibilityDTO> databases = Maps.newHashMap();
@@ -249,8 +246,7 @@ public class ShareReportDialog extends Dialog {
         if (toSave.isEmpty()) {
             hide();
         } else {
-            dispatcher.execute(new UpdateReportVisibility(
-                    currentReport.getId(), toSave),
+            dispatcher.execute(new UpdateReportVisibility(currentReport.getId(), toSave),
                     new MaskingAsyncMonitor(grid, I18N.CONSTANTS.saving()),
                     new AsyncCallback<VoidResult>() {
 

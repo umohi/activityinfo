@@ -53,13 +53,11 @@ public class DateRangeDialog extends Dialog {
 
         date1 = new DateField();
         date1.setFieldLabel(I18N.CONSTANTS.fromDate());
-        date1.getPropertyEditor().setFormat(
-                DateTimeFormat.getMediumDateFormat());
+        date1.getPropertyEditor().setFormat(DateTimeFormat.getMediumDateFormat());
 
         date2 = new DateField();
         date2.setFieldLabel(I18N.CONSTANTS.toDate());
-        date2.getPropertyEditor().setFormat(
-                DateTimeFormat.getMediumDateFormat());
+        date2.getPropertyEditor().setFormat(DateTimeFormat.getMediumDateFormat());
 
         add(date1);
         add(date2);
@@ -75,8 +73,7 @@ public class DateRangeDialog extends Dialog {
     protected void onButtonPressed(Button button) {
         if (button.getItemId().equals("ok")) {
             if (callback != null) {
-                callback.onSelected(new DateRange(date1.getValue(), date2
-                        .getValue()));
+                callback.onSelected(new DateRange(date1.getValue(), date2.getValue()));
             }
         }
         this.callback = null;

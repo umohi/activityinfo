@@ -44,15 +44,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractEditorGridPresenter<M extends ModelData>
-        extends AbstractGridPresenter<M> {
+public abstract class AbstractEditorGridPresenter<M extends ModelData> extends AbstractGridPresenter<M> {
 
     private GridView view;
     private Dispatcher service;
     private boolean isDirty = false;
 
     protected AbstractEditorGridPresenter(EventBus eventBus,
-                                          Dispatcher service, StateProvider stateMgr, GridView view) {
+                                          Dispatcher service,
+                                          StateProvider stateMgr,
+                                          GridView view) {
         super(eventBus, stateMgr, view);
         this.view = view;
         this.service = service;
@@ -107,21 +108,20 @@ public abstract class AbstractEditorGridPresenter<M extends ModelData>
      */
     protected void onSave() {
 
-        service.execute(createSaveCommand(), view.getSavingMonitor(),
-                new AsyncCallback() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // let the monitor handle failure, we're not
-                        // expecting any exceptions
-                    }
+        service.execute(createSaveCommand(), view.getSavingMonitor(), new AsyncCallback() {
+            @Override
+            public void onFailure(Throwable caught) {
+                // let the monitor handle failure, we're not
+                // expecting any exceptions
+            }
 
-                    @Override
-                    public void onSuccess(Object result) {
-                        getStore().commitChanges();
+            @Override
+            public void onSuccess(Object result) {
+                getStore().commitChanges();
 
-                        onSaved();
-                    }
-                });
+                onSaved();
+            }
+        });
     }
 
     /**
@@ -144,26 +144,24 @@ public abstract class AbstractEditorGridPresenter<M extends ModelData>
      */
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      final NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, final NavigationCallback callback) {
 
         if (getModifiedRecords().size() == 0) {
             callback.onDecided(true);
         } else {
-            service.execute(createSaveCommand(), view.getSavingMonitor(),
-                    new AsyncCallback<BatchResult>() {
+            service.execute(createSaveCommand(), view.getSavingMonitor(), new AsyncCallback<BatchResult>() {
 
-                        @Override
-                        public void onSuccess(BatchResult result) {
-                            getStore().commitChanges();
-                            callback.onDecided(true);
-                        }
+                @Override
+                public void onSuccess(BatchResult result) {
+                    getStore().commitChanges();
+                    callback.onDecided(true);
+                }
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            // TODO
-                        }
-                    });
+                @Override
+                public void onFailure(Throwable caught) {
+                    // TODO
+                }
+            });
         }
     }
 

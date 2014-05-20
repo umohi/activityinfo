@@ -81,19 +81,15 @@ public class SchemaCache implements CommandCache<GetSchema>, DispatchListener {
 
     @Override
     public void beforeDispatched(Command command) {
-        if (command instanceof UpdateEntity
-                && isSchemaEntity(((UpdateEntity) command).getEntityName())) {
+        if (command instanceof UpdateEntity && isSchemaEntity(((UpdateEntity) command).getEntityName())) {
             schema = null;
-        } else if (command instanceof CreateEntity
-                && isSchemaEntity(((CreateEntity) command).getEntityName())) {
+        } else if (command instanceof CreateEntity && isSchemaEntity(((CreateEntity) command).getEntityName())) {
             schema = null;
-        } else if (command instanceof AddPartner ||
-                command instanceof RemovePartner) {
+        } else if (command instanceof AddPartner || command instanceof RemovePartner) {
             schema = null;
-        } else if (command instanceof RequestChange &&
-                isSchemaEntity(((RequestChange) command).getEntityType())) {
+        } else if (command instanceof RequestChange && isSchemaEntity(((RequestChange) command).getEntityType())) {
         } else if (command instanceof BatchCommand) {
-            for(Command element : ((BatchCommand) command).getCommands()) {
+            for (Command element : ((BatchCommand) command).getCommands()) {
                 beforeDispatched(element);
             }
         }

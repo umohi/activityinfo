@@ -77,19 +77,15 @@ public class CommandQueue {
         }
     }
 
-    private SqlQuery queryNext =
-            SqlQuery.select("id", "command").from("command_queue").orderBy("id");
+    private SqlQuery queryNext = SqlQuery.select("id", "command").from("command_queue").orderBy("id");
 
-    private SqlQuery queryCount =
-            SqlQuery.select().appendColumn("count(*)", "count")
-                    .from("command_queue");
+    private SqlQuery queryCount = SqlQuery.select().appendColumn("count(*)", "count").from("command_queue");
 
     private Function<SqlResultSetRowList, Void> fireCount = new Function<SqlResultSetRowList, Void>() {
 
         @Override
         public Void apply(SqlResultSetRowList rows) {
-            eventBus.fireEvent(new CommandQueueEvent(rows.get(0)
-                    .getInt("count")));
+            eventBus.fireEvent(new CommandQueueEvent(rows.get(0).getInt("count")));
             return null;
         }
     };
@@ -103,7 +99,8 @@ public class CommandQueue {
         }
     };
 
-    private Function<SqlResultSetRow, CommandQueue.QueueEntry> createEntry = new Function<SqlResultSetRow, CommandQueue.QueueEntry>() {
+    private Function<SqlResultSetRow, CommandQueue.QueueEntry> createEntry = new Function<SqlResultSetRow,
+            CommandQueue.QueueEntry>() {
 
         @Override
         public QueueEntry apply(SqlResultSetRow row) {
@@ -113,21 +110,20 @@ public class CommandQueue {
         }
     };
 
-    private TxAsyncFunction<CommandQueue.QueueEntry, Void> removeItem = new TxAsyncFunction<CommandQueue.QueueEntry, Void>() {
+    private TxAsyncFunction<CommandQueue.QueueEntry, Void> removeItem = new TxAsyncFunction<CommandQueue.QueueEntry,
+            Void>() {
 
         @Override
-        protected void doApply(SqlTransaction tx, QueueEntry argument,
-                               final AsyncCallback<Void> callback) {
+        protected void doApply(SqlTransaction tx, QueueEntry argument, final AsyncCallback<Void> callback) {
             tx.executeSql("DELETE FROM command_queue WHERE id = ?",
-                    new Object[]{
-                            argument.getId()}, new SqlResultCallback() {
+                    new Object[]{argument.getId()},
+                    new SqlResultCallback() {
 
-                @Override
-                public void onSuccess(SqlTransaction tx,
-                                      SqlResultSet results) {
-                    callback.onSuccess(null);
-                }
-            });
+                        @Override
+                        public void onSuccess(SqlTransaction tx, SqlResultSet results) {
+                            callback.onSuccess(null);
+                        }
+                    });
         }
     };
 
@@ -141,8 +137,8 @@ public class CommandQueue {
     }
 
     public static TxAsyncFunction<Void, Void> createTableIfNotExists() {
-        return AsyncSql
-                .ddl("CREATE TABLE IF NOT EXISTS command_queue (id INTEGER PRIMARY KEY AUTOINCREMENT, command TEXT)");
+        return AsyncSql.ddl(
+                "CREATE TABLE IF NOT EXISTS command_queue (id INTEGER PRIMARY KEY AUTOINCREMENT, command TEXT)");
     }
 
     /**
@@ -154,17 +150,15 @@ public class CommandQueue {
     public void queue(SqlTransaction tx, Command cmd) {
         JsonObject root = serialize(cmd);
         SqlInsert.insertInto("command_queue")
-                .value("command", root.toString())
-                .compose(queryCount.asFunction())
-                .compose(fireCount)
-                .compose(fireSyncRequest)
-                .apply(tx, null);
+                 .value("command", root.toString())
+                 .compose(queryCount.asFunction())
+                 .compose(fireCount)
+                 .compose(fireSyncRequest)
+                 .apply(tx, null);
     }
 
     public AsyncFunction<Void, List<QueueEntry>> get() {
-        return database.asFunction(
-                queryNext.asFunction()
-                        .mapSequentially(createEntry));
+        return database.asFunction(queryNext.asFunction().mapSequentially(createEntry));
     }
 
     /**
@@ -189,10 +183,7 @@ public class CommandQueue {
     }
 
     public AsyncFunction<QueueEntry, Void> remove() {
-        return database.asFunction(
-                removeItem
-                        .compose(queryCount.asFunction())
-                        .compose(fireCount));
+        return database.asFunction(removeItem.compose(queryCount.asFunction()).compose(fireCount));
     }
 
     public void remove(QueueEntry entry, AsyncCallback<Void> callback) {
@@ -209,8 +200,7 @@ public class CommandQueue {
         } else if (cmd instanceof DeleteSite) {
             return serialize((DeleteSite) cmd);
         } else {
-            throw new IllegalArgumentException(
-                    "Cannot serialize commands of type " + cmd.getClass());
+            throw new IllegalArgumentException("Cannot serialize commands of type " + cmd.getClass());
         }
     }
 
@@ -224,8 +214,7 @@ public class CommandQueue {
     private JsonObject serialize(CreateSite cmd) {
         JsonObject root = new JsonObject();
         root.addProperty("commandClass", "CreateSite");
-        root.add("properties",
-                JsonUtil.encodeMap(cmd.getProperties().getTransientMap()));
+        root.add("properties", JsonUtil.encodeMap(cmd.getProperties().getTransientMap()));
         return root;
     }
 
@@ -233,16 +222,14 @@ public class CommandQueue {
         JsonObject root = new JsonObject();
         root.addProperty("commandClass", "UpdateSite");
         root.addProperty("siteId", cmd.getSiteId());
-        root.add("changes",
-                JsonUtil.encodeMap(cmd.getChanges().getTransientMap()));
+        root.add("changes", JsonUtil.encodeMap(cmd.getChanges().getTransientMap()));
         return root;
     }
 
     private JsonObject serialize(CreateLocation cmd) {
         JsonObject root = new JsonObject();
         root.addProperty("commandClass", "CreateLocation");
-        root.add("properties",
-                JsonUtil.encodeMap(cmd.getProperties().getTransientMap()));
+        root.add("properties", JsonUtil.encodeMap(cmd.getProperties().getTransientMap()));
         return root;
     }
 
@@ -259,8 +246,7 @@ public class CommandQueue {
         } else if ("DeleteSite".equals(commandClass)) {
             return deserializeDeleteSite(root);
         } else {
-            throw new RuntimeException(
-                    "Cannot deserialize queud command of class " + commandClass);
+            throw new RuntimeException("Cannot deserialize queud command of class " + commandClass);
         }
     }
 
@@ -271,17 +257,14 @@ public class CommandQueue {
     }
 
     private CreateSite deserializeCreateSite(JsonObject root) {
-        return new CreateSite(
-                JsonUtil.decodeMap(root.get("properties").getAsJsonObject()));
+        return new CreateSite(JsonUtil.decodeMap(root.get("properties").getAsJsonObject()));
     }
 
     private UpdateSite deserializeUpdateSite(JsonObject root) {
-        return new UpdateSite(root.get("siteId").getAsInt(),
-                JsonUtil.decodeMap(root.get("changes").getAsJsonObject()));
+        return new UpdateSite(root.get("siteId").getAsInt(), JsonUtil.decodeMap(root.get("changes").getAsJsonObject()));
     }
 
     private CreateLocation deserializeCreateLocation(JsonObject root) {
-        return new CreateLocation(JsonUtil.decodeMap(root.get("properties")
-                .getAsJsonObject()));
+        return new CreateLocation(JsonUtil.decodeMap(root.get("properties").getAsJsonObject()));
     }
 }

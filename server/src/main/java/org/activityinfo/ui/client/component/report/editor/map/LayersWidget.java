@@ -62,8 +62,7 @@ import java.util.List;
 /**
  * Displays a list of layers selected by the user
  */
-public final class LayersWidget extends LayoutContainer implements
-        HasReportElement<MapReportElement> {
+public final class LayersWidget extends LayoutContainer implements HasReportElement<MapReportElement> {
 
     public static final int WIDTH = 225;
 
@@ -85,8 +84,7 @@ public final class LayersWidget extends LayoutContainer implements
     private MenuItem clusterMenuItem;
 
     @Inject
-    public LayersWidget(Dispatcher service, EventBus eventBus,
-                        LayerOptionsPanel optionsPanel) {
+    public LayersWidget(Dispatcher service, EventBus eventBus, LayerOptionsPanel optionsPanel) {
         super();
 
         this.service = service;
@@ -118,22 +116,21 @@ public final class LayersWidget extends LayoutContainer implements
     private void createAddLayerButton() {
         Button addLayerButton = new Button();
         addLayerButton.setText(I18N.CONSTANTS.add());
-        addLayerButton.addListener(Events.Select,
-                new SelectionListener<ButtonEvent>() {
+        addLayerButton.addListener(Events.Select, new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                final NewLayerWizard wizard = new NewLayerWizard(service);
+                addLayersDialog = new WizardDialog(wizard);
+                addLayersDialog.show(new WizardCallback() {
+
                     @Override
-                    public void componentSelected(ButtonEvent ce) {
-                        final NewLayerWizard wizard = new NewLayerWizard(service);
-                        addLayersDialog = new WizardDialog(wizard);
-                        addLayersDialog.show(new WizardCallback() {
-
-                            @Override
-                            public void onFinished() {
-                                addLayer(wizard.createLayer());
-                            }
-
-                        });
+                    public void onFinished() {
+                        addLayer(wizard.createLayer());
                     }
+
                 });
+            }
+        });
 
         addLayerButton.setIcon(IconImageBundle.ICONS.add());
 
@@ -154,8 +151,7 @@ public final class LayersWidget extends LayoutContainer implements
         layersPanel.setHeadingText(I18N.CONSTANTS.layers());
         layersPanel.setBodyBorder(false);
         layersPanel.setHeaderVisible(true);
-        layersPanel.setIcon(AbstractImagePrototype.create(MapResources.INSTANCE
-                .layers()));
+        layersPanel.setIcon(AbstractImagePrototype.create(MapResources.INSTANCE.layers()));
 
         AnchorData layoutData = new AnchorData();
         layoutData.setAnchorSpec("100% none");
@@ -195,13 +191,12 @@ public final class LayersWidget extends LayoutContainer implements
 
         addListViewDnd();
 
-        view.addListener(Events.Select,
-                new Listener<ListViewEvent<LayerModel>>() {
-                    @Override
-                    public void handleEvent(ListViewEvent<LayerModel> event) {
-                        onLayerSelected(event);
-                    }
-                });
+        view.addListener(Events.Select, new Listener<ListViewEvent<LayerModel>>() {
+            @Override
+            public void handleEvent(ListViewEvent<LayerModel> event) {
+                onLayerSelected(event);
+            }
+        });
         layersPanel.add(view);
     }
 
@@ -328,8 +323,7 @@ public final class LayersWidget extends LayoutContainer implements
         // Save the selecteditem, because removing all items from the store
         // triggers
         // a selecteditem change
-        int selectedItemIndex = store.indexOf(view.getSelectionModel()
-                .getSelectedItem());
+        int selectedItemIndex = store.indexOf(view.getSelectionModel().getSelectedItem());
         store.removeAll();
         if (mapElement != null) {
             for (MapLayer layer : mapElement.getLayers()) {
@@ -373,8 +367,7 @@ public final class LayersWidget extends LayoutContainer implements
             if (!e.getTargetEl().hasStyleName("grabSprite")) {
                 e.setCancelled(true);
             }
-            draggedItemIndexStart = store.indexOf(view.getSelectionModel()
-                    .getSelectedItem());
+            draggedItemIndexStart = store.indexOf(view.getSelectionModel().getSelectedItem());
             e.setData(draggedItemIndexStart);
         }
 
@@ -383,13 +376,11 @@ public final class LayersWidget extends LayoutContainer implements
             super.onDragDrop(e);
 
             // Move the MapLayer onto his new position
-            draggedItemIndexDrop = ((MapLayersDropTarget) e.getDropTarget())
-                    .getInsertIndex();
+            draggedItemIndexDrop = ((MapLayersDropTarget) e.getDropTarget()).getInsertIndex();
             if (draggedItemIndexDrop == mapElement.getLayers().size()) {
                 draggedItemIndexDrop--;
             }
-            Collections.swap(mapElement.getLayers(), draggedItemIndexStart,
-                    draggedItemIndexDrop);
+            Collections.swap(mapElement.getLayers(), draggedItemIndexStart, draggedItemIndexDrop);
             reportEventBus.fireChange();
         }
     }

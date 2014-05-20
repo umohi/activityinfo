@@ -39,20 +39,16 @@ import java.util.logging.Logger;
  * @author Alex Bertram
  * @see org.activityinfo.legacy.shared.command.BatchCommand
  */
-public class BatchCommandHandler implements
-        CommandHandlerAsync<BatchCommand, BatchResult> {
+public class BatchCommandHandler implements CommandHandlerAsync<BatchCommand, BatchResult> {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(BatchCommandHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BatchCommandHandler.class.getName());
 
     @Override
-    public void execute(BatchCommand batch, ExecutionContext context,
-                        final AsyncCallback<BatchResult> callback) {
+    public void execute(BatchCommand batch, ExecutionContext context, final AsyncCallback<BatchResult> callback) {
 
         if (batch.getCommands().isEmpty()) {
             LOGGER.warning("Received empty batch command");
-            callback.onSuccess(new BatchResult(Lists
-                    .<CommandResult>newArrayList()));
+            callback.onSuccess(new BatchResult(Lists.<CommandResult>newArrayList()));
         } else {
             final ArrayList<CommandResult> results = new ArrayList<CommandResult>();
             for (Command command : batch.getCommands()) {
@@ -63,27 +59,26 @@ public class BatchCommandHandler implements
 
             for (int i = 0; i != batch.getCommands().size(); ++i) {
                 final int commandIndex = i;
-                context.execute(batch.getCommands().get(i),
-                        new AsyncCallback<CommandResult>() {
+                context.execute(batch.getCommands().get(i), new AsyncCallback<CommandResult>() {
 
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                if (exceptions.isEmpty()) {
-                                    exceptions.add(caught);
-                                    callback.onFailure(caught);
-                                }
-                            }
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        if (exceptions.isEmpty()) {
+                            exceptions.add(caught);
+                            callback.onFailure(caught);
+                        }
+                    }
 
-                            @Override
-                            public void onSuccess(CommandResult result) {
-                                results.set(commandIndex, result);
-                                finished[commandIndex] = true;
-                                if (all(finished)) {
-                                    callback.onSuccess(new BatchResult(results));
-                                }
-                            }
+                    @Override
+                    public void onSuccess(CommandResult result) {
+                        results.set(commandIndex, result);
+                        finished[commandIndex] = true;
+                        if (all(finished)) {
+                            callback.onSuccess(new BatchResult(results));
+                        }
+                    }
 
-                        });
+                });
 
             }
         }

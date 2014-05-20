@@ -38,9 +38,7 @@ public class SiteHistory implements java.io.Serializable {
     public SiteHistory() {
     }
 
-    @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @Column(name = "id", unique = true, nullable = false) @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return this.id;
     }
@@ -49,8 +47,7 @@ public class SiteHistory implements java.io.Serializable {
         this.id = siteId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "siteId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "siteId", nullable = false)
     public Site getSite() {
         return this.site;
     }
@@ -59,8 +56,7 @@ public class SiteHistory implements java.io.Serializable {
         this.site = site;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "userId", nullable = false)
     public User getUser() {
         return this.user;
     }

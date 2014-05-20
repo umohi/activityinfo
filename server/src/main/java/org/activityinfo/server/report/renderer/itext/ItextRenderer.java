@@ -47,7 +47,6 @@ public interface ItextRenderer<ElementT extends ReportElement> {
      * @param element The ReportElement to be rendered
      * @throws DocumentException
      */
-    void render(DocWriter writer, Document doc, ElementT element)
-            throws DocumentException;
+    void render(DocWriter writer, Document doc, ElementT element) throws DocumentException;
 
 }

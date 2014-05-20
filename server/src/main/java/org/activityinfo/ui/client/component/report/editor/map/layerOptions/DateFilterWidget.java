@@ -44,14 +44,11 @@ public class DateFilterWidget extends FilterWidget {
         if (getValue().getMinDate() == null && getValue().getMaxDate() == null) {
             setState(I18N.CONSTANTS.allDates());
         } else if (getValue().getMinDate() == null) {
-            setState(FilterResources.MESSAGES.beforeDate(getValue()
-                    .getMaxDate()));
+            setState(FilterResources.MESSAGES.beforeDate(getValue().getMaxDate()));
         } else if (getValue().getMaxDate() == null) {
-            setState(FilterResources.MESSAGES
-                    .afterDate(getValue().getMinDate()));
+            setState(FilterResources.MESSAGES.afterDate(getValue().getMinDate()));
         } else {
-            setState(FilterResources.MESSAGES.betweenDates(getValue()
-                    .getMinDate(), getValue().getMaxDate()));
+            setState(FilterResources.MESSAGES.betweenDates(getValue().getMinDate(), getValue().getMaxDate()));
         }
     }
 
@@ -60,17 +57,16 @@ public class DateFilterWidget extends FilterWidget {
         if (menu == null) {
             menu = new DateFilterMenu();
         }
-        menu.showAt(event.getClientX(), event.getClientY(),
-                new SelectionCallback<DateRange>() {
+        menu.showAt(event.getClientX(), event.getClientY(), new SelectionCallback<DateRange>() {
 
-                    @Override
-                    public void onSelected(DateRange selection) {
-                        Filter filter = new Filter(getValue());
-                        filter.setDateRange(selection);
+            @Override
+            public void onSelected(DateRange selection) {
+                Filter filter = new Filter(getValue());
+                filter.setDateRange(selection);
 
-                        setValue(filter);
-                    }
-                });
+                setValue(filter);
+            }
+        });
     }
 
 }

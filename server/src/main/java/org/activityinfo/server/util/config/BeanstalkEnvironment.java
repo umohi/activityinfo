@@ -49,8 +49,7 @@ final class BeanstalkEnvironment {
     }
 
     public static boolean credentialsArePresent() {
-        return !Strings.isNullOrEmpty(getAccessKeyId()) &&
-                !Strings.isNullOrEmpty(getSecretKey());
+        return !Strings.isNullOrEmpty(getAccessKeyId()) && !Strings.isNullOrEmpty(getSecretKey());
     }
 
     /**

@@ -49,8 +49,7 @@ public class GetMapIconsHandler implements CommandHandler<GetMapIcons> {
     }
 
     @Override
-    public CommandResult execute(GetMapIcons cmd, User user)
-            throws CommandException {
+    public CommandResult execute(GetMapIcons cmd, User user) throws CommandException {
 
         File iconFolder = new File(mapIconPath);
 

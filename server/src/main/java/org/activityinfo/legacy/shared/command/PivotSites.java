@@ -93,8 +93,7 @@ public class PivotSites implements Command<PivotResult> {
 
     @Override
     public String toString() {
-        return "PivotSites [dimensions=" + dimensions + ", filter=" + filter
-                + ", valueType=" + valueType + "]";
+        return "PivotSites [dimensions=" + dimensions + ", filter=" + filter + ", valueType=" + valueType + "]";
     }
 
     public boolean isPivotedBy(DimensionType dimType) {

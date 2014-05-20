@@ -61,28 +61,25 @@ public class LayerFilterPanel extends ContentPanel implements HasValue<Filter> {
         add(dateWidget);
 
         partnerFilterWidget = new PartnerFilterWidget(dispatcher);
-        partnerFilterWidget
-                .addValueChangeHandler(new ValueChangeHandler<Filter>() {
-                    @Override
-                    public void onValueChange(ValueChangeEvent<Filter> event) {
-                        createNewFilterAndFireEvent();
-                    }
-                });
+        partnerFilterWidget.addValueChangeHandler(new ValueChangeHandler<Filter>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Filter> event) {
+                createNewFilterAndFireEvent();
+            }
+        });
         add(partnerFilterWidget);
 
-        attributeGroupWidgets = new AttributeGroupFilterWidgets(this, dispatcher,
-                new ValueChangeHandler<Filter>() {
-                    @Override
-                    public void onValueChange(ValueChangeEvent<Filter> event) {
-                        createNewFilterAndFireEvent();
-                    }
-                },
-                new SuccessCallback<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        layout();
-                    }
-                }
+        attributeGroupWidgets = new AttributeGroupFilterWidgets(this, dispatcher, new ValueChangeHandler<Filter>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Filter> event) {
+                createNewFilterAndFireEvent();
+            }
+        }, new SuccessCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                layout();
+            }
+        }
         );
 
         filterPanelSet = new FilterPanelSet(dateWidget, partnerFilterWidget, attributeGroupWidgets);
@@ -95,8 +92,7 @@ public class LayerFilterPanel extends ContentPanel implements HasValue<Filter> {
 
         Filter partnerFilter = partnerFilterWidget.getValue();
         if (partnerFilter.hasRestrictions()) {
-            filter.addRestriction(DimensionType.Partner,
-                    partnerFilter.getRestrictions(DimensionType.Partner));
+            filter.addRestriction(DimensionType.Partner, partnerFilter.getRestrictions(DimensionType.Partner));
         }
 
         Filter attributeGroupFilter = attributeGroupWidgets.getValue();
@@ -118,8 +114,7 @@ public class LayerFilterPanel extends ContentPanel implements HasValue<Filter> {
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 

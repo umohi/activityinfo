@@ -81,7 +81,7 @@ public final class DateFormatter {
     private String format(Calendar min, Calendar max) {
 
         if (isMin(min, Calendar.MONTH) && isMin(min, Calendar.DATE) &&
-                isMax(max, Calendar.MONTH) && isMax(max, Calendar.DATE)) {
+            isMax(max, Calendar.MONTH) && isMax(max, Calendar.DATE)) {
 
             /* Case 1 - Range of years */
 
@@ -104,7 +104,7 @@ public final class DateFormatter {
             /* Case 2 - Range of months */
 
             if (min.get(Calendar.MONTH) == max.get(Calendar.MONTH) &&
-                    min.get(Calendar.YEAR) == max.get(Calendar.YEAR)) {
+                min.get(Calendar.YEAR) == max.get(Calendar.YEAR)) {
 
                 /* Case 2a Single month */
 
@@ -114,24 +114,18 @@ public final class DateFormatter {
 
                 /* Case 2b Multiple months in same year */
 
-                return String.format(rangePattern,
-                        month.format(min.getTime()),
-                        monthYear.format(max.getTime()));
+                return String.format(rangePattern, month.format(min.getTime()), monthYear.format(max.getTime()));
 
             } else {
 
                 /* Case 3b multiple months over multiple years */
 
-                return String.format(rangePattern,
-                        monthYear.format(min.getTime()),
-                        monthYear.format(max.getTime()));
+                return String.format(rangePattern, monthYear.format(min.getTime()), monthYear.format(max.getTime()));
             }
 
         } else {
 
-            return String.format(rangePattern,
-                    medium.format(min.getTime()),
-                    medium.format(max.getTime()));
+            return String.format(rangePattern, medium.format(min.getTime()), medium.format(max.getTime()));
         }
 
     }
@@ -145,16 +139,14 @@ public final class DateFormatter {
     }
 
     private DateFormat getMonthYearFormat(Locale locale) {
-        SimpleDateFormat format = (SimpleDateFormat) DateFormat
-                .getDateInstance(DateFormat.SHORT, locale);
+        SimpleDateFormat format = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale);
         format.applyPattern("MMM yyyy");
 
         return format;
     }
 
     private DateFormat getMonthFormat(Locale locale) {
-        SimpleDateFormat format = (SimpleDateFormat) DateFormat
-                .getDateInstance(DateFormat.SHORT, locale);
+        SimpleDateFormat format = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale);
         format.applyPattern("MMM");
 
         return format;

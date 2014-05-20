@@ -22,7 +22,6 @@ public class PartnerClassAdapter {
     /**
      * Partner was a builtin object type in api1. However, we need a different
      * FormClass for each legacy UserDatabase.
-     *
      */
     public static FormClass create(int databaseId) {
 

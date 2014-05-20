@@ -3,6 +3,7 @@ package org.activityinfo.server.endpoint.odk;
 import com.extjs.gxt.ui.client.data.RpcMap;
 import com.google.inject.Inject;
 import com.sun.jersey.multipart.FormDataParam;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.command.CreateLocation;
 import org.activityinfo.legacy.shared.command.CreateSite;
 import org.activityinfo.legacy.shared.command.GetSchema;
@@ -14,7 +15,6 @@ import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 import org.activityinfo.server.endpoint.odk.SiteFormData.FormAttributeGroup;
 import org.activityinfo.server.endpoint.odk.SiteFormData.FormIndicator;
 import org.activityinfo.server.event.sitehistory.SiteHistoryProcessor;
-import org.activityinfo.legacy.client.KeyGenerator;
 
 import javax.inject.Provider;
 import javax.ws.rs.*;
@@ -30,16 +30,15 @@ public class FormSubmissionResource extends ODKResource {
     private final SiteHistoryProcessor siteHistoryProcessor;
 
     @Inject
-    public FormSubmissionResource(Provider<FormParser> formParser, Geocoder geocoder,
+    public FormSubmissionResource(Provider<FormParser> formParser,
+                                  Geocoder geocoder,
                                   SiteHistoryProcessor siteHistoryProcessor) {
         this.formParser = formParser;
         this.geocoder = geocoder;
         this.siteHistoryProcessor = siteHistoryProcessor;
     }
 
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_XML)
+    @POST @Consumes(MediaType.MULTIPART_FORM_DATA) @Produces(MediaType.TEXT_XML)
     public Response submit(@FormDataParam("xml_submission_file") String xml) throws Exception {
         if (enforceAuthorization()) {
             return askAuthentication();
@@ -54,8 +53,8 @@ public class FormSubmissionResource extends ODKResource {
 
         // basic validation
         if (data.getActivity() == 0 || data.getPartner() == 0 ||
-                data.getLatitude() == 999 || data.getLongitude() == 999 ||
-                data.getDate1() == null || data.getDate2() == null || data.getDate2().before(data.getDate1())) {
+            data.getLatitude() == 999 || data.getLongitude() == 999 ||
+            data.getDate1() == null || data.getDate2() == null || data.getDate2().before(data.getDate1())) {
             return badRequest("Problem validating submission XML");
         }
 
@@ -133,8 +132,7 @@ public class FormSubmissionResource extends ODKResource {
         CreateLocation cmd = new CreateLocation(loc);
 
         // get adminentities that contain the specified coordinates
-        List<AdminEntity> adminentities =
-                geocoder.geocode(data.getLatitude(), data.getLongitude());
+        List<AdminEntity> adminentities = geocoder.geocode(data.getLatitude(), data.getLongitude());
         if (adminentities.isEmpty()) {
             AdminEntity adminEntity = createDebugAdminEntity();
             if (adminEntity != null) {

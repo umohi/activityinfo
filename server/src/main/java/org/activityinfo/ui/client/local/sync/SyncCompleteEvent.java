@@ -30,8 +30,7 @@ import java.util.Date;
 
 public class SyncCompleteEvent extends BaseEvent {
 
-    public static final EventType TYPE = new EventBus.NamedEventType(
-            "SyncCompleteEvent");
+    public static final EventType TYPE = new EventBus.NamedEventType("SyncCompleteEvent");
 
     private Date time;
 

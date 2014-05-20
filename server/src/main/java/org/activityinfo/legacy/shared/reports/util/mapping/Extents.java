@@ -125,8 +125,7 @@ public class Extents implements Serializable {
      * @return the intersection of the two Extentss
      */
     public Extents intersect(Extents b) {
-        return new Extents(
-                Math.max(minLat, b.minLat),
+        return new Extents(Math.max(minLat, b.minLat),
                 Math.min(maxLat, b.maxLat),
                 Math.max(minLon, b.minLon),
                 Math.min(maxLon, b.maxLon));
@@ -160,8 +159,7 @@ public class Extents implements Serializable {
      * @return true if this Extents contains <code>b</code>
      */
     public boolean contains(Extents b) {
-        return b.minLon >= minLon && b.maxLon <= maxLon && b.minLat >= minLat
-                && b.maxLat <= maxLat;
+        return b.minLon >= minLon && b.maxLon <= maxLon && b.minLat >= minLat && b.maxLat <= maxLat;
     }
 
     public boolean contains(AiLatLng center) {
@@ -220,19 +218,19 @@ public class Extents implements Serializable {
         }
         Extents other = (Extents) obj;
         return minLat == other.minLat &&
-                maxLat == other.maxLat &&
-                minLon == other.minLon &&
-                maxLon == other.maxLon;
+               maxLat == other.maxLat &&
+               minLon == other.minLon &&
+               maxLon == other.maxLon;
     }
 
     @Override
     public String toString() {
         return "Extents{" +
-                "minLat=" + minLat +
-                ", maxLat=" + maxLat +
-                ", minLon=" + minLon +
-                ", maxLon=" + maxLon +
-                '}';
+               "minLat=" + minLat +
+               ", maxLat=" + maxLat +
+               ", minLon=" + minLon +
+               ", maxLon=" + maxLon +
+               '}';
     }
 
 }

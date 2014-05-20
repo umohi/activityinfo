@@ -39,8 +39,7 @@ public class NewsPortlet extends Portlet {
 
     public interface Templates extends ClientBundle {
 
-        @Source("News.html")
-        TextResource newsTemplate();
+        @Source("News.html") TextResource newsTemplate();
 
     }
 
@@ -68,19 +67,16 @@ public class NewsPortlet extends Portlet {
         JsonLoadResultReader<ListLoadResult<ModelData>> reader = new JsonLoadResultReader<ListLoadResult<ModelData>>(
                 type);
 
-        final BaseListLoader<ListLoadResult<ModelData>> loader = new BaseListLoader<ListLoadResult<ModelData>>(
-                proxy,
+        final BaseListLoader<ListLoadResult<ModelData>> loader = new BaseListLoader<ListLoadResult<ModelData>>(proxy,
                 reader);
 
         loader.addLoadListener(new LoadListener() {
 
             @Override
             public void loaderLoad(LoadEvent le) {
-                XTemplate tpl = XTemplate.create(TEMPLATES.newsTemplate()
-                        .getText());
+                XTemplate tpl = XTemplate.create(TEMPLATES.newsTemplate().getText());
                 ListLoadResult<ModelData> result = le.getData();
-                tpl.overwrite(html.getElement(),
-                        Util.getJsObjects(result.getData(), 3));
+                tpl.overwrite(html.getElement(), Util.getJsObjects(result.getData(), 3));
             }
 
             @Override

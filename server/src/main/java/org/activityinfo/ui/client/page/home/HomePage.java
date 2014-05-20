@@ -32,8 +32,7 @@ public class HomePage implements Page {
 
     private static RootPageUiBinder ourUiBinder = GWT.create(RootPageUiBinder.class);
 
-    @UiField
-    DivElement folderListElement;
+    @UiField DivElement folderListElement;
 
     public HomePage(List<FormInstance> rootItems) {
         panel = ourUiBinder.createAndBindUi(this);
@@ -41,12 +40,12 @@ public class HomePage implements Page {
         ListItemRenderer renderer = GWT.create(ListItemRenderer.class);
 
         SafeHtmlBuilder html = new SafeHtmlBuilder();
-        for(FormInstance instance : rootItems) {
-           renderer.render(html,
-                   IconStyleProvider.getIconStyleForFormClass(instance.getClassId()),
-                   instance.getString(FolderClass.LABEL_FIELD_ID),
-                   Strings.nullToEmpty(instance.getString(FolderClass.DESCRIPTION_FIELD_ID)),
-                   "#i/" + instance.getId().asString());
+        for (FormInstance instance : rootItems) {
+            renderer.render(html,
+                    IconStyleProvider.getIconStyleForFormClass(instance.getClassId()),
+                    instance.getString(FolderClass.LABEL_FIELD_ID),
+                    Strings.nullToEmpty(instance.getString(FolderClass.DESCRIPTION_FIELD_ID)),
+                    "#i/" + instance.getId().asString());
         }
         folderListElement.setInnerSafeHtml(html.toSafeHtml());
     }

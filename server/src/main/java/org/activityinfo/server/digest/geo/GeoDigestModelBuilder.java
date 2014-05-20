@@ -34,8 +34,7 @@ public class GeoDigestModelBuilder implements DigestModelBuilder {
     private static final String BUBBLE_COLOR = "67a639";
     private static final int BUBBLE_SIZE = 20;
 
-    private static final Logger LOGGER =
-            Logger.getLogger(GeoDigestModelBuilder.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GeoDigestModelBuilder.class.getName());
 
     private final Provider<EntityManager> entityManager;
     private final DispatcherSync dispatcher;
@@ -77,9 +76,9 @@ public class GeoDigestModelBuilder implements DigestModelBuilder {
 
         List<Integer> siteIds = findSiteIds(database, model.getFrom());
 
-        LOGGER.finest("rendering geo digest for user " + model.getUser().getId() + " and database " + database.getId()
-                + " - found " + siteIds.size() + " site(s) that were edited since "
-                + DateFormatter.formatDateTime(model.getFrom()));
+        LOGGER.finest("rendering geo digest for user " + model.getUser().getId() + " and database " + database.getId() +
+                      " - found " + siteIds.size() + " site(s) that were edited since " +
+                      DateFormatter.formatDateTime(model.getFrom()));
 
         if (!siteIds.isEmpty()) {
             MapReportElement reportModel = new MapReportElement();
@@ -121,20 +120,17 @@ public class GeoDigestModelBuilder implements DigestModelBuilder {
      * a UserPermission for the specified user with allowView set to true. If the user happens to have his
      * emailnotification preference set to false, an empty list is returned.
      */
-    @VisibleForTesting
-    @SuppressWarnings("unchecked")
-    List<UserDatabase> findDatabases(User user) {
+    @VisibleForTesting @SuppressWarnings("unchecked") List<UserDatabase> findDatabases(User user) {
         // sanity check
         if (!user.isEmailNotification()) {
             return new ArrayList<UserDatabase>();
         }
 
-        Query query = entityManager.get().createQuery(
-                "select distinct d from UserDatabase d left join d.userPermissions p " +
-                        "where (d.owner = :user or (p.user = :user and p.allowView = true)) " +
-                        "and d.dateDeleted is null " +
-                        "order by d.name"
-        );
+        Query query = entityManager.get()
+                                   .createQuery("select distinct d from UserDatabase d left join d.userPermissions p " +
+                                                "where (d.owner = :user or (p.user = :user and p.allowView = true)) " +
+                                                "and d.dateDeleted is null " +
+                                                "order by d.name");
         query.setParameter("user", user);
 
         return query.getResultList();
@@ -145,16 +141,12 @@ public class GeoDigestModelBuilder implements DigestModelBuilder {
      * @param from     the timestamp (millis) to start searching from for edited sites
      * @return the siteIds linked to the specified database that were edited since the specified timestamp
      */
-    @VisibleForTesting
-    @SuppressWarnings("unchecked")
-    List<Integer> findSiteIds(UserDatabase database, long from) {
+    @VisibleForTesting @SuppressWarnings("unchecked") List<Integer> findSiteIds(UserDatabase database, long from) {
 
-        Query query = entityManager.get().createQuery(
-                "select distinct s.id from Site s " +
-                        "join s.siteHistories h " +
-                        "where s.activity.database = :database " +
-                        "and h.timeCreated >= :from"
-        );
+        Query query = entityManager.get().createQuery("select distinct s.id from Site s " +
+                                                      "join s.siteHistories h " +
+                                                      "where s.activity.database = :database " +
+                                                      "and h.timeCreated >= :from");
         query.setParameter("database", database);
         query.setParameter("from", from);
 

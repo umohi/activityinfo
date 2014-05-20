@@ -27,15 +27,17 @@ public class Utf8JacksonJsonProvider extends JacksonJsonProvider {
     }
 
     @Override
-    public void writeTo(Object value, Class<?> type, Type genericType,
-                        Annotation[] annotations, MediaType mediaType,
-                        MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
-            throws IOException {
+    public void writeTo(Object value,
+                        Class<?> type,
+                        Type genericType,
+                        Annotation[] annotations,
+                        MediaType mediaType,
+                        MultivaluedMap<String, Object> httpHeaders,
+                        OutputStream entityStream) throws IOException {
 
         httpHeaders.putSingle(HttpHeaders.CONTENT_TYPE, mediaType.toString() + ";charset=UTF-8");
 
-        super.writeTo(value, type, genericType, annotations, mediaType, httpHeaders,
-                entityStream);
+        super.writeTo(value, type, genericType, annotations, mediaType, httpHeaders, entityStream);
 
     }
 

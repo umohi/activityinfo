@@ -37,8 +37,7 @@ public class UpdateTargetValue implements MutatingCommand<VoidResult> {
 
     }
 
-    public UpdateTargetValue(int targetId, int indicatorId,
-                             Map<String, Object> changes) {
+    public UpdateTargetValue(int targetId, int indicatorId, Map<String, Object> changes) {
         this.targetId = targetId;
         this.indicatorId = indicatorId;
         this.changes = new RpcMap();

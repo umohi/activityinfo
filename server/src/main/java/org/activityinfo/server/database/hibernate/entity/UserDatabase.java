@@ -35,14 +35,12 @@ import java.util.Set;
  *
  * @author Alex Bertram
  */
-@Entity
-@org.hibernate.annotations.FilterDefs({
-        @org.hibernate.annotations.FilterDef(name = "userVisible", parameters = {@org.hibernate.annotations.ParamDef(name = "currentUserId", type = "int")}),
+@Entity @org.hibernate.annotations.FilterDefs({@org.hibernate.annotations.FilterDef(name = "userVisible",
+        parameters = {@org.hibernate.annotations.ParamDef(name = "currentUserId", type = "int")}),
         @org.hibernate.annotations.FilterDef(name = "hideDeleted")})
-@org.hibernate.annotations.Filters({
-        @org.hibernate.annotations.Filter(name = "userVisible", condition = "(:currentUserId = OwnerUserId  "
-                + "or :currentUserId in (select p.UserId from userpermission p "
-                + "where p.AllowView and p.UserId=:currentUserId and p.DatabaseId=DatabaseId))"),
+@org.hibernate.annotations.Filters({@org.hibernate.annotations.Filter(name = "userVisible",
+        condition = "(:currentUserId = OwnerUserId  " + "or :currentUserId in (select p.UserId from userpermission p " +
+                    "where p.AllowView and p.UserId=:currentUserId and p.DatabaseId=DatabaseId))"),
         @org.hibernate.annotations.Filter(name = "hideDeleted", condition = "DateDeleted is null")})
 @NamedQuery(name = "queryAllUserDatabasesAlphabetically", query = "select db from UserDatabase db order by db.name")
 public class UserDatabase implements java.io.Serializable, Deleteable {
@@ -72,9 +70,7 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
         this.name = name;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "DatabaseId", unique = true, nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "DatabaseId", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -91,8 +87,7 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
      *
      * @return The country assocatited with this database.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CountryId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "CountryId", nullable = false)
     public Country getCountry() {
         return this.country;
     }
@@ -106,8 +101,7 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
      * started. I.e. provides a minimum bound for the dates of
      * activities.
      */
-    @Temporal(TemporalType.DATE)
-    @Column(name = "StartDate", length = 23)
+    @Temporal(TemporalType.DATE) @Column(name = "StartDate", length = 23)
     public Date getStartDate() {
         return this.startDate;
     }
@@ -143,8 +137,7 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     /**
      * @return The user who owns this database
      */
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "OwnerUserId", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "OwnerUserId", nullable = false)
     public User getOwner() {
         return this.owner;
     }
@@ -159,8 +152,9 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
      * @return The list of partner organizations involved in this database.
      * (Partner organizations can own activity sites)
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "PartnerInDatabase", joinColumns = {@JoinColumn(name = "DatabaseId", nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "PartnerId", nullable = false, updatable = false)})
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable(name = "PartnerInDatabase",
+            joinColumns = {@JoinColumn(name = "DatabaseId", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "PartnerId", nullable = false, updatable = false)})
     public Set<Partner> getPartners() {
         return this.partners;
     }
@@ -200,8 +194,7 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
      * @return The date on which this database was deleted by the user, or null
      * if this database is not deleted.
      */
-    @Column
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column @Temporal(value = TemporalType.TIMESTAMP)
     public Date getDateDeleted() {
         return this.dateDeleted;
     }
@@ -224,8 +217,7 @@ public class UserDatabase implements java.io.Serializable, Deleteable {
     /**
      * @return True if this database was deleted by its owner.
      */
-    @Override
-    @Transient
+    @Override @Transient
     public boolean isDeleted() {
         return getDateDeleted() == null;
     }

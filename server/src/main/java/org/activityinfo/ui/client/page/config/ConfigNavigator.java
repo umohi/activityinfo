@@ -51,8 +51,7 @@ public class ConfigNavigator implements Navigator {
     private final IconImageBundle icons;
 
     @Inject
-    public ConfigNavigator(Dispatcher service, UiConstants messages,
-                           IconImageBundle icons) {
+    public ConfigNavigator(Dispatcher service, UiConstants messages, IconImageBundle icons) {
         this.service = service;
         this.messages = messages;
         this.icons = icons;
@@ -74,20 +73,19 @@ public class ConfigNavigator implements Navigator {
     }
 
     @Override
-    public void load(DataReader<List<Link>> dataReader, Object parent,
-                     AsyncCallback<List<Link>> callback) {
+    public void load(DataReader<List<Link>> dataReader, Object parent, AsyncCallback<List<Link>> callback) {
 
         if (parent == null) {
 
-            Link dbListLink = Link
-                    .to(new DbListPageState())
-                    .labeled(messages.databases())
-                    .withIcon(icons.database()).build();
+            Link dbListLink = Link.to(new DbListPageState())
+                                  .labeled(messages.databases())
+                                  .withIcon(icons.database())
+                                  .build();
 
-            Link dbLinksLink = Link
-                    .to(new IndicatorLinkPlace())
-                    .labeled(messages.linkIndicators())
-                    .withIcon(icons.link()).build();
+            Link dbLinksLink = Link.to(new IndicatorLinkPlace())
+                                   .labeled(messages.linkIndicators())
+                                   .withIcon(icons.link())
+                                   .build();
 
             callback.onSuccess(Arrays.asList(dbListLink, dbLinksLink));
 
@@ -113,15 +111,14 @@ public class ConfigNavigator implements Navigator {
         });
     }
 
-    private void loadDbList(final AsyncCallback<List<Link>> callback,
-                            SchemaDTO result) {
+    private void loadDbList(final AsyncCallback<List<Link>> callback, SchemaDTO result) {
         List<Link> list = new ArrayList<Link>();
         for (UserDatabaseDTO db : result.getDatabases()) {
             if (db.isDesignAllowed() || db.isManageUsersAllowed()) {
-                Link link = Link
-                        .to(new DbPageState(DbConfigPresenter.PAGE_ID, db.getId()))
-                        .labeled(db.getName())
-                        .withIcon(icons.database()).build();
+                Link link = Link.to(new DbPageState(DbConfigPresenter.PAGE_ID, db.getId()))
+                                .labeled(db.getName())
+                                .withIcon(icons.database())
+                                .build();
                 link.set("db", db);
                 list.add(link);
             }

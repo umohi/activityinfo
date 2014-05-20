@@ -29,8 +29,7 @@ import org.activityinfo.legacy.shared.reports.model.PivotChartReportElement;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.page.report.HasReportElement;
 
-public class ChartPivotBar extends ToolBar implements
-        HasReportElement<PivotChartReportElement> {
+public class ChartPivotBar extends ToolBar implements HasReportElement<PivotChartReportElement> {
 
     private DimensionComboBoxSet comboBoxes;
 

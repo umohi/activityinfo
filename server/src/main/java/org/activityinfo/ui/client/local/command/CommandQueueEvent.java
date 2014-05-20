@@ -28,8 +28,7 @@ import org.activityinfo.ui.client.EventBus;
 
 public class CommandQueueEvent extends BaseEvent {
 
-    public static final EventType TYPE = new EventBus.NamedEventType(
-            "CommandQueueEvent");
+    public static final EventType TYPE = new EventBus.NamedEventType("CommandQueueEvent");
 
     private int enqueuedItemCount;
 

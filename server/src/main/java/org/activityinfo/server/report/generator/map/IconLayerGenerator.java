@@ -71,11 +71,11 @@ public class IconLayerGenerator extends PointLayerGenerator<IconMapLayer> {
         Extents extents = Extents.emptyExtents();
         for (SiteDTO site : sites) {
             if (meetsCriteria(site)) {
-                if(site.hasLatLong()) {
+                if (site.hasLatLong()) {
                     extents.grow(site.getLatitude(), site.getLongitude());
                 } else {
                     Extents siteExtents = getBounds(site);
-                    if(siteExtents != null) {
+                    if (siteExtents != null) {
                         extents.grow(siteExtents);
                     }
                 }
@@ -86,8 +86,7 @@ public class IconLayerGenerator extends PointLayerGenerator<IconMapLayer> {
 
     @Override
     public Margins calculateMargins() {
-        return new Margins(
-                icon.getAnchorX(),
+        return new Margins(icon.getAnchorX(),
                 icon.getAnchorY(),
                 icon.getHeight() - icon.getAnchorY(),
                 icon.getWidth() - icon.getAnchorX());
@@ -101,13 +100,13 @@ public class IconLayerGenerator extends PointLayerGenerator<IconMapLayer> {
         IntersectionCalculator intersectionCalculator = new IntersectionCalculator() {
             @Override
             public boolean intersects(Node a, Node b) {
-                return a.getPointValue().getIconRect()
-                        .intersects(b.getPointValue().getIconRect());
+                return a.getPointValue().getIconRect().intersects(b.getPointValue().getIconRect());
             }
         };
 
-        Clusterer clusterer = ClustererFactory.fromClustering(
-                layer.getClustering(), rectCalculator, intersectionCalculator);
+        Clusterer clusterer = ClustererFactory.fromClustering(layer.getClustering(),
+                rectCalculator,
+                intersectionCalculator);
 
         for (SiteDTO site : sites) {
             if (meetsCriteria(site)) {
@@ -117,7 +116,8 @@ public class IconLayerGenerator extends PointLayerGenerator<IconMapLayer> {
                     if (geoPoint != null) {
                         point = map.fromLatLngToPixel(geoPoint);
                     }
-                    points.add(new PointValue(site, point,
+                    points.add(new PointValue(site,
+                            point,
                             point == null ? null : rectCalculator.iconRect(point),
                             getValue(site, layer.getIndicatorIds())));
                 } else {
@@ -135,8 +135,7 @@ public class IconLayerGenerator extends PointLayerGenerator<IconMapLayer> {
         content.addLegend(legend);
     }
 
-    private void createMarkersFrom(List<Cluster> clusters, TiledMap map,
-                                   MapContent content) {
+    private void createMarkersFrom(List<Cluster> clusters, TiledMap map, MapContent content) {
         for (Cluster cluster : clusters) {
             IconMapMarker marker = new IconMapMarker();
             marker.setX(cluster.getPoint().getX());

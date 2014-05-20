@@ -30,12 +30,10 @@ import org.apache.poi.ss.usermodel.*;
 import java.util.List;
 import java.util.Map.Entry;
 
-public class ExcelPivotTableRenderer implements
-        ExcelRenderer<PivotTableReportElement> {
+public class ExcelPivotTableRenderer implements ExcelRenderer<PivotTableReportElement> {
 
     @Override
-    public void render(Workbook book,
-                       PivotTableReportElement element) {
+    public void render(Workbook book, PivotTableReportElement element) {
 
         /* Generate the actual pivot table data */
 
@@ -43,8 +41,7 @@ public class ExcelPivotTableRenderer implements
 
         /* Generate the excel sheet */
 
-        new BaseExcelTableRenderer<PivotTableReportElement, PivotTableData.Axis>(
-                book, element) {
+        new BaseExcelTableRenderer<PivotTableReportElement, PivotTableData.Axis>(book, element) {
 
             @Override
             public List<FilterDescription> generateFilterDescriptions() {
@@ -103,24 +100,20 @@ public class ExcelPivotTableRenderer implements
                 }
             }
 
-            protected void generateRows(List<PivotTableData.Axis> rows,
-                                        int indent) {
+            protected void generateRows(List<PivotTableData.Axis> rows, int indent) {
 
                 for (PivotTableData.Axis pivotRow : rows) {
 
                     Row row = sheet.createRow(rowIndex++);
                     Cell headerCell = row.createCell(0);
-                    headerCell.setCellValue(factory
-                            .createRichTextString(pivotRow.getLabel()));
+                    headerCell.setCellValue(factory.createRichTextString(pivotRow.getLabel()));
                     headerCell.setCellStyle(rowHeaderStyles[indent]);
 
                     if (pivotRow.isLeaf()) {
 
-                        for (Entry<PivotTableData.Axis, Integer> entry : colIndexMap
-                                .entrySet()) {
+                        for (Entry<PivotTableData.Axis, Integer> entry : colIndexMap.entrySet()) {
 
-                            PivotTableData.Cell pivotCell = pivotRow
-                                    .getCell(entry.getKey());
+                            PivotTableData.Cell pivotCell = pivotRow.getCell(entry.getKey());
                             if (pivotCell != null) {
 
                                 Cell cell = row.createCell(entry.getValue());

@@ -38,13 +38,10 @@ import java.util.logging.Logger;
  */
 public class ItextImageRenderer implements ItextRenderer<ImageReportElement> {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ItextImageRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ItextImageRenderer.class.getName());
 
     @Override
-    public void render(DocWriter writer, Document doc,
-                       ImageReportElement element)
-            throws DocumentException {
+    public void render(DocWriter writer, Document doc, ImageReportElement element) throws DocumentException {
 
         if (element.getUrl() != null) {
             Image image = null;

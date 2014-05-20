@@ -36,8 +36,7 @@ public class UpperBoundsCalculator {
         void incremented(int count, List<Cluster> clusters, double fitness);
     }
 
-    public static List<Integer> calculate(MarkerGraph graph,
-                                          RadiiCalculator radiiCalculator) {
+    public static List<Integer> calculate(MarkerGraph graph, RadiiCalculator radiiCalculator) {
         return calculate(graph, radiiCalculator, null);
     }
 
@@ -45,8 +44,7 @@ public class UpperBoundsCalculator {
      * Calculates the upper bound of the number of clusters per subgraph based
      * on a minimum possible radius
      */
-    public static List<Integer> calculate(MarkerGraph graph,
-                                          RadiiCalculator radiiCalculator, Tracer tracer) {
+    public static List<Integer> calculate(MarkerGraph graph, RadiiCalculator radiiCalculator, Tracer tracer) {
 
         List<Integer> bounds = new ArrayList<Integer>();
         List<List<MarkerGraph.Node>> subgraphs = graph.getSubgraphs();
@@ -66,7 +64,9 @@ public class UpperBoundsCalculator {
     }
 
     private static int calcUpperBound(List<MarkerGraph.Node> subgraph,
-                                      RadiiCalculator radiiCalculator, FitnessFunctor ftor, Tracer tracer) {
+                                      RadiiCalculator radiiCalculator,
+                                      FitnessFunctor ftor,
+                                      Tracer tracer) {
 
         for (int i = 2; i <= subgraph.size(); ++i) {
             List<Cluster> clusters = KMeans.cluster(subgraph, i);

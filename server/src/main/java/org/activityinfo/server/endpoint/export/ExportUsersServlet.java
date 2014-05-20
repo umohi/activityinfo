@@ -52,8 +52,7 @@ public class ExportUsersServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         int dbId = Integer.valueOf(req.getParameter("dbUsers"));
 
@@ -66,14 +65,11 @@ public class ExportUsersServlet extends HttpServlet {
 
             resp.setContentType("application/vnd.ms-excel");
             if (req.getHeader("User-Agent").indexOf("MSIE") != -1) {
-                resp.addHeader("Content-Disposition",
-                        "attachment; filename=ActivityInfo.xls");
+                resp.addHeader("Content-Disposition", "attachment; filename=ActivityInfo.xls");
             } else {
-                resp.addHeader(
-                        "Content-Disposition",
-                        "attachment; filename="
-                                + ("ActivityInfo Export " + new Date().toString() + ".xls")
-                                .replace(" ", "_"));
+                resp.addHeader("Content-Disposition",
+                        "attachment; filename=" +
+                        ("ActivityInfo Export " + new Date().toString() + ".xls").replace(" ", "_"));
             }
 
             OutputStream os = resp.getOutputStream();

@@ -29,8 +29,8 @@ import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
-import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.i18n.shared.UiConstants;
+import org.activityinfo.legacy.shared.model.IndicatorDTO;
 import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
 import org.activityinfo.ui.client.widget.legacy.MappingComboBoxBinding;
 
@@ -79,17 +79,14 @@ class IndicatorForm extends AbstractDesignForm {
         aggregationCombo.setFieldLabel(constants.aggregationMethod());
         aggregationCombo.add(IndicatorDTO.AGGREGATE_SUM, constants.sum());
         aggregationCombo.add(IndicatorDTO.AGGREGATE_AVG, constants.average());
-        aggregationCombo.add(IndicatorDTO.AGGREGATE_SITE_COUNT,
-                constants.siteCount());
-        binding.addFieldBinding(new MappingComboBoxBinding(aggregationCombo,
-                "aggregation"));
+        aggregationCombo.add(IndicatorDTO.AGGREGATE_SITE_COUNT, constants.siteCount());
+        binding.addFieldBinding(new MappingComboBoxBinding(aggregationCombo, "aggregation"));
         this.add(aggregationCombo);
 
         TextField<String> listHeaderField = new TextField<String>();
         listHeaderField.setFieldLabel(constants.listHeader());
         listHeaderField.setMaxLength(IndicatorDTO.MAX_LIST_HEADER_LENGTH);
-        binding
-                .addFieldBinding(new FieldBinding(listHeaderField, "listHeader"));
+        binding.addFieldBinding(new FieldBinding(listHeaderField, "listHeader"));
         this.add(listHeaderField);
 
         TextArea descField = new TextArea();

@@ -37,14 +37,12 @@ import org.activityinfo.ui.client.page.entry.admin.AdminComboBox;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBoxSet.ComboBoxFactory;
 import org.activityinfo.ui.client.page.entry.form.resources.SiteFormResources;
 
-public class SearchAdminComboBox extends ComboBox<AdminEntityDTO> implements
-        AdminComboBox {
+public class SearchAdminComboBox extends ComboBox<AdminEntityDTO> implements AdminComboBox {
 
     private El clearSpan;
     private final AdminLevelDTO level;
 
-    public SearchAdminComboBox(AdminLevelDTO level,
-                               ListStore<AdminEntityDTO> store) {
+    public SearchAdminComboBox(AdminLevelDTO level, ListStore<AdminEntityDTO> store) {
         this.level = level;
         setFieldLabel(level.getName());
         setStore(store);
@@ -63,8 +61,7 @@ public class SearchAdminComboBox extends ComboBox<AdminEntityDTO> implements
 
         clearSpan = new El(DOM.createSpan());
         clearSpan.setInnerHtml("clear");
-        clearSpan.addStyleName(SiteFormResources.INSTANCE.style()
-                .adminClearSpan());
+        clearSpan.addStyleName(SiteFormResources.INSTANCE.style().adminClearSpan());
         clearSpan.addEventsSunk(Event.MOUSEEVENTS);
         clearSpan.setVisibilityMode(VisMode.VISIBILITY);
         clearSpan.setVisible(false);
@@ -100,16 +97,14 @@ public class SearchAdminComboBox extends ComboBox<AdminEntityDTO> implements
     }
 
     @Override
-    public void addSelectionChangeListener(
-            Listener<SelectionChangedEvent> listener) {
+    public void addSelectionChangeListener(Listener<SelectionChangedEvent> listener) {
         addListener(Events.SelectionChange, listener);
     }
 
     public static class Factory implements ComboBoxFactory {
 
         @Override
-        public AdminComboBox create(AdminLevelDTO level,
-                                    ListStore<AdminEntityDTO> store) {
+        public AdminComboBox create(AdminLevelDTO level, ListStore<AdminEntityDTO> store) {
             return new SearchAdminComboBox(level, store);
         }
     }

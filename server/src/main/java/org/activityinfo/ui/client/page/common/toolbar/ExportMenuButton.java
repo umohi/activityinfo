@@ -66,8 +66,7 @@ public class ExportMenuButton extends SplitButton {
         menuListener = new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(MenuEvent ce) {
-                callback.export((RenderElement.Format) ce.getItem().getData(
-                        "format"));
+                callback.export((RenderElement.Format) ce.getItem().getData("format"));
             }
         };
 
@@ -82,8 +81,7 @@ public class ExportMenuButton extends SplitButton {
         setIcon(formatIcon(formats.get(0)));
         menu.removeAll();
         for (RenderElement.Format format : formats) {
-            MenuItem word = new MenuItem(formatLabel(format),
-                    formatIcon(format), menuListener);
+            MenuItem word = new MenuItem(formatLabel(format), formatIcon(format), menuListener);
             word.setData("format", format);
             menu.add(word);
         }

@@ -42,8 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SearchLocationsHandler implements
-        CommandHandlerAsync<SearchLocations, LocationResult> {
+public class SearchLocationsHandler implements CommandHandlerAsync<SearchLocations, LocationResult> {
 
     private static final int MAX_LOCATIONS = 26;
 
@@ -61,32 +60,28 @@ public class SearchLocationsHandler implements
                         final AsyncCallback<LocationResult> callback) {
 
         // first get a count of how many sites we're talking about
-        baseQuery(command)
-                .appendColumn("count(*)", "count")
-                .execute(context.getTransaction(), new SqlResultCallback() {
+        baseQuery(command).appendColumn("count(*)", "count").execute(context.getTransaction(), new SqlResultCallback() {
 
-                    @Override
-                    public void onSuccess(SqlTransaction tx, SqlResultSet results) {
-                        int count = results.getRow(0).getInt("count");
-                        if (count > MAX_LOCATIONS) {
-                            LocationResult result = new LocationResult(
-                                    new ArrayList<LocationDTO>());
-                            result.setOffset(0);
-                            result.setTotalLength(count);
-                            callback.onSuccess(result);
-                        } else {
-                            retrieveLocations(command, context, callback);
-                        }
-                    }
-                });
+            @Override
+            public void onSuccess(SqlTransaction tx, SqlResultSet results) {
+                int count = results.getRow(0).getInt("count");
+                if (count > MAX_LOCATIONS) {
+                    LocationResult result = new LocationResult(new ArrayList<LocationDTO>());
+                    result.setOffset(0);
+                    result.setTotalLength(count);
+                    callback.onSuccess(result);
+                } else {
+                    retrieveLocations(command, context, callback);
+                }
+            }
+        });
     }
 
     private void retrieveLocations(final SearchLocations command,
                                    final ExecutionContext context,
                                    final AsyncCallback<LocationResult> callback) {
-        SqlQuery query = baseQuery(command)
-                .appendColumns("LocationId", "Name", "Axe", "X", "Y", "LocationTypeId")
-                .setLimitClause(dialect.limitClause(0, 26));
+        SqlQuery query = baseQuery(command).appendColumns("LocationId", "Name", "Axe", "X", "Y", "LocationTypeId")
+                                           .setLimitClause(dialect.limitClause(0, 26));
 
         query.execute(context.getTransaction(), new SqlResultCallback() {
             @Override
@@ -117,21 +112,19 @@ public class SearchLocationsHandler implements
         if (command.getAdminEntityIds() != null) {
             for (Integer adminEntityId : command.getAdminEntityIds()) {
                 query.where("LocationId")
-                        .in(SqlQuery.select("LocationId")
-                                .from("locationadminlink")
-                                .where("adminentityid")
-                                .equalTo(adminEntityId));
+                     .in(SqlQuery.select("LocationId")
+                                 .from("locationadminlink")
+                                 .where("adminentityid")
+                                 .equalTo(adminEntityId));
             }
         }
         query.orderBy("location.name");
 
         if (command.getLocationTypeId() != 0) {
-            query.where("locationTypeID")
-                    .equalTo(command.getLocationTypeId());
+            query.where("locationTypeID").equalTo(command.getLocationTypeId());
         }
         if (!Strings.isNullOrEmpty(command.getName())) {
-            query.where("Name")
-                    .startsWith(command.getName());
+            query.where("Name").startsWith(command.getName());
         }
         return query;
     }

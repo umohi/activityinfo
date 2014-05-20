@@ -38,8 +38,7 @@ import org.activityinfo.ui.client.page.report.HasReportElement;
 /**
  * User interface for selecting row / column dimensions
  */
-public class PivotTrayPanel extends ContentPanel implements
-        HasReportElement<PivotTableReportElement> {
+public class PivotTrayPanel extends ContentPanel implements HasReportElement<PivotTableReportElement> {
 
     private DimensionTree tree;
     private DimensionSelectionListView rowList;
@@ -50,10 +49,8 @@ public class PivotTrayPanel extends ContentPanel implements
     public PivotTrayPanel(EventBus eventBus, Dispatcher dispatcher) {
 
         this.tree = new DimensionTree(eventBus, dispatcher);
-        this.rowList = new DimensionSelectionListView(eventBus, dispatcher,
-                Axis.ROW);
-        this.colList = new DimensionSelectionListView(eventBus, dispatcher,
-                Axis.COLUMN);
+        this.rowList = new DimensionSelectionListView(eventBus, dispatcher, Axis.ROW);
+        this.colList = new DimensionSelectionListView(eventBus, dispatcher, Axis.COLUMN);
 
         setHeadingText(I18N.CONSTANTS.dimensions());
         setScrollMode(Style.Scroll.NONE);

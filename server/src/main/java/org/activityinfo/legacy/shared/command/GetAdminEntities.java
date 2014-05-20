@@ -125,8 +125,7 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
         result = prime * result + ((filter == null) ? 0 : filter.hashCode());
         result = prime * result + ((levelId == null) ? 0 : levelId.hashCode());
         result = prime * result + ((entityIds == null) ? 0 : entityIds.hashCode());
-        result = prime * result
-                + ((parentId == null) ? 0 : parentId.hashCode());
+        result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
         return result;
     }
 
@@ -173,8 +172,8 @@ public class GetAdminEntities extends GetListCommand<AdminEntityResult> {
 
     @Override
     public String toString() {
-        return "GetAdminEntities [levelId=" + levelId + ", parentId="
-                + parentId + ", filter=" + filter + ", country=" + countryIds + ", entityIds=" + entityIds + "]";
+        return "GetAdminEntities [levelId=" + levelId + ", parentId=" + parentId + ", filter=" + filter + ", country=" +
+               countryIds + ", entityIds=" + entityIds + "]";
     }
 
 }

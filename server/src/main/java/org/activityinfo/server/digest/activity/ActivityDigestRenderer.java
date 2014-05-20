@@ -226,7 +226,7 @@ public class ActivityDigestRenderer implements DigestRenderer {
             return I18N.CONSTANTS.lastEditUnknown();
         } else {
             return I18N.CONSTANTS.lastEdit() + " " +
-                    new PrettyTime(LocaleProxy.getLocale()).format(new Date(lastEdit.getTimeCreated()));
+                   new PrettyTime(LocaleProxy.getLocale()).format(new Date(lastEdit.getTimeCreated()));
             // return DateCalc.daysBeforeMidnight(new Date(), lastEdit.getTimeCreated()) + " day(s) ago";
         }
     }

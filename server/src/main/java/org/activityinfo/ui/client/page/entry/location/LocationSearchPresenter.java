@@ -54,8 +54,7 @@ public class LocationSearchPresenter extends BaseObservable {
 
     private LocationDTO selection;
 
-    public LocationSearchPresenter(Dispatcher dispatcher, CountryDTO country,
-                                   LocationTypeDTO locationType) {
+    public LocationSearchPresenter(Dispatcher dispatcher, CountryDTO country, LocationTypeDTO locationType) {
         this.dispatcher = dispatcher;
         this.country = country;
         this.locationType = locationType;
@@ -63,8 +62,7 @@ public class LocationSearchPresenter extends BaseObservable {
         loader = new BaseListLoader<ListLoadResult<LocationDTO>>(new Proxy());
         store = new ListStore<LocationDTO>(loader);
 
-        currentSearch = new SearchLocations()
-                .setLocationTypeId(locationType.getId());
+        currentSearch = new SearchLocations().setLocationTypeId(locationType.getId());
         loader.load();
     }
 
@@ -86,10 +84,9 @@ public class LocationSearchPresenter extends BaseObservable {
 
     public void search(String name, Collection<Integer> collection, Extents bounds) {
         searchBounds = bounds;
-        currentSearch = new SearchLocations()
-                .setName(name)
-                .setAdminEntityIds(collection)
-                .setLocationTypeId(locationType.getId());
+        currentSearch = new SearchLocations().setName(name)
+                                             .setAdminEntityIds(collection)
+                                             .setLocationTypeId(locationType.getId());
 
         loader.load();
     }
@@ -116,31 +113,29 @@ public class LocationSearchPresenter extends BaseObservable {
         int newId = newSelection == null ? 0 : newSelection.getId();
         if (currentId != newId) {
             this.selection = newSelection;
-            fireEvent(Events.Select, new LocationEvent(Events.Select, source,
-                    newSelection));
+            fireEvent(Events.Select, new LocationEvent(Events.Select, source, newSelection));
         }
     }
 
     public void accept() {
         // retrieve the full version of this location
-        dispatcher.execute(new GetLocations(selection.getId()),
-                new AsyncCallback<LocationResult>() {
+        dispatcher.execute(new GetLocations(selection.getId()), new AsyncCallback<LocationResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // TODO !!
-                    }
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO !!
+            }
 
-                    @Override
-                    public void onSuccess(LocationResult result) {
-                        if(result.getData().isEmpty()) {
-                            selection = null;
-                        } else {
-                            selection = result.getData().get(0);
-                        }
-                        fireEvent(ACCEPTED, new BaseEvent(ACCEPTED));
-                    }
-                });
+            @Override
+            public void onSuccess(LocationResult result) {
+                if (result.getData().isEmpty()) {
+                    selection = null;
+                } else {
+                    selection = result.getData().get(0);
+                }
+                fireEvent(ACCEPTED, new BaseEvent(ACCEPTED));
+            }
+        });
 
     }
 
@@ -151,8 +146,7 @@ public class LocationSearchPresenter extends BaseObservable {
     private class Proxy extends RpcProxy<PagingLoadResult<LocationDTO>> {
 
         @Override
-        protected void load(Object loadConfig,
-                            final AsyncCallback<PagingLoadResult<LocationDTO>> callback) {
+        protected void load(Object loadConfig, final AsyncCallback<PagingLoadResult<LocationDTO>> callback) {
 
             final SearchLocations thisSearch = currentSearch;
 

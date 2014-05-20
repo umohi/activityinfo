@@ -73,8 +73,8 @@ public class IndicatorValueId implements java.io.Serializable {
         }
         IndicatorValueId castOther = (IndicatorValueId) other;
 
-        return (this.getReportingPeriodId() == castOther.getReportingPeriodId())
-                && (this.getIndicatorId() == castOther.getIndicatorId());
+        return (this.getReportingPeriodId() == castOther.getReportingPeriodId()) &&
+               (this.getIndicatorId() == castOther.getIndicatorId());
     }
 
     @Override

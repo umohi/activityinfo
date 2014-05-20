@@ -45,25 +45,20 @@ public class SiteCounts extends BaseTable {
         if (command.getFilter().isRestricted(DimensionType.Indicator)) {
             // we only need to pull in indicator values if there is a filter on indicators
             query.from(Tables.INDICATOR_VALUE, "V");
-            query.leftJoin(Tables.REPORTING_PERIOD, "RP").on(
-                    "V.ReportingPeriodId = RP.ReportingPeriodId");
+            query.leftJoin(Tables.REPORTING_PERIOD, "RP").on("V.ReportingPeriodId = RP.ReportingPeriodId");
             query.leftJoin(Tables.SITE, "Site").on("RP.SiteId = Site.SiteId");
 
         } else {
             query.from(Tables.SITE, "Site");
         }
 
-        query.leftJoin(Tables.ACTIVITY, "Activity").on(
-                "Activity.ActivityId = Site.ActivityId");
+        query.leftJoin(Tables.ACTIVITY, "Activity").on("Activity.ActivityId = Site.ActivityId");
 
-        query.leftJoin(Tables.USER_DATABASE, "UserDatabase").on(
-                "Activity.DatabaseId = UserDatabase.DatabaseId");
-        query.leftJoin(Tables.REPORTING_PERIOD, "Period").on(
-                "Period.SiteId = Site.SiteId");
+        query.leftJoin(Tables.USER_DATABASE, "UserDatabase").on("Activity.DatabaseId = UserDatabase.DatabaseId");
+        query.leftJoin(Tables.REPORTING_PERIOD, "Period").on("Period.SiteId = Site.SiteId");
 
         query.appendColumn("COUNT(DISTINCT Site.SiteId)", ValueFields.COUNT);
-        query.appendColumn(Integer.toString(IndicatorDTO.AGGREGATE_SITE_COUNT),
-                ValueFields.AGGREGATION);
+        query.appendColumn(Integer.toString(IndicatorDTO.AGGREGATE_SITE_COUNT), ValueFields.AGGREGATION);
     }
 
     @Override

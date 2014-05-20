@@ -40,8 +40,7 @@ import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 /*
  * Default implementation for a FormDialog that displays a FormPanel
  */
-public class FormDialogImpl<FormT extends FormPanel> extends Window implements
-        AsyncMonitor, FormDialogTether {
+public class FormDialogImpl<FormT extends FormPanel> extends Window implements AsyncMonitor, FormDialogTether {
     protected FormT form;
     private Status status;
     protected Button saveButton;
@@ -96,8 +95,7 @@ public class FormDialogImpl<FormT extends FormPanel> extends Window implements
                     @Override
                     public void execute() {
                         if (!form.isValid()) {
-                            MessageBox.alert(getHeadingHtml(),
-                                    I18N.CONSTANTS.pleaseCompleteForm(), null);
+                            MessageBox.alert(getHeadingHtml(), I18N.CONSTANTS.pleaseCompleteForm(), null);
                         } else {
                             onValidated();
                         }

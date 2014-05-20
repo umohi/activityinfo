@@ -56,18 +56,15 @@ import java.util.ArrayList;
 /*
  * Displays a grid where users can add, remove and change projects
  */
-public class DbProjectEditor extends AbstractGridPresenter<ProjectDTO>
-        implements DbPage {
+public class DbProjectEditor extends AbstractGridPresenter<ProjectDTO> implements DbPage {
 
     public static final PageId PAGE_ID = new PageId("projects");
 
     @ImplementedBy(DbProjectGrid.class)
     public interface View extends GridView<DbProjectEditor, ProjectDTO> {
-        public void init(DbProjectEditor editor, UserDatabaseDTO db,
-                         ListStore<ProjectDTO> store);
+        public void init(DbProjectEditor editor, UserDatabaseDTO db, ListStore<ProjectDTO> store);
 
-        public FormDialogTether showAddDialog(ProjectDTO partner,
-                                              FormDialogCallback callback);
+        public FormDialogTether showAddDialog(ProjectDTO partner, FormDialogCallback callback);
     }
 
     private final Dispatcher service;
@@ -78,8 +75,7 @@ public class DbProjectEditor extends AbstractGridPresenter<ProjectDTO>
     private ListStore<ProjectDTO> store;
 
     @Inject
-    public DbProjectEditor(EventBus eventBus, Dispatcher service,
-                           StateProvider stateMgr, View view) {
+    public DbProjectEditor(EventBus eventBus, Dispatcher service, StateProvider stateMgr, View view) {
         super(eventBus, stateMgr, view);
         this.service = service;
         this.eventBus = eventBus;
@@ -111,20 +107,22 @@ public class DbProjectEditor extends AbstractGridPresenter<ProjectDTO>
 
             @Override
             public void onValidated() {
-                service.execute(RequestChange.update(model, "name", "description"), dialog, new AsyncCallback<VoidResult>() {
+                service.execute(RequestChange.update(model, "name", "description"),
+                        dialog,
+                        new AsyncCallback<VoidResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // handled by monitor
-                    }
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                // handled by monitor
+                            }
 
-                    @Override
-                    public void onSuccess(VoidResult result) {
-                        dialog.hide();
-                        eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
-                        view.refresh();
-                    }
-                });
+                            @Override
+                            public void onSuccess(VoidResult result) {
+                                dialog.hide();
+                                eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
+                                view.refresh();
+                            }
+                        });
             }
         });
 
@@ -132,12 +130,10 @@ public class DbProjectEditor extends AbstractGridPresenter<ProjectDTO>
 
     @Override
     protected void onDeleteConfirmed(final ProjectDTO project) {
-        service.execute(RequestChange.delete(project),
-                view.getDeletingMonitor(), new AsyncCallback<VoidResult>() {
+        service.execute(RequestChange.delete(project), view.getDeletingMonitor(), new AsyncCallback<VoidResult>() {
             @Override
             public void onFailure(Throwable caught) {
-                MessageBox.alert(I18N.CONSTANTS.error(),
-                        I18N.CONSTANTS.errorOnServer(), null);
+                MessageBox.alert(I18N.CONSTANTS.error(), I18N.CONSTANTS.errorOnServer(), null);
             }
 
             @Override
@@ -155,28 +151,25 @@ public class DbProjectEditor extends AbstractGridPresenter<ProjectDTO>
             @Override
             public void onValidated(final FormDialogTether dlg) {
 
-                service.execute(new AddProject(db.getId(), newProject), dlg,
-                        new AsyncCallback<CreateResult>() {
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                if (caught instanceof DuplicatePartnerException) {
-                                    MessageBox.alert(I18N.CONSTANTS.error(),
-                                            I18N.CONSTANTS.errorOnServer(), null);
-                                } else {
-                                    MessageBox.alert(I18N.CONSTANTS.error(),
-                                            I18N.CONSTANTS.errorOnServer(), null);
-                                }
-                            }
+                service.execute(new AddProject(db.getId(), newProject), dlg, new AsyncCallback<CreateResult>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof DuplicatePartnerException) {
+                            MessageBox.alert(I18N.CONSTANTS.error(), I18N.CONSTANTS.errorOnServer(), null);
+                        } else {
+                            MessageBox.alert(I18N.CONSTANTS.error(), I18N.CONSTANTS.errorOnServer(), null);
+                        }
+                    }
 
-                            @Override
-                            public void onSuccess(CreateResult result) {
-                                newProject.setId(result.getNewId());
-                                store.add(newProject);
-                                db.getProjects().add(newProject);
-                                eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
-                                dlg.hide();
-                            }
-                        });
+                    @Override
+                    public void onSuccess(CreateResult result) {
+                        newProject.setId(result.getNewId());
+                        store.add(newProject);
+                        db.getProjects().add(newProject);
+                        eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
+                        dlg.hide();
+                    }
+                });
             }
         });
     }

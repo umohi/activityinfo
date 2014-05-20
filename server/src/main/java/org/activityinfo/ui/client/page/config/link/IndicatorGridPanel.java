@@ -67,16 +67,15 @@ public class IndicatorGridPanel extends ContentPanel {
         grid.setHideHeaders(true);
 
         grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        grid.getSelectionModel().addListener(Events.BeforeSelect,
-                new Listener<SelectionEvent<ModelData>>() {
+        grid.getSelectionModel().addListener(Events.BeforeSelect, new Listener<SelectionEvent<ModelData>>() {
 
-                    @Override
-                    public void handleEvent(SelectionEvent<ModelData> event) {
-                        if (!(event.getModel() instanceof IndicatorDTO)) {
-                            event.setCancelled(true);
-                        }
-                    }
-                });
+            @Override
+            public void handleEvent(SelectionEvent<ModelData> event) {
+                if (!(event.getModel() instanceof IndicatorDTO)) {
+                    event.setCancelled(true);
+                }
+            }
+        });
         setLayout(new FitLayout());
         add(grid);
 
@@ -89,8 +88,7 @@ public class IndicatorGridPanel extends ContentPanel {
     public int getRowY(IndicatorDTO indicator) {
         int rowIndex = grid.getStore().indexOf(indicator);
         if (rowIndex == -1) {
-            throw new IllegalArgumentException("indicatorId="
-                    + indicator.getId());
+            throw new IllegalArgumentException("indicatorId=" + indicator.getId());
         }
         Element row = grid.getView().getRow(rowIndex);
         Point p = El.fly(row).getAnchorXY("c", false);
@@ -102,10 +100,8 @@ public class IndicatorGridPanel extends ContentPanel {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void addSelectionChangeListener(
-            SelectionChangedListener<IndicatorDTO> listener) {
-        grid.getSelectionModel().addSelectionChangedListener(
-                (SelectionChangedListener) listener);
+    public void addSelectionChangeListener(SelectionChangedListener<IndicatorDTO> listener) {
+        grid.getSelectionModel().addSelectionChangedListener((SelectionChangedListener) listener);
     }
 
     private ColumnModel createColumnModel() {
@@ -113,9 +109,13 @@ public class IndicatorGridPanel extends ContentPanel {
         icon.setRenderer(new GridCellRenderer<ModelData>() {
 
             @Override
-            public Object render(ModelData model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<ModelData> store, Grid<ModelData> grid) {
+            public Object render(ModelData model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<ModelData> store,
+                                 Grid<ModelData> grid) {
 
                 if (model instanceof IndicatorDTO) {
                     int id = ((IndicatorDTO) model).getId();
@@ -132,13 +132,16 @@ public class IndicatorGridPanel extends ContentPanel {
         name.setRenderer(new GridCellRenderer<ModelData>() {
 
             @Override
-            public Object render(ModelData model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<ModelData> store, Grid<ModelData> grid) {
+            public Object render(ModelData model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<ModelData> store,
+                                 Grid<ModelData> grid) {
 
                 StringBuilder html = new StringBuilder();
-                html.append("<div style=\"margin-left: ").append(indent(model))
-                        .append("px;");
+                html.append("<div style=\"margin-left: ").append(indent(model)).append("px;");
                 if (!(model instanceof IndicatorDTO)) {
                     html.append(";font-weight: bold;");
                 }

@@ -48,10 +48,9 @@ public class GroupingComboBox extends ComboBox<GroupingModelData> {
 
     public GroupingComboBox(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
-        ListLoader<ListLoadResult<GroupingModelData>> loader = new BaseListLoader<ListLoadResult<GroupingModelData>>(
-                new GroupingProxy());
-        ListStore<GroupingModelData> store = new ListStore<GroupingModelData>(
-                loader);
+        ListLoader<ListLoadResult<GroupingModelData>> loader = new BaseListLoader<ListLoadResult<GroupingModelData>>
+                (new GroupingProxy());
+        ListStore<GroupingModelData> store = new ListStore<GroupingModelData>(loader);
 
         setStore(store);
         setUseQueryCache(false);
@@ -73,12 +72,10 @@ public class GroupingComboBox extends ComboBox<GroupingModelData> {
         return getValue().getModel();
     }
 
-    private class GroupingProxy extends
-            RpcProxy<ListLoadResult<GroupingModelData>> {
+    private class GroupingProxy extends RpcProxy<ListLoadResult<GroupingModelData>> {
 
         @Override
-        protected void load(Object loadConfig,
-                            final AsyncCallback<ListLoadResult<GroupingModelData>> callback) {
+        protected void load(Object loadConfig, final AsyncCallback<ListLoadResult<GroupingModelData>> callback) {
 
             dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
 
@@ -93,12 +90,9 @@ public class GroupingComboBox extends ComboBox<GroupingModelData> {
                     models.add(GroupingModelData.NONE);
                     models.add(GroupingModelData.TIME);
                     for (AdminLevelDTO level : adminLevels(result)) {
-                        models.add(new GroupingModelData(level.getName(),
-                                new AdminGroupingModel(level.getId())));
+                        models.add(new GroupingModelData(level.getName(), new AdminGroupingModel(level.getId())));
                     }
-                    callback
-                            .onSuccess(new BaseListLoadResult<GroupingModelData>(
-                                    models));
+                    callback.onSuccess(new BaseListLoadResult<GroupingModelData>(models));
                 }
             });
 
@@ -106,11 +100,9 @@ public class GroupingComboBox extends ComboBox<GroupingModelData> {
 
         private List<AdminLevelDTO> adminLevels(SchemaDTO schema) {
             if (currentFilter.getRestrictions(DimensionType.Activity).size() == 1) {
-                int activityId = currentFilter
-                        .getRestrictedCategory(DimensionType.Activity);
+                int activityId = currentFilter.getRestrictedCategory(DimensionType.Activity);
                 ActivityDTO activity = schema.getActivityById(activityId);
-                List<AdminLevelDTO> levels = Lists.newArrayList(activity
-                        .getAdminLevels());
+                List<AdminLevelDTO> levels = Lists.newArrayList(activity.getAdminLevels());
                 if (activity.getLocationType().isAdminLevel()) {
                     // since the location type is actually bound to the leaf
                     // here,
@@ -118,15 +110,11 @@ public class GroupingComboBox extends ComboBox<GroupingModelData> {
                     levels.remove(levels.size() - 1);
                 }
                 return levels;
-            } else if (currentFilter.getRestrictions(DimensionType.Database)
-                    .size() == 1) {
-                int databaseId = currentFilter
-                        .getRestrictedCategory(DimensionType.Database);
-                return schema.getDatabaseById(databaseId).getCountry()
-                        .getAdminLevels();
+            } else if (currentFilter.getRestrictions(DimensionType.Database).size() == 1) {
+                int databaseId = currentFilter.getRestrictedCategory(DimensionType.Database);
+                return schema.getDatabaseById(databaseId).getCountry().getAdminLevels();
             } else if (schema.getCountries().size() == 1) {
-                return schema.getDatabases().get(0).getCountry()
-                        .getAdminLevels();
+                return schema.getDatabases().get(0).getCountry().getAdminLevels();
             } else {
                 return Collections.emptyList();
             }

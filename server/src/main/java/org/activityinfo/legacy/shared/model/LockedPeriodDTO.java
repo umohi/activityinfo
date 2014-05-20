@@ -59,9 +59,7 @@ public class LockedPeriodDTO extends BaseModelData implements EntityDTO {
         set("name", name);
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getName() {
         return (String) get("name");
     }
@@ -70,9 +68,7 @@ public class LockedPeriodDTO extends BaseModelData implements EntityDTO {
         set("id", id);
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }
@@ -89,8 +85,7 @@ public class LockedPeriodDTO extends BaseModelData implements EntityDTO {
         }
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public LocalDate getToDate() {
         return get("toDate");
     }
@@ -107,8 +102,7 @@ public class LockedPeriodDTO extends BaseModelData implements EntityDTO {
         set("fromDate", fromDate);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public LocalDate getFromDate() {
         return get("fromDate");
     }
@@ -119,16 +113,15 @@ public class LockedPeriodDTO extends BaseModelData implements EntityDTO {
      */
     public boolean isValid() {
         return getFromDate() != null &&
-                getToDate() != null &&
-                getFromDate().before(getToDate());
+               getToDate() != null &&
+               getFromDate().before(getToDate());
     }
 
     public void setEnabled(boolean enabled) {
         set("enabled", enabled);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public boolean isEnabled() {
         return (Boolean) get("enabled");
     }

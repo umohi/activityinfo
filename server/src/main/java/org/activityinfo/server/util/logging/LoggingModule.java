@@ -32,11 +32,8 @@ public class LoggingModule extends AbstractModule {
         LoggingInterceptor interceptor = new LoggingInterceptor();
         requestInjection(interceptor);
 
-        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Trace.class),
-                interceptor);
-        bindInterceptor(Matchers.any(),
-                Matchers.annotatedWith(LogException.class), interceptor);
-        bindInterceptor(Matchers.any(), Matchers.annotatedWith(LogSlow.class),
-                new LogSlowInterceptor());
+        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Trace.class), interceptor);
+        bindInterceptor(Matchers.any(), Matchers.annotatedWith(LogException.class), interceptor);
+        bindInterceptor(Matchers.any(), Matchers.annotatedWith(LogSlow.class), new LogSlowInterceptor());
     }
 }

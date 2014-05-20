@@ -22,10 +22,8 @@ package org.activityinfo.ui.client.page.app;
  * #L%
  */
 
-import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
@@ -39,7 +37,6 @@ import org.activityinfo.legacy.client.AsyncMonitor;
 import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.ui.client.FeatureSwitch;
 import org.activityinfo.ui.client.local.ui.SyncStatusBar;
 import org.activityinfo.ui.client.page.*;
 import org.activityinfo.ui.client.page.config.DbListPageState;
@@ -61,9 +58,7 @@ public class AppFrameSet implements Frame {
     private SyncStatusBar statusBar;
 
     @Inject
-    public AppFrameSet(EventBus eventBus, AuthenticatedUser auth,
-                       AppBar appBar,
-                       SyncStatusBar statusBar) {
+    public AppFrameSet(EventBus eventBus, AuthenticatedUser auth, AppBar appBar, SyncStatusBar statusBar) {
 
         Log.trace("AppFrameSet constructor starting");
 
@@ -86,24 +81,21 @@ public class AppFrameSet implements Frame {
     }
 
     private void setupTabs() {
-        appBar.getSectionTabStrip().addSelectionHandler(
-                new SelectionHandler<Section>() {
+        appBar.getSectionTabStrip().addSelectionHandler(new SelectionHandler<Section>() {
 
-                    @Override
-                    public void onSelection(SelectionEvent<Section> event) {
-                        onSectionClicked(event.getSelectedItem());
-                    }
-                });
-        eventBus.addListener(NavigationHandler.NAVIGATION_AGREED,
-                new Listener<NavigationEvent>() {
+            @Override
+            public void onSelection(SelectionEvent<Section> event) {
+                onSectionClicked(event.getSelectedItem());
+            }
+        });
+        eventBus.addListener(NavigationHandler.NAVIGATION_AGREED, new Listener<NavigationEvent>() {
 
-                    @Override
-                    public void handleEvent(NavigationEvent event) {
-                        appBar.getSectionTabStrip().setSelection(
-                                event.getPlace().getSection());
-                    }
+            @Override
+            public void handleEvent(NavigationEvent event) {
+                appBar.getSectionTabStrip().setSelection(event.getPlace().getSection());
+            }
 
-                });
+        });
         BorderLayoutData layout = new BorderLayoutData(LayoutRegion.NORTH);
         layout.setSize(AppBar.HEIGHT);
 
@@ -120,28 +112,23 @@ public class AppFrameSet implements Frame {
     private void onSectionClicked(Section selectedItem) {
         switch (selectedItem) {
             case HOME:
-                eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new DashboardPlace()));
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new DashboardPlace()));
                 break;
             case DATA_ENTRY:
-                eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new DataEntryPlace()));
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new DataEntryPlace()));
                 break;
             case ANALYSIS:
-                eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new ReportsPlace()));
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new ReportsPlace()));
                 break;
             case DESIGN:
-                eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new DbListPageState()));
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new DbListPageState()));
                 break;
         }
 
     }
 
     protected void search(String value) {
-        eventBus.fireEvent(new NavigationEvent(
-                NavigationHandler.NAVIGATION_REQUESTED, new SearchPageState(value)));
+        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED, new SearchPageState(value)));
     }
 
     public void setWidget(Widget widget) {
@@ -167,8 +154,7 @@ public class AppFrameSet implements Frame {
     }
 
     @Override
-    public AsyncMonitor showLoadingPlaceHolder(PageId pageId,
-                                               PageState loadingPlace) {
+    public AsyncMonitor showLoadingPlaceHolder(PageId pageId, PageState loadingPlace) {
         activePage = null;
         LoadingPlaceHolder placeHolder = new LoadingPlaceHolder();
         setWidget(placeHolder);
@@ -186,8 +172,7 @@ public class AppFrameSet implements Frame {
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 

@@ -27,8 +27,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 
-public abstract class FormSectionWithFormLayout<M> extends LayoutContainer
-        implements FormSection<M> {
+public abstract class FormSectionWithFormLayout<M> extends LayoutContainer implements FormSection<M> {
 
     private final FormLayout layout;
 

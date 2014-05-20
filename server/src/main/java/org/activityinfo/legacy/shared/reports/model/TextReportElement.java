@@ -56,8 +56,7 @@ public class TextReportElement extends ReportElement<NullContent> {
         this.text = text;
     }
 
-    @Override
-    @XmlTransient
+    @Override @XmlTransient
     public Set<Integer> getIndicators() {
         return Collections.emptySet();
     }

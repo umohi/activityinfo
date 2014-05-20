@@ -42,11 +42,9 @@ import java.util.logging.Logger;
  * @author Alex Bertram
  * @see org.activityinfo.legacy.shared.command.UpdateEntity
  */
-public class UpdateEntityHandler extends BaseEntityHandler implements
-        CommandHandler<UpdateEntity> {
+public class UpdateEntityHandler extends BaseEntityHandler implements CommandHandler<UpdateEntity> {
 
-    private final static Logger LOG = Logger
-            .getLogger(UpdateEntityHandler.class.getName());
+    private final static Logger LOG = Logger.getLogger(UpdateEntityHandler.class.getName());
 
     private final Injector injector;
 
@@ -57,11 +55,9 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
     }
 
     @Override
-    public CommandResult execute(UpdateEntity cmd, User user)
-            throws CommandException {
+    public CommandResult execute(UpdateEntity cmd, User user) throws CommandException {
 
-        LOG.fine("[execute] Update command for entity: " + cmd.getEntityName()
-                + ".");
+        LOG.fine("[execute] Update command for entity: " + cmd.getEntityName() + ".");
 
         Map<String, Object> changes = cmd.getChanges().getTransientMap();
         PropertyMap changeMap = new PropertyMap(changes);
@@ -69,7 +65,7 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
         if ("UserDatabase".equals(cmd.getEntityName())) {
             UserDatabasePolicy policy = injector.getInstance(UserDatabasePolicy.class);
             policy.update(user, cmd.getId(), changeMap);
-        }else if ("Activity".equals(cmd.getEntityName())) {
+        } else if ("Activity".equals(cmd.getEntityName())) {
             ActivityPolicy policy = injector.getInstance(ActivityPolicy.class);
             policy.update(user, cmd.getId(), changeMap);
 
@@ -94,21 +90,18 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
         return null;
     }
 
-    private void updateIndicator(User user, UpdateEntity cmd,
-                                 Map<String, Object> changes)
-            throws IllegalAccessCommandException {
-        Indicator indicator = entityManager()
-                .find(Indicator.class, cmd.getId());
+    private void updateIndicator(User user,
+                                 UpdateEntity cmd,
+                                 Map<String, Object> changes) throws IllegalAccessCommandException {
+        Indicator indicator = entityManager().find(Indicator.class, cmd.getId());
 
         assertDesignPrivileges(user, indicator.getActivity().getDatabase());
 
         updateIndicatorProperties(indicator, changes);
     }
 
-    private void updateLockedPeriod(User user, UpdateEntity cmd,
-                                    Map<String, Object> changes) {
-        LockedPeriod lockedPeriod = entityManager().find(LockedPeriod.class,
-                cmd.getId());
+    private void updateLockedPeriod(User user, UpdateEntity cmd, Map<String, Object> changes) {
+        LockedPeriod lockedPeriod = entityManager().find(LockedPeriod.class, cmd.getId());
 
         // TODO: check permissions when updating the LockedPeriod
         // assertDesignPrivileges(user, database)
@@ -116,17 +109,14 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
         updateLockedPeriodProperties(lockedPeriod, changes);
     }
 
-    private void updateAttribute(User user, UpdateEntity cmd,
-                                 Map<String, Object> changes) {
-        Attribute attribute = entityManager()
-                .find(Attribute.class, cmd.getId());
+    private void updateAttribute(User user, UpdateEntity cmd, Map<String, Object> changes) {
+        Attribute attribute = entityManager().find(Attribute.class, cmd.getId());
 
         // TODO: decide where attributes belong and how to manage them
         // assertDesignPrivileges(user, attribute.get);
 
         updateAttributeProperties(changes, attribute);
-        AttributeGroup ag = entityManager().find(AttributeGroup.class,
-                attribute.getGroup().getId());
+        AttributeGroup ag = entityManager().find(AttributeGroup.class, attribute.getGroup().getId());
         Activity activity = ag.getActivities().iterator().next(); // Assume only
         // one
         // activity
@@ -135,10 +125,8 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
         activity.getDatabase().setLastSchemaUpdate(new Date());
     }
 
-    private void updateAttributeGroup(UpdateEntity cmd,
-                                      Map<String, Object> changes) {
-        AttributeGroup group = entityManager().find(AttributeGroup.class,
-                cmd.getId());
+    private void updateAttributeGroup(UpdateEntity cmd, Map<String, Object> changes) {
+        AttributeGroup group = entityManager().find(AttributeGroup.class, cmd.getId());
 
         updateAttributeGroupProperties(group, changes);
 
@@ -151,8 +139,7 @@ public class UpdateEntityHandler extends BaseEntityHandler implements
         activity.getDatabase().setLastSchemaUpdate(new Date());
     }
 
-    private void updateTarget(User user, UpdateEntity cmd,
-                              Map<String, Object> changes) {
+    private void updateTarget(User user, UpdateEntity cmd, Map<String, Object> changes) {
         // TODO: check permissions when updating the Target
         Target target = entityManager().find(Target.class, cmd.getId());
 

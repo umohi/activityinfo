@@ -43,13 +43,11 @@ import org.activityinfo.ui.client.page.entry.grouping.GroupingModel;
 import org.activityinfo.ui.client.page.entry.grouping.TimeGroupingModel;
 import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
-final class SiteTreeGrid extends EditorTreeGrid<ModelData> implements
-        SiteGridPanelView {
+final class SiteTreeGrid extends EditorTreeGrid<ModelData> implements SiteGridPanelView {
 
     public static final String ADMIN_STATE_ID = "sitetreegrid.admin";
 
-    public SiteTreeGrid(Dispatcher dispatcher, GroupingModel groupingModel,
-                        Filter filter, ColumnModel columnModel) {
+    public SiteTreeGrid(Dispatcher dispatcher, GroupingModel groupingModel, Filter filter, ColumnModel columnModel) {
         super(createStore(dispatcher, groupingModel), columnModel);
         setLoadMask(true);
         setStateful(true);
@@ -88,19 +86,16 @@ final class SiteTreeGrid extends EditorTreeGrid<ModelData> implements
         getLoader().setFilter(filter);
     }
 
-    private static TreeStore<ModelData> createStore(Dispatcher dispatcher,
-                                                    GroupingModel groupingModel) {
+    private static TreeStore<ModelData> createStore(Dispatcher dispatcher, GroupingModel groupingModel) {
 
         SiteTreeLoader loader;
 
         if (groupingModel instanceof AdminGroupingModel) {
-            loader = new SiteAdminTreeLoader(dispatcher,
-                    (AdminGroupingModel) groupingModel);
+            loader = new SiteAdminTreeLoader(dispatcher, (AdminGroupingModel) groupingModel);
         } else if (groupingModel instanceof TimeGroupingModel) {
             loader = new SiteTimeTreeLoader(dispatcher);
         } else {
-            throw new IllegalArgumentException("Invalid grouping model "
-                    + groupingModel);
+            throw new IllegalArgumentException("Invalid grouping model " + groupingModel);
         }
 
         TreeStore<ModelData> treeStore = new TreeStore<ModelData>(loader);
@@ -113,8 +108,7 @@ final class SiteTreeGrid extends EditorTreeGrid<ModelData> implements
     }
 
     @Override
-    public void addSelectionChangeListener(
-            SelectionChangedListener<SiteDTO> selectionChangedListener) {
+    public void addSelectionChangeListener(SelectionChangedListener<SiteDTO> selectionChangedListener) {
         addListener(Events.SelectionChange, selectionChangedListener);
     }
 

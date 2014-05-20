@@ -44,8 +44,7 @@ import java.util.*;
 /**
  * Presenter which drives the selection of a set of heirarchial admin levels.
  */
-public class AdminFieldSetPresenter extends BaseObservable implements
-        HasAdminEntityValues {
+public class AdminFieldSetPresenter extends BaseObservable implements HasAdminEntityValues {
 
     private class Level {
         private AdminLevelDTO level;
@@ -59,8 +58,7 @@ public class AdminFieldSetPresenter extends BaseObservable implements
         public Level(AdminLevelDTO level) {
             this.level = level;
             this.proxy = new AdminEntityProxy(dispatcher, level.getId());
-            this.loader = new BaseListLoader<ListLoadResult<AdminEntityDTO>>(
-                    proxy);
+            this.loader = new BaseListLoader<ListLoadResult<AdminEntityDTO>>(proxy);
             this.store = new ListStore<AdminEntityDTO>(loader);
             this.children = Lists.newArrayList();
 
@@ -141,8 +139,7 @@ public class AdminFieldSetPresenter extends BaseObservable implements
                 proxy.setParentAdminEntityId(newParentSelection.getId());
                 setEnabled(true);
 
-                if (selection != null
-                        && selection.getParentId() != newParentSelection.getId()) {
+                if (selection != null && selection.getParentId() != newParentSelection.getId()) {
                     setSelection(null);
                 }
             }
@@ -181,8 +178,7 @@ public class AdminFieldSetPresenter extends BaseObservable implements
     private Extents bounds;
     private String boundsName = "";
 
-    public AdminFieldSetPresenter(Dispatcher dispatcher, CountryDTO country,
-                                  List<AdminLevelDTO> levels) {
+    public AdminFieldSetPresenter(Dispatcher dispatcher, CountryDTO country, List<AdminLevelDTO> levels) {
         this.dispatcher = dispatcher;
         this.levels = Lists.newArrayList(sort(levels));
         this.levelMap = Maps.newHashMap();
@@ -191,7 +187,7 @@ public class AdminFieldSetPresenter extends BaseObservable implements
         for (AdminLevelDTO level : levels) {
             levelMap.put(level.getId(), new Level(level));
         }
-        
+
         for (AdminLevelDTO level : levels) {
             if (!level.isRoot()) {
                 Level parent = levelMap.get(level.getParentLevelId());
@@ -201,23 +197,23 @@ public class AdminFieldSetPresenter extends BaseObservable implements
             }
         }
     }
-    
+
     private ArrayList<AdminLevelDTO> sort(List<AdminLevelDTO> levels2) {
         ArrayList<AdminLevelDTO> sortedList = new ArrayList<>();
         ArrayList<AdminLevelDTO> sorterList = new ArrayList<>();
-       
+
         for (AdminLevelDTO level : levels2) {
-            if (level.getParentLevelId()== null) {
-               sorterList.add(level);
-               sortedList.add(level);
+            if (level.getParentLevelId() == null) {
+                sorterList.add(level);
+                sortedList.add(level);
             }
         }
-        while(levels2.size() != sortedList.size()) {
+        while (levels2.size() != sortedList.size()) {
             ArrayList<AdminLevelDTO> tempList = new ArrayList<>();
-            for(AdminLevelDTO dto : sorterList) {
-                for(AdminLevelDTO e: levels2) {
-                    if(e.getParentLevelId() != null) {
-                        if(e.getParentLevelId().equals(dto.getId())) {
+            for (AdminLevelDTO dto : sorterList) {
+                for (AdminLevelDTO e : levels2) {
+                    if (e.getParentLevelId() != null) {
+                        if (e.getParentLevelId().equals(dto.getId())) {
                             tempList.add(e);
                         }
                     }
@@ -293,13 +289,12 @@ public class AdminFieldSetPresenter extends BaseObservable implements
 
     private void updateBounds() {
         Extents oldBounds = bounds;
-        bounds = AdminBoundsHelper.calculate(country, levels,
-                new HasAdminEntityValues() {
-                    @Override
-                    public AdminEntityDTO getAdminEntity(int levelId) {
-                        return level(levelId).getSelection();
-                    }
-                });
+        bounds = AdminBoundsHelper.calculate(country, levels, new HasAdminEntityValues() {
+            @Override
+            public AdminEntityDTO getAdminEntity(int levelId) {
+                return level(levelId).getSelection();
+            }
+        });
 
         if (!bounds.equals(oldBounds)) {
             boundsName = AdminBoundsHelper.name(bounds, levels, this);

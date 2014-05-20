@@ -50,19 +50,15 @@ import java.util.logging.Logger;
 /**
  * Match a Viewable-named view with a Freemarker template.
  */
-@Provider
-@Singleton
+@Provider @Singleton
 public class FreemarkerViewProcessor implements ViewProcessor<Template> {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(FreemarkerViewProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FreemarkerViewProcessor.class.getName());
 
     private final Configuration templateConfig;
     private final javax.inject.Provider<Locale> localeProvider;
 
-    private
-    @Context
-    HttpContext httpContext;
+    private @Context HttpContext httpContext;
     private ScaffoldingDirective scaffoldingDirective;
 
     @Inject
@@ -89,8 +85,7 @@ public class FreemarkerViewProcessor implements ViewProcessor<Template> {
     }
 
     @Override
-    public void writeTo(Template t, Viewable viewable, OutputStream out)
-            throws IOException {
+    public void writeTo(Template t, Viewable viewable, OutputStream out) throws IOException {
 
         // ensure that we set an content type and charset
         if (httpContext != null) {
@@ -106,8 +101,7 @@ public class FreemarkerViewProcessor implements ViewProcessor<Template> {
 
         Writer writer = new OutputStreamWriter(out, Charsets.UTF_8);
         try {
-            Environment env = t.createProcessingEnvironment(
-                    viewable.getModel(), writer);
+            Environment env = t.createProcessingEnvironment(viewable.getModel(), writer);
             env.setLocale(localeProvider.get());
             env.setVariable("label", getResourceBundle(localeProvider.get()));
             env.setVariable("scaffolding", scaffoldingDirective);
@@ -119,8 +113,7 @@ public class FreemarkerViewProcessor implements ViewProcessor<Template> {
     }
 
     private ResourceBundleModel getResourceBundle(Locale locale) {
-        return new freemarker.ext.beans.ResourceBundleModel(
-                ResourceBundle.getBundle("template/page/Labels", locale),
+        return new freemarker.ext.beans.ResourceBundleModel(ResourceBundle.getBundle("template/page/Labels", locale),
                 new BeansWrapper());
     }
 }

@@ -41,13 +41,11 @@ import java.util.List;
 /**
  * Loads sites grouped by a set of AdminLevels
  */
-class SiteAdminTreeLoader extends BaseTreeLoader<ModelData> implements
-        SiteTreeLoader {
+class SiteAdminTreeLoader extends BaseTreeLoader<ModelData> implements SiteTreeLoader {
 
     private TreeProxy treeProxy;
 
-    public SiteAdminTreeLoader(Dispatcher dispatcher,
-                               AdminGroupingModel groupingModel) {
+    public SiteAdminTreeLoader(Dispatcher dispatcher, AdminGroupingModel groupingModel) {
         super(new TreeProxy(dispatcher));
         treeProxy = (TreeProxy) proxy;
         setAdminLeafLevelId(groupingModel.getAdminLevelId());
@@ -100,8 +98,7 @@ class SiteAdminTreeLoader extends BaseTreeLoader<ModelData> implements
         }
 
         @Override
-        protected void load(Object parentNode,
-                            AsyncCallback<List<ModelData>> callback) {
+        protected void load(Object parentNode, AsyncCallback<List<ModelData>> callback) {
 
             if (adminLevelIds == null) {
                 loadAdminLevels(parentNode, callback);
@@ -110,8 +107,7 @@ class SiteAdminTreeLoader extends BaseTreeLoader<ModelData> implements
             }
         }
 
-        private void loadAdminLevels(final Object parentNode,
-                                     final AsyncCallback<List<ModelData>> callback) {
+        private void loadAdminLevels(final Object parentNode, final AsyncCallback<List<ModelData>> callback) {
 
             dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
 
@@ -135,17 +131,14 @@ class SiteAdminTreeLoader extends BaseTreeLoader<ModelData> implements
         private void initLevels(SchemaDTO result) {
             CountryDTO country = result.getCountryByAdminLevelId(leafLevelId);
             adminLevelIds = Lists.newArrayList();
-            for (AdminLevelDTO level : country
-                    .getAdminLevelAncestors(leafLevelId)) {
+            for (AdminLevelDTO level : country.getAdminLevelAncestors(leafLevelId)) {
                 adminLevelIds.add(level.getId());
             }
         }
 
-        private void loadNodes(Object parentNode,
-                               AsyncCallback<List<ModelData>> callback) {
+        private void loadNodes(Object parentNode, AsyncCallback<List<ModelData>> callback) {
             if (parentNode == null) {
-                GetAdminEntities query = new GetAdminEntities(
-                        adminLevelIds.get(0));
+                GetAdminEntities query = new GetAdminEntities(adminLevelIds.get(0));
                 query.setFilter(filter);
 
                 loadAdminEntities(query, callback);
@@ -154,8 +147,7 @@ class SiteAdminTreeLoader extends BaseTreeLoader<ModelData> implements
                 AdminEntityDTO parentEntity = (AdminEntityDTO) parentNode;
                 int depth = adminLevelIds.indexOf(parentEntity.getLevelId());
                 if (depth + 1 < adminLevelIds.size()) {
-                    loadChildAdminLevels(parentEntity,
-                            adminLevelIds.get(depth + 1), callback);
+                    loadChildAdminLevels(parentEntity, adminLevelIds.get(depth + 1), callback);
                 } else {
                     loadSites(parentEntity, callback);
                 }
@@ -174,8 +166,7 @@ class SiteAdminTreeLoader extends BaseTreeLoader<ModelData> implements
             loadAdminEntities(query, callback);
         }
 
-        private void loadAdminEntities(GetAdminEntities query,
-                                       final AsyncCallback<List<ModelData>> callback) {
+        private void loadAdminEntities(GetAdminEntities query, final AsyncCallback<List<ModelData>> callback) {
             dispatcher.execute(query, new AsyncCallback<AdminEntityResult>() {
 
                 @Override
@@ -190,12 +181,10 @@ class SiteAdminTreeLoader extends BaseTreeLoader<ModelData> implements
             });
         }
 
-        private void loadSites(AdminEntityDTO parentEntity,
-                               final AsyncCallback<List<ModelData>> callback) {
+        private void loadSites(AdminEntityDTO parentEntity, final AsyncCallback<List<ModelData>> callback) {
 
             Filter childFilter = new Filter(filter);
-            childFilter.addRestriction(DimensionType.AdminLevel,
-                    parentEntity.getId());
+            childFilter.addRestriction(DimensionType.AdminLevel, parentEntity.getId());
 
             GetSites siteQuery = new GetSites();
             siteQuery.setFilter(childFilter);

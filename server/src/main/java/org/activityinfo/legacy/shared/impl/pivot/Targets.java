@@ -92,16 +92,11 @@ public class Targets extends BaseTable {
     @Override
     public void setupQuery(PivotSites command, SqlQuery query) {
         query.from(Tables.TARGET_VALUE, "V");
-        query.leftJoin(Tables.TARGET, "Target")
-                .on("V.TargetId = Target.TargetId");
-        query.leftJoin(Tables.INDICATOR, "Indicator")
-                .on("V.IndicatorId = Indicator.IndicatorId");
-        query.leftJoin(Tables.ACTIVITY, "Activity")
-                .on("Activity.ActivityId = Indicator.ActivityId");
-        query.leftJoin(Tables.SITE, "Site")
-                .on("Site.ActivityId = Activity.ActivityId");
-        query.leftJoin(Tables.USER_DATABASE, "UserDatabase")
-                .on("UserDatabase.DatabaseId = Activity.DatabaseId");
+        query.leftJoin(Tables.TARGET, "Target").on("V.TargetId = Target.TargetId");
+        query.leftJoin(Tables.INDICATOR, "Indicator").on("V.IndicatorId = Indicator.IndicatorId");
+        query.leftJoin(Tables.ACTIVITY, "Activity").on("Activity.ActivityId = Indicator.ActivityId");
+        query.leftJoin(Tables.SITE, "Site").on("Site.ActivityId = Activity.ActivityId");
+        query.leftJoin(Tables.USER_DATABASE, "UserDatabase").on("UserDatabase.DatabaseId = Activity.DatabaseId");
 
         // don't use an actual sum query, target value is the same regardless of the number of sites
         query.appendColumn(String.valueOf(IndicatorDTO.AGGREGATE_SUM), ValueFields.AGGREGATION);

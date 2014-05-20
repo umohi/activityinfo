@@ -44,11 +44,9 @@ public class DropAll implements AsyncCommand {
     @Override
     public void execute(final AsyncCallback<Void> callback) {
 
-        conn.execute(AsyncSql.sequence(
-                AsyncSql.dropAllTables(),
+        conn.execute(AsyncSql.sequence(AsyncSql.dropAllTables(),
                 new SyncRegionTable(conn).createTableIfNotExists(),
                 new SyncHistoryTable(conn).createTableIfNotExists(),
-                CommandQueue.createTableIfNotExists()),
-                callback);
+                CommandQueue.createTableIfNotExists()), callback);
     }
 }

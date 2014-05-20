@@ -111,14 +111,13 @@ public class PartnerFilterPanel extends ContentPanel implements FilterPanel {
         listView = new CheckBoxListView<PartnerDTO>();
         listView.setStore(store);
         listView.setDisplayProperty("name");
-        listView.addListener(Events.Select,
-                new Listener<ListViewEvent<PartnerDTO>>() {
+        listView.addListener(Events.Select, new Listener<ListViewEvent<PartnerDTO>>() {
 
-                    @Override
-                    public void handleEvent(ListViewEvent<PartnerDTO> be) {
-                        filterToolBar.setApplyFilterEnabled(true);
-                    }
-                });
+            @Override
+            public void handleEvent(ListViewEvent<PartnerDTO> be) {
+                filterToolBar.setApplyFilterEnabled(true);
+            }
+        });
         add(listView);
 
     }
@@ -132,30 +131,29 @@ public class PartnerFilterPanel extends ContentPanel implements FilterPanel {
         filter.clearRestrictions(DimensionType.Partner);
 
         if (baseFilter == null || !baseFilter.equals(filter)) {
-            service.execute(new GetPartnersDimension(filter),
-                    new AsyncCallback<PartnerResult>() {
+            service.execute(new GetPartnersDimension(filter), new AsyncCallback<PartnerResult>() {
 
-                        @Override
-                        public void onFailure(Throwable caught) {
+                @Override
+                public void onFailure(Throwable caught) {
 
+                }
+
+                @Override
+                public void onSuccess(PartnerResult result) {
+                    List<Integer> ids = getSelectedIds();
+                    store.removeAll();
+                    store.add(result.getData());
+                    applyInternalValue();
+
+                    for (PartnerDTO partner : store.getModels()) {
+                        if (ids.contains(partner.getId())) {
+                            listView.setChecked(partner, true);
                         }
+                    }
 
-                        @Override
-                        public void onSuccess(PartnerResult result) {
-                            List<Integer> ids = getSelectedIds();
-                            store.removeAll();
-                            store.add(result.getData());
-                            applyInternalValue();
-
-                            for (PartnerDTO partner : store.getModels()) {
-                                if (ids.contains(partner.getId())) {
-                                    listView.setChecked(partner, true);
-                                }
-                            }
-
-                            baseFilter = filter;
-                        }
-                    });
+                    baseFilter = filter;
+                }
+            });
         }
     }
 
@@ -204,8 +202,7 @@ public class PartnerFilterPanel extends ContentPanel implements FilterPanel {
     @Override
     public void setValue(Filter value, boolean fireEvents) {
         this.value = new Filter();
-        this.value.addRestriction(DimensionType.Partner,
-                value.getRestrictions(DimensionType.Partner));
+        this.value.addRestriction(DimensionType.Partner, value.getRestrictions(DimensionType.Partner));
         applyInternalValue();
         if (fireEvents) {
             ValueChangeEvent.fire(this, value);
@@ -214,19 +211,14 @@ public class PartnerFilterPanel extends ContentPanel implements FilterPanel {
 
     private void applyInternalValue() {
         for (PartnerDTO model : listView.getStore().getModels()) {
-            listView.setChecked(
-                    model,
-                    value.getRestrictions(DimensionType.Partner).contains(
-                            model.getId()));
+            listView.setChecked(model, value.getRestrictions(DimensionType.Partner).contains(model.getId()));
         }
         filterToolBar.setApplyFilterEnabled(false);
-        filterToolBar.setRemoveFilterEnabled(value
-                .isRestricted(DimensionType.Partner));
+        filterToolBar.setRemoveFilterEnabled(value.isRestricted(DimensionType.Partner));
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 }

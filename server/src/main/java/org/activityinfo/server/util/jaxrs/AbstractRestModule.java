@@ -67,8 +67,7 @@ public abstract class AbstractRestModule extends ServletModule {
         filter(pattern).through(GuiceContainer.class);
     }
 
-    protected final void bindResource(Class clazz, String pattern,
-                                      String... morePatterns) {
+    protected final void bindResource(Class clazz, String pattern, String... morePatterns) {
         bind(clazz);
         filter(pattern, morePatterns).through(GuiceContainer.class);
     }

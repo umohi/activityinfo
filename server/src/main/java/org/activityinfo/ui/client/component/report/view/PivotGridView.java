@@ -14,7 +14,6 @@ import java.util.Objects;
 
 /**
  * Overrides the GridView to provide hovering on cells and
- *
  */
 public class PivotGridView extends GridView {
 
@@ -43,10 +42,10 @@ public class PivotGridView extends GridView {
             case Event.ONMOUSEMOVE:
                 cell = getCell(ge.getRowIndex(), ge.getColIndex());
                 if (!Objects.equals(cell, overCell)) {
-                    if(overCell != null) {
+                    if (overCell != null) {
                         onCellOut(overCell);
                     }
-                    if(cell != null) {
+                    if (cell != null) {
                         onCellOver(cell);
                     }
                 }
@@ -54,8 +53,7 @@ public class PivotGridView extends GridView {
 
             case Event.ONMOUSEOVER:
                 EventTarget from = ge.getEvent().getRelatedEventTarget();
-                if (from == null
-                        || (Element.is(from) && !grid.getElement().isOrHasChild(Element.as(from)))) {
+                if (from == null || (Element.is(from) && !grid.getElement().isOrHasChild(Element.as(from)))) {
                     cell = getCell(ge.getRowIndex(), ge.getColIndex());
                     if (cell != null) {
                         onCellOver(cell);
@@ -64,8 +62,7 @@ public class PivotGridView extends GridView {
                 break;
             case Event.ONMOUSEOUT:
                 EventTarget to = ge.getEvent().getRelatedEventTarget();
-                if (to == null
-                        || (Element.is(to) && !grid.getElement().isOrHasChild(Element.as(to)))) {
+                if (to == null || (Element.is(to) && !grid.getElement().isOrHasChild(Element.as(to)))) {
                     if (overCell != null) {
                         onCellOut(overCell);
                     }
@@ -79,7 +76,7 @@ public class PivotGridView extends GridView {
     }
 
     private void onCellOver(Element cell) {
-        if("value".equals(cell.getAttribute("data-pivot"))) {
+        if ("value".equals(cell.getAttribute("data-pivot"))) {
             fly(cell).addStyleName("cell-hover");
             overCell = cell;
             toolTip.showAt((Window.getClientWidth() - TOOLTIP_WIDTH) / 2, 0);

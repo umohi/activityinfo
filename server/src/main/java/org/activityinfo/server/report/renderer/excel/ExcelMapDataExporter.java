@@ -41,12 +41,10 @@ import java.io.OutputStream;
 public class ExcelMapDataExporter implements Renderer {
 
     @Override
-    public void render(ReportElement element, OutputStream stm)
-            throws IOException {
+    public void render(ReportElement element, OutputStream stm) throws IOException {
 
         if (!(element instanceof MapReportElement)) {
-            throw new RuntimeException(
-                    "ExcelMapDataExporter accepts only MapElements");
+            throw new RuntimeException("ExcelMapDataExporter accepts only MapElements");
         }
 
         MapContent content = ((MapReportElement) element).getContent();

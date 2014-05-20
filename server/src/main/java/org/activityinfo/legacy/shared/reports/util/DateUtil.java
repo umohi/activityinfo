@@ -98,7 +98,6 @@ public abstract class DateUtil {
     }
 
     public DateRange lastCompleteMonthRange(Date today) {
-        return new DateRange(startDateOfLastCompleteMonth(today),
-                endDateOfLastCompleteMonth(today));
+        return new DateRange(startDateOfLastCompleteMonth(today), endDateOfLastCompleteMonth(today));
     }
 }

@@ -30,7 +30,7 @@ public class ActivityUserFormBuilder {
         siteForm = new FormClass(classId);
         siteForm.setLabel(new LocalizedString(activity.getName()));
 
-        if(!Strings.isNullOrEmpty(activity.getCategory())) {
+        if (!Strings.isNullOrEmpty(activity.getCategory())) {
             siteForm.setParentId(activityCategoryFolderId(activity.getDatabase(), activity.getCategory()));
         } else {
             siteForm.setParentId(CuidAdapter.databaseId(activity.getDatabase()));
@@ -90,7 +90,8 @@ public class ActivityUserFormBuilder {
             if (Strings.isNullOrEmpty(group.getName())) {
                 addIndicators(siteForm, group);
             } else {
-                FormSection section = new FormSection(CuidAdapter.activityFormSection(activity.getId(), group.getName()));
+                FormSection section = new FormSection(CuidAdapter.activityFormSection(activity.getId(),
+                        group.getName()));
                 section.setLabel(new LocalizedString(group.getName()));
 
                 addIndicators(section, group);
@@ -108,7 +109,7 @@ public class ActivityUserFormBuilder {
     }
 
     private static Cuid locationClass(LocationTypeDTO locationType) {
-        if(locationType.isAdminLevel()) {
+        if (locationType.isAdminLevel()) {
             return CuidAdapter.adminLevelFormClass(locationType.getBoundAdminLevelId());
         } else {
             return CuidAdapter.locationFormClass(locationType.getId());

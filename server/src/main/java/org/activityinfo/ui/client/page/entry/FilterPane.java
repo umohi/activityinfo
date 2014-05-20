@@ -36,8 +36,7 @@ public class FilterPane extends ContentPanel {
         setHeadingText(I18N.CONSTANTS.filter());
         setLayout(new AccordionLayout());
 
-        ActivityFilterPanel activityFilterPanel = new ActivityFilterPanel(
-                dispatcher);
+        ActivityFilterPanel activityFilterPanel = new ActivityFilterPanel(dispatcher);
         AdminFilterPanel adminFilterPanel = new AdminFilterPanel(dispatcher);
         DateRangePanel datePanel = new DateRangePanel();
         PartnerFilterPanel partnerPanel = new PartnerFilterPanel(dispatcher);
@@ -52,7 +51,11 @@ public class FilterPane extends ContentPanel {
         add(locationFilterPanel);
 
         filterPanelSet = new FilterPanelSet(activityFilterPanel,
-                adminFilterPanel, datePanel, partnerPanel, attributePanel, locationFilterPanel);
+                adminFilterPanel,
+                datePanel,
+                partnerPanel,
+                attributePanel,
+                locationFilterPanel);
     }
 
     public FilterPanelSet getSet() {

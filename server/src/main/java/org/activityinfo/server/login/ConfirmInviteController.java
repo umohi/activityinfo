@@ -59,13 +59,10 @@ public class ConfirmInviteController {
         this.authTokenProvider = authTokenProvider;
     }
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    @LogException(emailAlert = true)
+    @GET @Produces(MediaType.TEXT_HTML) @LogException(emailAlert = true)
     public Viewable getPage(@Context UriInfo uri) throws Exception {
         try {
-            User user = userDAO.get().findUserByChangePasswordKey(
-                    uri.getRequestUri().getQuery());
+            User user = userDAO.get().findUserByChangePasswordKey(uri.getRequestUri().getQuery());
             return new ConfirmInvitePageModel(user).asViewable();
 
         } catch (NoResultException e) {
@@ -73,15 +70,13 @@ public class ConfirmInviteController {
         }
     }
 
-    @POST
-    @LogException(emailAlert = true)
-    public Response confirm(
-            @Context UriInfo uri,
-            @FormParam("key") String key,
-            @FormParam("locale") String locale,
-            @FormParam("password") String password,
-            @FormParam("name") String name,
-            @FormParam("newsletter") boolean newsletter) throws Exception {
+    @POST @LogException(emailAlert = true)
+    public Response confirm(@Context UriInfo uri,
+                            @FormParam("key") String key,
+                            @FormParam("locale") String locale,
+                            @FormParam("password") String password,
+                            @FormParam("name") String name,
+                            @FormParam("newsletter") boolean newsletter) throws Exception {
 
         User user = null;
         try {
@@ -96,20 +91,16 @@ public class ConfirmInviteController {
                 mailingList.subscribe(user);
             }
 
-            return Response
-                    .seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
-                    .cookie(authTokenProvider.createNewAuthCookies(user))
-                    .build();
+            return Response.seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
+                           .cookie(authTokenProvider.createNewAuthCookies(user))
+                           .build();
 
         } catch (EntityNotFoundException e) {
-            return Response.ok(new InvalidInvitePageModel().asViewable())
-                    .type(MediaType.TEXT_HTML)
-                    .build();
+            return Response.ok(new InvalidInvitePageModel().asViewable()).type(MediaType.TEXT_HTML).build();
         } catch (IllegalArgumentException e) {
-            return Response.ok(
-                    ConfirmInvitePageModel.incompleteForm(user).asViewable())
-                    .type(MediaType.TEXT_HTML)
-                    .build();
+            return Response.ok(ConfirmInvitePageModel.incompleteForm(user).asViewable())
+                           .type(MediaType.TEXT_HTML)
+                           .build();
         }
     }
 

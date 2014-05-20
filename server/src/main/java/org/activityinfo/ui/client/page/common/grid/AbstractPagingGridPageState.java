@@ -37,9 +37,8 @@ public abstract class AbstractPagingGridPageState extends AbstractGridPageState 
 
     @Override
     protected void appendGridStateToken(StringBuilder sb) {
-        if (getSortInfo() != null
-                && getSortInfo().getSortDir() != Style.SortDir.NONE &&
-                getSortInfo().getSortField().length() != 0) {
+        if (getSortInfo() != null && getSortInfo().getSortDir() != Style.SortDir.NONE &&
+            getSortInfo().getSortField().length() != 0) {
 
             sb.append("/sort");
             if (getSortInfo().getSortDir() == Style.SortDir.DESC) {

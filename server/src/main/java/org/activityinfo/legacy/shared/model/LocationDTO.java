@@ -30,8 +30,7 @@ import org.activityinfo.core.shared.model.AiLatLng;
 
 import java.util.List;
 
-public class LocationDTO extends BaseModelData implements EntityDTO,
-        HasAdminEntityValues {
+public class LocationDTO extends BaseModelData implements EntityDTO, HasAdminEntityValues {
 
     public static final String NAME_PROPERTY = "name";
     public static final String LATITUDE_PROPERTY = "latitude";
@@ -54,13 +53,12 @@ public class LocationDTO extends BaseModelData implements EntityDTO,
         Integer locationType = row.isNull("LocationTypeId") ? null : row.getInt("LocationTypeId");
         int id = row.getInt("LocationId");
 
-        return new LocationDTO()
-                .setId(id)
-                .setName(name)
-                .setAxe(axe)
-                .setLongitude(longitude)
-                .setLatitude(latitude)
-                .setLocationTypeId(locationType);
+        return new LocationDTO().setId(id)
+                                .setName(name)
+                                .setAxe(axe)
+                                .setLongitude(longitude)
+                                .setLatitude(latitude)
+                                .setLocationTypeId(locationType);
     }
 
     @Override
@@ -186,7 +184,7 @@ public class LocationDTO extends BaseModelData implements EntityDTO,
     }
 
     public AiLatLng getPoint() {
-        if(hasCoordinates()) {
+        if (hasCoordinates()) {
             return new AiLatLng(getLatitude(), getLongitude());
         }
         return null;

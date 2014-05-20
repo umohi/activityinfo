@@ -45,8 +45,7 @@ public class AdminUpdateBuilder implements UpdateBuilder {
     }
 
     @Override
-    public SyncRegionUpdate build(User user, GetSyncRegionUpdates request)
-            throws IOException {
+    public SyncRegionUpdate build(User user, GetSyncRegionUpdates request) throws IOException {
         parseLevelId(request);
         localState = new AdminLocalState(request.getLocalVersion());
 
@@ -59,28 +58,29 @@ public class AdminUpdateBuilder implements UpdateBuilder {
              * from the server
              */
             builder.addStatement("CREATE TABLE IF NOT EXISTS AdminEntity " +
-                    "(AdminEntityId INT, " +
-                    "Name TEXT," +
-                    "Code TEXT," +
-                    "AdminLevelId INT," +
-                    "AdminEntityParentId INT," +
-                    "Deleted INT," +
-                    "X1 REAL, Y1 REAL, X2 REAL, Y2 REAL)");
-            builder.addStatement("DELETE FROM AdminEntity WHERE AdminLevelId="
-                    + levelId);
+                                 "(AdminEntityId INT, " +
+                                 "Name TEXT," +
+                                 "Code TEXT," +
+                                 "AdminLevelId INT," +
+                                 "AdminEntityParentId INT," +
+                                 "Deleted INT," +
+                                 "X1 REAL, Y1 REAL, X2 REAL, Y2 REAL)");
+            builder.addStatement("DELETE FROM AdminEntity WHERE AdminLevelId=" + levelId);
 
-            SqlQuery query = SqlQuery.select(
-                    "AdminEntityId", "Name", "AdminLevelId", "AdminEntityParentId",
-                    "Code", "AdminLevelId", "AdminEntityParentId",
+            SqlQuery query = SqlQuery.select("AdminEntityId",
+                    "Name",
+                    "AdminLevelId",
+                    "AdminEntityParentId",
+                    "Code",
+                    "AdminLevelId",
+                    "AdminEntityParentId",
                     "Deleted",
-                    "X1", "Y1", "X2", "Y2")
-                    .from(Tables.ADMIN_ENTITY)
-                    .where("AdminLevelId").equalTo(levelId);
+                    "X1",
+                    "Y1",
+                    "X2",
+                    "Y2").from(Tables.ADMIN_ENTITY).where("AdminLevelId").equalTo(levelId);
 
-            builder.insert()
-                    .into(Tables.ADMIN_ENTITY)
-                    .from(query)
-                    .execute(em);
+            builder.insert().into(Tables.ADMIN_ENTITY).from(query).execute(em);
 
             update.setSql(builder.build());
         }
@@ -91,8 +91,7 @@ public class AdminUpdateBuilder implements UpdateBuilder {
     }
 
     private void parseLevelId(GetSyncRegionUpdates request) {
-        levelId = Integer.parseInt(request.getRegionId().substring(
-                "admin/".length()));
+        levelId = Integer.parseInt(request.getRegionId().substring("admin/".length()));
     }
 
 }

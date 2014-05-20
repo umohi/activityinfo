@@ -24,10 +24,9 @@ public class PageLoader implements org.activityinfo.ui.client.page.PageLoader {
     private ResourceLocator resourceLocator;
 
     @Inject
-    public PageLoader(
-            NavigationHandler pageManager,
-            PageStateSerializer placeSerializer,
-            ResourceLocator resourceLocator) {
+    public PageLoader(NavigationHandler pageManager,
+                      PageStateSerializer placeSerializer,
+                      ResourceLocator resourceLocator) {
 
         this.resourceLocator = resourceLocator;
 
@@ -41,18 +40,17 @@ public class PageLoader implements org.activityinfo.ui.client.page.PageLoader {
     }
 
     @Override
-    public void load(final PageId pageId, final PageState pageState,
-                     final AsyncCallback<Page> callback) {
+    public void load(final PageId pageId, final PageState pageState, final AsyncCallback<Page> callback) {
 
         BaseStylesheet.INSTANCE.ensureInjected();
 
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onSuccess() {
-                if(pageState instanceof HomePlace) {
+                if (pageState instanceof HomePlace) {
                     loadHomePage(callback);
 
-                } else if(pageState instanceof InstancePlace) {
+                } else if (pageState instanceof InstancePlace) {
                     InstancePage page = new InstancePage(resourceLocator);
                     page.navigate(pageState);
                     callback.onSuccess(page);
@@ -67,18 +65,14 @@ public class PageLoader implements org.activityinfo.ui.client.page.PageLoader {
     }
 
     private void loadHomePage(AsyncCallback<Page> callback) {
-        CriteriaIntersection criteria = new CriteriaIntersection(
-                new ClassCriteria(FolderClass.CLASS_ID),
+        CriteriaIntersection criteria = new CriteriaIntersection(new ClassCriteria(FolderClass.CLASS_ID),
                 ParentCriteria.isRoot());
 
-        resourceLocator.queryInstances(criteria)
-            .then(new Function<List<FormInstance>, Page>() {
-                @Nullable
-                @Override
-                public Page apply(List<FormInstance> formInstances) {
-                    return new HomePage(formInstances);
-                }
-            })
-            .then(callback);
+        resourceLocator.queryInstances(criteria).then(new Function<List<FormInstance>, Page>() {
+            @Nullable @Override
+            public Page apply(List<FormInstance> formInstances) {
+                return new HomePage(formInstances);
+            }
+        }).then(callback);
     }
 }

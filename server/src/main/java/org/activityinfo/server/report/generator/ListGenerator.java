@@ -34,8 +34,7 @@ import org.activityinfo.server.command.DispatcherSync;
  * @param <ElementT>
  * @author Alex Bertram
  */
-public abstract class ListGenerator<ElementT extends ReportElement>
-        extends BaseGenerator<ElementT> {
+public abstract class ListGenerator<ElementT extends ReportElement> extends BaseGenerator<ElementT> {
 
     @Inject
     public ListGenerator(DispatcherSync dispatcher) {

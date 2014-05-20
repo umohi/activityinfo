@@ -38,8 +38,7 @@ class RenderContext {
     private SiteHistoryDTO history;
     private Map<String, Object> state;
 
-    RenderContext(SchemaDTO schema, List<LocationDTO> locations, SiteDTO site,
-                  Map<String, Object> baselineState) {
+    RenderContext(SchemaDTO schema, List<LocationDTO> locations, SiteDTO site, Map<String, Object> baselineState) {
         this.schema = schema;
         this.locations = new HashMap<Integer, LocationDTO>();
         for (LocationDTO dto : locations) {

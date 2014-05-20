@@ -52,8 +52,7 @@ import java.util.Set;
 /*
  * Shows a list of options to aggregate markers on the map
  */
-public class ClusteringOptionsWidget extends LayoutContainer implements
-        HasValue<Clustering> {
+public class ClusteringOptionsWidget extends LayoutContainer implements HasValue<Clustering> {
 
     private Clustering value = new NoClustering();
 
@@ -110,10 +109,8 @@ public class ClusteringOptionsWidget extends LayoutContainer implements
     private void buildForm(Set<CountryDTO> countries) {
 
         radios = Lists.newArrayList();
-        radios.add(new ClusteringRadio(I18N.CONSTANTS.none(),
-                new NoClustering()));
-        radios.add(new ClusteringRadio(I18N.CONSTANTS.automatic(),
-                new AutomaticClustering()));
+        radios.add(new ClusteringRadio(I18N.CONSTANTS.none(), new NoClustering()));
+        radios.add(new ClusteringRadio(I18N.CONSTANTS.automatic(), new AutomaticClustering()));
 
         if (countries.size() == 1) {
             CountryDTO country = countries.iterator().next();
@@ -158,8 +155,7 @@ public class ClusteringOptionsWidget extends LayoutContainer implements
         return countries;
     }
 
-    private boolean databaseContainsIndicatorId(UserDatabaseDTO database,
-                                                Set<Integer> indicatorIds) {
+    private boolean databaseContainsIndicatorId(UserDatabaseDTO database, Set<Integer> indicatorIds) {
 
         for (ActivityDTO activity : database.getActivities()) {
             for (IndicatorDTO indicator : activity.getIndicators()) {
@@ -172,8 +168,7 @@ public class ClusteringOptionsWidget extends LayoutContainer implements
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Clustering> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Clustering> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 

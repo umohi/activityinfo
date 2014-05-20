@@ -43,8 +43,7 @@ public final class DomainFilters {
     }
 
     public static void applyDeletedFilter(EntityManager em) {
-        org.hibernate.Session session = ((HibernateEntityManager) em)
-                .getSession();
+        org.hibernate.Session session = ((HibernateEntityManager) em).getSession();
 
         /* Hide entities deleted by users */
         session.enableFilter("hideDeleted");
@@ -56,8 +55,7 @@ public final class DomainFilters {
 
     public static void applyVisibleFilter(int userId, EntityManager em) {
         /* Hide entities that this user does not have permission to view */
-        org.hibernate.Session session = ((HibernateEntityManager) em)
-                .getSession();
+        org.hibernate.Session session = ((HibernateEntityManager) em).getSession();
 
         Filter filter = session.enableFilter("userVisible");
         filter.setParameter("currentUserId", userId);

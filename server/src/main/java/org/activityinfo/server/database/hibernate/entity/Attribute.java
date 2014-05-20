@@ -44,9 +44,7 @@ public class Attribute implements Serializable, Deleteable, Orderable {
 
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "AttributeId", unique = true, nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "AttributeId", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -55,8 +53,7 @@ public class Attribute implements Serializable, Deleteable, Orderable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AttributeGroupId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "AttributeGroupId", nullable = false)
     public AttributeGroup getGroup() {
         return this.group;
     }
@@ -74,8 +71,7 @@ public class Attribute implements Serializable, Deleteable, Orderable {
         this.name = name;
     }
 
-    @Override
-    @Column(name = "SortOrder", nullable = false)
+    @Override @Column(name = "SortOrder", nullable = false)
     public int getSortOrder() {
         return this.sortOrder;
     }
@@ -85,8 +81,7 @@ public class Attribute implements Serializable, Deleteable, Orderable {
         this.sortOrder = sortOrder;
     }
 
-    @Column
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column @Temporal(value = TemporalType.TIMESTAMP)
     public Date getDateDeleted() {
         return this.dateDeleted;
     }
@@ -98,12 +93,10 @@ public class Attribute implements Serializable, Deleteable, Orderable {
     @Override
     public void delete() {
         setDateDeleted(new Date());
-        getGroup().getActivities().iterator().next().getDatabase()
-                .setLastSchemaUpdate(new Date());
+        getGroup().getActivities().iterator().next().getDatabase().setLastSchemaUpdate(new Date());
     }
 
-    @Override
-    @Transient
+    @Override @Transient
     public boolean isDeleted() {
         return getDateDeleted() != null;
     }

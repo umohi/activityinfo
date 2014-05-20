@@ -31,12 +31,12 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.LocationTypeDTO;
 import org.activityinfo.legacy.shared.model.Published;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
 import org.activityinfo.ui.client.widget.legacy.MappingComboBoxBinding;
 
@@ -84,35 +84,28 @@ class ActivityForm extends AbstractDesignForm {
         locationTypeCombo.setFieldLabel(I18N.CONSTANTS.locationType());
         this.add(locationTypeCombo);
 
-        binding.addFieldBinding(new MappingComboBoxBinding(locationTypeCombo,
-                "locationTypeId"));
+        binding.addFieldBinding(new MappingComboBoxBinding(locationTypeCombo, "locationTypeId"));
 
         final MappingComboBox frequencyCombo = new MappingComboBox();
         frequencyCombo.setAllowBlank(false);
         frequencyCombo.setFieldLabel(I18N.CONSTANTS.reportingFrequency());
-        frequencyCombo
-                .add(ActivityDTO.REPORT_ONCE, I18N.CONSTANTS.reportOnce());
-        frequencyCombo
-                .add(ActivityDTO.REPORT_MONTHLY, I18N.CONSTANTS.monthly());
-        binding.addFieldBinding(new MappingComboBoxBinding(frequencyCombo,
-                "reportingFrequency"));
+        frequencyCombo.add(ActivityDTO.REPORT_ONCE, I18N.CONSTANTS.reportOnce());
+        frequencyCombo.add(ActivityDTO.REPORT_MONTHLY, I18N.CONSTANTS.monthly());
+        binding.addFieldBinding(new MappingComboBoxBinding(frequencyCombo, "reportingFrequency"));
         this.add(frequencyCombo);
 
         MappingComboBox publishedCombo = new MappingComboBox();
         publishedCombo.setAllowBlank(false);
         publishedCombo.setFieldLabel(I18N.CONSTANTS.published());
-        publishedCombo.add(Published.NOT_PUBLISHED.getIndex(),
-                I18N.CONSTANTS.notPublished());
-        publishedCombo.add(Published.ALL_ARE_PUBLISHED.getIndex(),
-                I18N.CONSTANTS.allArePublished());
-        binding.addFieldBinding(new MappingComboBoxBinding(publishedCombo,
-                "published"));
+        publishedCombo.add(Published.NOT_PUBLISHED.getIndex(), I18N.CONSTANTS.notPublished());
+        publishedCombo.add(Published.ALL_ARE_PUBLISHED.getIndex(), I18N.CONSTANTS.allArePublished());
+        binding.addFieldBinding(new MappingComboBoxBinding(publishedCombo, "published"));
 
         binding.addListener(Events.Bind, new Listener<BindingEvent>() {
 
             @Override
             public void handleEvent(BindingEvent be) {
-//                locationTypeCombo.setEnabled(!isSaved(be.getModel()));
+                //                locationTypeCombo.setEnabled(!isSaved(be.getModel()));
                 frequencyCombo.setEnabled(!isSaved(be.getModel()));
             }
         });

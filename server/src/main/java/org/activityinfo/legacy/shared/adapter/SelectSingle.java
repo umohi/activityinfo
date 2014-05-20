@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import org.activityinfo.core.client.NotFoundException;
 import org.activityinfo.core.shared.form.FormInstance;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ import java.util.List;
 public class SelectSingle implements Function<List<FormInstance>, FormInstance> {
     @Override
     public FormInstance apply(List<FormInstance> input) {
-        if(input.isEmpty()) {
+        if (input.isEmpty()) {
             throw new NotFoundException();
         } else {
             return input.get(0);

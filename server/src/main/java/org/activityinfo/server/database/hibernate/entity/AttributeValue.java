@@ -48,8 +48,7 @@ public class AttributeValue implements java.io.Serializable {
     }
 
     @EmbeddedId
-    @AttributeOverrides({
-            @AttributeOverride(name = "siteId", column = @Column(name = "SiteId", nullable = false)),
+    @AttributeOverrides({@AttributeOverride(name = "siteId", column = @Column(name = "SiteId", nullable = false)),
             @AttributeOverride(name = "attributeId", column = @Column(name = "AttributeId", nullable = false))})
     public AttributeValueId getId() {
         return this.id;

@@ -61,7 +61,8 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
     }
 
     @Override
-    public void execute(final Search command, final ExecutionContext context,
+    public void execute(final Search command,
+                        final ExecutionContext context,
                         final AsyncCallback<SearchResult> callback) {
         QueryParser parser = new QueryParser();
         parser.parse(command.getSearchQuery().trim());
@@ -104,18 +105,17 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
                                   final ExecutionContext context,
                                   final AsyncCallback<SearchResult> callback) {
         AllSearcher allSearcher = new AllSearcher(context.getTransaction());
-        allSearcher.searchDimensions(parser.getUniqueDimensions(),
-                new AsyncCallback<Filter>() {
-                    @Override
-                    public void onSuccess(Filter result) {
-                        processFilter(context, callback, result);
-                    }
+        allSearcher.searchDimensions(parser.getUniqueDimensions(), new AsyncCallback<Filter>() {
+            @Override
+            public void onSuccess(Filter result) {
+                processFilter(context, callback, result);
+            }
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        callback.onFailure(caught);
-                    }
-                });
+            @Override
+            public void onFailure(Throwable caught) {
+                callback.onFailure(caught);
+            }
+        });
     }
 
     private PivotTableReportElement createSearchPivotTableElement() {
@@ -139,8 +139,7 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
             // pivot data query
             final PivotTableReportElement pivotTable = createSearchPivotTableElement();
             pivotTable.setFilter(resultFilter);
-            GenerateElement<PivotContent> zmd = new GenerateElement<PivotContent>(
-                    pivotTable);
+            GenerateElement<PivotContent> zmd = new GenerateElement<PivotContent>(pivotTable);
             context.execute(zmd, new AsyncCallback<PivotContent>() {
                 @Override
                 public void onFailure(Throwable caught) {
@@ -162,8 +161,7 @@ public class SearchHandler implements CommandHandlerAsync<Search, SearchResult> 
 
                         @Override
                         public void onSuccess(SiteResult resultSites) {
-                            searchResult.setRecentAdditions(resultSites
-                                    .getData());
+                            searchResult.setRecentAdditions(resultSites.getData());
                             callback.onSuccess(searchResult);
                         }
                     });

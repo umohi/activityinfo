@@ -56,8 +56,7 @@ public class SmtpMailSender extends MailSender {
         this.configuration = configuration;
     }
 
-    @Override
-    @LogException
+    @Override @LogException
     public void send(Message message) {
         try {
             Properties props = new Properties();
@@ -66,9 +65,8 @@ public class SmtpMailSender extends MailSender {
             mimeMessage.setSubject(message.getSubject(), Charsets.UTF_8.name());
             mimeMessage.addRecipients(RecipientType.TO, toArray(message.getTo()));
             mimeMessage.addRecipients(RecipientType.BCC, toArray(message.getBcc()));
-            mimeMessage.setFrom(new InternetAddress(
-                    configuration.getProperty("smtp.from", "activityinfo@configure-me.com"),
-                    configuration.getProperty("smtp.from.name", "ActivityInfo")));
+            mimeMessage.setFrom(new InternetAddress(configuration.getProperty("smtp.from",
+                    "activityinfo@configure-me.com"), configuration.getProperty("smtp.from.name", "ActivityInfo")));
 
             if (message.getReplyTo() != null) {
                 mimeMessage.setReplyTo(new Address[]{message.getReplyTo()});
@@ -90,8 +88,7 @@ public class SmtpMailSender extends MailSender {
                     MimeBodyPart part = new MimeBodyPart();
                     part.setFileName(attachment.getFilename());
 
-                    DataSource src = new ByteArrayDataSource(
-                            attachment.getContent(), attachment.getContentType());
+                    DataSource src = new ByteArrayDataSource(attachment.getContent(), attachment.getContentType());
                     part.setDataHandler(new DataHandler(src));
                     multipart.addBodyPart(part);
                 }

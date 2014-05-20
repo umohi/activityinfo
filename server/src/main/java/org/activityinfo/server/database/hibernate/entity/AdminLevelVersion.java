@@ -33,8 +33,7 @@ public class AdminLevelVersion {
         this.version = version;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AdminLevelId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "AdminLevelId", nullable = false)
     public AdminLevel getLevel() {
         return level;
     }
@@ -43,8 +42,7 @@ public class AdminLevelVersion {
         this.level = level;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "userId", nullable = false)
     public User getUser() {
         return user;
     }

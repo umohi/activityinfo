@@ -53,14 +53,14 @@ public class HtmlReportRenderer extends ItextReportRenderer {
 
     @Inject
     public HtmlReportRenderer(AdminGeometryProvider geometryProvider,
-                              @MapIconPath String mapIconPath, StorageProvider imageStorageProvider) {
+                              @MapIconPath String mapIconPath,
+                              StorageProvider imageStorageProvider) {
         super(geometryProvider, mapIconPath);
         this.imageStorageProvider = imageStorageProvider;
     }
 
     @Override
-    protected DocWriter createWriter(Document document, OutputStream os)
-            throws DocumentException {
+    protected DocWriter createWriter(Document document, OutputStream os) throws DocumentException {
         return HtmlWriter.getInstance(document, os);
     }
 
@@ -74,8 +74,7 @@ public class HtmlReportRenderer extends ItextReportRenderer {
         return ".html";
     }
 
-    public void render(ReportElement element, final Writer writer)
-            throws IOException {
+    public void render(ReportElement element, final Writer writer) throws IOException {
         // The HtmlWriter encodes everything as ISO-8859-1
         // so we can be safely naive here about encoding
         final Charset charset = Charset.forName("ISO-8859-1");
@@ -106,8 +105,7 @@ public class HtmlReportRenderer extends ItextReportRenderer {
     private class HtmlImageCreator implements ImageCreator {
         @Override
         public HtmlImage create(int width, int height) {
-            BufferedImage image = new BufferedImage(width, height,
-                    ColorSpace.TYPE_RGB);
+            BufferedImage image = new BufferedImage(width, height, ColorSpace.TYPE_RGB);
             Graphics2D g2d = image.createGraphics();
             g2d.setPaint(Color.WHITE);
             g2d.fillRect(0, 0, width, height);
@@ -169,21 +167,18 @@ public class HtmlReportRenderer extends ItextReportRenderer {
         @Override
         public Image toItextImage() throws BadElementException {
             try {
-                TempStorage storage = imageStorageProvider
-                        .allocateTemporaryFile("image/png", "activityinfo.png");
+                TempStorage storage = imageStorageProvider.allocateTemporaryFile("image/png", "activityinfo.png");
                 ImageIO.write(image, "PNG", storage.getOutputStream());
                 storage.getOutputStream().close();
 
-                return new MyImage(new URL(storage.getUrl()), image.getWidth(),
-                        image.getHeight());
+                return new MyImage(new URL(storage.getUrl()), image.getWidth(), image.getHeight());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
 
         @Override
-        public void addImage(String imageUrl, int x, int y, int width,
-                             int height) {
+        public void addImage(String imageUrl, int x, int y, int width, int height) {
             BufferedImage img;
             try {
                 img = ImageIO.read(new URL(imageUrl));

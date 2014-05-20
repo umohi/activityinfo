@@ -53,8 +53,7 @@ public class ReportSubscription implements Serializable {
     }
 
     @EmbeddedId
-    @AttributeOverrides({
-            @AttributeOverride(name = "reportId", column = @Column(name = "reportId", nullable = false)),
+    @AttributeOverrides({@AttributeOverride(name = "reportId", column = @Column(name = "reportId", nullable = false)),
             @AttributeOverride(name = "userId", column = @Column(name = "userId", nullable = false))})
     public ReportSubscriptionId getId() {
         return this.id;
@@ -110,8 +109,7 @@ public class ReportSubscription implements Serializable {
      * @return The second user who has invited <code>user</code> to subscribe to
      * this report. NULL if the user has set their own preferences.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "invitingUserId", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "invitingUserId", nullable = true)
     public User getInvitingUser() {
         return invitingUser;
     }

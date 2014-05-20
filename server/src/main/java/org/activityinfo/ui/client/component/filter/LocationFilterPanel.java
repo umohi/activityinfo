@@ -44,7 +44,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
 
     private ListStore<LocationDTO> store;
     private CheckBoxListView<LocationDTO> listView;
-    
+
     @Inject
     public LocationFilterPanel(Dispatcher service) {
         this.service = service;
@@ -53,7 +53,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         createFilterToolBar();
         createList();
     }
-    
+
     private void initializeComponent() {
         setHeadingText(I18N.CONSTANTS.filterByLocation());
         setIcon(IconImageBundle.ICONS.filter());
@@ -63,7 +63,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         setHeadingText(I18N.CONSTANTS.filterByLocation());
         setIcon(IconImageBundle.ICONS.filter());
     }
-    
+
     private void createFilterToolBar() {
         filterToolBar = new FilterToolBar();
         filterToolBar.addApplyFilterHandler(new ApplyFilterHandler() {
@@ -83,7 +83,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         });
         setTopComponent(filterToolBar);
     }
-    
+
     protected void applyFilter() {
         value = new Filter();
         if (isRendered()) {
@@ -97,7 +97,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         filterToolBar.setApplyFilterEnabled(false);
         filterToolBar.setRemoveFilterEnabled(true);
     }
-    
+
     private List<Integer> getSelectedIds() {
         List<Integer> list = new ArrayList<Integer>();
 
@@ -106,23 +106,22 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         }
         return list;
     }
-    
+
     private void createList() {
         store = new ListStore<LocationDTO>();
         listView = new CheckBoxListView<LocationDTO>();
         listView.setStore(store);
         listView.setDisplayProperty("name");
-        listView.addListener(Events.Select,
-                new Listener<ListViewEvent<LocationTypeDTO>>() {
+        listView.addListener(Events.Select, new Listener<ListViewEvent<LocationTypeDTO>>() {
 
-                    @Override
-                    public void handleEvent(ListViewEvent<LocationTypeDTO> be) {
-                        filterToolBar.setApplyFilterEnabled(true);
-                    }
-                });
+            @Override
+            public void handleEvent(ListViewEvent<LocationTypeDTO> be) {
+                filterToolBar.setApplyFilterEnabled(true);
+            }
+        });
         add(listView);
     }
-    
+
     protected void clearFilter() {
         for (LocationDTO location : listView.getStore().getModels()) {
             listView.setChecked(location, false);
@@ -131,7 +130,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         filterToolBar.setApplyFilterEnabled(false);
         filterToolBar.setRemoveFilterEnabled(false);
     }
-    
+
     @Override
     public Filter getValue() {
         return value;
@@ -145,20 +144,16 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
     @Override
     public void setValue(Filter value, boolean fireEvents) {
         this.value = new Filter();
-        this.value.addRestriction(DimensionType.Location,
-                value.getRestrictions(DimensionType.Location));
+        this.value.addRestriction(DimensionType.Location, value.getRestrictions(DimensionType.Location));
         applyInternalValue();
         if (fireEvents) {
             ValueChangeEvent.fire(this, this.value);
-        }        
+        }
     }
-    
+
     private void applyInternalValue() {
         for (LocationDTO model : listView.getStore().getModels()) {
-            listView.setChecked(
-                    model,
-                    value.getRestrictions(DimensionType.Location).contains(
-                            model.getId()));
+            listView.setChecked(model, value.getRestrictions(DimensionType.Location).contains(model.getId()));
         }
         filterToolBar.setApplyFilterEnabled(false);
         filterToolBar.setRemoveFilterEnabled(value.isRestricted(DimensionType.Location));
@@ -175,7 +170,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
         filter.clearRestrictions(DimensionType.Location);
 
         // avoid fetching a list of ALL locations if no indicators have been selected
-        if(!filter.isRestricted(DimensionType.Indicator)) {
+        if (!filter.isRestricted(DimensionType.Indicator)) {
             store.removeAll();
             return;
         }
@@ -190,7 +185,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
                 @Override
                 public void onFailure(Throwable caught) {
                     // TODO Auto-generated method stub
-                    
+
                 }
 
                 @Override
@@ -198,14 +193,15 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
                     store.removeAll();
                     List<Integer> ids = getSelectedIds();
 
-                    for(Bucket bucket : result.getBuckets()) {
+                    for (Bucket bucket : result.getBuckets()) {
                         LocationDTO dto = new LocationDTO();
                         dto.setId(((EntityCategory) bucket.getCategory(new Dimension(DimensionType.Location))).getId());
-                        dto.setName(((EntityCategory) bucket.getCategory(new Dimension(DimensionType.Location))).getLabel());
+                        dto.setName(((EntityCategory) bucket.getCategory(new Dimension(DimensionType.Location)))
+                                .getLabel());
                         store.add(dto);
                     }
                     store.sort("name", Style.SortDir.ASC);
-                    
+
                     applyInternalValue();
                     for (LocationDTO location : store.getModels()) {
                         if (ids.contains(location.getId())) {
@@ -215,7 +211,7 @@ public class LocationFilterPanel extends ContentPanel implements FilterPanel {
 
                     baseFilter = filter;
                 }
-            
+
             });
         }
     }

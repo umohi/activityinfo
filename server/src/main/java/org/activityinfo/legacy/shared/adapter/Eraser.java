@@ -50,8 +50,8 @@ public class Eraser {
     public Promise<Void> execute() {
 
         List<Command> commands = Lists.newArrayList();
-        for(Cuid instanceId : instanceIds) {
-            if(instanceId.getDomain() == CuidAdapter.LOCATION_DOMAIN) {
+        for (Cuid instanceId : instanceIds) {
+            if (instanceId.getDomain() == CuidAdapter.LOCATION_DOMAIN) {
 
 
                 Map<String, Object> properties = new HashMap<>();

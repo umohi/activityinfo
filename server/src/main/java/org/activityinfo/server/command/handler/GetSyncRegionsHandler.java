@@ -50,19 +50,15 @@ public class GetSyncRegionsHandler implements CommandHandler<GetSyncRegions> {
         this.entityManager = entityManager;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public CommandResult execute(GetSyncRegions cmd, User user)
-            throws CommandException {
+    @Override @SuppressWarnings("unchecked")
+    public CommandResult execute(GetSyncRegions cmd, User user) throws CommandException {
 
-        List<Object[]> databases = entityManager.createQuery(
-                "SELECT " +
-                        "db.id, db.country.id, db.version, " +
-                        "MAX(p.version) " +
-                        "FROM UserDatabase db " +
-                        "LEFT JOIN db.userPermissions p " +
-                        "GROUP BY db.id")
-                .getResultList();
+        List<Object[]> databases = entityManager.createQuery("SELECT " +
+                                                             "db.id, db.country.id, db.version, " +
+                                                             "MAX(p.version) " +
+                                                             "FROM UserDatabase db " +
+                                                             "LEFT JOIN db.userPermissions p " +
+                                                             "GROUP BY db.id").getResultList();
 
         List<Integer> databaseIds = Lists.newArrayList();
         Set<Integer> countryIds = Sets.newHashSet();
@@ -87,22 +83,20 @@ public class GetSyncRegionsHandler implements CommandHandler<GetSyncRegions> {
     }
 
     @SuppressWarnings("unchecked")
-    private Collection<? extends SyncRegion> listLocations(
-            List<Integer> databases) {
+    private Collection<? extends SyncRegion> listLocations(List<Integer> databases) {
 
         List<SyncRegion> locationRegions = new ArrayList<SyncRegion>();
 
         if (CollectionUtil.isNotEmpty(databases)) {
-            List<Object[]> regions = entityManager.createQuery(
-                    "SELECT " +
-                            "a.locationType.id, " +
-                            "MAX(loc.timeEdited) " +
-                            "FROM Activity a " +
-                            "INNER JOIN a.locationType.locations loc " +
-                            "WHERE a.database.id in (:dbs) " +
-                            "GROUP BY a.locationType")
-                    .setParameter("dbs", databases)
-                    .getResultList();
+            List<Object[]> regions = entityManager.createQuery("SELECT " +
+                                                               "a.locationType.id, " +
+                                                               "MAX(loc.timeEdited) " +
+                                                               "FROM Activity a " +
+                                                               "INNER JOIN a.locationType.locations loc " +
+                                                               "WHERE a.database.id in (:dbs) " +
+                                                               "GROUP BY a.locationType")
+                                                  .setParameter("dbs", databases)
+                                                  .getResultList();
 
             for (Object[] region : regions) {
                 locationRegions.add(new SyncRegion("location/" + region[0], region[1].toString()));
@@ -112,19 +106,17 @@ public class GetSyncRegionsHandler implements CommandHandler<GetSyncRegions> {
     }
 
     @SuppressWarnings("unchecked")
-    private Collection<? extends SyncRegion> listAdminRegions(
-            Set<Integer> countryIds) {
+    private Collection<? extends SyncRegion> listAdminRegions(Set<Integer> countryIds) {
 
         List<SyncRegion> adminRegions = new ArrayList<SyncRegion>();
 
         if (CollectionUtil.isNotEmpty(countryIds)) {
-            List<Integer> levels = entityManager.createQuery(
-                    "SELECT " +
-                            "level.id " +
-                            "FROM AdminLevel level " +
-                            "WHERE level.country.id in (:countries) ")
-                    .setParameter("countries", countryIds)
-                    .getResultList();
+            List<Integer> levels = entityManager.createQuery("SELECT " +
+                                                             "level.id " +
+                                                             "FROM AdminLevel level " +
+                                                             "WHERE level.country.id in (:countries) ")
+                                                .setParameter("countries", countryIds)
+                                                .getResultList();
 
             for (Integer level : levels) {
                 adminRegions.add(new SyncRegion("admin/" + level,
@@ -139,8 +131,7 @@ public class GetSyncRegionsHandler implements CommandHandler<GetSyncRegions> {
      * because we may be given permission to view data at different times.
      */
     @SuppressWarnings("unchecked")
-    private Collection<? extends SyncRegion> listSiteRegions(
-            List<Integer> databases) {
+    private Collection<? extends SyncRegion> listSiteRegions(List<Integer> databases) {
         List<SyncRegion> siteRegions = new ArrayList<SyncRegion>();
 
         // our initial sync region manages the table schema
@@ -148,15 +139,14 @@ public class GetSyncRegionsHandler implements CommandHandler<GetSyncRegions> {
 
         if (CollectionUtil.isNotEmpty(databases)) {
             // do one sync region per database
-            List<Object[]> regions = entityManager.createQuery(
-                    "SELECT " +
-                            "s.activity.database.id, " +
-                            "MAX(s.timeEdited) " +
-                            "FROM Site s " +
-                            "WHERE s.activity.database.id in (:dbs) " +
-                            "GROUP BY s.activity.database.id")
-                    .setParameter("dbs", databases)
-                    .getResultList();
+            List<Object[]> regions = entityManager.createQuery("SELECT " +
+                                                               "s.activity.database.id, " +
+                                                               "MAX(s.timeEdited) " +
+                                                               "FROM Site s " +
+                                                               "WHERE s.activity.database.id in (:dbs) " +
+                                                               "GROUP BY s.activity.database.id")
+                                                  .setParameter("dbs", databases)
+                                                  .getResultList();
 
             for (Object[] region : regions) {
                 siteRegions.add(new SyncRegion("site/" + region[0], region[1].toString()));

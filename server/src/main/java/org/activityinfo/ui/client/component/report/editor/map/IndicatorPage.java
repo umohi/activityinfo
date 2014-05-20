@@ -64,8 +64,7 @@ public class IndicatorPage extends WizardPage {
         treePanel.addCheckChangedListener(new Listener<TreePanelEvent>() {
             @Override
             public void handleEvent(TreePanelEvent be) {
-                IndicatorPage.this.fireEvent(Events.SelectionChange,
-                        new BaseEvent(Events.SelectionChange));
+                IndicatorPage.this.fireEvent(Events.SelectionChange, new BaseEvent(Events.SelectionChange));
             }
         });
 

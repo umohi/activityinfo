@@ -1,4 +1,3 @@
-
 /**
  * Interfaces and implementation for the generic interface
  * to blob stores

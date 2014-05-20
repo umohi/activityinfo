@@ -38,16 +38,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class GetTargetsHandler implements
-        CommandHandlerAsync<GetTargets, TargetResult> {
+public class GetTargetsHandler implements CommandHandlerAsync<GetTargets, TargetResult> {
 
-    private final Map<Integer, List<TargetValueDTO>> targetValues = Maps
-            .newHashMap();
+    private final Map<Integer, List<TargetValueDTO>> targetValues = Maps.newHashMap();
     private final List<TargetDTO> targets = Lists.newArrayList();
 
     @Override
-    public void execute(GetTargets command, ExecutionContext context,
-                        AsyncCallback<TargetResult> callback) {
+    public void execute(GetTargets command, ExecutionContext context, AsyncCallback<TargetResult> callback) {
 
         loadTargetValues(context, command.getDatabaseId());
         loadTargets(context, command.getDatabaseId());
@@ -56,21 +53,29 @@ public class GetTargetsHandler implements
     }
 
     protected void loadTargets(ExecutionContext context, int databaseId) {
-        SqlQuery.select("t.name", "t.targetId", "t.Date1", "t.Date2",
-                "t.ProjectId", "t.PartnerId", "t.AdminEntityId", "t.DatabaseId")
+        SqlQuery.select("t.name",
+                "t.targetId",
+                "t.Date1",
+                "t.Date2",
+                "t.ProjectId",
+                "t.PartnerId",
+                "t.AdminEntityId",
+                "t.DatabaseId")
                 .appendColumn("a.name", "area")
                 .appendColumn("pr.name", "projectName")
                 .appendColumn("pt.name", "partnerName")
                 .from(Tables.TARGET, "t")
                 .leftJoin("adminentity", "a")
                 .on("t.AdminEntityId = a.AdminEntityId")
-                .leftJoin("project", "pr").on("t.ProjectId = pr.ProjectId")
-                .leftJoin("partner", "pt").on("t.PartnerId = pt.PartnerId")
-                .where("t.DatabaseId").equalTo(databaseId)
+                .leftJoin("project", "pr")
+                .on("t.ProjectId = pr.ProjectId")
+                .leftJoin("partner", "pt")
+                .on("t.PartnerId = pt.PartnerId")
+                .where("t.DatabaseId")
+                .equalTo(databaseId)
                 .execute(context.getTransaction(), new SqlResultCallback() {
                     @Override
-                    public void onSuccess(SqlTransaction tx,
-                                          SqlResultSet results) {
+                    public void onSuccess(SqlTransaction tx, SqlResultSet results) {
 
                         for (SqlResultSetRow row : results.getRows()) {
                             TargetDTO target = new TargetDTO();
@@ -109,15 +114,16 @@ public class GetTargetsHandler implements
     protected void loadTargetValues(ExecutionContext context, int databaseId) {
 
         SqlQuery.select("v.targetId", "v.indicatorId", "v.value")
-                .appendColumn("t.name").appendColumn("i.name", "iname")
+                .appendColumn("t.name")
+                .appendColumn("i.name", "iname")
                 .from(Tables.TARGET_VALUE, "v")
-                .leftJoin(Tables.TARGET, "t").on("v.targetId = t.targetId")
+                .leftJoin(Tables.TARGET, "t")
+                .on("v.targetId = t.targetId")
                 .leftJoin(Tables.INDICATOR, "i")
                 .on("v.indicatorId = i.indicatorId")
                 .execute(context.getTransaction(), new SqlResultCallback() {
                     @Override
-                    public void onSuccess(SqlTransaction tx,
-                                          SqlResultSet results) {
+                    public void onSuccess(SqlTransaction tx, SqlResultSet results) {
 
                         for (SqlResultSetRow row : results.getRows()) {
                             TargetValueDTO dto = new TargetValueDTO();
@@ -126,8 +132,7 @@ public class GetTargetsHandler implements
                             dto.setIndicatorId(row.getInt("indicatorId"));
                             dto.setName(row.getString("iname"));
 
-                            List<TargetValueDTO> list = targetValues.get(dto
-                                    .getTargetId());
+                            List<TargetValueDTO> list = targetValues.get(dto.getTargetId());
 
                             if (targetValues.get(dto.getTargetId()) == null) {
                                 list = new ArrayList<TargetValueDTO>();

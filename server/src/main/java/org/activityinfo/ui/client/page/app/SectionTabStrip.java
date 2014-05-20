@@ -38,14 +38,11 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SectionTabStrip extends Widget implements
-        HasSelectionHandlers<Section> {
+public class SectionTabStrip extends Widget implements HasSelectionHandlers<Section> {
 
-    private static SectionTabStripUiBinder uiBinder = GWT
-            .create(SectionTabStripUiBinder.class);
+    private static SectionTabStripUiBinder uiBinder = GWT.create(SectionTabStripUiBinder.class);
 
-    interface SectionTabStripUiBinder extends
-            UiBinder<Element, SectionTabStrip> {
+    interface SectionTabStripUiBinder extends UiBinder<Element, SectionTabStrip> {
     }
 
     interface MyStyle extends CssResource {
@@ -56,11 +53,9 @@ public class SectionTabStrip extends Widget implements
         String hoverSection();
     }
 
-    @UiField
-    DivElement sectionDiv;
+    @UiField DivElement sectionDiv;
 
-    @UiField
-    MyStyle style;
+    @UiField MyStyle style;
 
     // Not ready yet
     // SectionPopup popup;
@@ -119,8 +114,7 @@ public class SectionTabStrip extends Widget implements
     }
 
     public void setSelection(Section section) {
-        NodeList<com.google.gwt.user.client.Element> tabs = El.fly(sectionDiv)
-                .select("." + style.section());
+        NodeList<com.google.gwt.user.client.Element> tabs = El.fly(sectionDiv).select("." + style.section());
         for (int i = 0; i != tabs.getLength(); ++i) {
             Element tab = tabs.getItem(i).cast();
             if (section != null && i == section.ordinal()) {
@@ -132,8 +126,7 @@ public class SectionTabStrip extends Widget implements
     }
 
     @Override
-    public HandlerRegistration addSelectionHandler(
-            SelectionHandler<Section> handler) {
+    public HandlerRegistration addSelectionHandler(SelectionHandler<Section> handler) {
         return addHandler(handler, SelectionEvent.getType());
     }
 }

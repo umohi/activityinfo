@@ -67,8 +67,7 @@ public class SelectionServlet extends DefaultSelectionServlet {
 
         @Override
         public String get(HttpServletRequest req) {
-            Authentication auth = entityManager.get().find(
-                    Authentication.class, getAuthToken(req));
+            Authentication auth = entityManager.get().find(Authentication.class, getAuthToken(req));
             if (auth == null) {
                 throw new UserNotAuthenticatedException("expired authtoken");
             }
@@ -77,8 +76,7 @@ public class SelectionServlet extends DefaultSelectionServlet {
 
         private String getAuthToken(HttpServletRequest req) {
             for (Cookie cookie : req.getCookies()) {
-                if (cookie.getName()
-                        .equals(AuthenticatedUser.AUTH_TOKEN_COOKIE)) {
+                if (cookie.getName().equals(AuthenticatedUser.AUTH_TOKEN_COOKIE)) {
                     return cookie.getValue();
                 }
             }
@@ -95,8 +93,7 @@ public class SelectionServlet extends DefaultSelectionServlet {
     }
 
     @Override
-    protected void handleSelectionException(Path path, Exception e,
-                                            HttpServletResponse resp) throws IOException {
+    protected void handleSelectionException(Path path, Exception e, HttpServletResponse resp) throws IOException {
         if (e instanceof UnknownUserAgentException) {
             resp.getWriter().print("window.location = '/unsupportedBrowser'; ");
         } else {
@@ -105,13 +102,11 @@ public class SelectionServlet extends DefaultSelectionServlet {
     }
 
     @Override
-    protected void handleNoAvailablePermutation(Path path,
-                                                HttpServletResponse resp) throws IOException {
+    protected void handleNoAvailablePermutation(Path path, HttpServletResponse resp) throws IOException {
         if (path.file.endsWith(".js")) {
             resp.getWriter().println("window.location = '/unsupportedBrowser';");
         } else {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Unsupported browser");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unsupported browser");
         }
     }
 
@@ -122,8 +117,8 @@ public class SelectionServlet extends DefaultSelectionServlet {
         @Override
         public String get(HttpServletRequest request) {
             if (request.getServerName().contains("localhost") ||
-                    request.getServerName().contains("127.0.0.1") ||
-                    request.getServerName().contains("trace")) {
+                request.getServerName().contains("127.0.0.1") ||
+                request.getServerName().contains("trace")) {
 
                 return "FINEST";
 
@@ -133,14 +128,12 @@ public class SelectionServlet extends DefaultSelectionServlet {
         }
     }
 
-    @VisibleForTesting
-    void testInit(ServletConfig config) throws ServletException {
+    @VisibleForTesting void testInit(ServletConfig config) throws ServletException {
         init(config);
     }
 
     @VisibleForTesting
-    void testGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    void testGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
 }

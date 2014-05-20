@@ -25,9 +25,5 @@ package org.activityinfo.ui.client.page.config.mvp;
 import org.activityinfo.legacy.shared.model.DTO;
 
 @Deprecated
-public interface AddCreateView<M extends DTO>
-        extends
-        View<M>,
-        CanCreate<M>,
-        CanUpdate<M> {
+public interface AddCreateView<M extends DTO> extends View<M>, CanCreate<M>, CanUpdate<M> {
 }

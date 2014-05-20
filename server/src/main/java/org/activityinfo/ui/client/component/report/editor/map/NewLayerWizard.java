@@ -44,14 +44,13 @@ public final class NewLayerWizard extends Wizard {
 
     public NewLayerWizard(Dispatcher dispatcher) {
         indicatorPage = new IndicatorPage(dispatcher);
-        indicatorPage.addListener(Events.SelectionChange,
-                new Listener<BaseEvent>() {
+        indicatorPage.addListener(Events.SelectionChange, new Listener<BaseEvent>() {
 
-                    @Override
-                    public void handleEvent(BaseEvent be) {
-                        onIndicatorsChanged();
-                    }
-                });
+            @Override
+            public void handleEvent(BaseEvent be) {
+                onIndicatorsChanged();
+            }
+        });
         layerTypePage = new LayerTypePage();
         layerTypePage.addListener(Events.Change, new Listener<BaseEvent>() {
 
@@ -87,8 +86,7 @@ public final class NewLayerWizard extends Wizard {
             layer.addIndicatorId(indicatorId);
         }
         if (layer instanceof PolygonMapLayer) {
-            ((PolygonMapLayer) layer).setAdminLevelId(adminLevelPage
-                    .getSelectedLevelId());
+            ((PolygonMapLayer) layer).setAdminLevelId(adminLevelPage.getSelectedLevelId());
         }
         return layer;
     }
@@ -121,8 +119,7 @@ public final class NewLayerWizard extends Wizard {
         if (indicatorPage.getSelection().isEmpty()) {
             return false;
         }
-        if (layerTypePage.newLayer() instanceof PolygonMapLayer &&
-                adminLevelPage.getSelectedLevelId() == null) {
+        if (layerTypePage.newLayer() instanceof PolygonMapLayer && adminLevelPage.getSelectedLevelId() == null) {
             return false;
         }
         return true;

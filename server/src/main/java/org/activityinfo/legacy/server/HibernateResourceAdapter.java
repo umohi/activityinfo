@@ -13,5 +13,4 @@ public class HibernateResourceAdapter {
     private EntityManager entityManager;
 
 
-
 }

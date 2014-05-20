@@ -39,8 +39,7 @@ public class FormNavigationListView extends ListView<FormSectionModel> {
         store = new ListStore<FormSectionModel>();
 
         setStore(store);
-        setTemplate(SiteFormResources.INSTANCE.formNavigationTemplate()
-                .getText());
+        setTemplate(SiteFormResources.INSTANCE.formNavigationTemplate().getText());
         setItemSelector(".formSec");
 
         getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -64,8 +63,7 @@ public class FormNavigationListView extends ListView<FormSectionModel> {
 
     private void selectAndFire(int index) {
         select(index);
-        ListViewEvent<FormSectionModel> event = new ListViewEvent<FormSectionModel>(
-                this);
+        ListViewEvent<FormSectionModel> event = new ListViewEvent<FormSectionModel>(this);
         event.setModel(getSelectionModel().getSelectedItem());
     }
 

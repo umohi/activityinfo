@@ -104,14 +104,12 @@ public class TiledMap {
     }
 
     public Point fromLatLngToPixel(AiLatLng latLng) {
-        return TileMath.fromLatLngToPixel(latLng, this.zoom)
-                .translate(-origin.getDoubleX(), -origin.getDoubleY());
+        return TileMath.fromLatLngToPixel(latLng, this.zoom).translate(-origin.getDoubleX(), -origin.getDoubleY());
     }
 
 
     public AiLatLng fromPixelToLatLng(Point px) {
-        return TileMath.inverse(
-                px.translate(origin.getDoubleX(), origin.getDoubleY()), this.zoom);
+        return TileMath.inverse(px.translate(origin.getDoubleX(), origin.getDoubleY()), this.zoom);
     }
 
     public AiLatLng fromPixelToLatLng(double x, double y) {

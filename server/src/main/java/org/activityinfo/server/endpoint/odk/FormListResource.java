@@ -15,8 +15,7 @@ import java.util.Map;
 
 @Path("/formList")
 public class FormListResource extends ODKResource {
-    @GET
-    @Produces(MediaType.TEXT_XML)
+    @GET @Produces(MediaType.TEXT_XML)
     public Response formList(@Context UriInfo info) throws Exception {
         if (enforceAuthorization()) {
             return askAuthentication();

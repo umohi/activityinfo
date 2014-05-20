@@ -30,8 +30,7 @@ import org.activityinfo.ui.client.EventBus;
  * Base class to reduce code in presenter classes and to provide a template
  */
 @Deprecated
-public class PresenterBase<V extends View<M>, M extends DTO>
-        implements Presenter<V, M> {
+public class PresenterBase<V extends View<M>, M extends DTO> implements Presenter<V, M> {
 
     protected final Dispatcher service;
     protected final EventBus eventBus;

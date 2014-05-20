@@ -27,8 +27,7 @@ import javax.persistence.*;
 /**
  * @author Alex Bertram
  */
-@Entity
-@org.hibernate.annotations.Filter(
+@Entity @org.hibernate.annotations.Filter(
         name = "hideDeleted",
         condition = "(IndicatorId not in (select i.IndicatorId from indicator i where i.dateDeleted is not null))")
 public class IndicatorValue implements java.io.Serializable {
@@ -41,23 +40,20 @@ public class IndicatorValue implements java.io.Serializable {
     public IndicatorValue() {
     }
 
-    public IndicatorValue(IndicatorValueId id, Indicator indicator,
-                          ReportingPeriod reportingPeriod) {
+    public IndicatorValue(IndicatorValueId id, Indicator indicator, ReportingPeriod reportingPeriod) {
         this.id = id;
         this.indicator = indicator;
         this.reportingPeriod = reportingPeriod;
     }
 
-    public IndicatorValue(IndicatorValueId id, Indicator indicator,
-                          ReportingPeriod reportingPeriod, Double value) {
+    public IndicatorValue(IndicatorValueId id, Indicator indicator, ReportingPeriod reportingPeriod, Double value) {
         this.id = id;
         this.indicator = indicator;
         this.reportingPeriod = reportingPeriod;
         this.value = value;
     }
 
-    public IndicatorValue(ReportingPeriod period, Indicator indicator,
-                          double value) {
+    public IndicatorValue(ReportingPeriod period, Indicator indicator, double value) {
 
         this.id = new IndicatorValueId(period.getId(), indicator.getId());
         this.indicator = indicator;
@@ -65,9 +61,8 @@ public class IndicatorValue implements java.io.Serializable {
         this.value = value;
     }
 
-    @EmbeddedId
-    @AttributeOverrides({
-            @AttributeOverride(name = "reportingPeriodId", column = @Column(name = "ReportingPeriodId", nullable = false)),
+    @EmbeddedId @AttributeOverrides({@AttributeOverride(name = "reportingPeriodId",
+            column = @Column(name = "ReportingPeriodId", nullable = false)),
             @AttributeOverride(name = "indicatorId", column = @Column(name = "IndicatorId", nullable = false))})
     public IndicatorValueId getId() {
         return this.id;

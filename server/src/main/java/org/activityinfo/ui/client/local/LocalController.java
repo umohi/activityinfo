@@ -129,8 +129,7 @@ public class LocalController extends AbstractDispatcher {
 
 
     @Override
-    public <T extends CommandResult> void execute(Command<T> command,
-                                                  AsyncCallback<T> callback) {
+    public <T extends CommandResult> void execute(Command<T> command, AsyncCallback<T> callback) {
         activeStrategy.dispatch(command, callback);
     }
 
@@ -152,8 +151,7 @@ public class LocalController extends AbstractDispatcher {
     }
 
     private void fireStatus() {
-        eventBus.fireEvent(new LocalStateChangeEvent(this.activeStrategy
-                .getState()));
+        eventBus.fireEvent(new LocalStateChangeEvent(this.activeStrategy.getState()));
     }
 
     private void loadSynchronizerImpl(final AsyncCallback<Synchronizer> callback) {
@@ -173,9 +171,7 @@ public class LocalController extends AbstractDispatcher {
                 try {
                     impl = synchronizerProvider.get();
                 } catch (Exception caught) {
-                    Log.error(
-                            "SynchronizationImpl constructor threw exception",
-                            caught);
+                    Log.error("SynchronizationImpl constructor threw exception", caught);
                     callback.onFailure(caught);
                     return;
                 }
@@ -216,8 +212,7 @@ public class LocalController extends AbstractDispatcher {
             return this;
         }
 
-        @Override
-        State getState() {
+        @Override State getState() {
             return State.UNINSTALLED;
         }
 
@@ -247,13 +242,11 @@ public class LocalController extends AbstractDispatcher {
      */
     private class InstallingStrategy extends Strategy {
 
-        @Override
-        State getState() {
+        @Override State getState() {
             return State.INSTALLING;
         }
 
-        @Override
-        Strategy activate() {
+        @Override Strategy activate() {
             eventBus.fireEvent(new SyncStatusEvent(uiConstants.starting(), 0));
 
             loadSynchronizerImpl(new AsyncCallback<Synchronizer>() {
@@ -295,13 +288,11 @@ public class LocalController extends AbstractDispatcher {
          */
         private List<CommandRequest> pendingRequests;
 
-        @Override
-        State getState() {
+        @Override State getState() {
             return State.CHECKING;
         }
 
-        @Override
-        Strategy activate() {
+        @Override Strategy activate() {
             pendingRequests = new ArrayList<CommandRequest>();
             try {
                 historyTable.get().get(new AsyncCallback<Date>() {
@@ -348,8 +339,7 @@ public class LocalController extends AbstractDispatcher {
             });
         }
 
-        @Override
-        void dispatch(Command command, AsyncCallback callback) {
+        @Override void dispatch(Command command, AsyncCallback callback) {
             pendingRequests.add(new CommandRequest(command, callback));
         }
 
@@ -383,8 +373,7 @@ public class LocalController extends AbstractDispatcher {
             localManager.synchronize();
         }
 
-        @Override
-        State getState() {
+        @Override State getState() {
             return State.INSTALLED;
         }
 
@@ -413,8 +402,7 @@ public class LocalController extends AbstractDispatcher {
             return this;
         }
 
-        @Override
-        void dispatch(Command command, AsyncCallback callback) {
+        @Override void dispatch(Command command, AsyncCallback callback) {
 
             localManager.execute(command, callback);
         }

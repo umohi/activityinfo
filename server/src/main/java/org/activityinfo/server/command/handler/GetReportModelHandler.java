@@ -47,11 +47,9 @@ import javax.xml.bind.JAXBException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class GetReportModelHandler implements
-        CommandHandlerAsync<GetReportModel, ReportDTO> {
+public class GetReportModelHandler implements CommandHandlerAsync<GetReportModel, ReportDTO> {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(GetReportModelHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GetReportModelHandler.class.getName());
 
     private final EntityManager em;
 
@@ -77,8 +75,7 @@ public class GetReportModelHandler implements
             Report report = new Report();
 
             try {
-                LOGGER.finest("Starting to parse xml (size = "
-                        + entity.getXml().length() + ")");
+                LOGGER.finest("Starting to parse xml (size = " + entity.getXml().length() + ")");
 
                 report = ReportParserJaxb.parseXml(entity.getXml());
 
@@ -102,25 +99,24 @@ public class GetReportModelHandler implements
 
     private void loadMetadata(final Integer reportId,
                               final ExecutionContext context,
-                              final ReportDTO reportDTO, final AsyncCallback<ReportDTO> callback) {
+                              final ReportDTO reportDTO,
+                              final AsyncCallback<ReportDTO> callback) {
 
         final int userId = context.getUser().getId();
 
-        SqlQuery mySubscriptions =
-                SqlQuery.selectAll()
-                        .from("reportsubscription")
-                        .where("userId").equalTo(userId);
+        SqlQuery mySubscriptions = SqlQuery.selectAll().from("reportsubscription").where("userId").equalTo(userId);
 
-        SqlQuery myDatabases =
-                SqlQuery.selectSingle("d.databaseid")
-                        .from("userdatabase", "d")
-                        .leftJoin(
-                                SqlQuery.selectAll()
-                                        .from(Tables.USER_PERMISSION, "UserPermission")
-                                        .where("UserPermission.UserId").equalTo(userId), "p")
-                        .on("p.DatabaseId = d.DatabaseId")
-                        .where("d.ownerUserId").equalTo(userId)
-                        .or("p.AllowView").equalTo(1);
+        SqlQuery myDatabases = SqlQuery.selectSingle("d.databaseid")
+                                       .from("userdatabase", "d")
+                                       .leftJoin(SqlQuery.selectAll()
+                                                         .from(Tables.USER_PERMISSION, "UserPermission")
+                                                         .where("UserPermission.UserId")
+                                                         .equalTo(userId), "p")
+                                       .on("p.DatabaseId = d.DatabaseId")
+                                       .where("d.ownerUserId")
+                                       .equalTo(userId)
+                                       .or("p.AllowView")
+                                       .equalTo(1);
 
         SqlQuery.select()
                 .appendColumn("r.reportTemplateId", "reportId")
@@ -130,23 +126,24 @@ public class GetReportModelHandler implements
                 .appendColumn("s.dashboard", "dashboard")
                 .appendColumn("s.emaildelivery", "emaildelivery")
                 .appendColumn("s.emailday", "emailday")
-                .appendColumn(
-                        SqlQuery.selectSingle("max(defaultDashboard)")
-                                .from("reportvisibility", "v")
-                                .where("v.databaseId").in(myDatabases)
-                                .whereTrue("v.reportid = r.reportTemplateId"),
-                        "defaultDashboard")
+                .appendColumn(SqlQuery.selectSingle("max(defaultDashboard)")
+                                      .from("reportvisibility", "v")
+                                      .where("v.databaseId")
+                                      .in(myDatabases)
+                                      .whereTrue("v.reportid = r.reportTemplateId"), "defaultDashboard")
                 .from("reporttemplate", "r")
-                .leftJoin("userlogin o").on("o.userid = r.ownerUserId")
+                .leftJoin("userlogin o")
+                .on("o.userid = r.ownerUserId")
                 .leftJoin(mySubscriptions, "s")
                 .on("r.reportTemplateId = s.reportId")
-                .where("r.ownerUserId").equalTo(userId)
-                .where("r.reportTemplateId").equalTo(reportId)
+                .where("r.ownerUserId")
+                .equalTo(userId)
+                .where("r.reportTemplateId")
+                .equalTo(reportId)
                 .execute(context.getTransaction(), new SqlResultCallback() {
 
                     @Override
-                    public void onSuccess(final SqlTransaction tx,
-                                          final SqlResultSet results) {
+                    public void onSuccess(final SqlTransaction tx, final SqlResultSet results) {
                         List<ReportMetadataDTO> dtos = Lists.newArrayList();
 
                         for (SqlResultSetRow row : results.getRows()) {
@@ -157,8 +154,7 @@ public class GetReportModelHandler implements
                             dto.setTitle(row.getString("title"));
                             dto.setEditAllowed(dto.getAmOwner());
                             if (!row.isNull("emaildelivery")) {
-                                dto.setEmailDelivery(EmailDelivery.valueOf(row
-                                        .getString("emaildelivery")));
+                                dto.setEmailDelivery(EmailDelivery.valueOf(row.getString("emaildelivery")));
                             }
                             if (row.isNull("emailday")) {
                                 dto.setDay(1);
@@ -167,8 +163,7 @@ public class GetReportModelHandler implements
                             }
                             if (row.isNull("dashboard")) {
                                 // inherited from database-wide visibility
-                                dto.setDashboard(!row.isNull("defaultDashboard") &&
-                                        row.getBoolean("defaultDashboard"));
+                                dto.setDashboard(!row.isNull("defaultDashboard") && row.getBoolean("defaultDashboard"));
                             } else {
                                 dto.setDashboard(row.getBoolean("dashboard"));
                             }

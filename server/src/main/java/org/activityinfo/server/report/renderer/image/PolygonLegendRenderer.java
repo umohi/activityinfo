@@ -64,8 +64,7 @@ public class PolygonLegendRenderer {
 
     private void calculateSize() {
         this.width = PADDING + SWATCH_WIDTH + PADDING + LABEL_WIDTH + PADDING;
-        this.height = ((PADDING + SWATCH_HEIGHT) * legend.getClasses().size())
-                + PADDING;
+        this.height = ((PADDING + SWATCH_HEIGHT) * legend.getClasses().size()) + PADDING;
     }
 
     public ItextGraphic createImage(ImageCreator creator) {

@@ -40,19 +40,13 @@ public class LinkedSumAvgIndicatorValues extends BaseTable {
     public void setupQuery(PivotSites command, SqlQuery query) {
 
         query.from(Tables.INDICATOR_LINK, "IndicatorLink");
-        query.leftJoin(Tables.INDICATOR_VALUE, "V")
-                .on("IndicatorLink.SourceIndicatorId=V.IndicatorId");
-        query.leftJoin(Tables.INDICATOR, "Indicator")
-                .on("IndicatorLink.DestinationIndicatorId=Indicator.IndicatorId");
-        query.leftJoin(Tables.ACTIVITY, "Activity")
-                .on("Activity.ActivityId=Indicator.ActivityId");
-        query.leftJoin(Tables.USER_DATABASE, "UserDatabase")
-                .on("UserDatabase.DatabaseId=Activity.DatabaseId");
+        query.leftJoin(Tables.INDICATOR_VALUE, "V").on("IndicatorLink.SourceIndicatorId=V.IndicatorId");
+        query.leftJoin(Tables.INDICATOR, "Indicator").on("IndicatorLink.DestinationIndicatorId=Indicator.IndicatorId");
+        query.leftJoin(Tables.ACTIVITY, "Activity").on("Activity.ActivityId=Indicator.ActivityId");
+        query.leftJoin(Tables.USER_DATABASE, "UserDatabase").on("UserDatabase.DatabaseId=Activity.DatabaseId");
 
-        query.leftJoin(Tables.REPORTING_PERIOD, "Period")
-                .on("Period.ReportingPeriodId=V.ReportingPeriodId");
-        query.leftJoin(Tables.SITE, "Site")
-                .on("Site.SiteId=Period.SiteId");
+        query.leftJoin(Tables.REPORTING_PERIOD, "Period").on("Period.ReportingPeriodId=V.ReportingPeriodId");
+        query.leftJoin(Tables.SITE, "Site").on("Site.SiteId=Period.SiteId");
 
         query.appendColumn("Indicator.Aggregation", ValueFields.AGGREGATION);
         query.appendColumn("SUM(V.Value)", ValueFields.SUM);
@@ -60,8 +54,7 @@ public class LinkedSumAvgIndicatorValues extends BaseTable {
 
         query.groupBy("Indicator.IndicatorId");
         query.groupBy("Indicator.Aggregation");
-        query
-                .whereTrue(" ((V.value <> 0 and Indicator.Aggregation=0) or Indicator.Aggregation=1) ");
+        query.whereTrue(" ((V.value <> 0 and Indicator.Aggregation=0) or Indicator.Aggregation=1) ");
 
         query.where("Site.dateDeleted").isNull();
         query.where("Activity.dateDeleted").isNull();

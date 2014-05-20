@@ -26,8 +26,7 @@ import java.util.logging.Logger;
 public class GeoDigestRenderer implements DigestRenderer {
     private static final String BUBBLE_COLOR = "67a639";
 
-    private static final Logger LOGGER =
-            Logger.getLogger(GeoDigestRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GeoDigestRenderer.class.getName());
 
     private final Provider<EntityManager> entityManager;
     private final DispatcherSync dispatcher;
@@ -110,15 +109,17 @@ public class GeoDigestRenderer implements DigestRenderer {
             for (Integer siteId : siteIds) {
                 SiteResult siteResult = dispatcher.execute(GetSites.byId(siteId));
                 SiteDTO siteDTO = siteResult.getData().get(0);
-                ActivityDTO activityDTO = databaseModel.getModel().getSchemaDTO()
-                        .getActivityById(siteDTO.getActivityId());
+                ActivityDTO activityDTO = databaseModel.getModel()
+                                                       .getSchemaDTO()
+                                                       .getActivityById(siteDTO.getActivityId());
 
                 List<SiteHistory> histories = findSiteHistory(siteId, databaseModel.getModel().getFrom());
                 for (SiteHistory history : histories) {
                     html.append("<span class='geo-site' style='margin-left:10px;'>&bull; ");
-                    html.append(I18N.MESSAGES.geoDigestSiteMsg(
-                            history.getUser().getEmail(), history.getUser().getName(),
-                            activityDTO.getName(), siteDTO.getLocationName()));
+                    html.append(I18N.MESSAGES.geoDigestSiteMsg(history.getUser().getEmail(),
+                            history.getUser().getName(),
+                            activityDTO.getName(),
+                            siteDTO.getLocationName()));
 
                     Date targetDate = databaseModel.getModel().getDate();
                     Date creationDate = new Date(history.getTimeCreated());
@@ -143,15 +144,11 @@ public class GeoDigestRenderer implements DigestRenderer {
      * @return the sitehistory edited since the specified timestamp (milliseconds) and linked to the specified database
      * and user. The resulting list is grouped by user, keeping the last created sitehistory entry per user.
      */
-    @VisibleForTesting
-    @SuppressWarnings("unchecked")
-    List<SiteHistory> findSiteHistory(Integer siteId, long from) {
+    @VisibleForTesting @SuppressWarnings("unchecked") List<SiteHistory> findSiteHistory(Integer siteId, long from) {
 
-        Query query = entityManager.get().createQuery(
-                "select distinct h from SiteHistory h " +
-                        "where h.site.id = :siteId and h.timeCreated >= :from " +
-                        "order by h.timeCreated"
-        );
+        Query query = entityManager.get().createQuery("select distinct h from SiteHistory h " +
+                                                      "where h.site.id = :siteId and h.timeCreated >= :from " +
+                                                      "order by h.timeCreated");
         query.setParameter("siteId", siteId);
         query.setParameter("from", from);
 

@@ -24,15 +24,13 @@ import static org.activityinfo.legacy.shared.adapter.CuidAdapter.*;
 
 /**
  * Given an intersection of Criteria, fetch the corresponding entities
- *
  */
-public class QueryExecutor  {
+public class QueryExecutor {
 
     private final Dispatcher dispatcher;
     private final Criteria criteria;
 
     private CriteriaAnalysis criteriaAnalysis;
-
 
 
     public QueryExecutor(Dispatcher dispatcher, Criteria rootCriteria) {
@@ -43,30 +41,30 @@ public class QueryExecutor  {
 
     public Promise<List<FormInstance>> execute() {
 
-        if(criteriaAnalysis.isEmptySet()) {
+        if (criteriaAnalysis.isEmptySet()) {
             return emptySet();
         }
 
-        if(criteriaAnalysis.isRestrictedToSingleClass()) {
+        if (criteriaAnalysis.isRestrictedToSingleClass()) {
             return queryByClassId(criteriaAnalysis.getClassRestriction());
         } else if (criteriaAnalysis.isRestrictedByUnionOfClasses()) {
             return queryByClassIds();
-        } else if(criteriaAnalysis.isRestrictedById()) {
+        } else if (criteriaAnalysis.isRestrictedById()) {
             List<Promise<List<FormInstance>>> resultSets = Lists.newArrayList();
-            for(Character domain : criteriaAnalysis.getIds().keySet()) {
+            for (Character domain : criteriaAnalysis.getIds().keySet()) {
                 resultSets.add(queryByIds(domain, criteriaAnalysis.getIds().get(domain)));
             }
             return Promise.foldLeft(Collections.<FormInstance>emptyList(), new ConcatList<FormInstance>(), resultSets);
 
-        } else if(criteriaAnalysis.isAncestorQuery()) {
+        } else if (criteriaAnalysis.isAncestorQuery()) {
             Cuid parentId = criteriaAnalysis.getParentCriteria();
 
-            if(parentId.equals(FolderListAdapter.HOME_ID) || parentId.getDomain() == DATABASE_DOMAIN ||
-                    parentId.getDomain() == ACTIVITY_CATEGORY_DOMAIN) {
+            if (parentId.equals(FolderListAdapter.HOME_ID) || parentId.getDomain() == DATABASE_DOMAIN ||
+                parentId.getDomain() == ACTIVITY_CATEGORY_DOMAIN) {
                 return folders();
-            } else if(parentId.equals(FolderListAdapter.GEODB_ID)) {
+            } else if (parentId.equals(FolderListAdapter.GEODB_ID)) {
                 return countries();
-            } else if(parentId.getDomain() == CuidAdapter.COUNTRY_DOMAIN) {
+            } else if (parentId.getDomain() == CuidAdapter.COUNTRY_DOMAIN) {
                 return adminLevels(CuidAdapter.getLegacyIdFromCuid(parentId));
             } else {
                 throw new UnsupportedOperationException("parentID " + parentId);
@@ -80,8 +78,7 @@ public class QueryExecutor  {
         GetAdminLevels query = new GetAdminLevels();
         query.setCountryId(countryId);
 
-        return dispatcher.execute(query)
-                .then(new ListResultAdapter<>(new AdminLevelInstanceAdapter()));
+        return dispatcher.execute(query).then(new ListResultAdapter<>(new AdminLevelInstanceAdapter()));
     }
 
     private Promise<List<FormInstance>> queryByClassIds() {
@@ -94,21 +91,19 @@ public class QueryExecutor  {
     }
 
     private Promise<List<FormInstance>> queryByIds(char domain, Collection<Integer> ids) {
-        switch(domain) {
+        switch (domain) {
             case ADMIN_ENTITY_DOMAIN:
                 GetAdminEntities entityQuery = new GetAdminEntities();
-                if(!ids.isEmpty()) {
+                if (!ids.isEmpty()) {
                     entityQuery.setEntityIds(ids);
                 }
-                return dispatcher.execute(entityQuery)
-                    .then(new ListResultAdapter<>(new AdminEntityInstanceAdapter()));
+                return dispatcher.execute(entityQuery).then(new ListResultAdapter<>(new AdminEntityInstanceAdapter()));
             case ATTRIBUTE_DOMAIN:
-                return dispatcher.execute(new GetSchema())
-                     .then(new AttributeInstanceListAdapter(criteria));
+                return dispatcher.execute(new GetSchema()).then(new AttributeInstanceListAdapter(criteria));
 
             case LOCATION_DOMAIN:
                 return dispatcher.execute(new GetLocations(Lists.newArrayList(ids)))
-                        .then(new ListResultAdapter<>(new LocationInstanceAdapter()));
+                                 .then(new ListResultAdapter<>(new LocationInstanceAdapter()));
 
             case COUNTRY_DOMAIN:
                 return countries();
@@ -125,34 +120,32 @@ public class QueryExecutor  {
     }
 
     private Promise<List<FormInstance>> countries() {
-        return dispatcher.execute(new GetCountries())
-                .then(new ListResultAdapter<>(new CountryInstanceAdapter()));
+        return dispatcher.execute(new GetCountries()).then(new ListResultAdapter<>(new CountryInstanceAdapter()));
     }
 
     private Promise<List<FormInstance>> queryByClassId(Cuid formClassId) {
-        if(formClassId.equals(FolderClass.CLASS_ID)) {
+        if (formClassId.equals(FolderClass.CLASS_ID)) {
             return folders();
-        } else if(formClassId.equals(ApplicationProperties.COUNTRY_CLASS)) {
+        } else if (formClassId.equals(ApplicationProperties.COUNTRY_CLASS)) {
             return countries();
         }
 
-        switch(formClassId.getDomain()) {
+        switch (formClassId.getDomain()) {
             case ATTRIBUTE_GROUP_DOMAIN:
-                return dispatcher.execute(new GetSchema())
-                        .then(new AttributeInstanceListAdapter(criteria));
+                return dispatcher.execute(new GetSchema()).then(new AttributeInstanceListAdapter(criteria));
 
             case ADMIN_LEVEL_DOMAIN:
                 return dispatcher.execute(adminQuery(formClassId))
-                        .then(new ListResultAdapter<>(new AdminEntityInstanceAdapter()));
+                                 .then(new ListResultAdapter<>(new AdminEntityInstanceAdapter()));
 
             case LOCATION_TYPE_DOMAIN:
                 return dispatcher.execute(composeLocationQuery(formClassId))
-                        .then(new ListResultAdapter<>(new LocationInstanceAdapter()));
+                                 .then(new ListResultAdapter<>(new LocationInstanceAdapter()));
 
             case PARTNER_FORM_CLASS_DOMAIN:
                 return dispatcher.execute(new GetSchema())
-                        .then(new PartnerListExtractor(criteria))
-                        .then(concatMap(new PartnerInstanceAdapter(formClassId)));
+                                 .then(new PartnerListExtractor(criteria))
+                                 .then(concatMap(new PartnerInstanceAdapter(formClassId)));
 
             default:
                 return Promise.rejected(new UnsupportedOperationException(
@@ -164,15 +157,15 @@ public class QueryExecutor  {
         GetAdminEntities query = new GetAdminEntities();
         query.setLevelId(CuidAdapter.getLegacyIdFromCuid(formClassId));
 
-        Multimap<Character,Integer> ids = criteriaAnalysis.getIds();
-        if(!ids.get(ADMIN_ENTITY_DOMAIN).isEmpty()) {
+        Multimap<Character, Integer> ids = criteriaAnalysis.getIds();
+        if (!ids.get(ADMIN_ENTITY_DOMAIN).isEmpty()) {
             query.setEntityIds(ids.get(ADMIN_ENTITY_DOMAIN));
         }
-        if(criteria instanceof CriteriaIntersection) {
-            for(Criteria element : ((CriteriaIntersection) criteria).getElements()) {
-                if(element instanceof FieldCriteria) {
+        if (criteria instanceof CriteriaIntersection) {
+            for (Criteria element : ((CriteriaIntersection) criteria).getElements()) {
+                if (element instanceof FieldCriteria) {
                     FieldCriteria fieldCriteria = (FieldCriteria) element;
-                    if(fieldCriteria.getFieldId().equals(CuidAdapter.field(formClassId, ADMIN_PARENT_FIELD))) {
+                    if (fieldCriteria.getFieldId().equals(CuidAdapter.field(formClassId, ADMIN_PARENT_FIELD))) {
                         Cuid id = (Cuid) fieldCriteria.getValue();
 
                         query.setParentId(CuidAdapter.getLegacyIdFromCuid(id));
@@ -185,8 +178,7 @@ public class QueryExecutor  {
     }
 
     private Promise<List<FormInstance>> folders() {
-        return dispatcher.execute(new GetSchema())
-                .then(new FolderListAdapter(criteria));
+        return dispatcher.execute(new GetSchema()).then(new FolderListAdapter(criteria));
     }
 
     private GetLocations composeLocationQuery(Cuid formClassId) {

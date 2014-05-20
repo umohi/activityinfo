@@ -35,11 +35,11 @@ import org.activityinfo.legacy.shared.command.result.IndicatorLinkResult;
 
 import java.util.List;
 
-public class GetIndicatorLinksHandler implements
-        CommandHandlerAsync<GetIndicatorLinks, IndicatorLinkResult> {
+public class GetIndicatorLinksHandler implements CommandHandlerAsync<GetIndicatorLinks, IndicatorLinkResult> {
 
     @Override
-    public void execute(GetIndicatorLinks command, ExecutionContext context,
+    public void execute(GetIndicatorLinks command,
+                        ExecutionContext context,
                         final AsyncCallback<IndicatorLinkResult> callback) {
 
         SqlQuery.select()
@@ -50,12 +50,14 @@ public class GetIndicatorLinksHandler implements
                 .from(Tables.INDICATOR_LINK, "L")
                 .innerJoin(Tables.INDICATOR, "SI")
                 .on("SI.IndicatorId=L.SourceIndicatorId")
-                .innerJoin(Tables.ACTIVITY, "SA").on("SA.ActivityId=SI.ActivityId")
+                .innerJoin(Tables.ACTIVITY, "SA")
+                .on("SA.ActivityId=SI.ActivityId")
                 .innerJoin(Tables.USER_DATABASE, "SDB")
                 .on("SDB.DatabaseId=SA.DatabaseId")
                 .innerJoin(Tables.INDICATOR, "DI")
                 .on("DI.IndicatorId=L.DestinationIndicatorId")
-                .innerJoin(Tables.ACTIVITY, "DA").on("DA.ActivityId=DI.ActivityId")
+                .innerJoin(Tables.ACTIVITY, "DA")
+                .on("DA.ActivityId=DI.ActivityId")
                 .innerJoin(Tables.USER_DATABASE, "DDB")
                 .on("DDB.DatabaseId=DA.DatabaseId")
                 .execute(context.getTransaction(), new SqlResultCallback() {
@@ -66,12 +68,9 @@ public class GetIndicatorLinksHandler implements
                         for (SqlResultSetRow row : results.getRows()) {
                             IndicatorLink link = new IndicatorLink();
                             link.setSourceDatabaseId(row.getInt("SourceDatabaseId"));
-                            link.setSourceIndicatorId(row
-                                    .getInt("SourceIndicatorId"));
-                            link.setDestinationDatabaseId(row
-                                    .getInt("DestinationDatabaseId"));
-                            link.setDestinationIndicatorId(row
-                                    .getInt("DestinationIndicatorId"));
+                            link.setSourceIndicatorId(row.getInt("SourceIndicatorId"));
+                            link.setDestinationDatabaseId(row.getInt("DestinationDatabaseId"));
+                            link.setDestinationIndicatorId(row.getInt("DestinationIndicatorId"));
                             links.add(link);
                         }
                         callback.onSuccess(new IndicatorLinkResult(links));

@@ -28,8 +28,7 @@ import com.google.gwt.resources.client.CssResource;
 
 public interface ReportResources extends ClientBundle {
 
-    public static final ReportResources INSTANCE = GWT
-            .create(ReportResources.class);
+    public static final ReportResources INSTANCE = GWT.create(ReportResources.class);
 
     interface Style extends CssResource {
         String bar();
@@ -37,7 +36,6 @@ public interface ReportResources extends ClientBundle {
         String page();
     }
 
-    @Source("Report.css")
-    Style style();
+    @Source("Report.css") Style style();
 
 }

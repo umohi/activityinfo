@@ -56,19 +56,17 @@ public class PartnerFilterWidget extends FilterWidget {
         if (dialog == null) {
             dialog = new PartnerFilterDialog(dispatcher);
         }
-        dialog.show(getBaseFilter(), getValue(),
-                new SelectionCallback<Set<Integer>>() {
+        dialog.show(getBaseFilter(), getValue(), new SelectionCallback<Set<Integer>>() {
 
-                    @Override
-                    public void onSelected(Set<Integer> selection) {
-                        Filter newValue = new Filter();
-                        if (selection != null && !selection.isEmpty()) {
-                            newValue.addRestriction(DimensionType.Partner,
-                                    selection);
-                        }
-                        setValue(newValue);
-                    }
-                });
+            @Override
+            public void onSelected(Set<Integer> selection) {
+                Filter newValue = new Filter();
+                if (selection != null && !selection.isEmpty()) {
+                    newValue.addRestriction(DimensionType.Partner, selection);
+                }
+                setValue(newValue);
+            }
+        });
     }
 
     public void clear() {

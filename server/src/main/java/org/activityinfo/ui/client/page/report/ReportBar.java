@@ -57,23 +57,19 @@ public class ReportBar extends LayoutContainer {
 
         addTitle();
 
-        switchViewButton = new Button("Switch to page view",
-                IconImageBundle.ICONS.page());
+        switchViewButton = new Button("Switch to page view", IconImageBundle.ICONS.page());
         add(switchViewButton);
 
-        dashboardButton = new ToggleButton("Pin to dashboard",
-                IconImageBundle.ICONS.star());
+        dashboardButton = new ToggleButton("Pin to dashboard", IconImageBundle.ICONS.star());
         add(dashboardButton);
 
-        shareButton = new Button(I18N.CONSTANTS.share(),
-                IconImageBundle.ICONS.group());
+        shareButton = new Button(I18N.CONSTANTS.share(), IconImageBundle.ICONS.group());
         add(shareButton);
 
         exportButton = new ExportMenuButton();
         add(exportButton);
 
-        saveButton = new Button(I18N.CONSTANTS.save(),
-                IconImageBundle.ICONS.save());
+        saveButton = new Button(I18N.CONSTANTS.save(), IconImageBundle.ICONS.save());
         add(saveButton);
 
     }

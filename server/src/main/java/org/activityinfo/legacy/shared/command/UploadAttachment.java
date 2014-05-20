@@ -26,8 +26,7 @@ import org.activityinfo.legacy.shared.command.UploadAttachment.UploadAttachmentR
 import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.model.AttachmentDTO;
 
-public class UploadAttachment implements
-        MutatingCommand<UploadAttachmentResult> {
+public class UploadAttachment implements MutatingCommand<UploadAttachmentResult> {
     private AttachmentDTO attachment;
 
     public UploadAttachment(AttachmentDTO attachment) {

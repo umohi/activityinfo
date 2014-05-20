@@ -29,8 +29,7 @@ import org.activityinfo.legacy.shared.model.AttributeDTO;
 import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 
-public class AttributeCombo extends ComboBox<AttributeDTO> implements
-        AttributeField {
+public class AttributeCombo extends ComboBox<AttributeDTO> implements AttributeField {
 
     public AttributeCombo(AttributeGroupDTO attributeGroup) {
         super();
@@ -66,8 +65,7 @@ public class AttributeCombo extends ComboBox<AttributeDTO> implements
         AttributeDTO selected = getValue();
 
         for (AttributeDTO attribute : getStore().getModels()) {
-            site.setAttributeValue(attribute.getId(),
-                    selected != null && selected.getId() == attribute.getId());
+            site.setAttributeValue(attribute.getId(), selected != null && selected.getId() == attribute.getId());
         }
     }
 }

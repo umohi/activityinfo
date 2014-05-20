@@ -39,8 +39,7 @@ import org.activityinfo.server.report.generator.map.cluster.genetic.MarkerGraph;
 
 import java.util.*;
 
-public class PiechartLayerGenerator extends
-        PointLayerGenerator<PiechartMapLayer> {
+public class PiechartLayerGenerator extends PointLayerGenerator<PiechartMapLayer> {
 
     public PiechartLayerGenerator(PiechartMapLayer layer, Map<Integer, Indicator> indicators) {
         super(layer, indicators);
@@ -70,20 +69,18 @@ public class PiechartLayerGenerator extends
 
         // define our symbol scaling
         RadiiCalculator radiiCalculator;
-        if (layer.getScaling() == ScalingType.None ||
-                layer.getMinRadius() == layer.getMaxRadius()) {
+        if (layer.getScaling() == ScalingType.None || layer.getMinRadius() == layer.getMaxRadius()) {
             radiiCalculator = new FixedRadiiCalculator(layer.getMinRadius());
 
         } else if (layer.getScaling() == ScalingType.Graduated) {
-            radiiCalculator = new GsLogCalculator(layer.getMinRadius(),
-                    layer.getMaxRadius());
+            radiiCalculator = new GsLogCalculator(layer.getMinRadius(), layer.getMaxRadius());
 
         } else {
             radiiCalculator = new FixedRadiiCalculator(layer.getMinRadius());
         }
 
-        Clusterer clusterer = ClustererFactory.fromClustering(
-                layer.getClustering(), radiiCalculator,
+        Clusterer clusterer = ClustererFactory.fromClustering(layer.getClustering(),
+                radiiCalculator,
                 new BubbleIntersectionCalculator(layer.getMaxRadius()));
 
         generatePoints(map, layer, clusterer, points, unmapped);
@@ -113,8 +110,7 @@ public class PiechartLayerGenerator extends
             marker.setLat(latlng.getLat());
             marker.setLng(latlng.getLng());
             marker.setAlpha(layer.getAlpha());
-            marker
-                    .setIndicatorIds(new HashSet<Integer>(layer.getIndicatorIds()));
+            marker.setIndicatorIds(new HashSet<Integer>(layer.getIndicatorIds()));
             marker.setClusterAmount(cluster.getPointValues().size());
             marker.setClustering(layer.getClustering());
 
@@ -133,12 +129,11 @@ public class PiechartLayerGenerator extends
         content.addLegend(legend);
     }
 
-    public void generatePoints(
-            TiledMap map,
-            PiechartMapLayer layer,
-            Clusterer clusterer,
-            List<PointValue> mapped,
-            List<PointValue> unmapped) {
+    public void generatePoints(TiledMap map,
+                               PiechartMapLayer layer,
+                               Clusterer clusterer,
+                               List<PointValue> mapped,
+                               List<PointValue> unmapped) {
 
         // TODO: rework method for piechart (copy/pasted from bubblelayer)
 
@@ -147,15 +142,12 @@ public class PiechartLayerGenerator extends
                 Point px = null;
 
                 if (site.hasLatLong()) {
-                    px = map.fromLatLngToPixel(new AiLatLng(site.getLatitude(),
-                            site.getLongitude()));
+                    px = map.fromLatLngToPixel(new AiLatLng(site.getLatitude(), site.getLongitude()));
                 }
 
                 Double value = getValue(site, layer.getIndicatorIds());
                 if (value != null && value != 0) {
-                    PointValue pv = new PointValue(site,
-                            new MapSymbol(),
-                            value, px);
+                    PointValue pv = new PointValue(site, new MapSymbol(), value, px);
                     calulateSlices(pv, site);
                     if (clusterer.isMapped(site)) {
                         mapped.add(pv);
@@ -182,8 +174,7 @@ public class PiechartLayerGenerator extends
         }
     }
 
-    public static class IntersectionCalculator implements
-            MarkerGraph.IntersectionCalculator {
+    public static class IntersectionCalculator implements MarkerGraph.IntersectionCalculator {
         private int radius;
 
         public IntersectionCalculator(int radius) {
@@ -193,7 +184,7 @@ public class PiechartLayerGenerator extends
         @Override
         public boolean intersects(MarkerGraph.Node a, MarkerGraph.Node b) {
             return a.getPoint().distance(b.getPoint()) < radius * 2 &&
-                    a.getPointValue().getSymbol().equals(b.getPointValue().getSymbol());
+                   a.getPointValue().getSymbol().equals(b.getPointValue().getSymbol());
         }
     }
 
@@ -201,8 +192,7 @@ public class PiechartLayerGenerator extends
         pv.setSlices(new ArrayList<PieMapMarker.SliceValue>());
 
         for (Slice slice : layer.getSlices()) {
-            EntityCategory indicatorCategory = new EntityCategory(
-                    slice.getIndicatorId());
+            EntityCategory indicatorCategory = new EntityCategory(slice.getIndicatorId());
             Double value = site.getIndicatorValue(slice.getIndicatorId());
             if (value != null && value != 0) {
                 PieMapMarker.SliceValue sliceValue = new PieMapMarker.SliceValue();
@@ -218,23 +208,21 @@ public class PiechartLayerGenerator extends
     }
 
     private void sumSlices(PieMapMarker marker, List<PointValue> pvs) {
-        Map<DimensionCategory, PieMapMarker.SliceValue> slices = new HashMap<DimensionCategory, PieMapMarker.SliceValue>();
+        Map<DimensionCategory, PieMapMarker.SliceValue> slices = new HashMap<DimensionCategory,
+                PieMapMarker.SliceValue>();
         for (PointValue pv : pvs) {
             for (PieMapMarker.SliceValue slice : pv.getSlices()) {
-                PieMapMarker.SliceValue summedSlice = slices.get(slice
-                        .getCategory());
+                PieMapMarker.SliceValue summedSlice = slices.get(slice.getCategory());
                 if (summedSlice == null) {
                     summedSlice = new PieMapMarker.SliceValue(slice);
                     summedSlice.setIndicatorId(slice.getIndicatorId());
                     slices.put(slice.getCategory(), summedSlice);
                 } else {
-                    summedSlice.setValue(summedSlice.getValue()
-                            + slice.getValue());
+                    summedSlice.setValue(summedSlice.getValue() + slice.getValue());
                 }
             }
         }
-        marker
-                .setSlices(new ArrayList<PieMapMarker.SliceValue>(slices.values()));
+        marker.setSlices(new ArrayList<PieMapMarker.SliceValue>(slices.values()));
     }
 
     @Override

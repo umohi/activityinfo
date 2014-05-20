@@ -31,8 +31,7 @@ import java.io.InputStream;
 
 public interface AttachmentService {
 
-    void serveAttachment(String blobId, HttpServletResponse response)
-            throws IOException;
+    void serveAttachment(String blobId, HttpServletResponse response) throws IOException;
 
     void upload(String key, FileItem fileItem, InputStream uploadingStream);
 

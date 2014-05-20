@@ -83,41 +83,38 @@ public class LocationDialog extends Window {
 
         getButtonBar().setAlignment(HorizontalAlignment.LEFT);
         getButtonBar().add(useLocationButton = new Button(I18N.CONSTANTS.useLocation(),
-                        IconImageBundle.ICONS.useLocation(),
-                        new SelectionListener<ButtonEvent>() {
-
-                            @Override
-                            public void componentSelected(ButtonEvent ce) {
-                                searchPresenter.accept();
-                            }
-                        }));
-        useLocationButton.disable();
-
-        getButtonBar().add(new Button(I18N.CONSTANTS.cancel(),
-                        new SelectionListener<ButtonEvent>() {
-                            @Override
-                            public void componentSelected(ButtonEvent ce) {
-                                hide();
-                            }
-                        }));
-
-        newLocationPresenter.addListener(
-                NewLocationPresenter.ACTIVE_STATE_CHANGED,
-                new Listener<BaseEvent>() {
+                IconImageBundle.ICONS.useLocation(),
+                new SelectionListener<ButtonEvent>() {
 
                     @Override
-                    public void handleEvent(BaseEvent be) {
-                        if (newLocationPresenter.isActive()) {
-                            formHeader.setHtml(I18N.CONSTANTS.addLocation());
-                        } else {
-                            formHeader.setHtml(I18N.CONSTANTS.searchLocations());
-                        }
-                        addLocationHeader.setVisible(!newLocationPresenter.isActive());
-                        addLocationHelp.setVisible(!newLocationPresenter.isActive());
-                        addLocationButton.setVisible(!newLocationPresenter.isActive());
-                        layout();
+                    public void componentSelected(ButtonEvent ce) {
+                        searchPresenter.accept();
                     }
-                });
+                }));
+        useLocationButton.disable();
+
+        getButtonBar().add(new Button(I18N.CONSTANTS.cancel(), new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                hide();
+            }
+        }));
+
+        newLocationPresenter.addListener(NewLocationPresenter.ACTIVE_STATE_CHANGED, new Listener<BaseEvent>() {
+
+            @Override
+            public void handleEvent(BaseEvent be) {
+                if (newLocationPresenter.isActive()) {
+                    formHeader.setHtml(I18N.CONSTANTS.addLocation());
+                } else {
+                    formHeader.setHtml(I18N.CONSTANTS.searchLocations());
+                }
+                addLocationHeader.setVisible(!newLocationPresenter.isActive());
+                addLocationHelp.setVisible(!newLocationPresenter.isActive());
+                addLocationButton.setVisible(!newLocationPresenter.isActive());
+                layout();
+            }
+        });
 
         newLocationPresenter.addAcceptedListener(new Listener<LocationEvent>() {
 
@@ -136,8 +133,7 @@ public class LocationDialog extends Window {
                     useLocationButton.disable();
                 } else {
                     useLocationButton.enable();
-                    useLocationButton.setText(I18N.MESSAGES
-                            .useLocation(searchPresenter.getSelection().getName()));
+                    useLocationButton.setText(I18N.MESSAGES.useLocation(searchPresenter.getSelection().getName()));
                 }
             }
         });
@@ -157,8 +153,7 @@ public class LocationDialog extends Window {
         LayoutContainer container = new LayoutContainer();
         container.setLayout(new FlowLayout());
         container.setScrollMode(Scroll.AUTOY);
-        container.addStyleName(SiteFormResources.INSTANCE.style()
-                .locationDialogPane());
+        container.addStyleName(SiteFormResources.INSTANCE.style().locationDialogPane());
 
         container.add(newHeader(I18N.CONSTANTS.chooseLocation()));
         container.add(newExplanation(I18N.CONSTANTS.chooseLocationDescription()));
@@ -172,7 +167,8 @@ public class LocationDialog extends Window {
 
         addLocationHeader = newHeader(I18N.CONSTANTS.addLocation());
         addLocationHelp = newExplanation(I18N.CONSTANTS.addLocationDescription());
-        addLocationButton = new Button(I18N.CONSTANTS.newLocation(), IconImageBundle.ICONS.add(),
+        addLocationButton = new Button(I18N.CONSTANTS.newLocation(),
+                IconImageBundle.ICONS.add(),
                 new SelectionListener<ButtonEvent>() {
 
                     @Override
@@ -182,7 +178,7 @@ public class LocationDialog extends Window {
                 });
         addLocationButton.addStyleName(SiteFormResources.INSTANCE.style().addLocationButton());
 
-        if(isAddAllowed()) {
+        if (isAddAllowed()) {
             container.add(addLocationHeader);
             container.add(addLocationHelp);
             container.add(addLocationButton);
@@ -217,7 +213,6 @@ public class LocationDialog extends Window {
     }
 
     /**
-     *
      * @return true if this LocationType's workflow allows adding new locations
      */
     private boolean isAddAllowed() {

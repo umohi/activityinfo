@@ -48,8 +48,7 @@ public class CreateLocation implements MutatingCommand<VoidResult> {
         properties.put("longitude", location.getLongitude());
 
         for (AdminEntityDTO entity : location.getAdminEntities()) {
-            properties.put(AdminLevelDTO.getPropertyName(entity.getLevelId()),
-                    entity.getId());
+            properties.put(AdminLevelDTO.getPropertyName(entity.getLevelId()), entity.getId());
         }
     }
 

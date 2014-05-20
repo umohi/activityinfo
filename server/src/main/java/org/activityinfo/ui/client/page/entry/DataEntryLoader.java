@@ -34,21 +34,18 @@ public class DataEntryLoader implements PageLoader {
     private final Provider<DataEntryPage> dataEntryPageProvider;
 
     @Inject
-    public DataEntryLoader(
-            NavigationHandler pageManager,
-            PageStateSerializer placeSerializer,
-            Provider<DataEntryPage> dataEntryPageProvider) {
+    public DataEntryLoader(NavigationHandler pageManager,
+                           PageStateSerializer placeSerializer,
+                           Provider<DataEntryPage> dataEntryPageProvider) {
 
         this.dataEntryPageProvider = dataEntryPageProvider;
 
         pageManager.registerPageLoader(DataEntryPage.PAGE_ID, this);
-        placeSerializer.registerParser(DataEntryPage.PAGE_ID,
-                new DataEntryPlaceParser());
+        placeSerializer.registerParser(DataEntryPage.PAGE_ID, new DataEntryPlaceParser());
     }
 
     @Override
-    public void load(final PageId pageId, final PageState pageState,
-                     final AsyncCallback<Page> callback) {
+    public void load(final PageId pageId, final PageState pageState, final AsyncCallback<Page> callback) {
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onSuccess() {

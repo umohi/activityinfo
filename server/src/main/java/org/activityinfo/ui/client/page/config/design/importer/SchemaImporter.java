@@ -206,7 +206,7 @@ public class SchemaImporter {
     }
 
     private boolean isTruthy(String columnValue) {
-        if(columnValue == null) {
+        if (columnValue == null) {
             return false;
         }
         String loweredValue = columnValue.toLowerCase().trim();

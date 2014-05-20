@@ -45,9 +45,13 @@ public class ReadLockedPeriodTypeColumn extends ColumnConfig {
 
         GridCellRenderer<LockedPeriodDTO> iconRenderer = new GridCellRenderer<LockedPeriodDTO>() {
             @Override
-            public Object render(LockedPeriodDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<LockedPeriodDTO> store, Grid<LockedPeriodDTO> grid) {
+            public Object render(LockedPeriodDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<LockedPeriodDTO> store,
+                                 Grid<LockedPeriodDTO> grid) {
 
                 if (model.getParent() instanceof ActivityDTO) {
                     return IconImageBundle.ICONS.activity().getHTML();

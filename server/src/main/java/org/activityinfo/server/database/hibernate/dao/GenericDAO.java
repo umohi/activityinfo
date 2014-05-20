@@ -39,8 +39,8 @@ public abstract class GenericDAO<T, K> implements DAO<T, K> {
 
     protected GenericDAO(EntityManager em) {
         this.em = em;
-        this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
+        this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
+                .getActualTypeArguments()[0];
     }
 
     protected final EntityManager getEntityManager() {

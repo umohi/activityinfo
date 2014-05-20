@@ -35,8 +35,7 @@ public class ReportModelException extends RuntimeException {
         super();
     }
 
-    public ReportModelException(String message, Throwable cause,
-                                ReportElement element) {
+    public ReportModelException(String message, Throwable cause, ReportElement element) {
         super(appendElementDetails(message, element), cause);
     }
 
@@ -48,8 +47,7 @@ public class ReportModelException extends RuntimeException {
         super(appendElementDetails("", element), cause);
     }
 
-    private static String appendElementDetails(String message,
-                                               ReportElement element) {
+    private static String appendElementDetails(String message, ReportElement element) {
         try {
             message += "In " + element.getClass().toString() + ", ";
             if (element.getTitle() == null) {

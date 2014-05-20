@@ -22,8 +22,8 @@ import java.util.Set;
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.adminLevelFormClass;
 
 /**
-* Creates a {@code FormClass} for a LocationType given a legacy SchemaDTO.
-*/
+ * Creates a {@code FormClass} for a LocationType given a legacy SchemaDTO.
+ */
 public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
 
     private final int locationTypeId;
@@ -50,8 +50,7 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
         return CuidAdapter.field(classId, CuidAdapter.ADMIN_FIELD);
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public FormClass apply(@Nullable SchemaDTO schema) {
         CountryDTO country = findCountry(schema, locationTypeId);
         LocationTypeDTO locationType = country.getLocationTypeById(locationTypeId);
@@ -73,7 +72,7 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
 
         // the range for the location object is any AdminLevel in this country
         Set<Cuid> adminRange = Sets.newHashSet();
-        for(AdminLevelDTO level : country.getAdminLevels()) {
+        for (AdminLevelDTO level : country.getAdminLevels()) {
             adminRange.add(adminLevelFormClass(level.getId()));
         }
 
@@ -94,9 +93,9 @@ public class LocationClassAdapter implements Function<SchemaDTO, FormClass> {
     }
 
     private CountryDTO findCountry(SchemaDTO schema, int locationTypeId) {
-        for(CountryDTO country : schema.getCountries()) {
-            for(LocationTypeDTO locationType : country.getLocationTypes()) {
-                if(locationType.getId() == locationTypeId) {
+        for (CountryDTO country : schema.getCountries()) {
+            for (LocationTypeDTO locationType : country.getLocationTypes()) {
+                if (locationType.getId() == locationTypeId) {
                     return country;
                 }
             }

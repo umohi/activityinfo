@@ -13,13 +13,15 @@ public interface FieldBinding<T extends DTO> {
 
     /**
      * Updates a FormInstance from a Legacy Model
+     *
      * @param instance FormInstance
-     * @param model a Legacy Model
+     * @param model    a Legacy Model
      */
     public void updateInstanceFromModel(FormInstance instance, T model);
 
     /**
      * Updates the toChangePropertyMap
+     *
      * @param instance
      * @param changeMap a name -> property value map used to update the model
      */

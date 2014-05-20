@@ -68,7 +68,8 @@ public class LocationForm extends LayoutContainer {
 
     private LocationTypeDTO locationType;
 
-    public LocationForm(Dispatcher dispatcher, LocationTypeDTO locationType,
+    public LocationForm(Dispatcher dispatcher,
+                        LocationTypeDTO locationType,
                         final LocationSearchPresenter searchPresenter,
                         final NewLocationPresenter newLocationPresenter) {
         this.searchPresenter = searchPresenter;
@@ -87,32 +88,28 @@ public class LocationForm extends LayoutContainer {
         addCoordFields();
         addNewLocationButtons();
 
-        adminPresenter.addListener(AdminSelectionChangedEvent.TYPE,
-                new Listener<AdminSelectionChangedEvent>() {
-                    @Override
-                    public void handleEvent(AdminSelectionChangedEvent be) {
-                        search();
-                        coordinateFields.validate();
-                    }
-                });
+        adminPresenter.addListener(AdminSelectionChangedEvent.TYPE, new Listener<AdminSelectionChangedEvent>() {
+            @Override
+            public void handleEvent(AdminSelectionChangedEvent be) {
+                search();
+                coordinateFields.validate();
+            }
+        });
 
-        newLocationPresenter.addListener(NewLocationPresenter.ACTIVE_STATE_CHANGED,
-                new Listener<BaseEvent>() {
-                    @Override
-                    public void handleEvent(BaseEvent be) {
-                        setNewFormActive(newLocationPresenter.isActive());
-                    }
-                });
+        newLocationPresenter.addListener(NewLocationPresenter.ACTIVE_STATE_CHANGED, new Listener<BaseEvent>() {
+            @Override
+            public void handleEvent(BaseEvent be) {
+                setNewFormActive(newLocationPresenter.isActive());
+            }
+        });
 
-        adminPresenter.addListener(BoundsChangedEvent.TYPE,
-                new Listener<BaseEvent>() {
-                    @Override
-                    public void handleEvent(BaseEvent be) {
-                        coordinateFields.setBounds(adminPresenter.getBoundsName(),
-                                adminPresenter.getBounds());
-                        newLocationPresenter.setBounds(adminPresenter.getBounds());
-                    }
-                });
+        adminPresenter.addListener(BoundsChangedEvent.TYPE, new Listener<BaseEvent>() {
+            @Override
+            public void handleEvent(BaseEvent be) {
+                coordinateFields.setBounds(adminPresenter.getBoundsName(), adminPresenter.getBounds());
+                newLocationPresenter.setBounds(adminPresenter.getBounds());
+            }
+        });
 
         nameTypeAheadTimer = new Timer() {
 
@@ -145,11 +142,10 @@ public class LocationForm extends LayoutContainer {
         add(axeField);
     }
 
-    private void addAdminCombos(Dispatcher dispatcher,
-                                final LocationSearchPresenter searchPresenter) {
+    private void addAdminCombos(Dispatcher dispatcher, final LocationSearchPresenter searchPresenter) {
         adminPresenter = new AdminFieldSetPresenter(dispatcher,
-                searchPresenter.getCountry(), searchPresenter.getCountry()
-                .getAdminLevels());
+                searchPresenter.getCountry(),
+                searchPresenter.getCountry().getAdminLevels());
 
         comboBoxes = new SearchAdminComboBoxSet(this, adminPresenter);
 
@@ -165,16 +161,14 @@ public class LocationForm extends LayoutContainer {
         add(coordinateFields.getLatitudeField());
         add(coordinateFields.getLongitudeField());
 
-        newLocationPresenter.addListener(NewLocationPresenter.POSITION_CHANGED,
-                new Listener<BaseEvent>() {
-                    @Override
-                    public void handleEvent(BaseEvent be) {
-                        if (!newLocationPresenter.isProvisional()) {
-                            coordinateFields.setValue(newLocationPresenter
-                                    .getLatLng());
-                        }
-                    }
-                });
+        newLocationPresenter.addListener(NewLocationPresenter.POSITION_CHANGED, new Listener<BaseEvent>() {
+            @Override
+            public void handleEvent(BaseEvent be) {
+                if (!newLocationPresenter.isProvisional()) {
+                    coordinateFields.setValue(newLocationPresenter.getLatLng());
+                }
+            }
+        });
         coordinateFields.addChangeListener(new Listener<FieldEvent>() {
 
             @Override
@@ -193,23 +187,23 @@ public class LocationForm extends LayoutContainer {
         int buttonWidth = (FIELD_WIDTH - BUTTON_SPACE) / 2;
 
         Button saveButton = new Button(I18N.CONSTANTS.useNewLocation(),
-                IconImageBundle.ICONS.save(), new SelectionListener<ButtonEvent>() {
-
-            @Override
-            public void componentSelected(ButtonEvent ce) {
-                saveNewLocation();
-            }
-        });
-        saveButton.setWidth(buttonWidth);
-
-        Button cancelButton = new Button(I18N.CONSTANTS.cancel(),
+                IconImageBundle.ICONS.save(),
                 new SelectionListener<ButtonEvent>() {
 
                     @Override
                     public void componentSelected(ButtonEvent ce) {
-                        newLocationPresenter.setActive(false);
+                        saveNewLocation();
                     }
                 });
+        saveButton.setWidth(buttonWidth);
+
+        Button cancelButton = new Button(I18N.CONSTANTS.cancel(), new SelectionListener<ButtonEvent>() {
+
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                newLocationPresenter.setActive(false);
+            }
+        });
         cancelButton.setWidth(buttonWidth);
 
         newFormButtonContainer = new LayoutContainer();
@@ -225,8 +219,7 @@ public class LocationForm extends LayoutContainer {
 
     private FormData buttonLayout() {
         FormData containerLayout = new FormData();
-        containerLayout.setMargins(new Margins(0, 0, 0, LABEL_WIDTH
-                + BUTTON_SPACE));
+        containerLayout.setMargins(new Margins(0, 0, 0, LABEL_WIDTH + BUTTON_SPACE));
         return containerLayout;
     }
 
@@ -237,13 +230,10 @@ public class LocationForm extends LayoutContainer {
             newLocation.setLocationTypeId(locationType.getId());
             newLocation.setName(nameField.getValue());
             newLocation.setAxe(axeField.getValue());
-            newLocation.setLatitude(coordinateFields.getLatitudeField()
-                    .getValue());
-            newLocation.setLongitude(coordinateFields.getLongitudeField()
-                    .getValue());
+            newLocation.setLatitude(coordinateFields.getLatitudeField().getValue());
+            newLocation.setLongitude(coordinateFields.getLongitudeField().getValue());
             for (AdminLevelDTO level : adminPresenter.getAdminLevels()) {
-                newLocation.setAdminEntity(level.getId(),
-                        adminPresenter.getAdminEntity(level));
+                newLocation.setAdminEntity(level.getId(), adminPresenter.getAdminEntity(level));
             }
             newLocationPresenter.accept(newLocation);
         }
@@ -263,7 +253,6 @@ public class LocationForm extends LayoutContainer {
     }
 
     private void search() {
-        searchPresenter.search(nameField.getRawValue(),
-                adminPresenter.getAdminEntityIds(), adminPresenter.getBounds());
+        searchPresenter.search(nameField.getRawValue(), adminPresenter.getAdminEntityIds(), adminPresenter.getBounds());
     }
 }

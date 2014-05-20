@@ -28,7 +28,6 @@ import org.activityinfo.server.database.hibernate.entity.User;
 
 public interface UpdateBuilder {
 
-    SyncRegionUpdate build(User user, GetSyncRegionUpdates request)
-            throws Exception;
+    SyncRegionUpdate build(User user, GetSyncRegionUpdates request) throws Exception;
 
 }

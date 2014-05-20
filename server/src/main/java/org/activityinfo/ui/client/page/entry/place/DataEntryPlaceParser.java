@@ -54,14 +54,12 @@ public class DataEntryPlaceParser implements PageStateParser {
         return fragment.toString();
     }
 
-    private static void appendGrouping(StringBuilder fragment,
-                                       GroupingModel grouping) {
+    private static void appendGrouping(StringBuilder fragment, GroupingModel grouping) {
         if (grouping instanceof AdminGroupingModel) {
             if (fragment.length() > 0) {
                 fragment.append("-");
             }
-            fragment.append("groupByAdmin+").append(
-                    ((AdminGroupingModel) grouping).getAdminLevelId());
+            fragment.append("groupByAdmin+").append(((AdminGroupingModel) grouping).getAdminLevelId());
         }
     }
 
@@ -95,8 +93,7 @@ public class DataEntryPlaceParser implements PageStateParser {
                     String[] qualifierParts = qualifier.split("\\+");
 
                     if (qualifierParts[0].equals("groupByAdmin")) {
-                        AdminGroupingModel grouping = new AdminGroupingModel(
-                                Integer.parseInt(qualifierParts[1]));
+                        AdminGroupingModel grouping = new AdminGroupingModel(Integer.parseInt(qualifierParts[1]));
                         place.setGrouping(grouping);
                     } else {
                         updateFilter(place, qualifierParts);

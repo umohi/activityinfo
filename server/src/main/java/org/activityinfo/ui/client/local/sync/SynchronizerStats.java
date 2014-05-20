@@ -70,10 +70,9 @@ public class SynchronizerStats {
         if (Log.isDebugEnabled()) {
             double totalLength = now() - timeStarted;
             Log.debug("Sync stats: total time: " + totalLength / 1000 + " s");
-            Log.debug("Sync stats: time waiting for remote server: "
-                    + timeWaitingForServer / 1000d + " s");
-            Log.debug("Sync stats: time waiting for local database updates: "
-                    + timeWaitingForLocalDatabase / 1000d + " s");
+            Log.debug("Sync stats: time waiting for remote server: " + timeWaitingForServer / 1000d + " s");
+            Log.debug("Sync stats: time waiting for local database updates: " + timeWaitingForLocalDatabase / 1000d +
+                      " s");
         }
     }
 

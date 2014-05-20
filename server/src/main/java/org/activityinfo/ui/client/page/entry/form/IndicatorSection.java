@@ -101,8 +101,7 @@ public class IndicatorSection extends LayoutContainer implements FormSection<Sit
             indicatorField.setAllowBlank(false);
         }
 
-        if (indicator.getDescription() != null
-                && !indicator.getDescription().isEmpty()) {
+        if (indicator.getDescription() != null && !indicator.getDescription().isEmpty()) {
             ToolTipConfig tip = new ToolTipConfig();
             tip.setDismissDelay(0);
             tip.setShowDelay(100);

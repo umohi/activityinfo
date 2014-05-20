@@ -45,8 +45,7 @@ import org.activityinfo.ui.client.page.report.ReportEventBus;
 
 import java.util.List;
 
-public class DimensionComboBoxSet implements
-        HasReportElement<PivotChartReportElement> {
+public class DimensionComboBoxSet implements HasReportElement<PivotChartReportElement> {
 
     private final ReportEventBus reportEventBus;
     private final DimensionProxy proxy;
@@ -64,32 +63,28 @@ public class DimensionComboBoxSet implements
         this.proxy = new DimensionProxy(dispatcher);
         this.loader = new BaseListLoader<ListLoadResult<DimensionModel>>(proxy);
         this.store = new ListStore<DimensionModel>(loader);
-        this.categoryCombo = new DimensionCombo(store,
-                new SelectionChangedListener<DimensionModel>() {
+        this.categoryCombo = new DimensionCombo(store, new SelectionChangedListener<DimensionModel>() {
 
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<DimensionModel> se) {
-                        model.setCategoryDimension(se.getSelectedItem().getDimension());
-                        if (fireEvents) {
-                            DimensionComboBoxSet.this.reportEventBus.fireChange();
-                            DimensionComboBoxSet.this.categoryCombo.setValue(se.getSelectedItem().getDimension());
-                        }
-                    }
-                });
-        this.seriesCombo = new DimensionCombo(store,
-                new SelectionChangedListener<DimensionModel>() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<DimensionModel> se) {
+                model.setCategoryDimension(se.getSelectedItem().getDimension());
+                if (fireEvents) {
+                    DimensionComboBoxSet.this.reportEventBus.fireChange();
+                    DimensionComboBoxSet.this.categoryCombo.setValue(se.getSelectedItem().getDimension());
+                }
+            }
+        });
+        this.seriesCombo = new DimensionCombo(store, new SelectionChangedListener<DimensionModel>() {
 
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<DimensionModel> se) {
-                        model.setSeriesDimension(se.getSelectedItem().getDimension());
-                        if (fireEvents) {
-                            DimensionComboBoxSet.this.reportEventBus.fireChange();
-                            DimensionComboBoxSet.this.seriesCombo.setValue(se.getSelectedItem().getDimension());
-                        }
-                    }
-                });
+            @Override
+            public void selectionChanged(SelectionChangedEvent<DimensionModel> se) {
+                model.setSeriesDimension(se.getSelectedItem().getDimension());
+                if (fireEvents) {
+                    DimensionComboBoxSet.this.reportEventBus.fireChange();
+                    DimensionComboBoxSet.this.seriesCombo.setValue(se.getSelectedItem().getDimension());
+                }
+            }
+        });
         this.categoryLabel = new LabelToolItemWithText();
         this.seriesLabel = new LabelToolItemWithText();
         this.reportEventBus = new ReportEventBus(eventBus, this);

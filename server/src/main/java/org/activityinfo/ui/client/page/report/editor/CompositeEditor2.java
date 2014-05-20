@@ -43,9 +43,7 @@ import org.activityinfo.ui.client.page.report.resources.ReportResources;
 import java.util.Arrays;
 import java.util.List;
 
-public class CompositeEditor2 extends LayoutContainer implements
-        ReportElementEditor<Report>,
-        AddCallback,
+public class CompositeEditor2 extends LayoutContainer implements ReportElementEditor<Report>, AddCallback,
         ElementWidget.EventHandler {
 
     private final Provider<ElementWidget> elementWidgetProvider;
@@ -57,7 +55,8 @@ public class CompositeEditor2 extends LayoutContainer implements
     private ReportEventBus reportEventBus;
 
     @Inject
-    public CompositeEditor2(EventBus eventBus, AddElementPanel addPanel,
+    public CompositeEditor2(EventBus eventBus,
+                            AddElementPanel addPanel,
                             Provider<ElementWidget> elementWidgetProvider) {
         this.elementWidgetProvider = elementWidgetProvider;
 

@@ -27,8 +27,7 @@ import org.activityinfo.legacy.shared.model.TargetDTO;
 import java.util.Arrays;
 import java.util.List;
 
-public class TargetResult extends ListResult<TargetDTO> implements
-        CommandResult {
+public class TargetResult extends ListResult<TargetDTO> implements CommandResult {
 
     public TargetResult() {
 

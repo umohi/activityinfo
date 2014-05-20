@@ -36,8 +36,7 @@ import java.util.logging.Logger;
 
 public class DigestMessageBuilder {
 
-    private static final Logger LOGGER =
-            Logger.getLogger(DigestMessageBuilder.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DigestMessageBuilder.class.getName());
 
     private final DigestModelBuilder digestModelBuilder;
     private final DigestRenderer digestRenderer;
@@ -46,8 +45,7 @@ public class DigestMessageBuilder {
     private Date date;
     private int days;
 
-    public DigestMessageBuilder(DigestModelBuilder digestModelBuilder,
-                                DigestRenderer digestRenderer) {
+    public DigestMessageBuilder(DigestModelBuilder digestModelBuilder, DigestRenderer digestRenderer) {
         this.digestModelBuilder = digestModelBuilder;
         this.digestRenderer = digestRenderer;
     }
@@ -88,8 +86,10 @@ public class DigestMessageBuilder {
 
         htmlWriter.startDocumentHeader();
         htmlWriter.documentTitle(subject);
-        htmlWriter.open(new HtmlTag("style")).at("type", "text/css")
-                .text("body { font-family:Helvetica; } a {color: black; text-decoration:none;} ").close();
+        htmlWriter.open(new HtmlTag("style"))
+                  .at("type", "text/css")
+                  .text("body { font-family:Helvetica; } a {color: black; text-decoration:none;} ")
+                  .close();
         htmlWriter.endDocumentHeader();
 
         htmlWriter.startDocumentBody();

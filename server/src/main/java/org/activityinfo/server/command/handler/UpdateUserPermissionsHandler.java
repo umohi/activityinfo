@@ -44,8 +44,7 @@ import java.util.logging.Logger;
  * @author Alex Bertram
  * @see org.activityinfo.legacy.shared.command.UpdateUserPermissions
  */
-public class UpdateUserPermissionsHandler implements
-        CommandHandler<UpdateUserPermissions> {
+public class UpdateUserPermissionsHandler implements CommandHandler<UpdateUserPermissions> {
 
     // TODO: this needs to be pushed down into the domain layer, it doesn't
     // belong here at the endpoint layer
@@ -62,8 +61,10 @@ public class UpdateUserPermissionsHandler implements
 
     @Inject
     public UpdateUserPermissionsHandler(UserDatabaseDAO databaseDAO,
-                                        PartnerDAO partnerDAO, UserDAO userDAO,
-                                        UserPermissionDAO permDAO, MailSender mailSender) {
+                                        PartnerDAO partnerDAO,
+                                        UserDAO userDAO,
+                                        UserPermissionDAO permDAO,
+                                        MailSender mailSender) {
         this.userDAO = userDAO;
         this.partnerDAO = partnerDAO;
         this.permDAO = permDAO;
@@ -72,8 +73,7 @@ public class UpdateUserPermissionsHandler implements
     }
 
     @Override
-    public CommandResult execute(UpdateUserPermissions cmd, User executingUser)
-            throws CommandException {
+    public CommandResult execute(UpdateUserPermissions cmd, User executingUser) throws CommandException {
 
         UserDatabase database = databaseDAO.findById(cmd.getDatabaseId());
         UserPermissionDTO dto = cmd.getModel();
@@ -148,39 +148,33 @@ public class UpdateUserPermissionsHandler implements
      * @throws IllegalAccessCommandException
      */
     public static void verifyAuthority(UpdateUserPermissions cmd,
-                                       UserPermission executingUserPermissions)
-            throws IllegalAccessCommandException {
+                                       UserPermission executingUserPermissions) throws IllegalAccessCommandException {
         if (!executingUserPermissions.isAllowManageUsers()) {
-            throw new IllegalAccessCommandException(
-                    "Current user does not have the right to manage other users");
+            throw new IllegalAccessCommandException("Current user does not have the right to manage other users");
         }
 
-        if (!executingUserPermissions.isAllowManageAllUsers()
-                &&
-                executingUserPermissions.getPartner().getId() != cmd.getModel()
-                        .getPartner().getId()) {
+        if (!executingUserPermissions.isAllowManageAllUsers() &&
+            executingUserPermissions.getPartner().getId() != cmd.getModel().getPartner().getId()) {
             throw new IllegalAccessCommandException(
                     "Current user does not have the right to manage users from other partners");
         }
 
-        if (!executingUserPermissions.isAllowDesign() &&
-                cmd.getModel().getAllowDesign()) {
-            throw new IllegalAccessCommandException(
-                    "Current user does not have the right to grant design privileges");
+        if (!executingUserPermissions.isAllowDesign() && cmd.getModel().getAllowDesign()) {
+            throw new IllegalAccessCommandException("Current user does not have the right to grant design privileges");
         }
 
-        if (!executingUserPermissions.isAllowManageAllUsers()
-                &&
-                (cmd.getModel().getAllowViewAll()
-                        || cmd.getModel().getAllowEditAll() ||
-                        cmd.getModel().getAllowManageAllUsers())) {
+        if (!executingUserPermissions.isAllowManageAllUsers() &&
+            (cmd.getModel().getAllowViewAll() || cmd.getModel().getAllowEditAll() ||
+             cmd.getModel().getAllowManageAllUsers())) {
             throw new IllegalAccessCommandException(
                     "Current user does not have the right to grant viewAll, editAll, or manageAllUsers privileges");
         }
     }
 
-    protected void doUpdate(UserPermission perm, UserPermissionDTO dto,
-                            boolean isOwner, UserPermission executingUserPermissions) {
+    protected void doUpdate(UserPermission perm,
+                            UserPermissionDTO dto,
+                            boolean isOwner,
+                            UserPermission executingUserPermissions) {
 
         perm.setPartner(partnerDAO.findById(dto.getPartner().getId()));
         perm.setAllowView(dto.getAllowView());
@@ -201,13 +195,11 @@ public class UpdateUserPermissionsHandler implements
         //
         // In this case, the only logical outcome (I think) is that
 
-        if (isOwner || executingUserPermissions.isAllowManageAllUsers()
-                || !dto.getAllowView()) {
+        if (isOwner || executingUserPermissions.isAllowManageAllUsers() || !dto.getAllowView()) {
             perm.setAllowViewAll(dto.getAllowViewAll());
         }
 
-        if (isOwner || executingUserPermissions.isAllowManageAllUsers()
-                || !dto.getAllowEdit()) {
+        if (isOwner || executingUserPermissions.isAllowManageAllUsers() || !dto.getAllowEdit()) {
             perm.setAllowEditAll(dto.getAllowEditAll());
         }
 

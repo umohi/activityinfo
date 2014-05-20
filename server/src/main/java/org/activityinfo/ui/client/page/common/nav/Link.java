@@ -97,8 +97,7 @@ public final class Link extends BaseTreeModel {
          */
         private Builder to(PageState pageState) {
             link.pageState = pageState;
-            link.key = pageState.getPageId() + "/"
-                    + pageState.serializeAsHistoryToken();
+            link.key = pageState.getPageId() + "/" + pageState.serializeAsHistoryToken();
             return this;
         }
 

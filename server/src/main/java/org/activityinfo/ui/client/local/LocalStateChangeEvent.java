@@ -28,8 +28,7 @@ import org.activityinfo.ui.client.EventBus.NamedEventType;
 
 public class LocalStateChangeEvent extends BaseEvent {
 
-    public static final EventType TYPE = new NamedEventType(
-            "OfflineStateChange");
+    public static final EventType TYPE = new NamedEventType("OfflineStateChange");
 
     public enum State {
         CHECKING, UNINSTALLED, INSTALLED, INSTALLING

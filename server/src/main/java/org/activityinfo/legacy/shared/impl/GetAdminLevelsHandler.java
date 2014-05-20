@@ -37,11 +37,11 @@ import org.activityinfo.legacy.shared.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetAdminLevelsHandler implements
-        CommandHandlerAsync<GetAdminLevels, AdminLevelResult> {
+public class GetAdminLevelsHandler implements CommandHandlerAsync<GetAdminLevels, AdminLevelResult> {
 
     @Override
-    public void execute(GetAdminLevels command, ExecutionContext context,
+    public void execute(GetAdminLevels command,
+                        ExecutionContext context,
                         final AsyncCallback<AdminLevelResult> callback) {
 
         if (CollectionUtil.isEmpty(command.getIndicatorIds())) {
@@ -51,29 +51,33 @@ public class GetAdminLevelsHandler implements
 
 
         String hasPolygonsSubQuery = "exists (select e.adminentityid from adminentity e " +
-                "where e.adminlevelid=level.adminlevelid and geometry is not null)";
+                                     "where e.adminlevelid=level.adminlevelid and geometry is not null)";
 
 
         SqlQuery query = SqlQuery.select()
-                .appendColumn("level.adminlevelId", "id")
-                .appendColumn("level.name", "name")
-                .appendColumn(hasPolygonsSubQuery, "polygons");
+                                 .appendColumn("level.adminlevelId", "id")
+                                 .appendColumn("level.name", "name")
+                                 .appendColumn(hasPolygonsSubQuery, "polygons");
 
-        if(!command.getIndicatorIds().isEmpty()) {
-            query
-                .from(Tables.INDICATOR, "i")
-                .innerJoin(Tables.ACTIVITY, "a").on("i.activityId=a.activityId")
-                .innerJoin(Tables.USER_DATABASE, "db").on("a.databaseid=db.databaseid")
-                .innerJoin(Tables.COUNTRY, "c").on("db.countryid=c.countryid")
-                .innerJoin(Tables.ADMIN_LEVEL, "level").on("level.countryid=c.countryid")
-                .where("i.indicatorId").in(command.getIndicatorIds())
-                .groupBy("level.adminlevelid")
-                .groupBy("level.name");
+        if (!command.getIndicatorIds().isEmpty()) {
+            query.from(Tables.INDICATOR, "i")
+                 .innerJoin(Tables.ACTIVITY, "a")
+                 .on("i.activityId=a.activityId")
+                 .innerJoin(Tables.USER_DATABASE, "db")
+                 .on("a.databaseid=db.databaseid")
+                 .innerJoin(Tables.COUNTRY, "c")
+                 .on("db.countryid=c.countryid")
+                 .innerJoin(Tables.ADMIN_LEVEL, "level")
+                 .on("level.countryid=c.countryid")
+                 .where("i.indicatorId")
+                 .in(command.getIndicatorIds())
+                 .groupBy("level.adminlevelid")
+                 .groupBy("level.name");
         } else {
-            query = SqlQuery
-                    .select()
-                    .from(Tables.ADMIN_LEVEL, "level")
-                    .where("level.countryId").equalTo(command.getCountryId());
+            query = SqlQuery.select()
+                            .from(Tables.ADMIN_LEVEL, "level")
+                            .where("level.countryId")
+                            .equalTo(command.getCountryId());
         }
 
         query.execute(context.getTransaction(), new SqlResultCallback() {

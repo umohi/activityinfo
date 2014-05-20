@@ -22,7 +22,6 @@ package org.activityinfo.legacy.shared.reports.model.typeadapter;
  * #L%
  */
 
-import com.google.gwt.core.shared.GwtIncompatible;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.reports.content.EntityCategory;
 import org.activityinfo.legacy.shared.reports.model.*;
@@ -36,8 +35,7 @@ import java.util.List;
 /**
  * @author Alex Bertram
  */
-public class DimensionAdapter extends
-        XmlAdapter<DimensionAdapter.DimensionElement, Dimension> {
+public class DimensionAdapter extends XmlAdapter<DimensionAdapter.DimensionElement, Dimension> {
 
     public static class CategoryElement {
         @XmlAttribute(required = true)
@@ -65,21 +63,18 @@ public class DimensionAdapter extends
         private Integer attributeGroupId;
 
         @XmlElement(name = "category")
-        private List<CategoryElement> categories = new ArrayList<CategoryElement>(
-                0);
+        private List<CategoryElement> categories = new ArrayList<CategoryElement>(0);
     }
 
     private Dimension createDim(DimensionElement element) {
         if ("admin".equals(element.type)) {
             return new AdminDimension(element.levelId);
         } else if ("date".equals(element.type)) {
-            return new DateDimension(findEnumValue(DateUnit.values(),
-                    element.dateUnit));
+            return new DateDimension(findEnumValue(DateUnit.values(), element.dateUnit));
         } else if ("attribute".equals(element.type)) {
             return new AttributeGroupDimension(element.attributeGroupId);
         } else {
-            return new Dimension(findEnumValue(DimensionType.values(),
-                    element.type));
+            return new Dimension(findEnumValue(DimensionType.values(), element.type));
         }
     }
 
@@ -89,8 +84,7 @@ public class DimensionAdapter extends
                 return value;
             }
         }
-        throw new IllegalArgumentException("'" + text + "' is not a member of "
-                + values[0].getClass().getName());
+        throw new IllegalArgumentException("'" + text + "' is not a member of " + values[0].getClass().getName());
     }
 
     @Override
@@ -103,8 +97,7 @@ public class DimensionAdapter extends
             if (category.color != null) {
                 props.setColor(decodeColor(category.color));
             }
-            EntityCategory entityCategory = new EntityCategory(
-                    Integer.parseInt(category.name));
+            EntityCategory entityCategory = new EntityCategory(Integer.parseInt(category.name));
             dim.getCategories().put(entityCategory, props);
             dim.getOrdering().add(entityCategory);
         }
@@ -129,12 +122,10 @@ public class DimensionAdapter extends
             element.levelId = ((AdminDimension) dim).getLevelId();
         } else if (dim instanceof DateDimension) {
             element.type = "date";
-            element.dateUnit = ((DateDimension) dim).getUnit().toString()
-                    .toLowerCase();
+            element.dateUnit = ((DateDimension) dim).getUnit().toString().toLowerCase();
         } else if (dim instanceof AttributeGroupDimension) {
             element.type = "attribute";
-            element.attributeGroupId = ((AttributeGroupDimension) dim)
-                    .getAttributeGroupId();
+            element.attributeGroupId = ((AttributeGroupDimension) dim).getAttributeGroupId();
         }
         return element;
     }

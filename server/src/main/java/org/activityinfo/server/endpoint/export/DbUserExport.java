@@ -22,8 +22,8 @@ package org.activityinfo.server.endpoint.export;
  * #L%
  */
 
-import org.activityinfo.legacy.shared.model.UserPermissionDTO;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.shared.model.UserPermissionDTO;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -43,8 +43,7 @@ public class DbUserExport extends Exporter {
     }
 
     public void createSheet() {
-        HSSFSheet sheet = book
-                .createSheet(composeUniqueSheetName("db-users-list"));
+        HSSFSheet sheet = book.createSheet(composeUniqueSheetName("db-users-list"));
         sheet.createFreezePane(4, 2);
 
         // initConditionalFormatting(sheet);
@@ -59,8 +58,7 @@ public class DbUserExport extends Exporter {
 
         // sheet names can only be 31 characters long, plus we need about 4-6
         // chars for disambiguation
-        String shortenedName = sheetName.substring(0,
-                Math.min(25, sheetName.length()));
+        String shortenedName = sheetName.substring(0, Math.min(25, sheetName.length()));
 
         // assure that the sheet name is unique
         if (!sheetNames.containsKey(shortenedName)) {
@@ -78,26 +76,16 @@ public class DbUserExport extends Exporter {
         // / The HEADER rows
         Row headerRow = sheet.createRow(0);
         int column = 0;
-        createHeaderCell(headerRow, column++, I18N.CONSTANTS.name(),
-                CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++, I18N.CONSTANTS.email(),
-                CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++, I18N.CONSTANTS.partner(),
-                CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowView(),
-                CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowViewAll(),
-                CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowDesign(),
-                CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowEdit(),
-                CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowEditAll(),
-                CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++,
-                I18N.CONSTANTS.allowManageUsers(), CellStyle.ALIGN_RIGHT);
-        createHeaderCell(headerRow, column++,
-                I18N.CONSTANTS.allowManageAllUsers(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.name(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.email(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.partner(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowView(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowViewAll(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowDesign(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowEdit(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowEditAll(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowManageUsers(), CellStyle.ALIGN_RIGHT);
+        createHeaderCell(headerRow, column++, I18N.CONSTANTS.allowManageAllUsers(), CellStyle.ALIGN_RIGHT);
 
         sheet.setColumnWidth(column, 12 * 256);
         sheet.setColumnWidth(column + 1, 12 * 256);
@@ -120,10 +108,8 @@ public class DbUserExport extends Exporter {
             createCell(row, column++, String.valueOf(user.getAllowDesign()));
             createCell(row, column++, String.valueOf(user.getAllowEdit()));
             createCell(row, column++, String.valueOf(user.getAllowEditAll()));
-            createCell(row, column++,
-                    String.valueOf(user.getAllowManageUsers()));
-            createCell(row, column++,
-                    String.valueOf(user.getAllowManageAllUsers()));
+            createCell(row, column++, String.valueOf(user.getAllowManageUsers()));
+            createCell(row, column++, String.valueOf(user.getAllowManageAllUsers()));
         }
     }
 

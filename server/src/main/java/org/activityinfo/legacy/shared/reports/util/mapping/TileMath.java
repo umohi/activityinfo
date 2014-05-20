@@ -88,8 +88,7 @@ public final class TileMath {
         double lat = latlng.getLat() * D2R;
 
         if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
-            throw new IllegalArgumentException(
-                    "Too close to the poles to project");
+            throw new IllegalArgumentException("Too close to the poles to project");
         }
 
         double ty = (size) / 2.0;
@@ -118,9 +117,7 @@ public final class TileMath {
         Point lowerRight = pointForTile(new Tile(x + 1, y + 1));
         AiLatLng northWest = inverse(upperLeft, zoom);
         AiLatLng southEast = inverse(lowerRight, zoom);
-        return new Extents(
-                southEast.getLat(), northWest.getLat(),
-                northWest.getLng(), southEast.getLng());
+        return new Extents(southEast.getLat(), northWest.getLat(), northWest.getLng(), southEast.getLng());
     }
 
     /**
@@ -132,17 +129,14 @@ public final class TileMath {
      * @param mapHeight
      * @return
      */
-    public static int zoomLevelForExtents(Extents extent, int mapWidth,
-                                          int mapHeight) {
+    public static int zoomLevelForExtents(Extents extent, int mapWidth, int mapHeight) {
 
         int zoomLevel = 1;
 
         do {
 
-            Point upperLeft = fromLatLngToPixel(new AiLatLng(
-                    extent.getMaxLat(), extent.getMinLon()), zoomLevel);
-            Point lowerRight = fromLatLngToPixel(
-                    new AiLatLng(extent.getMinLat(), extent.getMaxLon()), zoomLevel);
+            Point upperLeft = fromLatLngToPixel(new AiLatLng(extent.getMaxLat(), extent.getMinLon()), zoomLevel);
+            Point lowerRight = fromLatLngToPixel(new AiLatLng(extent.getMinLat(), extent.getMaxLon()), zoomLevel);
 
             int extentWidth = lowerRight.getX() - upperLeft.getX();
 

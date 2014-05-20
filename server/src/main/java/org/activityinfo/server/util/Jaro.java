@@ -11,7 +11,8 @@ public class Jaro {
     public float getSimilarity(final String string1, final String string2) {
 
         //get half the length of the string rounded up - (this is the distance used for acceptable transpositions)
-        final int halflen = ((Math.min(string1.length(), string2.length())) / 2) + ((Math.min(string1.length(), string2.length())) % 2);
+        final int halflen = ((Math.min(string1.length(), string2.length())) / 2) +
+                            ((Math.min(string1.length(), string2.length())) % 2);
 
         //get common characters
         final StringBuilder common1 = getCommonCharacters(string1, string2, halflen);
@@ -31,8 +32,9 @@ public class Jaro {
         int transpositions = 0;
         int n = common1.length();
         for (int i = 0; i < n; i++) {
-            if (common1.charAt(i) != common2.charAt(i))
+            if (common1.charAt(i) != common2.charAt(i)) {
                 transpositions++;
+            }
         }
         transpositions /= 2.0f;
 
@@ -52,7 +54,9 @@ public class Jaro {
      * @return a string buffer of characters from string1 within string2 if they are of a given
      * distance seperation from the position in string1
      */
-    private static StringBuilder getCommonCharacters(final String string1, final String string2, final int distanceSep) {
+    private static StringBuilder getCommonCharacters(final String string1,
+                                                     final String string2,
+                                                     final int distanceSep) {
         //create a return buffer of characters
         final StringBuilder returnCommons = new StringBuilder();
         //create a copy of string2 for processing

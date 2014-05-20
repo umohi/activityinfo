@@ -30,11 +30,11 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.GetUsers;
 import org.activityinfo.legacy.shared.command.result.UserResult;
 import org.activityinfo.legacy.shared.model.UserPermissionDTO;
-import org.activityinfo.i18n.shared.I18N;
 
 import java.util.List;
 

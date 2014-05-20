@@ -35,19 +35,21 @@ import org.activityinfo.legacy.shared.model.SiteAttachmentDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetSiteAttachmentsHandler implements
-        CommandHandlerAsync<GetSiteAttachments, SiteAttachmentResult> {
+public class GetSiteAttachmentsHandler implements CommandHandlerAsync<GetSiteAttachments, SiteAttachmentResult> {
 
     private List<SiteAttachmentDTO> dtos;
 
     @Override
-    public void execute(GetSiteAttachments command, ExecutionContext context,
+    public void execute(GetSiteAttachments command,
+                        ExecutionContext context,
                         final AsyncCallback<SiteAttachmentResult> callback) {
 
         dtos = new ArrayList<SiteAttachmentDTO>();
 
-        SqlQuery.selectAll().from(Tables.SITE_ATTACHMENT, "s")
-                .where("s.siteid").equalTo(command.getSiteId())
+        SqlQuery.selectAll()
+                .from(Tables.SITE_ATTACHMENT, "s")
+                .where("s.siteid")
+                .equalTo(command.getSiteId())
                 .execute(context.getTransaction(), new SqlResultCallback() {
                     @Override
                     public void onSuccess(SqlTransaction tx, SqlResultSet results) {

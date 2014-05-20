@@ -33,8 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class TableElement extends ReportElement<TableContent> implements
-        Serializable {
+public class TableElement extends ReportElement<TableContent> implements Serializable {
 
     private TableColumn rootColumn = new TableColumn();
     private List<TableColumn> sortBy = new ArrayList<TableColumn>();
@@ -51,8 +50,7 @@ public class TableElement extends ReportElement<TableContent> implements
         this.rootColumn = rootColumn;
     }
 
-    @XmlElement(name = "column")
-    @XmlElementWrapper(name = "sortBy")
+    @XmlElement(name = "column") @XmlElementWrapper(name = "sortBy")
     public List<TableColumn> getSortBy() {
         return sortBy;
     }
@@ -83,8 +81,7 @@ public class TableElement extends ReportElement<TableContent> implements
         getRootColumn().addChild(tableColumn);
     }
 
-    @Override
-    @XmlTransient
+    @Override @XmlTransient
     public Set<Integer> getIndicators() {
         return Collections.emptySet();
     }

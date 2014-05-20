@@ -83,8 +83,7 @@ public class SearchResultsPage extends ContentPanel implements SearchView {
         setLayout(new BorderLayout());
 
         SearchResources.INSTANCE.searchStyles().ensureInjected();
-        loadingMonitor = new MaskingAsyncMonitor(this,
-                I18N.CONSTANTS.busySearching());
+        loadingMonitor = new MaskingAsyncMonitor(this, I18N.CONSTANTS.busySearching());
     }
 
     private void createRecentSitesView() {
@@ -150,16 +149,14 @@ public class SearchResultsPage extends ContentPanel implements SearchView {
     }
 
     private void addEntityToSearchBox(SearchResultEntity addedEntity) {
-        textboxSearch.setText(textboxSearch.getText() + " "
-                + createEntityText(addedEntity));
+        textboxSearch.setText(textboxSearch.getText() + " " + createEntityText(addedEntity));
     }
 
     private String createEntityText(SearchResultEntity addedEntity) {
-        return new StringBuilder()
-                .append(addedEntity.getDimension().toString())
-                .append(":")
-                .append(addedEntity.getName())
-                .toString();
+        return new StringBuilder().append(addedEntity.getDimension().toString())
+                                  .append(":")
+                                  .append(addedEntity.getName())
+                                  .toString();
     }
 
     private void createSearchBox() {
@@ -173,8 +170,7 @@ public class SearchResultsPage extends ContentPanel implements SearchView {
                     QueryChecker checker = new QueryChecker();
 
                     if (checker.checkQuery(textboxSearch.getText())) {
-                        eventBus.fireEvent(new SearchEvent(textboxSearch
-                                .getText()));
+                        eventBus.fireEvent(new SearchEvent(textboxSearch.getText()));
                     } else {
                         showError(checker.getFails());
                     }
@@ -219,8 +215,9 @@ public class SearchResultsPage extends ContentPanel implements SearchView {
     }
 
     @Override
-    public com.google.gwt.event.shared.HandlerRegistration addSearchHandler(
-            org.activityinfo.ui.client.page.search.SearchView.SearchHandler handler) {
+    public com.google.gwt.event.shared.HandlerRegistration addSearchHandler(org.activityinfo.ui.client.page.search
+                                                                                        .SearchView.SearchHandler
+                                                                                        handler) {
         return eventBus.addHandler(SearchEvent.TYPE, handler);
     }
 
@@ -262,8 +259,7 @@ public class SearchResultsPage extends ContentPanel implements SearchView {
             }
         }
 
-        labelResults.setValue(I18N.MESSAGES.searchResultsFound(
-                searchQuery,
+        labelResults.setValue(I18N.MESSAGES.searchResultsFound(searchQuery,
                 Integer.toString(databases),
                 Integer.toString(activities),
                 Integer.toString(indicators)));
@@ -279,8 +275,7 @@ public class SearchResultsPage extends ContentPanel implements SearchView {
     }
 
     @Override
-    public void setFilter(
-            Map<DimensionType, List<SearchResultEntity>> affectedEntities) {
+    public void setFilter(Map<DimensionType, List<SearchResultEntity>> affectedEntities) {
         // filterView.setFilter(affectedEntities);
     }
 

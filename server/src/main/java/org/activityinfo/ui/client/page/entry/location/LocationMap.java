@@ -31,10 +31,10 @@ import com.extjs.gxt.ui.client.widget.Html;
 import com.google.common.collect.Lists;
 import com.google.gwt.resources.client.ImageResource;
 import org.activityinfo.core.shared.model.AiLatLng;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.reports.content.MapboxLayers;
 import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
-import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.page.entry.form.resources.SiteFormResources;
 import org.activityinfo.ui.client.util.LeafletUtil;
 import org.discotools.gwt.leaflet.client.LeafletResourceInjector;
@@ -65,8 +65,7 @@ public class LocationMap extends Html {
 
     private Map map;
 
-    public LocationMap(LocationSearchPresenter presenter,
-                       NewLocationPresenter newLocationPresenter) {
+    public LocationMap(LocationSearchPresenter presenter, NewLocationPresenter newLocationPresenter) {
         super();
         this.searchPresenter = presenter;
         this.newLocationPresenter = newLocationPresenter;
@@ -107,54 +106,48 @@ public class LocationMap extends Html {
 
     private void bindEvents() {
 
-        searchPresenter.getStore().addStoreListener(
-                new StoreListener<LocationDTO>() {
+        searchPresenter.getStore().addStoreListener(new StoreListener<LocationDTO>() {
 
-                    @Override
-                    public void storeDataChanged(StoreEvent<LocationDTO> event) {
-                        updateSearchMarkers();
-                    }
-                });
-        searchPresenter.addListener(Events.Select,
-                new Listener<LocationEvent>() {
+            @Override
+            public void storeDataChanged(StoreEvent<LocationDTO> event) {
+                updateSearchMarkers();
+            }
+        });
+        searchPresenter.addListener(Events.Select, new Listener<LocationEvent>() {
 
-                    @Override
-                    public void handleEvent(LocationEvent event) {
-                        if (event.getSource() != LocationMap.this) {
-                            onLocationSelected(event.getLocation());
-                        }
-                    }
-                });
+            @Override
+            public void handleEvent(LocationEvent event) {
+                if (event.getSource() != LocationMap.this) {
+                    onLocationSelected(event.getLocation());
+                }
+            }
+        });
 
-        newLocationPresenter.addListener(
-                NewLocationPresenter.ACTIVE_STATE_CHANGED,
-                new Listener<BaseEvent>() {
-                    @Override
-                    public void handleEvent(BaseEvent be) {
-                        onModeChanged();
-                    }
-                });
+        newLocationPresenter.addListener(NewLocationPresenter.ACTIVE_STATE_CHANGED, new Listener<BaseEvent>() {
+            @Override
+            public void handleEvent(BaseEvent be) {
+                onModeChanged();
+            }
+        });
 
-        newLocationPresenter.addListener(NewLocationPresenter.POSITION_CHANGED,
-                new Listener<BaseEvent>() {
+        newLocationPresenter.addListener(NewLocationPresenter.POSITION_CHANGED, new Listener<BaseEvent>() {
 
-                    @Override
-                    public void handleEvent(BaseEvent be) {
-                        onNewLocationPosChanged();
-                    }
-                });
+            @Override
+            public void handleEvent(BaseEvent be) {
+                onNewLocationPosChanged();
+            }
+        });
 
-        newLocationPresenter.addListener(NewLocationPresenter.BOUNDS_CHANGED,
-                new Listener<BaseEvent>() {
+        newLocationPresenter.addListener(NewLocationPresenter.BOUNDS_CHANGED, new Listener<BaseEvent>() {
 
-                    @Override
-                    public void handleEvent(BaseEvent be) {
-                        if (newLocationPresenter.isActive()) {
-                            LatLngBounds newBounds = LeafletUtil.newLatLngBounds(newLocationPresenter.getBounds());
-                            map.fitBounds(newBounds);
-                        }
-                    }
-                });
+            @Override
+            public void handleEvent(BaseEvent be) {
+                if (newLocationPresenter.isActive()) {
+                    LatLngBounds newBounds = LeafletUtil.newLatLngBounds(newLocationPresenter.getBounds());
+                    map.fitBounds(newBounds);
+                }
+            }
+        });
 
     }
 
@@ -195,13 +188,14 @@ public class LocationMap extends Html {
 
     private void bindClickEvent(final LocationDTO location, Marker marker) {
         EventHandlerManager.addEventHandler(marker,
-                org.discotools.gwt.leaflet.client.events.handler.EventHandler.Events.click, new EventHandler<MouseEvent>() {
+                org.discotools.gwt.leaflet.client.events.handler.EventHandler.Events.click,
+                new EventHandler<MouseEvent>() {
 
-            @Override
-            public void handle(MouseEvent event) {
-                searchPresenter.select(this, location);
-            }
-        });
+                    @Override
+                    public void handle(MouseEvent event) {
+                        searchPresenter.select(this, location);
+                    }
+                });
     }
 
     private Marker createMarker(LatLng latLng, String label) {
@@ -219,12 +213,8 @@ public class LocationMap extends Html {
 
         DivIconOptions iconOptions = new DivIconOptions();
         iconOptions.setClassName(SiteFormResources.INSTANCE.style().locationMarker());
-        iconOptions.setIconSize(new Point(
-                markerImage.getWidth(),
-                markerImage.getHeight()));
-        iconOptions.setIconAnchor(new Point(
-                markerImage.getWidth() / 2,
-                markerImage.getHeight()));
+        iconOptions.setIconSize(new Point(markerImage.getWidth(), markerImage.getHeight()));
+        iconOptions.setIconAnchor(new Point(markerImage.getWidth() / 2, markerImage.getHeight()));
         iconOptions.setHtml(label);
 
         DivIcon icon = new DivIcon(iconOptions);
@@ -259,15 +249,15 @@ public class LocationMap extends Html {
         newLocationMarker = new Marker(newLatLng(newLocationPresenter.getLatLng()), markerOptions);
 
         EventHandlerManager.addEventHandler(newLocationMarker,
-                org.discotools.gwt.leaflet.client.events.handler.EventHandler.Events.dragend, new EventHandler<Event>() {
+                org.discotools.gwt.leaflet.client.events.handler.EventHandler.Events.dragend,
+                new EventHandler<Event>() {
 
-            @Override
-            public void handle(Event event) {
-                newLocationPresenter.setLatLng(new AiLatLng(
-                        newLocationMarker.getLatLng().lat(),
-                        newLocationMarker.getLatLng().lng()));
-            }
-        });
+                    @Override
+                    public void handle(Event event) {
+                        newLocationPresenter.setLatLng(new AiLatLng(newLocationMarker.getLatLng().lat(),
+                                newLocationMarker.getLatLng().lng()));
+                    }
+                });
 
         map.addLayer(newLocationMarker);
     }
@@ -284,8 +274,7 @@ public class LocationMap extends Html {
     }
 
     private void panToNewLocation() {
-        if (!map.getBounds().contains(
-                newLocationMarker.getLatLng())) {
+        if (!map.getBounds().contains(newLocationMarker.getLatLng())) {
             map.panTo(newLocationMarker.getLatLng());
         }
     }

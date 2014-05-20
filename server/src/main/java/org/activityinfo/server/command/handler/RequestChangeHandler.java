@@ -23,11 +23,10 @@ public class RequestChangeHandler implements CommandHandler<RequestChange> {
     @Override
     public CommandResult execute(RequestChange cmd, User user) throws CommandException {
 
-        ChangeRequestBuilder request = new ChangeRequestBuilder()
-                .setChangeType(ChangeType.valueOf(cmd.getChangeType()))
-                .setEntityId(cmd.getEntityId())
-                .setEntityType(cmd.getEntityType())
-                .setUser(user);
+        ChangeRequestBuilder request = new ChangeRequestBuilder().setChangeType(ChangeType.valueOf(cmd.getChangeType()))
+                                                                 .setEntityId(cmd.getEntityId())
+                                                                 .setEntityType(cmd.getEntityType())
+                                                                 .setUser(user);
 
         if (cmd.getPropertyMap() != null) {
             request.setProperties(cmd.getPropertyMap().getTransientMap());

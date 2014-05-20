@@ -114,8 +114,7 @@ public class DimensionModel extends BaseModelData {
         for (UserDatabaseDTO db : schema.getDatabases()) {
             for (ActivityDTO activity : db.getActivities()) {
                 if (activity.containsAny(indicators)) {
-                    for (AttributeGroupDTO attributeGroup : activity
-                            .getAttributeGroups()) {
+                    for (AttributeGroupDTO attributeGroup : activity.getAttributeGroups()) {
                         if (!groupsAdded.contains(attributeGroup.getName())) {
                             DimensionModel dimModel = new DimensionModel(attributeGroup);
                             models.add(dimModel);

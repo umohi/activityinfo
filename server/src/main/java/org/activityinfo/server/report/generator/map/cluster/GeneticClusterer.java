@@ -41,8 +41,7 @@ public class GeneticClusterer implements Clusterer {
     private final RadiiCalculator radiiCalculator;
     private final IntersectionCalculator intersectionCalculator;
 
-    public GeneticClusterer(RadiiCalculator radiiCalculator,
-                            IntersectionCalculator intersectionCalculator) {
+    public GeneticClusterer(RadiiCalculator radiiCalculator, IntersectionCalculator intersectionCalculator) {
         super();
         this.radiiCalculator = radiiCalculator;
         this.intersectionCalculator = intersectionCalculator;
@@ -63,12 +62,10 @@ public class GeneticClusterer implements Clusterer {
         MarkerGraph graph = new MarkerGraph(points, intersectionCalculator);
 
         GeneticSolver solver = new GeneticSolver();
-        clusters = solver.solve(
-                graph,
+        clusters = solver.solve(graph,
                 radiiCalculator,
                 new BubbleFitnessFunctor(),
-                UpperBoundsCalculator.calculate(graph,
-                        radiiCalculator));
+                UpperBoundsCalculator.calculate(graph, radiiCalculator));
 
         return clusters;
     }

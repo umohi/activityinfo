@@ -57,8 +57,7 @@ public final class ThemeHelper {
 
     public static Paragraph reportTitle(String title) {
         Paragraph para = new Paragraph(title);
-        para.setFont(new Font(Font.TIMES_ROMAN, TITLE_FONT_SIZE, Font.NORMAL,
-                BLUE));
+        para.setFont(new Font(Font.TIMES_ROMAN, TITLE_FONT_SIZE, Font.NORMAL, BLUE));
         para.setSpacingAfter(15);
 
         return para;
@@ -66,8 +65,7 @@ public final class ThemeHelper {
 
     public static Paragraph filterDescription(String text) {
         Paragraph para = new Paragraph(text);
-        para.setFont(new Font(Font.HELVETICA, HEADER3_FONT_SIZE, Font.NORMAL,
-                Color.BLACK));
+        para.setFont(new Font(Font.HELVETICA, HEADER3_FONT_SIZE, Font.NORMAL, Color.BLACK));
         return para;
     }
 
@@ -79,36 +77,29 @@ public final class ThemeHelper {
 
     public static Paragraph elementTitle(String title) {
         Paragraph para = new Paragraph(title);
-        para.setFont(new Font(Font.TIMES_ROMAN, HEADER2_FONT_SIZE, Font.BOLD,
-                BLUE2));
+        para.setFont(new Font(Font.TIMES_ROMAN, HEADER2_FONT_SIZE, Font.BOLD, BLUE2));
         para.setSpacingBefore(BODY_FONT_SIZE);
         return para;
     }
 
     public static Paragraph legendTitle(String title) {
         Paragraph para = new Paragraph(title);
-        para.setFont(new Font(Font.TIMES_ROMAN, BODY_FONT_SIZE, Font.BOLD,
-                BLUE2));
+        para.setFont(new Font(Font.TIMES_ROMAN, BODY_FONT_SIZE, Font.BOLD, BLUE2));
         para.setSpacingBefore(BODY_FONT_SIZE);
         return para;
     }
 
     public static Font footerFont() {
-        return new Font(Font.TIMES_ROMAN, BODY_FONT_SIZE, Font.BOLD,
-                Color.BLACK);
+        return new Font(Font.TIMES_ROMAN, BODY_FONT_SIZE, Font.BOLD, Color.BLACK);
     }
 
-    public static Cell columnHeaderCell(String label, boolean leaf)
-            throws BadElementException {
-        return columnHeaderCell(label, leaf, leaf ? Cell.ALIGN_RIGHT
-                : Cell.ALIGN_CENTER);
+    public static Cell columnHeaderCell(String label, boolean leaf) throws BadElementException {
+        return columnHeaderCell(label, leaf, leaf ? Cell.ALIGN_RIGHT : Cell.ALIGN_CENTER);
     }
 
-    public static Cell columnHeaderCell(String label, boolean leaf, int hAlign)
-            throws BadElementException {
+    public static Cell columnHeaderCell(String label, boolean leaf, int hAlign) throws BadElementException {
         Paragraph para = new Paragraph(label);
-        para.setFont(new Font(Font.HELVETICA, BODY_FONT_SIZE, Font.NORMAL,
-                Color.WHITE));
+        para.setFont(new Font(Font.HELVETICA, BODY_FONT_SIZE, Font.NORMAL, Color.WHITE));
 
         Cell cell = new Cell();
         cell.addElement(para);
@@ -130,12 +121,9 @@ public final class ThemeHelper {
         return cell;
     }
 
-    public static Cell bodyCell(String label, boolean header, int depth,
-                                boolean leaf)
-            throws BadElementException {
+    public static Cell bodyCell(String label, boolean header, int depth, boolean leaf) throws BadElementException {
 
-        return bodyCell(label, header, depth, leaf, header ? Cell.ALIGN_LEFT
-                : Cell.ALIGN_RIGHT);
+        return bodyCell(label, header, depth, leaf, header ? Cell.ALIGN_LEFT : Cell.ALIGN_RIGHT);
     }
 
     /**
@@ -149,9 +137,11 @@ public final class ThemeHelper {
      * @return
      * @throws BadElementException
      */
-    public static Cell bodyCell(String label, boolean header, int depth,
-                                boolean leaf, int horizantalAlignment)
-            throws BadElementException {
+    public static Cell bodyCell(String label,
+                                boolean header,
+                                int depth,
+                                boolean leaf,
+                                int horizantalAlignment) throws BadElementException {
 
         Cell cell = new Cell();
         cell.setHorizontalAlignment(horizantalAlignment);
@@ -163,8 +153,7 @@ public final class ThemeHelper {
                 font.setColor(Color.WHITE);
             }
             para.setFont(font);
-            para.setIndentationLeft(LEFT_INDENT
-                    + (header ? HEADER3_FONT_SIZE * depth : 0));
+            para.setIndentationLeft(LEFT_INDENT + (header ? HEADER3_FONT_SIZE * depth : 0));
             cell.addElement(para);
         }
 
@@ -191,7 +180,6 @@ public final class ThemeHelper {
     }
 
     private static Font bodyFont() {
-        return new Font(Font.HELVETICA, BODY_FONT_SIZE, Font.NORMAL,
-                Color.BLACK);
+        return new Font(Font.HELVETICA, BODY_FONT_SIZE, Font.NORMAL, Color.BLACK);
     }
 }

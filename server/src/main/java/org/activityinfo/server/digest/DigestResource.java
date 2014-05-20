@@ -16,11 +16,9 @@ import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 public abstract class DigestResource {
     public static final String USERDIGEST_QUEUE = "userdigest";
 
-    private static final Logger LOGGER =
-            Logger.getLogger(DigestResource.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DigestResource.class.getName());
 
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @GET @Produces(MediaType.TEXT_PLAIN)
     public String createDigests() throws Exception {
 
         List<Integer> userIds = selectUsers();
@@ -31,9 +29,8 @@ public abstract class DigestResource {
         Queue queue = QueueFactory.getQueue(USERDIGEST_QUEUE);
 
         for (Integer userId : userIds) {
-            TaskOptions taskoptions = withUrl(getUserDigestEndpoint())
-                    .param(UserDigestResource.PARAM_USER, String.valueOf(userId))
-                    .method(Method.GET);
+            TaskOptions taskoptions = withUrl(getUserDigestEndpoint()).param(UserDigestResource.PARAM_USER,
+                    String.valueOf(userId)).method(Method.GET);
             queue.add(taskoptions);
         }
         return msg;

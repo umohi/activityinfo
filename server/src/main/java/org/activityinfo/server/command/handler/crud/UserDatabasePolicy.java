@@ -22,10 +22,7 @@ package org.activityinfo.server.command.handler.crud;
  * #L%
  */
 
-import java.util.Date;
-
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
 import org.activityinfo.server.command.handler.PermissionOracle;
 import org.activityinfo.server.database.hibernate.dao.CountryDAO;
 import org.activityinfo.server.database.hibernate.dao.UserDatabaseDAO;
@@ -33,7 +30,8 @@ import org.activityinfo.server.database.hibernate.entity.Country;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.database.hibernate.entity.UserDatabase;
 
-import com.google.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.Date;
 
 public class UserDatabasePolicy implements EntityPolicy<UserDatabase> {
 

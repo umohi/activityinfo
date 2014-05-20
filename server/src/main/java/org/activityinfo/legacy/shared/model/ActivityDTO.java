@@ -39,13 +39,7 @@ import java.util.*;
  * @author Alex Bertram
  */
 @JsonAutoDetect(JsonMethod.NONE)
-public final class ActivityDTO
-        extends
-        BaseModelData
-        implements
-        EntityDTO,
-        HasLockedPeriod,
-        ProvidesKey {
+public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLockedPeriod, ProvidesKey {
 
     public static final String ENTITY_NAME = "Activity";
 
@@ -58,8 +52,7 @@ public final class ActivityDTO
     private UserDatabaseDTO database;
 
     private List<IndicatorDTO> indicators = new ArrayList<IndicatorDTO>(0);
-    private List<AttributeGroupDTO> attributeGroups = new ArrayList<AttributeGroupDTO>(
-            0);
+    private List<AttributeGroupDTO> attributeGroups = new ArrayList<AttributeGroupDTO>(0);
     private Set<LockedPeriodDTO> lockedPeriods = new HashSet<LockedPeriodDTO>(0);
 
     // to ensure serializer
@@ -109,9 +102,7 @@ public final class ActivityDTO
     /**
      * @return this Activity's id
      */
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }
@@ -133,9 +124,7 @@ public final class ActivityDTO
     /**
      * @return this Activity's name
      */
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getName() {
         return get("name");
     }
@@ -154,8 +143,7 @@ public final class ActivityDTO
         this.database = database;
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getPublished() {
         return (Integer) get("published");
     }
@@ -167,8 +155,7 @@ public final class ActivityDTO
     /**
      * @return a list of this Activity's indicators
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public List<IndicatorDTO> getIndicators() {
         return indicators;
     }
@@ -193,8 +180,7 @@ public final class ActivityDTO
         this.indicators = indicators;
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public List<AttributeGroupDTO> getAttributeGroups() {
         return attributeGroups;
     }
@@ -223,8 +209,7 @@ public final class ActivityDTO
      * @return the ReportingFrequency of this Activity, either
      * <code>REPORT_ONCE</code> or <code>REPORT_MONTHLY</code>
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getReportingFrequency() {
         return (Integer) get("reportingFrequency");
     }
@@ -250,11 +235,9 @@ public final class ActivityDTO
     /**
      * @return the
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public LocationTypeDTO getLocationType() {
-        return getDatabase().getCountry().getLocationTypeById(
-                getLocationTypeId());
+        return getDatabase().getCountry().getLocationTypeById(getLocationTypeId());
     }
 
     /**
@@ -265,8 +248,7 @@ public final class ActivityDTO
      */
     public AttributeDTO getAttributeById(int id) {
         for (AttributeGroupDTO group : attributeGroups) {
-            AttributeDTO attribute = SchemaDTO.getById(group.getAttributes(),
-                    id);
+            AttributeDTO attribute = SchemaDTO.getById(group.getAttributes(), id);
             if (attribute != null) {
                 return attribute;
             }
@@ -292,8 +274,7 @@ public final class ActivityDTO
     /**
      * @return this Activity's category
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getCategory() {
         return get("category");
     }
@@ -357,9 +338,8 @@ public final class ActivityDTO
             // if this activity is bound to an administrative
             // level, then we need only as far down as this goes
 
-            return getDatabase().getCountry().getAdminLevelAncestors(
-                    getLocationType().getBoundAdminLevelId());
-        } else if(getLocationType().isNationwide()) {
+            return getDatabase().getCountry().getAdminLevelAncestors(getLocationType().getBoundAdminLevelId());
+        } else if (getLocationType().isNationwide()) {
 
             return Lists.newArrayList();
 
@@ -404,9 +384,7 @@ public final class ActivityDTO
         this.lockedPeriods = lockedPeriods;
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public Set<LockedPeriodDTO> getLockedPeriods() {
         return lockedPeriods;
     }

@@ -30,10 +30,9 @@ import org.activityinfo.ui.client.local.sync.DownSynchronizer;
 public class InstallPipeline extends AsyncPipeline {
 
     @Inject
-    public InstallPipeline(
-            AppCacheSynchronizer appCacheSynchronizer,
-            DropAll dropAll,
-            DownSynchronizer downSychronizer) {
+    public InstallPipeline(AppCacheSynchronizer appCacheSynchronizer,
+                           DropAll dropAll,
+                           DownSynchronizer downSychronizer) {
         super(appCacheSynchronizer, dropAll, downSychronizer);
     }
 }

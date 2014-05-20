@@ -28,8 +28,7 @@ import org.activityinfo.ui.client.EventBus;
 
 public class SyncRequestEvent extends BaseEvent {
 
-    public static final EventType TYPE = new EventBus.NamedEventType(
-            "SyncRequest");
+    public static final EventType TYPE = new EventBus.NamedEventType("SyncRequest");
 
     public static final SyncRequestEvent INSTANCE = new SyncRequestEvent();
 

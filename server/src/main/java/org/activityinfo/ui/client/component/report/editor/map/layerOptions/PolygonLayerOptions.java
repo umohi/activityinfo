@@ -35,8 +35,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.reports.model.layers.PolygonMapLayer;
 
-public class PolygonLayerOptions extends LayoutContainer implements
-        LayerOptionsWidget<PolygonMapLayer> {
+public class PolygonLayerOptions extends LayoutContainer implements LayerOptionsWidget<PolygonMapLayer> {
     private PolygonMapLayer layer;
     private ColorPalette colorPicker = new ColorPalette();
 
@@ -50,17 +49,15 @@ public class PolygonLayerOptions extends LayoutContainer implements
         colorPicker.setValue("000000");
 
         // Set the selected color to the maplayer
-        colorPicker.addListener(Events.Select,
-                new Listener<ColorPaletteEvent>() {
-                    @Override
-                    public void handleEvent(ColorPaletteEvent be) {
-                        if (!Objects.equal(layer.getMaxColor(),
-                                colorPicker.getValue())) {
-                            layer.setMaxColor(colorPicker.getValue());
-                            ValueChangeEvent.fire(PolygonLayerOptions.this, layer);
-                        }
-                    }
-                });
+        colorPicker.addListener(Events.Select, new Listener<ColorPaletteEvent>() {
+            @Override
+            public void handleEvent(ColorPaletteEvent be) {
+                if (!Objects.equal(layer.getMaxColor(), colorPicker.getValue())) {
+                    layer.setMaxColor(colorPicker.getValue());
+                    ValueChangeEvent.fire(PolygonLayerOptions.this, layer);
+                }
+            }
+        });
 
         LabelField labelColor = new LabelField(I18N.CONSTANTS.color());
         add(labelColor);
@@ -89,8 +86,7 @@ public class PolygonLayerOptions extends LayoutContainer implements
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<PolygonMapLayer> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<PolygonMapLayer> handler) {
         return this.addHandler(handler, ValueChangeEvent.getType());
     }
 }

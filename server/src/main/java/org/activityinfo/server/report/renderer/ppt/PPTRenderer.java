@@ -42,15 +42,13 @@ public class PPTRenderer implements Renderer {
     private final PPTChartRenderer chartRenderer;
 
     @Inject
-    public PPTRenderer(PPTMapRenderer mapRenderer,
-                       PPTChartRenderer chartRenderer) {
+    public PPTRenderer(PPTMapRenderer mapRenderer, PPTChartRenderer chartRenderer) {
         this.mapRenderer = mapRenderer;
         this.chartRenderer = chartRenderer;
     }
 
     @Override
-    public void render(ReportElement element, OutputStream os)
-            throws IOException {
+    public void render(ReportElement element, OutputStream os) throws IOException {
 
         if (element instanceof Report) {
             SlideShow ppt = new SlideShow();

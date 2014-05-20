@@ -107,8 +107,7 @@ public class KMLNamespace {
     }
 
     public KMLNamespace coordinates(double lng, double lat) throws SAXException {
-        return s("coordinates",
-                Double.toString(lng) + "," + Double.toString(lat));
+        return s("coordinates", Double.toString(lng) + "," + Double.toString(lat));
     }
 
     public XmlElement startNetworkLink() throws SAXException {

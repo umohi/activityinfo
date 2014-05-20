@@ -36,10 +36,8 @@ public class MailModule extends AbstractRestModule {
         bindResource(BounceHook.class, "/bounceHook/*");
     }
 
-    @Provides
-    @Singleton
-    public MailSender provideMailSender(DeploymentConfiguration config,
-                                        Injector injector) {
+    @Provides @Singleton
+    public MailSender provideMailSender(DeploymentConfiguration config, Injector injector) {
         if (config.hasProperty("postmark.key")) {
             return injector.getInstance(PostmarkMailSender.class);
         } else {

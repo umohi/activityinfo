@@ -123,8 +123,8 @@ public class MapMarker implements Serializable {
     @Override
     public String toString() {
         return "MapMarker{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+               "x=" + x +
+               ", y=" + y +
+               '}';
     }
 }

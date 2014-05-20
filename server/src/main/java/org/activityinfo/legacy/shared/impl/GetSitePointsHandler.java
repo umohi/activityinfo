@@ -36,17 +36,14 @@ import org.activityinfo.legacy.shared.reports.util.mapping.Extents;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetSitePointsHandler implements
-        CommandHandlerAsync<GetSitePoints, SitePointList> {
+public class GetSitePointsHandler implements CommandHandlerAsync<GetSitePoints, SitePointList> {
 
     @Override
-    public void execute(GetSitePoints command, ExecutionContext context,
-                        final AsyncCallback<SitePointList> callback) {
+    public void execute(GetSitePoints command, ExecutionContext context, final AsyncCallback<SitePointList> callback) {
 
         Filter filter = new Filter();
         if (command.getActivityId() != 0) {
-            filter.addRestriction(DimensionType.Activity,
-                    command.getActivityId());
+            filter.addRestriction(DimensionType.Activity, command.getActivityId());
         }
 
         context.execute(new GetSites(filter), new AsyncCallback<SiteResult>() {
@@ -68,8 +65,7 @@ public class GetSitePointsHandler implements
         List<SitePointDTO> points = new ArrayList<SitePointDTO>(sites.size());
         for (SiteDTO site : sites) {
             if (site.hasLatLong()) {
-                points.add(new SitePointDTO(site.getId(), site.getLongitude(),
-                        site.getLatitude()));
+                points.add(new SitePointDTO(site.getId(), site.getLongitude(), site.getLatitude()));
                 bounds.grow(site.getLatitude(), site.getLongitude());
             }
         }

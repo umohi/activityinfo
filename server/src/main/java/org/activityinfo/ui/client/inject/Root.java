@@ -35,9 +35,7 @@ import java.lang.annotation.Target;
  *
  * @author Alex Bertram
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-@BindingAnnotation
+@Retention(RetentionPolicy.RUNTIME) @Target({ElementType.FIELD, ElementType.PARAMETER}) @BindingAnnotation
 public @interface Root {
 
 }

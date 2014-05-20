@@ -33,8 +33,8 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.legacy.shared.Log;
+import org.activityinfo.legacy.shared.auth.AuthenticatedUser;
 import org.activityinfo.ui.client.local.command.HandlerRegistry;
 import org.activityinfo.ui.client.local.sync.Synchronizer;
 import org.activityinfo.ui.client.local.sync.SynchronizerImpl;
@@ -49,8 +49,7 @@ public class LocalModule extends AbstractGinModule {
         bind(SqlDialect.class).to(SqliteDialect.class);
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     protected SqlDatabase provideSqlDatabase(AuthenticatedUser auth) {
         try {
             SqlDatabaseFactory factory = GWT.create(SqlDatabaseFactory.class);
@@ -77,10 +76,8 @@ public class LocalModule extends AbstractGinModule {
         }
 
         @Override
-        public void executeUpdates(String bulkOperationJsonArray,
-                                   AsyncCallback<Integer> callback) {
-            callback
-                    .onFailure(new SqlException("Database could not be opened."));
+        public void executeUpdates(String bulkOperationJsonArray, AsyncCallback<Integer> callback) {
+            callback.onFailure(new SqlException("Database could not be opened."));
         }
 
         @Override

@@ -58,8 +58,7 @@ import org.activityinfo.ui.client.page.report.editor.ElementDialog.Callback;
 
 public class ElementWidget extends Composite {
 
-    private static ElementWidgetUiBinder uiBinder = GWT
-            .create(ElementWidgetUiBinder.class);
+    private static ElementWidgetUiBinder uiBinder = GWT.create(ElementWidgetUiBinder.class);
 
     interface ElementWidgetUiBinder extends UiBinder<Widget, ElementWidget> {
     }
@@ -82,24 +81,16 @@ public class ElementWidget extends Composite {
         String blockHover();
     }
 
-    @UiField
-    HTMLPanel htmlPanel;
+    @UiField HTMLPanel htmlPanel;
 
-    @UiField
-    MyStyle style;
+    @UiField MyStyle style;
 
-    @UiField
-    SpanElement titleElement;
-    @UiField
-    SpanElement titleChangeElement;
-    @UiField
-    DivElement buttonElement;
-    @UiField
-    DivElement contentElement;
-    @UiField
-    DivElement contentContainerElement;
-    @UiField
-    DivElement loadingElement;
+    @UiField SpanElement titleElement;
+    @UiField SpanElement titleChangeElement;
+    @UiField DivElement buttonElement;
+    @UiField DivElement contentElement;
+    @UiField DivElement contentContainerElement;
+    @UiField DivElement loadingElement;
 
     private ReportElement model;
 
@@ -109,8 +100,7 @@ public class ElementWidget extends Composite {
     private EventHandler parent;
 
     @Inject
-    public ElementWidget(Dispatcher dispatcher,
-                         Provider<ElementDialog> dialogProvider) {
+    public ElementWidget(Dispatcher dispatcher, Provider<ElementDialog> dialogProvider) {
         this.dispatcher = dispatcher;
         this.dialogProvider = dialogProvider;
 
@@ -138,25 +128,24 @@ public class ElementWidget extends Composite {
     }
 
     private void loadView() {
-        dispatcher.execute(new GenerateElement<Content>(model),
-                new AsyncCallback<Content>() {
+        dispatcher.execute(new GenerateElement<Content>(model), new AsyncCallback<Content>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // TODO
-                    }
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO
+            }
 
-                    @Override
-                    public void onSuccess(Content result) {
-                        model.setContent(result);
-                        ChartOFCView view = new ChartOFCView();
-                        view.setHeight(256);
-                        view.setBorders(false);
-                        view.show((PivotChartReportElement) model);
-                        loadingElement.getStyle().setDisplay(Display.NONE);
-                        htmlPanel.add(view, contentElement);
-                    }
-                });
+            @Override
+            public void onSuccess(Content result) {
+                model.setContent(result);
+                ChartOFCView view = new ChartOFCView();
+                view.setHeight(256);
+                view.setBorders(false);
+                view.show((PivotChartReportElement) model);
+                loadingElement.getStyle().setDisplay(Display.NONE);
+                htmlPanel.add(view, contentElement);
+            }
+        });
     }
 
     public ReportElement getModel() {
@@ -170,20 +159,19 @@ public class ElementWidget extends Composite {
         if (model instanceof TextReportElement) {
             renderStaticHtml();
         } else {
-            dispatcher.execute(new RenderReportHtml(model),
-                    new AsyncCallback<HtmlResult>() {
+            dispatcher.execute(new RenderReportHtml(model), new AsyncCallback<HtmlResult>() {
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            // TODO Auto-generated method stub
+                @Override
+                public void onFailure(Throwable caught) {
+                    // TODO Auto-generated method stub
 
-                        }
+                }
 
-                        @Override
-                        public void onSuccess(HtmlResult result) {
-                            updateHtml(result.getHtml());
-                        }
-                    });
+                @Override
+                public void onSuccess(HtmlResult result) {
+                    updateHtml(result.getHtml());
+                }
+            });
         }
     }
 

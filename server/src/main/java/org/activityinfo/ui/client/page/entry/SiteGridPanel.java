@@ -63,8 +63,7 @@ public final class SiteGridPanel extends ContentPanel {
 
     private SiteGridPanelView grid = null;
 
-    public SiteGridPanel(Dispatcher dispatcher,
-                         ColumnModelProvider columnModelProvider) {
+    public SiteGridPanel(Dispatcher dispatcher, ColumnModelProvider columnModelProvider) {
         this.dispatcher = dispatcher;
         this.columnModelProvider = columnModelProvider;
 
@@ -82,13 +81,12 @@ public final class SiteGridPanel extends ContentPanel {
         removeAll();
         add(new LoadingPlaceHolder());
         layout();
-        columnModelProvider.fetchColumnModels(filter, grouping,
-                new SuccessCallback<ColumnModel>() {
-                    @Override
-                    public void onSuccess(ColumnModel columnModel) {
-                        createGrid(grouping, filter, columnModel);
-                    }
-                });
+        columnModelProvider.fetchColumnModels(filter, grouping, new SuccessCallback<ColumnModel>() {
+            @Override
+            public void onSuccess(ColumnModel columnModel) {
+                createGrid(grouping, filter, columnModel);
+            }
+        });
         updateHeading(filter);
     }
 
@@ -125,8 +123,7 @@ public final class SiteGridPanel extends ContentPanel {
         }
     }
 
-    protected void createGrid(GroupingModel grouping, Filter filter,
-                              ColumnModel columnModel) {
+    protected void createGrid(GroupingModel grouping, Filter filter, ColumnModel columnModel) {
 
         if (grouping == NullGroupingModel.INSTANCE) {
             FlatSiteGridPanel panel = new FlatSiteGridPanel(dispatcher);
@@ -138,19 +135,17 @@ public final class SiteGridPanel extends ContentPanel {
             SiteTreeGrid treeGrid = new SiteTreeGrid(dispatcher, grouping, filter, columnModel);
             treeGrid.addSelectionChangeListener(new SelectionChangedListener<SiteDTO>() {
 
-                        @Override
-                        public void selectionChanged(
-                                SelectionChangedEvent<SiteDTO> se) {
-                            fireEvent(Events.SelectionChange, se);
-                        }
+                @Override
+                public void selectionChanged(SelectionChangedEvent<SiteDTO> se) {
+                    fireEvent(Events.SelectionChange, se);
+                }
 
-                    });
+            });
             installGrid(treeGrid);
         }
     }
 
-    public void addSelectionChangedListener(
-            SelectionChangedListener<SiteDTO> listener) {
+    public void addSelectionChangedListener(SelectionChangedListener<SiteDTO> listener) {
         addListener(Events.SelectionChange, listener);
     }
 

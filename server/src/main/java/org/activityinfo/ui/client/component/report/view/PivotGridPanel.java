@@ -30,14 +30,10 @@ import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Format;
-import com.extjs.gxt.ui.client.util.Point;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Info;
-import com.extjs.gxt.ui.client.widget.InfoConfig;
 import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.tips.ToolTipConfig;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.client.type.IndicatorNumberFormat;
@@ -49,8 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PivotGridPanel extends ContentPanel implements
-        ReportView<PivotReportElement> {
+public class PivotGridPanel extends ContentPanel implements ReportView<PivotReportElement> {
 
     private static final int ROW_INDENT = 15;
 
@@ -65,8 +60,8 @@ public class PivotGridPanel extends ContentPanel implements
     private DrillDownEditor drillDownEditor;
 
     public PivotGridPanel(Dispatcher dispatcher) {
-    	this.dispatcher = dispatcher;
-    	this.drillDownEditor = new DrillDownEditor(dispatcher);
+        this.dispatcher = dispatcher;
+        this.drillDownEditor = new DrillDownEditor(dispatcher);
         setLayout(new FitLayout());
 
     }
@@ -118,19 +113,18 @@ public class PivotGridPanel extends ContentPanel implements
         grid.setAutoExpandMin(150);
         grid.setView(new PivotGridView());
         grid.setSelectionModel(new CellSelectionModel<PivotGridPanel.PivotTableRow>());
-        grid.addListener(Events.CellDoubleClick,
-                new Listener<GridEvent<PivotTableRow>>() {
-                    @Override
-                    public void handleEvent(GridEvent<PivotTableRow> ge) {
-                        if (ge.getColIndex() != 0) {
-                            PivotTableData.Axis row = ge.getModel().getRowAxis();
-                            PivotTableData.Axis column = columnMap.get(ge.getColIndex());
-                            if(row.getCell(column) != null) {
-                                drillDownEditor.drillDown(element, row, column);
-                            }
-                        }
+        grid.addListener(Events.CellDoubleClick, new Listener<GridEvent<PivotTableRow>>() {
+            @Override
+            public void handleEvent(GridEvent<PivotTableRow> ge) {
+                if (ge.getColIndex() != 0) {
+                    PivotTableData.Axis row = ge.getModel().getRowAxis();
+                    PivotTableData.Axis column = columnMap.get(ge.getColIndex());
+                    if (row.getCell(column) != null) {
+                        drillDownEditor.drillDown(element, row, column);
                     }
-                });
+                }
+            }
+        });
 
         add(grid);
 
@@ -145,16 +139,19 @@ public class PivotGridPanel extends ContentPanel implements
         }
     }
 
-    private static class RowHeaderRenderer implements
-            GridCellRenderer<PivotTableRow> {
+    private static class RowHeaderRenderer implements GridCellRenderer<PivotTableRow> {
 
         @Override
-        public Object render(PivotTableRow model, String property,
-                             ColumnData config, int rowIndex, int colIndex,
-                             ListStore<PivotTableRow> store, Grid<PivotTableRow> grid) {
+        public Object render(PivotTableRow model,
+                             String property,
+                             ColumnData config,
+                             int rowIndex,
+                             int colIndex,
+                             ListStore<PivotTableRow> store,
+                             Grid<PivotTableRow> grid) {
             String indent = (model.getDepth() * ROW_INDENT) + "px";
             return "<span style=\"margin-left:" + indent + "\">" +
-                    Format.htmlEncode((String) model.get("header")) + "</span>";
+                   Format.htmlEncode((String) model.get("header")) + "</span>";
         }
 
     }
@@ -188,11 +185,16 @@ public class PivotGridPanel extends ContentPanel implements
             column.setMenuDisabled(true);
             column.setRenderer(new GridCellRenderer() {
                 @Override
-                public Object render(ModelData model, String property, ColumnData config, int rowIndex, int colIndex,
-                                     ListStore store, Grid grid) {
+                public Object render(ModelData model,
+                                     String property,
+                                     ColumnData config,
+                                     int rowIndex,
+                                     int colIndex,
+                                     ListStore store,
+                                     Grid grid) {
 
                     Double value = model.get(property);
-                    if(value == null) {
+                    if (value == null) {
                         config.cellAttr = "";
                         return null;
                     } else {

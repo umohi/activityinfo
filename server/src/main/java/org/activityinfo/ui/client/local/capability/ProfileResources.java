@@ -29,17 +29,13 @@ import com.google.gwt.resources.client.TextResource;
 
 public interface ProfileResources extends ClientBundle {
 
-    public static ProfileResources INSTANCE = GWT
-            .create(ProfileResources.class);
+    public static ProfileResources INSTANCE = GWT.create(ProfileResources.class);
 
-    @Source("StartupMessageIE.html")
-    TextResource startupMessageIE();
+    @Source("StartupMessageIE.html") TextResource startupMessageIE();
 
-    @Source("StartupMessageFirefox.html")
-    TextResource startupMessageFirefox();
+    @Source("StartupMessageFirefox.html") TextResource startupMessageFirefox();
 
-    @Source("Startup.css")
-    StartupStyle style();
+    @Source("Startup.css") StartupStyle style();
 
     interface StartupStyle extends CssResource {
         String startupDialogBody();

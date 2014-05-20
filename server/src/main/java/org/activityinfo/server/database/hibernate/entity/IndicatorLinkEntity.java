@@ -5,8 +5,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "IndicatorLink")
+@Entity @Table(name = "IndicatorLink")
 public class IndicatorLinkEntity {
     @EmbeddedId
     private IndicatorLinkEntityId id;

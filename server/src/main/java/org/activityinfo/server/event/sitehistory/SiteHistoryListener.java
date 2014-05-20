@@ -34,8 +34,7 @@ public class SiteHistoryListener extends CommandEventListener {
     private final SiteHistoryProcessor siteHistoryProcessor;
 
 
-    @Inject
-    @SuppressWarnings("unchecked")
+    @Inject @SuppressWarnings("unchecked")
     public SiteHistoryListener(ServerEventBus serverEventBus, SiteHistoryProcessor siteHistoryProcessor) {
         super(serverEventBus, CreateSite.class, UpdateSite.class, DeleteSite.class);
         this.siteHistoryProcessor = siteHistoryProcessor;

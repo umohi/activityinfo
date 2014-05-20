@@ -61,35 +61,30 @@ public class SqliteDeleteBuilder {
     }
 
     public void execute(EntityManager entityManager) {
-        ((HibernateEntityManager) entityManager).getSession().doWork(
-                new Work() {
+        ((HibernateEntityManager) entityManager).getSession().doWork(new Work() {
 
-                    @Override
-                    public void execute(Connection connection) throws SQLException {
-                        rs = SqlQueryUtil.query(connection, query);
-                        StringBuilder sql = new StringBuilder();
-                        sql.append("DELETE FROM ")
-                                .append(tableName)
-                                .append(" WHERE ")
-                                .append(idName)
-                                .append(" IN (");
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                rs = SqlQueryUtil.query(connection, query);
+                StringBuilder sql = new StringBuilder();
+                sql.append("DELETE FROM ").append(tableName).append(" WHERE ").append(idName).append(" IN (");
 
-                        boolean needsComma = false;
-                        while (rs.next()) {
-                            if (needsComma) {
-                                sql.append(',');
-                            }
-                            sql.append(rs.getInt(1));
-                            needsComma = true;
-                        }
-                        sql.append(")");
-                        try {
-                            batch.addStatement(sql.toString());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                boolean needsComma = false;
+                while (rs.next()) {
+                    if (needsComma) {
+                        sql.append(',');
                     }
-                });
+                    sql.append(rs.getInt(1));
+                    needsComma = true;
+                }
+                sql.append(")");
+                try {
+                    batch.addStatement(sql.toString());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
 }

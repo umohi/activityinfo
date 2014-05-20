@@ -63,8 +63,7 @@ public class SearchPresenter implements SearchView.SearchHandler, Page {
     private SchemaDTO schema;
 
     @Inject
-    public SearchPresenter(Dispatcher service, EventBus eventBus,
-                           SearchView view) {
+    public SearchPresenter(Dispatcher service, EventBus eventBus, SearchView view) {
         this.service = service;
         this.eventBus = eventBus;
         this.view = view;
@@ -90,65 +89,58 @@ public class SearchPresenter implements SearchView.SearchHandler, Page {
             view.getLoadingMonitor().beforeRequest();
 
             service.execute(new Search(searchEvent.getQuery()),
-                    view.getLoadingMonitor(), new AsyncCallback<SearchResult>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    // TODO handle failure
-                    view.getLoadingMonitor().onServerError();
-                }
+                    view.getLoadingMonitor(),
+                    new AsyncCallback<SearchResult>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            // TODO handle failure
+                            view.getLoadingMonitor().onServerError();
+                        }
 
-                @Override
-                public void onSuccess(SearchResult result) {
-                    view.setSearchResults(result.getPivotTabelData());
-                    Filter filter = result.getPivotTabelData() == null ? null
-                            : result.getPivotTabelData().getEffectiveFilter();
-                    view.setFilter(createFilter(filter,
-                            result.getPivotTabelData()));
-                    view.getLoadingMonitor().onCompleted();
-                    view.setSitePoints(SitePointList.fromSitesList(result
-                            .getRecentAdditions()));
-                    view.setSites(fromSitesList(result.getRecentAdditions()));
-                }
+                        @Override
+                        public void onSuccess(SearchResult result) {
+                            view.setSearchResults(result.getPivotTabelData());
+                            Filter filter = result.getPivotTabelData() == null ? null : result.getPivotTabelData()
+                                                                                              .getEffectiveFilter();
+                            view.setFilter(createFilter(filter, result.getPivotTabelData()));
+                            view.getLoadingMonitor().onCompleted();
+                            view.setSitePoints(SitePointList.fromSitesList(result.getRecentAdditions()));
+                            view.setSites(fromSitesList(result.getRecentAdditions()));
+                        }
 
-                private Map<DimensionType, List<SearchResultEntity>> createFilter(
-                        Filter effectiveFilter, PivotContent pivotContent) {
+                        private Map<DimensionType, List<SearchResultEntity>> createFilter(Filter effectiveFilter,
+                                                                                          PivotContent pivotContent) {
 
-                    Map<DimensionType, List<SearchResultEntity>> newFilter = new HashMap<DimensionType, List<SearchResultEntity>>();
+                            Map<DimensionType, List<SearchResultEntity>> newFilter = new HashMap<DimensionType,
+                                    List<SearchResultEntity>>();
 
-                    if (effectiveFilter != null) {
-                        for (DimensionType type : effectiveFilter
-                                .getRestrictedDimensions()) {
-                            List<SearchResultEntity> entities = new ArrayList<SearchResultEntity>();
-                            for (Integer entityId : effectiveFilter
-                                    .getRestrictions(type)) {
-                                String name = getName(entityId, type,
-                                        pivotContent);
-                                String link = GWT.getHostPageBaseURL()
-                                        + "#search/" + type.toString() + ":"
-                                        + name;
+                            if (effectiveFilter != null) {
+                                for (DimensionType type : effectiveFilter.getRestrictedDimensions()) {
+                                    List<SearchResultEntity> entities = new ArrayList<SearchResultEntity>();
+                                    for (Integer entityId : effectiveFilter.getRestrictions(type)) {
+                                        String name = getName(entityId, type, pivotContent);
+                                        String link =
+                                                GWT.getHostPageBaseURL() + "#search/" + type.toString() + ":" + name;
 
-                                SearchResultEntity entity = new SearchResultEntity(
-                                        entityId, name, link, type);
-                                entities.add(entity);
+                                        SearchResultEntity entity = new SearchResultEntity(entityId, name, link, type);
+                                        entities.add(entity);
+                                    }
+                                    newFilter.put(type, entities);
+                                }
                             }
-                            newFilter.put(type, entities);
-                        }
-                    }
 
-                    return newFilter;
-                }
-
-                private String getName(Integer entityId,
-                                       DimensionType type, PivotContent pivotTable) {
-                    for (FilterDescription fd : pivotTable
-                            .getFilterDescriptions()) {
-                        if (fd.getDimensionType() == type) {
-                            return fd.getLabels().get(entityId);
+                            return newFilter;
                         }
-                    }
-                    return "noName";
-                }
-            });
+
+                        private String getName(Integer entityId, DimensionType type, PivotContent pivotTable) {
+                            for (FilterDescription fd : pivotTable.getFilterDescriptions()) {
+                                if (fd.getDimensionType() == type) {
+                                    return fd.getLabels().get(entityId);
+                                }
+                            }
+                            return "noName";
+                        }
+                    });
         }
     }
 
@@ -167,8 +159,7 @@ public class SearchPresenter implements SearchView.SearchHandler, Page {
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 
@@ -193,16 +184,14 @@ public class SearchPresenter implements SearchView.SearchHandler, Page {
             for (SiteDTO site : sites) {
                 RecentSiteModel recent = null;
                 if (schema != null) {
-                    ActivityDTO activity = schema.getActivityById(site
-                            .getActivityId());
+                    ActivityDTO activity = schema.getActivityById(site.getActivityId());
                     if (activity != null) {
                         recent = new RecentSiteModel(site);
                         recent.setActivityName(activity.getName());
-                        recent.setActivityLink(PageStateSerializer
-                                .asLink(new DataEntryPlace(activity)));
-                        recent
-                                .setDatabaseName(activity.getDatabase().getName() == null ? "[Database]"
-                                        : activity.getDatabase().getName());
+                        recent.setActivityLink(PageStateSerializer.asLink(new DataEntryPlace(activity)));
+                        recent.setDatabaseName(
+                                activity.getDatabase().getName() == null ? "[Database]" : activity.getDatabase()
+                                                                                                  .getName());
                     }
                 }
                 if (recent != null) {

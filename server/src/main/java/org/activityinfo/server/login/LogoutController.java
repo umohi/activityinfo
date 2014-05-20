@@ -40,20 +40,15 @@ public class LogoutController {
 
     @GET
     public Response logout(@Context UriInfo uri) throws ServletException, IOException {
-        return Response
-                .seeOther(
-                        uri.getAbsolutePathBuilder()
-                                .replacePath(LoginController.ENDPOINT).build())
-                .cookie(emptyCookies())
-                .build();
+        return Response.seeOther(uri.getAbsolutePathBuilder().replacePath(LoginController.ENDPOINT).build())
+                       .cookie(emptyCookies())
+                       .build();
     }
 
     private NewCookie[] emptyCookies() {
-        return new NewCookie[]{
-                new NewCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE, null),
+        return new NewCookie[]{new NewCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE, null),
                 new NewCookie(AuthenticatedUser.EMAIL_COOKIE, null),
                 new NewCookie(AuthenticatedUser.USER_ID_COOKIE, null),
-                new NewCookie(AuthenticatedUser.USER_LOCAL_COOKIE, null)
-        };
+                new NewCookie(AuthenticatedUser.USER_LOCAL_COOKIE, null)};
     }
 }

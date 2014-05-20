@@ -45,10 +45,8 @@ public class OutOfSyncStatus extends Status implements OutOfSyncMonitor.View {
         if (this.tip == null) {
             ToolTipConfig config = new ToolTipConfig();
             config.setTitle("Out of Sync");
-            config
-                    .setText("You have recently sent an update directly to the server.<br>"
-                            +
-                            "Your change will not be visible locally until you synchronize.");
+            config.setText("You have recently sent an update directly to the server.<br>" +
+                           "Your change will not be visible locally until you synchronize.");
             config.setShowDelay(1);
 
             this.tip = new ToolTip(this, config);
@@ -74,8 +72,8 @@ public class OutOfSyncStatus extends Status implements OutOfSyncMonitor.View {
         ToolTipConfig config = new ToolTipConfig();
         config.setAnchor("top");
         config.setCloseable(false);
-        config
-                .setText("Your local database is out of sync with the server. Please wait while synchronization completes");
+        config.setText("Your local database is out of sync with the server. Please wait while synchronization " +
+                       "completes");
 
         ToolTip tip = new ToolTip();
         tip.update(config);

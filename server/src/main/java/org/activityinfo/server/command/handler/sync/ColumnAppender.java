@@ -32,9 +32,7 @@ import java.sql.Types;
 enum ColumnAppender {
 
     STRING {
-        @Override
-        void append(StringBuilder sb, ResultSet rs, int column)
-                throws SQLException {
+        @Override void append(StringBuilder sb, ResultSet rs, int column) throws SQLException {
             String value = rs.getString(column);
             if (value == null) {
                 sb.append("NULL");
@@ -53,9 +51,7 @@ enum ColumnAppender {
         }
     },
     INTEGER {
-        @Override
-        void append(StringBuilder sb, ResultSet rs, int column)
-                throws SQLException {
+        @Override void append(StringBuilder sb, ResultSet rs, int column) throws SQLException {
             int value = rs.getInt(column);
             if (rs.wasNull()) {
                 sb.append("NULL");
@@ -65,9 +61,7 @@ enum ColumnAppender {
         }
     },
     DATE {
-        @Override
-        void append(StringBuilder sb, ResultSet rs, int column)
-                throws SQLException {
+        @Override void append(StringBuilder sb, ResultSet rs, int column) throws SQLException {
             Date date = rs.getDate(column);
             if (date == null) {
                 sb.append("NULL");
@@ -78,9 +72,7 @@ enum ColumnAppender {
         }
     },
     REAL {
-        @Override
-        void append(StringBuilder sb, ResultSet rs, int column)
-                throws SQLException {
+        @Override void append(StringBuilder sb, ResultSet rs, int column) throws SQLException {
             double value = rs.getDouble(column);
             if (rs.wasNull()) {
                 sb.append("NULL");
@@ -90,8 +82,7 @@ enum ColumnAppender {
         }
     };
 
-    abstract void append(StringBuilder sb, ResultSet rs, int column)
-            throws SQLException;
+    abstract void append(StringBuilder sb, ResultSet rs, int column) throws SQLException;
 
     public static ColumnAppender forType(int columnType) {
         switch (columnType) {

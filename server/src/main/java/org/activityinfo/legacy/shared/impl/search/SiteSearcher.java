@@ -36,18 +36,13 @@ import java.util.List;
 public class SiteSearcher implements Searcher {
 
     @Override
-    public void search(List<String> testQuery, SqlTransaction tx,
-                       final AsyncCallback<List<Integer>> callback) {
+    public void search(List<String> testQuery, SqlTransaction tx, final AsyncCallback<List<Integer>> callback) {
 
         final String primaryKey = "SiteId";
         String tableName = "Site";
         String columnToSearch = "Comments";
 
-        SqlQuery
-                .select(primaryKey)
-                .from(tableName.toLowerCase())
-                .whereLikes(columnToSearch)
-                .likeMany(testQuery)
+        SqlQuery.select(primaryKey).from(tableName.toLowerCase()).whereLikes(columnToSearch).likeMany(testQuery)
 
                 .execute(tx, new SqlResultCallback() {
                     @Override

@@ -80,15 +80,13 @@ public class LinkGraph {
         return set;
     }
 
-    public Set<Integer> sourceIndicators(UserDatabaseDTO source,
-                                         UserDatabaseDTO dest) {
+    public Set<Integer> sourceIndicators(UserDatabaseDTO source, UserDatabaseDTO dest) {
         Set<Integer> set = Sets.newHashSet();
 
         if (source != null && dest != null) {
 
             for (IndicatorLink link : links) {
-                if (link.getSourceDatabaseId() == source.getId() &&
-                        link.getDestinationDatabaseId() == dest.getId()) {
+                if (link.getSourceDatabaseId() == source.getId() && link.getDestinationDatabaseId() == dest.getId()) {
 
                     set.add(link.getSourceIndicatorId());
                 }
@@ -97,15 +95,13 @@ public class LinkGraph {
         return set;
     }
 
-    public Set<Integer> destinationIndicators(UserDatabaseDTO source,
-                                              UserDatabaseDTO dest) {
+    public Set<Integer> destinationIndicators(UserDatabaseDTO source, UserDatabaseDTO dest) {
         Set<Integer> set = Sets.newHashSet();
 
         if (source != null && dest != null) {
 
             for (IndicatorLink link : links) {
-                if (link.getSourceDatabaseId() == source.getId() &&
-                        link.getDestinationDatabaseId() == dest.getId()) {
+                if (link.getSourceDatabaseId() == source.getId() && link.getDestinationDatabaseId() == dest.getId()) {
 
                     set.add(link.getDestinationIndicatorId());
                 }
@@ -114,15 +110,13 @@ public class LinkGraph {
         return set;
     }
 
-    public Set<Integer> destForIndicator(IndicatorDTO source,
-                                         UserDatabaseDTO dest) {
+    public Set<Integer> destForIndicator(IndicatorDTO source, UserDatabaseDTO dest) {
         Set<Integer> set = Sets.newHashSet();
 
         if (source != null && dest != null) {
 
             for (IndicatorLink link : links) {
-                if (link.getSourceIndicatorId() == source.getId() &&
-                        link.getDestinationDatabaseId() == dest.getId()) {
+                if (link.getSourceIndicatorId() == source.getId() && link.getDestinationDatabaseId() == dest.getId()) {
 
                     set.add(link.getDestinationIndicatorId());
                 }
@@ -131,15 +125,13 @@ public class LinkGraph {
         return set;
     }
 
-    public Set<Integer> sourceForIndicator(UserDatabaseDTO source,
-                                           IndicatorDTO dest) {
+    public Set<Integer> sourceForIndicator(UserDatabaseDTO source, IndicatorDTO dest) {
         Set<Integer> set = Sets.newHashSet();
 
         if (source != null && dest != null) {
 
             for (IndicatorLink link : links) {
-                if (link.getSourceDatabaseId() == source.getId() &&
-                        link.getDestinationIndicatorId() == dest.getId()) {
+                if (link.getSourceDatabaseId() == source.getId() && link.getDestinationIndicatorId() == dest.getId()) {
 
                     set.add(link.getSourceIndicatorId());
                 }
@@ -150,16 +142,14 @@ public class LinkGraph {
 
     public boolean linked(IndicatorDTO source, IndicatorDTO dest) {
         for (IndicatorLink link : links) {
-            if (link.getSourceIndicatorId() == source.getId() &&
-                    link.getDestinationIndicatorId() == dest.getId()) {
+            if (link.getSourceIndicatorId() == source.getId() && link.getDestinationIndicatorId() == dest.getId()) {
                 return true;
             }
         }
         return false;
     }
 
-    public void link(UserDatabaseDTO sourceDb, IndicatorDTO source,
-                     UserDatabaseDTO destDb, IndicatorDTO dest) {
+    public void link(UserDatabaseDTO sourceDb, IndicatorDTO source, UserDatabaseDTO destDb, IndicatorDTO dest) {
         IndicatorLink link = new IndicatorLink();
         link.setSourceDatabaseId(sourceDb.getId());
         link.setSourceIndicatorId(source.getId());
@@ -169,11 +159,9 @@ public class LinkGraph {
     }
 
     public void unlink(IndicatorDTO source, IndicatorDTO dest) {
-        for (ListIterator<IndicatorLink> it = links.listIterator(); it
-                .hasNext(); ) {
+        for (ListIterator<IndicatorLink> it = links.listIterator(); it.hasNext(); ) {
             IndicatorLink link = it.next();
-            if (link.getSourceIndicatorId() == source.getId()
-                    && link.getDestinationIndicatorId() == dest.getId()) {
+            if (link.getSourceIndicatorId() == source.getId() && link.getDestinationIndicatorId() == dest.getId()) {
                 it.remove();
             }
         }

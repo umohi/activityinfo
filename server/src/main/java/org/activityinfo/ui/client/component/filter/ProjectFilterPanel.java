@@ -87,35 +87,32 @@ public class ProjectFilterPanel extends ContentPanel implements FilterPanel {
         private List<ProjectDTO> allPartners = null;
 
         @Override
-        public void load(DataReader<List<ModelData>> listDataReader, Object o,
+        public void load(DataReader<List<ModelData>> listDataReader,
+                         Object o,
                          final AsyncCallback<List<ModelData>> callback) {
 
             if (allPartners == null) {
-                service.execute(new GetSchema(),
-                        new AsyncCallback<SchemaDTO>() {
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                callback.onFailure(caught);
-                            }
+                service.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        callback.onFailure(caught);
+                    }
 
-                            @Override
-                            public void onSuccess(SchemaDTO result) {
-                                List<UserDatabaseDTO> databases = result
-                                        .getDatabases();
-                                ArrayList<ProjectDTO> allProjects = new ArrayList<ProjectDTO>();
-                                for (UserDatabaseDTO db : databases) {
-                                    for (ProjectDTO p : db.getProjects()) {
-                                        if (!allProjects.contains(p)) {
-                                            allProjects.add(p);
-                                        }
-                                    }
+                    @Override
+                    public void onSuccess(SchemaDTO result) {
+                        List<UserDatabaseDTO> databases = result.getDatabases();
+                        ArrayList<ProjectDTO> allProjects = new ArrayList<ProjectDTO>();
+                        for (UserDatabaseDTO db : databases) {
+                            for (ProjectDTO p : db.getProjects()) {
+                                if (!allProjects.contains(p)) {
+                                    allProjects.add(p);
                                 }
-                                Collections.sort(allProjects,
-                                        new ProjectDTOComparator());
-                                callback.onSuccess(new ArrayList<ModelData>(
-                                        allProjects));
                             }
-                        });
+                        }
+                        Collections.sort(allProjects, new ProjectDTOComparator());
+                        callback.onSuccess(new ArrayList<ModelData>(allProjects));
+                    }
+                });
             } else {
                 callback.onSuccess(new ArrayList<ModelData>(allPartners));
             }
@@ -185,8 +182,7 @@ public class ProjectFilterPanel extends ContentPanel implements FilterPanel {
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
         // TODO Auto-generated method stub
         return null;
     }

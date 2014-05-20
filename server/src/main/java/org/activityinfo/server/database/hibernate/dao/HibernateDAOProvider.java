@@ -56,15 +56,13 @@ public class HibernateDAOProvider<T> implements Provider<T> {
     private Class findDAOInterface() {
         for (Type interfaceType : daoClass.getGenericInterfaces()) {
             ParameterizedType genericType = (ParameterizedType) interfaceType;
-            @SuppressWarnings("rawtypes")
-            Class interfaceClass = (Class) genericType.getRawType();
+            @SuppressWarnings("rawtypes") Class interfaceClass = (Class) genericType.getRawType();
             if (interfaceClass.equals(DAO.class)) {
                 return (Class) genericType.getActualTypeArguments()[0];
             }
         }
-        throw new UnsupportedOperationException("Dao class "
-                + daoClass.getSimpleName()
-                + " MUST implement " + DAO.class.getName());
+        throw new UnsupportedOperationException(
+                "Dao class " + daoClass.getSimpleName() + " MUST implement " + DAO.class.getName());
     }
 
     @Override
@@ -72,14 +70,11 @@ public class HibernateDAOProvider<T> implements Provider<T> {
         return makeImplementation(daoClass, entityClass, emProvider.get());
     }
 
-    public static <T> T makeImplementation(Class<T> daoClass,
-                                           Class entityClass, EntityManager entityManager) {
+    public static <T> T makeImplementation(Class<T> daoClass, Class entityClass, EntityManager entityManager) {
         ClassLoader cl = daoClass.getClassLoader();
         return (T) Proxy.newProxyInstance(cl,
                 new Class[]{daoClass},
-                new DAOInvocationHandler(
-                        entityManager, entityClass
-                ));
+                new DAOInvocationHandler(entityManager, entityClass));
     }
 
 }

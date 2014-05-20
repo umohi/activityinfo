@@ -21,9 +21,11 @@ public class MysqlGeometryProvider implements AdminGeometryProvider {
     @Override
     public List<AdminGeo> getGeometries(int adminLevelId) {
         List<AdminEntity> entityList = em.get()
-                .createQuery("select e from AdminEntity e where e.level.id = :levelId and e.deleted = false and e.geometry is not null")
-                .setParameter("levelId", adminLevelId)
-                .getResultList();
+                                         .createQuery(
+                                                 "select e from AdminEntity e where e.level.id = :levelId and e" +
+                                                 ".deleted = false and e.geometry is not null")
+                                         .setParameter("levelId", adminLevelId)
+                                         .getResultList();
 
         List<AdminGeo> resultList = Lists.newArrayList();
         for (AdminEntity entity : entityList) {

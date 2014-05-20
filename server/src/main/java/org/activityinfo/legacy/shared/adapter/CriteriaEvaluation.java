@@ -5,7 +5,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.Cuid;
-import org.activityinfo.core.shared.Cuids;
 import org.activityinfo.core.shared.criteria.*;
 
 import java.util.List;
@@ -44,13 +43,13 @@ public class CriteriaEvaluation {
 
         @Override
         public void visitClassCriteria(ClassCriteria criteria) {
-               classPredicates.add(Predicates.equalTo(criteria.getClassId()));
+            classPredicates.add(Predicates.equalTo(criteria.getClassId()));
         }
 
         @Override
         public void visitIntersection(CriteriaIntersection intersection) {
             ClassIdEvaluator visitor = evaluateSet(intersection);
-            if(visitor.hasCriteriaIndependentOfClassId) {
+            if (visitor.hasCriteriaIndependentOfClassId) {
                 hasCriteriaIndependentOfClassId = true;
             }
             classPredicates.add(Predicates.and(visitor.classPredicates));
@@ -59,7 +58,7 @@ public class CriteriaEvaluation {
         @Override
         public void visitUnion(CriteriaUnion union) {
             ClassIdEvaluator visitor = evaluateSet(union.getElements());
-            if(visitor.hasCriteriaIndependentOfClassId) {
+            if (visitor.hasCriteriaIndependentOfClassId) {
                 hasCriteriaIndependentOfClassId = true;
             } else {
                 classPredicates.add(Predicates.or(visitor.classPredicates));
@@ -68,14 +67,14 @@ public class CriteriaEvaluation {
 
         private ClassIdEvaluator evaluateSet(Iterable<Criteria> set) {
             ClassIdEvaluator visitor = new ClassIdEvaluator();
-            for(Criteria criteria : set) {
+            for (Criteria criteria : set) {
                 criteria.accept(visitor);
             }
             return visitor;
         }
 
         public Predicate<Cuid> getPredicate() {
-            if(classPredicates.isEmpty()) {
+            if (classPredicates.isEmpty()) {
                 return Predicates.alwaysTrue();
             } else {
                 Preconditions.checkState(classPredicates.size() == 1);

@@ -59,8 +59,7 @@ public class BubbleLegendRenderer {
         this.legend = legend;
         this.layer = legend.getDefinition();
 
-        this.renderRange = layer.getMinRadius() != layer.getMaxRadius() &&
-                legend.hasValues();
+        this.renderRange = layer.getMinRadius() != layer.getMaxRadius() && legend.hasValues();
 
         calculateSize();
 
@@ -73,20 +72,18 @@ public class BubbleLegendRenderer {
     private void calculateSize() {
         if (renderRange) {
             this.width = PADDING + (layer.getMaxRadius() * 2) + PADDING;
-            this.height =
-                    PADDING +
-                            (layer.getMinRadius() * 2) +
-                            PADDING +
-                            LABEL_HEIGHT +
-                            PADDING +
-                            (layer.getMaxRadius() * 2) +
-                            PADDING +
-                            LABEL_HEIGHT +
-                            PADDING;
+            this.height = PADDING +
+                          (layer.getMinRadius() * 2) +
+                          PADDING +
+                          LABEL_HEIGHT +
+                          PADDING +
+                          (layer.getMaxRadius() * 2) +
+                          PADDING +
+                          LABEL_HEIGHT +
+                          PADDING;
 
         } else {
-            this.width = this.height =
-                    PADDING + (layer.getMaxRadius() * 2) + PADDING;
+            this.width = this.height = PADDING + (layer.getMaxRadius() * 2) + PADDING;
         }
 
         this.bubbleCenterX = PADDING + layer.getMaxRadius();
@@ -124,10 +121,7 @@ public class BubbleLegendRenderer {
         y += layer.getMinRadius();
         y += PADDING;
 
-        drawBubbleLegendLabel(g2d,
-                bubbleCenterX,
-                y,
-                legend.getMinValue());
+        drawBubbleLegendLabel(g2d, bubbleCenterX, y, legend.getMinValue());
 
         y += PADDING;
         y += LABEL_HEIGHT;
@@ -143,21 +137,15 @@ public class BubbleLegendRenderer {
         y += layer.getMaxRadius();
         y += PADDING;
 
-        drawBubbleLegendLabel(g2d,
-                bubbleCenterX,
-                y,
-                legend.getMaxValue());
+        drawBubbleLegendLabel(g2d, bubbleCenterX, y, legend.getMaxValue());
 
     }
 
-    private void drawBubbleLegendLabel(Graphics2D g2d, int x, int y,
-                                       double value) {
+    private void drawBubbleLegendLabel(Graphics2D g2d, int x, int y, double value) {
         Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
         String label = labelFormat.format(value);
-        LineMetrics metrics = font.getLineMetrics(label,
-                g2d.getFontRenderContext());
-        Rectangle2D bounds = font.getStringBounds(label,
-                g2d.getFontRenderContext());
+        LineMetrics metrics = font.getLineMetrics(label, g2d.getFontRenderContext());
+        Rectangle2D bounds = font.getStringBounds(label, g2d.getFontRenderContext());
 
         x -= bounds.getWidth() / 2d;
         y += metrics.getAscent();

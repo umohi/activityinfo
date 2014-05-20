@@ -14,8 +14,8 @@ import org.activityinfo.legacy.shared.model.SchemaDTO;
 import static org.activityinfo.legacy.shared.adapter.CuidAdapter.adminLevelFormClass;
 
 /**
-* Extracts a given AdminLevel from a provided SchemaDTO and converts it to a FormClass
-*/
+ * Extracts a given AdminLevel from a provided SchemaDTO and converts it to a FormClass
+ */
 public class AdminLevelClassAdapter implements Function<SchemaDTO, FormClass> {
 
     private final int adminLevelId;
@@ -37,7 +37,7 @@ public class AdminLevelClassAdapter implements Function<SchemaDTO, FormClass> {
         FormClass formClass = new FormClass(classId);
         formClass.setLabel(new LocalizedString(adminLevel.getName()));
 
-        if(adminLevel.isRoot()) {
+        if (adminLevel.isRoot()) {
             // TODO add country field
         } else {
             AdminLevelDTO parentLevel = schema.getAdminLevelById(adminLevel.getParentLevelId());
@@ -58,11 +58,11 @@ public class AdminLevelClassAdapter implements Function<SchemaDTO, FormClass> {
         formClass.addElement(nameField);
 
 
-//    Not currently exposed by the legacy api
-//        FormField codeField = new FormField(CuidAdapter.field(classId, CuidAdapter.CODE_FIELD));
-//        codeField.setLabel(new LocalizedString(I18N.CONSTANTS.codeFieldLabel()));
-//        codeField.setType(FormFieldType.FREE_TEXT);
-//        formClass.addElement(codeField);
+        //    Not currently exposed by the legacy api
+        //        FormField codeField = new FormField(CuidAdapter.field(classId, CuidAdapter.CODE_FIELD));
+        //        codeField.setLabel(new LocalizedString(I18N.CONSTANTS.codeFieldLabel()));
+        //        codeField.setType(FormFieldType.FREE_TEXT);
+        //        formClass.addElement(codeField);
 
         return formClass;
     }

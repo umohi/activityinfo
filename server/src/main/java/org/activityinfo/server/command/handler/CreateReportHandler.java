@@ -47,8 +47,7 @@ public class CreateReportHandler implements CommandHandler<CreateReport> {
     }
 
     @Override
-    public CommandResult execute(CreateReport cmd, User user)
-            throws CommandException {
+    public CommandResult execute(CreateReport cmd, User user) throws CommandException {
 
         // verify that the XML is valid
         try {
@@ -59,8 +58,7 @@ public class CreateReportHandler implements CommandHandler<CreateReport> {
             reportDef.setXml(xml);
 
             if (cmd.getDatabaseId() != null) {
-                reportDef.setDatabase(em.getReference(UserDatabase.class,
-                        cmd.getDatabaseId()));
+                reportDef.setDatabase(em.getReference(UserDatabase.class, cmd.getDatabaseId()));
             }
 
             reportDef.setTitle(cmd.getReport().getTitle());

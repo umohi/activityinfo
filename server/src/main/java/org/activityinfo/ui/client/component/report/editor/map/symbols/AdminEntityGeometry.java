@@ -32,11 +32,11 @@ public final class AdminEntityGeometry extends JavaScriptObject {
     }
 
     public native int getAdminEntityId() /*-{
-        return this.id;
+      return this.id;
     }-*/;
 
     public native JsArray<AdminPolygon> getPolygons() /*-{
-        return this.polygons;
+      return this.polygons;
     }-*/;
 
 }

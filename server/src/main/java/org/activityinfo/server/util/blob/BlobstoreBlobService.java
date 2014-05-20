@@ -21,8 +21,7 @@ public class BlobstoreBlobService implements BlobService {
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     @Override
-    public void put(String key, InputSupplier<? extends InputStream> blob)
-            throws IOException {
+    public void put(String key, InputSupplier<? extends InputStream> blob) throws IOException {
 
         OutputStream out = put(key);
         ByteStreams.copy(blob, out);

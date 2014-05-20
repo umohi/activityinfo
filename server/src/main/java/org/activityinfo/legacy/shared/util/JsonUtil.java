@@ -70,9 +70,8 @@ public class JsonUtil {
                     value.addProperty("value", property.getValue().toString());
 
                 } else {
-                    Log.error("Cannot convert handle map value '"
-                            + property.getKey() + ", type " + property.getKey() +
-                            ": " + property.getValue().getClass().getName());
+                    Log.error("Cannot convert handle map value '" + property.getKey() + ", type " + property.getKey() +
+                              ": " + property.getValue().getClass().getName());
                     value = null;
                 }
 
@@ -97,17 +96,14 @@ public class JsonUtil {
             } else if ("Double".equals(type)) {
                 map.put(property.getKey(), value.get("value").getAsDouble());
             } else if ("Date".equals(type)) {
-                map.put(property.getKey(), new Date(value.get("time")
-                        .getAsLong()));
+                map.put(property.getKey(), new Date(value.get("time").getAsLong()));
             } else if ("Boolean".equals(type)) {
                 map.put(property.getKey(), value.get("value").getAsBoolean());
             } else if ("LocalDate".equals(type)) {
-                map.put(property.getKey(),
-                        LocalDate.parse(value.get("value").getAsString()));
+                map.put(property.getKey(), LocalDate.parse(value.get("value").getAsString()));
             } else {
-                throw new IllegalArgumentException(
-                        "map contains key with unsupported value type -- " +
-                                property.getKey() + ": " + type);
+                throw new IllegalArgumentException("map contains key with unsupported value type -- " +
+                                                   property.getKey() + ": " + type);
             }
 
         }

@@ -42,8 +42,7 @@ public class IconMapLayer extends PointMapLayer {
     public IconMapLayer() {
     }
 
-    @XmlElement(name = "activity")
-    @XmlElementWrapper(name = "activities")
+    @XmlElement(name = "activity") @XmlElementWrapper(name = "activities")
     public List<Integer> getActivityIds() {
         return activityIds;
     }
@@ -77,9 +76,7 @@ public class IconMapLayer extends PointMapLayer {
 
     @Override
     public String toString() {
-        return "IconMapLayer [indicatorIds=" + getIndicatorIds() + ", icon="
-                + icon
-                + "]";
+        return "IconMapLayer [indicatorIds=" + getIndicatorIds() + ", icon=" + icon + "]";
     }
 
 }

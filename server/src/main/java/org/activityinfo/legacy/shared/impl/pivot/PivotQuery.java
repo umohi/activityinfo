@@ -30,6 +30,7 @@ import com.bedatadriven.rebar.sql.client.query.SqlDialect;
 import com.bedatadriven.rebar.sql.client.query.SqlQuery;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.PivotSites;
@@ -37,7 +38,6 @@ import org.activityinfo.legacy.shared.command.result.Bucket;
 import org.activityinfo.legacy.shared.impl.Tables;
 import org.activityinfo.legacy.shared.impl.pivot.bundler.*;
 import org.activityinfo.legacy.shared.reports.model.*;
-import org.activityinfo.legacy.shared.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,22 +97,24 @@ public class PivotQuery {
         baseTable.setupQuery(command, query);
 
         if (command.isPivotedBy(DimensionType.Location) || command.isPivotedBy(DimensionType.Site) ||
-                command.isPointRequested()) {
+            command.isPointRequested()) {
             query.leftJoin(Tables.LOCATION, "Location")
-                    .on("Location.LocationId=" + baseTable.getDimensionIdColumn(DimensionType.Location));
+                 .on("Location.LocationId=" + baseTable.getDimensionIdColumn(DimensionType.Location));
         }
         if (command.isPivotedBy(DimensionType.Partner)) {
             query.leftJoin(Tables.PARTNER, "Partner")
-                    .on("Partner.PartnerId=" + baseTable.getDimensionIdColumn(DimensionType.Partner));
+                 .on("Partner.PartnerId=" + baseTable.getDimensionIdColumn(DimensionType.Partner));
 
         }
         if (command.isPivotedBy(DimensionType.Project)) {
 
-            SqlQuery activeProjects = SqlQuery.selectAll().from(Tables.PROJECT, "AllProjects")
-                    .where("AllProjects.dateDeleted").isNull();
+            SqlQuery activeProjects = SqlQuery.selectAll()
+                                              .from(Tables.PROJECT, "AllProjects")
+                                              .where("AllProjects.dateDeleted")
+                                              .isNull();
 
             query.leftJoin(activeProjects, "Project")
-                    .on("Project.ProjectId=" + baseTable.getDimensionIdColumn(DimensionType.Project));
+                 .on("Project.ProjectId=" + baseTable.getDimensionIdColumn(DimensionType.Project));
         }
 
         if (command.isPointRequested()) {
@@ -127,20 +129,23 @@ public class PivotQuery {
             // Build the derived table that identifies the MBR for each
             // location using the admin MBRs
             SqlQuery adminBoundsQuery = SqlQuery.select()
-                    .appendColumn("link.LocationId", "LocationId")
-                    .appendColumn("(MAX(X1)+MIN(X2))/2.0", "AX")
-                    .appendColumn("(MAX(Y1)+MIN(Y2))/2.0", "AY")
-                    .from(Tables.LOCATION_ADMIN_LINK, "link")
-                    .leftJoin(Tables.ADMIN_ENTITY, "e").on("link.adminentityid=e.adminentityid")
-                    .groupBy("link.locationid");
+                                                .appendColumn("link.LocationId", "LocationId")
+                                                .appendColumn("(MAX(X1)+MIN(X2))/2.0", "AX")
+                                                .appendColumn("(MAX(Y1)+MIN(Y2))/2.0", "AY")
+                                                .from(Tables.LOCATION_ADMIN_LINK, "link")
+                                                .leftJoin(Tables.ADMIN_ENTITY, "e")
+                                                .on("link.adminentityid=e.adminentityid")
+                                                .groupBy("link.locationid");
 
             query.leftJoin(adminBoundsQuery, "ambr").on("Location.LocationId=ambr.LocationId");
             query.appendColumn("ambr.AX", "AX");
             query.appendColumn("ambr.AY", "AY");
 
             // join the country table to get the country mbr to fall back to
-            query.leftJoin(Tables.LOCATION_TYPE, "LocationType").on("Location.LocationTypeId=LocationType.LocationTypeId")
-                    .leftJoin(Tables.COUNTRY, "Country").on("Country.CountryId=LocationType.CountryId");
+            query.leftJoin(Tables.LOCATION_TYPE, "LocationType")
+                 .on("Location.LocationTypeId=LocationType.LocationTypeId")
+                 .leftJoin(Tables.COUNTRY, "Country")
+                 .on("Country.CountryId=LocationType.CountryId");
             query.appendColumn("(Country.X1+Country.X2)/2", "CX");
             query.appendColumn("(Country.Y1+Country.Y2)/2", "CY");
 
@@ -165,12 +170,10 @@ public class PivotQuery {
         }
 
         if (filter.getMinDate() != null) {
-            query.where(baseTable.getDateCompleteColumn())
-                    .greaterThanOrEqualTo(filter.getMinDate());
+            query.where(baseTable.getDateCompleteColumn()).greaterThanOrEqualTo(filter.getMinDate());
         }
         if (filter.getMaxDate() != null) {
-            query.where(baseTable.getDateCompleteColumn()).lessThanOrEqualTo(
-                    filter.getMaxDate());
+            query.where(baseTable.getDateCompleteColumn()).lessThanOrEqualTo(filter.getMaxDate());
         }
 
         appendDimensionRestrictions();
@@ -190,8 +193,7 @@ public class PivotQuery {
                     if (!row.isNull(ValueFields.SUM)) {
                         bucket.setSum(row.getDouble(ValueFields.SUM));
                     }
-                    bucket.setCategory(new Dimension(DimensionType.Target),
-                            baseTable.getTargetCategory());
+                    bucket.setCategory(new Dimension(DimensionType.Target), baseTable.getTargetCategory());
 
                     for (Bundler bundler : bundlers) {
                         bundler.bundle(row, bucket);
@@ -213,27 +215,22 @@ public class PivotQuery {
         for (Dimension dimension : dimensions) {
 
             if (dimension == null) {
-                Log.error("NULL dimension provided to pivot query: dimensions = "
-                        + dimensions);
+                Log.error("NULL dimension provided to pivot query: dimensions = " + dimensions);
 
             } else if (dimension.getType() == DimensionType.Activity) {
-                addOrderedEntityDimension(dimension, "Activity.ActivityId",
-                        "Activity.Name", "Activity.SortOrder");
+                addOrderedEntityDimension(dimension, "Activity.ActivityId", "Activity.Name", "Activity.SortOrder");
 
             } else if (dimension.getType() == DimensionType.ActivityCategory) {
                 addSimpleDimension(dimension, "Activity.Category");
 
             } else if (dimension.getType() == DimensionType.Database) {
-                addEntityDimension(dimension, "Activity.DatabaseId",
-                        "UserDatabase.Name");
+                addEntityDimension(dimension, "Activity.DatabaseId", "UserDatabase.Name");
 
             } else if (dimension.getType() == DimensionType.Partner) {
-                addEntityDimension(dimension, "Partner.PartnerId",
-                        "Partner.Name");
+                addEntityDimension(dimension, "Partner.PartnerId", "Partner.Name");
 
             } else if (dimension.getType() == DimensionType.Project) {
-                addEntityDimension(dimension, "Project.ProjectId",
-                        "Project.Name");
+                addEntityDimension(dimension, "Project.ProjectId", "Project.Name");
 
             } else if (dimension.getType() == DimensionType.Location) {
                 addEntityDimension(dimension, "Location.LocationId", "Location.Name");
@@ -242,8 +239,7 @@ public class PivotQuery {
                 addEntityDimension(dimension, baseTable.getDimensionIdColumn(DimensionType.Site), "Location.Name");
 
             } else if (dimension.getType() == DimensionType.Indicator) {
-                addOrderedEntityDimension(dimension, "Indicator.IndicatorId",
-                        "Indicator.Name", "Indicator.SortOrder");
+                addOrderedEntityDimension(dimension, "Indicator.IndicatorId", "Indicator.Name", "Indicator.SortOrder");
 
             } else if (dimension.getType() == DimensionType.IndicatorCategory) {
                 addSimpleDimension(dimension, "Indicator.Category");
@@ -252,24 +248,19 @@ public class PivotQuery {
                 DateDimension dateDim = (DateDimension) dimension;
 
                 if (dateDim.getUnit() == DateUnit.YEAR) {
-                    String yearAlias = appendDimColumn("year",
-                            dialect.yearFunction(baseTable.getDateCompleteColumn()));
+                    String yearAlias = appendDimColumn("year", dialect.yearFunction(baseTable.getDateCompleteColumn()));
 
                     bundlers.add(new YearBundler(dimension, yearAlias));
 
                 } else if (dateDim.getUnit() == DateUnit.MONTH) {
-                    String yearAlias = appendDimColumn("year",
-                            dialect.yearFunction(baseTable.getDateCompleteColumn()));
-                    String monthAlias = appendDimColumn(
-                            "month",
+                    String yearAlias = appendDimColumn("year", dialect.yearFunction(baseTable.getDateCompleteColumn()));
+                    String monthAlias = appendDimColumn("month",
                             dialect.monthFunction(baseTable.getDateCompleteColumn()));
 
-                    bundlers.add(new MonthBundler(dimension, yearAlias,
-                            monthAlias));
+                    bundlers.add(new MonthBundler(dimension, yearAlias, monthAlias));
 
                 } else if (dateDim.getUnit() == DateUnit.QUARTER) {
-                    String yearAlias = appendDimColumn("year",
-                            dialect.yearFunction(baseTable.getDateCompleteColumn()));
+                    String yearAlias = appendDimColumn("year", dialect.yearFunction(baseTable.getDateCompleteColumn()));
                     String quarterAlias = appendDimColumn("quarter",
                             dialect.quarterFunction(baseTable.getDateCompleteColumn()));
 
@@ -285,7 +276,7 @@ public class PivotQuery {
                         bundlers.add(new MySqlYearWeekBundler(dimension, weekAlias));
                     }
                     // TODO: sqlite
-                } else if(dateDim.getUnit() == DateUnit.DAY) {
+                } else if (dateDim.getUnit() == DateUnit.DAY) {
                     String dateAlias = appendDimColumn("date", baseTable.getDateCompleteColumn());
 
                     bundlers.add(new DayBundler(dimension, dateAlias));
@@ -296,29 +287,22 @@ public class PivotQuery {
 
                 String tableAlias = "AdminLevel" + adminDim.getLevelId();
 
-                query
-                        .from(new StringBuilder(
-                                " LEFT JOIN "
-                                        +
-                                        "(SELECT L.LocationId, E.AdminEntityId, E.Name "
-                                        +
-                                        "FROM locationadminlink L "
-                                        +
-                                        "LEFT JOIN adminentity E ON (L.AdminEntityId=E.AdminEntityID) "
-                                        +
-                                        "WHERE E.AdminLevelId=")
-                                .append(adminDim.getLevelId())
-                                .append(") AS ")
-                                .append(tableAlias)
-                                .append(" ON (")
-                                .append(
-                                        baseTable
-                                                .getDimensionIdColumn(DimensionType.Location))
-                                .append(" =").append(tableAlias).append(".LocationId)")
-                                .toString());
+                query.from(new StringBuilder(" LEFT JOIN " +
+                                             "(SELECT L.LocationId, E.AdminEntityId, E.Name " +
+                                             "FROM locationadminlink L " +
+                                             "LEFT JOIN adminentity E ON (L.AdminEntityId=E.AdminEntityID) " +
+                                             "WHERE E.AdminLevelId=").append(adminDim.getLevelId())
+                                                                     .append(") AS ")
+                                                                     .append(tableAlias)
+                                                                     .append(" ON (")
+                                                                     .append(baseTable.getDimensionIdColumn(
+                                                                             DimensionType.Location))
+                                                                     .append(" =")
+                                                                     .append(tableAlias)
+                                                                     .append(".LocationId)")
+                                                                     .toString());
 
-                addEntityDimension(dimension, tableAlias + ".AdminEntityId",
-                        tableAlias + ".Name");
+                addEntityDimension(dimension, tableAlias + ".AdminEntityId", tableAlias + ".Name");
 
             } else if (dimension.getType() == DimensionType.Attribute) {
                 addEntityDimension(dimension, "AttributeValue.AttributeId", "Attribute.Name");
@@ -342,8 +326,7 @@ public class PivotQuery {
     private void defineAttributeDimension(AttributeGroupDimension dim) {
         // this pivots the data by a single-valued attribute group
 
-        String valueQueryAlias = "attributeValues"
-                + dim.getAttributeGroupId();
+        String valueQueryAlias = "attributeValues" + dim.getAttributeGroupId();
 
         // this first query gives us the single chosen attribute for
         // each site, arbitrarily taking the attribute with the minimum
@@ -353,27 +336,27 @@ public class PivotQuery {
         // the attribute group id itself. This permits merging 
         // of attributes from other activities/dbs with the same name
 
-        SqlQuery groupNameQuery = SqlQuery
-                .select()
-                .appendColumn("name")
-                .from(Tables.ATTRIBUTE_GROUP)
-                .whereTrue("AttributeGroupId=" + dim.getAttributeGroupId());
+        SqlQuery groupNameQuery = SqlQuery.select()
+                                          .appendColumn("name")
+                                          .from(Tables.ATTRIBUTE_GROUP)
+                                          .whereTrue("AttributeGroupId=" + dim.getAttributeGroupId());
 
-        SqlQuery derivedValueQuery = SqlQuery
-                .select()
-                .appendColumn("v.siteId", "siteId")
-                .appendColumn("min(a.name)", "value")
-                .appendColumn("min(a.sortOrder)", "sortOrder")
-                .from("attributevalue", "v")
-                .leftJoin("attribute", "a").on("v.AttributeId = a.AttributeId")
-                .leftJoin("attributegroup", "g").on("a.AttributeGroupId=g.AttributeGroupId")
-                .whereTrue("v.value=1")
-                .where("g.name").in(groupNameQuery)
-                .groupBy("v.siteId");
+        SqlQuery derivedValueQuery = SqlQuery.select()
+                                             .appendColumn("v.siteId", "siteId")
+                                             .appendColumn("min(a.name)", "value")
+                                             .appendColumn("min(a.sortOrder)", "sortOrder")
+                                             .from("attributevalue", "v")
+                                             .leftJoin("attribute", "a")
+                                             .on("v.AttributeId = a.AttributeId")
+                                             .leftJoin("attributegroup", "g")
+                                             .on("a.AttributeGroupId=g.AttributeGroupId")
+                                             .whereTrue("v.value=1")
+                                             .where("g.name")
+                                             .in(groupNameQuery)
+                                             .groupBy("v.siteId");
 
         query.leftJoin(derivedValueQuery, valueQueryAlias)
-                .on(baseTable.getDimensionIdColumn(DimensionType.Site)
-                        + "=" + valueQueryAlias + ".SiteId");
+             .on(baseTable.getDimensionIdColumn(DimensionType.Site) + "=" + valueQueryAlias + ".SiteId");
 
         String valueAlias = appendDimColumn(valueQueryAlias + ".value");
         String sortOrderAlias = appendDimColumn(valueQueryAlias + ".sortOrder");
@@ -388,14 +371,12 @@ public class PivotQuery {
         bundlers.add(new EntityBundler(dimension, idAlias, labelAlias));
     }
 
-    private void addOrderedEntityDimension(Dimension dimension, String id,
-                                           String label, String sortOrder) {
+    private void addOrderedEntityDimension(Dimension dimension, String id, String label, String sortOrder) {
         String idAlias = appendDimColumn(id);
         String labelAlias = appendDimColumn(label);
         String sortOrderAlias = appendDimColumn(sortOrder);
 
-        bundlers.add(new OrderedEntityBundler(dimension, idAlias, labelAlias,
-                sortOrderAlias));
+        bundlers.add(new OrderedEntityBundler(dimension, idAlias, labelAlias, sortOrderAlias));
     }
 
     private void addSimpleDimension(Dimension dimension, String label) {
@@ -405,10 +386,9 @@ public class PivotQuery {
 
     private void appendVisibilityFilter() {
         StringBuilder securityFilter = new StringBuilder();
-        securityFilter
-                .append("(")
+        securityFilter.append("(")
 
-                        // own databases
+                // own databases
                 .append("UserDatabase.OwnerUserId = ").append(userId).append(" ")
 
                 // databases with allowviewall
@@ -418,23 +398,23 @@ public class PivotQuery {
                 .append(" FROM ")
                 .append("  userpermission p ")
                 .append(" WHERE ")
-                .append("  p.UserId = ").append(userId)
-                .append("  AND p.AllowViewAll")
-                .append(") ")
+                .append("  p.UserId = ")
+                .append(userId)
+                .append("  AND p.AllowViewAll").append(") ")
 
-                        // sites of own partner
+                // sites of own partner
                 .append("OR UserDatabase.DatabaseId IN (")
                 .append(" SELECT ")
                 .append("  p.DatabaseId ")
                 .append(" FROM ")
                 .append("  userpermission p ")
                 .append(" WHERE ")
-                .append("  p.UserId = ").append(userId)
+                .append("  p.UserId = ")
+                .append(userId)
                 .append("  AND p.AllowView ")
-                .append("  AND p.PartnerId = Site.PartnerId ")
-                .append(") ")
+                .append("  AND p.PartnerId = Site.PartnerId ").append(") ")
 
-                        // or sites of which one or more activities are published
+                // or sites of which one or more activities are published
                 .append("OR (")
                 .append(" SELECT ")
                 .append("  COUNT(*) ")
@@ -452,8 +432,7 @@ public class PivotQuery {
 
     private void appendDimensionRestrictions() {
         if (filter != null) {
-            if (filter.getRestrictedDimensions() != null
-                    && filter.getRestrictedDimensions().size() > 0) {
+            if (filter.getRestrictedDimensions() != null && filter.getRestrictedDimensions().size() > 0) {
                 query.where("(");
                 boolean isFirst = true;
                 for (DimensionType type : filter.getRestrictedDimensions()) {
@@ -464,28 +443,22 @@ public class PivotQuery {
                     }
 
                     if (type == DimensionType.AdminLevel) {
-                        query
-                                .onlyWhere(
-                                        baseTable
-                                                .getDimensionIdColumn(DimensionType.Location))
-                                .in(
-                                        SqlQuery
-                                                .select("Link.LocationId")
-                                                .from(Tables.LOCATION_ADMIN_LINK, "Link")
-                                                .where("Link.AdminEntityId")
-                                                .in(filter
-                                                        .getRestrictions(DimensionType.AdminLevel)));
+                        query.onlyWhere(baseTable.getDimensionIdColumn(DimensionType.Location))
+                             .in(SqlQuery.select("Link.LocationId")
+                                         .from(Tables.LOCATION_ADMIN_LINK, "Link")
+                                         .where("Link.AdminEntityId")
+                                         .in(filter.getRestrictions(DimensionType.AdminLevel)));
                     } else if (type == DimensionType.Attribute) {
                         Set<Integer> attributes = filter.getRestrictions(DimensionType.Attribute);
                         boolean isFirstAttr = true;
                         for (Integer attribute : attributes) {
-                            SqlQuery attributefilter = SqlQuery
-                                    .select()
-                                    .appendColumn("1", "__VAL_EXISTS")
-                                    .from("attributevalue", "v")
-                                    .whereTrue("v.value=1")
-                                    .and("v.SiteId = Site.SiteId")
-                                    .where("v.AttributeId").equalTo(attribute);
+                            SqlQuery attributefilter = SqlQuery.select()
+                                                               .appendColumn("1", "__VAL_EXISTS")
+                                                               .from("attributevalue", "v")
+                                                               .whereTrue("v.value=1")
+                                                               .and("v.SiteId = Site.SiteId")
+                                                               .where("v.AttributeId")
+                                                               .equalTo(attribute);
 
                             addJoint(query, filter.isLenient(), isFirstAttr);
                             if (isFirstAttr) {
@@ -496,8 +469,7 @@ public class PivotQuery {
                         }
 
                     } else {
-                        query.onlyWhere(baseTable.getDimensionIdColumn(type))
-                                .in(filter.getRestrictions(type));
+                        query.onlyWhere(baseTable.getDimensionIdColumn(type)).in(filter.getRestrictions(type));
                     }
                 }
                 query.onlyWhere(")");

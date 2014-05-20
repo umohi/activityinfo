@@ -46,16 +46,14 @@ import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbListPage extends ContentPanel implements DbListPresenter.View,
-        Page {
+public class DbListPage extends ContentPanel implements DbListPresenter.View, Page {
 
     private Grid<UserDatabaseDTO> grid;
     private DbListPresenter presenter;
     private ActionToolBar toolBar;
 
     @Inject
-    public DbListPage(EventBus eventBus, Dispatcher dispatcher,
-                      StateProvider stateMgr) {
+    public DbListPage(EventBus eventBus, Dispatcher dispatcher, StateProvider stateMgr) {
         presenter = new DbListPresenter(eventBus, dispatcher, this);
 
         setLayout(new FitLayout());
@@ -70,8 +68,7 @@ public class DbListPage extends ContentPanel implements DbListPresenter.View,
 
     private void createToolBar() {
         toolBar = new ActionToolBar();
-        toolBar.addButton(UIActions.ADD, I18N.CONSTANTS.newDatabase(),
-                IconImageBundle.ICONS.addDatabase());
+        toolBar.addButton(UIActions.ADD, I18N.CONSTANTS.newDatabase(), IconImageBundle.ICONS.addDatabase());
         toolBar.addEditButton(IconImageBundle.ICONS.editDatabase());
         toolBar.addButton(UIActions.RENAME, I18N.CONSTANTS.renameDatabase(), IconImageBundle.ICONS.database());
         toolBar.addDeleteButton();
@@ -80,8 +77,7 @@ public class DbListPage extends ContentPanel implements DbListPresenter.View,
     }
 
     private void createGrid() {
-        grid = new Grid<UserDatabaseDTO>(presenter.getStore(),
-                createColumnModel());
+        grid = new Grid<UserDatabaseDTO>(presenter.getStore(), createColumnModel());
         grid.setAutoExpandColumn("fullName");
         grid.setLoadMask(true);
 
@@ -91,14 +87,12 @@ public class DbListPage extends ContentPanel implements DbListPresenter.View,
                 presenter.onUIAction(UIActions.EDIT);
             }
         });
-        grid.getSelectionModel().addSelectionChangedListener(
-                new SelectionChangedListener<UserDatabaseDTO>() {
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<UserDatabaseDTO> se) {
-                        presenter.onSelectionChanged(se.getSelectedItem());
-                    }
-                });
+        grid.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<UserDatabaseDTO>() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<UserDatabaseDTO> se) {
+                presenter.onSelectionChanged(se.getSelectedItem());
+            }
+        });
 
         add(grid);
     }
@@ -108,14 +102,18 @@ public class DbListPage extends ContentPanel implements DbListPresenter.View,
         columns.add(new ColumnConfig("name", I18N.CONSTANTS.name(), 100));
         columns.add(new ColumnConfig("fullName", I18N.CONSTANTS.fullName(), 150));
         columns.add(new ColumnConfig("ownerName", I18N.CONSTANTS.ownerName(), 150));
-        ColumnConfig countryColumn =  new ColumnConfig();
+        ColumnConfig countryColumn = new ColumnConfig();
         countryColumn.setHeaderText(I18N.CONSTANTS.country());
         countryColumn.setWidth(150);
         countryColumn.setRenderer(new GridCellRenderer<UserDatabaseDTO>() {
             @Override
-            public String render(UserDatabaseDTO model, String property,
-                    ColumnData config, int rowIndex, int colIndex,
-                    ListStore<UserDatabaseDTO> store, Grid<UserDatabaseDTO> grid) {
+            public String render(UserDatabaseDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<UserDatabaseDTO> store,
+                                 Grid<UserDatabaseDTO> grid) {
                 return model.getCountry().getName();
             }
         });
@@ -144,8 +142,7 @@ public class DbListPage extends ContentPanel implements DbListPresenter.View,
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 

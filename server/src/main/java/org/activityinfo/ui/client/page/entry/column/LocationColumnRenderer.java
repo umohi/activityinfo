@@ -32,8 +32,12 @@ import org.activityinfo.legacy.shared.model.SiteDTO;
 public class LocationColumnRenderer implements GridCellRenderer<ModelData> {
 
     @Override
-    public Object render(ModelData model, String property, ColumnData config,
-                         int rowIndex, int colIndex, ListStore<ModelData> store,
+    public Object render(ModelData model,
+                         String property,
+                         ColumnData config,
+                         int rowIndex,
+                         int colIndex,
+                         ListStore<ModelData> store,
                          Grid<ModelData> grid) {
 
         if (model instanceof SiteDTO) {
@@ -51,8 +55,7 @@ public class LocationColumnRenderer implements GridCellRenderer<ModelData> {
         if (axe == null) {
             return name;
         } else {
-            return ColumnTemplates.INSTANCE.locationCell(
-                    model.getLocationName(), model.getLocationAxe()).asString();
+            return ColumnTemplates.INSTANCE.locationCell(model.getLocationName(), model.getLocationAxe()).asString();
         }
     }
 

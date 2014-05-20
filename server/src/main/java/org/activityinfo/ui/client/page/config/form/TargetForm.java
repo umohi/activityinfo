@@ -28,10 +28,10 @@ import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
+import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.legacy.shared.model.PartnerDTO;
 import org.activityinfo.legacy.shared.model.ProjectDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
-import org.activityinfo.i18n.shared.UiConstants;
 import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
 import org.activityinfo.ui.client.widget.legacy.MappingComboBoxBinding;
 
@@ -71,8 +71,7 @@ public class TargetForm extends FormPanel {
         for (ProjectDTO projectDTO : database.getProjects()) {
             projectCombo.add(projectDTO.getId(), projectDTO.getName());
         }
-        binding.addFieldBinding(new MappingComboBoxBinding(projectCombo,
-                "projectId"));
+        binding.addFieldBinding(new MappingComboBoxBinding(projectCombo, "projectId"));
         this.add(projectCombo);
 
         MappingComboBox<Integer> partnerCombo = new MappingComboBox<Integer>();
@@ -81,8 +80,7 @@ public class TargetForm extends FormPanel {
         }
         partnerCombo.setAllowBlank(true);
         partnerCombo.setFieldLabel(constants.partner());
-        binding.addFieldBinding(new MappingComboBoxBinding(partnerCombo,
-                "partnerId"));
+        binding.addFieldBinding(new MappingComboBoxBinding(partnerCombo, "partnerId"));
         this.add(partnerCombo);
     }
 

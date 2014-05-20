@@ -5,7 +5,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.model.LocationTypeDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.ui.client.page.entry.location.LocationForm;
 
 /**
  * LocationFormSection for sites with no location

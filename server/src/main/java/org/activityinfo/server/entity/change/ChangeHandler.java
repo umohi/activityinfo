@@ -131,7 +131,9 @@ public class ChangeHandler {
 
             Object newValue = request.getPropertyValue(attribute.getJavaType(), propertyName);
 
-            Set<ConstraintViolation<T>> violations = validator.validateValue(entityType.getJavaType(), attribute.getName(), newValue);
+            Set<ConstraintViolation<T>> violations = validator.validateValue(entityType.getJavaType(),
+                    attribute.getName(),
+                    newValue);
             if (!violations.isEmpty()) {
                 throw new ChangeException(propertyName, violations);
             }
@@ -145,7 +147,8 @@ public class ChangeHandler {
         }
 
         private Method setterForAttribute(Attribute<? super T, ?> attribute) {
-            String setterName = "set" + attribute.getName().substring(0, 1).toUpperCase() + attribute.getName().substring(1);
+            String setterName =
+                    "set" + attribute.getName().substring(0, 1).toUpperCase() + attribute.getName().substring(1);
             try {
                 return entityType.getJavaType().getMethod(setterName, attribute.getJavaType());
             } catch (NoSuchMethodException e) {
@@ -232,8 +235,8 @@ public class ChangeHandler {
         private Authorization findAuthorizationAnnotation() {
             Authorization authorization = findAuthorizationAnnotation(entityType.getJavaType());
             if (authorization == null) {
-                LOGGER.severe("Entity class " + entityType.getName() + " does not have an @Authorization annotation,"
-                        + " denying all change requests.");
+                LOGGER.severe("Entity class " + entityType.getName() + " does not have an @Authorization annotation," +
+                              " denying all change requests.");
                 throw new ChangeException(ChangeFailureType.NOT_AUTHORIZED);
             }
             return authorization;

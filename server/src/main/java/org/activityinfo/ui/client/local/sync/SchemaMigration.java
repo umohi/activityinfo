@@ -33,10 +33,10 @@ public class SchemaMigration {
     // This should be generated automatically from the liquibase change set logs.
     // This will do until then:
 
-    public static final String[] MIGRATION_DDL = new String[]{
-            "ALTER TABLE Site ADD COLUMN timeEdited REAL",
+    public static final String[] MIGRATION_DDL = new String[]{"ALTER TABLE Site ADD COLUMN timeEdited REAL",
             "ALTER TABLE Location ADD COLUMN timeEdited REAL",
-            "CREATE TABLE IF NOT EXISTS  siteattachment (blobid TEXT, siteid INT, filename TEXT, uploadedBy INT, blobSize REAL, contentType TEXT)",
+            "CREATE TABLE IF NOT EXISTS  siteattachment (blobid TEXT, siteid INT, filename TEXT, uploadedBy INT, " +
+            "blobSize REAL, contentType TEXT)",
             "ALTER TABLE UserDatabase ADD COLUMN version REAL",
             "ALTER TABLE UserPermission ADD COLUMN version REAL",
             "ALTER TABLE AdminLevel ADD COLUMN polygons INT",
@@ -58,8 +58,7 @@ public class SchemaMigration {
             "ALTER TABLE UserLogin ADD COLUMN dateCreated REAL",
             "ALTER TABLE Location ADD COLUMN workflowStatusId",
             "ALTER TABLE LocationType ADD COLUMN workflowId",
-            "ALTER TABLE LocationType ADD COLUMN databaseId"
-    };
+            "ALTER TABLE LocationType ADD COLUMN databaseId"};
 
     @Inject
     public SchemaMigration(SqlDatabase database) {
@@ -76,8 +75,7 @@ public class SchemaMigration {
                     tx.executeSql(ddl, new SqlResultCallback() {
 
                         @Override
-                        public void onSuccess(SqlTransaction tx,
-                                              SqlResultSet results) {
+                        public void onSuccess(SqlTransaction tx, SqlResultSet results) {
                         }
 
                         @Override

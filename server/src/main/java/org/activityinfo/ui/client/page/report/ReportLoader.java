@@ -41,7 +41,8 @@ public class ReportLoader implements PageLoader {
     private Provider<ReportDesignPage> reportDesignPage;
 
     @Inject
-    public ReportLoader(Dispatcher service, NavigationHandler pageManager,
+    public ReportLoader(Dispatcher service,
+                        NavigationHandler pageManager,
                         PageStateSerializer placeSerializer,
                         Provider<ReportsPage> reportsPage,
                         Provider<ReportDesignPage> reportDesignPage) {
@@ -49,17 +50,14 @@ public class ReportLoader implements PageLoader {
         this.reportDesignPage = reportDesignPage;
 
         pageManager.registerPageLoader(ReportsPage.PAGE_ID, this);
-        placeSerializer.registerStatelessPlace(ReportsPage.PAGE_ID,
-                new ReportsPlace());
+        placeSerializer.registerStatelessPlace(ReportsPage.PAGE_ID, new ReportsPlace());
 
         pageManager.registerPageLoader(ReportDesignPage.PAGE_ID, this);
-        placeSerializer.registerParser(ReportDesignPage.PAGE_ID,
-                new ReportDesignPageState.Parser());
+        placeSerializer.registerParser(ReportDesignPage.PAGE_ID, new ReportDesignPageState.Parser());
     }
 
     @Override
-    public void load(final PageId pageId, final PageState pageState,
-                     final AsyncCallback<Page> callback) {
+    public void load(final PageId pageId, final PageState pageState, final AsyncCallback<Page> callback) {
 
         GWT.runAsync(new RunAsyncCallback() {
             @Override
@@ -78,10 +76,8 @@ public class ReportLoader implements PageLoader {
                     callback.onSuccess(page);
 
                 } else {
-                    GWT.log(
-                            "ReportLoader received a request it didn't know how to handle: "
-                                    +
-                                    pageState.toString(), null);
+                    GWT.log("ReportLoader received a request it didn't know how to handle: " + pageState.toString(),
+                            null);
                 }
             }
         });

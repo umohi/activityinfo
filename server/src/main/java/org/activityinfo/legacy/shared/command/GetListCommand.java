@@ -35,8 +35,7 @@ import org.activityinfo.legacy.shared.command.result.CommandResult;
  *            {@link org.activityinfo.legacy.shared.command.result.PagingResult}
  * @author Alex Bertram
  */
-public abstract class GetListCommand<T extends CommandResult> implements
-        Command<T> {
+public abstract class GetListCommand<T extends CommandResult> implements Command<T> {
 
     private SortInfo sortInfo = new SortInfo();
 

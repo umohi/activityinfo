@@ -23,8 +23,7 @@ public class AttributeClassAdapter implements Function<SchemaDTO, FormClass> {
         this.attributeGroupId = attributeGroupId;
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public FormClass apply(@Nullable SchemaDTO schema) {
         AttributeGroupDTO group = schema.getAttributeGroupById(attributeGroupId);
         Cuid classId = CuidAdapter.attributeGroupFormClass(group);

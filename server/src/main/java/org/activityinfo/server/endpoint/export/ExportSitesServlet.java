@@ -58,8 +58,7 @@ public class ExportSitesServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Set<Integer> activities = new HashSet<Integer>();
         if (req.getParameterValues("a") != null) {
@@ -68,18 +67,15 @@ public class ExportSitesServlet extends HttpServlet {
             }
         }
 
-        Filter filter = FilterUrlSerializer.fromQueryParameter(req
-                .getParameter("filter"));
+        Filter filter = FilterUrlSerializer.fromQueryParameter(req.getParameter("filter"));
 
         SchemaDTO schema = dispatcher.execute(new GetSchema());
 
         SiteExporter export = new SiteExporter(dispatcher);
         for (UserDatabaseDTO db : schema.getDatabases()) {
             for (ActivityDTO activity : db.getActivities()) {
-                if (!filter.isRestricted(DimensionType.Activity)
-                        ||
-                        filter.getRestrictions(DimensionType.Activity).contains(
-                                activity.getId())) {
+                if (!filter.isRestricted(DimensionType.Activity) ||
+                    filter.getRestrictions(DimensionType.Activity).contains(activity.getId())) {
                     export.export(activity, filter);
 
                 }
@@ -89,15 +85,11 @@ public class ExportSitesServlet extends HttpServlet {
 
         resp.setContentType("application/vnd.ms-excel");
         if (req.getHeader("User-Agent").indexOf("MSIE") != -1) {
-            resp.addHeader("Content-Disposition",
-                    "attachment; filename=ActivityInfo.xls");
+            resp.addHeader("Content-Disposition", "attachment; filename=ActivityInfo.xls");
         } else {
-            resp.addHeader(
-                    "Content-Disposition",
-                    "attachment; filename="
-                            +
-                            ("ActivityInfo Export " + new Date().toString() + ".xls")
-                                    .replace(" ", "_"));
+            resp.addHeader("Content-Disposition",
+                    "attachment; filename=" +
+                    ("ActivityInfo Export " + new Date().toString() + ".xls").replace(" ", "_"));
         }
 
         OutputStream os = resp.getOutputStream();

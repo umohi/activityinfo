@@ -42,13 +42,7 @@ import java.util.Set;
  * @author Alex Bertram
  */
 @JsonAutoDetect(JsonMethod.NONE)
-public final class UserDatabaseDTO
-        extends
-        BaseModelData
-        implements
-        EntityDTO,
-        HasLockedPeriod,
-        ProvidesKey {
+public final class UserDatabaseDTO extends BaseModelData implements EntityDTO, HasLockedPeriod, ProvidesKey {
 
     private CountryDTO country;
     private List<PartnerDTO> partners = new ArrayList<PartnerDTO>(0);
@@ -69,9 +63,7 @@ public final class UserDatabaseDTO
     /**
      * @return this UserDatabase's id
      */
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.List.class)
+    @Override @JsonProperty @JsonView(DTOViews.List.class)
     public int getId() {
         return (Integer) get("id");
     }
@@ -86,9 +78,7 @@ public final class UserDatabaseDTO
     /**
      * @return the name of this UserDatabase
      */
-    @Override
-    @JsonProperty
-    @JsonView({DTOViews.Schema.class, DTOViews.List.class})
+    @Override @JsonProperty @JsonView({DTOViews.Schema.class, DTOViews.List.class})
     public String getName() {
         return get("name");
     }
@@ -140,8 +130,7 @@ public final class UserDatabaseDTO
     /**
      * Gets the full, descriptive name of this UserDatabase
      */
-    @JsonProperty("description")
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty("description") @JsonView(DTOViews.Schema.class)
     public String getFullName() {
         return get("fullName");
     }
@@ -149,8 +138,7 @@ public final class UserDatabaseDTO
     /**
      * @return this list of ActivityDTOs that belong to this UserDatabase
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public List<ActivityDTO> getActivities() {
         return activities;
     }
@@ -165,8 +153,7 @@ public final class UserDatabaseDTO
     /**
      * @return the Country in which this UserDatabase is set
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public CountryDTO getCountry() {
         return country;
     }
@@ -181,8 +168,7 @@ public final class UserDatabaseDTO
     /**
      * @return the list of Partners who belong to this UserDatabase
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public List<PartnerDTO> getPartners() {
         return partners;
     }
@@ -194,8 +180,7 @@ public final class UserDatabaseDTO
         this.partners = partners;
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public List<ProjectDTO> getProjects() {
         return projects;
     }
@@ -234,8 +219,7 @@ public final class UserDatabaseDTO
      * @return true if the client receiving the DTO is authorized to edit data
      * for their Partner in this UserDatabase
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public boolean isEditAllowed() {
         return (Boolean) get("editAllowed");
     }
@@ -252,8 +236,7 @@ public final class UserDatabaseDTO
      * @return true if the client receiving the DTO is authorized to design
      * (change indicators, etc) this UserDatabase
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public boolean isDesignAllowed() {
         return (Boolean) get("designAllowed");
     }
@@ -270,8 +253,7 @@ public final class UserDatabaseDTO
      * @return true if the client receiving the DTO is authorized to edit data
      * for all Partners in this UserDatabase
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public boolean isEditAllAllowed() {
         return (Boolean) get("editAllAllowed");
     }
@@ -333,8 +315,7 @@ public final class UserDatabaseDTO
     /**
      * @return true if the client owns this UserDatabase
      */
-    @JsonProperty("owned")
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty("owned") @JsonView(DTOViews.Schema.class)
     public boolean getAmOwner() {
         return (Boolean) get("amOwner");
     }
@@ -385,9 +366,7 @@ public final class UserDatabaseDTO
         this.lockedPeriods = lockedPeriods;
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public Set<LockedPeriodDTO> getLockedPeriods() {
         return lockedPeriods;
     }

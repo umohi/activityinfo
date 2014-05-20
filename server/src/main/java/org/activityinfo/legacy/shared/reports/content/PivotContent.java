@@ -40,8 +40,7 @@ public class PivotContent implements Content {
     private List<FilterDescription> filterDescriptions;
     private PivotTableData data;
 
-    public PivotContent(PivotTableData data,
-                        ArrayList<FilterDescription> filterDescriptions) {
+    public PivotContent(PivotTableData data, ArrayList<FilterDescription> filterDescriptions) {
         this.data = data;
         this.filterDescriptions = filterDescriptions;
     }

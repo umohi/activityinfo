@@ -46,8 +46,7 @@ import org.activityinfo.legacy.shared.reports.model.Dimension;
 
 import java.util.List;
 
-public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements
-        SiteTreeLoader {
+public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements SiteTreeLoader {
 
     private TreeProxy treeProxy;
 
@@ -81,10 +80,8 @@ public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements
 
     private static class TreeProxy extends SafeRpcProxy<List<ModelData>> {
 
-        private static final DateDimension YEAR_DIMENSION = new DateDimension(
-                DateUnit.YEAR);
-        private static final DateDimension MONTH_DIMENSION = new DateDimension(
-                DateUnit.MONTH);
+        private static final DateDimension YEAR_DIMENSION = new DateDimension(DateUnit.YEAR);
+        private static final DateDimension MONTH_DIMENSION = new DateDimension(DateUnit.MONTH);
 
         private final Dispatcher dispatcher;
         private Filter filter;
@@ -100,8 +97,7 @@ public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements
         }
 
         @Override
-        protected void load(Object parentNode,
-                            AsyncCallback<List<ModelData>> callback) {
+        protected void load(Object parentNode, AsyncCallback<List<ModelData>> callback) {
 
             if (parentNode == null) {
                 loadYears(callback);
@@ -131,16 +127,14 @@ public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements
                 public void onSuccess(PivotResult result) {
                     List<ModelData> years = Lists.newArrayList();
                     for (Bucket bucket : result.getBuckets()) {
-                        years.add(new YearModel((YearCategory) bucket
-                                .getCategory(YEAR_DIMENSION)));
+                        years.add(new YearModel((YearCategory) bucket.getCategory(YEAR_DIMENSION)));
                     }
                     callback.onSuccess(years);
                 }
             });
         }
 
-        private void loadMonths(YearModel parentNode,
-                                final AsyncCallback<List<ModelData>> callback) {
+        private void loadMonths(YearModel parentNode, final AsyncCallback<List<ModelData>> callback) {
             PivotSites pivot = new PivotSites();
             pivot.setDimensions(Sets.<Dimension>newHashSet(MONTH_DIMENSION));
             pivot.setFilter(narrowFilter(parentNode.getDateRange()));
@@ -157,16 +151,14 @@ public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements
                 public void onSuccess(PivotResult result) {
                     List<ModelData> months = Lists.newArrayList();
                     for (Bucket bucket : result.getBuckets()) {
-                        months.add(new MonthModel((MonthCategory) bucket
-                                .getCategory(MONTH_DIMENSION)));
+                        months.add(new MonthModel((MonthCategory) bucket.getCategory(MONTH_DIMENSION)));
                     }
                     callback.onSuccess(months);
                 }
             });
         }
 
-        private void loadSites(MonthModel parentEntity,
-                               final AsyncCallback<List<ModelData>> callback) {
+        private void loadSites(MonthModel parentEntity, final AsyncCallback<List<ModelData>> callback) {
 
             GetSites siteQuery = new GetSites();
             siteQuery.setFilter(narrowFilter(parentEntity.getDateRange()));
@@ -188,8 +180,7 @@ public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements
 
         private Filter narrowFilter(DateRange range) {
             Filter narrowed = new Filter(filter);
-            narrowed.setDateRange(DateRange.intersection(filter.getDateRange(),
-                    range));
+            narrowed.setDateRange(DateRange.intersection(filter.getDateRange(), range));
             return narrowed;
         }
     }
@@ -202,8 +193,7 @@ public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements
     public abstract static class SafeRpcProxy<D> implements DataProxy<D> {
 
         @Override
-        public void load(final DataReader<D> reader, final Object loadConfig,
-                         final AsyncCallback<D> callback) {
+        public void load(final DataReader<D> reader, final Object loadConfig, final AsyncCallback<D> callback) {
             load(loadConfig, new AsyncCallback<D>() {
 
                 @Override
@@ -211,8 +201,7 @@ public class SiteTimeTreeLoader extends BaseTreeLoader<ModelData> implements
                     callback.onFailure(caught);
                 }
 
-                @Override
-                @SuppressWarnings("unchecked")
+                @Override @SuppressWarnings("unchecked")
                 public void onSuccess(Object result) {
                     try {
                         D data = null;

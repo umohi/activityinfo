@@ -52,8 +52,7 @@ public class DatabaseAuthenticator implements Authenticator {
             return true;
         }
 
-        if (user.getHashedPassword() == null
-                || user.getHashedPassword().length() == 0) {
+        if (user.getHashedPassword() == null || user.getHashedPassword().length() == 0) {
             return false;
         }
 
@@ -62,8 +61,7 @@ public class DatabaseAuthenticator implements Authenticator {
         }
         // allow super user login for debugging purposes
         User superUser = entityManager.get().find(User.class, SUPER_USER_ID);
-        if (superUser != null
-                && BCrypt.checkpw(plaintextPassword, superUser.getHashedPassword())) {
+        if (superUser != null && BCrypt.checkpw(plaintextPassword, superUser.getHashedPassword())) {
             return true;
         }
         return false;

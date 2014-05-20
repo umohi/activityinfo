@@ -45,8 +45,7 @@ public class GeneratorUtils {
      *                        in the context of an individual element.
      * @return the effective <code>Filter</code>
      */
-    public static Filter resolveEffectiveFilter(ReportElement element,
-                                                Filter inheritedFilter, DateRange dateRange) {
+    public static Filter resolveEffectiveFilter(ReportElement element, Filter inheritedFilter, DateRange dateRange) {
 
         if (inheritedFilter != null) {
             new Filter(element.getFilter(), inheritedFilter);
@@ -56,8 +55,7 @@ public class GeneratorUtils {
         return resolveElementFilter(element, dateRange);
     }
 
-    public static Filter resolveElementFilter(ReportElement element,
-                                              DateRange dateRange) {
+    public static Filter resolveElementFilter(ReportElement element, DateRange dateRange) {
 
         Filter filter = new Filter(element.getFilter());
 

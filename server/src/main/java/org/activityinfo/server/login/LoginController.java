@@ -52,34 +52,26 @@ public class LoginController {
     @Inject
     private Provider<UserDAO> userDAO;
 
-    @GET
-    @LogException(emailAlert = true)
-    @Produces(MediaType.TEXT_HTML)
+    @GET @LogException(emailAlert = true) @Produces(MediaType.TEXT_HTML)
     public Viewable getLoginPage(@Context UriInfo uri) throws Exception {
         LoginPageModel model = new LoginPageModel();
         return model.asViewable();
     }
 
-    @POST
-    @Path("ajax")
-    public Response ajaxLogin(
-            @FormParam("email") String email,
-            @FormParam("password") String password) throws Exception {
+    @POST @Path("ajax")
+    public Response ajaxLogin(@FormParam("email") String email,
+                              @FormParam("password") String password) throws Exception {
 
         User user = userDAO.get().findUserByEmail(email);
         checkPassword(password, user);
 
-        return Response
-                .ok()
-                .cookie(authTokenProvider.get().createNewAuthCookies(user))
-                .build();
+        return Response.ok().cookie(authTokenProvider.get().createNewAuthCookies(user)).build();
     }
 
     @POST
-    public Response login(
-            @Context UriInfo uri,
-            @FormParam("email") String email,
-            @FormParam("password") String password) throws Exception {
+    public Response login(@Context UriInfo uri,
+                          @FormParam("email") String email,
+                          @FormParam("password") String password) throws Exception {
 
         User user;
         try {
@@ -88,19 +80,15 @@ public class LoginController {
         } catch (Exception e) {
             LoginPageModel model = LoginPageModel.unsuccessful();
 
-            return Response.ok(model)
-                    .type(MediaType.TEXT_HTML)
-                    .build();
+            return Response.ok(model).type(MediaType.TEXT_HTML).build();
         }
 
-        return Response
-                .seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
-                .cookie(authTokenProvider.get().createNewAuthCookies(user))
-                .build();
+        return Response.seeOther(uri.getAbsolutePathBuilder().replacePath("/").build())
+                       .cookie(authTokenProvider.get().createNewAuthCookies(user))
+                       .build();
     }
 
-    private void checkPassword(String password, User user)
-            throws LoginException {
+    private void checkPassword(String password, User user) throws LoginException {
 
         if (!authenticator.get().check(user, password)) {
             throw new LoginException();

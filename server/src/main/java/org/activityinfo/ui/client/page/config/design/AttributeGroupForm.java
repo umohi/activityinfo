@@ -27,8 +27,8 @@ import com.extjs.gxt.ui.client.binding.FormBinding;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.shared.model.AttributeGroupDTO;
 import org.activityinfo.ui.client.widget.legacy.MappingComboBox;
 import org.activityinfo.ui.client.widget.legacy.MappingComboBoxBinding;
 
@@ -57,8 +57,7 @@ class AttributeGroupForm extends AbstractDesignForm {
         typeField.add(true, I18N.CONSTANTS.multipleChoice());
         typeField.add(false, I18N.CONSTANTS.singleChoice());
         typeField.setFieldLabel(I18N.CONSTANTS.choiceType());
-        binding.addFieldBinding(new MappingComboBoxBinding(typeField,
-                "multipleAllowed"));
+        binding.addFieldBinding(new MappingComboBoxBinding(typeField, "multipleAllowed"));
         add(typeField);
 
         CheckBox mandatoryCB = new CheckBox();

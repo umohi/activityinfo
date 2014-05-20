@@ -73,7 +73,7 @@ public class SimpleCategory implements DimensionCategory {
     @Override
     public String toString() {
         return "SimpleCategory{" +
-                "label='" + label + '\'' +
-                '}';
+               "label='" + label + '\'' +
+               '}';
     }
 }

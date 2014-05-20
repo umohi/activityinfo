@@ -54,8 +54,7 @@ public abstract class PointMapLayer extends AbstractMapLayer {
         return clustering.isClustered();
     }
 
-    @XmlElementRefs({
-            @XmlElementRef(type = AdministrativeLevelClustering.class),
+    @XmlElementRefs({@XmlElementRef(type = AdministrativeLevelClustering.class),
             @XmlElementRef(type = NoClustering.class),
             @XmlElementRef(type = AutomaticClustering.class)})
     public Clustering getClustering() {

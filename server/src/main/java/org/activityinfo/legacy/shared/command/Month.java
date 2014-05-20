@@ -165,8 +165,7 @@ public class Month implements Serializable, Comparable<Month> {
             throw new NumberFormatException();
         }
 
-        return new Month(Integer.parseInt(tokens[0]),
-                Integer.parseInt(tokens[1]));
+        return new Month(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]));
     }
 
     @Override

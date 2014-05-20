@@ -43,19 +43,16 @@ public class Message {
     private String htmlBody;
 
 
-    public Message to(String email, String name)
-            throws MessagingException {
+    public Message to(String email, String name) throws MessagingException {
         try {
-            to.add(new InternetAddress(
-                    email, name));
+            to.add(new InternetAddress(email, name));
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
         return this;
     }
 
-    public Message replyTo(String email, String name)
-            throws MessagingException {
+    public Message replyTo(String email, String name) throws MessagingException {
         InternetAddress address;
         try {
             address = new InternetAddress(email, name);

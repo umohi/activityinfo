@@ -52,8 +52,7 @@ public class LayerTypePage extends WizardPage {
 
         proportionalCircleRadio.setValue(true);
 
-        proportionalCircleRadio
-                .setBoxLabel(I18N.CONSTANTS.proportionalCircle());
+        proportionalCircleRadio.setBoxLabel(I18N.CONSTANTS.proportionalCircle());
         iconRadio.setBoxLabel(I18N.CONSTANTS.icon());
         piechartRadio.setBoxLabel(I18N.CONSTANTS.pieChart());
         polygonRadio.setBoxLabel(I18N.CONSTANTS.shadedPolygons());
@@ -79,8 +78,7 @@ public class LayerTypePage extends WizardPage {
         radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
             @Override
             public void handleEvent(FieldEvent be) {
-                LayerTypePage.this.fireEvent(Events.Change, new BaseEvent(
-                        Events.Change));
+                LayerTypePage.this.fireEvent(Events.Change, new BaseEvent(Events.Change));
             }
         });
     }

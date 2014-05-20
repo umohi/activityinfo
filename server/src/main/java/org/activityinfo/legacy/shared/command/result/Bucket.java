@@ -111,8 +111,7 @@ public class Bucket implements Serializable {
             case IndicatorDTO.AGGREGATE_SITE_COUNT:
                 return count;
         }
-        throw new UnsupportedOperationException("aggregationMethod: "
-                + aggregationMethod);
+        throw new UnsupportedOperationException("aggregationMethod: " + aggregationMethod);
     }
 
     public Object getKey() {

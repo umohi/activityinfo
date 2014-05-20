@@ -100,8 +100,7 @@ public class AdminLevelPanel extends LayoutContainer {
 
             @Override
             public void handleEvent(BaseEvent be) {
-                AdminLevelPanel.this.fireEvent(Events.Change, new BaseEvent(
-                        Events.Change));
+                AdminLevelPanel.this.fireEvent(Events.Change, new BaseEvent(Events.Change));
             }
         });
         layout();

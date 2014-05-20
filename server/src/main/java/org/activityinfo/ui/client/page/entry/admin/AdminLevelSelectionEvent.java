@@ -87,7 +87,6 @@ public class AdminLevelSelectionEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return "AdminSelectionEvent [levelId=" + levelId + ", value=" + value
-                + "]";
+        return "AdminSelectionEvent [levelId=" + levelId + ", value=" + value + "]";
     }
 }

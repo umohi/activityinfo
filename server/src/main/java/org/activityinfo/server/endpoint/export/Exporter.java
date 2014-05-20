@@ -54,16 +54,13 @@ public abstract class Exporter {
 
     protected void declareStyles() {
         dateStyle = book.createCellStyle();
-        dateStyle.setDataFormat(creationHelper.createDataFormat().getFormat(
-                "m/d/yy"));
+        dateStyle.setDataFormat(creationHelper.createDataFormat().getFormat("m/d/yy"));
 
         coordStyle = book.createCellStyle();
-        coordStyle.setDataFormat(creationHelper.createDataFormat().getFormat(
-                "0.000000"));
+        coordStyle.setDataFormat(creationHelper.createDataFormat().getFormat("0.000000"));
 
         indicatorValueStyle = book.createCellStyle();
-        indicatorValueStyle.setDataFormat(creationHelper.createDataFormat()
-                .getFormat("#,##0"));
+        indicatorValueStyle.setDataFormat(creationHelper.createDataFormat().getFormat("#,##0"));
 
         Font headerFont = book.createFont();
         headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -84,8 +81,7 @@ public abstract class Exporter {
 
     }
 
-    protected Cell createHeaderCell(Row headerRow, int columnIndex,
-                                    String text, CellStyle style) {
+    protected Cell createHeaderCell(Row headerRow, int columnIndex, String text, CellStyle style) {
         Cell cell = headerRow.createCell(columnIndex);
         cell.setCellValue(creationHelper.createRichTextString(text));
         cell.setCellStyle(style);
@@ -94,12 +90,10 @@ public abstract class Exporter {
     }
 
     protected Cell createHeaderCell(Row headerRow, int columnIndex, String text) {
-        return createHeaderCell(headerRow, columnIndex, text,
-                CellStyle.ALIGN_LEFT);
+        return createHeaderCell(headerRow, columnIndex, text, CellStyle.ALIGN_LEFT);
     }
 
-    protected Cell createHeaderCell(Row headerRow, int columnIndex,
-                                    String text, int align) {
+    protected Cell createHeaderCell(Row headerRow, int columnIndex, String text, int align) {
         Cell cell = headerRow.createCell(columnIndex);
         cell.setCellValue(creationHelper.createRichTextString(text));
 
@@ -124,8 +118,7 @@ public abstract class Exporter {
         return cell;
     }
 
-    protected Cell createCell(Row row, int columnIndex, String text,
-                              CellStyle style) {
+    protected Cell createCell(Row row, int columnIndex, String text, CellStyle style) {
         Cell cell = createCell(row, columnIndex, text);
         cell.setCellStyle(style);
         return cell;

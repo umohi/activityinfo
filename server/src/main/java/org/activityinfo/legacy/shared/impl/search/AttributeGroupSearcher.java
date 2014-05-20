@@ -33,15 +33,10 @@ import java.util.List;
 public class AttributeGroupSearcher implements Searcher {
 
     @Override
-    public void search(List<String> testQuery, SqlTransaction tx,
-                       final AsyncCallback<List<Integer>> callback) {
+    public void search(List<String> testQuery, SqlTransaction tx, final AsyncCallback<List<Integer>> callback) {
         final List<Integer> attributeGroupIds = new ArrayList<Integer>();
 
-        SqlQuery
-                .select("AttributeGroupId")
-                .from("attributegroup")
-                .whereLikes("Name")
-                .likeMany(testQuery)
+        SqlQuery.select("AttributeGroupId").from("attributegroup").whereLikes("Name").likeMany(testQuery)
 
                 .execute(tx, new SqlResultCallback() {
                     @Override

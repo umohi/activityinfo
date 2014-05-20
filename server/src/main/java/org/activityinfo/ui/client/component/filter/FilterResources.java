@@ -37,15 +37,11 @@ public interface FilterResources extends ClientBundle {
     static final FilterResources INSTANCE = GWT.create(FilterResources.class);
     static final FilterMessages MESSAGES = GWT.create(FilterMessages.class);
 
-    @Source("Filter.css")
-    @NotStrict
-    Style style();
+    @Source("Filter.css") @NotStrict Style style();
 
-    @Source("Filter.png")
-    ImageResource filterIcon();
+    @Source("Filter.png") ImageResource filterIcon();
 
-    @Source("CrossCircle.png")
-    ImageResource crossIcon();
+    @Source("CrossCircle.png") ImageResource crossIcon();
 
     interface Style extends CssResource {
 
@@ -53,19 +49,14 @@ public interface FilterResources extends ClientBundle {
 
     interface FilterMessages extends Messages {
 
-        @DefaultMessage("Before {0,date,medium}")
-        String beforeDate(Date date);
+        @DefaultMessage("Before {0,date,medium}") String beforeDate(Date date);
 
-        @DefaultMessage("After {0,date,medium}")
-        String afterDate(Date date);
+        @DefaultMessage("After {0,date,medium}") String afterDate(Date date);
 
-        @DefaultMessage("{0,date,medium} - {1,date,medium}")
-        String betweenDates(Date date1, Date date2);
+        @DefaultMessage("{0,date,medium} - {1,date,medium}") String betweenDates(Date date1, Date date2);
 
-        @DefaultMessage("{0,list}")
-        String filteredPartnerList(List<String> names);
+        @DefaultMessage("{0,list}") String filteredPartnerList(List<String> names);
 
-        @DefaultMessage("{0,list}")
-        String filteredAttributeList(List<String> names);
+        @DefaultMessage("{0,list}") String filteredAttributeList(List<String> names);
     }
 }

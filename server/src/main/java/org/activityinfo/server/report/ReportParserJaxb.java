@@ -38,8 +38,7 @@ import java.util.logging.Logger;
  */
 public class ReportParserJaxb {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ReportParserJaxb.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReportParserJaxb.class.getName());
 
 
     private static class ContextHolder {
@@ -48,8 +47,7 @@ public class ReportParserJaxb {
         public ContextHolder() {
             try {
                 LOGGER.info("Initializing JAXB context...");
-                context = JAXBContext.newInstance(Report.class.getPackage()
-                        .getName());
+                context = JAXBContext.newInstance(Report.class.getPackage().getName());
                 LOGGER.info("JAXB Initialization complete");
             } catch (JAXBException e) {
                 throw new RuntimeException(e);

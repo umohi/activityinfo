@@ -45,24 +45,22 @@ public class SynchronizerDispatcher extends AbstractDispatcher {
     private static final int MAX_RETRY_COUNT = 16;
 
     @Inject
-    public SynchronizerDispatcher(EventBus eventBus,
-                                  @Remote Dispatcher remoteDispatcher) {
+    public SynchronizerDispatcher(EventBus eventBus, @Remote Dispatcher remoteDispatcher) {
         super();
         this.eventBus = eventBus;
         this.remoteDispatcher = remoteDispatcher;
     }
 
     @Override
-    public <T extends CommandResult> void execute(Command<T> command,
-                                                  AsyncCallback<T> callback) {
+    public <T extends CommandResult> void execute(Command<T> command, AsyncCallback<T> callback) {
 
         tryExecute(command, callback, 0);
 
     }
 
-    private final <T extends CommandResult> void tryExecute(
-            final Command<T> command, final AsyncCallback<T> callback,
-            final int attempt) {
+    private final <T extends CommandResult> void tryExecute(final Command<T> command,
+                                                            final AsyncCallback<T> callback,
+                                                            final int attempt) {
         remoteDispatcher.execute(command, null, new AsyncCallback<T>() {
 
             @Override
@@ -81,9 +79,10 @@ public class SynchronizerDispatcher extends AbstractDispatcher {
         });
     }
 
-    private final <T extends CommandResult> void handleConnectionFailure(
-            final Command<T> command, Throwable caught,
-            final AsyncCallback<T> callback, final int attempt) {
+    private final <T extends CommandResult> void handleConnectionFailure(final Command<T> command,
+                                                                         Throwable caught,
+                                                                         final AsyncCallback<T> callback,
+                                                                         final int attempt) {
         if (attempt > MAX_RETRY_COUNT) {
             callback.onFailure(new SyncException(SyncErrorType.CONNECTION_PROBLEM, caught));
         } else {

@@ -62,8 +62,7 @@ public class HibernateDatabase extends SqlDatabase {
     }
 
     @Override
-    public void executeUpdates(String bulkOperationJsonArray,
-                               AsyncCallback<Integer> callback) {
+    public void executeUpdates(String bulkOperationJsonArray, AsyncCallback<Integer> callback) {
         callback.onFailure(new UnsupportedOperationException());
     }
 

@@ -67,8 +67,7 @@ public class SiteRenderer {
         return html.toString();
     }
 
-    public String renderSite(SiteDTO site, ActivityDTO activity,
-                             boolean showEmptyRows, boolean renderComments) {
+    public String renderSite(SiteDTO site, ActivityDTO activity, boolean showEmptyRows, boolean renderComments) {
         StringBuilder html = new StringBuilder();
 
         if (renderComments && site.getComments() != null) {
@@ -90,8 +89,7 @@ public class SiteRenderer {
         return html.toString();
     }
 
-    private String renderIndicators(SiteDTO site, ActivityDTO activity,
-                                    boolean showEmptyRows) {
+    private String renderIndicators(SiteDTO site, ActivityDTO activity, boolean showEmptyRows) {
         StringBuilder html = new StringBuilder();
         html.append("<br/><p><span class='groupName'>");
         html.append(I18N.CONSTANTS.indicators());
@@ -108,13 +106,14 @@ public class SiteRenderer {
     }
 
     private boolean renderIndicatorGroup(StringBuilder html,
-                                         IndicatorGroup group, SiteDTO site, boolean showEmptyRows) {
+                                         IndicatorGroup group,
+                                         SiteDTO site,
+                                         boolean showEmptyRows) {
         StringBuilder groupHtml = new StringBuilder();
         boolean empty = true;
 
         if (group.getName() != null) {
-            groupHtml.append("<tr><td class='indicatorGroupHeading'>")
-                    .append(group.getName()).
+            groupHtml.append("<tr><td class='indicatorGroupHeading'>").append(group.getName()).
                     append("</td><td>&nbsp;</td></tr>");
         }
         for (IndicatorDTO indicator : group.getIndicators()) {
@@ -126,22 +125,21 @@ public class SiteRenderer {
                 value = site.getIndicatorValue(indicator);
             }
 
-            if (showEmptyRows
-                    ||
-                    (value != null &&
-                            (indicator.getAggregation() != IndicatorDTO.AGGREGATE_SUM || value != 0))) {
+            if (showEmptyRows ||
+                (value != null && (indicator.getAggregation() != IndicatorDTO.AGGREGATE_SUM || value != 0))) {
 
                 groupHtml.append("<tr><td class='indicatorHeading");
                 if (group.getName() != null) {
                     groupHtml.append(" indicatorGroupChild");
                 }
 
-                groupHtml.append("'>").append(indicator.getName())
-                        .append("</td><td class='indicatorValue'>")
-                        .append(formatValue(indicator, value))
-                        .append("</td><td class='indicatorUnits'>")
-                        .append(indicator.getUnits())
-                        .append("</td></tr>");
+                groupHtml.append("'>")
+                         .append(indicator.getName())
+                         .append("</td><td class='indicatorValue'>")
+                         .append(formatValue(indicator, value))
+                         .append("</td><td class='indicatorUnits'>")
+                         .append(indicator.getUnits())
+                         .append("</td></tr>");
                 empty = false;
             }
         }

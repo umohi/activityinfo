@@ -28,9 +28,9 @@ package org.activityinfo.legacy.client;
 
 import com.google.common.base.Function;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.command.Command;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
-import org.activityinfo.fp.client.Promise;
 
 /**
  * Executes {@link org.activityinfo.legacy.shared.command.Command}s on behalf of client
@@ -51,9 +51,7 @@ public interface Dispatcher extends Function<Command, Promise<CommandResult>> {
      * @param callback The callback which implements application logic
      * @param <T>      The type of the {@code CommandResult}
      */
-    <T extends CommandResult> void execute(Command<T> command,
-                                           AsyncMonitor monitor,
-                                           AsyncCallback<T> callback);
+    <T extends CommandResult> void execute(Command<T> command, AsyncMonitor monitor, AsyncCallback<T> callback);
 
     /**
      * Attempts to execute a command. The command may not neccessarily be
@@ -64,12 +62,12 @@ public interface Dispatcher extends Function<Command, Promise<CommandResult>> {
      * @param callback The callback which implements application logic
      * @param <T>      The type of the {@code CommandResult}
      */
-    <T extends CommandResult> void execute(Command<T> command,
-                                           AsyncCallback<T> callback);
+    <T extends CommandResult> void execute(Command<T> command, AsyncCallback<T> callback);
 
 
     /**
      * Returns a retryable Promise for the given {@code Command}
+     *
      * @param command
      * @param <T>
      * @return

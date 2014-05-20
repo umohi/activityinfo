@@ -32,29 +32,22 @@ import java.util.Set;
  *
  * @author Alex Bertram
  */
-@Entity
-@org.hibernate.annotations.Filters(
-        {
-                @org.hibernate.annotations.Filter(
-                        name = "userVisible",
-                        condition = "(ActivityId in (select a.ActivityId from activity a where a.DatabaseId in "
-                                +
-                                "(select d.DatabaseId from userdatabase d where "
-                                +
-                                "d.OwnerUserId = :currentUserId or "
-                                +
-                                "d.DatabaseId in "
-                                +
-                                "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p.AllowViewAll) or "
-                                +
-                                "d.DatabaseId in "
-                                +
-                                "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p.AllowView and p.PartnerId = PartnerId))))"
-                ),
-                @org.hibernate.annotations.Filter(
-                        name = "hideDeleted",
-                        condition = "DateDeleted is null"
-                )})
+@Entity @org.hibernate.annotations.Filters(
+        {@org.hibernate.annotations.Filter(
+                name = "userVisible",
+                condition = "(ActivityId in (select a.ActivityId from activity a where a.DatabaseId in " +
+                            "(select d.DatabaseId from userdatabase d where " +
+                            "d.OwnerUserId = :currentUserId or " +
+                            "d.DatabaseId in " +
+                            "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p" +
+                            ".AllowViewAll) or " +
+                            "d.DatabaseId in " +
+                            "(select p.DatabaseId from userpermission p where p.UserId = :currentUserId and p" +
+                            ".AllowView and p.PartnerId = PartnerId))))"
+        ), @org.hibernate.annotations.Filter(
+                name = "hideDeleted",
+                condition = "DateDeleted is null"
+        )})
 public class Site implements java.io.Serializable, Deleteable {
 
     private int id;
@@ -90,8 +83,7 @@ public class Site implements java.io.Serializable, Deleteable {
     /**
      * @return the id of this Site
      */
-    @Id
-    @Column(name = "SiteId", unique = true, nullable = false)
+    @Id @Column(name = "SiteId", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -106,8 +98,7 @@ public class Site implements java.io.Serializable, Deleteable {
     /**
      * @return the Activity to which this Site belongs
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ActivityId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "ActivityId", nullable = false)
     public Activity getActivity() {
         return this.activity;
     }
@@ -122,8 +113,7 @@ public class Site implements java.io.Serializable, Deleteable {
     /**
      * @return the geographic Location of this Site
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "LocationId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "LocationId", nullable = false)
     public Location getLocation() {
         return this.location;
     }
@@ -163,8 +153,7 @@ public class Site implements java.io.Serializable, Deleteable {
      *
      * @return the Partner who owns this Site
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PartnerId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "PartnerId", nullable = false)
     public Partner getPartner() {
         return this.partner;
     }
@@ -179,8 +168,7 @@ public class Site implements java.io.Serializable, Deleteable {
     /**
      * @return the date on which work at this Site began
      */
-    @Temporal(TemporalType.DATE)
-    @Column(name = "Date1", length = 23)
+    @Temporal(TemporalType.DATE) @Column(name = "Date1", length = 23)
     public Date getDate1() {
         return this.date1;
     }
@@ -195,8 +183,7 @@ public class Site implements java.io.Serializable, Deleteable {
     /**
      * @return the date on which work at this Site ended
      */
-    @Temporal(TemporalType.DATE)
-    @Column(name = "Date2", length = 23)
+    @Temporal(TemporalType.DATE) @Column(name = "Date2", length = 23)
     public Date getDate2() {
         return this.date2;
     }
@@ -211,8 +198,7 @@ public class Site implements java.io.Serializable, Deleteable {
     /**
      * @return the time at which this Site created. Used for synchronization.
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DateCreated", nullable = false, length = 23)
+    @Temporal(TemporalType.TIMESTAMP) @Column(name = "DateCreated", nullable = false, length = 23)
     public Date getDateCreated() {
         return this.dateCreated;
     }
@@ -228,8 +214,7 @@ public class Site implements java.io.Serializable, Deleteable {
      * @return the time at which this Site was last edited. Initially equal to
      * dateCreated.
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DateEdited", nullable = false, length = 23)
+    @Temporal(TemporalType.TIMESTAMP) @Column(name = "DateEdited", nullable = false, length = 23)
     public Date getDateEdited() {
         return this.dateEdited;
     }
@@ -269,8 +254,7 @@ public class Site implements java.io.Serializable, Deleteable {
      * @return the time at which this Site was last synchronized with an
      * external system
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DateSynchronized", length = 23)
+    @Temporal(TemporalType.TIMESTAMP) @Column(name = "DateSynchronized", length = 23)
     public Date getDateSynchronized() {
         return this.dateSynchronized;
     }
@@ -343,8 +327,7 @@ public class Site implements java.io.Serializable, Deleteable {
      * @return the time at which this Site was deleted. Used for synchronization
      * with clients.
      */
-    @Column
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column @Temporal(value = TemporalType.TIMESTAMP)
     public Date getDateDeleted() {
         return this.dateDeleted;
     }
@@ -374,8 +357,7 @@ public class Site implements java.io.Serializable, Deleteable {
     /**
      * @return true if this Site has been deleted
      */
-    @Override
-    @Transient
+    @Override @Transient
     public boolean isDeleted() {
         return getDateDeleted() != null;
     }
@@ -384,8 +366,7 @@ public class Site implements java.io.Serializable, Deleteable {
         this.project = project;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProjectId", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "ProjectId", nullable = true)
     public Project getProject() {
         return project;
     }

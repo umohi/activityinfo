@@ -95,9 +95,7 @@ public final class FilterToolBar extends ToolBar {
 
     private void createRemoveButton() {
         if (renderRemoveButton) {
-            removeButton = new Button(
-                    I18N.CONSTANTS.remove(),
-                    IconImageBundle.ICONS.delete(),
+            removeButton = new Button(I18N.CONSTANTS.remove(), IconImageBundle.ICONS.delete(),
 
                     new SelectionListener<ButtonEvent>() {
                         @Override
@@ -113,9 +111,7 @@ public final class FilterToolBar extends ToolBar {
 
     private void createApplyButton() {
         if (renderApplyButton) {
-            applyButton = new Button(
-                    I18N.CONSTANTS.apply(),
-                    IconImageBundle.ICONS.applyFilter(),
+            applyButton = new Button(I18N.CONSTANTS.apply(), IconImageBundle.ICONS.applyFilter(),
 
                     new SelectionListener<ButtonEvent>() {
                         @Override
@@ -133,8 +129,7 @@ public final class FilterToolBar extends ToolBar {
         return this.addHandler(handler, ApplyFilterEvent.TYPE);
     }
 
-    public HandlerRegistration addRemoveFilterHandler(
-            RemoveFilterHandler handler) {
+    public HandlerRegistration addRemoveFilterHandler(RemoveFilterHandler handler) {
         return this.addHandler(handler, RemoveFilterEvent.TYPE);
     }
 

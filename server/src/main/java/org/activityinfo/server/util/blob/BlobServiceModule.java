@@ -17,8 +17,7 @@ public class BlobServiceModule extends AbstractModule {
 
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     public BlobService provideBlobService(DeploymentConfiguration config) {
         if (DeploymentEnvironment.isAppEngine()) {
             return new AppEngineBlobService();

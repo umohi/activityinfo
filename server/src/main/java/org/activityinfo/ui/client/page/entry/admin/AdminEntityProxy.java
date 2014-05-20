@@ -46,8 +46,7 @@ public class AdminEntityProxy extends RpcProxy<ListResult<AdminEntityDTO>> {
     }
 
     @Override
-    protected void load(Object loadConfig,
-                        final AsyncCallback<ListResult<AdminEntityDTO>> callback) {
+    protected void load(Object loadConfig, final AsyncCallback<ListResult<AdminEntityDTO>> callback) {
 
         GetAdminEntities query = new GetAdminEntities(levelId);
         query.setParentId(parentId);

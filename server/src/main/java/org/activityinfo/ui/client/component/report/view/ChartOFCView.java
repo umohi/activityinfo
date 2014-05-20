@@ -83,8 +83,7 @@ public class ChartOFCView extends ContentPanel implements ChartView {
     }
 
     private void createChart() {
-        chart = new Chart(GWT.getModuleBaseURL()
-                + "/gxt231/chart/open-flash-chart.swf");
+        chart = new Chart(GWT.getModuleBaseURL() + "/gxt231/chart/open-flash-chart.swf");
         chart.setBorders(false);
         chart.setChartModel(chartModel);
 
@@ -179,9 +178,7 @@ public class ChartOFCView extends ContentPanel implements ChartView {
         return xa;
     }
 
-    private void addBarSeries(ChartModel cm,
-                              List<PivotTableData.Axis> categories,
-                              List<PivotTableData.Axis> series) {
+    private void addBarSeries(ChartModel cm, List<PivotTableData.Axis> categories, List<PivotTableData.Axis> series) {
 
         int index = 0;
         for (PivotTableData.Axis s : series) {
@@ -207,9 +204,7 @@ public class ChartOFCView extends ContentPanel implements ChartView {
         }
     }
 
-    private void addLineSeries(ChartModel cm,
-                               List<PivotTableData.Axis> categories,
-                               List<PivotTableData.Axis> series) {
+    private void addLineSeries(ChartModel cm, List<PivotTableData.Axis> categories, List<PivotTableData.Axis> series) {
 
         int index = 0;
 
@@ -237,8 +232,7 @@ public class ChartOFCView extends ContentPanel implements ChartView {
         }
     }
 
-    private String formatTooltip(PivotTableData.Axis s,
-                                 PivotTableData.Axis category, double value) {
+    private String formatTooltip(PivotTableData.Axis s, PivotTableData.Axis category, double value) {
         StringBuilder sb = new StringBuilder();
         sb.append(s.flattenLabel());
         sb.append("<br>");
@@ -248,9 +242,7 @@ public class ChartOFCView extends ContentPanel implements ChartView {
         return sb.toString();
     }
 
-    private void addPieChart(ChartModel cm,
-                             List<PivotTableData.Axis> categories,
-                             List<PivotTableData.Axis> series) {
+    private void addPieChart(ChartModel cm, List<PivotTableData.Axis> categories, List<PivotTableData.Axis> series) {
 
         PieChart pieChart = new PieChart();
         List<PieChart.Slice> slices = Lists.newArrayList();
@@ -259,8 +251,7 @@ public class ChartOFCView extends ContentPanel implements ChartView {
         for (PivotTableData.Axis category : categories) {
             PivotTableData.Cell cell = category.getCell(series.get(0));
             if (cell != null) {
-                PieChart.Slice slice = new PieChart.Slice(cell.getValue(),
-                        category.flattenLabel());
+                PieChart.Slice slice = new PieChart.Slice(cell.getValue(), category.flattenLabel());
                 slices.add(slice);
                 colors.add(Theme.getAccent(colorIndex++));
             }

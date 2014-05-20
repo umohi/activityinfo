@@ -39,8 +39,7 @@ public interface DispatchEventSource {
      * @param <T>          A Command class implementing
      *                     {@link org.activityinfo.legacy.shared.command.Command}
      */
-    <T extends Command> void registerListener(Class<T> commandClass,
-                                              DispatchListener<T> listener);
+    <T extends Command> void registerListener(Class<T> commandClass, DispatchListener<T> listener);
 
     /**
      * Registers a CommandProxy with the source. Command proxies are called
@@ -51,6 +50,5 @@ public interface DispatchEventSource {
      * @param <T>          A Command class implementing
      *                     {@link org.activityinfo.legacy.shared.command.Command}
      */
-    <T extends Command> void registerProxy(Class<T> commandClass,
-                                           CommandCache<T> proxy);
+    <T extends Command> void registerProxy(Class<T> commandClass, CommandCache<T> proxy);
 }

@@ -37,8 +37,7 @@ import java.util.logging.Logger;
  */
 public class GenerateElementHandler implements CommandHandler<GenerateElement> {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(GenerateElementHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GenerateElementHandler.class.getName());
 
     private final ReportGenerator generator;
 
@@ -48,13 +47,11 @@ public class GenerateElementHandler implements CommandHandler<GenerateElement> {
     }
 
     @Override
-    public CommandResult execute(GenerateElement cmd, User user)
-            throws CommandException {
+    public CommandResult execute(GenerateElement cmd, User user) throws CommandException {
 
         LOGGER.info("GenerateElement.element = " + cmd.getElement());
 
-        return generator.generateElement(user, cmd.getElement(), null,
-                new DateRange());
+        return generator.generateElement(user, cmd.getElement(), null, new DateRange());
 
     }
 }

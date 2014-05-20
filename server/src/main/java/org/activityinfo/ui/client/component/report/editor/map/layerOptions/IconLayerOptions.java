@@ -46,8 +46,7 @@ import java.util.Map;
 /*
  * Displays a list of options the user can choose to configure an IconMapLayer
  */
-public class IconLayerOptions extends LayoutContainer implements
-        LayerOptionsWidget<IconMapLayer> {
+public class IconLayerOptions extends LayoutContainer implements LayerOptionsWidget<IconMapLayer> {
     private IconMapLayer iconMapLayer;
     private RadioGroup radioGroup = new RadioGroup();
     private HorizontalPanel contentPanel = new HorizontalPanel();
@@ -65,8 +64,7 @@ public class IconLayerOptions extends LayoutContainer implements
         radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
             @Override
             public void handleEvent(FieldEvent be) {
-                iconMapLayer.setIcon(radioIcons.get(radioGroup.getValue())
-                        .name());
+                iconMapLayer.setIcon(radioIcons.get(radioGroup.getValue()).name());
                 ValueChangeEvent.fire(IconLayerOptions.this, iconMapLayer);
             }
         });
@@ -123,8 +121,7 @@ public class IconLayerOptions extends LayoutContainer implements
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<IconMapLayer> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<IconMapLayer> handler) {
         return this.addHandler(handler, ValueChangeEvent.getType());
     }
 

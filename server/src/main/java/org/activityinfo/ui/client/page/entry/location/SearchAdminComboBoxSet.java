@@ -28,9 +28,9 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.google.common.collect.Lists;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBox;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBoxSet;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBoxSet.ComboBoxFactory;
@@ -39,24 +39,21 @@ import org.activityinfo.ui.client.page.entry.admin.AdminFieldSetPresenter;
 import java.util.Iterator;
 import java.util.List;
 
-public class SearchAdminComboBoxSet implements ComboBoxFactory,
-        Iterable<SearchAdminComboBox> {
+public class SearchAdminComboBoxSet implements ComboBoxFactory, Iterable<SearchAdminComboBox> {
 
     private List<SearchAdminComboBox> comboBoxes = Lists.newArrayList();
     private final LayoutContainer container;
 
     private EditMode mode = EditMode.SEARCH;
 
-    public SearchAdminComboBoxSet(LayoutContainer container,
-                                  AdminFieldSetPresenter presenter) {
+    public SearchAdminComboBoxSet(LayoutContainer container, AdminFieldSetPresenter presenter) {
         super();
         this.container = container;
         new AdminComboBoxSet(presenter, this);
     }
 
     @Override
-    public AdminComboBox create(AdminLevelDTO level,
-                                ListStore<AdminEntityDTO> store) {
+    public AdminComboBox create(AdminLevelDTO level, ListStore<AdminEntityDTO> store) {
         final SearchAdminComboBox box = new SearchAdminComboBox(level, store);
         box.addListener(Events.Enable, new Listener<ComponentEvent>() {
 

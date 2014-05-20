@@ -41,8 +41,10 @@ public class AttributeGroupFilterWidgets implements FilterPanel {
     private List<AttributeGroupFilterWidget> widgets;
     private Multimap<String, AttributeGroupFilterWidget> duplicates;
 
-    public AttributeGroupFilterWidgets(ContentPanel panel, Dispatcher service,
-                                       ValueChangeHandler<Filter> valueChangeHandler, SuccessCallback<Void> drawCallback) {
+    public AttributeGroupFilterWidgets(ContentPanel panel,
+                                       Dispatcher service,
+                                       ValueChangeHandler<Filter> valueChangeHandler,
+                                       SuccessCallback<Void> drawCallback) {
 
         this.service = service;
         this.panel = panel;
@@ -101,7 +103,8 @@ public class AttributeGroupFilterWidgets implements FilterPanel {
                                 groups = new ArrayList<AttributeGroupDTO>();
                                 if (CollectionUtil.isNotEmpty(pivotData)) {
                                     for (AttributeGroupDTO pivotGroup : pivotData) {
-                                        AttributeGroupDTO schemaGroup = schema.getAttributeGroupById(pivotGroup.getId());
+                                        AttributeGroupDTO schemaGroup = schema.getAttributeGroupById(pivotGroup.getId
+                                                ());
                                         if (schemaGroup != null) {
                                             groups.add(schemaGroup);
                                         }
@@ -149,8 +152,7 @@ public class AttributeGroupFilterWidgets implements FilterPanel {
 
     private boolean isNoDuplicate(AttributeGroupFilterWidget widget) {
         for (AttributeGroupFilterWidget alreadyAdded : widgets) {
-            if (alreadyAdded.getGroup().getName().toLowerCase()
-                    .equals(widget.getGroup().getName().toLowerCase())) {
+            if (alreadyAdded.getGroup().getName().toLowerCase().equals(widget.getGroup().getName().toLowerCase())) {
                 return false;
             }
         }
@@ -164,8 +166,9 @@ public class AttributeGroupFilterWidgets implements FilterPanel {
             if (CollectionUtil.isNotEmpty(selection)) {
 
                 // if the widget has at least one selection, check the duplicates if we need to add some more ids
-                Collection<AttributeGroupFilterWidget> hiddenWidgets =
-                        duplicates.get(widget.getGroup().getName().toLowerCase());
+                Collection<AttributeGroupFilterWidget> hiddenWidgets = duplicates.get(widget.getGroup()
+                                                                                            .getName()
+                                                                                            .toLowerCase());
                 if (CollectionUtil.isNotEmpty(hiddenWidgets)) {
                     // has duplicates, so collect the attribute-ids from the hidden widgets by the
                     // selected attribute-names of the visible widget
@@ -208,13 +211,15 @@ public class AttributeGroupFilterWidgets implements FilterPanel {
     }
 
     @Override
-    /** only sets the selection. To (re)draw the widgets based on the possibly new filter, call applyBaseFilter or draw */
+    /** only sets the selection. To (re)draw the widgets based on the possibly new filter,
+     * call applyBaseFilter or draw */
     public void setValue(Filter value) {
         setValue(value, false);
     }
 
     @Override
-    /** only sets the selection. To (re)draw the widgets based on the possibly new filter, call applyBaseFilter or draw */
+    /** only sets the selection. To (re)draw the widgets based on the possibly new filter,
+     * call applyBaseFilter or draw */
     public void setValue(Filter value, boolean fireEvents) {
         if (value.isRestricted(DIMENSION_TYPE)) {
             Collection<Integer> restriction = value.getRestrictions(DIMENSION_TYPE);

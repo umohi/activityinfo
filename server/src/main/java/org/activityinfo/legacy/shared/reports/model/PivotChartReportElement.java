@@ -33,12 +33,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class PivotChartReportElement extends
-        PivotReportElement<PivotChartContent> {
+public class PivotChartReportElement extends PivotReportElement<PivotChartContent> {
 
     public enum Type {
-        @Deprecated
-        Bar,
+        @Deprecated Bar,
         StackedBar,
         Line,
         ClusteredBar,
@@ -89,8 +87,7 @@ public class PivotChartReportElement extends
         getFilter().addRestriction(DimensionType.Indicator, indicatorId);
     }
 
-    @XmlElement(name = "dimension")
-    @XmlElementWrapper(name = "series")
+    @XmlElement(name = "dimension") @XmlElementWrapper(name = "series")
     public List<Dimension> getSeriesDimensions() {
         return seriesDimensions;
     }
@@ -107,8 +104,7 @@ public class PivotChartReportElement extends
         this.seriesDimensions = Lists.newArrayList(dimension);
     }
 
-    @XmlElement(name = "dimension")
-    @XmlElementWrapper(name = "categories")
+    @XmlElement(name = "dimension") @XmlElementWrapper(name = "categories")
     public List<Dimension> getCategoryDimensions() {
         return categoryDimensions;
     }

@@ -44,9 +44,7 @@ import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbProjectGrid extends
-        AbstractGridView<ProjectDTO, DbProjectEditor> implements
-        DbProjectEditor.View {
+public class DbProjectGrid extends AbstractGridView<ProjectDTO, DbProjectEditor> implements DbProjectEditor.View {
     private final UiConstants messages;
     private final IconImageBundle icons;
 
@@ -74,8 +72,7 @@ public class DbProjectGrid extends
         List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
         columns.add(new ColumnConfig("name", messages.name(), 150));
-        columns
-                .add(new ColumnConfig("description", messages.description(), 300));
+        columns.add(new ColumnConfig("description", messages.description(), 300));
 
         return new ColumnModel(columns);
     }
@@ -88,15 +85,13 @@ public class DbProjectGrid extends
     }
 
     @Override
-    public void init(DbProjectEditor editor, UserDatabaseDTO db,
-                     ListStore<ProjectDTO> store) {
+    public void init(DbProjectEditor editor, UserDatabaseDTO db, ListStore<ProjectDTO> store) {
         super.init(editor, store);
         this.setHeadingText(I18N.MESSAGES.projectsForDatabase(db.getName()));
     }
 
     @Override
-    public FormDialogTether showAddDialog(ProjectDTO project,
-                                          FormDialogCallback callback) {
+    public FormDialogTether showAddDialog(ProjectDTO project, FormDialogCallback callback) {
 
         ProjectForm form = new ProjectForm();
         form.getBinding().bind(project);

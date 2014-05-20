@@ -46,8 +46,7 @@ public abstract class GearsCapabilityProfile extends LocalCapabilityProfile {
         Log.trace("GearsCapabilityProfile: acquiring permissions...");
         try {
             if (!isGearsInstalled()) {
-                callback.onFailure(new UnsupportedOperationException(
-                        "Gears is not installed"));
+                callback.onFailure(new UnsupportedOperationException("Gears is not installed"));
             } else if (acquirePermissions()) {
                 callback.onSuccess(null);
             } else {
@@ -67,7 +66,6 @@ public abstract class GearsCapabilityProfile extends LocalCapabilityProfile {
     }
 
     private boolean acquirePermissions() {
-        return Factory.getInstance().getPermission("ActivityInfo",
-                GWT.getModuleBaseURL() + "desktopicons/64x64.png");
+        return Factory.getInstance().getPermission("ActivityInfo", GWT.getModuleBaseURL() + "desktopicons/64x64.png");
     }
 }

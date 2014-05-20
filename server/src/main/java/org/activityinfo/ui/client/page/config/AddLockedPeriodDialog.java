@@ -42,8 +42,7 @@ import org.activityinfo.legacy.shared.model.ProjectDTO;
 import org.activityinfo.legacy.shared.model.UserDatabaseDTO;
 import org.activityinfo.ui.client.page.config.LockedPeriodsPresenter.AddLockedPeriodView;
 
-public class AddLockedPeriodDialog extends FormPanel implements
-        AddLockedPeriodView {
+public class AddLockedPeriodDialog extends FormPanel implements AddLockedPeriodView {
 
     private FieldSet fieldsetContainer;
     private RadioGroup radiogroupContainer;
@@ -199,17 +198,16 @@ public class AddLockedPeriodDialog extends FormPanel implements
         datefieldFromDate.setAllowBlank(false);
         add(datefieldToDate);
 
-        radiogroupContainer.addListener(Events.Change,
-                new Listener<FieldEvent>() {
+        radiogroupContainer.addListener(Events.Change, new Listener<FieldEvent>() {
 
-                    @Override
-                    public void handleEvent(FieldEvent be) {
-                        comboboxActivities.setAllowBlank(!radioActivity.getValue());
-                        comboboxProjects.setAllowBlank(!radioProject.getValue());
-                        comboboxActivities.clearInvalid();
-                        comboboxProjects.clearInvalid();
-                    }
-                });
+            @Override
+            public void handleEvent(FieldEvent be) {
+                comboboxActivities.setAllowBlank(!radioActivity.getValue());
+                comboboxProjects.setAllowBlank(!radioProject.getValue());
+                comboboxActivities.clearInvalid();
+                comboboxProjects.clearInvalid();
+            }
+        });
     }
 
     @Override
@@ -227,10 +225,8 @@ public class AddLockedPeriodDialog extends FormPanel implements
         if (value != null) {
             textfieldName.setValue(value.getName());
             checkboxEnabled.setValue(value.isEnabled());
-            datefieldFromDate.setValue(value.getFromDate()
-                    .atMidnightInMyTimezone());
-            datefieldToDate
-                    .setValue(value.getToDate().atMidnightInMyTimezone());
+            datefieldFromDate.setValue(value.getFromDate().atMidnightInMyTimezone());
+            datefieldToDate.setValue(value.getToDate().atMidnightInMyTimezone());
         }
     }
 
@@ -260,8 +256,8 @@ public class AddLockedPeriodDialog extends FormPanel implements
     }
 
     @Override
-    public HandlerRegistration addCreateHandler(
-            org.activityinfo.ui.client.page.config.mvp.CanCreate.CreateHandler handler) {
+    public HandlerRegistration addCreateHandler(org.activityinfo.ui.client.page.config.mvp.CanCreate.CreateHandler
+                                                            handler) {
         return eventBus.addHandler(CreateEvent.TYPE, handler);
     }
 
@@ -274,14 +270,14 @@ public class AddLockedPeriodDialog extends FormPanel implements
     }
 
     @Override
-    public HandlerRegistration addCancelCreateHandler(
-            org.activityinfo.ui.client.page.config.mvp.CanCreate.CancelCreateHandler handler) {
+    public HandlerRegistration addCancelCreateHandler(org.activityinfo.ui.client.page.config.mvp.CanCreate
+                                                                  .CancelCreateHandler handler) {
         return eventBus.addHandler(CancelCreateEvent.TYPE, handler);
     }
 
     @Override
-    public HandlerRegistration addStartCreateHandler(
-            org.activityinfo.ui.client.page.config.mvp.CanCreate.StartCreateHandler handler) {
+    public HandlerRegistration addStartCreateHandler(org.activityinfo.ui.client.page.config.mvp.CanCreate
+                                                                 .StartCreateHandler handler) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -338,22 +334,22 @@ public class AddLockedPeriodDialog extends FormPanel implements
     }
 
     @Override
-    public HandlerRegistration addUpdateHandler(
-            org.activityinfo.ui.client.page.config.mvp.CanUpdate.UpdateHandler handler) {
+    public HandlerRegistration addUpdateHandler(org.activityinfo.ui.client.page.config.mvp.CanUpdate.UpdateHandler
+                                                            handler) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public HandlerRegistration addCancelUpdateHandler(
-            org.activityinfo.ui.client.page.config.mvp.CanUpdate.CancelUpdateHandler handler) {
+    public HandlerRegistration addCancelUpdateHandler(org.activityinfo.ui.client.page.config.mvp.CanUpdate
+                                                                  .CancelUpdateHandler handler) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public HandlerRegistration addRequestUpdateHandler(
-            org.activityinfo.ui.client.page.config.mvp.CanUpdate.RequestUpdateHandler handler) {
+    public HandlerRegistration addRequestUpdateHandler(org.activityinfo.ui.client.page.config.mvp.CanUpdate
+                                                                   .RequestUpdateHandler handler) {
         // TODO Auto-generated method stub
         return null;
     }

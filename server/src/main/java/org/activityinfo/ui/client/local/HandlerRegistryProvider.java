@@ -33,22 +33,21 @@ public class HandlerRegistryProvider implements Provider<HandlerRegistry> {
     private final HandlerRegistry registry;
 
     @Inject
-    public HandlerRegistryProvider(
-            GetSchemaHandler schemaHandler,
-            GetSitesHandler sitesHandler,
-            GetAdminEntitiesHandler adminHandler,
-            GetPartnersDimensionHandler partnersDimensionHandler,
-            GetAttributeGroupsDimensionHandler attributeGroupsDimensionHandler,
-            CreateSiteHandler createSiteHandler,
-            UpdateSiteHandler updateSiteHandler,
-            CreateLocationHandler createLocationHandler,
-            SearchLocationsHandler searchLocationsHandler,
-            // SearchHandler searchHandler,
-            PivotSitesHandler pivotSitesHandler,
-            GeneratePivotTableHandler generatePivotTableHandler,
-            GetLocationsHandler getLocationsHandler,
-            DeleteSiteHandler deleteSiteHandler,
-            GetSiteAttachmentsHandler getSiteAttachmentsHandler) {
+    public HandlerRegistryProvider(GetSchemaHandler schemaHandler,
+                                   GetSitesHandler sitesHandler,
+                                   GetAdminEntitiesHandler adminHandler,
+                                   GetPartnersDimensionHandler partnersDimensionHandler,
+                                   GetAttributeGroupsDimensionHandler attributeGroupsDimensionHandler,
+                                   CreateSiteHandler createSiteHandler,
+                                   UpdateSiteHandler updateSiteHandler,
+                                   CreateLocationHandler createLocationHandler,
+                                   SearchLocationsHandler searchLocationsHandler,
+                                   // SearchHandler searchHandler,
+                                   PivotSitesHandler pivotSitesHandler,
+                                   GeneratePivotTableHandler generatePivotTableHandler,
+                                   GetLocationsHandler getLocationsHandler,
+                                   DeleteSiteHandler deleteSiteHandler,
+                                   GetSiteAttachmentsHandler getSiteAttachmentsHandler) {
 
         registry = new HandlerRegistry();
         registry.registerHandler(GetSchema.class, schemaHandler);

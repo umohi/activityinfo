@@ -32,11 +32,9 @@ import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBox;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBoxSet.ComboBoxFactory;
 
-public class BoundAdminComboBox extends ComboBox<AdminEntityDTO> implements
-        AdminComboBox {
+public class BoundAdminComboBox extends ComboBox<AdminEntityDTO> implements AdminComboBox {
 
-    public BoundAdminComboBox(AdminLevelDTO level,
-                              ListStore<AdminEntityDTO> store) {
+    public BoundAdminComboBox(AdminLevelDTO level, ListStore<AdminEntityDTO> store) {
         setFieldLabel(level.getName());
         setStore(store);
         setTypeAhead(false);
@@ -50,16 +48,14 @@ public class BoundAdminComboBox extends ComboBox<AdminEntityDTO> implements
     }
 
     @Override
-    public void addSelectionChangeListener(
-            Listener<SelectionChangedEvent> listener) {
+    public void addSelectionChangeListener(Listener<SelectionChangedEvent> listener) {
         addListener(Events.SelectionChange, listener);
     }
 
     public static class Factory implements ComboBoxFactory {
 
         @Override
-        public AdminComboBox create(AdminLevelDTO level,
-                                    ListStore<AdminEntityDTO> store) {
+        public AdminComboBox create(AdminLevelDTO level, ListStore<AdminEntityDTO> store) {
             return new BoundAdminComboBox(level, store);
         }
     }

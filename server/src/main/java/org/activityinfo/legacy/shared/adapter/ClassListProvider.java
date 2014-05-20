@@ -44,8 +44,7 @@ public class ClassListProvider implements Function<Cuid, Promise<List<FormClass>
         this.dispatcher = dispatcher;
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public Promise<List<FormClass>> apply(@Nullable Cuid input) {
         return dispatcher.execute(new GetSchema()).then(new AllClassesAdapter());
     }

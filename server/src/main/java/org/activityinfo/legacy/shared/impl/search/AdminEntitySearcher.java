@@ -36,12 +36,8 @@ import java.util.List;
 public class AdminEntitySearcher implements Searcher {
 
     @Override
-    public void search(final List<String> testQuery, SqlTransaction tx,
-                       final AsyncCallback<List<Integer>> callback) {
-        SqlQuery.select("AdminEntityId")
-                .from("adminentity")
-                .whereLikes("Name")
-                .likeMany(testQuery)
+    public void search(final List<String> testQuery, SqlTransaction tx, final AsyncCallback<List<Integer>> callback) {
+        SqlQuery.select("AdminEntityId").from("adminentity").whereLikes("Name").likeMany(testQuery)
 
                 .execute(tx, new SqlResultCallback() {
                     @Override

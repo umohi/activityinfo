@@ -35,8 +35,7 @@ import java.util.Set;
  *
  * @author Alex Bertram
  */
-public abstract class PivotReportElement<ContentT extends PivotContent> extends
-        ReportElement<ContentT> {
+public abstract class PivotReportElement<ContentT extends PivotContent> extends ReportElement<ContentT> {
 
     /**
      * Returns the set of all dimensions that figure in the pivot table/chart,
@@ -66,8 +65,7 @@ public abstract class PivotReportElement<ContentT extends PivotContent> extends
         return super.getContent();
     }
 
-    @Override
-    @XmlTransient
+    @Override @XmlTransient
     public Set<Integer> getIndicators() {
         return getFilter().getRestrictions(DimensionType.Indicator);
     }

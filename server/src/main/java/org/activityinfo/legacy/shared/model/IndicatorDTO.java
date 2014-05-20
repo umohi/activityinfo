@@ -37,8 +37,7 @@ import org.codehaus.jackson.map.annotate.JsonView;
  * @author Alex Bertram
  */
 @JsonAutoDetect(JsonMethod.NONE)
-public final class IndicatorDTO extends BaseModelData implements EntityDTO,
-        ProvidesKey {
+public final class IndicatorDTO extends BaseModelData implements EntityDTO, ProvidesKey {
     public final static int AGGREGATE_SUM = 0;
     public final static int AGGREGATE_AVG = 1;
     public final static int AGGREGATE_SITE_COUNT = 2;
@@ -73,9 +72,7 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
     /**
      * @return the id of the Indicator
      */
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }
@@ -97,9 +94,7 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
     /**
      * @return the Indicator's name
      */
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getName() {
         return get("name");
     }
@@ -114,8 +109,7 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
     /**
      * @return the Indicator's units
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getUnits() {
         return get("units");
     }
@@ -124,8 +118,7 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
      * @return the short list header used when displaying this Indicator in a
      * grid
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getListHeader() {
         return get("listHeader");
     }
@@ -150,8 +143,7 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
      * @return this Indicator's description, principally used to aid users
      * entering data
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getDescription() {
         return get("description");
     }
@@ -160,8 +152,7 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
         set("mandatory", mandatory);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public boolean isMandatory() {
         return get("mandatory", false);
     }
@@ -176,8 +167,7 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
     /**
      * @return the aggregation method for this indicator
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getAggregation() {
         return (Integer) get("aggregation");
     }
@@ -185,8 +175,7 @@ public final class IndicatorDTO extends BaseModelData implements EntityDTO,
     /**
      * @return this Indicator's category
      */
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getCategory() {
         return get("category");
     }

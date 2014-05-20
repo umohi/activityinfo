@@ -39,8 +39,7 @@ public final class KMeans {
     private KMeans() {
     }
 
-    public static List<Cluster> cluster(List<MarkerGraph.Node> nodes,
-                                        int numClusters) {
+    public static List<Cluster> cluster(List<MarkerGraph.Node> nodes, int numClusters) {
 
         List<Cluster> clusters = new ArrayList<Cluster>(numClusters);
 
@@ -90,8 +89,7 @@ public final class KMeans {
      * @param membership An array containing the cluster membership for each node
      * @param centers    Array of center points to update
      */
-    private static void computeCenters(List<MarkerGraph.Node> nodes,
-                                       int[] membership, Point[] centers) {
+    private static void computeCenters(List<MarkerGraph.Node> nodes, int[] membership, Point[] centers) {
         int[] sumX = new int[centers.length];
         int[] sumY = new int[centers.length];
         int[] counts = new int[centers.length];
@@ -106,9 +104,7 @@ public final class KMeans {
 
         for (int i = 0; i != centers.length; ++i) {
             if (counts[i] > 0) {
-                centers[i] = new Point(
-                        sumX[i] / counts[i],
-                        sumY[i] / counts[i]);
+                centers[i] = new Point(sumX[i] / counts[i], sumY[i] / counts[i]);
             }
         }
     }
@@ -122,8 +118,7 @@ public final class KMeans {
      * @param membership
      * @return True if cluster membership has changed
      */
-    private static boolean assignClosest(List<MarkerGraph.Node> nodes,
-                                         Point[] centers, int[] membership) {
+    private static boolean assignClosest(List<MarkerGraph.Node> nodes, Point[] centers, int[] membership) {
         boolean changed = false;
         for (int i = 0; i != nodes.size(); ++i) {
 

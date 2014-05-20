@@ -56,10 +56,9 @@ public class DatabaseGridPanel extends ContentPanel {
     public DatabaseGridPanel(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
 
-        ListLoader<ListLoadResult<UserDatabaseDTO>> loader = new BaseListLoader<ListLoadResult<UserDatabaseDTO>>(
-                new DatabaseProxy());
-        ListStore<UserDatabaseDTO> store = new ListStore<UserDatabaseDTO>(
-                loader);
+        ListLoader<ListLoadResult<UserDatabaseDTO>> loader = new BaseListLoader<ListLoadResult<UserDatabaseDTO>>(new
+                DatabaseProxy());
+        ListStore<UserDatabaseDTO> store = new ListStore<UserDatabaseDTO>(loader);
         grid = new Grid(store, createColumnModel());
         grid.setView(new HighlightingGridView());
         grid.setAutoExpandColumn("name");
@@ -76,13 +75,11 @@ public class DatabaseGridPanel extends ContentPanel {
 
     }
 
-    public void addMouseOverListener(
-            Listener<GridEvent<UserDatabaseDTO>> listener) {
+    public void addMouseOverListener(Listener<GridEvent<UserDatabaseDTO>> listener) {
         grid.addListener(HighlightingGridView.ROW_MOUSE_OVER, listener);
     }
 
-    public void addSelectionChangeListener(
-            SelectionChangedListener<UserDatabaseDTO> listener) {
+    public void addSelectionChangeListener(SelectionChangedListener<UserDatabaseDTO> listener) {
         grid.getSelectionModel().addSelectionChangedListener(listener);
     }
 
@@ -108,32 +105,37 @@ public class DatabaseGridPanel extends ContentPanel {
         icon.setRenderer(new GridCellRenderer<UserDatabaseDTO>() {
 
             @Override
-            public Object render(UserDatabaseDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<UserDatabaseDTO> store, Grid<UserDatabaseDTO> grid) {
+            public Object render(UserDatabaseDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<UserDatabaseDTO> store,
+                                 Grid<UserDatabaseDTO> grid) {
 
-                return linked.contains(model.getId()) ? IconImageBundle.ICONS
-                        .link().getHTML() : "";
+                return linked.contains(model.getId()) ? IconImageBundle.ICONS.link().getHTML() : "";
             }
         });
 
-        ColumnConfig name = new ColumnConfig("name", I18N.CONSTANTS.database(),
-                150);
+        ColumnConfig name = new ColumnConfig("name", I18N.CONSTANTS.database(), 150);
         name.setSortable(false);
         name.setMenuDisabled(true);
         name.setRenderer(new GridCellRenderer<UserDatabaseDTO>() {
 
             @Override
-            public Object render(UserDatabaseDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<UserDatabaseDTO> store, Grid<UserDatabaseDTO> grid) {
+            public Object render(UserDatabaseDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<UserDatabaseDTO> store,
+                                 Grid<UserDatabaseDTO> grid) {
 
                 if (hasPermission(model)) {
                     return model.getName();
                 } else {
                     StringBuilder html = new StringBuilder();
-                    html.append("<span style=\"color: gray\">")
-                            .append(model.getName()).append("</span>");
+                    html.append("<span style=\"color: gray\">").append(model.getName()).append("</span>");
                     return html.toString();
                 }
 
@@ -151,8 +153,7 @@ public class DatabaseGridPanel extends ContentPanel {
     private class DatabaseProxy extends RpcProxy<List<UserDatabaseDTO>> {
 
         @Override
-        protected void load(Object loadConfig,
-                            final AsyncCallback<List<UserDatabaseDTO>> callback) {
+        protected void load(Object loadConfig, final AsyncCallback<List<UserDatabaseDTO>> callback) {
 
             dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
 

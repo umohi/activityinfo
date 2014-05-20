@@ -28,8 +28,8 @@ import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 
-public abstract class AbstractEditorGridView<M extends ModelData, P extends GridPresenter<M>>
-        extends AbstractGridView<M, P> {
+public abstract class AbstractEditorGridView<M extends ModelData, P extends GridPresenter<M>> extends
+        AbstractGridView<M, P> {
 
     private M lastSelection;
 
@@ -51,15 +51,14 @@ public abstract class AbstractEditorGridView<M extends ModelData, P extends Grid
             }
         });
 
-        grid.getSelectionModel().addSelectionChangedListener(
-                new SelectionChangedListener<M>() {
-                    @Override
-                    public void selectionChanged(SelectionChangedEvent<M> se) {
-                        if (se.getSelectedItem() != null) {
-                            presenter.onSelectionChanged(se.getSelectedItem());
-                        }
-                    }
-                });
+        grid.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<M>() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<M> se) {
+                if (se.getSelectedItem() != null) {
+                    presenter.onSelectionChanged(se.getSelectedItem());
+                }
+            }
+        });
 
         grid.addListener(Events.BeforeEdit, new Listener<GridEvent>() {
             @Override

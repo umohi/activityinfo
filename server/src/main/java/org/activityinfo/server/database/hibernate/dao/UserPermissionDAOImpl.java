@@ -35,14 +35,12 @@ public class UserPermissionDAOImpl extends GenericDAO<UserPermission, Integer> i
         super(em);
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings("unchecked")
     public UserPermission findUserPermissionByUserIdAndDatabaseId(int userId, int databaseId) {
-        List<UserPermission> result = getEntityManager()
-                .createNamedQuery("findUserPermissionByUserIdAndDatabaseId")
-                .setParameter("databaseId", databaseId)
-                .setParameter("userId", userId)
-                .getResultList();
+        List<UserPermission> result = getEntityManager().createNamedQuery("findUserPermissionByUserIdAndDatabaseId")
+                                                        .setParameter("databaseId", databaseId)
+                                                        .setParameter("userId", userId)
+                                                        .getResultList();
         return (result != null && !result.isEmpty()) ? result.get(0) : null;
     }
 }

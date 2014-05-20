@@ -82,8 +82,7 @@ public class IndicatorFilterPanel extends IndicatorTreePanel implements FilterPa
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 

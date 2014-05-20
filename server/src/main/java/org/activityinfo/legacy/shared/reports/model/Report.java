@@ -39,8 +39,7 @@ import java.util.Set;
  * @see org.activityinfo.legacy.shared.reports.model.ReportElement
  */
 @XmlRootElement(name = "report")
-public class Report extends ReportElement<ReportContent> implements
-        Serializable, CommandResult {
+public class Report extends ReportElement<ReportContent> implements Serializable, CommandResult {
 
     private List<ReportElement> elements = new ArrayList<ReportElement>();
 
@@ -78,15 +77,12 @@ public class Report extends ReportElement<ReportContent> implements
     /**
      * @return The list of report elements included in this report.
      */
-    @XmlElements({
-            @XmlElement(name = "pivotTable", type = PivotTableReportElement.class),
+    @XmlElements({@XmlElement(name = "pivotTable", type = PivotTableReportElement.class),
             @XmlElement(name = "pivotChart", type = PivotChartReportElement.class),
             @XmlElement(name = "table", type = TableElement.class),
             @XmlElement(name = "map", type = MapReportElement.class),
             @XmlElement(name = "text", type = TextReportElement.class),
-            @XmlElement(name = "image", type = ImageReportElement.class)
-    })
-    @XmlElementWrapper(name = "elements")
+            @XmlElement(name = "image", type = ImageReportElement.class)}) @XmlElementWrapper(name = "elements")
     public List<ReportElement> getElements() {
         return elements;
     }
@@ -127,8 +123,7 @@ public class Report extends ReportElement<ReportContent> implements
         this.fileName = fileName;
     }
 
-    @Override
-    @XmlTransient
+    @Override @XmlTransient
     public Set<Integer> getIndicators() {
         Set<Integer> ids = Sets.newHashSet();
         for (ReportElement element : getElements()) {
@@ -139,9 +134,7 @@ public class Report extends ReportElement<ReportContent> implements
 
     @Override
     public String toString() {
-        return "Report [elements="
-                + com.google.common.base.Joiner.on('\n').join(elements) + elements
-                + "]";
+        return "Report [elements=" + com.google.common.base.Joiner.on('\n').join(elements) + elements + "]";
     }
 
 }

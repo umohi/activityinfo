@@ -39,12 +39,10 @@ import java.util.List;
  * @author Alex Bertram
  * @see org.activityinfo.legacy.shared.command.GetBaseMaps
  */
-public class GetBaseMapsHandler implements
-        CommandHandlerAsync<GetBaseMaps, BaseMapResult> {
+public class GetBaseMapsHandler implements CommandHandlerAsync<GetBaseMaps, BaseMapResult> {
 
     @Override
-    public void execute(GetBaseMaps command, ExecutionContext context,
-                        final AsyncCallback<BaseMapResult> callback) {
+    public void execute(GetBaseMaps command, ExecutionContext context, final AsyncCallback<BaseMapResult> callback) {
 
         SqlQuery.select()
                 .appendColumn("id")

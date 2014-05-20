@@ -34,8 +34,7 @@ public final class AdminLevelPredicates {
     private AdminLevelPredicates() {
     }
 
-    public static List<AdminLevelDTO> breadthFirstSort(
-            List<AdminLevelDTO> allLevels) {
+    public static List<AdminLevelDTO> breadthFirstSort(List<AdminLevelDTO> allLevels) {
         List<AdminLevelDTO> sorted = Lists.newArrayList();
         Predicate<AdminLevelDTO> predicate = rootLevels();
         Collection<AdminLevelDTO> next;
@@ -56,15 +55,13 @@ public final class AdminLevelPredicates {
         };
     }
 
-    public static Predicate<AdminLevelDTO> childrenOf(
-            final Collection<AdminLevelDTO> parents) {
+    public static Predicate<AdminLevelDTO> childrenOf(final Collection<AdminLevelDTO> parents) {
         return new Predicate<AdminLevelDTO>() {
 
             @Override
             public boolean apply(AdminLevelDTO level) {
                 for (AdminLevelDTO parent : parents) {
-                    if (!level.isRoot()
-                            && parent.getId() == level.getParentLevelId()) {
+                    if (!level.isRoot() && parent.getId() == level.getParentLevelId()) {
                         return true;
                     }
                 }

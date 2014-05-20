@@ -40,13 +40,15 @@ public class EditColorColumn extends ColumnConfig {
 
         GridCellRenderer<NamedSlice> colorRenderer = new GridCellRenderer<PiechartLayerOptions.NamedSlice>() {
             @Override
-            public Object render(NamedSlice model, String property,
+            public Object render(NamedSlice model,
+                                 String property,
                                  ColumnData config,
-                                 int rowIndex, int colIndex, ListStore<NamedSlice> store,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<NamedSlice> store,
                                  Grid<NamedSlice> grid) {
                 String color = model.get("color");
-                return "<span style='background:#" + color + "'>" + color
-                        + "</span>";
+                return "<span style='background:#" + color + "'>" + color + "</span>";
             }
         };
 

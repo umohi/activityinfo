@@ -39,8 +39,7 @@ public class PivotQueryContext {
     private SqlDialect dialect;
     private Map<Object, Bucket> buckets = Maps.newHashMap();
 
-    public PivotQueryContext(PivotSites command, ExecutionContext context,
-                             SqlDialect dialect) {
+    public PivotQueryContext(PivotSites command, ExecutionContext context, SqlDialect dialect) {
         this.command = command;
         this.executionContext = context;
         this.dialect = dialect;

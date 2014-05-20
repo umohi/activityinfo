@@ -27,12 +27,10 @@ import org.activityinfo.legacy.shared.command.UpdateSite;
 import org.activityinfo.legacy.shared.impl.AuthorizationHandler;
 import org.activityinfo.legacy.shared.impl.ExecutionContext;
 
-public class UpdateSiteAuthorizationHandler implements
-        AuthorizationHandler<UpdateSite> {
+public class UpdateSiteAuthorizationHandler implements AuthorizationHandler<UpdateSite> {
 
     @Override
-    public void authorize(UpdateSite command, ExecutionContext context,
-                          AsyncCallback<Void> callback) {
+    public void authorize(UpdateSite command, ExecutionContext context, AsyncCallback<Void> callback) {
 
         callback.onSuccess(null);
 

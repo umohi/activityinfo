@@ -23,7 +23,6 @@ package org.activityinfo.server.report.generator.map;
  */
 
 import com.google.common.collect.Lists;
-
 import org.activityinfo.core.shared.model.AiLatLng;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
@@ -39,8 +38,7 @@ import org.activityinfo.server.database.hibernate.entity.Indicator;
 import java.util.List;
 import java.util.Map;
 
-public abstract class PointLayerGenerator<T extends PointMapLayer> implements
-        LayerGenerator {
+public abstract class PointLayerGenerator<T extends PointMapLayer> implements LayerGenerator {
 
     protected T layer;
     protected List<SiteDTO> sites;
@@ -146,12 +144,12 @@ public abstract class PointLayerGenerator<T extends PointMapLayer> implements
     }
 
     protected AiLatLng getPoint(SiteDTO site) {
-        if(site.hasLatLong()) {
+        if (site.hasLatLong()) {
             return new AiLatLng(site.getLatitude(), site.getLongitude());
         } else {
             Extents bounds = getBounds(site);
 
-            if(bounds != null) {
+            if (bounds != null) {
                 return bounds.center();
             } else {
                 return null;
@@ -163,9 +161,9 @@ public abstract class PointLayerGenerator<T extends PointMapLayer> implements
         // if we don't have a lat/long point, get a centroid from the
         // bounds
         Extents bounds = null;
-        for(AdminEntityDTO entity : site.getAdminEntities().values()) {
-            if(entity.hasBounds()) {
-                if(bounds == null) {
+        for (AdminEntityDTO entity : site.getAdminEntities().values()) {
+            if (entity.hasBounds()) {
+                if (bounds == null) {
                     bounds = entity.getBounds();
                 } else {
                     bounds = bounds.intersect(entity.getBounds());

@@ -32,35 +32,35 @@ import com.extjs.gxt.ui.client.data.RpcMap;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.legacy.shared.command.CreateLocation;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
-import org.activityinfo.legacy.shared.exception.IllegalAccessCommandException;
 import org.activityinfo.legacy.shared.model.AdminLevelDTO;
 
 import java.util.Date;
-import java.util.Map;
 
 public class CreateLocationHandler implements CommandHandlerAsync<CreateLocation, VoidResult> {
 
     @Override
-    public void execute(final CreateLocation command, ExecutionContext context,
+    public void execute(final CreateLocation command,
+                        ExecutionContext context,
                         final AsyncCallback<VoidResult> callback) {
 
         SqlQuery.select("LocationTypeId")
-        .from(Tables.LOCATION)
-        .where("LocationId").equalTo(command.getLocationId())
-        .execute(context.getTransaction(), new SqlResultCallback() {
-            @Override
-            public void onSuccess(SqlTransaction tx, SqlResultSet results) {
-                if (results.getRows().isEmpty()) {
-                    // New Location
-                    createLocation(tx, command);
-                    callback.onSuccess(null);
+                .from(Tables.LOCATION)
+                .where("LocationId")
+                .equalTo(command.getLocationId())
+                .execute(context.getTransaction(), new SqlResultCallback() {
+                    @Override
+                    public void onSuccess(SqlTransaction tx, SqlResultSet results) {
+                        if (results.getRows().isEmpty()) {
+                            // New Location
+                            createLocation(tx, command);
+                            callback.onSuccess(null);
 
-                } else {
-                    updateLocation(tx, command.getProperties());
-                    callback.onSuccess(null);
-                }
-            }
-        });
+                        } else {
+                            updateLocation(tx, command.getProperties());
+                            callback.onSuccess(null);
+                        }
+                    }
+                });
     }
 
     private void createLocation(SqlTransaction tx, CreateLocation command) {
@@ -68,14 +68,14 @@ public class CreateLocationHandler implements CommandHandlerAsync<CreateLocation
         RpcMap properties = command.getProperties();
 
         SqlInsert.insertInto("location")
-                .value("LocationId", properties.get("id"))
-                .value("LocationTypeId", properties.get("locationTypeId"))
-                .value("Name", properties.get("name"))
-                .value("Axe", properties.get("axe"))
-                .value("X", properties.get("longitude"))
-                .value("Y", properties.get("latitude"))
-                .value("timeEdited", new Date().getTime())
-                .execute(tx);
+                 .value("LocationId", properties.get("id"))
+                 .value("LocationTypeId", properties.get("locationTypeId"))
+                 .value("Name", properties.get("name"))
+                 .value("Axe", properties.get("axe"))
+                 .value("X", properties.get("longitude"))
+                 .value("Y", properties.get("latitude"))
+                 .value("timeEdited", new Date().getTime())
+                 .execute(tx);
 
         insertAdminLinks(tx, properties);
     }
@@ -83,18 +83,16 @@ public class CreateLocationHandler implements CommandHandlerAsync<CreateLocation
 
     private void updateLocation(SqlTransaction tx, RpcMap properties) {
         SqlUpdate.update("location")
-                .valueIfNotNull("Name", properties.get("name"))
-                .valueIfNotNull("Axe", properties.get("axe"))
-                .valueIfNotNull("X", properties.get("longitude"))
-                .valueIfNotNull("Y", properties.get("latitude"))
-                .valueIfNotNull("workflowstatusid", properties.get("workflowstatusid"))
-                .value("timeEdited", new Date().getTime())
-                .where("locationId", properties.get("id"))
-                .execute(tx);
+                 .valueIfNotNull("Name", properties.get("name"))
+                 .valueIfNotNull("Axe", properties.get("axe"))
+                 .valueIfNotNull("X", properties.get("longitude"))
+                 .valueIfNotNull("Y", properties.get("latitude"))
+                 .valueIfNotNull("workflowstatusid", properties.get("workflowstatusid"))
+                 .value("timeEdited", new Date().getTime())
+                 .where("locationId", properties.get("id"))
+                 .execute(tx);
 
-        SqlUpdate.delete(Tables.LOCATION_ADMIN_LINK)
-                .where("LocationId", properties.get("id"))
-                .execute(tx);
+        SqlUpdate.delete(Tables.LOCATION_ADMIN_LINK).where("LocationId", properties.get("id")).execute(tx);
 
         insertAdminLinks(tx, properties);
     }
@@ -104,9 +102,9 @@ public class CreateLocationHandler implements CommandHandlerAsync<CreateLocation
         for (String property : properties.keySet()) {
             if (property.startsWith(AdminLevelDTO.PROPERTY_PREFIX)) {
                 SqlInsert.insertInto("locationadminlink")
-                        .value("LocationId", properties.get("id"))
-                        .value("AdminEntityId", properties.get(property))
-                        .execute(tx);
+                         .value("LocationId", properties.get("id"))
+                         .value("AdminEntityId", properties.get(property))
+                         .execute(tx);
             }
         }
     }

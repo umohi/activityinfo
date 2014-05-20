@@ -86,8 +86,7 @@ public class AdminFilterPanel extends ContentPanel implements FilterPanel {
 
                 // at this point we know the TreeNode has been created
                 // so we can set the check state
-                if (value.getRestrictions(DimensionType.AdminLevel).contains(
-                        m.getId())) {
+                if (value.getRestrictions(DimensionType.AdminLevel).contains(m.getId())) {
                     tree.setChecked(m, true);
                 }
 
@@ -107,8 +106,7 @@ public class AdminFilterPanel extends ContentPanel implements FilterPanel {
 
             @Override
             public void checkChanged(CheckChangedEvent<AdminEntityDTO> event) {
-                filterToolBar.setApplyFilterEnabled(!tree.getCheckedSelection()
-                        .isEmpty());
+                filterToolBar.setApplyFilterEnabled(!tree.getCheckedSelection().isEmpty());
             }
         });
 
@@ -162,16 +160,14 @@ public class AdminFilterPanel extends ContentPanel implements FilterPanel {
     public void setSelection(int id, boolean select) {
 
         for (ModelData model : tree.getStore().getAllItems()) {
-            if (model instanceof AdminEntityDTO
-                    && ((AdminEntityDTO) model).getId() == id) {
+            if (model instanceof AdminEntityDTO && ((AdminEntityDTO) model).getId() == id) {
                 tree.setChecked((AdminEntityDTO) model, select);
             }
         }
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 
@@ -208,13 +204,11 @@ public class AdminFilterPanel extends ContentPanel implements FilterPanel {
     @Override
     public void setValue(Filter value, boolean fireEvents) {
         this.value = new Filter();
-        this.value.addRestriction(DimensionType.AdminLevel,
-                value.getRestrictions(DimensionType.AdminLevel));
+        this.value.addRestriction(DimensionType.AdminLevel, value.getRestrictions(DimensionType.AdminLevel));
         applyInternalState();
 
         filterToolBar.setApplyFilterEnabled(false);
-        filterToolBar.setRemoveFilterEnabled(value
-                .isRestricted(DimensionType.AdminLevel));
+        filterToolBar.setRemoveFilterEnabled(value.isRestricted(DimensionType.AdminLevel));
 
         if (fireEvents) {
             ValueChangeEvent.fire(this, value);
@@ -236,10 +230,7 @@ public class AdminFilterPanel extends ContentPanel implements FilterPanel {
 
     private void applyInternalState() {
         for (AdminEntityDTO treeNode : tree.getStore().getAllItems()) {
-            tree.setChecked(
-                    treeNode,
-                    value.getRestrictions(DimensionType.AdminLevel).contains(
-                            treeNode.getId()));
+            tree.setChecked(treeNode, value.getRestrictions(DimensionType.AdminLevel).contains(treeNode.getId()));
         }
     }
 

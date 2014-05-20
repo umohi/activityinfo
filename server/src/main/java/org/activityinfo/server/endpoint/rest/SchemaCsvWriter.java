@@ -44,8 +44,11 @@ public class SchemaCsvWriter {
     }
 
     private void writeHeaders() {
-        writeLine("DatabaseId", "DatabaseName",
-                "ActivityId", "ActivityCategory", "ActivityName",
+        writeLine("DatabaseId",
+                "DatabaseName",
+                "ActivityId",
+                "ActivityCategory",
+                "ActivityName",
                 "FormFieldType",
                 "AttributeGroup/IndicatorId",
                 "Category",
@@ -57,21 +60,35 @@ public class SchemaCsvWriter {
     }
 
     private void writeElementLine(ActivityDTO activity, IndicatorDTO indicator) {
-        writeLine(
-                activity.getDatabase().getId(), activity.getDatabase().getName(),
-                activity.getId(), activity.getCategory(), activity.getName(),
+        writeLine(activity.getDatabase().getId(),
+                activity.getDatabase().getName(),
+                activity.getId(),
+                activity.getCategory(),
+                activity.getName(),
                 "Indicator",
-                indicator.getId(), indicator.getCategory(), indicator.getName(), indicator.getDescription(), indicator.getUnits(),
-                null, null);
+                indicator.getId(),
+                indicator.getCategory(),
+                indicator.getName(),
+                indicator.getDescription(),
+                indicator.getUnits(),
+                null,
+                null);
     }
 
     private void writeElementLine(ActivityDTO activity, AttributeGroupDTO attribGroup, AttributeDTO attrib) {
-        writeLine(
-                activity.getDatabase().getId(), activity.getDatabase().getName(),
-                activity.getId(), activity.getCategory(), activity.getName(),
+        writeLine(activity.getDatabase().getId(),
+                activity.getDatabase().getName(),
+                activity.getId(),
+                activity.getCategory(),
+                activity.getName(),
                 "AttributeGroup",
-                attribGroup.getId(), null, attribGroup.getName(), null, null,
-                attrib.getId(), attrib.getName());
+                attribGroup.getId(),
+                null,
+                attribGroup.getName(),
+                null,
+                null,
+                attrib.getId(),
+                attrib.getName());
     }
 
     private void writeLine(Object... columns) {

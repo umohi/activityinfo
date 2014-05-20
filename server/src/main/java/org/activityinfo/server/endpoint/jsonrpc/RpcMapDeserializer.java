@@ -20,8 +20,7 @@ public class RpcMapDeserializer extends StdDeserializer<RpcMap> {
     }
 
     @Override
-    public RpcMap deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+    public RpcMap deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
 
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         ObjectNode root = (ObjectNode) mapper.readTree(jp);

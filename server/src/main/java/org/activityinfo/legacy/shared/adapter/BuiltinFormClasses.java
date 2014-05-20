@@ -49,8 +49,7 @@ public class BuiltinFormClasses {
             this.activityId = activityId;
         }
 
-        @Nullable
-        @Override
+        @Nullable @Override
         public FormClass apply(@Nullable SchemaDTO schemaDTO) {
             ActivityDTO activity = schemaDTO.getActivityById(activityId);
             ActivityUserFormBuilder builder = new ActivityUserFormBuilder(activity);

@@ -35,15 +35,12 @@ import org.activityinfo.legacy.shared.model.AttachmentDTO;
 
 import java.util.List;
 
-public class GetAttachmentsHandler implements
-        CommandHandlerAsync<GetAttachments, GetAttachmentsResult> {
+public class GetAttachmentsHandler implements CommandHandlerAsync<GetAttachments, GetAttachmentsResult> {
     @Override
-    public void execute(final GetAttachments command, ExecutionContext context,
+    public void execute(final GetAttachments command,
+                        ExecutionContext context,
                         final AsyncCallback<GetAttachmentsResult> callback) {
-        SqlQuery.selectAll()
-                .from("attachment")
-                .where("SiteId")
-                .equalTo(command.getSiteId())
+        SqlQuery.selectAll().from("attachment").where("SiteId").equalTo(command.getSiteId())
 
                 .execute(context.getTransaction(), new SqlResultCallback() {
                     @Override

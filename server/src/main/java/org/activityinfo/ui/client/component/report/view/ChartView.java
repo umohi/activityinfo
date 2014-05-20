@@ -30,6 +30,5 @@ import org.activityinfo.legacy.shared.reports.model.PivotChartReportElement;
  * @author Alex Bertram
  */
 public interface ChartView extends ReportView<PivotChartReportElement> {
-    @Override
-    void show(PivotChartReportElement element);
+    @Override void show(PivotChartReportElement element);
 }

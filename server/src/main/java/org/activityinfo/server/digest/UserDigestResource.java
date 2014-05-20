@@ -25,8 +25,7 @@ public abstract class UserDigestResource {
     public static final String PARAM_SENDEMAIL = "send";
     public static final String PARAM_SENDEMAIL_DEF = "true";
 
-    private static final Logger LOGGER = Logger
-            .getLogger(UserDigestResource.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserDigestResource.class.getName());
 
     private final Provider<EntityManager> entityManager;
     private final Provider<MailSender> mailSender;
@@ -46,13 +45,11 @@ public abstract class UserDigestResource {
         this.digestRenderer = digestRenderer;
     }
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    public String createUserDigest(
-            @QueryParam(PARAM_USER) int userId,
-            @QueryParam(PARAM_NOW) Long now,
-            @QueryParam(PARAM_DAYS) int days,
-            @QueryParam(PARAM_SENDEMAIL) @DefaultValue(PARAM_SENDEMAIL_DEF) boolean sendEmail)
+    @GET @Produces(MediaType.TEXT_HTML)
+    public String createUserDigest(@QueryParam(PARAM_USER) int userId,
+                                   @QueryParam(PARAM_NOW) Long now,
+                                   @QueryParam(PARAM_DAYS) int days,
+                                   @QueryParam(PARAM_SENDEMAIL) @DefaultValue(PARAM_SENDEMAIL_DEF) boolean sendEmail)
             throws IOException, MessagingException {
 
         if (userId <= 0) {
@@ -68,11 +65,10 @@ public abstract class UserDigestResource {
         User user = entityManager.get().find(User.class, userId);
         authProvider.set(user);
 
-        LOGGER.info("creating digest for " + user.getEmail() + " on " + DateFormatter.formatDateTime(date)
-                + " for activity period: " + days + " day(s)." + " (sending email: " + sendEmail + ")");
+        LOGGER.info("creating digest for " + user.getEmail() + " on " + DateFormatter.formatDateTime(date) +
+                    " for activity period: " + days + " day(s)." + " (sending email: " + sendEmail + ")");
 
-        DigestMessageBuilder digest =
-                new DigestMessageBuilder(digestModelBuilder, digestRenderer);
+        DigestMessageBuilder digest = new DigestMessageBuilder(digestModelBuilder, digestRenderer);
         digest.setUser(user);
         digest.setDate(date);
         digest.setDays(days);

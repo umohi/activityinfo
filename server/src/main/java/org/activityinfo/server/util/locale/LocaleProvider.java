@@ -75,8 +75,7 @@ public class LocaleProvider implements Provider<Locale> {
     }
 
     private String languageFromHeader() {
-        String[] acceptLanguages = Strings.nullToEmpty(
-                req.get().getHeader("Accept-Language")).split(",");
+        String[] acceptLanguages = Strings.nullToEmpty(req.get().getHeader("Accept-Language")).split(",");
 
         for (String lang : acceptLanguages) {
             if (lang.startsWith("en")) {

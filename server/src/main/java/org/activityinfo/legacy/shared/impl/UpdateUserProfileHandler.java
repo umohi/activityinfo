@@ -31,19 +31,18 @@ import org.activityinfo.legacy.shared.model.UserProfileDTO;
 public class UpdateUserProfileHandler implements CommandHandlerAsync<UpdateUserProfile, VoidResult> {
 
     @Override
-    public void execute(final UpdateUserProfile command, ExecutionContext context,
+    public void execute(final UpdateUserProfile command,
+                        ExecutionContext context,
                         final AsyncCallback<VoidResult> callback) {
 
         UserProfileDTO model = command.getModel();
 
         SqlUpdate.update("userlogin")
-                .where("userId", model.getUserId())
-                .value("name", model.getName())
-                .value("organization", model.getOrganization())
-                .value("jobtitle", model.getJobtitle())
-                        // .value("locale", model.getLocale())
-                .value("emailNotification", model.isEmailNotification())
-                .execute(context.getTransaction());
+                 .where("userId", model.getUserId())
+                 .value("name", model.getName())
+                 .value("organization", model.getOrganization()).value("jobtitle", model.getJobtitle())
+                // .value("locale", model.getLocale())
+                .value("emailNotification", model.isEmailNotification()).execute(context.getTransaction());
 
         callback.onSuccess(new VoidResult());
     }

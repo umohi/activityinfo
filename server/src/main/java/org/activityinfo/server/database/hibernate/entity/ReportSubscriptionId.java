@@ -69,7 +69,6 @@ public class ReportSubscriptionId implements Serializable {
         }
 
         ReportSubscriptionId i = (ReportSubscriptionId) obj;
-        return Objects.equal(i.getReportId(), this.getReportId())
-                && Objects.equal(i.getUserId(), this.getUserId());
+        return Objects.equal(i.getReportId(), this.getReportId()) && Objects.equal(i.getUserId(), this.getUserId());
     }
 }

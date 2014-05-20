@@ -62,7 +62,6 @@ public class FormDialog {
 
         loadingPanel = new LoadingPanel<>(new PageLoadingPanel());
         loadingPanel.setDisplayWidget(formPanel);
-
         dialog = new ModalDialog(loadingPanel);
         dialog.getOkButton().setText(I18N.CONSTANTS.save());
         dialog.getOkButton().setStyleName("btn btn-primary");

@@ -57,8 +57,7 @@ public class Domain implements Serializable {
         this.title = title;
     }
 
-    @Id
-    @Column(name = "host", unique = true, nullable = false, length = 100)
+    @Id @Column(name = "host", unique = true, nullable = false, length = 100)
     public String getHost() {
         return host;
     }

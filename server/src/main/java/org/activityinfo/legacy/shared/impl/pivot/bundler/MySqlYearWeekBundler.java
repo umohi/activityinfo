@@ -42,9 +42,9 @@ public class MySqlYearWeekBundler implements Bundler {
         if (!row.isNull(weekAlias)) {
             String yearWeek = row.getString(weekAlias);
             if (yearWeek.length() == 6) {
-                bucket.setCategory(dimension, new WeekCategory(
-                        Integer.parseInt(yearWeek.substring(0, 4)),
-                        Integer.parseInt(yearWeek.substring(4, 6))));
+                bucket.setCategory(dimension,
+                        new WeekCategory(Integer.parseInt(yearWeek.substring(0, 4)),
+                                Integer.parseInt(yearWeek.substring(4, 6))));
             }
         }
     }

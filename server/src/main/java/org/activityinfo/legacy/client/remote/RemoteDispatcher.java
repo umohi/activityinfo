@@ -44,16 +44,14 @@ public class RemoteDispatcher extends AbstractDispatcher {
     private EventBus eventBus;
 
     @Inject
-    public RemoteDispatcher(EventBus eventBus, AuthenticatedUser auth,
-                            RemoteCommandServiceAsync service) {
+    public RemoteDispatcher(EventBus eventBus, AuthenticatedUser auth, RemoteCommandServiceAsync service) {
         this.eventBus = eventBus;
         this.auth = auth;
         this.service = service;
     }
 
     @Override
-    public <T extends CommandResult> void execute(final Command<T> command,
-                                                  final AsyncCallback<T> callback) {
+    public <T extends CommandResult> void execute(final Command<T> command, final AsyncCallback<T> callback) {
         try {
             System.currentTimeMillis();
             service.execute(auth.getAuthToken(),

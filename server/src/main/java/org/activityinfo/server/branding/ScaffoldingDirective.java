@@ -27,7 +27,9 @@ public class ScaffoldingDirective implements TemplateDirectiveModel {
     }
 
     @Override
-    public void execute(Environment env, Map params, TemplateModel[] loopVars,
+    public void execute(Environment env,
+                        Map params,
+                        TemplateModel[] loopVars,
                         TemplateDirectiveBody body) throws TemplateException, IOException {
 
         // write out the inner body to a string

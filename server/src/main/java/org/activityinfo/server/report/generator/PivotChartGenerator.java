@@ -33,30 +33,25 @@ import org.activityinfo.server.database.hibernate.dao.IndicatorDAO;
 import org.activityinfo.server.database.hibernate.entity.Indicator;
 import org.activityinfo.server.database.hibernate.entity.User;
 
-public class PivotChartGenerator extends
-        PivotGenerator<PivotChartReportElement> {
+public class PivotChartGenerator extends PivotGenerator<PivotChartReportElement> {
 
     private final IndicatorDAO indicatorDAO;
 
     @Inject
-    public PivotChartGenerator(DispatcherSync dispatcher,
-                               IndicatorDAO indicatorDAO) {
+    public PivotChartGenerator(DispatcherSync dispatcher, IndicatorDAO indicatorDAO) {
         super(dispatcher);
 
         this.indicatorDAO = indicatorDAO;
     }
 
     @Override
-    public void generate(User user, PivotChartReportElement element,
-                         Filter inheritedFilter,
-                         DateRange dateRange) {
+    public void generate(User user, PivotChartReportElement element, Filter inheritedFilter, DateRange dateRange) {
 
         Filter filter = GeneratorUtils.resolveElementFilter(element, dateRange);
-        Filter effectiveFilter = inheritedFilter == null ? new Filter(filter,
-                new Filter()) : new Filter(inheritedFilter, filter);
+        Filter effectiveFilter =
+                inheritedFilter == null ? new Filter(filter, new Filter()) : new Filter(inheritedFilter, filter);
 
-        PivotTableData data = generateData(
-                user.getId(),
+        PivotTableData data = generateData(user.getId(),
                 user.getLocaleObject(),
                 element,
                 effectiveFilter,
@@ -69,8 +64,7 @@ public class PivotChartGenerator extends
         content.setXAxisTitle(composeXAxisTitle(element));
         content.setYAxisTitle(composeYAxisTitle(element));
         content.setEffectiveFilter(filter);
-        content.setFilterDescriptions(generateFilterDescriptions(filter,
-                element.allDimensionTypes(), user));
+        content.setFilterDescriptions(generateFilterDescriptions(filter, element.allDimensionTypes(), user));
         content.setYMin(scale.getValmin());
         content.setYStep(scale.getStep());
         content.setData(data);
@@ -78,8 +72,7 @@ public class PivotChartGenerator extends
         element.setContent(content);
     }
 
-    private ScaleUtil.Scale computeScale(PivotChartReportElement element,
-                                         PivotTableData data) {
+    private ScaleUtil.Scale computeScale(PivotChartReportElement element, PivotTableData data) {
 
         if (element.getType() == PivotChartReportElement.Type.Pie) {
             return new ScaleUtil.Scale();
@@ -118,9 +111,7 @@ public class PivotChartGenerator extends
         }
 
         // TODO : localize
-        return element.getCategoryDimensions()
-                .get(element.getCategoryDimensions().size() - 1).getType()
-                .toString();
+        return element.getCategoryDimensions().get(element.getCategoryDimensions().size() - 1).getType().toString();
 
     }
 
@@ -135,8 +126,7 @@ public class PivotChartGenerator extends
             return element.getValueAxisTitle();
         }
 
-        if (element.getIndicators() == null
-                || element.getIndicators().size() <= 0) {
+        if (element.getIndicators() == null || element.getIndicators().size() <= 0) {
             return "[Empty]";
         }
 

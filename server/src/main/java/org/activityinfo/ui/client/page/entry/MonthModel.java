@@ -37,8 +37,7 @@ final class MonthModel extends BaseModelData {
     }
 
     public DateRange getDateRange() {
-        return DateUtilGWTImpl.INSTANCE.monthRange(category.getYear(),
-                category.getMonth());
+        return DateUtilGWTImpl.INSTANCE.monthRange(category.getYear(), category.getMonth());
     }
 
     public String getKey() {

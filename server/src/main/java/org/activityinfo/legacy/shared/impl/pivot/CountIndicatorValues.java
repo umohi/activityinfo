@@ -40,19 +40,14 @@ public class CountIndicatorValues extends BaseTable {
     @Override
     public void setupQuery(PivotSites command, SqlQuery query) {
         query.from(Tables.INDICATOR, "Indicator");
-        query.leftJoin(Tables.ACTIVITY, "Activity").on(
-                "Activity.ActivityId=Indicator.ActivityId");
-        query.leftJoin(Tables.SITE, "Site").on(
-                "Site.ActivityId=Activity.ActivityId");
-        query.leftJoin(Tables.USER_DATABASE, "UserDatabase").on(
-                "UserDatabase.DatabaseId=Activity.DatabaseId");
+        query.leftJoin(Tables.ACTIVITY, "Activity").on("Activity.ActivityId=Indicator.ActivityId");
+        query.leftJoin(Tables.SITE, "Site").on("Site.ActivityId=Activity.ActivityId");
+        query.leftJoin(Tables.USER_DATABASE, "UserDatabase").on("UserDatabase.DatabaseId=Activity.DatabaseId");
 
         query.appendColumn("COUNT(DISTINCT Site.SiteId)", ValueFields.COUNT);
-        query.appendColumn(Integer.toString(IndicatorDTO.AGGREGATE_SITE_COUNT),
-                ValueFields.AGGREGATION);
+        query.appendColumn(Integer.toString(IndicatorDTO.AGGREGATE_SITE_COUNT), ValueFields.AGGREGATION);
 
-        query.where("Indicator.Aggregation").equalTo(
-                IndicatorDTO.AGGREGATE_SITE_COUNT);
+        query.where("Indicator.Aggregation").equalTo(IndicatorDTO.AGGREGATE_SITE_COUNT);
         query.where("Indicator.dateDeleted").isNull();
         query.where("Site.dateDeleted").isNull();
     }

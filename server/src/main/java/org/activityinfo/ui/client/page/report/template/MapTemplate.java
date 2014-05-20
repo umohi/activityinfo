@@ -68,8 +68,7 @@ public class MapTemplate extends ReportElementTemplate {
 
     }
 
-    private void createMap(final AsyncCallback<ReportElement> callback,
-                           MapLayer layer) {
+    private void createMap(final AsyncCallback<ReportElement> callback, MapLayer layer) {
 
     }
 

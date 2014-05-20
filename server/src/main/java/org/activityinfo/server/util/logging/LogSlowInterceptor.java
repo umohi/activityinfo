@@ -33,8 +33,7 @@ public class LogSlowInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        LogSlow annotation = invocation.getMethod()
-                .getAnnotation(LogSlow.class);
+        LogSlow annotation = invocation.getMethod().getAnnotation(LogSlow.class);
         long start = System.currentTimeMillis();
         try {
             Object result = invocation.proceed();
@@ -51,8 +50,7 @@ public class LogSlowInterceptor implements MethodInterceptor {
 
     private void emitLog(MethodInvocation invocation, String message) {
         LogRecord record = new LogRecord(Level.WARNING, message);
-        String declaringClassName = invocation.getMethod().getDeclaringClass()
-                .getName();
+        String declaringClassName = invocation.getMethod().getDeclaringClass().getName();
         record.setSourceClassName(declaringClassName);
         record.setSourceMethodName(invocation.getMethod().getName());
         Logger.getLogger(declaringClassName).log(record);

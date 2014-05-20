@@ -36,8 +36,7 @@ import org.activityinfo.ui.client.page.report.HasReportElement;
 import org.activityinfo.ui.client.page.report.ReportChangeHandler;
 import org.activityinfo.ui.client.page.report.ReportEventBus;
 
-public class PivotFilterPanel extends ContentPanel implements
-        HasReportElement<PivotReportElement> {
+public class PivotFilterPanel extends ContentPanel implements HasReportElement<PivotReportElement> {
     private final FilterPanelSet panelSet;
     private final ReportEventBus reportEventBus;
 
@@ -64,12 +63,16 @@ public class PivotFilterPanel extends ContentPanel implements
 
         AttributeFilterPanel attributePanel = new AttributeFilterPanel(dispatcher);
         add(attributePanel);
-        
+
         LocationFilterPanel locationFilterPanel = new LocationFilterPanel(dispatcher);
         add(locationFilterPanel);
 
-        panelSet = new FilterPanelSet(indicatorPanel, adminFilterPanel,
-                dateFilterPanel, partnerFilterPanel, attributePanel, locationFilterPanel);
+        panelSet = new FilterPanelSet(indicatorPanel,
+                adminFilterPanel,
+                dateFilterPanel,
+                partnerFilterPanel,
+                attributePanel,
+                locationFilterPanel);
 
         // if a nested filterpanel changed the filter
         panelSet.addValueChangeHandler(new ValueChangeHandler<Filter>() {

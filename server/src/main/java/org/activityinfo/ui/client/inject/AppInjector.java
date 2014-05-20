@@ -53,15 +53,13 @@ import org.activityinfo.ui.client.page.search.SearchModule;
  * TODO: having this number of explicit entries is probably not ideal, try to
  * make better use of injection and injecting Provider<>s
  */
-@GinModules({
-        AppModule.class,
+@GinModules({AppModule.class,
         ReportModule.class,
         EntryModule.class,
         MapModule.class,
         ConfigModule.class,
         LocalModule.class,
-        SearchModule.class
-})
+        SearchModule.class})
 public interface AppInjector extends Ginjector {
     EventBus getEventBus();
 

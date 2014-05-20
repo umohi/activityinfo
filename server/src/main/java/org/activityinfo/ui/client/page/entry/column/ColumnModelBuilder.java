@@ -37,7 +37,6 @@ import org.activityinfo.ui.client.page.common.columns.EditableLocalDateColumn;
 import org.activityinfo.ui.client.page.common.columns.ReadTextColumn;
 import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,17 +47,19 @@ public class ColumnModelBuilder {
     private List<ColumnConfig> columns = Lists.newArrayList();
 
     public ColumnModelBuilder addActivityColumn(final UserDatabaseDTO database) {
-        ColumnConfig config = new ColumnConfig("activityId",
-                I18N.CONSTANTS.activity(), 100);
+        ColumnConfig config = new ColumnConfig("activityId", I18N.CONSTANTS.activity(), 100);
         config.setRenderer(new GridCellRenderer<SiteDTO>() {
 
             @Override
-            public Object render(SiteDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<SiteDTO> store, Grid<SiteDTO> grid) {
+            public Object render(SiteDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<SiteDTO> store,
+                                 Grid<SiteDTO> grid) {
 
-                ActivityDTO activity = database.getActivityById(model
-                        .getActivityId());
+                ActivityDTO activity = database.getActivityById(model.getActivityId());
                 return activity == null ? "" : activity.getName();
             }
         });
@@ -67,17 +68,19 @@ public class ColumnModelBuilder {
     }
 
     public ColumnModelBuilder addActivityColumn(final SchemaDTO schema) {
-        ColumnConfig config = new ColumnConfig("activityId",
-                I18N.CONSTANTS.activity(), 100);
+        ColumnConfig config = new ColumnConfig("activityId", I18N.CONSTANTS.activity(), 100);
         config.setRenderer(new GridCellRenderer<SiteDTO>() {
 
             @Override
-            public Object render(SiteDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<SiteDTO> store, Grid<SiteDTO> grid) {
+            public Object render(SiteDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<SiteDTO> store,
+                                 Grid<SiteDTO> grid) {
 
-                ActivityDTO activity = schema.getActivityById(model
-                        .getActivityId());
+                ActivityDTO activity = schema.getActivityById(model.getActivityId());
                 return activity == null ? "" : activity.getName();
             }
         });
@@ -90,12 +93,15 @@ public class ColumnModelBuilder {
         config.setRenderer(new GridCellRenderer<SiteDTO>() {
 
             @Override
-            public Object render(SiteDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<SiteDTO> store, Grid<SiteDTO> grid) {
+            public Object render(SiteDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<SiteDTO> store,
+                                 Grid<SiteDTO> grid) {
 
-                ActivityDTO activity = schema.getActivityById(model
-                        .getActivityId());
+                ActivityDTO activity = schema.getActivityById(model.getActivityId());
                 return activity == null ? "" : activity.getDatabase().getName();
             }
         });
@@ -116,8 +122,7 @@ public class ColumnModelBuilder {
         }
     }
 
-    protected ColumnModelBuilder maybeAddProjectColumn(
-            UserDatabaseDTO userDatabase) {
+    protected ColumnModelBuilder maybeAddProjectColumn(UserDatabaseDTO userDatabase) {
         if (!userDatabase.getProjects().isEmpty()) {
             addProjectColumn();
         }
@@ -125,12 +130,11 @@ public class ColumnModelBuilder {
     }
 
     public void addProjectColumn() {
-        columns
-                .add(new ReadTextColumn("project", I18N.CONSTANTS.project(), 100));
+        columns.add(new ReadTextColumn("project", I18N.CONSTANTS.project(), 100));
     }
 
     public ColumnModelBuilder maybeAddLockColumn(final ActivityDTO activity) {
-        if(activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
+        if (activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
             ColumnConfig columnLocked = new ColumnConfig("x", "", 28);
             columnLocked.setRenderer(new LockedColumnRenderer(new LockedPeriodSet(activity)));
             columnLocked.setSortable(false);
@@ -143,11 +147,11 @@ public class ColumnModelBuilder {
     public ColumnConfig createIndicatorColumn(IndicatorDTO indicator, String header) {
 
         NumberField indicatorField = new NumberField();
-        indicatorField.getPropertyEditor().setFormat(
-                IndicatorNumberFormat.INSTANCE);
+        indicatorField.getPropertyEditor().setFormat(IndicatorNumberFormat.INSTANCE);
 
-        ColumnConfig indicatorColumn = new ColumnConfig(
-                indicator.getPropertyName(), SafeHtmlUtils.fromString(header).asString(), 50);
+        ColumnConfig indicatorColumn = new ColumnConfig(indicator.getPropertyName(),
+                SafeHtmlUtils.fromString(header).asString(),
+                50);
 
         indicatorColumn.setNumberFormat(IndicatorNumberFormat.INSTANCE);
         indicatorColumn.setEditor(new CellEditor(indicatorField));
@@ -158,9 +162,13 @@ public class ColumnModelBuilder {
         if (indicator.getAggregation() == IndicatorDTO.AGGREGATE_SUM) {
             indicatorColumn.setRenderer(new GridCellRenderer() {
                 @Override
-                public Object render(ModelData model, String property,
-                                     ColumnData config, int rowIndex, int colIndex,
-                                     ListStore listStore, Grid grid) {
+                public Object render(ModelData model,
+                                     String property,
+                                     ColumnData config,
+                                     int rowIndex,
+                                     int colIndex,
+                                     ListStore listStore,
+                                     Grid grid) {
                     Double value = model.get(property);
                     if (value != null && value != 0) {
                         return IndicatorNumberFormat.INSTANCE.format(value);
@@ -169,12 +177,16 @@ public class ColumnModelBuilder {
                     }
                 }
             });
-        } else if(indicator.getAggregation() == IndicatorDTO.AGGREGATE_SITE_COUNT) {
+        } else if (indicator.getAggregation() == IndicatorDTO.AGGREGATE_SITE_COUNT) {
             indicatorColumn.setRenderer(new GridCellRenderer() {
                 @Override
-                public Object render(ModelData model, String property,
-                                     ColumnData config, int rowIndex, int colIndex,
-                                     ListStore listStore, Grid grid) {
+                public Object render(ModelData model,
+                                     String property,
+                                     ColumnData config,
+                                     int rowIndex,
+                                     int colIndex,
+                                     ListStore listStore,
+                                     Grid grid) {
 
                     return "1"; // the value of a site count indicator a single site is always 1
                 }
@@ -190,27 +202,23 @@ public class ColumnModelBuilder {
 
     public ColumnModelBuilder maybeAddTwoLineLocationColumn(ActivityDTO activity) {
         if (activity.getLocationType().getBoundAdminLevelId() == null) {
-            ReadTextColumn column = new ReadTextColumn("locationName", activity
-                    .getLocationType().getName(), 100);
+            ReadTextColumn column = new ReadTextColumn("locationName", activity.getLocationType().getName(), 100);
             column.setRenderer(new LocationColumnRenderer());
             columns.add(column);
         }
         return this;
     }
 
-    public ColumnModelBuilder maybeAddSingleLineLocationColumn(
-            ActivityDTO activity) {
+    public ColumnModelBuilder maybeAddSingleLineLocationColumn(ActivityDTO activity) {
         if (activity.getLocationType().getBoundAdminLevelId() == null) {
-            ReadTextColumn column = new ReadTextColumn("locationName", activity
-                    .getLocationType().getName(), 100);
+            ReadTextColumn column = new ReadTextColumn("locationName", activity.getLocationType().getName(), 100);
             columns.add(column);
         }
         return this;
     }
 
     public ColumnModelBuilder addLocationColumn() {
-        ReadTextColumn column = new ReadTextColumn("locationName",
-                I18N.CONSTANTS.location(), 100);
+        ReadTextColumn column = new ReadTextColumn("locationName", I18N.CONSTANTS.location(), 100);
         columns.add(column);
         return this;
     }
@@ -220,18 +228,15 @@ public class ColumnModelBuilder {
     }
 
     public ColumnModelBuilder addSingleAdminColumn(ActivityDTO activity) {
-        ColumnConfig admin = new ColumnConfig("admin",
-                I18N.CONSTANTS.location(), 100);
+        ColumnConfig admin = new ColumnConfig("admin", I18N.CONSTANTS.location(), 100);
         admin.setRenderer(new AdminColumnRenderer(activity.getAdminLevels()));
         columns.add(admin);
         return this;
     }
 
-    public ColumnModelBuilder addAdminLevelColumns(
-            List<AdminLevelDTO> adminLevels) {
+    public ColumnModelBuilder addAdminLevelColumns(List<AdminLevelDTO> adminLevels) {
         for (AdminLevelDTO level : adminLevels) {
-            columns.add(new ColumnConfig(AdminLevelDTO.getPropertyName(level
-                    .getId()), level.getName(), 100));
+            columns.add(new ColumnConfig(AdminLevelDTO.getPropertyName(level.getId()), level.getName(), 100));
         }
 
         return this;
@@ -256,8 +261,7 @@ public class ColumnModelBuilder {
 
     public ColumnModelBuilder maybeAddDateColumn(ActivityDTO activity) {
         if (activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
-            columns.add(new EditableLocalDateColumn("date2", I18N.CONSTANTS
-                    .date(), 100));
+            columns.add(new EditableLocalDateColumn("date2", I18N.CONSTANTS.date(), 100));
         }
         return this;
     }
@@ -266,9 +270,13 @@ public class ColumnModelBuilder {
         ColumnConfig mapColumn = new ColumnConfig("x", "", 25);
         mapColumn.setRenderer(new GridCellRenderer<ModelData>() {
             @Override
-            public Object render(ModelData model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore listStore, Grid grid) {
+            public Object render(ModelData model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore listStore,
+                                 Grid grid) {
                 if (model instanceof SiteDTO) {
                     SiteDTO siteModel = (SiteDTO) model;
                     if (siteModel.hasCoords()) {
@@ -288,10 +296,8 @@ public class ColumnModelBuilder {
         // Only add indicators that have a queries heading
         if (activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
             for (IndicatorDTO indicator : activity.getIndicators()) {
-                if (indicator.getListHeader() != null
-                        && !indicator.getListHeader().isEmpty()) {
-                    columns.add(createIndicatorColumn(indicator,
-                            indicator.getListHeader()));
+                if (indicator.getListHeader() != null && !indicator.getListHeader().isEmpty()) {
+                    columns.add(createIndicatorColumn(indicator, indicator.getListHeader()));
                 }
             }
         }
@@ -299,17 +305,19 @@ public class ColumnModelBuilder {
     }
 
     public ColumnModelBuilder addTreeNameColumn() {
-        ColumnConfig name = new ColumnConfig("name", I18N.CONSTANTS.location(),
-                200);
+        ColumnConfig name = new ColumnConfig("name", I18N.CONSTANTS.location(), 200);
         name.setRenderer(new TreeGridCellRenderer<ModelData>() {
 
             @Override
-            public Object render(ModelData model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<ModelData> store, Grid<ModelData> grid) {
+            public Object render(ModelData model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<ModelData> store,
+                                 Grid<ModelData> grid) {
 
-                return super.render(model, propertyName(model), config,
-                        rowIndex, colIndex, store, grid);
+                return super.render(model, propertyName(model), config, rowIndex, colIndex, store, grid);
             }
 
             private String propertyName(ModelData model) {

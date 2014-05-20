@@ -31,8 +31,7 @@ import org.activityinfo.legacy.shared.reports.content.PivotContent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResult extends ListResult<SearchHitDTO> implements
-        CommandResult, DTO {
+public class SearchResult extends ListResult<SearchHitDTO> implements CommandResult, DTO {
     private PivotContent pivotTabelData; // hierarchy of activities
     private List<SiteDTO> recentAdditions;
     private List<Searcher> failedSearchers = new ArrayList<Searcher>();
@@ -41,8 +40,7 @@ public class SearchResult extends ListResult<SearchHitDTO> implements
         super();
     }
 
-    public SearchResult(PivotContent pivotTabelData,
-                        List<SiteDTO> recentAdditions) {
+    public SearchResult(PivotContent pivotTabelData, List<SiteDTO> recentAdditions) {
         super();
 
         this.pivotTabelData = pivotTabelData;

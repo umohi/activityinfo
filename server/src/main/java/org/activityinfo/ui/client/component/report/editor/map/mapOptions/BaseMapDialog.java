@@ -98,26 +98,20 @@ public class BaseMapDialog extends Dialog {
     }
 
     private native String getTemplate() /*-{
-        return ['<tpl for=".">',
-            '<div class="thumb-wrap">',
-            '<div class="thumb"><img src="{path}" title="{name}"></div>',
-            '<span class="x-editable">{name}</span></div>',
-            '</tpl>',
-            '<div class="x-clear"></div>'].join("");
+      return ['<tpl for=".">',
+        '<div class="thumb-wrap">',
+        '<div class="thumb"><img src="{path}" title="{name}"></div>',
+        '<span class="x-editable">{name}</span></div>',
+        '</tpl>',
+        '<div class="x-clear"></div>'].join("");
     }-*/;
 
     private void loadBaseMaps() {
         listView.getStore().removeAll();
-        listView.getStore().add(
-                googleThumb(GoogleBaseMap.ROADMAP, I18N.CONSTANTS.googleRoadmap()));
-        listView.getStore().add(
-                googleThumb(GoogleBaseMap.SATELLITE,
-                        I18N.CONSTANTS.googleSatelliteMap()));
-        listView.getStore().add(
-                googleThumb(GoogleBaseMap.HYBRID, I18N.CONSTANTS.googleHybrid()));
-        listView.getStore().add(
-                googleThumb(GoogleBaseMap.TERRAIN,
-                        I18N.CONSTANTS.googleTerrainMap()));
+        listView.getStore().add(googleThumb(GoogleBaseMap.ROADMAP, I18N.CONSTANTS.googleRoadmap()));
+        listView.getStore().add(googleThumb(GoogleBaseMap.SATELLITE, I18N.CONSTANTS.googleSatelliteMap()));
+        listView.getStore().add(googleThumb(GoogleBaseMap.HYBRID, I18N.CONSTANTS.googleHybrid()));
+        listView.getStore().add(googleThumb(GoogleBaseMap.TERRAIN, I18N.CONSTANTS.googleTerrainMap()));
         updateSelection();
 
         service.execute(new GetBaseMaps(),
@@ -156,8 +150,7 @@ public class BaseMapDialog extends Dialog {
         BaseModelData thumb = new BaseModelData();
         thumb.set("id", baseMap.getId());
         thumb.set("name", name);
-        thumb.set("path",
-                GWT.getModuleBaseURL() + "basemaps/" + baseMap.getId() + ".png");
+        thumb.set("path", GWT.getModuleBaseURL() + "basemaps/" + baseMap.getId() + ".png");
 
         return thumb;
     }
@@ -177,8 +170,7 @@ public class BaseMapDialog extends Dialog {
         } else {
             ModelData thumb = listView.getSelectionModel().getSelectedItem();
             if (thumb != null) {
-                callback.onSelect((String) thumb.get("id"),
-                        (String) thumb.get("name"));
+                callback.onSelect((String) thumb.get("id"), (String) thumb.get("name"));
                 hide();
             }
         }

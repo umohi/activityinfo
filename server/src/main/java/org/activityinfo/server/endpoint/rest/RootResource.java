@@ -51,7 +51,8 @@ public class RootResource {
     private DeploymentConfiguration config;
 
     @Inject
-    public RootResource(Provider<EntityManager> entityManager, DispatcherSync dispatcher,
+    public RootResource(Provider<EntityManager> entityManager,
+                        DispatcherSync dispatcher,
                         DeploymentConfiguration config) {
         super();
         this.entityManager = entityManager;
@@ -61,14 +62,10 @@ public class RootResource {
 
     @Path("/adminEntity/{id}")
     public AdminEntityResource getAdminEntity(@PathParam("id") int id) {
-        return new AdminEntityResource(entityManager.get().find(
-                AdminEntity.class, id));
+        return new AdminEntityResource(entityManager.get().find(AdminEntity.class, id));
     }
 
-    @GET
-    @Path("/countries")
-    @JsonView(DTOViews.List.class)
-    @Produces(MediaType.APPLICATION_JSON)
+    @GET @Path("/countries") @JsonView(DTOViews.List.class) @Produces(MediaType.APPLICATION_JSON)
     public List<CountryDTO> getCountries() {
         return dispatcher.execute(new GetCountries()).getData();
     }
@@ -87,9 +84,9 @@ public class RootResource {
     public CountryResource getCountryByCode(@PathParam("code") String code) {
 
         List<Country> results = entityManager.get()
-                .createQuery("select c from Country c where c.codeISO = :iso")
-                .setParameter("iso", code)
-                .getResultList();
+                                             .createQuery("select c from Country c where c.codeISO = :iso")
+                                             .setParameter("iso", code)
+                                             .getResultList();
 
         if (results.isEmpty()) {
             throw new WebApplicationException(Status.NOT_FOUND);
@@ -98,45 +95,36 @@ public class RootResource {
         return new CountryResource(results.get(0));
     }
 
-    @GET
-    @Path("/databases")
-    @JsonView(DTOViews.List.class)
-    @Produces(MediaType.APPLICATION_JSON)
+    @GET @Path("/databases") @JsonView(DTOViews.List.class) @Produces(MediaType.APPLICATION_JSON)
     public List<UserDatabaseDTO> getDatabases() {
         return dispatcher.execute(new GetSchema()).getDatabases();
     }
 
-    @GET
-    @Path("/database/{id}/schema")
-    @JsonView(DTOViews.Schema.class)
-    @Produces(MediaType.APPLICATION_JSON)
+    @GET @Path("/database/{id}/schema") @JsonView(DTOViews.Schema.class) @Produces(MediaType.APPLICATION_JSON)
     public UserDatabaseDTO getDatabaseSchema(@PathParam("id") int id) {
-        UserDatabaseDTO db = dispatcher.execute(new GetSchema())
-                .getDatabaseById(id);
+        UserDatabaseDTO db = dispatcher.execute(new GetSchema()).getDatabaseById(id);
         if (db == null) {
             throw new WebApplicationException(Status.NOT_FOUND);
         }
         return db;
     }
 
-    @GET
-    @Path("/database/{id}/schema.csv")
+    @GET @Path("/database/{id}/schema.csv")
     public Response getDatabaseSchemaCsv(@PathParam("id") int id) {
         UserDatabaseDTO db = getDatabaseSchema(id);
         SchemaCsvWriter writer = new SchemaCsvWriter();
         writer.write(db);
 
         return Response.ok()
-                .type("text/css")
-                .header("Content-Disposition", "attachment; filename=schema_" + id + ".csv")
-                .entity(writer.toString())
-                .build();
+                       .type("text/css")
+                       .header("Content-Disposition", "attachment; filename=schema_" + id + ".csv")
+                       .entity(writer.toString())
+                       .build();
     }
 
     @Path("/adminLevel/{id}")
     public AdminLevelResource getAdminLevel(@PathParam("id") int id) {
-        return new AdminLevelResource(entityManager, entityManager.get().find(
-                AdminLevel.class, id));
+        return new AdminLevelResource(entityManager, entityManager.get().find(AdminLevel.class, id));
     }
 
     @Path("/sites")

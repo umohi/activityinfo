@@ -41,11 +41,9 @@ import org.activityinfo.i18n.shared.I18N;
 
 public class ReportTitleWidget extends Widget implements HasText {
 
-    private static ReportTitleWidgetUiBinder uiBinder = GWT
-            .create(ReportTitleWidgetUiBinder.class);
+    private static ReportTitleWidgetUiBinder uiBinder = GWT.create(ReportTitleWidgetUiBinder.class);
 
-    interface ReportTitleWidgetUiBinder extends
-            UiBinder<Element, ReportTitleWidget> {
+    interface ReportTitleWidgetUiBinder extends UiBinder<Element, ReportTitleWidget> {
     }
 
     interface MyStyle extends CssResource {
@@ -56,11 +54,9 @@ public class ReportTitleWidget extends Widget implements HasText {
         String changeTitleText();
     }
 
-    @UiField
-    SpanElement titleSpan;
+    @UiField SpanElement titleSpan;
 
-    @UiField
-    MyStyle style;
+    @UiField MyStyle style;
 
     private Editor titleEditor;
 
@@ -91,17 +87,15 @@ public class ReportTitleWidget extends Widget implements HasText {
     @Override
     public void setText(String text) {
         this.text = text;
-        titleSpan.setInnerText(text == null ? I18N.CONSTANTS.untitledReport()
-                : text);
+        titleSpan.setInnerText(text == null ? I18N.CONSTANTS.untitledReport() : text);
     }
 
     @Override
     public void onBrowserEvent(Event event) {
         Element clicked = event.getEventTarget().cast();
         if (clicked.getClassName().equals(style.reportTitle()) ||
-                clicked.getClassName().equals(style.changeTitleText())) {
-            titleEditor.startEdit(
-                    (com.google.gwt.user.client.Element) titleSpan.cast(), text);
+            clicked.getClassName().equals(style.changeTitleText())) {
+            titleEditor.startEdit((com.google.gwt.user.client.Element) titleSpan.cast(), text);
         }
     }
 

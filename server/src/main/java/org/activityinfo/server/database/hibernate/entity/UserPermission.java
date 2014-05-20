@@ -39,11 +39,8 @@ import java.util.Date;
  *
  * @author Alex Bertram
  */
-@Entity
-@NamedQueries({
-        @NamedQuery(name = "findUserPermissionByUserIdAndDatabaseId",
-                query = "select p from UserPermission p where p.database.id = :databaseId and p.user.id = :userId")
-})
+@Entity @NamedQueries({@NamedQuery(name = "findUserPermissionByUserIdAndDatabaseId",
+        query = "select p from UserPermission p where p.database.id = :databaseId and p.user.id = :userId")})
 public class UserPermission implements Serializable {
 
     private int id;
@@ -67,8 +64,7 @@ public class UserPermission implements Serializable {
         this.user = user;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "UserPermissionId", unique = true, nullable = false)
     public int getId() {
         return this.id;
@@ -83,8 +79,7 @@ public class UserPermission implements Serializable {
      *
      * @return The <code>Partner</code> to which the <code>user</code> belongs
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PartnerId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "PartnerId", nullable = false)
     public Partner getPartner() {
         return this.partner;
     }
@@ -103,8 +98,7 @@ public class UserPermission implements Serializable {
      *
      * @return The <code>UserDatabase</code> to which these permissions apply.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DatabaseId", nullable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "DatabaseId", nullable = false, updatable = false)
     public UserDatabase getDatabase() {
         return this.database;
     }
@@ -124,8 +118,7 @@ public class UserPermission implements Serializable {
      *
      * @return The <code>User</code> to whom these permissions apply
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UserId", nullable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "UserId", nullable = false, updatable = false)
     public User getUser() {
         return this.user;
     }

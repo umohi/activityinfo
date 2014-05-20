@@ -6,8 +6,8 @@ import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
 
 /**
-* Converts an AdminEntityDTO to a FormInstance
-*/
+ * Converts an AdminEntityDTO to a FormInstance
+ */
 public class AdminEntityInstanceAdapter implements Function<AdminEntityDTO, FormInstance> {
 
 
@@ -19,7 +19,7 @@ public class AdminEntityInstanceAdapter implements Function<AdminEntityDTO, Form
         FormInstance instance = new FormInstance(instanceId, classId);
 
         // Parent field value
-        if(input.getParentId() != null) {
+        if (input.getParentId() != null) {
             instance.set(CuidAdapter.field(classId, CuidAdapter.ADMIN_PARENT_FIELD),
                     CuidAdapter.entity(input.getParentId()));
         }

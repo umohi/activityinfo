@@ -59,41 +59,34 @@ public abstract class MailSender {
         }
     }
 
-    public Message createMessage(MessageModel model)
-            throws MessagingException, AddressException, IOException,
+    public Message createMessage(MessageModel model) throws MessagingException, AddressException, IOException,
             TemplateException {
         Message message = new Message();
-        message.to(model.getRecipient().getEmail(), model.getRecipient()
-                .getName());
+        message.to(model.getRecipient().getEmail(), model.getRecipient().getName());
         message.bcc("akbertram@gmail.com");
         message.subject(getSubject(model));
         message.body(composeMessage(model));
         return message;
     }
 
-    private String composeMessage(MessageModel model)
-            throws IOException, TemplateException {
+    private String composeMessage(MessageModel model) throws IOException, TemplateException {
 
         StringWriter writer = new StringWriter();
-        Template template = templateCfg.getTemplate(model.getTemplateName(),
-                model.getRecipient().getLocaleObject());
+        Template template = templateCfg.getTemplate(model.getTemplateName(), model.getRecipient().getLocaleObject());
         template.process(model, writer);
         return writer.toString();
     }
 
     private String getSubject(MessageModel message) {
-        String subject = getResourceBundle(message).getString(
-                message.getSubjectKey());
+        String subject = getResourceBundle(message).getString(message.getSubjectKey());
         if (subject == null) {
-            throw new RuntimeException("Missing subject key '"
-                    + message.getSubjectKey() + "' in MailMessages");
+            throw new RuntimeException("Missing subject key '" + message.getSubjectKey() + "' in MailMessages");
         }
         return subject;
     }
 
     private ResourceBundle getResourceBundle(MessageModel message) {
-        return ResourceBundle.getBundle(
-                "org.activityinfo.server.mail.MailMessages",
+        return ResourceBundle.getBundle("org.activityinfo.server.mail.MailMessages",
                 message.getRecipient().getLocaleObject());
     }
 }

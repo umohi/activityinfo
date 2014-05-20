@@ -34,8 +34,8 @@ import java.util.List;
  * @param <D> The type of model contained in the list
  * @see com.extjs.gxt.ui.client.data.PagingLoadResult
  */
-public abstract class PagingResult<D extends ModelData> extends ListResult<D>
-        implements CommandResult, PagingLoadResult<D> {
+public abstract class PagingResult<D extends ModelData> extends ListResult<D> implements CommandResult,
+        PagingLoadResult<D> {
 
     private int offset;
     private int totalLength;

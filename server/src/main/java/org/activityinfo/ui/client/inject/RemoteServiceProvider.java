@@ -33,8 +33,7 @@ import org.activityinfo.legacy.shared.command.RemoteCommandServiceAsync;
  * Configures and provides the RemoteCommandServiceAsync instance
  */
 @Singleton
-public class RemoteServiceProvider implements
-        Provider<RemoteCommandServiceAsync> {
+public class RemoteServiceProvider implements Provider<RemoteCommandServiceAsync> {
 
     @Override
     public RemoteCommandServiceAsync get() {

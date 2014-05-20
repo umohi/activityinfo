@@ -60,8 +60,7 @@ public class TableColumn extends TreeNode<TableColumn> {
         this.property = property;
     }
 
-    @Override
-    @XmlAttribute
+    @Override @XmlAttribute
     public String getLabel() {
         return label;
     }
@@ -84,8 +83,7 @@ public class TableColumn extends TreeNode<TableColumn> {
         this.order = order;
     }
 
-    @Override
-    @XmlElement(name = "column")
+    @Override @XmlElement(name = "column")
     public List<TableColumn> getChildren() {
         return children;
     }
@@ -98,8 +96,7 @@ public class TableColumn extends TreeNode<TableColumn> {
         children.add(column);
     }
 
-    @Override
-    @XmlTransient
+    @Override @XmlTransient
     public boolean isLeaf() {
         return children.size() == 0;
     }

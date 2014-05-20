@@ -35,19 +35,21 @@ import org.activityinfo.legacy.shared.model.ReportVisibilityDTO;
 
 import java.util.List;
 
-public class GetReportVisibilityHandler implements
-        CommandHandlerAsync<GetReportVisibility, ReportVisibilityResult> {
+public class GetReportVisibilityHandler implements CommandHandlerAsync<GetReportVisibility, ReportVisibilityResult> {
 
     @Override
-    public void execute(GetReportVisibility command, ExecutionContext context,
+    public void execute(GetReportVisibility command,
+                        ExecutionContext context,
                         final AsyncCallback<ReportVisibilityResult> callback) {
         SqlQuery.select()
                 .appendColumn("v.databaseId", "databaseId")
                 .appendColumn("d.name", "name")
                 .appendColumn("v.defaultDashboard", "defaultDashboard")
                 .from(Tables.REPORT_VISIBILITY, "v")
-                .leftJoin("userdatabase", "d").on("v.databaseId=d.databaseId")
-                .where("v.reportId").equalTo(command.getReportId())
+                .leftJoin("userdatabase", "d")
+                .on("v.databaseId=d.databaseId")
+                .where("v.reportId")
+                .equalTo(command.getReportId())
                 .execute(context.getTransaction(), new SqlResultCallback() {
 
                     @Override
@@ -57,8 +59,7 @@ public class GetReportVisibilityHandler implements
                             ReportVisibilityDTO dto = new ReportVisibilityDTO();
                             dto.setDatabaseId(row.getInt("databaseId"));
                             dto.setDatabaseName(row.getString("name"));
-                            dto.setDefaultDashboard(row
-                                    .getBoolean("defaultDashboard"));
+                            dto.setDefaultDashboard(row.getBoolean("defaultDashboard"));
                             dto.setVisible(true);
                             list.add(dto);
                         }

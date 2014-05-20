@@ -43,8 +43,7 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
     private final UserDatabaseDAO databaseDAO;
 
     @Inject
-    public ActivityPolicy(EntityManager em, ActivityDAO activityDAO,
-                          UserDatabaseDAO databaseDAO) {
+    public ActivityPolicy(EntityManager em, ActivityDAO activityDAO, UserDatabaseDAO databaseDAO) {
         this.em = em;
         this.activityDAO = activityDAO;
         this.databaseDAO = databaseDAO;
@@ -98,22 +97,21 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
         if (changes.containsKey("name")) {
             activity.setName((String) changes.get("name"));
         }
-        
-        if(changes.containsKey("locationTypeId")) {
+
+        if (changes.containsKey("locationTypeId")) {
             LocationType location = em.find(LocationType.class, changes.get("locationTypeId"));
-            if(location != null) {
+            if (location != null) {
                 activity.setLocationType(location);
             }
         }
 
         if (changes.containsKey("locationType")) {
-            activity.setLocationType(
-                    em.getReference(LocationType.class,
-                            ((LocationTypeDTO) changes.get("locationType")).getId()));
+            activity.setLocationType(em.getReference(LocationType.class,
+                    ((LocationTypeDTO) changes.get("locationType")).getId()));
         }
 
         if (changes.containsKey("category")) {
-            String category = Strings.nullToEmpty((String)changes.get("category")).trim();
+            String category = Strings.nullToEmpty((String) changes.get("category")).trim();
             activity.setCategory(Strings.emptyToNull(category));
         }
 
@@ -122,8 +120,7 @@ public class ActivityPolicy implements EntityPolicy<Activity> {
         }
 
         if (changes.containsKey("reportingFrequency")) {
-            activity.setReportingFrequency((Integer) changes
-                    .get("reportingFrequency"));
+            activity.setReportingFrequency((Integer) changes.get("reportingFrequency"));
         }
 
         if (changes.containsKey("published")) {

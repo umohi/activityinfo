@@ -42,10 +42,7 @@ public class ReportModule extends ServletModule {
 
         bind(StorageProvider.class).to(BlobServiceStorageProvider.class);
 
-        bind(String.class)
-                .annotatedWith(MapIconPath.class)
-                .toProvider(MapIconPathProvider.class)
-                .in(Singleton.class);
+        bind(String.class).annotatedWith(MapIconPath.class).toProvider(MapIconPathProvider.class).in(Singleton.class);
 
         serve("/icon*").with(MapIconServlet.class);
         serve("/generated/*").with(TempStorageServlet.class);

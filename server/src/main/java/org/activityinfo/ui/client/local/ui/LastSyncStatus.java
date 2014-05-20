@@ -55,15 +55,14 @@ public class LastSyncStatus extends Status {
     public LastSyncStatus(EventBus eventBus) {
         this.eventBus = eventBus;
         setStyleAttribute("cursor", "pointer");
-        eventBus.addListener(SyncCompleteEvent.TYPE,
-                new Listener<SyncCompleteEvent>() {
-                    @Override
-                    public void handleEvent(SyncCompleteEvent event) {
-                        lastSyncTime = event.getTime();
-                        setBox(true);
-                        updateLastSyncLabel();
-                    }
-                });
+        eventBus.addListener(SyncCompleteEvent.TYPE, new Listener<SyncCompleteEvent>() {
+            @Override
+            public void handleEvent(SyncCompleteEvent event) {
+                lastSyncTime = event.getTime();
+                setBox(true);
+                updateLastSyncLabel();
+            }
+        });
 
         Scheduler.get().scheduleFixedPeriod(new RepeatingCommand() {
 
@@ -80,14 +79,13 @@ public class LastSyncStatus extends Status {
 
     public void createMenu() {
 
-        MenuItem syncNow = new MenuItem(I18N.CONSTANTS.syncNow(),
-                new SelectionListener<MenuEvent>() {
+        MenuItem syncNow = new MenuItem(I18N.CONSTANTS.syncNow(), new SelectionListener<MenuEvent>() {
 
-                    @Override
-                    public void componentSelected(MenuEvent ce) {
-                        eventBus.fireEvent(SyncRequestEvent.INSTANCE);
-                    }
-                });
+            @Override
+            public void componentSelected(MenuEvent ce) {
+                eventBus.fireEvent(SyncRequestEvent.INSTANCE);
+            }
+        });
 
         this.contextMenu = new Menu();
         contextMenu.add(syncNow);

@@ -73,8 +73,7 @@ import java.util.Set;
 /**
  * This is the container for the DataEntry page.
  */
-public class DataEntryPage extends LayoutContainer implements Page,
-        ActionListener {
+public class DataEntryPage extends LayoutContainer implements Page, ActionListener {
 
     private static final boolean IMPORT_FUNCTION_ENABLED = FeatureSwitch.enableImport();
 
@@ -122,22 +121,18 @@ public class DataEntryPage extends LayoutContainer implements Page,
         filterLayout.setSplit(true);
         add(filterPane, filterLayout);
 
-        filterPane.getSet().addValueChangeHandler(
-                new ValueChangeHandler<Filter>() {
+        filterPane.getSet().addValueChangeHandler(new ValueChangeHandler<Filter>() {
 
-                    @Override
-                    public void onValueChange(ValueChangeEvent<Filter> event) {
-                        eventBus.fireEvent(new NavigationEvent(
-                                NavigationHandler.NAVIGATION_REQUESTED,
-                                currentPlace.copy()
-                                        .setFilter(event.getValue())));
-                    }
-                });
+            @Override
+            public void onValueChange(ValueChangeEvent<Filter> event) {
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
+                        currentPlace.copy().setFilter(event.getValue())));
+            }
+        });
     }
 
     private void addCenter() {
-        gridPanel = new SiteGridPanel(dispatcher,
-                new DefaultColumnModelProvider(dispatcher));
+        gridPanel = new SiteGridPanel(dispatcher, new DefaultColumnModelProvider(dispatcher));
         gridPanel.setTopComponent(createToolBar());
 
         LayoutContainer center = new LayoutContainer();
@@ -145,14 +140,13 @@ public class DataEntryPage extends LayoutContainer implements Page,
 
         center.add(gridPanel, new BorderLayoutData(LayoutRegion.CENTER));
 
-        gridPanel
-                .addSelectionChangedListener(new SelectionChangedListener<SiteDTO>() {
+        gridPanel.addSelectionChangedListener(new SelectionChangedListener<SiteDTO>() {
 
-                    @Override
-                    public void selectionChanged(SelectionChangedEvent<SiteDTO> se) {
-                        onSiteSelected(se);
-                    }
-                });
+            @Override
+            public void selectionChanged(SelectionChangedEvent<SiteDTO> se) {
+                onSiteSelected(se);
+            }
+        });
 
         detailTab = new DetailTab(dispatcher);
 
@@ -184,32 +178,27 @@ public class DataEntryPage extends LayoutContainer implements Page,
 
             @Override
             public void handleEvent(FieldEvent be) {
-                eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED,
-                        currentPlace.copy()
-                                .setGrouping(groupingComboBox.getGroupingModel())));
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
+                        currentPlace.copy().setGrouping(groupingComboBox.getGroupingModel())));
             }
         });
 
         toolBar.add(new Label(I18N.CONSTANTS.grouping()));
         toolBar.add(groupingComboBox);
 
-        toolBar.addButton(UIActions.ADD, I18N.CONSTANTS.newSite(),
-                IconImageBundle.ICONS.add());
-        toolBar.addButton(UIActions.EDIT, I18N.CONSTANTS.edit(),
-                IconImageBundle.ICONS.edit());
+        toolBar.addButton(UIActions.ADD, I18N.CONSTANTS.newSite(), IconImageBundle.ICONS.add());
+        toolBar.addButton(UIActions.EDIT, I18N.CONSTANTS.edit(), IconImageBundle.ICONS.edit());
         toolBar.addDeleteButton(I18N.CONSTANTS.deleteSite());
 
         toolBar.add(new SeparatorToolItem());
 
-        if(IMPORT_FUNCTION_ENABLED) {
+        if (IMPORT_FUNCTION_ENABLED) {
             toolBar.addImportButton();
         }
         toolBar.addExcelExportButton();
 
         toolBar.addPrintButton();
-        toolBar.addButton("EMBED", I18N.CONSTANTS.embed(),
-                IconImageBundle.ICONS.embed());
+        toolBar.addButton("EMBED", I18N.CONSTANTS.embed(), IconImageBundle.ICONS.embed());
 
 
         return toolBar;
@@ -230,8 +219,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
                 @Override
                 public void onSuccess(SchemaDTO schema) {
                     SiteDTO site = se.getSelectedItem();
-                    ActivityDTO activity = schema.getActivityById(site
-                            .getActivityId());
+                    ActivityDTO activity = schema.getActivityById(site.getActivityId());
                     updateSelection(activity, site);
                 }
             });
@@ -283,8 +271,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 
@@ -297,7 +284,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
     public boolean navigate(PageState place) {
         currentPlace = (DataEntryPlace) place;
         if (!currentPlace.getFilter().isRestricted(DimensionType.Activity) &&
-                !currentPlace.getFilter().isRestricted(DimensionType.Database)) {
+            !currentPlace.getFilter().isRestricted(DimensionType.Database)) {
 
             redirectToFirstActivity();
         } else {
@@ -317,9 +304,8 @@ public class DataEntryPage extends LayoutContainer implements Page,
             public void onSuccess(SchemaDTO result) {
                 for (UserDatabaseDTO db : result.getDatabases()) {
                     if (!db.getActivities().isEmpty()) {
-                        currentPlace.getFilter().addRestriction(
-                                DimensionType.Activity,
-                                db.getActivities().get(0).getId());
+                        currentPlace.getFilter()
+                                    .addRestriction(DimensionType.Activity, db.getActivities().get(0).getId());
                         doNavigate();
                         return;
                     }
@@ -336,14 +322,13 @@ public class DataEntryPage extends LayoutContainer implements Page,
         filterPane.getSet().applyBaseFilter(filter);
 
         // currently the print form only does one activity
-        Set<Integer> activities = filter
-                .getRestrictions(DimensionType.Activity);
+        Set<Integer> activities = filter.getRestrictions(DimensionType.Activity);
         toolBar.setActionEnabled(UIActions.PRINT, activities.size() == 1);
 
         // also embedding is only implemented for one activity
         toolBar.setActionEnabled("EMBED", activities.size() == 1);
 
-        if(IMPORT_FUNCTION_ENABLED) {
+        if (IMPORT_FUNCTION_ENABLED) {
             toolBar.setActionEnabled(UIActions.IMPORT, activities.size() == 1);
         }
 
@@ -367,7 +352,7 @@ public class DataEntryPage extends LayoutContainer implements Page,
             public void onSuccess(SchemaDTO result) {
                 boolean isAllowed = result.getActivityById(activityId).getDatabase().isEditAllowed();
                 toolBar.setActionEnabled(UIActions.ADD, isAllowed);
-                if(IMPORT_FUNCTION_ENABLED) {
+                if (IMPORT_FUNCTION_ENABLED) {
                     toolBar.setActionEnabled("IMPORT", isAllowed);
                 }
             }
@@ -379,58 +364,56 @@ public class DataEntryPage extends LayoutContainer implements Page,
     public void onUIAction(String actionId) {
         if (UIActions.ADD.equals(actionId)) {
             if (FeatureSwitch.isNewFormEnabled()) {
-                int activityId = currentPlace.getFilter().getRestrictedCategory(
-                        DimensionType.Activity);
+                int activityId = currentPlace.getFilter().getRestrictedCategory(DimensionType.Activity);
                 final Cuid siteCuid = CuidAdapter.siteField(new KeyGenerator().generateInt());
                 final Cuid activityCuid = CuidAdapter.activityFormClass(activityId);
-                eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(activityCuid, siteCuid)));
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
+                        new UserFormPlace(activityCuid, siteCuid)));
             } else {
                 SiteDialogLauncher formHelper = new SiteDialogLauncher(dispatcher);
-                formHelper.addSite(currentPlace.getFilter(),
-                        new SiteDialogCallback() {
+                formHelper.addSite(currentPlace.getFilter(), new SiteDialogCallback() {
 
-                            @Override
-                            public void onSaved(SiteDTO site) {
-                                gridPanel.refresh();
-                            }
-                        });
+                    @Override
+                    public void onSaved(SiteDTO site) {
+                        gridPanel.refresh();
+                    }
+                });
             }
         } else if (UIActions.EDIT.equals(actionId)) {
             final SiteDTO selection = gridPanel.getSelection();
             if (FeatureSwitch.isNewFormEnabled()) {
-                eventBus.fireEvent(new NavigationEvent(
-                        NavigationHandler.NAVIGATION_REQUESTED, new UserFormPlace(selection.getFormClassId(), selection.getInstanceId())));
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
+                        new UserFormPlace(selection.getFormClassId(), selection.getInstanceId())));
             } else {
                 SiteDialogLauncher launcher = new SiteDialogLauncher(dispatcher);
-                launcher.editSite(selection,
-                        new SiteDialogCallback() {
+                launcher.editSite(selection, new SiteDialogCallback() {
 
-                            @Override
-                            public void onSaved(SiteDTO site) {
-                                gridPanel.refresh();
-                            }
-                        });
+                    @Override
+                    public void onSaved(SiteDTO site) {
+                        gridPanel.refresh();
+                    }
+                });
             }
         } else if (UIActions.DELETE.equals(actionId)) {
-            MessageBox.confirm(ClientContext.getAppTitle(), I18N.MESSAGES.confirmDeleteSite(), new Listener<MessageBoxEvent>() {
-                @Override
-                public void handleEvent(MessageBoxEvent be) {
-                    if(be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-                        delete();
-                    }
-                }
-            });
+            MessageBox.confirm(ClientContext.getAppTitle(),
+                    I18N.MESSAGES.confirmDeleteSite(),
+                    new Listener<MessageBoxEvent>() {
+                        @Override
+                        public void handleEvent(MessageBoxEvent be) {
+                            if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
+                                delete();
+                            }
+                        }
+                    });
 
         } else if (UIActions.PRINT.equals(actionId)) {
-            int activityId = currentPlace.getFilter().getRestrictedCategory(
-                    DimensionType.Activity);
+            int activityId = currentPlace.getFilter().getRestrictedCategory(DimensionType.Activity);
             PrintDataEntryForm form = new PrintDataEntryForm(dispatcher);
             form.print(activityId);
 
         } else if (UIActions.EXPORT.equals(actionId)) {
             Window.Location.assign(GWT.getModuleBaseURL() + "export?filter=" +
-                    FilterUrlSerializer.toUrlFragment(currentPlace.getFilter()));
+                                   FilterUrlSerializer.toUrlFragment(currentPlace.getFilter()));
 
         } else if ("EMBED".equals(actionId)) {
             EmbedDialog dialog = new EmbedDialog(dispatcher);
@@ -444,15 +427,15 @@ public class DataEntryPage extends LayoutContainer implements Page,
     }
 
     protected void doImport() {
-        final int activityId = currentPlace.getFilter().getRestrictedCategory(
-                DimensionType.Activity);
+        final int activityId = currentPlace.getFilter().getRestrictedCategory(DimensionType.Activity);
         final ResourceLocatorAdaptor resourceLocator = new ResourceLocatorAdaptor(dispatcher);
-        ImportPresenter.showPresenter(CuidAdapter.activityFormClass(activityId), resourceLocator).then(new SuccessCallback<ImportPresenter>() {
-            @Override
-            public void onSuccess(ImportPresenter result) {
-                result.show();
-            }
-        });
+        ImportPresenter.showPresenter(CuidAdapter.activityFormClass(activityId), resourceLocator)
+                       .then(new SuccessCallback<ImportPresenter>() {
+                           @Override
+                           public void onSuccess(ImportPresenter result) {
+                               result.show();
+                           }
+                       });
     }
 
     private void delete() {

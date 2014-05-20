@@ -34,8 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class SectionPopup extends PopupPanel {
 
-    private static SectionPopupUiBinder uiBinder = GWT
-            .create(SectionPopupUiBinder.class);
+    private static SectionPopupUiBinder uiBinder = GWT.create(SectionPopupUiBinder.class);
 
     interface SectionPopupUiBinder extends UiBinder<Widget, SectionPopup> {
     }

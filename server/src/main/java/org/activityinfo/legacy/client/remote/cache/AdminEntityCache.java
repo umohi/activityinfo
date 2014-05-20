@@ -36,8 +36,8 @@ import org.activityinfo.legacy.shared.command.result.CommandResult;
  * {@link org.activityinfo.legacy.shared.command.GetAdminEntities}
  */
 @Singleton
-public class AdminEntityCache extends AbstractCache implements
-        CommandCache<GetAdminEntities>, DispatchListener<GetAdminEntities> {
+public class AdminEntityCache extends AbstractCache implements CommandCache<GetAdminEntities>,
+        DispatchListener<GetAdminEntities> {
 
     @Inject
     public AdminEntityCache(DispatchEventSource connection) {
@@ -56,8 +56,7 @@ public class AdminEntityCache extends AbstractCache implements
         if (result == null) {
             return CacheResult.couldNotExecute();
         } else {
-            return new CacheResult<AdminEntityResult>(new AdminEntityResult(
-                    result));
+            return new CacheResult<AdminEntityResult>(new AdminEntityResult(result));
         }
     }
 

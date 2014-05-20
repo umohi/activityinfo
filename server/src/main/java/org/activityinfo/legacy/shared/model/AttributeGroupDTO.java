@@ -66,9 +66,7 @@ public final class AttributeGroupDTO extends BaseModelData implements EntityDTO 
         this.setId(id);
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }
@@ -81,9 +79,7 @@ public final class AttributeGroupDTO extends BaseModelData implements EntityDTO 
         set("name", name);
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getName() {
         return get("name");
     }
@@ -92,14 +88,12 @@ public final class AttributeGroupDTO extends BaseModelData implements EntityDTO 
         set("mandatory", mandatory);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public boolean isMandatory() {
         return get("mandatory", false);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public List<AttributeDTO> getAttributes() {
         return attributes;
     }
@@ -125,8 +119,7 @@ public final class AttributeGroupDTO extends BaseModelData implements EntityDTO 
         return null;
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public boolean isMultipleAllowed() {
         return get("multipleAllowed", false);
     }

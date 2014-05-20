@@ -31,10 +31,10 @@ public final class AdminPolygon extends JavaScriptObject {
     }
 
     public native String getPoints() /*-{
-        return this.points;
+      return this.points;
     }-*/;
 
     public native String getLevels() /*-{
-        return this.levels;
+      return this.levels;
     }-*/;
 }

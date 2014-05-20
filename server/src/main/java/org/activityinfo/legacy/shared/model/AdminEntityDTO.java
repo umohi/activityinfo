@@ -82,8 +82,7 @@ public final class AdminEntityDTO extends BaseModelData implements DTO {
      * @param name     the name of this AdminEntity
      * @param bounds   the geographing BoundingBox of this AdminEntity
      */
-    public AdminEntityDTO(int levelId, int id, int parentId, String name,
-                          Extents bounds) {
+    public AdminEntityDTO(int levelId, int id, int parentId, String name, Extents bounds) {
         setId(id);
         setLevelId(levelId);
         setParentId(parentId);

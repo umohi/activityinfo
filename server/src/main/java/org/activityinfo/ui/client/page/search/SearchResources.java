@@ -32,35 +32,25 @@ public interface SearchResources extends ClientBundle {
 
     static final SearchResources INSTANCE = GWT.create(SearchResources.class);
 
-    @Source("SitesTemplate.html")
-    TextResource sitesTemplate();
+    @Source("SitesTemplate.html") TextResource sitesTemplate();
 
-    @Source("EntitiesTemplate.html")
-    TextResource entitiesTemplate();
+    @Source("EntitiesTemplate.html") TextResource entitiesTemplate();
 
-    @Source("SearchStyles.css")
-    SearchStyles searchStyles();
+    @Source("SearchStyles.css") SearchStyles searchStyles();
 
-    @Source("location.png")
-    ImageResource location();
+    @Source("location.png") ImageResource location();
 
-    @Source("database.png")
-    ImageResource database();
+    @Source("database.png") ImageResource database();
 
-    @Source("activity.png")
-    ImageResource activity();
+    @Source("activity.png") ImageResource activity();
 
-    @Source("date.png")
-    ImageResource date();
+    @Source("date.png") ImageResource date();
 
-    @Source("addEdited.png")
-    ImageResource addEdited();
+    @Source("addEdited.png") ImageResource addEdited();
 
-    @Source("search.png")
-    ImageResource search();
+    @Source("search.png") ImageResource search();
 
-    @Source("searchSmall.png")
-    ImageResource searchSmall();
+    @Source("searchSmall.png") ImageResource searchSmall();
 
     interface SearchStyles extends CssResource {
         String searchBox();

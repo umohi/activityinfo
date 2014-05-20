@@ -23,11 +23,11 @@ package org.activityinfo.ui.client.page.entry.sitehistory;
  */
 
 import com.bedatadriven.rebar.time.calendar.LocalDate;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.legacy.shared.model.SchemaDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
 import org.activityinfo.legacy.shared.model.SiteHistoryDTO;
-import org.activityinfo.i18n.shared.I18N;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,34 +36,31 @@ import java.util.Map;
 
 public class SiteHistoryRenderer {
 
-    private static final LocalDate HISTORY_AVAILABLE_FROM =
-            new LocalDate(2012, 12, 20);
+    private static final LocalDate HISTORY_AVAILABLE_FROM = new LocalDate(2012, 12, 20);
 
     public String renderLoading() {
         return new Item(I18N.CONSTANTS.loading()).toString();
     }
 
     public String renderNotAvailable(final SiteDTO site) {
-        return Item.appendAll(
-                new Item(I18N.MESSAGES.siteHistoryNotAvailable()),
-                availableFrom(site));
+        return Item.appendAll(new Item(I18N.MESSAGES.siteHistoryNotAvailable()), availableFrom(site));
     }
 
-    public String render(SchemaDTO schema, List<LocationDTO> locations,
-                         SiteDTO site, List<SiteHistoryDTO> histories) {
+    public String render(SchemaDTO schema, List<LocationDTO> locations, SiteDTO site, List<SiteHistoryDTO> histories) {
         List<Item> items = new ArrayList<Item>();
         items.addAll(items(schema, locations, site, histories));
         items.add(availableFrom(site));
         return Item.appendAll(items);
     }
 
-    private List<Item> items(SchemaDTO schema, List<LocationDTO> locations,
-                             SiteDTO site, List<SiteHistoryDTO> histories) {
+    private List<Item> items(SchemaDTO schema,
+                             List<LocationDTO> locations,
+                             SiteDTO site,
+                             List<SiteHistoryDTO> histories) {
         List<Item> items = new ArrayList<Item>();
 
         Map<String, Object> baselineState = histories.get(0).getJsonMap();
-        RenderContext ctx = new RenderContext(schema, locations, site,
-                baselineState);
+        RenderContext ctx = new RenderContext(schema, locations, site, baselineState);
 
         boolean first = true;
         for (SiteHistoryDTO history : histories) {
@@ -74,14 +71,14 @@ public class SiteHistoryRenderer {
                 if (history.isInitial()) {
                     // only show if the entry was created when the actual site
                     // was created, don't show stub baselines
-                    item.setMsg(I18N.MESSAGES.siteHistoryCreated(
-                            history.getDateCreated(), history.getUserName(),
+                    item.setMsg(I18N.MESSAGES.siteHistoryCreated(history.getDateCreated(),
+                            history.getUserName(),
                             history.getUserEmail()));
                 }
                 first = false;
             } else {
-                item.setMsg(I18N.MESSAGES.siteHistoryUpdated(
-                        history.getDateCreated(), history.getUserName(),
+                item.setMsg(I18N.MESSAGES.siteHistoryUpdated(history.getDateCreated(),
+                        history.getUserName(),
                         history.getUserEmail()));
                 item.setDetails(details(ctx));
             }
@@ -104,11 +101,8 @@ public class SiteHistoryRenderer {
 
     private Item availableFrom(SiteDTO site) {
         Item item = new Item();
-        if (site != null && site.getDateCreated() != null
-                && site.getDateCreated().before(HISTORY_AVAILABLE_FROM)) {
-            item.setMsg(I18N.MESSAGES
-                    .siteHistoryAvailableFrom(HISTORY_AVAILABLE_FROM
-                            .atMidnightInMyTimezone()));
+        if (site != null && site.getDateCreated() != null && site.getDateCreated().before(HISTORY_AVAILABLE_FROM)) {
+            item.setMsg(I18N.MESSAGES.siteHistoryAvailableFrom(HISTORY_AVAILABLE_FROM.atMidnightInMyTimezone()));
         }
         return item;
     }

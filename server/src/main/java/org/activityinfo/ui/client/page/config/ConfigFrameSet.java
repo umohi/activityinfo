@@ -36,9 +36,8 @@ public class ConfigFrameSet extends VSplitFrameSet {
 
     @Inject
     public ConfigFrameSet(EventBus eventBus, Dispatcher dispatcher) {
-        super(ConfigFrameSet.PAGE_ID, new NavigationPanel(eventBus,
-                new ConfigNavigator(dispatcher, I18N.CONSTANTS,
-                        IconImageBundle.ICONS)));
+        super(ConfigFrameSet.PAGE_ID,
+                new NavigationPanel(eventBus, new ConfigNavigator(dispatcher, I18N.CONSTANTS, IconImageBundle.ICONS)));
     }
 
 }

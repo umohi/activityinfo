@@ -43,12 +43,12 @@ import com.extjs.gxt.ui.client.widget.tips.QuickTip;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.command.GetSites;
 import org.activityinfo.legacy.shared.command.result.SiteResult;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.legacy.shared.Log;
-import org.activityinfo.legacy.client.Dispatcher;
 
 /**
  * Displays of sites in a "flat" projection with a paging toolbar. Note: do not
@@ -76,13 +76,13 @@ final class FlatSiteGridPanel extends ContentPanel implements SiteGridPanelView 
 
     public void initGrid(Filter filter, ColumnModel columnModel) {
 
-        PagingLoader<PagingLoadResult<SiteDTO>> loader = new BasePagingLoader<PagingLoadResult<SiteDTO>>(new SiteProxy());
+        PagingLoader<PagingLoadResult<SiteDTO>> loader = new BasePagingLoader<PagingLoadResult<SiteDTO>>(new
+                SiteProxy());
         loader.addLoadListener(new LoadListener() {
 
             @Override
             public void loaderLoadException(LoadEvent le) {
-                Log.debug("Exception thrown during load of FlatSiteGrid: ",
-                        le.exception);
+                Log.debug("Exception thrown during load of FlatSiteGrid: ", le.exception);
             }
 
         });
@@ -126,16 +126,14 @@ final class FlatSiteGridPanel extends ContentPanel implements SiteGridPanelView 
     }
 
     @Override
-    public void addSelectionChangeListener(
-            SelectionChangedListener<SiteDTO> listener) {
+    public void addSelectionChangeListener(SelectionChangedListener<SiteDTO> listener) {
         addListener(Events.SelectionChange, listener);
     }
 
     private class SiteProxy extends RpcProxy<PagingLoadResult<SiteDTO>> {
 
         @Override
-        protected void load(Object loadConfig,
-                            final AsyncCallback<PagingLoadResult<SiteDTO>> callback) {
+        protected void load(Object loadConfig, final AsyncCallback<PagingLoadResult<SiteDTO>> callback) {
 
             PagingLoadConfig config = (PagingLoadConfig) loadConfig;
             GetSites command = new GetSites();

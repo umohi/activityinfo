@@ -45,9 +45,7 @@ public class AdminLevelClusterer implements Clusterer {
     private AdministrativeLevelClustering model;
     private RadiiCalculator radiiCalculator;
 
-    public AdminLevelClusterer(
-            AdministrativeLevelClustering adminLevelClustering,
-            RadiiCalculator radiiCalculator) {
+    public AdminLevelClusterer(AdministrativeLevelClustering adminLevelClustering, RadiiCalculator radiiCalculator) {
         super();
         this.model = adminLevelClustering;
         this.radiiCalculator = radiiCalculator;
@@ -110,11 +108,8 @@ public class AdminLevelClusterer implements Clusterer {
         if (entity.getBounds() == null) {
             return null;
         } else {
-            AiLatLng center = new AiLatLng(
-                    (entity.getBounds().getMinLat() + entity.getBounds()
-                            .getMaxLat()) / 2d,
-                    (entity.getBounds().getMinLon() + entity.getBounds()
-                            .getMaxLon()) / 2d);
+            AiLatLng center = new AiLatLng((entity.getBounds().getMinLat() + entity.getBounds().getMaxLat()) / 2d,
+                    (entity.getBounds().getMinLon() + entity.getBounds().getMaxLon()) / 2d);
 
             return map.fromLatLngToPixel(center);
         }

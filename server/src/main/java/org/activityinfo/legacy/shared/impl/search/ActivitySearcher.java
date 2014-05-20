@@ -36,8 +36,7 @@ import java.util.List;
 public class ActivitySearcher implements Searcher {
 
     @Override
-    public void search(List<String> searchTerms, SqlTransaction tx,
-                       final AsyncCallback<List<Integer>> callback) {
+    public void search(List<String> searchTerms, SqlTransaction tx, final AsyncCallback<List<Integer>> callback) {
         SqlQuery.select("ActivityId")
                 .from("activity")
                 .whereLikes("Name")

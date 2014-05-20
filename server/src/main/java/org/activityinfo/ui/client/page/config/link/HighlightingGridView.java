@@ -41,8 +41,7 @@ class HighlightingGridView extends GridView {
 
     @Override
     protected void onRowOut(Element row) {
-        fly(row).removeStyleName(
-                IndicatorLinkResources.INSTANCE.style().highlight());
+        fly(row).removeStyleName(IndicatorLinkResources.INSTANCE.style().highlight());
     }
 
     @Override
@@ -52,8 +51,7 @@ class HighlightingGridView extends GridView {
             ModelData model = grid.getStore().getAt(index);
             if (isHighlightable(model)) {
 
-                fly(row).addStyleName(
-                        IndicatorLinkResources.INSTANCE.style().highlight());
+                fly(row).addStyleName(IndicatorLinkResources.INSTANCE.style().highlight());
 
                 GridEvent event = new GridEvent(grid);
                 event.setModel(model);
@@ -71,8 +69,7 @@ class HighlightingGridView extends GridView {
                 Element element = grid.getView().getRow(row);
                 El el = El.fly(element);
                 if (ids.contains(grid.getStore().getAt(row).get("id"))) {
-                    el.addStyleName(IndicatorLinkResources.INSTANCE.style()
-                            .highlight());
+                    el.addStyleName(IndicatorLinkResources.INSTANCE.style().highlight());
                     highlighted.add(element);
                 }
             }
@@ -81,8 +78,7 @@ class HighlightingGridView extends GridView {
 
     public void clearHighlight() {
         for (Element element : highlighted) {
-            El.fly(element).removeStyleName(
-                    IndicatorLinkResources.INSTANCE.style().highlight());
+            El.fly(element).removeStyleName(IndicatorLinkResources.INSTANCE.style().highlight());
         }
         highlighted.clear();
     }

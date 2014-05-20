@@ -36,8 +36,7 @@ public class BasePromptDialog extends Dialog {
         ProfileResources.INSTANCE.style().ensureInjected();
     }
 
-    protected final static LocalCapabilityProfile CAPABILITY_PROFILE = GWT
-            .create(LocalCapabilityProfile.class);
+    protected final static LocalCapabilityProfile CAPABILITY_PROFILE = GWT.create(LocalCapabilityProfile.class);
 
     public BasePromptDialog(String html) {
 
@@ -48,8 +47,7 @@ public class BasePromptDialog extends Dialog {
         setLayout(new FitLayout());
 
         Html bodyHtml = new Html(html);
-        bodyHtml.addStyleName(ProfileResources.INSTANCE.style()
-                .startupDialogBody());
+        bodyHtml.addStyleName(ProfileResources.INSTANCE.style().startupDialogBody());
 
         add(bodyHtml);
     }

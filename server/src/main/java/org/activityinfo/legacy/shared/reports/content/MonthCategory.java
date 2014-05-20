@@ -91,8 +91,7 @@ public class MonthCategory implements DimensionCategory {
         return "MonthCategory{" + year + "/" + month + "}";
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
+    @Override @SuppressWarnings("deprecation")
     public String getLabel() {
         // hackish, yes, but it's the only thing that works on client & server
         Date date = new Date(year - 1900, month - 1, 1);

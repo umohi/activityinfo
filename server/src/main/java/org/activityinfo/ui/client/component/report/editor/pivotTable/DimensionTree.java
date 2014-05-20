@@ -115,14 +115,13 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
 
         treePanel.collapseAll();
 
-        treePanel.addListener(Events.CheckChange,
-                new Listener<TreePanelEvent<DimensionModel>>() {
+        treePanel.addListener(Events.CheckChange, new Listener<TreePanelEvent<DimensionModel>>() {
 
-                    @Override
-                    public void handleEvent(TreePanelEvent<DimensionModel> be) {
-                        updateModelAfterCheckChange(be);
-                    }
-                });
+            @Override
+            public void handleEvent(TreePanelEvent<DimensionModel> be) {
+                updateModelAfterCheckChange(be);
+            }
+        });
     }
 
     private void addGeographyRoot() {
@@ -132,8 +131,7 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
     }
 
     private void addLocationDimension() {
-        store.add(geographyRoot, new DimensionModel(DimensionType.Location,
-                I18N.CONSTANTS.location()), false);
+        store.add(geographyRoot, new DimensionModel(DimensionType.Location, I18N.CONSTANTS.location()), false);
     }
 
     private void addDimension(DimensionType type, String name) {
@@ -202,20 +200,17 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
     private void applyModelState(SchemaDTO schema) {
         for (DimensionModel node : store.getAllItems()) {
             if (node.hasDimension()) {
-                treePanel.setChecked(
-                        node,
-                        isDimensionSelected(schema, node.getDimension()));
+                treePanel.setChecked(node, isDimensionSelected(schema, node.getDimension()));
             }
         }
     }
 
     private boolean isDimensionSelected(SchemaDTO schema, Dimension dim) {
         return isDimensionSelected(schema, model.getRowDimensions(), dim) ||
-                isDimensionSelected(schema, model.getColumnDimensions(), dim);
+               isDimensionSelected(schema, model.getColumnDimensions(), dim);
     }
 
-    private boolean isDimensionSelected(SchemaDTO schema, List<Dimension> dims,
-                                        Dimension dim) {
+    private boolean isDimensionSelected(SchemaDTO schema, List<Dimension> dims, Dimension dim) {
 
         if (dim instanceof AttributeGroupDimension) {
             return isAttributeDimensionSelected(schema, dims, (AttributeGroupDimension) dim);
@@ -224,8 +219,7 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
         }
     }
 
-    private boolean isAttributeDimensionSelected(SchemaDTO schema,
-                                                 List<Dimension> dims, AttributeGroupDimension dim) {
+    private boolean isAttributeDimensionSelected(SchemaDTO schema, List<Dimension> dims, AttributeGroupDimension dim) {
 
         String name = schema.getAttributeGroupNameSafe(dim.getAttributeGroupId());
 
@@ -244,19 +238,18 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
 
     private boolean needToReloadDimensions(PivotTableReportElement model) {
         return !previouslyLoaded.containsAll(model.getIndicators()) ||
-                !model.getIndicators().containsAll(previouslyLoaded);
+               !model.getIndicators().containsAll(previouslyLoaded);
     }
 
     private void clearIndicatorSpecificDimensions() {
 
         for (DimensionModel model : Lists.newArrayList(store.getAllItems())) {
-            if (model.hasDimension() && (
-                    model.getDimension() instanceof AttributeGroupDimension ||
-                            model.getDimension() instanceof AdminDimension)) {
+            if (model.hasDimension() && (model.getDimension() instanceof AttributeGroupDimension ||
+                                         model.getDimension() instanceof AdminDimension)) {
                 Log.info("Removing " + model.getCaption());
                 try {
                     store.remove(model);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // workaround for buggy GXT
                     Log.debug("Exception thrown removing " + model.getCaption(), e);
                 }
@@ -273,15 +266,13 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
 
     private void addGeography(SchemaDTO schema) {
 
-        Set<CountryDTO> countries = schema.getCountriesForIndicators(model
-                .getIndicators());
+        Set<CountryDTO> countries = schema.getCountriesForIndicators(model.getIndicators());
 
         store.removeAll(geographyRoot);
         if (countries.size() == 1) {
             CountryDTO country = countries.iterator().next();
             for (AdminLevelDTO level : country.getAdminLevels()) {
-                store.add(geographyRoot, new DimensionModel(level),
-                        false);
+                store.add(geographyRoot, new DimensionModel(level), false);
             }
             addLocationDimension();
         }
@@ -302,16 +293,13 @@ public class DimensionTree implements HasReportElement<PivotTableReportElement> 
     }
 
 
-    private void updateModelAfterCheckChange(
-            TreePanelEvent<DimensionModel> event) {
+    private void updateModelAfterCheckChange(TreePanelEvent<DimensionModel> event) {
         Dimension dim = event.getItem().getDimension();
 
         if (event.isChecked()) {
-            if (!model.getRowDimensions().contains(dim) &&
-                    !model.getColumnDimensions().contains(dim)) {
+            if (!model.getRowDimensions().contains(dim) && !model.getColumnDimensions().contains(dim)) {
 
-                if (model.getRowDimensions().size() > model
-                        .getColumnDimensions().size()) {
+                if (model.getRowDimensions().size() > model.getColumnDimensions().size()) {
                     model.addColDimension(dim);
                 } else {
                     model.addRowDimension(dim);

@@ -74,8 +74,7 @@ public class FilterUrlSerializer {
             } else {
                 DimensionType dimType = DimensionType.valueOf(elements[0]);
                 for (int i = 1; i < elements.length; ++i) {
-                    filter.addRestriction(dimType,
-                            Integer.parseInt(elements[i]));
+                    filter.addRestriction(dimType, Integer.parseInt(elements[i]));
                 }
             }
         }
@@ -87,8 +86,7 @@ public class FilterUrlSerializer {
     }
 
     private static LocalDate parseDate(String string) {
-        return new LocalDate(
-                Integer.parseInt(string.substring(0, 4)),
+        return new LocalDate(Integer.parseInt(string.substring(0, 4)),
                 Integer.parseInt(string.substring(4, 6)),
                 Integer.parseInt(string.substring(6, 8)));
     }

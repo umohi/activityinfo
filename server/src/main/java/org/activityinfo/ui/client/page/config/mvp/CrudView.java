@@ -44,13 +44,8 @@ import java.util.Map;
  * P: parent, holding a collection of DTO's
  */
 @Deprecated
-public interface CrudView<M extends DTO, P extends DTO> extends
-        ListView<M, P>,
-        CanCreate<M>,
-        CanUpdate<M>,
-        CanDelete<M>,
-        CanFilter<M>,
-        CanRefresh<M> {
+public interface CrudView<M extends DTO, P extends DTO> extends ListView<M, P>, CanCreate<M>, CanUpdate<M>,
+        CanDelete<M>, CanFilter<M>, CanRefresh<M> {
 
     List<M> getUnsavedItems();
 

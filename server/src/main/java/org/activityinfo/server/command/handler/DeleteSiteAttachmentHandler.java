@@ -32,8 +32,7 @@ import org.activityinfo.legacy.shared.impl.ExecutionContext;
 import org.activityinfo.legacy.shared.impl.Tables;
 import org.activityinfo.server.attachment.AttachmentService;
 
-public class DeleteSiteAttachmentHandler implements
-        CommandHandlerAsync<DeleteSiteAttachment, VoidResult> {
+public class DeleteSiteAttachmentHandler implements CommandHandlerAsync<DeleteSiteAttachment, VoidResult> {
 
     private AttachmentService attachmentService;
 
@@ -44,14 +43,11 @@ public class DeleteSiteAttachmentHandler implements
     }
 
     @Override
-    public void execute(DeleteSiteAttachment command, ExecutionContext context,
-                        AsyncCallback<VoidResult> callback) {
+    public void execute(DeleteSiteAttachment command, ExecutionContext context, AsyncCallback<VoidResult> callback) {
 
         attachmentService.delete(command.getBlobId());
 
-        SqlUpdate.delete(Tables.SITE_ATTACHMENT)
-                .where("blobid", command.getBlobId())
-                .execute(context.getTransaction());
+        SqlUpdate.delete(Tables.SITE_ATTACHMENT).where("blobid", command.getBlobId()).execute(context.getTransaction());
 
         callback.onSuccess(new VoidResult());
     }

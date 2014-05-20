@@ -41,10 +41,9 @@ public class BasicAuthentication {
     private final Provider<Authenticator> authenticator;
 
     @Inject
-    public BasicAuthentication(
-            ServerSideAuthProvider authProvider,
-            Provider<UserDAO> userDAO,
-            Provider<Authenticator> authenticator) {
+    public BasicAuthentication(ServerSideAuthProvider authProvider,
+                               Provider<UserDAO> userDAO,
+                               Provider<Authenticator> authenticator) {
         this.authProvider = authProvider;
         this.userDAO = userDAO;
         this.authenticator = authenticator;
@@ -70,8 +69,7 @@ public class BasicAuthentication {
             return null;
         }
 
-        authProvider.set(new AuthenticatedUser("", user.getId(), user
-                .getEmail()));
+        authProvider.set(new AuthenticatedUser("", user.getId(), user.getEmail()));
 
         return user;
     }

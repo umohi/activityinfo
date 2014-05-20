@@ -52,14 +52,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TargetIndicatorPresenter extends
-        AbstractEditorGridPresenter<ModelData> {
+public class TargetIndicatorPresenter extends AbstractEditorGridPresenter<ModelData> {
 
     @ImplementedBy(TargetIndicatorView.class)
-    public interface View extends
-            TreeGridView<TargetIndicatorPresenter, ModelData> {
-        void init(TargetIndicatorPresenter presenter, UserDatabaseDTO db,
-                  TreeStore store);
+    public interface View extends TreeGridView<TargetIndicatorPresenter, ModelData> {
+        void init(TargetIndicatorPresenter presenter, UserDatabaseDTO db, TreeStore store);
 
         void expandAll();
     }
@@ -74,8 +71,11 @@ public class TargetIndicatorPresenter extends
     private TreeStore<ModelData> treeStore;
 
     @Inject
-    public TargetIndicatorPresenter(EventBus eventBus, Dispatcher service,
-                                    StateProvider stateMgr, View view, UiConstants messages) {
+    public TargetIndicatorPresenter(EventBus eventBus,
+                                    Dispatcher service,
+                                    StateProvider stateMgr,
+                                    View view,
+                                    UiConstants messages) {
         super(eventBus, service, stateMgr, view);
         this.eventBus = eventBus;
         this.service = service;
@@ -135,34 +135,27 @@ public class TargetIndicatorPresenter extends
         for (IndicatorDTO indicator : activity.getIndicators()) {
 
             if (indicator.getCategory() != null) {
-                Link indCategoryLink = indicatorCategories.get(indicator
-                        .getCategory());
+                Link indCategoryLink = indicatorCategories.get(indicator.getCategory());
 
                 if (indCategoryLink == null) {
-                    indCategoryLink = createIndicatorCategoryLink(indicator,
-                            indicatorCategories);
-                    indicatorCategories.put(indicator.getCategory(),
-                            indCategoryLink);
+                    indCategoryLink = createIndicatorCategoryLink(indicator, indicatorCategories);
+                    indicatorCategories.put(indicator.getCategory(), indCategoryLink);
                     treeStore.add(parent, indCategoryLink, false);
                 }
 
-                TargetValueDTO targetValueDTO = getTargetValueByIndicatorId(indicator
-                        .getId());
+                TargetValueDTO targetValueDTO = getTargetValueByIndicatorId(indicator.getId());
                 if (null != targetValueDTO) {
                     treeStore.add(indCategoryLink, targetValueDTO, false);
                 } else {
-                    treeStore.add(indCategoryLink,
-                            createTargetValueModel(indicator), false);
+                    treeStore.add(indCategoryLink, createTargetValueModel(indicator), false);
                 }
 
             } else {
-                TargetValueDTO targetValueDTO = getTargetValueByIndicatorId(indicator
-                        .getId());
+                TargetValueDTO targetValueDTO = getTargetValueByIndicatorId(indicator.getId());
                 if (null != targetValueDTO) {
                     treeStore.add(parent, targetValueDTO, false);
                 } else {
-                    treeStore.add(parent, createTargetValueModel(indicator),
-                            false);
+                    treeStore.add(parent, createTargetValueModel(indicator), false);
                 }
             }
         }
@@ -194,31 +187,27 @@ public class TargetIndicatorPresenter extends
         return null;
     }
 
-    private Link createIndicatorCategoryLink(IndicatorDTO indicatorNode,
-                                             Map<String, Link> categories) {
+    private Link createIndicatorCategoryLink(IndicatorDTO indicatorNode, Map<String, Link> categories) {
         return Link.folderLabelled(indicatorNode.getCategory())
-                .usingKey(categoryKey(indicatorNode, categories))
-                .withIcon(IconImageBundle.ICONS.folder()).build();
+                   .usingKey(categoryKey(indicatorNode, categories))
+                   .withIcon(IconImageBundle.ICONS.folder())
+                   .build();
     }
 
-    private Link createCategoryLink(ActivityDTO activity,
-                                    Map<String, Link> categories) {
+    private Link createCategoryLink(ActivityDTO activity, Map<String, Link> categories) {
 
         return Link.folderLabelled(activity.getCategory())
-                .usingKey(categoryKey(activity, categories))
-                .withIcon(IconImageBundle.ICONS.folder()).build();
+                   .usingKey(categoryKey(activity, categories))
+                   .withIcon(IconImageBundle.ICONS.folder())
+                   .build();
     }
 
-    private String categoryKey(ActivityDTO activity,
-                               Map<String, Link> categories) {
-        return "category" + activity.getDatabase().getId()
-                + activity.getCategory() + categories.size();
+    private String categoryKey(ActivityDTO activity, Map<String, Link> categories) {
+        return "category" + activity.getDatabase().getId() + activity.getCategory() + categories.size();
     }
 
-    private String categoryKey(IndicatorDTO indicatorNode,
-                               Map<String, Link> categories) {
-        return "category-indicator" + indicatorNode.getCategory()
-                + categories.size();
+    private String categoryKey(IndicatorDTO indicatorNode, Map<String, Link> categories) {
+        return "category-indicator" + indicatorNode.getCategory() + categories.size();
     }
 
     @Override
@@ -249,8 +238,7 @@ public class TargetIndicatorPresenter extends
 
     @Override
     protected void onDeleteConfirmed(final ModelData model) {
-        service.execute(new Delete((EntityDTO) model),
-                view.getDeletingMonitor(), new AsyncCallback<VoidResult>() {
+        service.execute(new Delete((EntityDTO) model), view.getDeletingMonitor(), new AsyncCallback<VoidResult>() {
             @Override
             public void onFailure(Throwable caught) {
 
@@ -283,8 +271,7 @@ public class TargetIndicatorPresenter extends
         if (model instanceof EntityDTO) {
             Record record = treeStore.getRecord(model);
             if (record.isDirty()) {
-                UpdateTargetValue cmd = new UpdateTargetValue(
-                        (Integer) model.get("targetId"),
+                UpdateTargetValue cmd = new UpdateTargetValue((Integer) model.get("targetId"),
                         (Integer) model.get("indicatorId"),
                         this.getChangedProperties(record));
 
@@ -299,8 +286,7 @@ public class TargetIndicatorPresenter extends
 
     @Override
     public void onSelectionChanged(ModelData selectedItem) {
-        view.setActionEnabled(UIActions.DELETE, this.db.isDesignAllowed()
-                && selectedItem instanceof EntityDTO);
+        view.setActionEnabled(UIActions.DELETE, this.db.isDesignAllowed() && selectedItem instanceof EntityDTO);
     }
 
     @Override

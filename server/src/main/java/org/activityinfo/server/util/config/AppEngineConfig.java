@@ -13,8 +13,7 @@ import com.google.appengine.api.datastore.*;
 public class AppEngineConfig {
 
     public static String getPropertyFile() {
-        DatastoreService datastore = DatastoreServiceFactory
-                .getDatastoreService();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Entity entity;
         try {
             entity = datastore.get(key());
@@ -26,8 +25,7 @@ public class AppEngineConfig {
     }
 
     public static void setPropertyFile(String string) {
-        DatastoreService datastore = DatastoreServiceFactory
-                .getDatastoreService();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Entity entity = new Entity(key());
         entity.setProperty("text", new Text(string));
         datastore.put(entity);

@@ -56,8 +56,7 @@ import java.util.List;
  * @author Muhammad Abid
  */
 
-public class TargetIndicatorView extends
-        AbstractEditorTreeGridView<ModelData, TargetIndicatorPresenter> implements
+public class TargetIndicatorView extends AbstractEditorTreeGridView<ModelData, TargetIndicatorPresenter> implements
         TargetIndicatorPresenter.View {
 
     private final Dispatcher service;
@@ -72,8 +71,7 @@ public class TargetIndicatorView extends
     }
 
     @Override
-    public void init(TargetIndicatorPresenter presenter, UserDatabaseDTO db,
-                     TreeStore store) {
+    public void init(TargetIndicatorPresenter presenter, UserDatabaseDTO db, TreeStore store) {
 
         this.db = db;
         this.presenter = presenter;
@@ -166,16 +164,14 @@ public class TargetIndicatorView extends
 
         List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
-        ColumnConfig nameColumn = new ColumnConfig("name",
-                I18N.CONSTANTS.indicator(), 250);
+        ColumnConfig nameColumn = new ColumnConfig("name", I18N.CONSTANTS.indicator(), 250);
         nameColumn.setRenderer(new TreeGridCellRenderer());
         columns.add(nameColumn);
 
         TextField<String> valueField = new TextField<String>();
         valueField.setAllowBlank(true);
 
-        ColumnConfig valueColumn = new ColumnConfig("value",
-                I18N.CONSTANTS.targetValue(), 150);
+        ColumnConfig valueColumn = new ColumnConfig("value", I18N.CONSTANTS.targetValue(), 150);
         valueColumn.setEditor(new CellEditor(valueField));
         valueColumn.setRenderer(new TargetValueCellRenderer());
         columns.add(valueColumn);
@@ -183,15 +179,18 @@ public class TargetIndicatorView extends
         return new ColumnModel(columns);
     }
 
-    private class TargetValueCellRenderer implements
-            GridCellRenderer<ModelData> {
+    private class TargetValueCellRenderer implements GridCellRenderer<ModelData> {
 
         public TargetValueCellRenderer() {
         }
 
         @Override
-        public Object render(ModelData model, String property,
-                             ColumnData config, int rowIndex, int colIndex, ListStore store,
+        public Object render(ModelData model,
+                             String property,
+                             ColumnData config,
+                             int rowIndex,
+                             int colIndex,
+                             ListStore store,
                              Grid grid) {
 
             if (model instanceof TargetValueDTO && model.get("value") == null) {

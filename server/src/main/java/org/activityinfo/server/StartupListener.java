@@ -61,8 +61,7 @@ import java.util.logging.Logger;
  */
 public class StartupListener extends GuiceServletContextListener {
 
-    private static Logger logger = Logger.getLogger(StartupListener.class
-            .getName());
+    private static Logger logger = Logger.getLogger(StartupListener.class.getName());
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -74,8 +73,7 @@ public class StartupListener extends GuiceServletContextListener {
     @Override
     protected Injector getInjector() {
 
-        return Guice.createInjector(
-                new HibernateModule(),
+        return Guice.createInjector(new HibernateModule(),
                 new ConfigModule(),
                 new LoggingModule(),
                 new TemplateModule(),
@@ -89,12 +87,13 @@ public class StartupListener extends GuiceServletContextListener {
                 new EventModule(),
                 new DigestModule(),
                 new LoginModule(),
-                new GwtRpcModule(), new JsonRpcModule(),
+                new GwtRpcModule(),
+                new JsonRpcModule(),
                 new HealthCheckModule(),
                 new ExportModule(),
                 new MonitoringModule(),
                 new KmlModule(),
-                    new BrandingModule(),
+                new BrandingModule(),
                 new BlobServiceModule(),
                 new LocaleModule(),
                 new JaxRsModule(),

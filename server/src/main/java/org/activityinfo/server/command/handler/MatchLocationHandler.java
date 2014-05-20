@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.command.MatchLocation;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
 import org.activityinfo.legacy.shared.exception.CommandException;
@@ -14,7 +15,6 @@ import org.activityinfo.server.database.hibernate.entity.AdminLevel;
 import org.activityinfo.server.database.hibernate.entity.Location;
 import org.activityinfo.server.database.hibernate.entity.User;
 import org.activityinfo.server.util.Jaro;
-import org.activityinfo.legacy.client.KeyGenerator;
 
 import javax.persistence.EntityManager;
 import java.util.Collection;
@@ -33,8 +33,7 @@ public class MatchLocationHandler implements CommandHandler<MatchLocation> {
     }
 
     @Override
-    public CommandResult execute(MatchLocation cmd, User user)
-            throws CommandException {
+    public CommandResult execute(MatchLocation cmd, User user) throws CommandException {
 
         Map<Integer, AdminEntity> matched = Maps.newHashMap();
 
@@ -121,9 +120,7 @@ public class MatchLocationHandler implements CommandHandler<MatchLocation> {
         return bestMatch;
     }
 
-    private void matchEntity(Map<Integer, AdminEntity> matched,
-                             Map<Integer, String> toMatch,
-                             AdminLevel level) {
+    private void matchEntity(Map<Integer, AdminEntity> matched, Map<Integer, String> toMatch, AdminLevel level) {
 
         // match parent level first
         if (level.getParent() != null && !matched.containsKey(level.getParentId())) {

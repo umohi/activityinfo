@@ -9,8 +9,7 @@ import java.lang.annotation.Target;
  * Allows the persistent property to be updated through the
  * ChangeRequest process.
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME) @Target({ElementType.METHOD, ElementType.FIELD})
 public @interface AllowUserUpdate {
 
 }

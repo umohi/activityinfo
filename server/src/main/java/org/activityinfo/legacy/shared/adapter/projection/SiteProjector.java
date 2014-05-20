@@ -74,8 +74,10 @@ public class SiteProjector implements Function<ListResult<SiteDTO>, List<Project
                             projector.update(projection, doubleValue);
                         }
                     }
-                } else if (propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX) && site.get(propertyName) == Boolean.TRUE) {
-                    final AttributeDTO attributeById = schemaDTO.getAttributeById(AttributeDTO.idForPropertyName(propertyName));
+                } else if (propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX) &&
+                           site.get(propertyName) == Boolean.TRUE) {
+                    final AttributeDTO attributeById = schemaDTO.getAttributeById(AttributeDTO.idForPropertyName(
+                            propertyName));
                     for (ProjectionUpdater<AttributeDTO> projector : attributeProjectors) {
                         projector.update(projection, attributeById);
                     }

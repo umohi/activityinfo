@@ -36,8 +36,7 @@ import org.activityinfo.legacy.shared.command.Filter;
 
 public abstract class FilterWidget extends Widget implements FilterPanel {
 
-    private static FilterWidgetUiBinder uiBinder = GWT
-            .create(FilterWidgetUiBinder.class);
+    private static FilterWidgetUiBinder uiBinder = GWT.create(FilterWidgetUiBinder.class);
 
     interface FilterWidgetUiBinder extends UiBinder<Element, FilterWidget> {
     }
@@ -96,8 +95,7 @@ public abstract class FilterWidget extends Widget implements FilterPanel {
     }
 
     @Override
-    public final HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
+    public final HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 

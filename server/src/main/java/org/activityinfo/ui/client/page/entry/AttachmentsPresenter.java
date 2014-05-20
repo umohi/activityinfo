@@ -105,8 +105,7 @@ public class AttachmentsPresenter implements ActionListener {
         dialog.show(new FormDialogCallback() {
             @Override
             public void onValidated() {
-                form.setAction("/ActivityInfo/attachment?blobId=" + blobid
-                        + "&siteId=" + currentSite.getId());
+                form.setAction("/ActivityInfo/attachment?blobId=" + blobid + "&siteId=" + currentSite.getId());
                 form.submit();
                 dialog.getSaveButton().setEnabled(false);
             }

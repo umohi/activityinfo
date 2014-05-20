@@ -74,8 +74,7 @@ import java.util.Set;
  * @see org.activityinfo.legacy.shared.reports.content.Content
  * @see org.activityinfo.server.report.renderer.Renderer
  */
-public abstract class ReportElement<ContentT extends Content> implements
-        Serializable {
+public abstract class ReportElement<ContentT extends Content> implements Serializable {
 
     private Filter filter = new Filter();
     private String title;

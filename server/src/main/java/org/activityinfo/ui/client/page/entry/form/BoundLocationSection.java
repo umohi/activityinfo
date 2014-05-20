@@ -23,11 +23,11 @@ package org.activityinfo.ui.client.page.entry.form;
  */
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.legacy.client.Dispatcher;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.command.CreateLocation;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.legacy.client.Dispatcher;
-import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBox;
 import org.activityinfo.ui.client.page.entry.admin.AdminComboBoxSet;
 import org.activityinfo.ui.client.page.entry.admin.AdminFieldSetPresenter;
@@ -36,8 +36,7 @@ import org.activityinfo.ui.client.page.entry.admin.AdminFieldSetPresenter;
  * Presents a form dialog for a Site for an Activity that has a LocationType
  * that is bound to an AdminLevel
  */
-public class BoundLocationSection extends FormSectionWithFormLayout<SiteDTO>
-        implements LocationFormSection {
+public class BoundLocationSection extends FormSectionWithFormLayout<SiteDTO> implements LocationFormSection {
 
     private final Dispatcher dispatcher;
 
@@ -51,11 +50,11 @@ public class BoundLocationSection extends FormSectionWithFormLayout<SiteDTO>
 
         this.dispatcher = dispatcher;
 
-        adminFieldSet = new AdminFieldSetPresenter(dispatcher, activity
-                .getDatabase().getCountry(), activity.getAdminLevels());
+        adminFieldSet = new AdminFieldSetPresenter(dispatcher,
+                activity.getDatabase().getCountry(),
+                activity.getAdminLevels());
 
-        comboBoxes = new AdminComboBoxSet(adminFieldSet,
-                new BoundAdminComboBox.Factory());
+        comboBoxes = new AdminComboBoxSet(adminFieldSet, new BoundAdminComboBox.Factory());
 
         for (AdminComboBox comboBox : comboBoxes) {
             add(comboBox.asWidget());
@@ -74,19 +73,18 @@ public class BoundLocationSection extends FormSectionWithFormLayout<SiteDTO>
     public void save(final AsyncCallback<Void> callback) {
         if (isDirty()) {
             newLocation();
-            dispatcher.execute(new CreateLocation(location),
-                    new AsyncCallback<VoidResult>() {
+            dispatcher.execute(new CreateLocation(location), new AsyncCallback<VoidResult>() {
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            callback.onFailure(caught);
-                        }
+                @Override
+                public void onFailure(Throwable caught) {
+                    callback.onFailure(caught);
+                }
 
-                        @Override
-                        public void onSuccess(VoidResult result) {
-                            callback.onSuccess(null);
-                        }
-                    });
+                @Override
+                public void onSuccess(VoidResult result) {
+                    callback.onSuccess(null);
+                }
+            });
         } else {
             callback.onSuccess(null);
         }
@@ -97,8 +95,7 @@ public class BoundLocationSection extends FormSectionWithFormLayout<SiteDTO>
         location.setId(new KeyGenerator().generateInt());
         location.setName(leafComboBox.getValue().getName());
         for (AdminLevelDTO level : adminFieldSet.getAdminLevels()) {
-            location.setAdminEntity(level.getId(),
-                    adminFieldSet.getAdminEntity(level));
+            location.setAdminEntity(level.getId(), adminFieldSet.getAdminEntity(level));
         }
     }
 

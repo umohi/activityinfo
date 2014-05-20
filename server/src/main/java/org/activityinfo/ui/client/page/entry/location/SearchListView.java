@@ -25,8 +25,8 @@ package org.activityinfo.ui.client.page.entry.location;
 import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.google.gwt.user.client.Element;
-import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.shared.model.LocationDTO;
 import org.activityinfo.ui.client.page.entry.form.resources.SiteFormResources;
 
 import java.util.Arrays;
@@ -49,23 +49,20 @@ public class SearchListView extends ListView<LocationDTO> {
         setLoadingText(I18N.CONSTANTS.loading());
 
 
-        getSelectionModel().addSelectionChangedListener(
-                new SelectionChangedListener<LocationDTO>() {
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<LocationDTO> se) {
-                        presenter.select(this, se.getSelectedItem());
-                    }
-                });
+        getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<LocationDTO>() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<LocationDTO> se) {
+                presenter.select(this, se.getSelectedItem());
+            }
+        });
 
-        addListener(Events.DoubleClick,
-                new Listener<ListViewEvent<LocationDTO>>() {
+        addListener(Events.DoubleClick, new Listener<ListViewEvent<LocationDTO>>() {
 
-                    @Override
-                    public void handleEvent(ListViewEvent<LocationDTO> be) {
-                        presenter.accept();
-                    }
-                });
+            @Override
+            public void handleEvent(ListViewEvent<LocationDTO> be) {
+                presenter.accept();
+            }
+        });
 
         presenter.addListener(Events.Select, new Listener<LocationEvent>() {
 

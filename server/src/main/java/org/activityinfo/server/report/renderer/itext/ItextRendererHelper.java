@@ -50,18 +50,14 @@ final class ItextRendererHelper {
     public static void addFilterDescription(Document document,
                                             List<FilterDescription> filterDescriptions) throws DocumentException {
         for (FilterDescription description : filterDescriptions) {
-            document.add(ThemeHelper.filterDescription(description
-                    .joinLabels(", ")));
+            document.add(ThemeHelper.filterDescription(description.joinLabels(", ")));
         }
     }
 
-    public static void addDateFilterDescription(Document document,
-                                                DateRange dateRange) throws DocumentException {
+    public static void addDateFilterDescription(Document document, DateRange dateRange) throws DocumentException {
         if (dateRange.getMinDate() != null || dateRange.getMaxDate() != null) {
-            DateFormatter format = new DateFormatter(
-                    LocaleProxy.getLocale());
-            document
-                    .add(ThemeHelper.filterDescription(format.format(dateRange)));
+            DateFormatter format = new DateFormatter(LocaleProxy.getLocale());
+            document.add(ThemeHelper.filterDescription(format.format(dateRange)));
         }
     }
 }

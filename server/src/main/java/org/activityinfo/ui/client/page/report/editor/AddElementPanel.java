@@ -58,7 +58,8 @@ public class AddElementPanel extends LayoutContainer {
 
     @Inject
     public AddElementPanel(final Dispatcher dispatcher,
-                           EditorProvider editorProvider, Provider<ElementDialog> dialogProvider) {
+                           EditorProvider editorProvider,
+                           Provider<ElementDialog> dialogProvider) {
         this.editorProvider = editorProvider;
         this.dialogProvider = dialogProvider;
 
@@ -86,8 +87,7 @@ public class AddElementPanel extends LayoutContainer {
                         addElement(new PivotTableTemplate(dispatcher));
                     }
                 }));
-        add(createAddButton(I18N.CONSTANTS.addMap(),
-                IconImageBundle.ICONS.map(), new SelectionListener<ButtonEvent>() {
+        add(createAddButton(I18N.CONSTANTS.addMap(), IconImageBundle.ICONS.map(), new SelectionListener<ButtonEvent>() {
 
             @Override
             public void componentSelected(ButtonEvent ce) {
@@ -95,13 +95,14 @@ public class AddElementPanel extends LayoutContainer {
             }
         }));
         add(createAddButton(I18N.CONSTANTS.addText(),
-                IconImageBundle.ICONS.text(), new SelectionListener<ButtonEvent>() {
+                IconImageBundle.ICONS.text(),
+                new SelectionListener<ButtonEvent>() {
 
-            @Override
-            public void componentSelected(ButtonEvent ce) {
-                addElement(new TextReportElement());
-            }
-        }));
+                    @Override
+                    public void componentSelected(ButtonEvent ce) {
+                        addElement(new TextReportElement());
+                    }
+                }));
     }
 
     public void setCallback(AddCallback callback) {
@@ -141,8 +142,7 @@ public class AddElementPanel extends LayoutContainer {
 
     }
 
-    private Button createAddButton(String text, AbstractImagePrototype icon,
-                                   SelectionListener<ButtonEvent> listener) {
+    private Button createAddButton(String text, AbstractImagePrototype icon, SelectionListener<ButtonEvent> listener) {
         Button button = new Button(text, icon, listener);
         button.setIconAlign(IconAlign.TOP);
         return button;

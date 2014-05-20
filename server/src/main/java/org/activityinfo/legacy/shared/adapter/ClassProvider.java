@@ -33,16 +33,19 @@ public class ClassProvider implements Function<Cuid, Promise<FormClass>> {
                 return Promise.resolved(BuiltinFormClasses.projectFormClass(getLegacyIdFromCuid(classId)));
 
             case ATTRIBUTE_GROUP_DOMAIN:
-                return dispatcher.execute(new GetSchema()).then(new AttributeClassAdapter(getLegacyIdFromCuid(classId)));
+                return dispatcher.execute(new GetSchema())
+                                 .then(new AttributeClassAdapter(getLegacyIdFromCuid(classId)));
 
             case ADMIN_LEVEL_DOMAIN:
-                return dispatcher.execute(new GetSchema()).then(new AdminLevelClassAdapter(getLegacyIdFromCuid(classId)));
+                return dispatcher.execute(new GetSchema())
+                                 .then(new AdminLevelClassAdapter(getLegacyIdFromCuid(classId)));
 
             case LOCATION_TYPE_DOMAIN:
                 return dispatcher.execute(new GetSchema()).then(new LocationClassAdapter(getLegacyIdFromCuid(classId)));
 
             // this is just spike: not exactly sure how to deal with application/system-level classes properties
-            // etc. The 'domains' that we're using for the legacy objects aren't really the same thing -- the whole point
+            // etc. The 'domains' that we're using for the legacy objects aren't really the same thing -- the whole
+            // point
             // is that a location_type form class isn't treated specially by the application, while we are going
             // to have a small number of *different* form classes that ARE treated specially...
             case '_':

@@ -15,8 +15,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public class ListResultAdapter<T extends ModelData> implements
-        Function<ListResult<T>, List<FormInstance>> {
+public class ListResultAdapter<T extends ModelData> implements Function<ListResult<T>, List<FormInstance>> {
 
     private final Function<T, FormInstance> instanceAdapter;
 

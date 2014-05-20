@@ -35,11 +35,11 @@ import org.activityinfo.legacy.shared.model.SiteHistoryDTO;
 
 import java.util.List;
 
-public class GetSiteHistoryHandler implements
-        CommandHandlerAsync<GetSiteHistory, GetSiteHistoryResult> {
+public class GetSiteHistoryHandler implements CommandHandlerAsync<GetSiteHistory, GetSiteHistoryResult> {
 
     @Override
-    public void execute(final GetSiteHistory command, ExecutionContext context,
+    public void execute(final GetSiteHistory command,
+                        ExecutionContext context,
                         final AsyncCallback<GetSiteHistoryResult> callback) {
 
         SqlQuery.select()
@@ -50,9 +50,11 @@ public class GetSiteHistoryHandler implements
                 .appendColumn("u.name", "username")
                 .appendColumn("u.email", "useremail")
                 .from("sitehistory", "h")
-                .innerJoin("userlogin", "u").on("h.userid = u.userid")
+                .innerJoin("userlogin", "u")
+                .on("h.userid = u.userid")
 
-                .where("h.siteid").equalTo(command.getSiteId())
+                .where("h.siteid")
+                .equalTo(command.getSiteId())
                 .orderBy("h.timecreated")
 
                 .execute(context.getTransaction(), new SqlResultCallback() {

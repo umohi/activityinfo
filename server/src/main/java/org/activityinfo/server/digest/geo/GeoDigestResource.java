@@ -29,25 +29,22 @@ public class GeoDigestResource extends DigestResource {
      * @return the ids of all users who could possibly be selected to recieve the digest email. Filter on database
      * ownership and userpermission.allowView to minimize the amount of created userdigest tasks.
      */
-    @Override
-    @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings("unchecked")
     public List<Integer> selectUsers() {
         // @formatter:off
-        Query query = entityManager.get().createNativeQuery(
-                "select u.userid from userlogin u " +
-                        "where u.emailnotification and ( " +
-                        "exists ( " +
-                        "select 1 from userdatabase d " +
-                        "where d.owneruserid = u.userid " +
-                        ") " +
-                        "or " +
-                        "exists ( " +
-                        "select 1 from userpermission p " +
-                        "where p.userId = u.userid " +
-                        "and p.allowView " +
-                        ") " +
-                        ")"
-        );
+        Query query = entityManager.get().createNativeQuery("select u.userid from userlogin u " +
+                                                            "where u.emailnotification and ( " +
+                                                            "exists ( " +
+                                                            "select 1 from userdatabase d " +
+                                                            "where d.owneruserid = u.userid " +
+                                                            ") " +
+                                                            "or " +
+                                                            "exists ( " +
+                                                            "select 1 from userpermission p " +
+                                                            "where p.userId = u.userid " +
+                                                            "and p.allowView " +
+                                                            ") " +
+                                                            ")");
         // @formatter:on
         return query.getResultList();
     }

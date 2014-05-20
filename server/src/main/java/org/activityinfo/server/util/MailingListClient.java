@@ -56,22 +56,19 @@ public class MailingListClient {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type",
-                "application/json; charset=UTF-8");
+        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setRequestProperty("Accept", "application/json");
         conn.setConnectTimeout(5 * 60 * 1000);
         conn.setReadTimeout(5 * 60 * 1000);
         ObjectMapper mapper = new ObjectMapper();
 
-        OutputStreamWriter writer = new OutputStreamWriter(
-                conn.getOutputStream(), Charsets.UTF_8);
+        OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream(), Charsets.UTF_8);
         String json = mapper.writeValueAsString(method);
         LOGGER.fine("MailChimp: " + json);
         writer.write(json);
         writer.flush();
         String line;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                conn.getInputStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
         }

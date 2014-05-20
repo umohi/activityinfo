@@ -47,8 +47,7 @@ public class BaseEntityHandler {
         this.permissionsOracle = new PermissionOracle(Providers.of(em));
     }
 
-    protected void updateIndicatorProperties(Indicator indicator,
-                                             Map<String, Object> changes) {
+    protected void updateIndicatorProperties(Indicator indicator, Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             indicator.setName(trim(changes.get("name")));
         }
@@ -84,8 +83,7 @@ public class BaseEntityHandler {
         indicator.getActivity().getDatabase().setLastSchemaUpdate(new Date());
     }
 
-    protected void updateAttributeProperties(Map<String, Object> changes,
-                                             Attribute attribute) {
+    protected void updateAttributeProperties(Map<String, Object> changes, Attribute attribute) {
         if (changes.containsKey("name")) {
             attribute.setName(trim(changes.get("name")));
         }
@@ -95,8 +93,7 @@ public class BaseEntityHandler {
         // TODO: update lastSchemaUpdate
     }
 
-    protected void updateAttributeGroupProperties(AttributeGroup group,
-                                                  Map<String, Object> changes) {
+    protected void updateAttributeGroupProperties(AttributeGroup group, Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             group.setName(trim(changes.get("name")));
         }
@@ -112,8 +109,7 @@ public class BaseEntityHandler {
         }
     }
 
-    protected void updateLockedPeriodProperties(LockedPeriod lockedPeriod,
-                                                Map<String, Object> changes) {
+    protected void updateLockedPeriodProperties(LockedPeriod lockedPeriod, Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             lockedPeriod.setName(trim(changes.get("name")));
         }
@@ -139,8 +135,7 @@ public class BaseEntityHandler {
         }
     }
 
-    protected void updateTargetProperties(Target target,
-                                          Map<String, Object> changes) {
+    protected void updateTargetProperties(Target target, Map<String, Object> changes) {
         if (changes.containsKey("name")) {
             target.setName(trim(changes.get("name")));
         }
@@ -154,21 +149,15 @@ public class BaseEntityHandler {
         }
 
         if (changes.containsKey("projectId")) {
-            target.setProject(
-                    entityManager().getReference(Project.class,
-                            changes.get("projectId")));
+            target.setProject(entityManager().getReference(Project.class, changes.get("projectId")));
         }
 
         if (changes.containsKey("partnerId")) {
-            target.setPartner(
-                    entityManager().getReference(Partner.class,
-                            changes.get("partnerId")));
+            target.setPartner(entityManager().getReference(Partner.class, changes.get("partnerId")));
         }
 
         if (changes.containsKey("AdminEntityId")) {
-            target.setAdminEntity(
-                    entityManager().getReference(AdminEntity.class,
-                            changes.get("AdminEntityId")));
+            target.setAdminEntity(entityManager().getReference(AdminEntity.class, changes.get("AdminEntityId")));
         }
 
     }
@@ -181,8 +170,7 @@ public class BaseEntityHandler {
      * @param database The database the user is trying to modify
      * @throws IllegalAccessCommandException If the user does not have permission
      */
-    protected void assertDesignPrivileges(User user, UserDatabase database)
-            throws IllegalAccessCommandException {
+    protected void assertDesignPrivileges(User user, UserDatabase database) throws IllegalAccessCommandException {
 
         if (!permissionsOracle.isDesignAllowed(database, user)) {
             throw new IllegalAccessCommandException();

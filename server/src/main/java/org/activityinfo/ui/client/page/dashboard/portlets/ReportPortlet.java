@@ -58,8 +58,7 @@ public class ReportPortlet extends Portlet {
     private final ReportMetadataDTO metadata;
     private final EventBus eventBus;
 
-    public ReportPortlet(Dispatcher dispatcher, EventBus eventBus,
-                         ReportMetadataDTO report) {
+    public ReportPortlet(Dispatcher dispatcher, EventBus eventBus, ReportMetadataDTO report) {
         this.dispatcher = dispatcher;
         this.eventBus = eventBus;
         this.metadata = report;
@@ -80,71 +79,67 @@ public class ReportPortlet extends Portlet {
         final Menu optionsMenu = new Menu();
 
         optionsMenu.add(new MenuItem(I18N.CONSTANTS.edit(),
-                IconImageBundle.ICONS.edit(), new SelectionListener<MenuEvent>() {
-
-            @Override
-            public void componentSelected(MenuEvent ce) {
-                edit();
-            }
-        }));
-
-        optionsMenu.add(new MenuItem(I18N.CONSTANTS.removeFromDashboard(),
-                IconImageBundle.ICONS.remove(), new SelectionListener<MenuEvent>() {
-
-            @Override
-            public void componentSelected(MenuEvent ce) {
-                removeFromDashboard();
-            }
-        }));
-
-        final ToolButton gear = new ToolButton("x-tool-gear",
-                new SelectionListener<IconButtonEvent>() {
+                IconImageBundle.ICONS.edit(),
+                new SelectionListener<MenuEvent>() {
 
                     @Override
-                    public void componentSelected(IconButtonEvent ce) {
-                        optionsMenu.show(ce.getComponent());
+                    public void componentSelected(MenuEvent ce) {
+                        edit();
                     }
-                });
+                }));
+
+        optionsMenu.add(new MenuItem(I18N.CONSTANTS.removeFromDashboard(),
+                IconImageBundle.ICONS.remove(),
+                new SelectionListener<MenuEvent>() {
+
+                    @Override
+                    public void componentSelected(MenuEvent ce) {
+                        removeFromDashboard();
+                    }
+                }));
+
+        final ToolButton gear = new ToolButton("x-tool-gear", new SelectionListener<IconButtonEvent>() {
+
+            @Override
+            public void componentSelected(IconButtonEvent ce) {
+                optionsMenu.show(ce.getComponent());
+            }
+        });
         getHeader().addTool(gear);
     }
 
     private void addCloseButton() {
-        getHeader().addTool(
-                new ToolButton("x-tool-close",
-                        new SelectionListener<IconButtonEvent>() {
+        getHeader().addTool(new ToolButton("x-tool-close", new SelectionListener<IconButtonEvent>() {
 
-                            @Override
-                            public void componentSelected(IconButtonEvent ce) {
-                                removeFromDashboard();
-                            }
-                        }));
+            @Override
+            public void componentSelected(IconButtonEvent ce) {
+                removeFromDashboard();
+            }
+        }));
 
-        getHeader().addTool(
-                new ToolButton("x-tool-maximize",
-                        new SelectionListener<IconButtonEvent>() {
+        getHeader().addTool(new ToolButton("x-tool-maximize", new SelectionListener<IconButtonEvent>() {
 
-                            @Override
-                            public void componentSelected(IconButtonEvent ce) {
-                                edit();
-                            }
-                        }));
+            @Override
+            public void componentSelected(IconButtonEvent ce) {
+                edit();
+            }
+        }));
     }
 
     private void loadModel() {
-        dispatcher.execute(new GetReportModel(metadata.getId()),
-                new AsyncCallback<ReportDTO>() {
+        dispatcher.execute(new GetReportModel(metadata.getId()), new AsyncCallback<ReportDTO>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // TODO Auto-generated method stub
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Auto-generated method stub
 
-                    }
+            }
 
-                    @Override
-                    public void onSuccess(ReportDTO dto) {
-                        onModelLoad(dto);
-                    }
-                });
+            @Override
+            public void onSuccess(ReportDTO dto) {
+                onModelLoad(dto);
+            }
+        });
     }
 
     private void onModelLoad(ReportDTO dto) {
@@ -164,24 +159,23 @@ public class ReportPortlet extends Portlet {
             return;
         }
 
-        dispatcher.execute(new GenerateElement<Content>(element),
-                new AsyncCallback<Content>() {
+        dispatcher.execute(new GenerateElement<Content>(element), new AsyncCallback<Content>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // TODO Auto-generated method stub
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Auto-generated method stub
 
-                    }
+            }
 
-                    @Override
-                    public void onSuccess(Content result) {
-                        element.setContent(result);
-                        view.show(element);
-                        removeAll();
-                        add(view.asComponent());
-                        layout();
-                    }
-                });
+            @Override
+            public void onSuccess(Content result) {
+                element.setContent(result);
+                view.show(element);
+                removeAll();
+                add(view.asComponent());
+                layout();
+            }
+        });
     }
 
     private ReportView createView(ReportElement element) {
@@ -200,8 +194,7 @@ public class ReportPortlet extends Portlet {
     }
 
     private void edit() {
-        eventBus.fireEvent(new NavigationEvent(
-                NavigationHandler.NAVIGATION_REQUESTED,
+        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
                 new ReportDesignPageState(metadata.getId())));
     }
 
@@ -217,20 +210,19 @@ public class ReportPortlet extends Portlet {
                             update.setReportId(metadata.getId());
                             update.setPinnedToDashboard(false);
 
-                            dispatcher.execute(update,
-                                    new AsyncCallback<VoidResult>() {
+                            dispatcher.execute(update, new AsyncCallback<VoidResult>() {
 
-                                        @Override
-                                        public void onFailure(Throwable caught) {
-                                            // TODO Auto-generated method stub
+                                @Override
+                                public void onFailure(Throwable caught) {
+                                    // TODO Auto-generated method stub
 
-                                        }
+                                }
 
-                                        @Override
-                                        public void onSuccess(VoidResult result) {
-                                            removeFromParent();
-                                        }
-                                    });
+                                @Override
+                                public void onSuccess(VoidResult result) {
+                                    removeFromParent();
+                                }
+                            });
                         }
                     }
                 });

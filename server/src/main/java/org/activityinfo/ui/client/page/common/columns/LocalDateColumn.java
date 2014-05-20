@@ -34,8 +34,7 @@ import java.util.Date;
 
 public class LocalDateColumn extends ReadTextColumn {
 
-    protected static final DateTimeFormat FORMAT = DateTimeFormat
-            .getFormat("yyyy-MMM-dd");
+    protected static final DateTimeFormat FORMAT = DateTimeFormat.getFormat("yyyy-MMM-dd");
 
     public LocalDateColumn(String property, String header, int width) {
         super(property, header, width);
@@ -47,9 +46,13 @@ public class LocalDateColumn extends ReadTextColumn {
         setRenderer(new GridCellRenderer<ModelData>() {
 
             @Override
-            public Object render(ModelData model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<ModelData> store, Grid<ModelData> grid) {
+            public Object render(ModelData model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<ModelData> store,
+                                 Grid<ModelData> grid) {
 
                 Object value = model.get(property);
                 if (value == null) {
@@ -61,9 +64,7 @@ public class LocalDateColumn extends ReadTextColumn {
                 } else if (value instanceof LocalDate) {
                     date = ((LocalDate) value).atMidnightInMyTimezone();
                 } else {
-                    throw new RuntimeException(
-                            "Don't know how to handle date as class "
-                                    + value.getClass().getName());
+                    throw new RuntimeException("Don't know how to handle date as class " + value.getClass().getName());
                 }
                 return FORMAT.format(date);
             }

@@ -27,8 +27,7 @@ package org.activityinfo.legacy.shared.reports;
  */
 public final class Theme {
 
-    public static final String[] ACCENTS = new String[]{
-            "#4F81BD", // 79, 129, 189
+    public static final String[] ACCENTS = new String[]{"#4F81BD", // 79, 129, 189
             "#C0504D", // 192, 80, 77
             "#98BB59", // 155, 187, 89
             "#8064A2", // 128, 100, 162
@@ -39,8 +38,7 @@ public final class Theme {
     }
 
     public static String[] getColors() {
-        return new String[]{
-                "#1F497D", // 31, 73, 125
+        return new String[]{"#1F497D", // 31, 73, 125
                 "#EEECE1"}; // 238, 236, 225
 
     }

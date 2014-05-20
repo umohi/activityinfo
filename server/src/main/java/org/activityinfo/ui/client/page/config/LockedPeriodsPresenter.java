@@ -53,27 +53,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class LockedPeriodsPresenter
-        extends
-        ListPresenterBase<LockedPeriodDTO,
-                List<LockedPeriodDTO>,
-                UserDatabaseDTO,
-                LockedPeriodListEditor>
-        implements
-        DbPage {
+public class LockedPeriodsPresenter extends ListPresenterBase<LockedPeriodDTO, List<LockedPeriodDTO>,
+        UserDatabaseDTO, LockedPeriodListEditor> implements DbPage {
 
     @ImplementedBy(LockedPeriodGrid.class)
-    public interface LockedPeriodListEditor
-            extends
-            CrudView<LockedPeriodDTO, UserDatabaseDTO> {
+    public interface LockedPeriodListEditor extends CrudView<LockedPeriodDTO, UserDatabaseDTO> {
 
         void setTitle(String title);
     }
 
     @ImplementedBy(AddLockedPeriodDialog.class)
-    public interface AddLockedPeriodView
-            extends
-            AddCreateView<LockedPeriodDTO> {
+    public interface AddLockedPeriodView extends AddCreateView<LockedPeriodDTO> {
 
         void setUserDatabase(UserDatabaseDTO userDatabase);
     }
@@ -81,8 +71,7 @@ public class LockedPeriodsPresenter
     public static final PageId PAGE_ID = new PageId("lockedPeriod");
 
     @Inject
-    public LockedPeriodsPresenter(Dispatcher service, EventBus eventBus,
-                                  LockedPeriodListEditor view) {
+    public LockedPeriodsPresenter(Dispatcher service, EventBus eventBus, LockedPeriodListEditor view) {
         super(service, eventBus, view);
 
     }
@@ -92,8 +81,7 @@ public class LockedPeriodsPresenter
         view.getCreatingMonitor().beforeRequest();
 
         final LockedPeriodDTO lockedPeriod = view.getValue();
-        CreateLockedPeriod lockUserDatabase = new CreateLockedPeriod(
-                lockedPeriod);
+        CreateLockedPeriod lockUserDatabase = new CreateLockedPeriod(lockedPeriod);
         if (lockedPeriod.getParent() instanceof ActivityDTO) {
             lockUserDatabase.setActivityId(lockedPeriod.getParent().getId());
         }
@@ -101,18 +89,16 @@ public class LockedPeriodsPresenter
             lockUserDatabase.setProjectId(lockedPeriod.getParent().getId());
         }
         if (lockedPeriod.getParent() instanceof UserDatabaseDTO) {
-            lockUserDatabase
-                    .setUserDatabaseId(lockedPeriod.getParent().getId());
+            lockUserDatabase.setUserDatabaseId(lockedPeriod.getParent().getId());
         }
 
         service.execute(lockUserDatabase, new AsyncCallback<CreateResult>() {
             @Override
             public void onFailure(Throwable caught) {
                 view.getCreatingMonitor().onServerError();
-                MessageBox.alert(
-                        I18N.CONSTANTS.error(),
-                        I18N.CONSTANTS.errorOnServer() + "\n\n"
-                                + caught.getMessage(), null);
+                MessageBox.alert(I18N.CONSTANTS.error(),
+                        I18N.CONSTANTS.errorOnServer() + "\n\n" + caught.getMessage(),
+                        null);
             }
 
             @Override
@@ -135,74 +121,65 @@ public class LockedPeriodsPresenter
             // Tell the user we're about to persist his changes
             view.getUpdatingMonitor().beforeRequest();
 
-            service.execute(createBatchCommand(),
-                    new AsyncCallback<BatchResult>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            // Tell the user an error occurred
-                            view.getDeletingMonitor().onServerError();
-                            // TODO Handle failure
-                            MessageBox.alert(
-                                    I18N.CONSTANTS.error(),
-                                    I18N.CONSTANTS.errorOnServer() + "\n\n"
-                                            + caught.getMessage(), null);
-                        }
+            service.execute(createBatchCommand(), new AsyncCallback<BatchResult>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    // Tell the user an error occurred
+                    view.getDeletingMonitor().onServerError();
+                    // TODO Handle failure
+                    MessageBox.alert(I18N.CONSTANTS.error(),
+                            I18N.CONSTANTS.errorOnServer() + "\n\n" + caught.getMessage(),
+                            null);
+                }
 
-                        @Override
-                        public void onSuccess(BatchResult result) {
-                            // Tell the user we're done updating
-                            view.getDeletingMonitor().onCompleted();
+                @Override
+                public void onSuccess(BatchResult result) {
+                    // Tell the user we're done updating
+                    view.getDeletingMonitor().onCompleted();
 
-                            // Update the in-memory model
-                            updateParent();
+                    // Update the in-memory model
+                    updateParent();
 
-                            // Update the view
-                            view.update(null);
-                        }
+                    // Update the view
+                    view.update(null);
+                }
 
-                        /** Replace changed locks */
-                        private void updateParent() {
-                            for (LockedPeriodDTO lockedPeriod : view
-                                    .getUnsavedItems()) {
-                                LockedPeriodDTO lockedPeriodToRemove = null;
+                /** Replace changed locks */
+                private void updateParent() {
+                    for (LockedPeriodDTO lockedPeriod : view.getUnsavedItems()) {
+                        LockedPeriodDTO lockedPeriodToRemove = null;
 
-                                // Cache the LockedPeriods candidate for removal
-                                Set<LockedPeriodDTO> lockedPeriodsToUpdate = parentModel
-                                        .getLockedPeriods();
+                        // Cache the LockedPeriods candidate for removal
+                        Set<LockedPeriodDTO> lockedPeriodsToUpdate = parentModel.getLockedPeriods();
 
-                                // Find the LockedPeriod in the model
-                                for (LockedPeriodDTO oldLockedPeriod : lockedPeriodsToUpdate) {
-                                    if (lockedPeriod.getId() == oldLockedPeriod
-                                            .getId()) {
-                                        lockedPeriodToRemove = oldLockedPeriod;
-                                        break;
-                                    }
-                                }
-
-                                // Replace LockedPeriod when the same entity is
-                                // found
-                                if (lockedPeriodToRemove != null) {
-                                    // Remove from cache
-                                    lockedPeriodsToUpdate
-                                            .remove(lockedPeriodToRemove);
-
-                                    // Replace old instance with new instance
-                                    parentModel.getLockedPeriods().remove(
-                                            lockedPeriodToRemove);
-                                    parentModel.getLockedPeriods()
-                                            .add(lockedPeriod);
-                                }
+                        // Find the LockedPeriod in the model
+                        for (LockedPeriodDTO oldLockedPeriod : lockedPeriodsToUpdate) {
+                            if (lockedPeriod.getId() == oldLockedPeriod.getId()) {
+                                lockedPeriodToRemove = oldLockedPeriod;
+                                break;
                             }
                         }
-                    });
+
+                        // Replace LockedPeriod when the same entity is
+                        // found
+                        if (lockedPeriodToRemove != null) {
+                            // Remove from cache
+                            lockedPeriodsToUpdate.remove(lockedPeriodToRemove);
+
+                            // Replace old instance with new instance
+                            parentModel.getLockedPeriods().remove(lockedPeriodToRemove);
+                            parentModel.getLockedPeriods().add(lockedPeriod);
+                        }
+                    }
+                }
+            });
         }
     }
 
     private BatchCommand createBatchCommand() {
         BatchCommand batch = new BatchCommand();
         for (LockedPeriodDTO lockedPeriod : view.getUnsavedItems()) {
-            batch.add(new UpdateEntity(
-                    lockedPeriod.getEntityName(),
+            batch.add(new UpdateEntity(lockedPeriod.getEntityName(),
                     lockedPeriod.getId(),
                     view.getChanges(lockedPeriod)));
         }
@@ -218,23 +195,21 @@ public class LockedPeriodsPresenter
     @Override
     public void onConfirmDelete(ConfirmDeleteEvent deleteEvent) {
         final LockedPeriodDTO lockedPeriod = view.getValue();
-        service.execute(new Delete(lockedPeriod),
-                new AsyncCallback<VoidResult>() {
+        service.execute(new Delete(lockedPeriod), new AsyncCallback<VoidResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        MessageBox.alert(
-                                I18N.CONSTANTS.error(),
-                                I18N.CONSTANTS.errorOnServer() + "\n\n"
-                                        + caught.getMessage(), null);
-                    }
+            @Override
+            public void onFailure(Throwable caught) {
+                MessageBox.alert(I18N.CONSTANTS.error(),
+                        I18N.CONSTANTS.errorOnServer() + "\n\n" + caught.getMessage(),
+                        null);
+            }
 
-                    @Override
-                    public void onSuccess(VoidResult result) {
-                        view.delete(lockedPeriod);
-                        parentModel.getLockedPeriods().remove(lockedPeriod);
-                    }
-                });
+            @Override
+            public void onSuccess(VoidResult result) {
+                view.delete(lockedPeriod);
+                parentModel.getLockedPeriods().remove(lockedPeriod);
+            }
+        });
     }
 
     @Override
@@ -266,17 +241,14 @@ public class LockedPeriodsPresenter
     public void go(UserDatabaseDTO db) {
         parentModel = db;
 
-        ArrayList<LockedPeriodDTO> items = new ArrayList<LockedPeriodDTO>(
-                db.getLockedPeriods());
+        ArrayList<LockedPeriodDTO> items = new ArrayList<LockedPeriodDTO>(db.getLockedPeriods());
         for (ActivityDTO activity : db.getActivities()) {
-            if (activity.getLockedPeriods() != null
-                    && activity.getLockedPeriods().size() > 0) {
+            if (activity.getLockedPeriods() != null && activity.getLockedPeriods().size() > 0) {
                 items.addAll(activity.getLockedPeriods());
             }
         }
         for (ProjectDTO project : db.getProjects()) {
-            if (project.getLockedPeriods() != null
-                    && project.getLockedPeriods().size() > 0) {
+            if (project.getLockedPeriods() != null && project.getLockedPeriods().size() > 0) {
                 items.addAll(project.getLockedPeriods());
             }
         }
@@ -302,8 +274,7 @@ public class LockedPeriodsPresenter
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 

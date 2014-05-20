@@ -45,8 +45,7 @@ import org.activityinfo.ui.client.page.report.ReportEventBus;
 
 import java.util.List;
 
-public class DimensionSelectionListView implements
-        HasReportElement<PivotTableReportElement> {
+public class DimensionSelectionListView implements HasReportElement<PivotTableReportElement> {
 
     public enum Axis {
         ROW,
@@ -62,8 +61,7 @@ public class DimensionSelectionListView implements
 
     private PivotTableReportElement model;
 
-    public DimensionSelectionListView(EventBus eventBus, Dispatcher dispatcher,
-                                      Axis axis) {
+    public DimensionSelectionListView(EventBus eventBus, Dispatcher dispatcher, Axis axis) {
         this.reportEventBus = new ReportEventBus(eventBus, this);
         this.reportEventBus.listen(new ReportChangeHandler() {
 
@@ -168,12 +166,10 @@ public class DimensionSelectionListView implements
         if (dim instanceof DateDimension) {
             return new DimensionModel(((DateDimension) dim).getUnit());
         } else if (dim instanceof AdminDimension) {
-            return new DimensionModel(
-                    schema.getAdminLevelById(((AdminDimension) dim).getLevelId()));
+            return new DimensionModel(schema.getAdminLevelById(((AdminDimension) dim).getLevelId()));
         } else if (dim instanceof AttributeGroupDimension) {
-            AttributeGroupDTO group = schema
-                    .getAttributeGroupById(((AttributeGroupDimension) dim)
-                            .getAttributeGroupId());
+            AttributeGroupDTO group = schema.getAttributeGroupById(((AttributeGroupDimension) dim)
+                    .getAttributeGroupId());
             return group == null ? null : new DimensionModel(group);
         } else {
             switch (dim.getType()) {
@@ -190,8 +186,7 @@ public class DimensionSelectionListView implements
                 case Location:
                     return new DimensionModel(dim, I18N.CONSTANTS.location());
                 case Target:
-                    return new DimensionModel(dim,
-                            I18N.CONSTANTS.realizedOrTargeted());
+                    return new DimensionModel(dim, I18N.CONSTANTS.realizedOrTargeted());
             }
         }
         return null;

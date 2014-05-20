@@ -65,8 +65,7 @@ public class MapIconServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         // Cache forever
         resp.setHeader("Cache-Control", "max-age=31556926, public");
@@ -76,8 +75,7 @@ public class MapIconServlet extends HttpServlet {
             int radius = Integer.parseInt(req.getParameter("r"));
             Color color = ColorUtil.colorFromString(req.getParameter("c"));
 
-            BufferedImage icon = new BufferedImage(radius * 2, radius * 2,
-                    BufferedImage.TYPE_INT_ARGB);
+            BufferedImage icon = new BufferedImage(radius * 2, radius * 2, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = icon.createGraphics();
 
             g2d.setPaint(new Color(255, 255, 255, 0));
@@ -92,8 +90,7 @@ public class MapIconServlet extends HttpServlet {
 
                 int radius = Integer.parseInt(req.getParameter("r"));
 
-                BufferedImage icon = new BufferedImage(radius * 2, radius * 2,
-                        BufferedImage.TYPE_INT_ARGB);
+                BufferedImage icon = new BufferedImage(radius * 2, radius * 2, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g2d = icon.createGraphics();
 
                 PieMapMarker pmm = new PieMapMarker();
@@ -105,7 +102,8 @@ public class MapIconServlet extends HttpServlet {
                 String[] colors = req.getParameterValues("color");
 
                 if (colors.length != values.length) {
-                    String error = "Expected same amount of colors & values. Amount of Colors: [{0}]. Amount of values: [{1}].";
+                    String error = "Expected same amount of colors & values. Amount of Colors: [{0}]. Amount of " +
+                                   "values: [{1}].";
                     error = String.format(error, colors.length, values.length);
                     throw new ServletException(error);
                 }

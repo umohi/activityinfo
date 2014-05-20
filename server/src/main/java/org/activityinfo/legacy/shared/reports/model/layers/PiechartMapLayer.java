@@ -67,8 +67,7 @@ public class PiechartMapLayer extends CircledMapLayer {
         return result;
     }
 
-    @XmlElement(name = "slice")
-    @XmlElementWrapper(name = "slices")
+    @XmlElement(name = "slice") @XmlElementWrapper(name = "slices")
     public List<Slice> getSlices() {
         return slices;
     }
@@ -127,8 +126,7 @@ public class PiechartMapLayer extends CircledMapLayer {
 
         @Override
         public String toString() {
-            return "Slice [color=" + color + ", indicatorId=" + indicatorId
-                    + "]";
+            return "Slice [color=" + color + ", indicatorId=" + indicatorId + "]";
         }
 
     }

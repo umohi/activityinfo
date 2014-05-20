@@ -42,8 +42,7 @@ public class YearBundler implements Bundler {
         // reporting period
         // and we query for site counts
         if (!rs.isNull(yearAlias)) {
-            bucket.setCategory(dimension, new YearCategory(
-                    rs.getInt(yearAlias)));
+            bucket.setCategory(dimension, new YearCategory(rs.getInt(yearAlias)));
         }
     }
 }

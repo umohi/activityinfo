@@ -32,8 +32,7 @@ public class SyncStatusBar extends ToolBar {
     public static final int HEIGHT = 30;
 
     @Inject
-    public SyncStatusBar(EventBus eventBus, OutOfSyncStatus outOfSyncStatus,
-                         CommandQueueStatus commandQueueStatus) {
+    public SyncStatusBar(EventBus eventBus, OutOfSyncStatus outOfSyncStatus, CommandQueueStatus commandQueueStatus) {
         setHeight(HEIGHT);
         add(new WorkStatus(eventBus));
         add(new LastSyncStatus(eventBus));

@@ -42,8 +42,7 @@ public final class ClustererFactory {
         } else if (clustering instanceof AutomaticClustering) {
             return new GeneticClusterer(radiiCalculator, intersectionCalculator);
         } else if (clustering instanceof AdministrativeLevelClustering) {
-            return new AdminLevelClusterer(
-                    (AdministrativeLevelClustering) clustering, radiiCalculator);
+            return new AdminLevelClusterer((AdministrativeLevelClustering) clustering, radiiCalculator);
         }
 
         return new NullClusterer(radiiCalculator);

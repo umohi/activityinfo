@@ -39,8 +39,7 @@ public class PieChartLegendRenderer {
     public PieChartLegendRenderer(PieChartLegend legend) {
         this.layer = legend.getDefinition();
 
-        this.width = this.height = PADDING + (layer.getMaxRadius() * 2)
-                + PADDING;
+        this.width = this.height = PADDING + (layer.getMaxRadius() * 2) + PADDING;
     }
 
     public ItextGraphic createImage(ImageCreator creator) {

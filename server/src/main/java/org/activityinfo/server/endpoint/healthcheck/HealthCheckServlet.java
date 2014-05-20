@@ -46,12 +46,10 @@ public class HealthCheckServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, final HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
 
         // verify connection with database
-        Query query = entityManager.get().createNativeQuery(
-                "select count(*) from userdatabase");
+        Query query = entityManager.get().createNativeQuery("select count(*) from userdatabase");
         query.getSingleResult();
     }
 }

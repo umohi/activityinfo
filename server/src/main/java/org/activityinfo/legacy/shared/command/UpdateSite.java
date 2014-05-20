@@ -59,11 +59,9 @@ public class UpdateSite implements MutatingCommand<VoidResult>, SiteCommand {
             Object newValue = updated.get(property);
             if (isChanged(original.get(property), newValue)) {
                 if (property.equals("partner")) {
-                    changes.put("partnerId", newValue == null ? null
-                            : ((PartnerDTO) newValue).getId());
+                    changes.put("partnerId", newValue == null ? null : ((PartnerDTO) newValue).getId());
                 } else if (property.equals("project")) {
-                    changes.put("projectId", newValue == null ? null
-                            : ((ProjectDTO) newValue).getId());
+                    changes.put("projectId", newValue == null ? null : ((ProjectDTO) newValue).getId());
                 } else if (propertyCanBeModified(property)) {
                     changes.put(property, newValue);
                 }
@@ -72,8 +70,7 @@ public class UpdateSite implements MutatingCommand<VoidResult>, SiteCommand {
     }
 
     private boolean propertyCanBeModified(String property) {
-        return !(property.equals("activityId") || property
-                .startsWith(AdminLevelDTO.PROPERTY_PREFIX));
+        return !(property.equals("activityId") || property.startsWith(AdminLevelDTO.PROPERTY_PREFIX));
     }
 
     private boolean isChanged(Object a, Object b) {
@@ -142,7 +139,6 @@ public class UpdateSite implements MutatingCommand<VoidResult>, SiteCommand {
 
     @Override
     public String toString() {
-        return "UpdateSite{ id=" + siteId + ", changes="
-                + changes.getTransientMap().toString() + "}";
+        return "UpdateSite{ id=" + siteId + ", changes=" + changes.getTransientMap().toString() + "}";
     }
 }

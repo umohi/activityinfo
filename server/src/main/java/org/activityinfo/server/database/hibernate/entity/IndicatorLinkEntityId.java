@@ -51,7 +51,7 @@ public class IndicatorLinkEntityId implements Serializable {
         }
 
         IndicatorLinkEntityId i = (IndicatorLinkEntityId) obj;
-        return Objects.equal(i.getSourceIndicatorId(), this.getSourceIndicatorId())
-                && Objects.equal(i.getDestinationIndicatorId(), this.getDestinationIndicatorId());
+        return Objects.equal(i.getSourceIndicatorId(), this.getSourceIndicatorId()) &&
+               Objects.equal(i.getDestinationIndicatorId(), this.getDestinationIndicatorId());
     }
 }

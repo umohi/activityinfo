@@ -49,8 +49,7 @@ public class RectFitnessFunctor implements FitnessFunctor {
                 Rectangle jRect = clusters.get(j).getRectangle();
 
                 if (iRect.intersects(jRect)) {
-                    score -= 4.0 * area(iRect.intersection(clusters.get(j)
-                            .getRectangle()));
+                    score -= 4.0 * area(iRect.intersection(clusters.get(j).getRectangle()));
                 }
             }
         }

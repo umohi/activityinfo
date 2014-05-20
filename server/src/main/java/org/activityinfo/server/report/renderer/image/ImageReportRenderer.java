@@ -41,15 +41,13 @@ public class ImageReportRenderer implements Renderer {
     private final ChartRendererJC chartRenderer;
 
     @Inject
-    public ImageReportRenderer(ImageMapRenderer renderer,
-                               ChartRendererJC chartRendererJC) {
+    public ImageReportRenderer(ImageMapRenderer renderer, ChartRendererJC chartRendererJC) {
         this.mapRenderer = renderer;
         this.chartRenderer = chartRendererJC;
     }
 
     @Override
-    public void render(ReportElement element, OutputStream os)
-            throws IOException {
+    public void render(ReportElement element, OutputStream os) throws IOException {
         // TODO: support for other types?
 
         if (element instanceof MapReportElement) {

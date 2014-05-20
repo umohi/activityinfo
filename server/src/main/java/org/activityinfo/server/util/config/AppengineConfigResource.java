@@ -23,8 +23,7 @@ public class AppengineConfigResource {
 
     public static final String END_POINT = "/admin/config";
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
+    @GET @Produces(MediaType.TEXT_HTML)
     public Viewable getPage() {
         Map<String, String> model = Maps.newHashMap();
         model.put("currentConfig", AppEngineConfig.getPropertyFile());
@@ -33,8 +32,7 @@ public class AppengineConfigResource {
     }
 
     @POST
-    public Response update(@Context UriInfo uri,
-                           @FormParam("config") String config) {
+    public Response update(@Context UriInfo uri, @FormParam("config") String config) {
         AppEngineConfig.setPropertyFile(config);
 
         return Response.seeOther(uri.getRequestUri()).build();

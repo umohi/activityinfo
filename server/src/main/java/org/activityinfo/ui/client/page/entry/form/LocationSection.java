@@ -28,11 +28,11 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.LabelField;
 import com.google.common.collect.Maps;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.CreateLocation;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.*;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.page.entry.location.LocationDialog;
 import org.activityinfo.ui.client.page.entry.location.LocationDialog.Callback;
 import org.activityinfo.ui.client.widget.coord.CoordinateFields;
@@ -40,8 +40,7 @@ import org.activityinfo.ui.client.widget.coord.CoordinateFields;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class LocationSection extends FormSectionWithFormLayout<SiteDTO>
-        implements LocationFormSection {
+public class LocationSection extends FormSectionWithFormLayout<SiteDTO> implements LocationFormSection {
 
     private boolean isNew;
     private ActivityDTO activity;
@@ -57,8 +56,7 @@ public class LocationSection extends FormSectionWithFormLayout<SiteDTO>
         this.activity = activity;
 
         levelFields = Maps.newHashMap();
-        for (AdminLevelDTO level : activity.getDatabase().getCountry()
-                .getAdminLevels()) {
+        for (AdminLevelDTO level : activity.getDatabase().getCountry().getAdminLevels()) {
             LabelField levelField = new LabelField();
             levelField.setFieldLabel(level.getName());
             add(levelField);
@@ -78,14 +76,13 @@ public class LocationSection extends FormSectionWithFormLayout<SiteDTO>
         add(coordinateFields.getLatitudeField());
         add(coordinateFields.getLongitudeField());
 
-        Button changeLocation = new Button(I18N.CONSTANTS.changeLocation(),
-                new SelectionListener<ButtonEvent>() {
+        Button changeLocation = new Button(I18N.CONSTANTS.changeLocation(), new SelectionListener<ButtonEvent>() {
 
-                    @Override
-                    public void componentSelected(ButtonEvent ce) {
-                        changeLocation();
-                    }
-                });
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                changeLocation();
+            }
+        });
         add(changeLocation);
 
     }
@@ -108,10 +105,8 @@ public class LocationSection extends FormSectionWithFormLayout<SiteDTO>
         }
 
         if (location.hasCoordinates()) {
-            coordinateFields.getLatitudeField()
-                    .setValue(location.getLatitude());
-            coordinateFields.getLongitudeField().setValue(
-                    location.getLongitude());
+            coordinateFields.getLatitudeField().setValue(location.getLatitude());
+            coordinateFields.getLongitudeField().setValue(location.getLongitude());
         } else {
             coordinateFields.setValue(null);
         }
@@ -127,20 +122,19 @@ public class LocationSection extends FormSectionWithFormLayout<SiteDTO>
         if (!isNew) {
             callback.onSuccess(null);
         } else {
-            dispatcher.execute(new CreateLocation(location),
-                    new AsyncCallback<VoidResult>() {
+            dispatcher.execute(new CreateLocation(location), new AsyncCallback<VoidResult>() {
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            callback.onFailure(caught);
-                        }
+                @Override
+                public void onFailure(Throwable caught) {
+                    callback.onFailure(caught);
+                }
 
-                        @Override
-                        public void onSuccess(VoidResult result) {
-                            isNew = false;
-                            callback.onSuccess(null);
-                        }
-                    });
+                @Override
+                public void onSuccess(VoidResult result) {
+                    isNew = false;
+                    callback.onSuccess(null);
+                }
+            });
         }
     }
 
@@ -151,8 +145,8 @@ public class LocationSection extends FormSectionWithFormLayout<SiteDTO>
     }
 
     private void changeLocation() {
-        LocationDialog dialog = new LocationDialog(dispatcher, activity
-                .getDatabase().getCountry(),
+        LocationDialog dialog = new LocationDialog(dispatcher,
+                activity.getDatabase().getCountry(),
                 activity.getLocationType());
         dialog.show(new Callback() {
 

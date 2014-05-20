@@ -53,9 +53,7 @@ public abstract class AbstractMapLayer implements MapLayer {
         this.isVisible = isVisible;
     }
 
-    @Override
-    @XmlElement(name = "indicator")
-    @XmlElementWrapper(name = "indicators")
+    @Override @XmlElement(name = "indicator") @XmlElementWrapper(name = "indicators")
     public List<Integer> getIndicatorIds() {
         return indicatorIds;
     }
@@ -69,8 +67,7 @@ public abstract class AbstractMapLayer implements MapLayer {
         return indicatorIds != null && indicatorIds.size() > 1;
     }
 
-    @XmlElement
-    @Override
+    @XmlElement @Override
     public String getName() {
         return name;
     }
@@ -92,8 +89,6 @@ public abstract class AbstractMapLayer implements MapLayer {
 
     @Override
     public String toString() {
-        return getClass() + "[isVisible=" + isVisible + ", indicatorIds="
-                + indicatorIds
-                + filter + "]";
+        return getClass() + "[isVisible=" + isVisible + ", indicatorIds=" + indicatorIds + filter + "]";
     }
 }

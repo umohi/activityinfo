@@ -40,8 +40,7 @@ public class AppCacheSynchronizer implements ProgressEventHandler, AsyncCommand 
     private final EventBus eventBus;
     private final AppCache appCache = AppCacheFactory.get();
 
-    private static final Logger LOGGER = Logger
-            .getLogger(AppCacheSynchronizer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AppCacheSynchronizer.class.getName());
 
     @Inject
     public AppCacheSynchronizer(EventBus eventBus) {
@@ -51,8 +50,7 @@ public class AppCacheSynchronizer implements ProgressEventHandler, AsyncCommand 
     @Override
     public void execute(final AsyncCallback<Void> callback) {
 
-        final HandlerRegistration progressRegistration = appCache
-                .addProgressHandler(this);
+        final HandlerRegistration progressRegistration = appCache.addProgressHandler(this);
         appCache.ensureUpToDate(new AsyncCallback<Void>() {
 
             @Override
@@ -74,8 +72,7 @@ public class AppCacheSynchronizer implements ProgressEventHandler, AsyncCommand 
 
     @Override
     public void onProgress(int filesComplete, int filesTotal) {
-        eventBus.fireEvent(new SyncStatusEvent(I18N.CONSTANTS
-                .appCacheProgress(),
+        eventBus.fireEvent(new SyncStatusEvent(I18N.CONSTANTS.appCacheProgress(),
                 (double) filesComplete / (double) filesTotal * 100d));
     }
 }

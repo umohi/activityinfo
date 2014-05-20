@@ -74,8 +74,7 @@ import java.util.logging.Logger;
  */
 public class PersistentPolicyProvider {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(PersistentPolicyProvider.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PersistentPolicyProvider.class.getName());
 
     private ServletContext servletContext;
     private BlobService blobService;
@@ -86,8 +85,7 @@ public class PersistentPolicyProvider {
         this.servletContext = servletContext;
     }
 
-    public SerializationPolicy getSerializationPolicy(String moduleBaseURL,
-                                                      String strongName) {
+    public SerializationPolicy getSerializationPolicy(String moduleBaseURL, String strongName) {
 
         LOGGER.info("Loading serialization policy " + strongName);
 
@@ -133,8 +131,7 @@ public class PersistentPolicyProvider {
         return "/gwt-rpc/" + strongName;
     }
 
-    private SerializationPolicy readFromDeployment(String moduleBaseURL,
-                                                   String strongName) {
+    private SerializationPolicy readFromDeployment(String moduleBaseURL, String strongName) {
 
         // Read the serialization policy from the
         // deployed application files
@@ -147,14 +144,12 @@ public class PersistentPolicyProvider {
             InputStream in = servletContext.getResourceAsStream(file);
             bytes = ByteStreams.toByteArray(in);
             in.close();
-            policy = SerializationPolicyLoader.loadFromStream(
-                    new ByteArrayInputStream(bytes), null);
+            policy = SerializationPolicyLoader.loadFromStream(new ByteArrayInputStream(bytes), null);
 
             LOGGER.info("Read serialization policy " + strongName + " from deployment");
 
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE,
-                    "Failed to read serialization policy from deployment", e);
+            LOGGER.log(Level.SEVERE, "Failed to read serialization policy from deployment", e);
             return null;
         }
 
@@ -171,8 +166,7 @@ public class PersistentPolicyProvider {
     }
 
 
-    private String deploymentPath(String moduleBaseURL, String strongName)
-            throws MalformedURLException {
+    private String deploymentPath(String moduleBaseURL, String strongName) throws MalformedURLException {
         String modulePath = new URL(moduleBaseURL).getPath();
         return modulePath + strongName + ".gwt.rpc";
     }

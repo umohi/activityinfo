@@ -81,7 +81,8 @@ public class PrintDataEntryForm extends Window {
 
     public void print(final int activityId) {
         setVisible(true);
-        dispatcher.execute(new GetSchema(), new MaskingAsyncMonitor(this, I18N.CONSTANTS.loading()),
+        dispatcher.execute(new GetSchema(),
+                new MaskingAsyncMonitor(this, I18N.CONSTANTS.loading()),
                 new AsyncCallback<SchemaDTO>() {
 
                     @Override
@@ -111,22 +112,23 @@ public class PrintDataEntryForm extends Window {
     }
 
     private final native void fillIframe(IFrameElement iframe, String content) /*-{
-        var doc = iframe.document;
+      var doc = iframe.document;
 
-        if (iframe.contentDocument) {
-            doc = iframe.contentDocument; // For NS6
-        } else if (iframe.contentWindow) {
-            doc = iframe.contentWindow.document; // For IE5.5 and IE6
-        }
+      if (iframe.contentDocument) {
+        doc = iframe.contentDocument; // For NS6
+      } else if (iframe.contentWindow) {
+        doc = iframe.contentWindow.document; // For IE5.5 and IE6
+      }
 
-        // Put the content in the iframe
-        doc.open();
-        doc.writeln(content);
-        doc.close();
+      // Put the content in the iframe
+      doc.open();
+      doc.writeln(content);
+      doc.close();
     }-*/;
 
     private void showError(Throwable e) {
-        MessageBox.alert(I18N.CONSTANTS.error(), "There was an error printing the data entry form: " + e.getMessage(),
+        MessageBox.alert(I18N.CONSTANTS.error(),
+                "There was an error printing the data entry form: " + e.getMessage(),
                 new Listener<MessageBoxEvent>() {
 
                     @Override
@@ -141,10 +143,10 @@ public class PrintDataEntryForm extends Window {
         String contents = getFormContents();
 
         contents = contents.replace("{$activityName}", activity.getName())
-                .replace("{$databaseName}", activity.getDatabase().getName())
-                .replace("{$activityName}", activity.getName())
-                .replace("{$indicators}", addIndicators(activity))
-                .replace("{$attributes}", addAttributes(activity));
+                           .replace("{$databaseName}", activity.getDatabase().getName())
+                           .replace("{$activityName}", activity.getName())
+                           .replace("{$indicators}", addIndicators(activity))
+                           .replace("{$attributes}", addAttributes(activity));
 
         html = new StringBuilder();
         html.append(contents);
@@ -168,24 +170,22 @@ public class PrintDataEntryForm extends Window {
     }
 
     private static native void doPrint(IFrameElement frame) /*-{
-        var contentWindow = frame.contentWindow;
-        contentWindow.focus();
-        contentWindow.print();
+      var contentWindow = frame.contentWindow;
+      contentWindow.focus();
+      contentWindow.print();
     }-*/;
 
 
     private String addIndicators(ActivityDTO activity) {
         StringBuilder builder = new StringBuilder();
 
-        builder
-                .append("<table border=\"1px\" align=\"left\" cellpadding=\"0\" cellspacing=\"0\" class=\"form-detail\">");
+        builder.append("<table border=\"1px\" align=\"left\" cellpadding=\"0\" cellspacing=\"0\" " +
+                       "class=\"form-detail\">");
 
         for (IndicatorGroup group : activity.groupIndicators()) {
 
             if (group.getName() != null) {
-                builder
-                        .append("<tr><td colspan='3'><h3 class='indicatorGroup'> "
-                                + group.getName() + "</h3><td></tr>");
+                builder.append("<tr><td colspan='3'><h3 class='indicatorGroup'> " + group.getName() + "</h3><td></tr>");
             }
 
             builder.append("<tr>");
@@ -218,8 +218,7 @@ public class PrintDataEntryForm extends Window {
         for (AttributeGroupDTO attributeGroup : activity.getAttributeGroups()) {
 
             builder.append("<tr>");
-            builder.append("<td id=\"field-set\" valign=\"top\">"
-                    + attributeGroup.getName() + ":</td><td>");
+            builder.append("<td id=\"field-set\" valign=\"top\">" + attributeGroup.getName() + ":</td><td>");
 
             attributeCheckBoxGroup(attributeGroup, builder);
             builder.append("</td></tr>");
@@ -227,8 +226,7 @@ public class PrintDataEntryForm extends Window {
         return builder.toString();
     }
 
-    private void attributeCheckBoxGroup(AttributeGroupDTO group,
-                                        StringBuilder builder) {
+    private void attributeCheckBoxGroup(AttributeGroupDTO group, StringBuilder builder) {
 
         for (AttributeDTO attribture : group.getAttributes()) {
             builder.append("[  ] " + attribture.getName() + "<br />");

@@ -45,8 +45,7 @@ public class AdministrativeLevelClustering implements Clustering {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((adminLevels == null) ? 0 : adminLevels.hashCode());
+        result = prime * result + ((adminLevels == null) ? 0 : adminLevels.hashCode());
         return result;
     }
 
@@ -65,7 +64,6 @@ public class AdministrativeLevelClustering implements Clustering {
 
     @Override
     public String toString() {
-        return "AdministrativeLevelClustering [adminLevels=" + adminLevels
-                + "]";
+        return "AdministrativeLevelClustering [adminLevels=" + adminLevels + "]";
     }
 }

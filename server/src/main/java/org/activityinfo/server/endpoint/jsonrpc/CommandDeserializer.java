@@ -18,9 +18,7 @@ public class CommandDeserializer extends StdDeserializer<Command> {
     }
 
     @Override
-    public Command deserialize(
-            JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+    public Command deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         ObjectNode root = (ObjectNode) mapper.readTree(jp);
 

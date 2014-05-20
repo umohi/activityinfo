@@ -280,9 +280,9 @@ public final class SchemaDTO extends BaseModelData implements DTO {
     }
 
     public LocationTypeDTO getLocationTypeById(int locationTypeId) {
-        for(CountryDTO country : countries) {
-            for(LocationTypeDTO locationType : country.getLocationTypes())  {
-                if(locationType.getId() == locationTypeId) {
+        for (CountryDTO country : countries) {
+            for (LocationTypeDTO locationType : country.getLocationTypes()) {
+                if (locationType.getId() == locationTypeId) {
                     return locationType;
                 }
             }

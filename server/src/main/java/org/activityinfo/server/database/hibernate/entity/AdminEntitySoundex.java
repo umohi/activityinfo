@@ -26,8 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "adminentity_soundex")
+@Entity @Table(name = "adminentity_soundex")
 public class AdminEntitySoundex {
 
     @Id

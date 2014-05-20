@@ -45,8 +45,7 @@ import java.util.logging.Logger;
  * the server side.
  */
 public class ConfigModule extends ServletModule {
-    private static Logger logger = Logger.getLogger(ConfigModule.class
-            .getName());
+    private static Logger logger = Logger.getLogger(ConfigModule.class.getName());
 
     @Override
     protected void configureServlets() {
@@ -56,11 +55,8 @@ public class ConfigModule extends ServletModule {
         }
     }
 
-    @Provides
-    @Singleton
-    @Trace
-    public DeploymentConfiguration provideDeploymentConfig(
-            ServletContext context) {
+    @Provides @Singleton @Trace
+    public DeploymentConfiguration provideDeploymentConfig(ServletContext context) {
         Properties properties = new Properties();
 
         tryToLoadFrom(properties, webInfDirectory(context));
@@ -73,8 +69,7 @@ public class ConfigModule extends ServletModule {
         // specified at server start up with
         // -Dactivityinfo.config=/path/to/conf.properties
         if (!Strings.isNullOrEmpty(System.getProperty("activityinfo.config"))) {
-            tryToLoadFrom(properties,
-                    new File(System.getProperty("activityinfo.config")));
+            tryToLoadFrom(properties, new File(System.getProperty("activityinfo.config")));
         }
 
         return new DeploymentConfiguration(properties);
@@ -82,11 +77,9 @@ public class ConfigModule extends ServletModule {
 
     private boolean tryToLoadFrom(Properties properties, File file) {
         try {
-            logger.info("Trying to read properties from: "
-                    + file.getAbsolutePath());
+            logger.info("Trying to read properties from: " + file.getAbsolutePath());
             if (file.exists()) {
-                logger
-                        .info("Reading properties from " + file.getAbsolutePath());
+                logger.info("Reading properties from " + file.getAbsolutePath());
                 properties.load(new FileInputStream(file));
                 return true;
             }
@@ -106,14 +99,12 @@ public class ConfigModule extends ServletModule {
                 properties.load(new StringReader(config));
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE,
-                    "Exception reading configuration from AppEngine Datastore", e);
+            logger.log(Level.SEVERE, "Exception reading configuration from AppEngine Datastore", e);
         }
     }
 
     private File webInfDirectory(ServletContext context) {
-        return new File(context.getRealPath("WEB-INF") + File.separator
-                + "activityinfo.properties");
+        return new File(context.getRealPath("WEB-INF") + File.separator + "activityinfo.properties");
     }
 
     private File systemSettings() {
@@ -121,7 +112,6 @@ public class ConfigModule extends ServletModule {
     }
 
     private File userSettings() {
-        return new File(System.getProperty("user.home") + File.separator
-                + "activityinfo.properties");
+        return new File(System.getProperty("user.home") + File.separator + "activityinfo.properties");
     }
 }

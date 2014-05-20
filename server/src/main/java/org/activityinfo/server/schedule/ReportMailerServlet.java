@@ -50,8 +50,7 @@ public class ReportMailerServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         Date today = parseDate(request);
         Predicate<ReportSubscription> filter = parseFilter(request);
@@ -99,8 +98,7 @@ public class ReportMailerServlet extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         doGet(request, response);
     }
 }

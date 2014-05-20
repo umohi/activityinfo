@@ -40,8 +40,7 @@ import org.activityinfo.ui.client.page.report.editor.ReportElementEditor;
 import java.util.Arrays;
 import java.util.List;
 
-public class TextElementEditor extends LayoutContainer implements
-        ReportElementEditor<TextReportElement> {
+public class TextElementEditor extends LayoutContainer implements ReportElementEditor<TextReportElement> {
 
     private TextArea textArea;
     private ReportEventBus reportEventBus;

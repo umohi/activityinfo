@@ -70,10 +70,8 @@ public class Filter implements Serializable {
      */
     public Filter(Filter filter) {
 
-        for (Map.Entry<DimensionType, Set<Integer>> entry : filter.restrictions
-                .entrySet()) {
-            this.restrictions.put(entry.getKey(),
-                    new HashSet<Integer>(entry.getValue()));
+        for (Map.Entry<DimensionType, Set<Integer>> entry : filter.restrictions.entrySet()) {
+            this.restrictions.put(entry.getKey(), new HashSet<Integer>(entry.getValue()));
         }
         this.dateRange = filter.dateRange;
         this.lenient = filter.lenient;
@@ -93,13 +91,10 @@ public class Filter implements Serializable {
         types.addAll(b.restrictions.keySet());
 
         for (DimensionType type : types) {
-            this.restrictions.put(type, intersect(
-                    a.getRestrictionSet(type, false),
-                    b.getRestrictionSet(type, false)));
+            this.restrictions.put(type, intersect(a.getRestrictionSet(type, false), b.getRestrictionSet(type, false)));
 
         }
-        this.dateRange = DateRange.intersection(a.getDateRange(),
-                b.getDateRange());
+        this.dateRange = DateRange.intersection(a.getDateRange(), b.getDateRange());
 
     }
 
@@ -140,8 +135,7 @@ public class Filter implements Serializable {
         set.add(categoryId);
     }
 
-    public void addRestriction(DimensionType type,
-                               Collection<Integer> categoryIds) {
+    public void addRestriction(DimensionType type, Collection<Integer> categoryIds) {
         if (!categoryIds.isEmpty()) {
             Set<Integer> set = getRestrictionSet(type, true);
             set.addAll(categoryIds);
@@ -178,8 +172,7 @@ public class Filter implements Serializable {
 
     public Set<DimensionType> getRestrictedDimensions() {
         Set<DimensionType> dims = Sets.newHashSet();
-        for (Entry<DimensionType, Set<Integer>> entries : restrictions
-                .entrySet()) {
+        for (Entry<DimensionType, Set<Integer>> entries : restrictions.entrySet()) {
             if (!entries.getValue().isEmpty()) {
                 dims.add(entries.getKey());
             }
@@ -225,9 +218,8 @@ public class Filter implements Serializable {
         Set<Integer> ids = getRestrictions(type);
         if (ids.size() != 1) {
             throw new UnsupportedOperationException(
-                    "Cannot return a unique category, the dimension " + type
-                            + " is restricted to " +
-                            ids.size() + " categories");
+                    "Cannot return a unique category, the dimension " + type + " is restricted to " +
+                    ids.size() + " categories");
         }
         return ids.iterator().next();
     }
@@ -308,10 +300,8 @@ public class Filter implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((dateRange == null) ? 0 : dateRange.hashCode());
-        result = prime * result
-                + ((restrictions == null) ? 0 : restrictions.hashCode());
+        result = prime * result + ((dateRange == null) ? 0 : dateRange.hashCode());
+        result = prime * result + ((restrictions == null) ? 0 : restrictions.hashCode());
         return result;
     }
 
@@ -327,8 +317,7 @@ public class Filter implements Serializable {
             return false;
         }
         Filter other = (Filter) obj;
-        return getDateRange().equals(other.getDateRange()) &&
-                getRestrictions().equals(other.getRestrictions());
+        return getDateRange().equals(other.getDateRange()) && getRestrictions().equals(other.getRestrictions());
     }
 
 }

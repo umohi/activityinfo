@@ -37,20 +37,20 @@ import java.util.Locale;
 /**
  * @author Alex Bertram (akbertram@gmail.com)
  */
-public abstract class PivotGenerator<T extends PivotReportElement> extends
-        BaseGenerator<T> {
+public abstract class PivotGenerator<T extends PivotReportElement> extends BaseGenerator<T> {
 
     public PivotGenerator(DispatcherSync dispatcher) {
         super(dispatcher);
     }
 
-    protected PivotTableData generateData(int userId, Locale locale,
+    protected PivotTableData generateData(int userId,
+                                          Locale locale,
                                           T element,
                                           Filter filter,
-                                          List<Dimension> rowDims, List<Dimension> colDims) {
+                                          List<Dimension> rowDims,
+                                          List<Dimension> colDims) {
 
-        PivotResult result = getDispatcher().execute(
-                new PivotSites(element.allDimensions(), filter));
+        PivotResult result = getDispatcher().execute(new PivotSites(element.allDimensions(), filter));
 
         PivotTableDataBuilder builder = new PivotTableDataBuilder();
         return builder.build(element, rowDims, colDims, result.getBuckets());

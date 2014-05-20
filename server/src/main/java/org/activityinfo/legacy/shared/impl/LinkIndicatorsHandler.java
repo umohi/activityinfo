@@ -28,23 +28,21 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.activityinfo.legacy.shared.command.LinkIndicators;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 
-public class LinkIndicatorsHandler implements
-        CommandHandlerAsync<LinkIndicators, VoidResult> {
+public class LinkIndicatorsHandler implements CommandHandlerAsync<LinkIndicators, VoidResult> {
 
     @Override
-    public void execute(LinkIndicators command, ExecutionContext context,
-                        AsyncCallback<VoidResult> callback) {
+    public void execute(LinkIndicators command, ExecutionContext context, AsyncCallback<VoidResult> callback) {
 
         SqlUpdate.delete(Tables.INDICATOR_LINK)
-                .where("sourceIndicatorId", command.getSourceIndicatorId())
-                .where("destinationIndicatorId", command.getDestIndicatorId())
-                .execute(context.getTransaction());
+                 .where("sourceIndicatorId", command.getSourceIndicatorId())
+                 .where("destinationIndicatorId", command.getDestIndicatorId())
+                 .execute(context.getTransaction());
 
         if (command.isLink()) {
             SqlInsert.insertInto(Tables.INDICATOR_LINK)
-                    .value("sourceIndicatorId", command.getSourceIndicatorId())
-                    .value("destinationIndicatorId", command.getDestIndicatorId())
-                    .execute(context.getTransaction());
+                     .value("sourceIndicatorId", command.getSourceIndicatorId())
+                     .value("destinationIndicatorId", command.getDestIndicatorId())
+                     .execute(context.getTransaction());
         }
 
         callback.onSuccess(null);

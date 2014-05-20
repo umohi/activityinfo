@@ -68,18 +68,14 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
         setHeadingText("Saved Reports");
 
         toolBar = new ActionToolBar(this);
-        toolBar.addButton(UIActions.PRINT, I18N.CONSTANTS.open(),
-                IconImageBundle.ICONS.pdf());
+        toolBar.addButton(UIActions.PRINT, I18N.CONSTANTS.open(), IconImageBundle.ICONS.pdf());
         toolBar.addDeleteButton();
-        toolBar.addButton("share", I18N.CONSTANTS.sharingOptions(),
-                IconImageBundle.ICONS.group());
-        toolBar.addButton("email", I18N.CONSTANTS.emailOptions(),
-                IconImageBundle.ICONS.email());
+        toolBar.addButton("share", I18N.CONSTANTS.sharingOptions(), IconImageBundle.ICONS.group());
+        toolBar.addButton("email", I18N.CONSTANTS.emailOptions(), IconImageBundle.ICONS.email());
 
         setTopComponent(toolBar);
 
-        ListLoader<ReportsResult> loader = new BaseListLoader<ReportsResult>(
-                new ReportsProxy(dispatcher));
+        ListLoader<ReportsResult> loader = new BaseListLoader<ReportsResult>(new ReportsProxy(dispatcher));
         store = new ListStore<ReportMetadataDTO>(loader);
 
         grid = new EditorGrid<ReportMetadataDTO>(store, createColumnModel());
@@ -88,33 +84,29 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
         grid.setSelectionModel(new GridSelectionModel<ReportMetadataDTO>());
         grid.setClicksToEdit(ClicksToEdit.ONE);
         grid.setLoadMask(true);
-        grid.addListener(Events.CellDoubleClick,
-                new Listener<GridEvent<ReportMetadataDTO>>() {
+        grid.addListener(Events.CellDoubleClick, new Listener<GridEvent<ReportMetadataDTO>>() {
 
-                    @Override
-                    public void handleEvent(GridEvent<ReportMetadataDTO> be) {
-                        open(be.getModel());
-                    }
-                });
-        grid.addListener(Events.CellClick,
-                new Listener<GridEvent<ReportMetadataDTO>>() {
+            @Override
+            public void handleEvent(GridEvent<ReportMetadataDTO> be) {
+                open(be.getModel());
+            }
+        });
+        grid.addListener(Events.CellClick, new Listener<GridEvent<ReportMetadataDTO>>() {
 
-                    @Override
-                    public void handleEvent(GridEvent<ReportMetadataDTO> event) {
-                        if (event.getColIndex() == 0) {
-                            onDashboardClicked(event.getModel());
-                        }
-                    }
-                });
-        grid.getSelectionModel().addSelectionChangedListener(
-                new SelectionChangedListener<ReportMetadataDTO>() {
+            @Override
+            public void handleEvent(GridEvent<ReportMetadataDTO> event) {
+                if (event.getColIndex() == 0) {
+                    onDashboardClicked(event.getModel());
+                }
+            }
+        });
+        grid.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<ReportMetadataDTO>() {
 
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<ReportMetadataDTO> se) {
-                        onSelectionChanged(se.getSelectedItem());
-                    }
-                });
+            @Override
+            public void selectionChanged(SelectionChangedEvent<ReportMetadataDTO> se) {
+                onSelectionChanged(se.getSelectedItem());
+            }
+        });
 
         setLayout(new FitLayout());
         add(grid);
@@ -129,8 +121,7 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
     }
 
     private void updateToolbarState(ReportMetadataDTO selectedItem) {
-        toolBar.setActionEnabled(UIActions.DELETE, selectedItem != null &&
-                selectedItem.getAmOwner());
+        toolBar.setActionEnabled(UIActions.DELETE, selectedItem != null && selectedItem.getAmOwner());
         toolBar.setActionEnabled(UIActions.PRINT, selectedItem != null);
         toolBar.setActionEnabled("email", selectedItem != null);
     }
@@ -143,27 +134,32 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
         dashboard.setRenderer(new GridCellRenderer<ReportMetadataDTO>() {
 
             @Override
-            public Object render(ReportMetadataDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<ReportMetadataDTO> store, Grid<ReportMetadataDTO> grid) {
+            public Object render(ReportMetadataDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<ReportMetadataDTO> store,
+                                 Grid<ReportMetadataDTO> grid) {
 
-                return "<div style='cursor:pointer'>"
-                        + (model.isDashboard() ? IconImageBundle.ICONS.star()
-                        .getHTML() :
-                        IconImageBundle.ICONS.starWhite().getHTML()) + "</div>";
+                return "<div style='cursor:pointer'>" +
+                       (model.isDashboard() ? IconImageBundle.ICONS.star().getHTML() : IconImageBundle.ICONS.starWhite()
+                                                                                                            .getHTML()) +
+                       "</div>";
 
             }
         });
 
-        ColumnConfig title = new ColumnConfig("title", I18N.CONSTANTS.title(),
-                150);
-        ColumnConfig owner = new ColumnConfig("ownerName",
-                I18N.CONSTANTS.ownerName(), 100);
+        ColumnConfig title = new ColumnConfig("title", I18N.CONSTANTS.title(), 150);
+        ColumnConfig owner = new ColumnConfig("ownerName", I18N.CONSTANTS.ownerName(), 100);
         owner.setRenderer(new GridCellRenderer<ReportMetadataDTO>() {
 
             @Override
-            public Object render(ReportMetadataDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
+            public Object render(ReportMetadataDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
                                  ListStore<ReportMetadataDTO> store,
                                  Grid<ReportMetadataDTO> grid) {
 
@@ -175,14 +171,17 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
             }
         });
 
-        ColumnConfig email = new ColumnConfig("email",
-                I18N.CONSTANTS.emailSubscription(), 100);
+        ColumnConfig email = new ColumnConfig("email", I18N.CONSTANTS.emailSubscription(), 100);
         email.setRenderer(new GridCellRenderer<ReportMetadataDTO>() {
 
             @Override
-            public Object render(ReportMetadataDTO model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<ReportMetadataDTO> store, Grid<ReportMetadataDTO> grid) {
+            public Object render(ReportMetadataDTO model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<ReportMetadataDTO> store,
+                                 Grid<ReportMetadataDTO> grid) {
 
                 switch (model.getEmailDelivery()) {
                     case NONE:
@@ -209,22 +208,20 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
         }
 
         @Override
-        protected void load(Object loadConfig,
-                            final AsyncCallback<ReportsResult> callback) {
+        protected void load(Object loadConfig, final AsyncCallback<ReportsResult> callback) {
 
-            dispatcher.execute(new GetReports(),
-                    new AsyncCallback<ReportsResult>() {
+            dispatcher.execute(new GetReports(), new AsyncCallback<ReportsResult>() {
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            callback.onFailure(caught);
-                        }
+                @Override
+                public void onFailure(Throwable caught) {
+                    callback.onFailure(caught);
+                }
 
-                        @Override
-                        public void onSuccess(ReportsResult result) {
-                            callback.onSuccess(result);
-                        }
-                    });
+                @Override
+                public void onSuccess(ReportsResult result) {
+                    callback.onSuccess(result);
+                }
+            });
         }
     }
 
@@ -246,11 +243,10 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
 
             @Override
             public void onSuccess(VoidResult result) {
-                Info.display(
-                        I18N.CONSTANTS.saved(),
-                        model.isDashboard() ? I18N.MESSAGES.addedToDashboard(model
-                                .getTitle()) :
-                                I18N.MESSAGES.removedFromDashboard(model.getTitle()));
+                Info.display(I18N.CONSTANTS.saved(),
+                        model.isDashboard() ? I18N.MESSAGES.addedToDashboard(model.getTitle()) : I18N.MESSAGES
+                                .removedFromDashboard(
+                                model.getTitle()));
             }
         });
 
@@ -272,8 +268,7 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
 
     private void showEmailDialog() {
         EmailDialog dialog = new EmailDialog(dispatcher);
-        final ReportMetadataDTO selected = grid.getSelectionModel()
-                .getSelectedItem();
+        final ReportMetadataDTO selected = grid.getSelectionModel().getSelectedItem();
         dialog.show(selected, new EmailDialog.Callback() {
 
             @Override
@@ -284,14 +279,12 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
     }
 
     private void open(ReportMetadataDTO model) {
-        eventBus.fireEvent(new NavigationEvent(
-                NavigationHandler.NAVIGATION_REQUESTED,
+        eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
                 new ReportDesignPageState(model.getId())));
     }
 
     private void delete() {
-        final ReportMetadataDTO report = grid.getSelectionModel()
-                .getSelectedItem();
+        final ReportMetadataDTO report = grid.getSelectionModel().getSelectedItem();
         MessageBox.confirm(I18N.CONSTANTS.delete(),
                 I18N.MESSAGES.confirmDeleteReport(report.getTitle()),
                 new Listener<MessageBoxEvent>() {
@@ -300,8 +293,7 @@ public class ReportGridPanel extends ContentPanel implements ActionListener {
                     public void handleEvent(MessageBoxEvent be) {
                         if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
                             dispatcher.execute(new DeleteReport(report.getId()),
-                                    new MaskingAsyncMonitor(ReportGridPanel.this,
-                                            I18N.CONSTANTS.delete()),
+                                    new MaskingAsyncMonitor(ReportGridPanel.this, I18N.CONSTANTS.delete()),
                                     new AsyncCallback<VoidResult>() {
 
                                         @Override

@@ -89,8 +89,7 @@ public final class ScaleUtil {
 
         final double tol = 5.0E-6;
         final double bias = 1.0E-4;
-        final double[] unit = new double[]{1, 1.2, 1.6, 2.0, 2.5, 3, 5, 6, 8,
-                10};
+        final double[] unit = new double[]{1, 1.2, 1.6, 2.0, 2.5, 3, 5, 6, 8, 10};
 
         // C
         // FMAX = FMX
@@ -114,8 +113,7 @@ public final class ScaleUtil {
             throw new IllegalArgumentException("fmax cannot be less than fmin.");
         }
         if (n < 1) {
-            throw new IllegalArgumentException(
-                    "n must be greater than or equal to n");
+            throw new IllegalArgumentException("n must be greater than or equal to n");
         }
 
         rn = n - 1;

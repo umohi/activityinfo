@@ -31,17 +31,14 @@ public class SitesResources {
         this.dispatcher = dispatcher;
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String query(
-            @QueryParam("activity") List<Integer> activityIds,
-            @QueryParam("database") List<Integer> databaseIds,
-            @QueryParam("indicator") List<Integer> indicatorIds,
-            @QueryParam("partner") List<Integer> partnerIds,
-            @QueryParam("attribute") List<Integer> attributeIds,
-            @QueryParam("location") List<Integer> locationIds,
-            @QueryParam("format") String format
-    ) throws IOException {
+    @GET @Produces(MediaType.APPLICATION_JSON)
+    public String query(@QueryParam("activity") List<Integer> activityIds,
+                        @QueryParam("database") List<Integer> databaseIds,
+                        @QueryParam("indicator") List<Integer> indicatorIds,
+                        @QueryParam("partner") List<Integer> partnerIds,
+                        @QueryParam("attribute") List<Integer> attributeIds,
+                        @QueryParam("location") List<Integer> locationIds,
+                        @QueryParam("format") String format) throws IOException {
 
         Filter filter = new Filter();
         filter.addRestriction(DimensionType.Activity, activityIds);
@@ -61,12 +58,10 @@ public class SitesResources {
         return writer.toString();
     }
 
-    @GET
-    @Path("/points")
-    public Response queryPoints(
-            @QueryParam("activity") List<Integer> activityIds,
-            @QueryParam("database") List<Integer> databaseIds,
-            @QueryParam("callback") String callback) throws IOException {
+    @GET @Path("/points")
+    public Response queryPoints(@QueryParam("activity") List<Integer> activityIds,
+                                @QueryParam("database") List<Integer> databaseIds,
+                                @QueryParam("callback") String callback) throws IOException {
 
         Filter filter = new Filter();
         filter.addRestriction(DimensionType.Activity, activityIds);
@@ -79,20 +74,16 @@ public class SitesResources {
         writeGeoJson(sites, json);
 
         if (Strings.isNullOrEmpty(callback)) {
-            return Response
-                    .ok(writer.toString())
-                    .type("application/json; charset=UTF-8").build();
+            return Response.ok(writer.toString()).type("application/json; charset=UTF-8").build();
         } else {
-            return Response
-                    .ok(callback + "(" + writer.toString() + ");")
-                    .type("application/javascript; charset=UTF-8")
-                    .build();
+            return Response.ok(callback + "(" + writer.toString() + ");")
+                           .type("application/javascript; charset=UTF-8")
+                           .build();
         }
     }
 
 
-    private void writeJson(List<SiteDTO> sites, JsonGenerator json)
-            throws IOException {
+    private void writeJson(List<SiteDTO> sites, JsonGenerator json) throws IOException {
         json.writeStartArray();
 
         for (SiteDTO site : sites) {
@@ -175,7 +166,7 @@ public class SitesResources {
                 json.writeStartObject();
                 json.writeStringField("type", "Feature");
                 json.writeNumberField("id", site.getId());
-//                json.writeNumberField("timestamp", site.getTimeEdited());
+                //                json.writeNumberField("timestamp", site.getTimeEdited());
 
                 final ActivityDTO activity = schemaDTO.getActivityById(site.getActivityId());
 
@@ -203,16 +194,16 @@ public class SitesResources {
                 final Map<AttributeGroupDTO, Map<String, Object>> attributesGroupMap = Maps.newHashMap();
 
                 // write indicators and attributes
-                for(String propertyName : site.getPropertyNames()) {
-                    if(propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {
+                for (String propertyName : site.getPropertyNames()) {
+                    if (propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX)) {
                         Object value = site.get(propertyName);
-                        if(value instanceof Number) {
+                        if (value instanceof Number) {
                             final int indicatorId = IndicatorDTO.indicatorIdForPropertyName(propertyName);
                             final IndicatorDTO dto = schemaDTO.getIndicatorById(indicatorId);
                             final double doubleValue = ((Number) value).doubleValue();
                             indicatorsMap.put(dto.getName(), doubleValue);
                         }
-                    } else if(propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
+                    } else if (propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
                         Object value = site.get(propertyName);
                         final int attributeId = AttributeDTO.idForPropertyName(propertyName);
                         for (AttributeGroupDTO attributeGroupDTO : activity.getAttributeGroups()) {
@@ -237,7 +228,7 @@ public class SitesResources {
 
                 // write attribute groups
                 for (Map.Entry<AttributeGroupDTO, Map<String, Object>> entry : attributesGroupMap.entrySet()) {
-                      Jackson.writeMap(json, entry.getKey().getName(), entry.getValue());
+                    Jackson.writeMap(json, entry.getKey().getName(), entry.getValue());
                 }
 
                 json.writeEndObject();
@@ -262,8 +253,7 @@ public class SitesResources {
     private Set<Integer> getIndicatorIds(SiteDTO site) {
         Set<Integer> ids = Sets.newHashSet();
         for (String propertyName : site.getPropertyNames()) {
-            if (propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX) &&
-                    site.get(propertyName) != null) {
+            if (propertyName.startsWith(IndicatorDTO.PROPERTY_PREFIX) && site.get(propertyName) != null) {
                 ids.add(IndicatorDTO.indicatorIdForPropertyName(propertyName));
             }
         }
@@ -274,8 +264,7 @@ public class SitesResources {
         Set<Integer> ids = Sets.newHashSet();
         for (String propertyName : site.getPropertyNames()) {
             if (propertyName.startsWith(AttributeDTO.PROPERTY_PREFIX)) {
-                int attributeId = AttributeDTO
-                        .idForPropertyName(propertyName);
+                int attributeId = AttributeDTO.idForPropertyName(propertyName);
                 boolean value = site.get(propertyName, false);
                 if (value) {
                     ids.add(attributeId);

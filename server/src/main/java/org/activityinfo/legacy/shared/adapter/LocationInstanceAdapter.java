@@ -37,15 +37,15 @@ public class LocationInstanceAdapter implements Function<LocationDTO, FormInstan
         // querying the sql database. here we need to eliminate the redundancy
 
         Set<Integer> parents = Sets.newHashSet();
-        for(AdminEntityDTO entity : adminEntities) {
-            if(entity.getParentId() != null) {
+        for (AdminEntityDTO entity : adminEntities) {
+            if (entity.getParentId() != null) {
                 parents.add(entity.getParentId());
             }
         }
 
         Set<Cuid> instanceIds = Sets.newHashSet();
-        for(AdminEntityDTO entity : adminEntities) {
-            if(!parents.contains(entity.getId())) {
+        for (AdminEntityDTO entity : adminEntities) {
+            if (!parents.contains(entity.getId())) {
                 instanceIds.add(CuidAdapter.entity(entity.getId()));
             }
         }

@@ -65,7 +65,7 @@ public class FFCapabilityProfile extends LocalCapabilityProfile {
     }
 
     private static native boolean hasPlugin() /*-{
-        return !!$wnd.openDatabase;
+      return !!$wnd.openDatabase;
     }-*/;
 
 }

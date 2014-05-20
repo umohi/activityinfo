@@ -22,9 +22,15 @@ package org.activityinfo.ui.client.component.report.editor.chart;
  * #L%
  */
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.Component;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
+import com.google.inject.Inject;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.RenderElement.Format;
@@ -36,18 +42,10 @@ import org.activityinfo.ui.client.component.report.view.ReportViewBinder;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.client.page.report.editor.ReportElementEditor;
 
-import com.extjs.gxt.ui.client.Style;
-import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.Component;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
-import com.google.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
 
-public class ChartEditor extends LayoutContainer implements
-        ReportElementEditor<PivotChartReportElement> {
+public class ChartEditor extends LayoutContainer implements ReportElementEditor<PivotChartReportElement> {
 
     private final EventBus eventBus;
     private final Dispatcher dispatcher;
@@ -85,8 +83,7 @@ public class ChartEditor extends LayoutContainer implements
 
         filterPane = new PivotFilterPanel(eventBus, dispatcher);
 
-        BorderLayoutData west = new BorderLayoutData(Style.LayoutRegion.WEST,
-                0.30f);
+        BorderLayoutData west = new BorderLayoutData(Style.LayoutRegion.WEST, 0.30f);
         west.setCollapsible(true);
         west.setSplit(true);
         west.setMargins(new Margins(0, 5, 0, 0));
@@ -120,8 +117,7 @@ public class ChartEditor extends LayoutContainer implements
     }
 
     private void createGridPane() {
-        BorderLayoutData south = new BorderLayoutData(Style.LayoutRegion.SOUTH,
-                0.30f);
+        BorderLayoutData south = new BorderLayoutData(Style.LayoutRegion.SOUTH, 0.30f);
         south.setCollapsible(true);
         south.setSplit(true);
         south.setMargins(new Margins(5, 0, 0, 0));
@@ -129,7 +125,6 @@ public class ChartEditor extends LayoutContainer implements
         gridPanel = new PivotGridPanel(dispatcher);
         gridPanel.setHeadingText("Table");
         chartView.bindTable(gridPanel);
-
 
 
         center.add(gridPanel, south);

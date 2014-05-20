@@ -126,8 +126,7 @@ public class ExportDialog extends Dialog {
                     bar.updateProgress(1.0, I18N.CONSTANTS.downloadReady());
                     button.setText(I18N.CONSTANTS.close());
                     tryStartDownloadWithIframe(result.getUrl());
-                    downloadLink.getElement().setAttribute("href",
-                            result.getUrl());
+                    downloadLink.getElement().setAttribute("href", result.getUrl());
                     downloadLink.setVisible(true);
                     layout(true);
                 }
@@ -136,8 +135,7 @@ public class ExportDialog extends Dialog {
     }
 
     private void tryStartDownloadWithIframe(String url) {
-        com.google.gwt.user.client.ui.Frame frame = new com.google.gwt.user.client.ui.Frame(
-                url);
+        com.google.gwt.user.client.ui.Frame frame = new com.google.gwt.user.client.ui.Frame(url);
         El el = El.fly(frame.getElement());
         el.setStyleAttribute("width", 0);
         el.setStyleAttribute("height", 0);

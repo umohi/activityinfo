@@ -37,36 +37,34 @@ public class PivotTableDataBuilder {
 
     public PivotTableData build(PivotReportElement<?> element,
                                 List<Dimension> rowDims,
-                                List<Dimension> colDims, List<Bucket> buckets) {
+                                List<Dimension> colDims,
+                                List<Bucket> buckets) {
 
         PivotTableData table = new PivotTableData();
-        Map<Dimension, Comparator<PivotTableData.Axis>> comparators =
-                createComparators(element.allDimensions());
+        Map<Dimension, Comparator<PivotTableData.Axis>> comparators = createComparators(element.allDimensions());
 
         for (Bucket bucket : buckets) {
 
-            PivotTableData.Axis column = colDims.isEmpty() ? table
-                    .getRootColumn() :
-                    find(table.getRootColumn(), colDims.iterator(), comparators,
-                            bucket);
-            PivotTableData.Axis row = rowDims.isEmpty() ? table.getRootRow() :
-                    find(table.getRootRow(), rowDims.iterator(), comparators,
-                            bucket);
+            PivotTableData.Axis column = colDims.isEmpty() ? table.getRootColumn() : find(table.getRootColumn(),
+                    colDims.iterator(),
+                    comparators,
+                    bucket);
+            PivotTableData.Axis row = rowDims.isEmpty() ? table.getRootRow() : find(table.getRootRow(),
+                    rowDims.iterator(),
+                    comparators,
+                    bucket);
 
             row.setValue(column, bucket.doubleValue());
         }
         return table;
     }
 
-    protected Map<Dimension, Comparator<PivotTableData.Axis>> createComparators(
-            Set<Dimension> dimensions) {
-        Map<Dimension, Comparator<PivotTableData.Axis>> map =
-                new HashMap<Dimension, Comparator<PivotTableData.Axis>>();
+    protected Map<Dimension, Comparator<PivotTableData.Axis>> createComparators(Set<Dimension> dimensions) {
+        Map<Dimension, Comparator<PivotTableData.Axis>> map = new HashMap<Dimension, Comparator<PivotTableData.Axis>>();
 
         for (Dimension dimension : dimensions) {
             if (dimension.isOrderDefined()) {
-                map.put(dimension,
-                        new DefinedCategoryComparator(dimension.getOrdering()));
+                map.put(dimension, new DefinedCategoryComparator(dimension.getOrdering()));
             } else {
                 map.put(dimension, new CategoryComparator());
             }

@@ -71,14 +71,13 @@ public class BaseMapPanel extends ContentPanel implements HasValue<String> {
 
         Image icon = new Image(MapResources.INSTANCE.globe());
         label = new LabelWithText();
-        Button button = new Button("Change",
-                new SelectionListener<ButtonEvent>() {
+        Button button = new Button("Change", new SelectionListener<ButtonEvent>() {
 
-                    @Override
-                    public void componentSelected(ButtonEvent ce) {
-                        chooseBaseMap();
-                    }
-                });
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                chooseBaseMap();
+            }
+        });
 
         HBoxLayoutData iconLayout = new HBoxLayoutData(0, 5, 0, 2);
         add(icon, iconLayout);
@@ -107,8 +106,7 @@ public class BaseMapPanel extends ContentPanel implements HasValue<String> {
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<String> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
     }
 
@@ -149,24 +147,23 @@ public class BaseMapPanel extends ContentPanel implements HasValue<String> {
     private void loadTileMapLabel() {
 
         label.setText(I18N.CONSTANTS.loading());
-        dispatcher.execute(new GetBaseMaps(),
-                new AsyncCallback<BaseMapResult>() {
+        dispatcher.execute(new GetBaseMaps(), new AsyncCallback<BaseMapResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        label.setText(value);
-                    }
+            @Override
+            public void onFailure(Throwable caught) {
+                label.setText(value);
+            }
 
-                    @Override
-                    public void onSuccess(BaseMapResult result) {
-                        for (TileBaseMap baseMap : result.getBaseMaps()) {
-                            if (baseMap.getId().equals(value)) {
-                                label.setText(baseMap.getName());
-                                return;
-                            }
-                        }
-                        label.setText(value);
+            @Override
+            public void onSuccess(BaseMapResult result) {
+                for (TileBaseMap baseMap : result.getBaseMaps()) {
+                    if (baseMap.getId().equals(value)) {
+                        label.setText(baseMap.getName());
+                        return;
                     }
-                });
+                }
+                label.setText(value);
+            }
+        });
     }
 }

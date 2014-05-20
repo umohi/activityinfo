@@ -39,8 +39,7 @@ public class AttachmentForm extends FormPanel {
         attachmentFiled.setFieldLabel(I18N.CONSTANTS.attachFile());
         attachmentFiled.setAllowBlank(false);
         attachmentFiled.setName("attachmentFile");
-        binding.addFieldBinding(new FieldBinding(attachmentFiled,
-                "attachmentFile"));
+        binding.addFieldBinding(new FieldBinding(attachmentFiled, "attachmentFile"));
         add(attachmentFiled);
     }
 

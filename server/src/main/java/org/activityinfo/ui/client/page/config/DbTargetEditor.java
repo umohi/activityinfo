@@ -63,20 +63,17 @@ import java.util.Map;
 /**
  * Displays a grid where users can add, remove and change Targets
  */
-public class DbTargetEditor extends AbstractGridPresenter<TargetDTO> implements
-        DbPage {
+public class DbTargetEditor extends AbstractGridPresenter<TargetDTO> implements DbPage {
 
     public static final PageId PAGE_ID = new PageId("targets");
 
     @ImplementedBy(DbTargetGrid.class)
     public interface View extends GridView<DbTargetEditor, TargetDTO> {
-        void init(DbTargetEditor editor, UserDatabaseDTO db,
-                  ListStore<TargetDTO> store);
+        void init(DbTargetEditor editor, UserDatabaseDTO db, ListStore<TargetDTO> store);
 
         void createTargetValueContainer(Widget w);
 
-        FormDialogTether showAddDialog(TargetDTO target, UserDatabaseDTO db,
-                                       FormDialogCallback callback);
+        FormDialogTether showAddDialog(TargetDTO target, UserDatabaseDTO db, FormDialogCallback callback);
 
         AsyncMonitor getLoadingMonitor();
     }
@@ -90,8 +87,10 @@ public class DbTargetEditor extends AbstractGridPresenter<TargetDTO> implements
     private final TargetIndicatorPresenter targetIndicatorPresenter;
 
     @Inject
-    public DbTargetEditor(EventBus eventBus, Dispatcher service,
-                          StateProvider stateMgr, View view,
+    public DbTargetEditor(EventBus eventBus,
+                          Dispatcher service,
+                          StateProvider stateMgr,
+                          View view,
                           Provider<TargetIndicatorPresenter> targetIndicatorPresenterProvider) {
 
         super(eventBus, stateMgr, view);
@@ -115,45 +114,42 @@ public class DbTargetEditor extends AbstractGridPresenter<TargetDTO> implements
         view.setActionEnabled(UIActions.DELETE, false);
         view.setActionEnabled(UIActions.EDIT, false);
 
-        view.createTargetValueContainer((Widget) targetIndicatorPresenter
-                .getWidget());
+        view.createTargetValueContainer((Widget) targetIndicatorPresenter.getWidget());
         targetIndicatorPresenter.go(db);
     }
 
     private void fillStore() {
 
-        service.execute(new GetTargets(db.getId()), view.getLoadingMonitor(),
-                new AsyncCallback<TargetResult>() {
+        service.execute(new GetTargets(db.getId()), view.getLoadingMonitor(), new AsyncCallback<TargetResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
+            @Override
+            public void onFailure(Throwable caught) {
 
-                    }
+            }
 
-                    @Override
-                    public void onSuccess(TargetResult result) {
-                        store.add(result.getData());
-                    }
+            @Override
+            public void onSuccess(TargetResult result) {
+                store.add(result.getData());
+            }
 
-                });
+        });
     }
 
     @Override
     protected void onDeleteConfirmed(final TargetDTO model) {
-        service.execute(new Delete(model), view.getDeletingMonitor(),
-                new AsyncCallback<VoidResult>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
+        service.execute(new Delete(model), view.getDeletingMonitor(), new AsyncCallback<VoidResult>() {
+            @Override
+            public void onFailure(Throwable caught) {
 
-                    }
+            }
 
-                    @Override
-                    public void onSuccess(VoidResult result) {
-                        store.remove(model);
-                        store.commitChanges();
-                        eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
-                    }
-                });
+            @Override
+            public void onSuccess(VoidResult result) {
+                store.remove(model);
+                store.commitChanges();
+                eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
+            }
+        });
     }
 
     @Override
@@ -164,35 +160,29 @@ public class DbTargetEditor extends AbstractGridPresenter<TargetDTO> implements
             @Override
             public void onValidated(final FormDialogTether dlg) {
 
-                service.execute(new AddTarget(db.getId(), newTarget), dlg,
-                        new AsyncCallback<CreateResult>() {
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                MessageBox.alert(I18N.CONSTANTS.error(),
-                                        I18N.CONSTANTS.errorOnServer(), null);
-                            }
+                service.execute(new AddTarget(db.getId(), newTarget), dlg, new AsyncCallback<CreateResult>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        MessageBox.alert(I18N.CONSTANTS.error(), I18N.CONSTANTS.errorOnServer(), null);
+                    }
 
-                            @Override
-                            public void onSuccess(CreateResult result) {
-                                newTarget.setId(result.getNewId());
+                    @Override
+                    public void onSuccess(CreateResult result) {
+                        newTarget.setId(result.getNewId());
 
-                                PartnerDTO partner = db
-                                        .getPartnerById((Integer) newTarget
-                                                .get("partnerId"));
-                                newTarget.setPartner(partner);
+                        PartnerDTO partner = db.getPartnerById((Integer) newTarget.get("partnerId"));
+                        newTarget.setPartner(partner);
 
-                                ProjectDTO project = db
-                                        .getProjectById((Integer) newTarget
-                                                .get("projectId"));
-                                newTarget.setProject(project);
+                        ProjectDTO project = db.getProjectById((Integer) newTarget.get("projectId"));
+                        newTarget.setProject(project);
 
-                                store.add(newTarget);
-                                store.commitChanges();
+                        store.add(newTarget);
+                        store.commitChanges();
 
-                                eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
-                                dlg.hide();
-                            }
-                        });
+                        eventBus.fireEvent(AppEvents.SCHEMA_CHANGED);
+                        dlg.hide();
+                    }
+                });
             }
         });
     }
@@ -205,8 +195,8 @@ public class DbTargetEditor extends AbstractGridPresenter<TargetDTO> implements
             public void onValidated(final FormDialogTether dlg) {
 
                 final Record record = store.getRecord(dto);
-                service.execute(new UpdateEntity(dto,
-                        getChangedProperties(record)), dlg,
+                service.execute(new UpdateEntity(dto, getChangedProperties(record)),
+                        dlg,
                         new AsyncCallback<VoidResult>() {
                             @Override
                             public void onFailure(Throwable caught) {
@@ -216,14 +206,10 @@ public class DbTargetEditor extends AbstractGridPresenter<TargetDTO> implements
                             @Override
                             public void onSuccess(VoidResult result) {
 
-                                PartnerDTO partner = db
-                                        .getPartnerById((Integer) record
-                                                .get("partnerId"));
+                                PartnerDTO partner = db.getPartnerById((Integer) record.get("partnerId"));
                                 dto.setPartner(partner);
 
-                                ProjectDTO project = db
-                                        .getProjectById((Integer) record
-                                                .get("projectId"));
+                                ProjectDTO project = db.getProjectById((Integer) record.get("projectId"));
                                 dto.setProject(project);
 
                                 store.commitChanges();

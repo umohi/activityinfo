@@ -24,10 +24,8 @@ package org.activityinfo.server.database.hibernate.entity;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "siteattachment")
-@NamedQueries({
-        @NamedQuery(name = "findSiteAttachments", query = "select s from SiteAttachment s where s.blobId = :blobId")})
+@Entity @Table(name = "siteattachment") @NamedQueries({@NamedQuery(name = "findSiteAttachments",
+        query = "select s from SiteAttachment s where s.blobId = :blobId")})
 public class SiteAttachment implements java.io.Serializable {
 
     private static final long serialVersionUID = -619220161104158193L;
@@ -42,8 +40,7 @@ public class SiteAttachment implements java.io.Serializable {
     public SiteAttachment() {
     }
 
-    @Id
-    @Column(name = "blobid", nullable = false, length = 255)
+    @Id @Column(name = "blobid", nullable = false, length = 255)
     public String getBlobId() {
         return blobId;
     }

@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Defines a two-way binding between a legacy model and a FormInstance
  */
-public abstract class ModelBinding<T extends EntityDTO>  {
+public abstract class ModelBinding<T extends EntityDTO> {
 
     private final Cuid classId;
     private final char instanceDomain;
@@ -39,7 +39,7 @@ public abstract class ModelBinding<T extends EntityDTO>  {
     public Map<String, Object> toChangePropertyMap(FormInstance instance) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", CuidAdapter.getLegacyIdFromCuid(instance.getId()));
-        for(FieldBinding<? super T> binding : fieldBindings) {
+        for (FieldBinding<? super T> binding : fieldBindings) {
             binding.populateChangeMap(instance, map);
         }
         return map;
@@ -47,7 +47,7 @@ public abstract class ModelBinding<T extends EntityDTO>  {
 
     public FormInstance newInstance(T entity) {
         FormInstance instance = new FormInstance(CuidAdapter.cuid(instanceDomain, entity.getId()), classId);
-        for(FieldBinding<? super T> binding : fieldBindings) {
+        for (FieldBinding<? super T> binding : fieldBindings) {
             binding.updateInstanceFromModel(instance, entity);
         }
         return instance;

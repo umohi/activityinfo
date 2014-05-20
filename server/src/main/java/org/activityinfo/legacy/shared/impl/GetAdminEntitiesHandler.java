@@ -38,25 +38,24 @@ import org.activityinfo.legacy.shared.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetAdminEntitiesHandler implements
-        CommandHandlerAsync<GetAdminEntities, AdminEntityResult> {
+public class GetAdminEntitiesHandler implements CommandHandlerAsync<GetAdminEntities, AdminEntityResult> {
 
     @Override
-    public void execute(GetAdminEntities cmd, ExecutionContext context,
+    public void execute(GetAdminEntities cmd,
+                        ExecutionContext context,
                         final AsyncCallback<AdminEntityResult> callback) {
 
-        SqlQuery query =
-                SqlQuery.select("AdminEntity.adminEntityId",
-                        "AdminEntity.name",
-                        "AdminEntity.adminLevelId",
-                        "AdminEntity.adminEntityParentId",
-                        "x1", "y1", "x2", "y2")
-                        .from(Tables.ADMIN_ENTITY, "AdminEntity")
-                        .whereTrue("not AdminEntity.deleted");
+        SqlQuery query = SqlQuery.select("AdminEntity.adminEntityId",
+                "AdminEntity.name",
+                "AdminEntity.adminLevelId",
+                "AdminEntity.adminEntityParentId",
+                "x1",
+                "y1",
+                "x2",
+                "y2").from(Tables.ADMIN_ENTITY, "AdminEntity").whereTrue("not AdminEntity.deleted");
 
         if (CollectionUtil.isNotEmpty(cmd.getCountryIds())) {
-            query.leftJoin(Tables.ADMIN_LEVEL, "AdminLevel").on(
-                    "AdminLevel.AdminLevelId=AdminEntity.AdminLevelId");
+            query.leftJoin(Tables.ADMIN_LEVEL, "AdminLevel").on("AdminLevel.AdminLevelId=AdminEntity.AdminLevelId");
             query.where("AdminLevel.CountryId").in(cmd.getCountryIds());
 
             if (cmd.getParentId() == null && cmd.getLevelId() == null) {
@@ -77,38 +76,32 @@ public class GetAdminEntitiesHandler implements
         }
 
         if (cmd.getParentId() != null) {
-            query.where("AdminEntity.AdminEntityParentId").equalTo(
-                    cmd.getParentId());
+            query.where("AdminEntity.AdminEntityParentId").equalTo(cmd.getParentId());
         }
 
-        if (cmd.getFilter() != null
-                && cmd.getFilter().isRestricted(DimensionType.Activity)) {
+        if (cmd.getFilter() != null && cmd.getFilter().isRestricted(DimensionType.Activity)) {
             SqlQuery subQuery = SqlQuery.select("link.AdminEntityId")
-                    .from(Tables.SITE, "site")
-                    .leftJoin(Tables.LOCATION, "Location")
-                    .on("Location.LocationId = site.LocationId")
-                    .leftJoin(Tables.LOCATION_ADMIN_LINK, "link")
-                    .on("link.LocationId = Location.LocationId")
-                    .where("site.ActivityId")
-                    .in(cmd.getFilter().getRestrictions(DimensionType.Activity));
+                                        .from(Tables.SITE, "site")
+                                        .leftJoin(Tables.LOCATION, "Location")
+                                        .on("Location.LocationId = site.LocationId")
+                                        .leftJoin(Tables.LOCATION_ADMIN_LINK, "link")
+                                        .on("link.LocationId = Location.LocationId")
+                                        .where("site.ActivityId")
+                                        .in(cmd.getFilter().getRestrictions(DimensionType.Activity));
 
             query.where("AdminEntity.AdminEntityId").in(subQuery);
         }
 
-        if (cmd.getFilter() != null
-                && cmd.getFilter().isRestricted(DimensionType.AdminLevel)) {
+        if (cmd.getFilter() != null && cmd.getFilter().isRestricted(DimensionType.AdminLevel)) {
             if (cmd.getLevelId() == null) {
-                query.where("AdminEntityId").in(
-                        cmd.getFilter().getRestrictions(DimensionType.AdminLevel));
+                query.where("AdminEntityId").in(cmd.getFilter().getRestrictions(DimensionType.AdminLevel));
             } else {
-                SqlQuery subQuery = SqlQuery
-                        .select("adminEntityId")
-                        .from(Tables.ADMIN_ENTITY, "AdminEntity")
-                        .where("AdminLevelId")
-                        .equalTo(cmd.getLevelId())
-                        .where("AdminEntityId")
-                        .in(cmd.getFilter().getRestrictions(
-                                DimensionType.AdminLevel));
+                SqlQuery subQuery = SqlQuery.select("adminEntityId")
+                                            .from(Tables.ADMIN_ENTITY, "AdminEntity")
+                                            .where("AdminLevelId")
+                                            .equalTo(cmd.getLevelId())
+                                            .where("AdminEntityId")
+                                            .in(cmd.getFilter().getRestrictions(DimensionType.AdminLevel));
                 query.where("AdminEntity.AdminEntityId").in(subQuery);
             }
         }

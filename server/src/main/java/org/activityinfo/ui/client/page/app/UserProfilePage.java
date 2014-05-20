@@ -80,21 +80,20 @@ public class UserProfilePage extends FormPanel implements Page {
     private void bindProfile() {
         userProfile = new UserProfileDTO();
         AuthenticatedUser user = new ClientSideAuthProvider().get();
-        dispatcher.execute(new GetUserProfile(user.getUserId()),
-                new AsyncCallback<UserProfileDTO>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Log.error("error binding profile", caught);
-                        MessageBox.alert(I18N.CONSTANTS.serverError(), caught.getMessage(), null);
-                    }
+        dispatcher.execute(new GetUserProfile(user.getUserId()), new AsyncCallback<UserProfileDTO>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Log.error("error binding profile", caught);
+                MessageBox.alert(I18N.CONSTANTS.serverError(), caught.getMessage(), null);
+            }
 
-                    @Override
-                    public void onSuccess(UserProfileDTO userProfileDTO) {
-                        userProfile = userProfileDTO;
-                        binding.bind(userProfile);
-                        UserProfilePage.this.show();
-                    }
-                });
+            @Override
+            public void onSuccess(UserProfileDTO userProfileDTO) {
+                userProfile = userProfileDTO;
+                binding.bind(userProfile);
+                UserProfilePage.this.show();
+            }
+        });
     }
 
     private void saveProfile() {

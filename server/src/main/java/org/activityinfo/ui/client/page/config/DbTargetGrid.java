@@ -53,8 +53,7 @@ import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbTargetGrid extends AbstractGridView<TargetDTO, DbTargetEditor>
-        implements DbTargetEditor.View {
+public class DbTargetGrid extends AbstractGridView<TargetDTO, DbTargetEditor> implements DbTargetEditor.View {
 
     private final UiConstants messages;
     private final IconImageBundle icons;
@@ -62,8 +61,7 @@ public class DbTargetGrid extends AbstractGridView<TargetDTO, DbTargetEditor>
     private Grid<TargetDTO> grid;
     private ListStore<TargetDTO> store;
     private ContentPanel targetValueContainer;
-    private final AsyncMonitor loadingMonitor = new MaskingAsyncMonitor(this,
-            I18N.CONSTANTS.loading());
+    private final AsyncMonitor loadingMonitor = new MaskingAsyncMonitor(this, I18N.CONSTANTS.loading());
 
     @Inject
     public DbTargetGrid(UiConstants messages, IconImageBundle icons) {
@@ -91,8 +89,7 @@ public class DbTargetGrid extends AbstractGridView<TargetDTO, DbTargetEditor>
         columns.add(new ColumnConfig("name", messages.name(), 150));
         columns.add(new ColumnConfig("project", messages.project(), 150));
         columns.add(new ColumnConfig("partner", messages.partner(), 150));
-        columns.add(new TimePeriodColumn("timePeriod", messages.timePeriod(),
-                300));
+        columns.add(new TimePeriodColumn("timePeriod", messages.timePeriod(), 300));
 
         return new ColumnModel(columns);
     }
@@ -105,15 +102,13 @@ public class DbTargetGrid extends AbstractGridView<TargetDTO, DbTargetEditor>
     }
 
     @Override
-    public void init(DbTargetEditor editor, UserDatabaseDTO db,
-                     ListStore<TargetDTO> store) {
+    public void init(DbTargetEditor editor, UserDatabaseDTO db, ListStore<TargetDTO> store) {
         super.init(editor, store);
         this.setHeadingText(I18N.MESSAGES.targetsForDatabase(db.getName()));
     }
 
     @Override
-    public FormDialogTether showAddDialog(TargetDTO target, UserDatabaseDTO db,
-                                          FormDialogCallback callback) {
+    public FormDialogTether showAddDialog(TargetDTO target, UserDatabaseDTO db, FormDialogCallback callback) {
 
         TargetForm form = new TargetForm(db);
         form.getBinding().setStore(store);

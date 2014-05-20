@@ -48,11 +48,7 @@ public class IconRectCalculator implements RadiiCalculator {
     }
 
     public Rectangle iconRect(int x, int y) {
-        return new Rectangle(
-                x - icon.getAnchorX(),
-                y - icon.getAnchorY(),
-                icon.getWidth(),
-                icon.getHeight());
+        return new Rectangle(x - icon.getAnchorX(), y - icon.getAnchorY(), icon.getWidth(), icon.getHeight());
     }
 
     public Rectangle iconRect(Point p) {

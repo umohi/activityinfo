@@ -53,11 +53,9 @@ public class ReportsPage extends LayoutContainer implements Page {
         newLayout.setMargins(new Margins(0, 5, 0, 0));
         newLayout.setSplit(true);
         newLayout.setCollapsible(true);
-        add(new NewReportPanel(eventBus, dispatcher),
-                newLayout);
+        add(new NewReportPanel(eventBus, dispatcher), newLayout);
 
-        add(new ReportGridPanel(eventBus, dispatcher), new BorderLayoutData(
-                LayoutRegion.CENTER));
+        add(new ReportGridPanel(eventBus, dispatcher), new BorderLayoutData(LayoutRegion.CENTER));
 
     }
 
@@ -77,8 +75,7 @@ public class ReportsPage extends LayoutContainer implements Page {
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
     }
 

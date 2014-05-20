@@ -35,12 +35,10 @@ import java.util.logging.Logger;
 @Singleton
 public class ClientMetricsServlet extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(ClientMetricsServlet.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(ClientMetricsServlet.class.getName());
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         new String(ByteStreams.toByteArray(req.getInputStream()));
 

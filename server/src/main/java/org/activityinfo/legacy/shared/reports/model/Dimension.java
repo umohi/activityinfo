@@ -46,8 +46,8 @@ public class Dimension implements Serializable {
     private DimensionType type;
     private String color;
 
-    private Map<DimensionCategory, CategoryProperties> categories =
-            new HashMap<DimensionCategory, CategoryProperties>(0);
+    private Map<DimensionCategory, CategoryProperties> categories = new HashMap<DimensionCategory,
+            CategoryProperties>(0);
 
     private List<DimensionCategory> ordering = new ArrayList<DimensionCategory>();
 
@@ -105,8 +105,7 @@ public class Dimension implements Serializable {
         return categories;
     }
 
-    public void setCategories(
-            Map<DimensionCategory, CategoryProperties> categories) {
+    public void setCategories(Map<DimensionCategory, CategoryProperties> categories) {
         this.categories = categories;
     }
 
@@ -116,8 +115,7 @@ public class Dimension implements Serializable {
      * @param category
      * @param props
      */
-    public void setProperties(DimensionCategory category,
-                              CategoryProperties props) {
+    public void setProperties(DimensionCategory category, CategoryProperties props) {
         categories.put(category, props);
     }
 

@@ -74,8 +74,7 @@ public class IndicatorTreePanel extends ContentPanel {
      */
     private Set<Integer> selection = Sets.newHashSet();
 
-    public IndicatorTreePanel(Dispatcher dispatcher,
-                              final boolean multipleSelection) {
+    public IndicatorTreePanel(Dispatcher dispatcher, final boolean multipleSelection) {
         this.dispatcher = dispatcher;
 
         this.setHeadingText(I18N.CONSTANTS.indicators());
@@ -102,19 +101,18 @@ public class IndicatorTreePanel extends ContentPanel {
         tree.setStateId("indicatorPanel");
         tree.setStateful(true);
         tree.setAutoSelect(true);
-        tree.addListener(Events.BrowserEvent,
-                new Listener<TreePanelEvent<ModelData>>() {
+        tree.addListener(Events.BrowserEvent, new Listener<TreePanelEvent<ModelData>>() {
 
-                    @Override
-                    public void handleEvent(TreePanelEvent<ModelData> be) {
-                        if (be.getEventTypeInt() == Event.ONKEYPRESS) {
-                            if (!toolBar.isVisible()) {
-                                toolBar.setVisible(true);
-                            }
-                            filter.focus();
-                        }
+            @Override
+            public void handleEvent(TreePanelEvent<ModelData> be) {
+                if (be.getEventTypeInt() == Event.ONKEYPRESS) {
+                    if (!toolBar.isVisible()) {
+                        toolBar.setVisible(true);
                     }
-                });
+                    filter.focus();
+                }
+            }
+        });
 
         add(tree);
         createFilterBar();
@@ -166,8 +164,7 @@ public class IndicatorTreePanel extends ContentPanel {
                     throw new IllegalStateException(
                             "Did not expect model to be null: assigning keys in IndicatorTreePanel");
                 }
-                throw new IllegalStateException(
-                        "Unknown type: expected activity, userdb, indicator or indicatorgroup");
+                throw new IllegalStateException("Unknown type: expected activity, userdb, indicator or indicatorgroup");
             }
         });
     }
@@ -180,8 +177,7 @@ public class IndicatorTreePanel extends ContentPanel {
             for (ModelData model : models) {
                 if (model instanceof IndicatorGroup) {
                     store.add(activity, model, true);
-                    store.add(model,
-                            createIndicatorList((IndicatorGroup) model), true);
+                    store.add(model, createIndicatorList((IndicatorGroup) model), true);
                 } else {
                     store.add(activity, model, true);
                 }
@@ -203,8 +199,7 @@ public class IndicatorTreePanel extends ContentPanel {
         filter.addListener(Events.Blur, new Listener<BaseEvent>() {
             @Override
             public void handleEvent(BaseEvent be) {
-                if (filter.getRawValue() == null
-                        || filter.getRawValue().length() == 0) {
+                if (filter.getRawValue() == null || filter.getRawValue().length() == 0) {
                     toolBar.setVisible(false);
                 }
             }
@@ -215,8 +210,7 @@ public class IndicatorTreePanel extends ContentPanel {
         setTopComponent(toolBar);
     }
 
-    private final class NodeLabelProvider implements
-            ModelStringProvider<ModelData> {
+    private final class NodeLabelProvider implements ModelStringProvider<ModelData> {
         @Override
         public String getStringValue(ModelData model, String property) {
             String name = model.get("name");
@@ -236,23 +230,22 @@ public class IndicatorTreePanel extends ContentPanel {
 
         @Override
         public void load(DataReader<List<ModelData>> listDataReader,
-                         Object parent, final AsyncCallback<List<ModelData>> callback) {
+                         Object parent,
+                         final AsyncCallback<List<ModelData>> callback) {
 
             if (parent == null) {
-                dispatcher.execute(new GetSchema(), new MaskingAsyncMonitor(
-                        IndicatorTreePanel.this, I18N.CONSTANTS.loading()),
+                dispatcher.execute(new GetSchema(),
+                        new MaskingAsyncMonitor(IndicatorTreePanel.this, I18N.CONSTANTS.loading()),
                         new SuccessCallback<SchemaDTO>() {
 
                             @Override
                             public void onSuccess(SchemaDTO result) {
                                 schema = result;
-                                callback.onSuccess(new ArrayList<ModelData>(schema
-                                        .getDatabases()));
+                                callback.onSuccess(new ArrayList<ModelData>(schema.getDatabases()));
                             }
                         });
             } else if (parent instanceof UserDatabaseDTO) {
-                callback.onSuccess(new ArrayList<ModelData>(
-                        ((UserDatabaseDTO) parent).getActivities()));
+                callback.onSuccess(new ArrayList<ModelData>(((UserDatabaseDTO) parent).getActivities()));
 
             } else if (parent instanceof ActivityDTO) {
                 ActivityDTO acitvity = (ActivityDTO) parent;
@@ -316,8 +309,7 @@ public class IndicatorTreePanel extends ContentPanel {
 
         // apply directly if the indicators are loaded
         for (ModelData model : tree.getStore().getAllItems()) {
-            if (model instanceof IndicatorDTO
-                    && ((IndicatorDTO) model).getId() == indicatorId) {
+            if (model instanceof IndicatorDTO && ((IndicatorDTO) model).getId() == indicatorId) {
                 setChecked((IndicatorDTO) model, select);
             }
         }
@@ -365,8 +357,7 @@ public class IndicatorTreePanel extends ContentPanel {
 
     private static class FilterField extends StoreFilterField {
         @Override
-        protected boolean doSelect(Store store, ModelData parent,
-                                   ModelData record, String property, String filter) {
+        protected boolean doSelect(Store store, ModelData parent, ModelData record, String property, String filter) {
 
             String[] keywords = filter.toLowerCase().split("\\s+");
             String name = ((String) record.get("name")).toLowerCase();

@@ -34,8 +34,7 @@ import java.util.Date;
 
 public class TimePeriodColumn extends ReadTextColumn {
 
-    protected static final DateTimeFormat FORMAT = DateTimeFormat
-            .getFormat("yyyy-MMM-dd");
+    protected static final DateTimeFormat FORMAT = DateTimeFormat.getFormat("yyyy-MMM-dd");
 
     public TimePeriodColumn(String property, String header, int width) {
         super(property, header, width);
@@ -47,9 +46,13 @@ public class TimePeriodColumn extends ReadTextColumn {
         setRenderer(new GridCellRenderer<ModelData>() {
 
             @Override
-            public Object render(ModelData model, String property,
-                                 ColumnData config, int rowIndex, int colIndex,
-                                 ListStore<ModelData> store, Grid<ModelData> grid) {
+            public Object render(ModelData model,
+                                 String property,
+                                 ColumnData config,
+                                 int rowIndex,
+                                 int colIndex,
+                                 ListStore<ModelData> store,
+                                 Grid<ModelData> grid) {
 
                 Object value = model.get("date1");
                 if (value == null) {
@@ -61,9 +64,7 @@ public class TimePeriodColumn extends ReadTextColumn {
                 } else if (value instanceof LocalDate) {
                     date1 = ((LocalDate) value).atMidnightInMyTimezone();
                 } else {
-                    throw new RuntimeException(
-                            "Don't know how to handle date as class "
-                                    + value.getClass().getName());
+                    throw new RuntimeException("Don't know how to handle date as class " + value.getClass().getName());
                 }
 
                 Object value2 = model.get("date2");
@@ -76,9 +77,7 @@ public class TimePeriodColumn extends ReadTextColumn {
                 } else if (value2 instanceof LocalDate) {
                     date2 = ((LocalDate) value2).atMidnightInMyTimezone();
                 } else {
-                    throw new RuntimeException(
-                            "Don't know how to handle date as class "
-                                    + value2.getClass().getName());
+                    throw new RuntimeException("Don't know how to handle date as class " + value2.getClass().getName());
                 }
 
                 return FORMAT.format(date1) + " to " + FORMAT.format(date2);

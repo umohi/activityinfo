@@ -53,11 +53,10 @@ public class KmlActivityServlet extends HttpServlet {
     private final Provider<EntityManager> entityManager;
 
     @Inject
-    public KmlActivityServlet(
-            Provider<EntityManager> entityManager,
-            Configuration templateCfg,
-            BasicAuthentication authenticator,
-            DispatcherSync dispatcher) {
+    public KmlActivityServlet(Provider<EntityManager> entityManager,
+                              Configuration templateCfg,
+                              BasicAuthentication authenticator,
+                              DispatcherSync dispatcher) {
 
         this.templateCfg = templateCfg;
         this.entityManager = entityManager;
@@ -66,8 +65,7 @@ public class KmlActivityServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
         // Get Authorization header
         String auth = req.getHeader("Authorization");
@@ -76,23 +74,19 @@ public class KmlActivityServlet extends HttpServlet {
         User user = authenticator.doAuthentication(auth);
         if (user == null) {
             // Not allowed, or no password provided so report unauthorized
-            res.setHeader("WWW-Authenticate",
-                    "BASIC realm=\"Utilisateurs authorises\"");
+            res.setHeader("WWW-Authenticate", "BASIC realm=\"Utilisateurs authorises\"");
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        String baseURL = "http://" + req.getServerName() + ":"
-                + req.getServerPort()
-                + "/earth/sites?activityId=";
+        String baseURL = "http://" + req.getServerName() + ":" + req.getServerPort() + "/earth/sites?activityId=";
         SchemaDTO schemaDTO = loadSchema(user);
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("schema", schemaDTO);
         map.put("baseURL", baseURL);
 
-        Template tpl = templateCfg
-                .getTemplate("kml/ActivitiesNetworkLink.kml.ftl");
+        Template tpl = templateCfg.getTemplate("kml/ActivitiesNetworkLink.kml.ftl");
         res.setContentType("application/vnd.google-earth.kml+xml; filename=ActivityInfo.kml");
         res.setCharacterEncoding("UTF-8");
 

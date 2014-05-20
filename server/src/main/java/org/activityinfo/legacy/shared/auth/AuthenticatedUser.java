@@ -51,8 +51,7 @@ public class AuthenticatedUser implements IsSerializable {
 
     }
 
-    public AuthenticatedUser(String authToken, int userId, String userEmail,
-                             String userLocale) {
+    public AuthenticatedUser(String authToken, int userId, String userEmail, String userLocale) {
         super();
         this.authToken = authToken;
         this.userId = userId;
@@ -97,13 +96,14 @@ public class AuthenticatedUser implements IsSerializable {
     }
 
     public static AuthenticatedUser getAnonymous() {
-        return new AuthenticatedUser(AnonymousUser.AUTHTOKEN, ANONYMOUS_ID,
-                AnonymousUser.USER_EMAIL);
+        return new AuthenticatedUser(AnonymousUser.AUTHTOKEN, ANONYMOUS_ID, AnonymousUser.USER_EMAIL);
     }
 
     public static AuthenticatedUser getAnonymous(LocaleInfo currentLocale) {
-        return new AuthenticatedUser(AnonymousUser.AUTHTOKEN, ANONYMOUS_ID,
-                AnonymousUser.USER_EMAIL, currentLocale.getLocaleName());
+        return new AuthenticatedUser(AnonymousUser.AUTHTOKEN,
+                ANONYMOUS_ID,
+                AnonymousUser.USER_EMAIL,
+                currentLocale.getLocaleName());
     }
 
     public boolean isAnonymous() {

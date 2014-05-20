@@ -54,9 +54,7 @@ public final class AttributeDTO extends BaseModelData implements EntityDTO {
         setName(name);
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }
@@ -69,9 +67,7 @@ public final class AttributeDTO extends BaseModelData implements EntityDTO {
         set("name", value);
     }
 
-    @Override
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @Override @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getName() {
         return get("name");
     }

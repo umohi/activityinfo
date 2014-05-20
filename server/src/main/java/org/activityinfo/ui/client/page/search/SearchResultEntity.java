@@ -30,8 +30,7 @@ import org.activityinfo.legacy.shared.command.DimensionType;
  */
 public final class SearchResultEntity extends BaseModelData {
 
-    public SearchResultEntity(int id, String name, String url,
-                              DimensionType dimensionType) {
+    public SearchResultEntity(int id, String name, String url, DimensionType dimensionType) {
         setId(id);
         setName(name);
         setUrl(url);

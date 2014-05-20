@@ -30,8 +30,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@JsonAutoDetect(JsonMethod.NONE)
+@Entity @JsonAutoDetect(JsonMethod.NONE)
 public class AdminLevel implements java.io.Serializable {
 
     private int id;
@@ -56,9 +55,7 @@ public class AdminLevel implements java.io.Serializable {
         this.name = name;
     }
 
-    @Id
-    @JsonProperty
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @JsonProperty @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "AdminLevelId", unique = true, nullable = false)
     public int getId() {
         return this.id;
@@ -68,8 +65,7 @@ public class AdminLevel implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CountryId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "CountryId", nullable = false)
     public Country getCountry() {
         return this.country;
     }
@@ -78,14 +74,12 @@ public class AdminLevel implements java.io.Serializable {
         this.country = country;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ParentId")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "ParentId")
     public AdminLevel getParent() {
         return this.parent;
     }
 
-    @Transient
-    @JsonProperty
+    @Transient @JsonProperty
     public Integer getParentId() {
         if (getParent() == null) {
             return null;
@@ -98,8 +92,7 @@ public class AdminLevel implements java.io.Serializable {
         this.parent = adminLevel;
     }
 
-    @JsonProperty
-    @Column(name = "Name", nullable = false, length = 30)
+    @JsonProperty @Column(name = "Name", nullable = false, length = 30)
     public String getName() {
         return this.name;
     }

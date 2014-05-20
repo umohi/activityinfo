@@ -63,8 +63,7 @@ public class GeneticSolver {
 
         void evolved(GeneticSolver solver, int generation, int stagnationCount);
 
-        void crossover(GeneticSolver solver, int[] p1, int[] p2,
-                       int xoverPoint, int[] c1, int[] c2);
+        void crossover(GeneticSolver solver, int[] p1, int[] p2, int xoverPoint, int[] c1, int[] c2);
     }
 
     private Tracer tracer;
@@ -79,8 +78,7 @@ public class GeneticSolver {
             this.chromosomes = Arrays.copyOf(chromosomes, chromosomes.length);
             this.clusters = new ArrayList<Cluster>();
             for (int i = 0; i != chromosomes.length; ++i) {
-                this.clusters.addAll(KMeans.cluster(subgraphs.get(i),
-                        chromosomes[i]));
+                this.clusters.addAll(KMeans.cluster(subgraphs.get(i), chromosomes[i]));
             }
             this.clusters.addAll(simpleClusters);
             radiiCalculator.calculate(this.clusters);
@@ -113,7 +111,8 @@ public class GeneticSolver {
 
     public List<Cluster> solve(MarkerGraph graph,
                                RadiiCalculator radiiCalculator,
-                               FitnessFunctor fitnessFunctor, List<Integer> allUpperBounds) {
+                               FitnessFunctor fitnessFunctor,
+                               List<Integer> allUpperBounds) {
 
         this.radiiCalculator = radiiCalculator;
         this.fitnessFunctor = fitnessFunctor;
@@ -133,8 +132,7 @@ public class GeneticSolver {
         for (int i = 0; i != allSubGraphs.size(); i++) {
             List<MarkerGraph.Node> subGraph = allSubGraphs.get(i);
             if (subGraph.size() == 1) {
-                simpleClusters
-                        .add(new Cluster(subGraph.get(0).getPointValue()));
+                simpleClusters.add(new Cluster(subGraph.get(0).getPointValue()));
             } else if (allUpperBounds.get(i) == 1) {
                 simpleClusters.addAll(KMeans.cluster(subGraph, 1));
             } else {
@@ -208,8 +206,7 @@ public class GeneticSolver {
             int[] child2 = Arrays.copyOf(parents.get(1), parents.get(1).length);
 
             crossover(child1, child2);
-            double pMutate = Math.pow(PROB_MUTATE,
-                    1 + (generationsStagnated / 2.0));
+            double pMutate = Math.pow(PROB_MUTATE, 1 + (generationsStagnated / 2.0));
             mutate(child1, pMutate);
             mutate(child2, pMutate);
 
@@ -257,8 +254,7 @@ public class GeneticSolver {
         swap(children.get(0), children.get(1), xoverPoint);
 
         if (tracer != null) {
-            tracer.crossover(this, p1, p2, xoverPoint, children.get(0),
-                    children.get(1));
+            tracer.crossover(this, p1, p2, xoverPoint, children.get(0), children.get(1));
         }
 
         return children;
@@ -287,8 +283,7 @@ public class GeneticSolver {
      * proportionate to its fitness rank
      */
     public int randomPhenotype() {
-        return (int) Math.round((1 - Math.pow(random.nextDouble(),
-                SELECTION_CDF_ROOT)) * (population.size() - 1));
+        return (int) Math.round((1 - Math.pow(random.nextDouble(), SELECTION_CDF_ROOT)) * (population.size() - 1));
     }
 
     /**

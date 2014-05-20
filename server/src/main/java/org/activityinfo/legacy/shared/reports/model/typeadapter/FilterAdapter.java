@@ -22,7 +22,6 @@ package org.activityinfo.legacy.shared.reports.model.typeadapter;
  * #L%
  */
 
-import com.google.gwt.core.shared.GwtIncompatible;
 import org.activityinfo.legacy.shared.command.DimensionType;
 import org.activityinfo.legacy.shared.command.Filter;
 import org.activityinfo.legacy.shared.reports.model.DateRange;
@@ -36,9 +35,7 @@ import java.util.List;
 /**
  * @author Alex Bertram
  */
-public class FilterAdapter extends XmlAdapter<
-        FilterAdapter.FilterElement,
-        Filter> {
+public class FilterAdapter extends XmlAdapter<FilterAdapter.FilterElement, Filter> {
 
     public static class Restriction {
         @XmlAttribute
@@ -63,8 +60,7 @@ public class FilterAdapter extends XmlAdapter<
 
         for (Restriction r : element.restrictions) {
             for (String s : r.categories) {
-                filter.addRestriction(findDimType(r.dimension),
-                        Integer.parseInt(s));
+                filter.addRestriction(findDimType(r.dimension), Integer.parseInt(s));
             }
         }
         return filter;
@@ -77,8 +73,7 @@ public class FilterAdapter extends XmlAdapter<
                 return type;
             }
         }
-        throw new RuntimeException("No DimensionType could be find to match '"
-                + name + "'");
+        throw new RuntimeException("No DimensionType could be find to match '" + name + "'");
     }
 
     @Override

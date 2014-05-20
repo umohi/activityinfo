@@ -34,7 +34,8 @@ public abstract class AbstractDispatcher implements Dispatcher {
 
     @Override
     public final <T extends CommandResult> void execute(Command<T> command,
-                                                        AsyncMonitor monitor, AsyncCallback<T> callback) {
+                                                        AsyncMonitor monitor,
+                                                        AsyncCallback<T> callback) {
 
         if (monitor == null) {
             execute(command, callback);

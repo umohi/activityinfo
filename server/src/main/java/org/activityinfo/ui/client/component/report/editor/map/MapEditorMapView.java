@@ -60,8 +60,7 @@ import org.discotools.gwt.leaflet.client.types.LatLng;
 /**
  * Displays the content of a MapElement using Google Maps.
  */
-public class MapEditorMapView extends ContentPanel implements
-        HasReportElement<MapReportElement> {
+public class MapEditorMapView extends ContentPanel implements HasReportElement<MapReportElement> {
 
     private static final int DEFAULT_ZOOM_CONTROL_OFFSET_X = 5;
     private static final int ZOOM_CONTROL_OFFSET_Y = 5;
@@ -154,11 +153,11 @@ public class MapEditorMapView extends ContentPanel implements
     public MapReportElement getModel() {
         return model;
     }
-//
-//    private ControlPosition zoomControlPosition() {
-//        return new ControlPosition(ControlAnchor.TOP_LEFT, zoomControlOffsetX,
-//            ZOOM_CONTROL_OFFSET_Y);
-//    }
+    //
+    //    private ControlPosition zoomControlPosition() {
+    //        return new ControlPosition(ControlAnchor.TOP_LEFT, zoomControlOffsetX,
+    //            ZOOM_CONTROL_OFFSET_Y);
+    //    }
 
     /**
      * Updates the size of the map and adds Overlays to reflect the content of
@@ -174,8 +173,7 @@ public class MapEditorMapView extends ContentPanel implements
         }
         // Prevent setting the extents for the MapWidget when more then 1 layer
         // is added
-        if (isFirstLayerUpdate &&
-                model.getLayers().size() > 0) {
+        if (isFirstLayerUpdate && model.getLayers().size() > 0) {
             isFirstLayerUpdate = false;
         }
 
@@ -199,8 +197,7 @@ public class MapEditorMapView extends ContentPanel implements
 
         content = result;
 
-        statusWidget.setStatus(result.getUnmappedSites().size() + " "
-                + I18N.CONSTANTS.siteLackCoordiantes(), null);
+        statusWidget.setStatus(result.getUnmappedSites().size() + " " + I18N.CONSTANTS.siteLackCoordiantes(), null);
 
         if (!isRendered()) {
             return;
@@ -219,8 +216,10 @@ public class MapEditorMapView extends ContentPanel implements
 
         if (!zoomSet) {
             if (model.getZoomLevel() != -1 && model.getCenter() != null) {
-                map.getMap().setView(new LatLng(model.getCenter().getLat(), model.getCenter().getLng()),
-                        model.getZoomLevel(), true);
+                map.getMap()
+                   .setView(new LatLng(model.getCenter().getLat(), model.getCenter().getLng()),
+                           model.getZoomLevel(),
+                           true);
             } else {
                 map.fitBounds(result.getExtents());
             }

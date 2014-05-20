@@ -51,22 +51,21 @@ public class FilterPanelSet implements FilterPanel {
             manager = new HandlerManager(this);
             myRegistrations = new ArrayList<HandlerRegistration>();
             for (FilterPanel panel : panels) {
-                HandlerRegistration registration = panel
-                        .addValueChangeHandler(new ValueChangeHandler<Filter>() {
-                            @Override
-                            public void onValueChange(ValueChangeEvent<Filter> event) {
-                                // reset attribute- and partner filters when a different activity, database (data entry)
-                                // or indicator (reports) is selected
-                                if (event.getSource() instanceof ActivityFilterPanel ||
-                                        event.getSource() instanceof IndicatorFilterPanel) {
-                                    clearAttributeAndPartnerFilters();
-                                }
+                HandlerRegistration registration = panel.addValueChangeHandler(new ValueChangeHandler<Filter>() {
+                    @Override
+                    public void onValueChange(ValueChangeEvent<Filter> event) {
+                        // reset attribute- and partner filters when a different activity, database (data entry)
+                        // or indicator (reports) is selected
+                        if (event.getSource() instanceof ActivityFilterPanel ||
+                            event.getSource() instanceof IndicatorFilterPanel) {
+                            clearAttributeAndPartnerFilters();
+                        }
 
-                                Filter value = composeFilter(new Filter(), null);
-                                Log.debug("FilterPanelSet: Filter changed = " + value);
-                                ValueChangeEvent.fire(FilterPanelSet.this, value);
-                            }
-                        });
+                        Filter value = composeFilter(new Filter(), null);
+                        Log.debug("FilterPanelSet: Filter changed = " + value);
+                        ValueChangeEvent.fire(FilterPanelSet.this, value);
+                    }
+                });
                 myRegistrations.add(registration);
             }
         }
@@ -124,10 +123,8 @@ public class FilterPanelSet implements FilterPanel {
     }
 
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Filter> handler) {
-        final HandlerRegistration reg = ensureHandlers().addHandler(
-                ValueChangeEvent.getType(), handler);
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Filter> handler) {
+        final HandlerRegistration reg = ensureHandlers().addHandler(ValueChangeEvent.getType(), handler);
         return new HandlerRegistration() {
             @Override
             public void removeHandler() {

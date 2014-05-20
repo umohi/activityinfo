@@ -62,21 +62,18 @@ import org.activityinfo.ui.client.page.report.resources.ReportResources;
 
 import java.util.Date;
 
-public class ReportDesignPage extends ContentPanel implements Page,
-        ExportCallback {
+public class ReportDesignPage extends ContentPanel implements Page, ExportCallback {
 
     private class SaveCallback implements AsyncCallback<VoidResult> {
         @Override
         public void onSuccess(final VoidResult result) {
-            Info.display(I18N.CONSTANTS.saved(),
-                    I18N.MESSAGES.reportSaved(currentModel.getTitle()));
+            Info.display(I18N.CONSTANTS.saved(), I18N.MESSAGES.reportSaved(currentModel.getTitle()));
             onSaved();
         }
 
         @Override
         public final void onFailure(final Throwable caught) {
-            MessageBox.alert(I18N.CONSTANTS.serverError(), caught.getMessage(),
-                    null);
+            MessageBox.alert(I18N.CONSTANTS.serverError(), caught.getMessage(), null);
         }
 
         public void onSaved() {
@@ -106,8 +103,7 @@ public class ReportDesignPage extends ContentPanel implements Page,
     private ReportElementEditor currentEditor;
 
     @Inject
-    public ReportDesignPage(final EventBus eventBus, final Dispatcher service,
-                            final EditorProvider editorProvider) {
+    public ReportDesignPage(final EventBus eventBus, final Dispatcher service, final EditorProvider editorProvider) {
         this.eventBus = eventBus;
         this.dispatcher = service;
         this.editorProvider = editorProvider;
@@ -119,24 +115,21 @@ public class ReportDesignPage extends ContentPanel implements Page,
 
         createToolbar();
 
-        eventBus.addListener(ReportChangeEvent.TYPE,
-                new Listener<ReportChangeEvent>() {
+        eventBus.addListener(ReportChangeEvent.TYPE, new Listener<ReportChangeEvent>() {
 
-                    @Override
-                    public void handleEvent(final ReportChangeEvent event) {
-                        if (event.getModel() == currentModel ||
-                                currentModel.getElements().contains(event.getModel())) {
-                            Log.debug("marking report as dirty");
-                            dirty = true;
-                        }
-                    }
-                });
+            @Override
+            public void handleEvent(final ReportChangeEvent event) {
+                if (event.getModel() == currentModel || currentModel.getElements().contains(event.getModel())) {
+                    Log.debug("marking report as dirty");
+                    dirty = true;
+                }
+            }
+        });
     }
 
     public void createToolbar() {
         reportBar = new ReportBar();
-        BorderLayoutData reportBarLayout = new BorderLayoutData(
-                LayoutRegion.NORTH);
+        BorderLayoutData reportBarLayout = new BorderLayoutData(LayoutRegion.NORTH);
         reportBarLayout.setSize(35);
         add(reportBar, reportBarLayout);
 
@@ -146,8 +139,7 @@ public class ReportDesignPage extends ContentPanel implements Page,
             @Override
             public void handleEvent(final EditorEvent be) {
                 String newTitle = (String) be.getValue();
-                if (newTitle != null
-                        && !newTitle.equals(currentModel.getTitle())) {
+                if (newTitle != null && !newTitle.equals(currentModel.getTitle())) {
                     currentModel.setTitle(newTitle);
                     reportBar.setReportTitle(newTitle);
                     save(new SaveCallback());
@@ -155,42 +147,38 @@ public class ReportDesignPage extends ContentPanel implements Page,
             }
         });
 
-        reportBar.getSaveButton().addSelectionListener(
-                new SelectionListener<ButtonEvent>() {
+        reportBar.getSaveButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
 
-                    @Override
-                    public void componentSelected(final ButtonEvent ce) {
-                        saveTitled(null, new SaveCallback());
-                    }
-                });
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+                saveTitled(null, new SaveCallback());
+            }
+        });
 
-        reportBar.getShareButton().addSelectionListener(
-                new SelectionListener<ButtonEvent>() {
+        reportBar.getShareButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
 
-                    @Override
-                    public void componentSelected(final ButtonEvent ce) {
-                        showShareForm();
-                    }
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+                showShareForm();
+            }
 
-                });
+        });
 
-        reportBar.getDashboardButton().addSelectionListener(
-                new SelectionListener<ButtonEvent>() {
+        reportBar.getDashboardButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
 
-                    @Override
-                    public void componentSelected(final ButtonEvent ce) {
-                        pinToDashboard(reportBar.getDashboardButton().isPressed());
-                    }
-                });
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+                pinToDashboard(reportBar.getDashboardButton().isPressed());
+            }
+        });
 
-        reportBar.getSwitchViewButton().addSelectionListener(
-                new SelectionListener<ButtonEvent>() {
+        reportBar.getSwitchViewButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
 
-                    @Override
-                    public void componentSelected(final ButtonEvent ce) {
-                        switchView();
-                    }
-                });
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+                switchView();
+            }
+        });
     }
 
     @Override
@@ -229,8 +217,7 @@ public class ReportDesignPage extends ContentPanel implements Page,
         reportBar.getDashboardButton().toggle(currentMetadata.isDashboard());
 
         if (currentModel.getElements().size() == 1) {
-            ReportElementEditor editor = editorProvider.create(currentModel
-                    .getElement(0));
+            ReportElementEditor editor = editorProvider.create(currentModel.getElement(0));
             editor.bind(currentModel.getElement(0));
             installEditor(editor);
             reportBar.getSwitchViewButton().setVisible(true);
@@ -240,8 +227,7 @@ public class ReportDesignPage extends ContentPanel implements Page,
     }
 
     private void installCompositeEditor() {
-        CompositeEditor2 editor = (CompositeEditor2) editorProvider
-                .create(currentModel);
+        CompositeEditor2 editor = (CompositeEditor2) editorProvider.create(currentModel);
         editor.bind(currentModel);
         installEditor(editor);
 
@@ -277,12 +263,10 @@ public class ReportDesignPage extends ContentPanel implements Page,
                     public void onSuccess(final VoidResult result) {
                         if (update.getPinnedToDashboard()) {
                             Info.display(I18N.CONSTANTS.saved(),
-                                    I18N.MESSAGES.addedToDashboard(currentModel
-                                            .getTitle()));
+                                    I18N.MESSAGES.addedToDashboard(currentModel.getTitle()));
                         } else {
                             Info.display(I18N.CONSTANTS.saved(),
-                                    I18N.MESSAGES.removedFromDashboard(currentModel
-                                            .getTitle()));
+                                    I18N.MESSAGES.removedFromDashboard(currentModel.getTitle()));
                         }
                     }
 
@@ -308,29 +292,25 @@ public class ReportDesignPage extends ContentPanel implements Page,
     }
 
     private void promptForTitle(final AsyncCallback<VoidResult> callback) {
-        MessageBox.prompt(I18N.CONSTANTS.save(),
-                I18N.CONSTANTS.chooseReportTitle(),
-                new Listener<MessageBoxEvent>() {
+        MessageBox.prompt(I18N.CONSTANTS.save(), I18N.CONSTANTS.chooseReportTitle(), new Listener<MessageBoxEvent>() {
 
-                    @Override
-                    public void handleEvent(final MessageBoxEvent be) {
-                        String newTitle = be.getMessageBox().getTextBox()
-                                .getValue();
-                        if (!Strings.isNullOrEmpty(newTitle)) {
-                            currentModel.setTitle(newTitle);
-                            reportBar.setReportTitle(newTitle);
-                            save(callback);
-                        }
-                    }
-                });
+            @Override
+            public void handleEvent(final MessageBoxEvent be) {
+                String newTitle = be.getMessageBox().getTextBox().getValue();
+                if (!Strings.isNullOrEmpty(newTitle)) {
+                    currentModel.setTitle(newTitle);
+                    reportBar.setReportTitle(newTitle);
+                    save(callback);
+                }
+            }
+        });
     }
 
     private void save(final AsyncCallback<VoidResult> callback) {
         save(null, callback);
     }
 
-    private void save(final AsyncMonitor monitor,
-                      final AsyncCallback<VoidResult> callback) {
+    private void save(final AsyncMonitor monitor, final AsyncCallback<VoidResult> callback) {
         if (currentMetadata.isEditAllowed()) {
             performUpdate(monitor, callback);
         } else {
@@ -338,30 +318,26 @@ public class ReportDesignPage extends ContentPanel implements Page,
         }
     }
 
-    private void performUpdate(final AsyncMonitor monitor,
-                               final AsyncCallback<VoidResult> callback) {
+    private void performUpdate(final AsyncMonitor monitor, final AsyncCallback<VoidResult> callback) {
         UpdateReportModel updateReport = new UpdateReportModel();
         updateReport.setModel(currentModel);
 
-        dispatcher.execute(updateReport, monitor,
-                new AsyncCallback<VoidResult>() {
-                    @Override
-                    public void onFailure(final Throwable caught) {
-                        callback.onFailure(caught);
-                    }
+        dispatcher.execute(updateReport, monitor, new AsyncCallback<VoidResult>() {
+            @Override
+            public void onFailure(final Throwable caught) {
+                callback.onFailure(caught);
+            }
 
-                    @Override
-                    public void onSuccess(final VoidResult result) {
-                        dirty = false;
-                        callback.onSuccess(result);
-                    }
-                });
+            @Override
+            public void onSuccess(final VoidResult result) {
+                dirty = false;
+                callback.onSuccess(result);
+            }
+        });
     }
 
-    private void confirmCreate(final AsyncMonitor monitor,
-                               final AsyncCallback<VoidResult> callback) {
-        MessageBox.confirm(I18N.CONSTANTS.save(),
-                I18N.MESSAGES.confirmSaveCopy(), new Listener<MessageBoxEvent>() {
+    private void confirmCreate(final AsyncMonitor monitor, final AsyncCallback<VoidResult> callback) {
+        MessageBox.confirm(I18N.CONSTANTS.save(), I18N.MESSAGES.confirmSaveCopy(), new Listener<MessageBoxEvent>() {
             @Override
             public void handleEvent(final MessageBoxEvent be) {
                 Button btn = be.getButtonClicked();
@@ -373,22 +349,19 @@ public class ReportDesignPage extends ContentPanel implements Page,
     }
 
     private void performCreate() {
-        currentModel.setTitle(currentModel.getTitle() + " ("
-                + I18N.CONSTANTS.copy() + ")");
+        currentModel.setTitle(currentModel.getTitle() + " (" + I18N.CONSTANTS.copy() + ")");
 
-        dispatcher.execute(new CreateReport(currentModel),
-                new AsyncCallback<CreateResult>() {
-                    @Override
-                    public void onFailure(final Throwable caught) {
-                    }
+        dispatcher.execute(new CreateReport(currentModel), new AsyncCallback<CreateResult>() {
+            @Override
+            public void onFailure(final Throwable caught) {
+            }
 
-                    @Override
-                    public void onSuccess(final CreateResult created) {
-                        eventBus.fireEvent(new NavigationEvent(
-                                NavigationHandler.NAVIGATION_REQUESTED,
-                                new ReportDesignPageState(created.getNewId())));
-                    }
-                });
+            @Override
+            public void onSuccess(final CreateResult created) {
+                eventBus.fireEvent(new NavigationEvent(NavigationHandler.NAVIGATION_REQUESTED,
+                        new ReportDesignPageState(created.getNewId())));
+            }
+        });
     }
 
     public void setReportEdited(final boolean edited) {
@@ -416,8 +389,7 @@ public class ReportDesignPage extends ContentPanel implements Page,
     }
 
     @Override
-    public void requestToNavigateAway(final PageState place,
-                                      final NavigationCallback callback) {
+    public void requestToNavigateAway(final PageState place, final NavigationCallback callback) {
         if (!dirty) {
             callback.onDecided(true);
         } else {
@@ -460,8 +432,7 @@ public class ReportDesignPage extends ContentPanel implements Page,
 
             @Override
             public void onSaved() {
-                final ShareReportDialog dialog = new ShareReportDialog(
-                        dispatcher);
+                final ShareReportDialog dialog = new ShareReportDialog(dispatcher);
                 // form.updateForm(currentReportId);
                 dialog.show(currentModel);
             }
@@ -471,11 +442,9 @@ public class ReportDesignPage extends ContentPanel implements Page,
     @Override
     public void export(final Format format) {
         StringBuilder fileName = new StringBuilder();
-        fileName.append(untitled() ? I18N.CONSTANTS.untitledReport()
-                : currentModel.getTitle());
+        fileName.append(untitled() ? I18N.CONSTANTS.untitledReport() : currentModel.getTitle());
         fileName.append(" ");
-        fileName.append(DateTimeFormat.getFormat("yyyyMMdd_HHmm").format(
-                new Date()));
+        fileName.append(DateTimeFormat.getFormat("yyyyMMdd_HHmm").format(new Date()));
 
         ExportDialog dialog = new ExportDialog(dispatcher);
         dialog.export(fileName.toString(), currentEditor.getModel(), format);

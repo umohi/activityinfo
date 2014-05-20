@@ -61,8 +61,7 @@ public class VSplitFrameSet implements Frame {
 
     private void addNavigationPanel() {
 
-        BorderLayoutData layoutData = new BorderLayoutData(
-                Style.LayoutRegion.WEST);
+        BorderLayoutData layoutData = new BorderLayoutData(Style.LayoutRegion.WEST);
         layoutData.setSplit(true);
         layoutData.setCollapsible(true);
         layoutData.setMargins(new Margins(0, 5, 0, 0));
@@ -95,8 +94,7 @@ public class VSplitFrameSet implements Frame {
     }
 
     @Override
-    public AsyncMonitor showLoadingPlaceHolder(PageId page,
-                                               PageState loadingPlace) {
+    public AsyncMonitor showLoadingPlaceHolder(PageId page, PageState loadingPlace) {
 
         LoadingPlaceHolder placeHolder = new LoadingPlaceHolder();
         setWidget(placeHolder);
@@ -112,8 +110,7 @@ public class VSplitFrameSet implements Frame {
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         if (activePage == null) {
             callback.onDecided(true);
         } else {

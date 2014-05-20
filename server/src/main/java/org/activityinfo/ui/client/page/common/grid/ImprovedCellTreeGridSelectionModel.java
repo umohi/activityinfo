@@ -28,8 +28,7 @@ import com.extjs.gxt.ui.client.widget.treegrid.CellTreeGridSelectionModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImprovedCellTreeGridSelectionModel<M extends ModelData> extends
-        CellTreeGridSelectionModel<M> {
+public class ImprovedCellTreeGridSelectionModel<M extends ModelData> extends CellTreeGridSelectionModel<M> {
 
     @Override
     public M getSelectedItem() {

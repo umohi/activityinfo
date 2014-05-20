@@ -66,8 +66,7 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
     private ToggleButton linkButton;
 
     @Inject
-    public IndicatorLinkPage(Dispatcher dispatcher,
-                             StateProvider stateMgr) {
+    public IndicatorLinkPage(Dispatcher dispatcher, StateProvider stateMgr) {
 
         this.dispatcher = dispatcher;
 
@@ -81,99 +80,83 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
         addGalley();
         addDestinationContainer();
 
-        sourceDatabaseGrid
-                .addMouseOverListener(new Listener<GridEvent<UserDatabaseDTO>>() {
+        sourceDatabaseGrid.addMouseOverListener(new Listener<GridEvent<UserDatabaseDTO>>() {
 
-                    @Override
-                    public void handleEvent(GridEvent<UserDatabaseDTO> event) {
-                        sourceDatabaseGrid.getGridView().clearHighlight();
-                        destDatabaseGrid.getGridView().highlight(
-                                linkGraph.destinationForDatabase(event.getModel()));
-                    }
-                });
+            @Override
+            public void handleEvent(GridEvent<UserDatabaseDTO> event) {
+                sourceDatabaseGrid.getGridView().clearHighlight();
+                destDatabaseGrid.getGridView().highlight(linkGraph.destinationForDatabase(event.getModel()));
+            }
+        });
 
-        sourceDatabaseGrid
-                .addSelectionChangeListener(new SelectionChangedListener<UserDatabaseDTO>() {
+        sourceDatabaseGrid.addSelectionChangeListener(new SelectionChangedListener<UserDatabaseDTO>() {
 
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<UserDatabaseDTO> se) {
-                        sourceIndicatorGrid.setDatabase(se.getSelectedItem());
-                        onDatabaseLinksChanged();
-                    }
-                });
+            @Override
+            public void selectionChanged(SelectionChangedEvent<UserDatabaseDTO> se) {
+                sourceIndicatorGrid.setDatabase(se.getSelectedItem());
+                onDatabaseLinksChanged();
+            }
+        });
 
-        sourceIndicatorGrid
-                .addMouseOverListener(new Listener<GridEvent<IndicatorDTO>>() {
+        sourceIndicatorGrid.addMouseOverListener(new Listener<GridEvent<IndicatorDTO>>() {
 
-                    @Override
-                    public void handleEvent(GridEvent<IndicatorDTO> event) {
+            @Override
+            public void handleEvent(GridEvent<IndicatorDTO> event) {
 
-                        Set<Integer> linkedTo = linkGraph.destForIndicator(
-                                event.getModel(),
-                                destDatabaseGrid.getSelectedItem());
+                Set<Integer> linkedTo = linkGraph.destForIndicator(event.getModel(),
+                        destDatabaseGrid.getSelectedItem());
 
-                        sourceDatabaseGrid.getGridView().clearHighlight();
-                        destDatabaseGrid.getGridView().clearHighlight();
-                        destIndicatorGrid.getGridView().highlight(linkedTo);
-                    }
-                });
+                sourceDatabaseGrid.getGridView().clearHighlight();
+                destDatabaseGrid.getGridView().clearHighlight();
+                destIndicatorGrid.getGridView().highlight(linkedTo);
+            }
+        });
 
-        sourceIndicatorGrid
-                .addSelectionChangeListener(new SelectionChangedListener<IndicatorDTO>() {
+        sourceIndicatorGrid.addSelectionChangeListener(new SelectionChangedListener<IndicatorDTO>() {
 
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<IndicatorDTO> se) {
-                        onIndicatorSelectionChanged();
-                    }
-                });
+            @Override
+            public void selectionChanged(SelectionChangedEvent<IndicatorDTO> se) {
+                onIndicatorSelectionChanged();
+            }
+        });
 
-        destDatabaseGrid
-                .addMouseOverListener(new Listener<GridEvent<UserDatabaseDTO>>() {
+        destDatabaseGrid.addMouseOverListener(new Listener<GridEvent<UserDatabaseDTO>>() {
 
-                    @Override
-                    public void handleEvent(GridEvent<UserDatabaseDTO> event) {
-                        destDatabaseGrid.getGridView().clearHighlight();
-                        sourceDatabaseGrid.getGridView().highlight(
-                                linkGraph.sourcesForDatabase(event.getModel()));
-                    }
-                });
+            @Override
+            public void handleEvent(GridEvent<UserDatabaseDTO> event) {
+                destDatabaseGrid.getGridView().clearHighlight();
+                sourceDatabaseGrid.getGridView().highlight(linkGraph.sourcesForDatabase(event.getModel()));
+            }
+        });
 
-        destDatabaseGrid
-                .addSelectionChangeListener(new SelectionChangedListener<UserDatabaseDTO>() {
+        destDatabaseGrid.addSelectionChangeListener(new SelectionChangedListener<UserDatabaseDTO>() {
 
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<UserDatabaseDTO> se) {
-                        destIndicatorGrid.setDatabase(se.getSelectedItem());
-                        onDatabaseLinksChanged();
-                    }
-                });
+            @Override
+            public void selectionChanged(SelectionChangedEvent<UserDatabaseDTO> se) {
+                destIndicatorGrid.setDatabase(se.getSelectedItem());
+                onDatabaseLinksChanged();
+            }
+        });
 
-        destIndicatorGrid
-                .addMouseOverListener(new Listener<GridEvent<IndicatorDTO>>() {
+        destIndicatorGrid.addMouseOverListener(new Listener<GridEvent<IndicatorDTO>>() {
 
-                    @Override
-                    public void handleEvent(GridEvent<IndicatorDTO> be) {
-                        sourceDatabaseGrid.getGridView().clearHighlight();
-                        destDatabaseGrid.getGridView().clearHighlight();
-                        sourceIndicatorGrid.getGridView().highlight(
-                                linkGraph.sourceForIndicator(
-                                        sourceDatabaseGrid.getSelectedItem(),
-                                        be.getModel()));
-                    }
-                });
+            @Override
+            public void handleEvent(GridEvent<IndicatorDTO> be) {
+                sourceDatabaseGrid.getGridView().clearHighlight();
+                destDatabaseGrid.getGridView().clearHighlight();
+                sourceIndicatorGrid.getGridView()
+                                   .highlight(linkGraph.sourceForIndicator(sourceDatabaseGrid.getSelectedItem(),
+                                           be.getModel()));
+            }
+        });
 
-        destIndicatorGrid
-                .addSelectionChangeListener(new SelectionChangedListener<IndicatorDTO>() {
+        destIndicatorGrid.addSelectionChangeListener(new SelectionChangedListener<IndicatorDTO>() {
 
-                    @Override
-                    public void selectionChanged(
-                            SelectionChangedEvent<IndicatorDTO> se) {
-                        onIndicatorSelectionChanged();
-                    }
-                });
+            @Override
+            public void selectionChanged(SelectionChangedEvent<IndicatorDTO> se) {
+                onIndicatorSelectionChanged();
+            }
+        });
     }
 
     private void addSourceContainer() {
@@ -261,13 +244,10 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
     }
 
     private void onDatabaseLinksChanged() {
-        sourceIndicatorGrid.setLinked(
-                linkGraph.sourceIndicators(sourceDatabaseGrid.getSelectedItem(),
-                        destDatabaseGrid.getSelectedItem()));
-        destIndicatorGrid.setLinked(
-                linkGraph.destinationIndicators(
-                        sourceDatabaseGrid.getSelectedItem(),
-                        destDatabaseGrid.getSelectedItem()));
+        sourceIndicatorGrid.setLinked(linkGraph.sourceIndicators(sourceDatabaseGrid.getSelectedItem(),
+                destDatabaseGrid.getSelectedItem()));
+        destIndicatorGrid.setLinked(linkGraph.destinationIndicators(sourceDatabaseGrid.getSelectedItem(),
+                destDatabaseGrid.getSelectedItem()));
     }
 
     protected void onIndicatorSelectionChanged() {
@@ -301,8 +281,7 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
         update.setDestIndicatorId(dest.getId());
 
         if (link) {
-            linkGraph.link(sourceDatabaseGrid.getSelectedItem(), source,
-                    destDatabaseGrid.getSelectedItem(), dest);
+            linkGraph.link(sourceDatabaseGrid.getSelectedItem(), source, destDatabaseGrid.getSelectedItem(), dest);
         } else {
             linkGraph.unlink(source, dest);
         }
@@ -320,8 +299,7 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
 
             @Override
             public void onSuccess(VoidResult result) {
-                Info.display(I18N.CONSTANTS.saved(), link ? "Link created"
-                        : "Link removed");
+                Info.display(I18N.CONSTANTS.saved(), link ? "Link created" : "Link removed");
             }
         });
 
@@ -339,21 +317,20 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
 
     @Override
     public boolean navigate(PageState place) {
-        dispatcher.execute(new GetIndicatorLinks(),
-                new AsyncCallback<IndicatorLinkResult>() {
+        dispatcher.execute(new GetIndicatorLinks(), new AsyncCallback<IndicatorLinkResult>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // TODO Auto-generated method stub
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Auto-generated method stub
 
-                    }
+            }
 
-                    @Override
-                    public void onSuccess(IndicatorLinkResult result) {
-                        linkGraph = new LinkGraph(result.getLinks());
-                        onDatabaseGraphChanged();
-                    }
-                });
+            @Override
+            public void onSuccess(IndicatorLinkResult result) {
+                linkGraph = new LinkGraph(result.getLinks());
+                onDatabaseGraphChanged();
+            }
+        });
         return true;
     }
 
@@ -364,8 +341,7 @@ public class IndicatorLinkPage extends ContentPanel implements Page {
     }
 
     @Override
-    public void requestToNavigateAway(PageState place,
-                                      NavigationCallback callback) {
+    public void requestToNavigateAway(PageState place, NavigationCallback callback) {
         callback.onDecided(true);
 
     }

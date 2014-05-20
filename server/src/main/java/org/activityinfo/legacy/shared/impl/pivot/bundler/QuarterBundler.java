@@ -32,8 +32,7 @@ public class QuarterBundler implements Bundler {
     private final String yearAlias;
     private final String quarterAlias;
 
-    public QuarterBundler(Dimension dimension, String yearAlias,
-                          String quarterAlias) {
+    public QuarterBundler(Dimension dimension, String yearAlias, String quarterAlias) {
         this.dimension = dimension;
         this.yearAlias = yearAlias;
         this.quarterAlias = quarterAlias;

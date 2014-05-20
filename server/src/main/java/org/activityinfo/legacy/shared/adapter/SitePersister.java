@@ -1,7 +1,6 @@
 package org.activityinfo.legacy.shared.adapter;
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
 import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.fp.client.Promise;
@@ -11,7 +10,9 @@ import org.activityinfo.legacy.shared.adapter.bindings.SiteBindingFactory;
 import org.activityinfo.legacy.shared.command.*;
 import org.activityinfo.legacy.shared.command.result.BatchResult;
 import org.activityinfo.legacy.shared.command.result.CommandResult;
-import org.activityinfo.legacy.shared.model.*;
+import org.activityinfo.legacy.shared.model.AdminEntityDTO;
+import org.activityinfo.legacy.shared.model.AdminLevelDTO;
+import org.activityinfo.legacy.shared.model.LocationTypeDTO;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -34,14 +35,13 @@ public class SitePersister {
 
         int activityId = CuidAdapter.getLegacyIdFromCuid(siteInstance.getClassId());
         return dispatcher.execute(new GetSchema())
-          .then(new SiteBindingFactory(activityId))
-          .join(new Function<SiteBinding, Promise<Void>>() {
-              @Nullable
-              @Override
-              public Promise<Void> apply(@Nullable SiteBinding binding) {
-                  return persist(binding, siteInstance).thenDiscardResult();
-              }
-          });
+                         .then(new SiteBindingFactory(activityId))
+                         .join(new Function<SiteBinding, Promise<Void>>() {
+                             @Nullable @Override
+                             public Promise<Void> apply(@Nullable SiteBinding binding) {
+                                 return persist(binding, siteInstance).thenDiscardResult();
+                             }
+                         });
     }
 
     private Promise<? extends CommandResult> persist(SiteBinding siteBinding, FormInstance instance) {
@@ -54,12 +54,12 @@ public class SitePersister {
         if (siteBinding.getLocationType().isAdminLevel()) {
             // we need to create the dummy location as well
             Promise<Command> createLocation = Promise.resolved(siteBinding.getAdminEntityId(instance))
-                    .join(new FetchEntityFunction())
-                    .then(new CreateDummyLocation(createSite.getLocationId(), siteBinding.getLocationType()));
+                                                     .join(new FetchEntityFunction())
+                                                     .then(new CreateDummyLocation(createSite.getLocationId(),
+                                                             siteBinding.getLocationType()));
 
             return createLocation.join(new Function<Command, Promise<BatchResult>>() {
-                @Nullable
-                @Override
+                @Nullable @Override
                 public Promise<BatchResult> apply(@Nullable Command createLocation) {
                     return dispatcher.execute(new BatchCommand(createLocation, createSite));
                 }
@@ -72,18 +72,14 @@ public class SitePersister {
 
     private class FetchEntityFunction implements Function<Integer, Promise<List<AdminEntityDTO>>> {
 
-        @Nullable
-        @Override
+        @Nullable @Override
         public Promise<List<AdminEntityDTO>> apply(@Nullable Integer input) {
-            GetAdminEntities query = new GetAdminEntities()
-                    .setEntityId(input);
+            GetAdminEntities query = new GetAdminEntities().setEntityId(input);
 
-            Promise<AdminEntityDTO> entity = dispatcher
-                    .execute(query)
-                    .then(new SingleListResultAdapter<AdminEntityDTO>());
+            Promise<AdminEntityDTO> entity = dispatcher.execute(query)
+                                                       .then(new SingleListResultAdapter<AdminEntityDTO>());
 
-            Promise<List<AdminEntityDTO>> parents = entity
-                    .join(new FetchParentsFunction());
+            Promise<List<AdminEntityDTO>> parents = entity.join(new FetchParentsFunction());
 
             return Promise.prepend(entity, parents);
         }
@@ -93,7 +89,7 @@ public class SitePersister {
 
         @Override
         public Promise<List<AdminEntityDTO>> apply(AdminEntityDTO input) {
-            if(input.getParentId() == null) {
+            if (input.getParentId() == null) {
                 return Promise.resolved(Collections.<AdminEntityDTO>emptyList());
             } else {
                 return Promise.resolved(input.getParentId()).join(new FetchEntityFunction());
@@ -122,7 +118,7 @@ public class SitePersister {
             properties.put("locationTypeId", locationType.getId());
             properties.put("name", entity.getName());
 
-            for(AdminEntityDTO parent : entities) {
+            for (AdminEntityDTO parent : entities) {
                 properties.put(AdminLevelDTO.getPropertyName(parent.getLevelId()), parent.getId());
             }
 

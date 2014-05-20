@@ -31,16 +31,14 @@ import org.activityinfo.legacy.shared.reports.content.PivotContent;
 import org.activityinfo.legacy.shared.reports.content.PivotTableData;
 import org.activityinfo.legacy.shared.reports.model.PivotTableReportElement;
 
-public class GeneratePivotTableHandler implements
-        CommandHandlerAsync<GeneratePivotTable, PivotContent> {
+public class GeneratePivotTableHandler implements CommandHandlerAsync<GeneratePivotTable, PivotContent> {
 
     @Override
     public void execute(final GeneratePivotTable command,
                         ExecutionContext context,
                         final AsyncCallback<PivotContent> callback) {
 
-        context.execute(new PivotSites(command.getModel().allDimensions(),
-                command.getModel().getFilter()),
+        context.execute(new PivotSites(command.getModel().allDimensions(), command.getModel().getFilter()),
                 new AsyncCallback<PivotSites.PivotResult>() {
 
                     @Override
@@ -55,12 +53,13 @@ public class GeneratePivotTableHandler implements
                 });
     }
 
-    protected PivotContent buildResult(PivotTableReportElement model,
-                                       PivotResult result) {
+    protected PivotContent buildResult(PivotTableReportElement model, PivotResult result) {
 
         PivotTableDataBuilder builder = new PivotTableDataBuilder();
-        PivotTableData data = builder.build(model, model.getRowDimensions(),
-                model.getColumnDimensions(), result.getBuckets());
+        PivotTableData data = builder.build(model,
+                model.getRowDimensions(),
+                model.getColumnDimensions(),
+                result.getBuckets());
 
         PivotContent content = new PivotContent();
         content.setEffectiveFilter(model.getFilter());

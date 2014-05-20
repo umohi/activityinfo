@@ -27,8 +27,7 @@ import org.activityinfo.legacy.shared.model.SiteAttachmentDTO;
 
 import java.util.List;
 
-public class SiteAttachmentResult implements CommandResult,
-        ListLoadResult<SiteAttachmentDTO> {
+public class SiteAttachmentResult implements CommandResult, ListLoadResult<SiteAttachmentDTO> {
 
     private List<SiteAttachmentDTO> data;
 

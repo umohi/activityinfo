@@ -56,14 +56,11 @@ public class AuthTokenProvider {
     public NewCookie[] createNewAuthCookies(User user) {
         Authentication token = createNewAuthToken(user);
 
-        NewCookie cookie = newAuthCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE,
-                token.getId());
+        NewCookie cookie = newAuthCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE, token.getId());
         NewCookie userCookie = newAuthCookie(AuthenticatedUser.USER_ID_COOKIE,
                 Integer.toString(token.getUser().getId()));
-        NewCookie emailCookie = newAuthCookie(AuthenticatedUser.EMAIL_COOKIE,
-                user.getEmail());
-        NewCookie localeCookie = newLocaleCookie(
-                AuthenticatedUser.USER_LOCAL_COOKIE, user.getLocale());
+        NewCookie emailCookie = newAuthCookie(AuthenticatedUser.EMAIL_COOKIE, user.getEmail());
+        NewCookie localeCookie = newLocaleCookie(AuthenticatedUser.USER_LOCAL_COOKIE, user.getLocale());
 
         return new NewCookie[]{cookie, userCookie, emailCookie, localeCookie};
     }
@@ -74,8 +71,7 @@ public class AuthTokenProvider {
         String comment = null;
         int maxAge = THIS_SESSION;
         boolean onlySecure = false;
-        return new NewCookie(name, value, path, domain, comment, maxAge,
-                onlySecure);
+        return new NewCookie(name, value, path, domain, comment, maxAge, onlySecure);
     }
 
     private NewCookie newLocaleCookie(String name, String value) {
@@ -84,7 +80,6 @@ public class AuthTokenProvider {
         String comment = null;
         int maxAge = ONE_YEAR;
         boolean onlySecure = false;
-        return new NewCookie(name, value, path, domain, comment, maxAge,
-                onlySecure);
+        return new NewCookie(name, value, path, domain, comment, maxAge, onlySecure);
     }
 }

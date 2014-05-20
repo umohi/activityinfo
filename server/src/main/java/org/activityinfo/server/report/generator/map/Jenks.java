@@ -112,8 +112,7 @@ public class Jenks {
         return computeBreaks(list, numclass, new Identity());
     }
 
-    private Breaks computeBreaks(double[] list, int numclass,
-                                 DoubleFunction transform) {
+    private Breaks computeBreaks(double[] list, int numclass, DoubleFunction transform) {
 
         int numdata = list.length;
 
@@ -298,8 +297,7 @@ public class Jenks {
                 if (getClassMin(i) == getClassMax(i)) {
                     sb.append(getClassMin(i));
                 } else {
-                    sb.append(getClassMin(i)).append(" - ")
-                            .append(getClassMax(i));
+                    sb.append(getClassMin(i)).append(" - ").append(getClassMax(i));
                 }
                 sb.append(" (" + getClassCount(i) + ")");
                 sb.append(" = ").append(Arrays.toString(classList(i)));

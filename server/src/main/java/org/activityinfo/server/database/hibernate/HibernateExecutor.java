@@ -41,8 +41,7 @@ public class HibernateExecutor extends JdbcExecutor {
 
     private final HibernateEntityManager entityManager;
 
-    private final static Logger LOGGER = Logger
-            .getLogger(HibernateExecutor.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(HibernateExecutor.class.getName());
 
     @Inject
     public HibernateExecutor(EntityManager em) {
@@ -55,8 +54,7 @@ public class HibernateExecutor extends JdbcExecutor {
     }
 
     @Override
-    public SqlResultSet execute(final String statement, final Object[] params)
-            throws Exception {
+    public SqlResultSet execute(final String statement, final Object[] params) throws Exception {
         final List<SqlResultSet> result = Lists.newArrayList();
         entityManager.getSession().doWork(new Work() {
 
@@ -75,14 +73,10 @@ public class HibernateExecutor extends JdbcExecutor {
 
                     if (elapsed > 100) {
                         String formatted = format(statement);
-                        LOGGER.warning("Slow query completed in " + elapsed
-                                + "ms:\n" + formatted);
+                        LOGGER.warning("Slow query completed in " + elapsed + "ms:\n" + formatted);
                     }
                 } catch (Throwable e) {
-                    LOGGER
-                            .log(Level.SEVERE,
-                                    "Exception occured while executing query: "
-                                            + statement, e);
+                    LOGGER.log(Level.SEVERE, "Exception occured while executing query: " + statement, e);
                     throw new SQLException(e);
                 }
             }

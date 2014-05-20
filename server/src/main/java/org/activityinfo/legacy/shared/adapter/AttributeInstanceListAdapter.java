@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Extracts a list of a {@code AttributeDTO}s from a SchemaDTO and converts them to
  * {@code FormInstances}
-*/
+ */
 public class AttributeInstanceListAdapter implements Function<SchemaDTO, List<FormInstance>> {
 
     private final Predicate<Cuid> criteria;
@@ -25,18 +25,17 @@ public class AttributeInstanceListAdapter implements Function<SchemaDTO, List<Fo
         this.criteria = CriteriaEvaluation.evaluatePartiallyOnClassId(criteria);
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public List<FormInstance> apply(SchemaDTO schema) {
         Set<Integer> added = Sets.newHashSet();
         List<FormInstance> instances = Lists.newArrayList();
-        for(UserDatabaseDTO db : schema.getDatabases()) {
-            for(ActivityDTO activity : db.getActivities()) {
-                for(AttributeGroupDTO group : activity.getAttributeGroups()) {
+        for (UserDatabaseDTO db : schema.getDatabases()) {
+            for (ActivityDTO activity : db.getActivities()) {
+                for (AttributeGroupDTO group : activity.getAttributeGroups()) {
                     Cuid classId = CuidAdapter.attributeGroupFormClass(group.getId());
-                    if(criteria.apply(classId)) {
-                        for(AttributeDTO attribute : group.getAttributes()) {
-                            if(!added.contains(attribute.getId())) {
+                    if (criteria.apply(classId)) {
+                        for (AttributeDTO attribute : group.getAttributes()) {
+                            if (!added.contains(attribute.getId())) {
                                 Cuid instanceId = CuidAdapter.attributeId(attribute.getId());
                                 FormInstance instance = new FormInstance(instanceId, classId);
                                 instance.set(CuidAdapter.getFormInstanceLabelCuid(instance), attribute.getName());

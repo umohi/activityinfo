@@ -90,14 +90,22 @@ public class UserFormPlace implements PageState {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         UserFormPlace that = (UserFormPlace) o;
 
-        if (userFormId != null ? !userFormId.equals(that.userFormId) : that.userFormId != null) return false;
-        if (userFormInstanceId != null ? !userFormInstanceId.equals(that.userFormInstanceId) : that.userFormInstanceId != null)
+        if (userFormId != null ? !userFormId.equals(that.userFormId) : that.userFormId != null) {
             return false;
+        }
+        if (userFormInstanceId != null ? !userFormInstanceId.equals(that.userFormInstanceId) :
+                that.userFormInstanceId != null) {
+            return false;
+        }
 
         return true;
     }
@@ -112,8 +120,8 @@ public class UserFormPlace implements PageState {
     @Override
     public String toString() {
         return "UserFormPlace{" +
-                ", userFormId=" + userFormId +
-                ", userFormInstanceId=" + userFormInstanceId +
-                '}';
+               ", userFormId=" + userFormId +
+               ", userFormInstanceId=" + userFormInstanceId +
+               '}';
     }
 }

@@ -32,8 +32,8 @@ import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayout;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.extjs.gxt.ui.client.widget.layout.VBoxLayoutData;
-import org.activityinfo.legacy.shared.command.result.SitePointList;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.legacy.shared.command.result.SitePointList;
 import org.activityinfo.ui.client.page.search.SearchPresenter.RecentSiteModel;
 
 import java.util.List;
@@ -72,19 +72,16 @@ public class RecentSitesView extends ContentPanel {
     }
 
     private void createSitesPanel() {
-        ListView<RecentSiteModel> listviewSites = new ListView<RecentSiteModel>(
-                storeSites);
+        ListView<RecentSiteModel> listviewSites = new ListView<RecentSiteModel>(storeSites);
 
-        listviewSites.setTemplate(SearchResources.INSTANCE.sitesTemplate()
-                .getText());
+        listviewSites.setTemplate(SearchResources.INSTANCE.sitesTemplate().getText());
         listviewSites.setItemSelector(".site");
-        listviewSites.addListener(Events.Select,
-                new Listener<ListViewEvent<RecentSiteModel>>() {
-                    @Override
-                    public void handleEvent(ListViewEvent<RecentSiteModel> be) {
-                        // mapWidget.selectSite(be.getModel().getSiteId());
-                    }
-                });
+        listviewSites.addListener(Events.Select, new Listener<ListViewEvent<RecentSiteModel>>() {
+            @Override
+            public void handleEvent(ListViewEvent<RecentSiteModel> be) {
+                // mapWidget.selectSite(be.getModel().getSiteId());
+            }
+        });
 
         VBoxLayoutData vbld = new VBoxLayoutData();
         vbld.setFlex(3);

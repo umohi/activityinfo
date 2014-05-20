@@ -33,15 +33,13 @@ import java.util.logging.Logger;
 @Singleton
 public final class HibernateSessionFilter implements Filter {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(HibernateSessionFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HibernateSessionFilter.class.getName());
 
     private HibernateSessionScope sessionScope;
     private EntityManagerFactory entityManagerFactory;
 
     @Inject
-    public HibernateSessionFilter(EntityManagerFactory emf,
-                                  HibernateSessionScope sessionScope) {
+    public HibernateSessionFilter(EntityManagerFactory emf, HibernateSessionScope sessionScope) {
         this.entityManagerFactory = emf;
         this.sessionScope = sessionScope;
     }
@@ -52,8 +50,8 @@ public final class HibernateSessionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
+                         ServletResponse servletResponse,
+                         FilterChain filterChain) throws IOException, ServletException {
 
         try {
             sessionScope.enter();

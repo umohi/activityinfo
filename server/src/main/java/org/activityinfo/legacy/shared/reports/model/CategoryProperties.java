@@ -54,8 +54,8 @@ public class CategoryProperties implements Serializable {
 
     public void setColor(int r, int g, int b) {
         this.color = ((r & 0xFF) << 16) |
-                ((g & 0xFF) << 8) |
-                ((b & 0xFF) << 0);
+                     ((g & 0xFF) << 8) |
+                     ((b & 0xFF) << 0);
     }
 
 }

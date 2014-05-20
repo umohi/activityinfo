@@ -28,8 +28,8 @@ import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 import org.activityinfo.legacy.shared.model.LocationDTO;
 
 /**
-* @author yuriyz on 4/15/14.
-*/
+ * @author yuriyz on 4/15/14.
+ */
 class LocationFieldProjectionUpdater implements ProjectionUpdater<LocationDTO> {
 
     private FieldPath path;
@@ -50,10 +50,8 @@ class LocationFieldProjectionUpdater implements ProjectionUpdater<LocationDTO> {
                 projection.setValue(path, locationDTO.getAxe());
                 break;
             case CuidAdapter.GEOMETRY_FIELD:
-                if(locationDTO.hasCoordinates()) {
-                    projection.setValue(path, new AiLatLng(
-                            locationDTO.getLatitude(),
-                            locationDTO.getLongitude()));
+                if (locationDTO.hasCoordinates()) {
+                    projection.setValue(path, new AiLatLng(locationDTO.getLatitude(), locationDTO.getLongitude()));
                 }
                 break;
         }

@@ -36,17 +36,12 @@ import java.util.List;
 public class LocationSearcher implements Searcher {
 
     @Override
-    public void search(List<String> testQuery, SqlTransaction tx,
-                       final AsyncCallback<List<Integer>> callback) {
+    public void search(List<String> testQuery, SqlTransaction tx, final AsyncCallback<List<Integer>> callback) {
         final List<Integer> ids = new ArrayList<Integer>();
         String tableName = "Location";
         final String primaryKey = "LocationID";
 
-        SqlQuery
-                .select(primaryKey)
-                .from(tableName.toLowerCase())
-                .whereLikes("Name")
-                .likeMany(testQuery)
+        SqlQuery.select(primaryKey).from(tableName.toLowerCase()).whereLikes("Name").likeMany(testQuery)
 
                 .execute(tx, new SqlResultCallback() {
                     @Override

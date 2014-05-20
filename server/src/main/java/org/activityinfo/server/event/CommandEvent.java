@@ -35,8 +35,7 @@ public class CommandEvent {
     private CommandResult result;
     private ExecutionContext context;
 
-    public CommandEvent(Command command, CommandResult result,
-                        ExecutionContext context) {
+    public CommandEvent(Command command, CommandResult result, ExecutionContext context) {
         this.command = command;
         this.result = result;
         this.context = context;

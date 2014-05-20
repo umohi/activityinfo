@@ -42,9 +42,7 @@ public class Target implements Serializable, ReallyDeleteable {
         super();
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "targetId", unique = true, nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "targetId", unique = true, nullable = false)
     public int getId() {
         return id;
     }
@@ -78,8 +76,7 @@ public class Target implements Serializable, ReallyDeleteable {
         this.date2 = date2;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ProjectId")
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "ProjectId")
     public Project getProject() {
         return project;
     }
@@ -88,8 +85,7 @@ public class Target implements Serializable, ReallyDeleteable {
         this.project = project;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "PartnerId")
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "PartnerId")
     public Partner getPartner() {
         return partner;
     }
@@ -98,8 +94,7 @@ public class Target implements Serializable, ReallyDeleteable {
         this.partner = partner;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "AdminEntityId")
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "AdminEntityId")
     public AdminEntity getAdminEntity() {
         return adminEntity;
     }
@@ -112,8 +107,7 @@ public class Target implements Serializable, ReallyDeleteable {
         this.userDatabase = userDatabase;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DatabaseId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "DatabaseId", nullable = false)
     public UserDatabase getUserDatabase() {
         return userDatabase;
     }

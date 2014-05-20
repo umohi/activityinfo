@@ -36,9 +36,7 @@ import java.util.Set;
 /**
  * @author Alex Bertram
  */
-@Entity
-@Table(name = "AdminEntity")
-@JsonAutoDetect(JsonMethod.NONE)
+@Entity @Table(name = "AdminEntity") @JsonAutoDetect(JsonMethod.NONE)
 public class AdminEntity implements java.io.Serializable {
 
     private int id;
@@ -65,10 +63,7 @@ public class AdminEntity implements java.io.Serializable {
         this.name = name;
     }
 
-    @Id
-    @JsonProperty
-    @JsonView(AdminEntityViews.GeocodeView.class)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @JsonProperty @JsonView(AdminEntityViews.GeocodeView.class) @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "AdminEntityId", unique = true, nullable = false)
     public int getId() {
         return this.id;
@@ -78,14 +73,12 @@ public class AdminEntity implements java.io.Serializable {
         this.id = adminEntityId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AdminLevelId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "AdminLevelId", nullable = false)
     public AdminLevel getLevel() {
         return this.level;
     }
 
-    @Transient
-    @JsonView(AdminEntityViews.GeocodeView.class)
+    @Transient @JsonView(AdminEntityViews.GeocodeView.class)
     public int getLevelId() {
         return getLevel().getId();
     }
@@ -94,12 +87,9 @@ public class AdminEntity implements java.io.Serializable {
         this.level = level;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "LocationAdminLink",
-            joinColumns = {
-                    @JoinColumn(name = "AdminEntityId", nullable = false, updatable = false)},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "LocationId", nullable = false, updatable = false)}
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable(name = "LocationAdminLink",
+            joinColumns = {@JoinColumn(name = "AdminEntityId", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "LocationId", nullable = false, updatable = false)}
     )
     public Set<Location> getLocations() {
         return this.locations;
@@ -109,8 +99,7 @@ public class AdminEntity implements java.io.Serializable {
         this.locations = locations;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "AdminEntityParentId", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true) @JoinColumn(name = "AdminEntityParentId", nullable = true)
     public AdminEntity getParent() {
         return this.parent;
     }
@@ -119,14 +108,12 @@ public class AdminEntity implements java.io.Serializable {
         this.parent = parent;
     }
 
-    @JsonProperty
-    @Transient
+    @JsonProperty @Transient
     public Integer getParentId() {
         return parent == null ? null : parent.getId();
     }
 
-    @JsonProperty
-    @Column(name = "Name", nullable = false, length = 50)
+    @JsonProperty @Column(name = "Name", nullable = false, length = 50)
     public String getName() {
         return this.name;
     }
@@ -144,8 +131,7 @@ public class AdminEntity implements java.io.Serializable {
         this.soundex = soundex;
     }
 
-    @JsonProperty
-    @Column(name = "Code", length = 15)
+    @JsonProperty @Column(name = "Code", length = 15)
     public String getCode() {
         return this.code;
     }
@@ -154,8 +140,7 @@ public class AdminEntity implements java.io.Serializable {
         this.code = code;
     }
 
-    @Embedded
-    @JsonProperty
+    @Embedded @JsonProperty
     public Bounds getBounds() {
         return bounds;
     }
@@ -191,8 +176,7 @@ public class AdminEntity implements java.io.Serializable {
     }
 
 
-    @Basic(fetch = FetchType.LAZY)
-    @Type(type = "org.hibernate.spatial.GeometryType")
+    @Basic(fetch = FetchType.LAZY) @Type(type = "org.hibernate.spatial.GeometryType")
     public Geometry getGeometry() {
         return geometry;
     }

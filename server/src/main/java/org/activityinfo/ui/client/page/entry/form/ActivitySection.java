@@ -26,9 +26,9 @@ import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.Validator;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.shared.model.ActivityDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.page.entry.LockedPeriodSet;
 import org.activityinfo.ui.client.page.entry.form.field.PartnerComboBox;
 import org.activityinfo.ui.client.page.entry.form.field.ProjectComboBox;
@@ -87,23 +87,17 @@ public class ActivitySection extends FormSectionWithFormLayout<SiteDTO> {
             dateField2.setValidator(new Validator() {
                 @Override
                 public String validate(Field<?> field, String value) {
-                    if (dateField1.getValue() != null
-                            && dateField2.getValue() != null) {
+                    if (dateField1.getValue() != null && dateField2.getValue() != null) {
                         if (dateField2.getValue().before(dateField1.getValue())) {
-                            return I18N.CONSTANTS
-                                    .inconsistentDateRangeWarning();
+                            return I18N.CONSTANTS.inconsistentDateRangeWarning();
                         }
-                        if (locks.isActivityLocked(activity.getId(),
-                                dateField2.getValue())) {
-                            return I18N.CONSTANTS
-                                    .dateFallsWithinLockedPeriodWarning();
+                        if (locks.isActivityLocked(activity.getId(), dateField2.getValue())) {
+                            return I18N.CONSTANTS.dateFallsWithinLockedPeriodWarning();
                         }
                         if (projectCombo.getValue() != null) {
                             int projectId = projectCombo.getValue().getId();
-                            if (locks.isProjectLocked(projectId,
-                                    dateField2.getValue())) {
-                                return I18N.CONSTANTS
-                                        .dateFallsWithinLockedPeriodWarning();
+                            if (locks.isProjectLocked(projectId, dateField2.getValue())) {
+                                return I18N.CONSTANTS.dateFallsWithinLockedPeriodWarning();
                             }
                         }
                     }
@@ -140,10 +134,8 @@ public class ActivitySection extends FormSectionWithFormLayout<SiteDTO> {
     @Override
     public void updateForm(SiteDTO m) {
         if (activity.getReportingFrequency() == ActivityDTO.REPORT_ONCE) {
-            dateField1.setValue(m.getDate1() == null ? null : m.getDate1()
-                    .atMidnightInMyTimezone());
-            dateField2.setValue(m.getDate2() == null ? null : m.getDate2()
-                    .atMidnightInMyTimezone());
+            dateField1.setValue(m.getDate1() == null ? null : m.getDate1().atMidnightInMyTimezone());
+            dateField2.setValue(m.getDate2() == null ? null : m.getDate2().atMidnightInMyTimezone());
         }
         partnerCombo.setValue(m.getPartner());
         projectCombo.setValue(m.getProject());

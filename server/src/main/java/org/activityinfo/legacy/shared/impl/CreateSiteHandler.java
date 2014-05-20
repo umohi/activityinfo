@@ -43,11 +43,11 @@ import java.util.Map.Entry;
  * <p/>
  * Currently only supports updates to the SiteDTO view.
  */
-public class CreateSiteHandler implements
-        CommandHandlerAsync<CreateSite, CreateResult> {
+public class CreateSiteHandler implements CommandHandlerAsync<CreateSite, CreateResult> {
 
     @Override
-    public void execute(final CreateSite cmd, final ExecutionContext context,
+    public void execute(final CreateSite cmd,
+                        final ExecutionContext context,
                         final AsyncCallback<CreateResult> callback) {
 
         if (cmd.hasNestedCommand()) {
@@ -65,59 +65,45 @@ public class CreateSiteHandler implements
         callback.onSuccess(new CreateResult(cmd.getSiteId()));
     }
 
-    private void insertSite(
-            SqlTransaction tx,
-            CreateSite cmd) {
+    private void insertSite(SqlTransaction tx, CreateSite cmd) {
 
         RpcMap properties = cmd.getProperties();
 
         // deal with the possibility that we've already received this command
         // but its completion was not acknowledged because of network problems
         tx.executeSql("delete from indicatorvalue Where ReportingPeriodId in " +
-                "(select reportingperiodid from reportingperiod where siteid="
-                + cmd.getSiteId() + ")");
-        SqlUpdate.delete(Tables.REPORTING_PERIOD)
-                .where("SiteId", cmd.getSiteId())
-                .execute(tx);
-        SqlUpdate.delete(Tables.SITE_HISTORY)
-                .where("siteid", cmd.getSiteId())
-                .execute(tx);
-        SqlUpdate.delete(Tables.SITE)
-                .where("SiteId", cmd.getSiteId())
-                .execute(tx);
+                      "(select reportingperiodid from reportingperiod where siteid=" + cmd.getSiteId() + ")");
+        SqlUpdate.delete(Tables.REPORTING_PERIOD).where("SiteId", cmd.getSiteId()).execute(tx);
+        SqlUpdate.delete(Tables.SITE_HISTORY).where("siteid", cmd.getSiteId()).execute(tx);
+        SqlUpdate.delete(Tables.SITE).where("SiteId", cmd.getSiteId()).execute(tx);
 
         SqlInsert.insertInto(Tables.SITE)
-                .value("SiteId", cmd.getSiteId())
-                .value("LocationId", cmd.getLocationId())
-                .value("ActivityId", cmd.getActivityId())
-                .value("Date1", properties.get("date1"))
-                .value("Date2", properties.get("date2"))
-                .value("Comments", properties.get("comments"))
-                .value("PartnerId", properties.get("partnerId"))
-                .value("ProjectId", properties.get("projectId"))
-                .value("DateCreated", new Date())
-                .value("DateEdited", new Date())
-                .value("timeEdited", new Date().getTime())
-                .execute(tx);
+                 .value("SiteId", cmd.getSiteId())
+                 .value("LocationId", cmd.getLocationId())
+                 .value("ActivityId", cmd.getActivityId())
+                 .value("Date1", properties.get("date1"))
+                 .value("Date2", properties.get("date2"))
+                 .value("Comments", properties.get("comments"))
+                 .value("PartnerId", properties.get("partnerId"))
+                 .value("ProjectId", properties.get("projectId"))
+                 .value("DateCreated", new Date())
+                 .value("DateEdited", new Date())
+                 .value("timeEdited", new Date().getTime())
+                 .execute(tx);
 
         insertAttributeValues(tx, cmd);
     }
 
-    private void insertAttributeValues(
-            SqlTransaction tx, CreateSite cmd) {
+    private void insertAttributeValues(SqlTransaction tx, CreateSite cmd) {
 
-        for (Entry<String, Object> property : cmd.getProperties()
-                .getTransientMap().entrySet()) {
-            if (property.getKey().startsWith(AttributeDTO.PROPERTY_PREFIX) &&
-                    property.getValue() != null) {
+        for (Entry<String, Object> property : cmd.getProperties().getTransientMap().entrySet()) {
+            if (property.getKey().startsWith(AttributeDTO.PROPERTY_PREFIX) && property.getValue() != null) {
 
-                SqlInsert
-                        .insertInto(Tables.ATTRIBUTE_VALUE)
-                        .value("AttributeId",
-                                AttributeDTO.idForPropertyName(property.getKey()))
-                        .value("SiteId", cmd.getSiteId())
-                        .value("Value", property.getValue())
-                        .execute(tx);
+                SqlInsert.insertInto(Tables.ATTRIBUTE_VALUE)
+                         .value("AttributeId", AttributeDTO.idForPropertyName(property.getKey()))
+                         .value("SiteId", cmd.getSiteId())
+                         .value("Value", property.getValue())
+                         .execute(tx);
             }
         }
     }
@@ -126,13 +112,13 @@ public class CreateSiteHandler implements
 
         int reportingPeriodId = cmd.getReportingPeriodId();
         SqlInsert.insertInto(Tables.REPORTING_PERIOD)
-                .value("ReportingPeriodId", reportingPeriodId)
-                .value("SiteId", cmd.getSiteId())
-                .value("Date1", cmd.getProperties().get("date1"))
-                .value("Date2", cmd.getProperties().get("date2"))
-                .value("DateCreated", new Date())
-                .value("DateEdited", new Date())
-                .execute(tx);
+                 .value("ReportingPeriodId", reportingPeriodId)
+                 .value("SiteId", cmd.getSiteId())
+                 .value("Date1", cmd.getProperties().get("date1"))
+                 .value("Date2", cmd.getProperties().get("date2"))
+                 .value("DateCreated", new Date())
+                 .value("DateEdited", new Date())
+                 .execute(tx);
 
         insertIndicatorValues(tx, cmd);
 
@@ -140,20 +126,14 @@ public class CreateSiteHandler implements
     }
 
     private void insertIndicatorValues(SqlTransaction tx, CreateSite cmd) {
-        for (Entry<String, Object> property : cmd.getProperties()
-                .getTransientMap().entrySet()) {
-            if (property.getKey().startsWith(IndicatorDTO.PROPERTY_PREFIX) &&
-                    property.getValue() != null) {
+        for (Entry<String, Object> property : cmd.getProperties().getTransientMap().entrySet()) {
+            if (property.getKey().startsWith(IndicatorDTO.PROPERTY_PREFIX) && property.getValue() != null) {
 
-                SqlInsert
-                        .insertInto(Tables.INDICATOR_VALUE)
-                        .value(
-                                "IndicatorId",
-                                IndicatorDTO.indicatorIdForPropertyName(property
-                                        .getKey()))
-                        .value("ReportingPeriodId", cmd.getReportingPeriodId())
-                        .value("Value", property.getValue())
-                        .execute(tx);
+                SqlInsert.insertInto(Tables.INDICATOR_VALUE)
+                         .value("IndicatorId", IndicatorDTO.indicatorIdForPropertyName(property.getKey()))
+                         .value("ReportingPeriodId", cmd.getReportingPeriodId())
+                         .value("Value", property.getValue())
+                         .execute(tx);
             }
         }
     }

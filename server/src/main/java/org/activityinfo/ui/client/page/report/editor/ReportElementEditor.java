@@ -29,8 +29,7 @@ import org.activityinfo.ui.client.page.report.HasReportElement;
 
 import java.util.List;
 
-public interface ReportElementEditor<M extends ReportElement> extends
-        HasReportElement<M> {
+public interface ReportElementEditor<M extends ReportElement> extends HasReportElement<M> {
 
     Component getWidget();
 

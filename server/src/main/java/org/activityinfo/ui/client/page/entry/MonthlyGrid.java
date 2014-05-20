@@ -69,7 +69,7 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
                 }
                 String property = getColumnModel().getColumn(event.getColIndex()).getDataIndex();
                 Month month = IndicatorRowDTO.monthForProperty(property);
-                if(locked.apply(month)) {
+                if (locked.apply(month)) {
                     event.setCancelled(true);
                 }
             }
@@ -92,7 +92,7 @@ class MonthlyGrid extends EditorGrid<IndicatorRowDTO> {
     private String formatHeader(Month month) {
         DateWrapper date = new DateWrapper(month.getYear(), month.getMonth() - 1, 1);
         String header = monthFormat.format(date.asDate());
-        if(locked.apply(month)) {
+        if (locked.apply(month)) {
             header = IconImageBundle.ICONS.lockedPeriodSmall().getHTML() + " " + header;
         }
         return header;

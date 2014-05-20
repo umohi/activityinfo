@@ -31,9 +31,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@JsonAutoDetect(JsonMethod.NONE)
-@NamedQuery(name = "queryAllCountriesAlphabetically",
+@Entity @JsonAutoDetect(JsonMethod.NONE) @NamedQuery(name = "queryAllCountriesAlphabetically",
         query = "select c from Country c order by c.name")
 public class Country implements Serializable {
 
@@ -54,9 +52,7 @@ public class Country implements Serializable {
      *
      * @return the country's id
      */
-    @Id
-    @JsonProperty
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @JsonProperty @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CountryId", unique = true, nullable = false)
     public int getId() {
         return this.id;
@@ -71,8 +67,7 @@ public class Country implements Serializable {
         this.id = id;
     }
 
-    @JsonProperty
-    @Column(name = "Name", nullable = false, length = 50)
+    @JsonProperty @Column(name = "Name", nullable = false, length = 50)
     public String getName() {
         return this.name;
     }
@@ -86,8 +81,7 @@ public class Country implements Serializable {
         this.name = name;
     }
 
-    @JsonProperty("code")
-    @Column(name = "ISO2", length = 2)
+    @JsonProperty("code") @Column(name = "ISO2", length = 2)
     public String getCodeISO() {
         return this.codeISO;
     }
@@ -102,14 +96,10 @@ public class Country implements Serializable {
      *
      * @return tbe geogaphics bounds of this Country
      */
-    @Embedded
-    @JsonProperty
-    @AttributeOverrides({
-            @AttributeOverride(name = "x1", column = @Column(nullable = false)),
+    @Embedded @JsonProperty @AttributeOverrides({@AttributeOverride(name = "x1", column = @Column(nullable = false)),
             @AttributeOverride(name = "y1", column = @Column(nullable = false)),
             @AttributeOverride(name = "x2", column = @Column(nullable = false)),
-            @AttributeOverride(name = "y2", column = @Column(nullable = false))
-    })
+            @AttributeOverride(name = "y2", column = @Column(nullable = false))})
     public Bounds getBounds() {
         return this.bounds;
     }

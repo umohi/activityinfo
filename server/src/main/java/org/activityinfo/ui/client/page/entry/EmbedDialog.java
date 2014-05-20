@@ -83,8 +83,8 @@ public class EmbedDialog extends Dialog {
     }
 
     public void show(final DataEntryPlace place) {
-        final String url = "http://www.activityinfo.org/embed.html?sites="
-                + FilterUrlSerializer.toUrlFragment(place.getFilter());
+        final String url =
+                "http://www.activityinfo.org/embed.html?sites=" + FilterUrlSerializer.toUrlFragment(place.getFilter());
 
         dispatcher.execute(new GetSchema(), new AsyncCallback<SchemaDTO>() {
             @Override
@@ -95,8 +95,8 @@ public class EmbedDialog extends Dialog {
             public void onSuccess(SchemaDTO result) {
                 Filter filter = place.getFilter();
                 if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Activity)) {
-                    ActivityDTO singleActivity =
-                            result.getActivityById(filter.getRestrictedCategory(DimensionType.Activity));
+                    ActivityDTO singleActivity = result.getActivityById(filter.getRestrictedCategory(DimensionType
+                            .Activity));
                     showPublished(singleActivity, url);
                 } else if (filter.isDimensionRestrictedToSingleCategory(DimensionType.Database)) {
                     MessageBox.alert("foo", "not impl", null);
@@ -109,14 +109,15 @@ public class EmbedDialog extends Dialog {
         if (activity.getPublished() != Published.ALL_ARE_PUBLISHED.getIndex()) {
             if (activity.getDatabase().isDesignAllowed()) {
                 MessageBox.confirm(I18N.CONSTANTS.embed(),
-                        I18N.MESSAGES.promptPublishActivity(activity.getName()), new Listener<MessageBoxEvent>() {
-                    @Override
-                    public void handleEvent(MessageBoxEvent be) {
-                        if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
-                            publishActivity(activity, url);
-                        }
-                    }
-                });
+                        I18N.MESSAGES.promptPublishActivity(activity.getName()),
+                        new Listener<MessageBoxEvent>() {
+                            @Override
+                            public void handleEvent(MessageBoxEvent be) {
+                                if (be.getButtonClicked().getItemId().equals(Dialog.YES)) {
+                                    publishActivity(activity, url);
+                                }
+                            }
+                        });
             } else {
                 MessageBox.alert(I18N.CONSTANTS.embed(), I18N.MESSAGES.activityNotPublic(activity.getName()), null);
             }
@@ -134,8 +135,7 @@ public class EmbedDialog extends Dialog {
 
             @Override
             public void onFailure(Throwable caught) {
-                MessageBox.alert(
-                        I18N.CONSTANTS.embed(),
+                MessageBox.alert(I18N.CONSTANTS.embed(),
                         "There was an error encounted on the server while trying to publish the activity",
                         null);
             }

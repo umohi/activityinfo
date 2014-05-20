@@ -35,18 +35,17 @@ import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.legacy.client.Dispatcher;
 import org.activityinfo.legacy.shared.command.GetSiteAttachments;
 import org.activityinfo.legacy.shared.command.result.SiteAttachmentResult;
 import org.activityinfo.legacy.shared.model.SiteAttachmentDTO;
 import org.activityinfo.legacy.shared.model.SiteDTO;
-import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.EventBus;
 import org.activityinfo.ui.client.page.common.toolbar.ActionToolBar;
 import org.activityinfo.ui.client.page.common.toolbar.UIActions;
 
-public class AttachmentsTab extends TabItem implements
-        AttachmentsPresenter.View {
+public class AttachmentsTab extends TabItem implements AttachmentsPresenter.View {
 
     protected ActionToolBar toolBar;
     private ContentPanel panel;
@@ -77,35 +76,29 @@ public class AttachmentsTab extends TabItem implements
         store = new ListStore<SiteAttachmentDTO>();
 
         attachmentList = new ListView<SiteAttachmentDTO>();
-        attachmentList.setTemplate(getTemplate(GWT.getModuleBaseURL()
-                + "image/"));
+        attachmentList.setTemplate(getTemplate(GWT.getModuleBaseURL() + "image/"));
         attachmentList.setBorders(false);
         attachmentList.setStore(store);
         attachmentList.setItemSelector("dd");
         attachmentList.setOverStyle("over");
 
-        attachmentList.addListener(Events.Select,
-                new Listener<ListViewEvent<SiteAttachmentDTO>>() {
+        attachmentList.addListener(Events.Select, new Listener<ListViewEvent<SiteAttachmentDTO>>() {
 
-                    @Override
-                    public void handleEvent(
-                            ListViewEvent<SiteAttachmentDTO> event) {
-                        toolBar.setActionEnabled(UIActions.DELETE, true);
-                    }
-                });
+            @Override
+            public void handleEvent(ListViewEvent<SiteAttachmentDTO> event) {
+                toolBar.setActionEnabled(UIActions.DELETE, true);
+            }
+        });
 
-        attachmentList.addListener(Events.DoubleClick,
-                new Listener<ListViewEvent<SiteAttachmentDTO>>() {
+        attachmentList.addListener(Events.DoubleClick, new Listener<ListViewEvent<SiteAttachmentDTO>>() {
 
-                    @Override
-                    public void handleEvent(
-                            ListViewEvent<SiteAttachmentDTO> event) {
-                        event.getModel().getBlobId();
-                        Window.Location.assign(GWT.getModuleBaseURL()
-                                + "attachment?blobId=" +
-                                event.getModel().getBlobId());
-                    }
-                });
+            @Override
+            public void handleEvent(ListViewEvent<SiteAttachmentDTO> event) {
+                event.getModel().getBlobId();
+                Window.Location.assign(GWT.getModuleBaseURL() + "attachment?blobId=" +
+                                       event.getModel().getBlobId());
+            }
+        });
         panel.add(attachmentList);
 
         add(panel);
@@ -140,27 +133,26 @@ public class AttachmentsTab extends TabItem implements
         GetSiteAttachments getAttachments = new GetSiteAttachments();
         getAttachments.setSiteId(siteId);
 
-        dispatcher.execute(getAttachments,
-                new AsyncCallback<SiteAttachmentResult>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // callback.onFailure(caught);
-                    }
+        dispatcher.execute(getAttachments, new AsyncCallback<SiteAttachmentResult>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                // callback.onFailure(caught);
+            }
 
-                    @Override
-                    public void onSuccess(SiteAttachmentResult result) {
-                        store.removeAll();
-                        store.add(result.getData());
-                    }
-                });
+            @Override
+            public void onSuccess(SiteAttachmentResult result) {
+                store.removeAll();
+                store.add(result.getData());
+            }
+        });
 
     }
 
     private native String getTemplate(String base) /*-{
-        return [ '<dl><tpl for=".">', '<dd>',
-            '<img src="' + base + 'attach.png" title="{fileName}">',
-            '<span>{fileName}</span>', '</tpl>',
-            '<div style="clear:left;"></div></dl>' ].join("");
+      return [ '<dl><tpl for=".">', '<dd>',
+        '<img src="' + base + 'attach.png" title="{fileName}">',
+        '<span>{fileName}</span>', '</tpl>',
+        '<div style="clear:left;"></div></dl>' ].join("");
 
     }-*/;
 

@@ -32,8 +32,7 @@ import com.google.gwt.resources.client.TextResource;
 public class GoogleEarthPortlet extends Portlet {
     public interface Templates extends ClientBundle {
 
-        @Source("GoogleEarth.html")
-        TextResource googleEarthText();
+        @Source("GoogleEarth.html") TextResource googleEarthText();
 
     }
 

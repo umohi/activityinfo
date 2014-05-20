@@ -51,14 +51,12 @@ public final class PartnerDTO extends BaseModelData implements DTO, ProvidesKey 
         set("id", id);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public int getId() {
         return (Integer) get("id");
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getName() {
         return get("name");
     }
@@ -71,8 +69,7 @@ public final class PartnerDTO extends BaseModelData implements DTO, ProvidesKey 
         set("fullName", value);
     }
 
-    @JsonProperty
-    @JsonView(DTOViews.Schema.class)
+    @JsonProperty @JsonView(DTOViews.Schema.class)
     public String getFullName() {
         return get("fullName");
     }

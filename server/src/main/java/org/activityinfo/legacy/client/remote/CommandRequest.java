@@ -68,9 +68,8 @@ class CommandRequest implements AsyncCallback {
     }
 
     private void merge(CommandRequest request) {
-        Log.debug("Dispatcher: merging " + request.getCommand().toString()
-                + " with pending/executing command " +
-                getCommand().toString());
+        Log.debug("Dispatcher: merging " + request.getCommand().toString() + " with pending/executing command " +
+                  getCommand().toString());
 
         callbacks.addAll(request.callbacks);
     }
@@ -101,9 +100,7 @@ class CommandRequest implements AsyncCallback {
             try {
                 c.onSuccess(result);
             } catch (Exception e) {
-                Log.error(
-                        "Exception thrown during callback on AsyncCallback.onSuccess() for "
-                                + command.toString(), e);
+                Log.error("Exception thrown during callback on AsyncCallback.onSuccess() for " + command.toString(), e);
             }
         }
     }

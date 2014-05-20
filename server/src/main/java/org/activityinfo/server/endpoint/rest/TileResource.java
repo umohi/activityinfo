@@ -22,15 +22,13 @@ public class TileResource {
         datastore = DatastoreServiceFactory.getDatastoreService();
     }
 
-    @PUT
-    @Path("{layer}/{z}/{x}/{y}.png")
-    public Response putTile(
-            @HeaderParam("X-Update-Key") String authToken,
-            @PathParam("layer") String layer,
-            @PathParam("z") int zoom,
-            @PathParam("x") int x,
-            @PathParam("y") int y,
-            byte[] image) {
+    @PUT @Path("{layer}/{z}/{x}/{y}.png")
+    public Response putTile(@HeaderParam("X-Update-Key") String authToken,
+                            @PathParam("layer") String layer,
+                            @PathParam("z") int zoom,
+                            @PathParam("x") int x,
+                            @PathParam("y") int y,
+                            byte[] image) {
 
         if (!Objects.equal(this.authToken, authToken)) {
             throw new WebApplicationException(Status.UNAUTHORIZED);
@@ -44,14 +42,11 @@ public class TileResource {
         return Response.ok().build();
     }
 
-    @GET
-    @Path("{layer}/{z}/{x}/{y}.png")
-    @Produces("image/png")
-    public Response getTile(
-            @PathParam("layer") String layer,
-            @PathParam("z") int zoom,
-            @PathParam("x") int x,
-            @PathParam("y") int y) {
+    @GET @Path("{layer}/{z}/{x}/{y}.png") @Produces("image/png")
+    public Response getTile(@PathParam("layer") String layer,
+                            @PathParam("z") int zoom,
+                            @PathParam("x") int x,
+                            @PathParam("y") int y) {
 
         Entity entity;
         try {

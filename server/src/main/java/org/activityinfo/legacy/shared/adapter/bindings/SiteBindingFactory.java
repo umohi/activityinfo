@@ -35,17 +35,17 @@ public class SiteBindingFactory implements Function<SchemaDTO, SiteBinding> {
         binding.addField(field(CuidAdapter.activityFormClass(activityId), START_DATE_FIELD), "date1");
         binding.addField(field(CuidAdapter.activityFormClass(activityId), END_DATE_FIELD), "date2");
 
-        if(activity.getLocationType().isAdminLevel()) {
+        if (activity.getLocationType().isAdminLevel()) {
             binding.addField(new AdminLevelLocationBinding(activity.getLocationType().getBoundAdminLevelId()));
         } else {
             binding.addNestedField(locationField(activity.getId()), LOCATION_DOMAIN, "location");
         }
 
-        for(AttributeGroupDTO group : activity.getAttributeGroups()) {
+        for (AttributeGroupDTO group : activity.getAttributeGroups()) {
             binding.addField(new AttributeGroupBinding(activity, group));
         }
 
-        for(IndicatorDTO indicator : activity.getIndicators()) {
+        for (IndicatorDTO indicator : activity.getIndicators()) {
             binding.addField(indicatorField(indicator.getId()), IndicatorDTO.getPropertyName(indicator.getId()));
         }
 
@@ -68,13 +68,13 @@ public class SiteBindingFactory implements Function<SchemaDTO, SiteBinding> {
         @Override
         public void updateInstanceFromModel(FormInstance instance, SiteDTO model) {
             Set<Cuid> references = Sets.newHashSet();
-            for(AttributeDTO attribute : group.getAttributes()) {
+            for (AttributeDTO attribute : group.getAttributes()) {
                 int id = attribute.getId();
-                if(model.getAttributeValue(id)) {
+                if (model.getAttributeValue(id)) {
                     references.add(CuidAdapter.attributeId(id));
                 }
             }
-            if(!references.isEmpty()) {
+            if (!references.isEmpty()) {
                 instance.set(fieldId, references);
             }
         }
@@ -82,7 +82,7 @@ public class SiteBindingFactory implements Function<SchemaDTO, SiteBinding> {
         @Override
         public void populateChangeMap(FormInstance instance, Map<String, Object> changeMap) {
             Set<Cuid> references = instance.getReferences(fieldId);
-            for(Cuid attributeCuid : references) {
+            for (Cuid attributeCuid : references) {
                 changeMap.put(AttributeDTO.getPropertyName(getLegacyIdFromCuid(attributeCuid)), true);
             }
         }

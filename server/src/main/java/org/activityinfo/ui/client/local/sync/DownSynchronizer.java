@@ -69,10 +69,7 @@ public class DownSynchronizer implements AsyncCommand {
     private SynchronizerStats stats = new SynchronizerStats();
 
     @Inject
-    public DownSynchronizer(EventBus eventBus,
-                            @Remote Dispatcher dispatch,
-                            SqlDatabase conn,
-                            UiConstants uiConstants) {
+    public DownSynchronizer(EventBus eventBus, @Remote Dispatcher dispatch, SqlDatabase conn, UiConstants uiConstants) {
         this.eventBus = eventBus;
         this.conn = conn;
         this.dispatch = dispatch;
@@ -94,26 +91,24 @@ public class DownSynchronizer implements AsyncCommand {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void retrieveSyncRegions() {
-        dispatch.execute(new GetSyncRegions(),
-                new AsyncCallback<SyncRegions>() {
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        handleException("Error getting sync regions", throwable);
-                    }
+        dispatch.execute(new GetSyncRegions(), new AsyncCallback<SyncRegions>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                handleException("Error getting sync regions", throwable);
+            }
 
-                    @Override
-                    public void onSuccess(SyncRegions syncRegions) {
-                        DownSynchronizer.this.regionIt = new ProgressTrackingIterator(syncRegions.getList());
-                        fireStatusEvent("Received sync regions...", 0);
-                        doNextUpdate();
-                    }
-                });
+            @Override
+            public void onSuccess(SyncRegions syncRegions) {
+                DownSynchronizer.this.regionIt = new ProgressTrackingIterator(syncRegions.getList());
+                fireStatusEvent("Received sync regions...", 0);
+                doNextUpdate();
+            }
+        });
     }
 
     private void fireStatusEvent(String task, double percentComplete) {
         Log.info("Synchronizer: " + task + " (" + percentComplete + "%)");
-        eventBus.fireEvent(SyncStatusEvent.TYPE, new SyncStatusEvent(task,
-                percentComplete));
+        eventBus.fireEvent(SyncStatusEvent.TYPE, new SyncStatusEvent(task, percentComplete));
     }
 
     private void doNextUpdate() {
@@ -134,8 +129,8 @@ public class DownSynchronizer implements AsyncCommand {
             @Override
             public void onSuccess(String localVersion) {
                 if (localVersion == null ||
-                        region.getCurrentVersion() == null ||
-                        !localVersion.equals(region.getCurrentVersion())) {
+                    region.getCurrentVersion() == null ||
+                    !localVersion.equals(region.getCurrentVersion())) {
 
                     doUpdate(region, localVersion);
                 } else {
@@ -158,54 +153,44 @@ public class DownSynchronizer implements AsyncCommand {
 
     private void doUpdate(final SyncRegion region, String localVersion) {
 
-        fireStatusEvent(uiConstants.downSyncProgress(),
-                regionIt.percentComplete());
-        Log.info("Synchronizer: Region " + region.getId() + ": localVersion="
-                + localVersion);
+        fireStatusEvent(uiConstants.downSyncProgress(), regionIt.percentComplete());
+        Log.info("Synchronizer: Region " + region.getId() + ": localVersion=" + localVersion);
 
         stats.onRemoteCallStarted();
-        dispatch.execute(
-                new GetSyncRegionUpdates(region.getId(), localVersion),
-                new AsyncCallback<SyncRegionUpdate>() {
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        handleException("GetSyncRegionUpdates for region id "
-                                + region.getId() + " failed.", throwable);
-                    }
+        dispatch.execute(new GetSyncRegionUpdates(region.getId(), localVersion), new AsyncCallback<SyncRegionUpdate>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                handleException("GetSyncRegionUpdates for region id " + region.getId() + " failed.", throwable);
+            }
 
-                    @Override
-                    public void onSuccess(SyncRegionUpdate update) {
-                        stats.onRemoteCallFinished();
-                        persistUpdates(region, update);
-                    }
-                });
+            @Override
+            public void onSuccess(SyncRegionUpdate update) {
+                stats.onRemoteCallFinished();
+                persistUpdates(region, update);
+            }
+        });
     }
 
-    private void persistUpdates(final SyncRegion region,
-                                final SyncRegionUpdate update) {
+    private void persistUpdates(final SyncRegion region, final SyncRegionUpdate update) {
         if (update.getSql() == null) {
-            Log.debug("Synchronizer: Region " + region.getId()
-                    + " is up to date");
+            Log.debug("Synchronizer: Region " + region.getId() + " is up to date");
             doNextUpdate();
 
         } else {
-            Log.debug("Synchronizer: persisting updates for region "
-                    + region.getId());
+            Log.debug("Synchronizer: persisting updates for region " + region.getId());
 
             stats.onDbUpdateStarted();
             conn.executeUpdates(update.getSql(), new AsyncCallback<Integer>() {
                 @Override
                 public void onFailure(Throwable throwable) {
-                    handleException("Synchronizer: Async execution of region "
-                            + region.getId() + " failed." +
-                            "\nMessage: " + throwable.getMessage(), throwable);
+                    handleException("Synchronizer: Async execution of region " + region.getId() + " failed." +
+                                    "\nMessage: " + throwable.getMessage(), throwable);
                 }
 
                 @Override
                 public void onSuccess(Integer rows) {
-                    Log.debug("Synchronizer: updates to region "
-                            + region.getId() + " succeeded, " + rows
-                            + " row(s) affected");
+                    Log.debug("Synchronizer: updates to region " + region.getId() + " succeeded, " + rows +
+                              " row(s) affected");
                     stats.onDbUpdateFinished();
                     updateLocalVersion(region, update);
                 }
@@ -213,25 +198,23 @@ public class DownSynchronizer implements AsyncCommand {
         }
     }
 
-    private void updateLocalVersion(final SyncRegion region,
-                                    final SyncRegionUpdate update) {
-        localVerisonTable.put(region.getId(), update.getVersion(),
-                new AsyncCallback<Void>() {
+    private void updateLocalVersion(final SyncRegion region, final SyncRegionUpdate update) {
+        localVerisonTable.put(region.getId(), update.getVersion(), new AsyncCallback<Void>() {
 
-                    @Override
-                    public void onSuccess(Void result) {
-                        if (!update.isComplete()) {
-                            doUpdate(region, update.getVersion());
-                        } else {
-                            doNextUpdate();
-                        }
-                    }
+            @Override
+            public void onSuccess(Void result) {
+                if (!update.isComplete()) {
+                    doUpdate(region, update.getVersion());
+                } else {
+                    doNextUpdate();
+                }
+            }
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        callback.onFailure(caught);
-                    }
-                });
+            @Override
+            public void onFailure(Throwable caught) {
+                callback.onFailure(caught);
+            }
+        });
     }
 
     private void handleException(String message, Throwable throwable) {
@@ -259,8 +242,7 @@ public class DownSynchronizer implements AsyncCommand {
         }
     }
 
-    private static final class ProgressTrackingIterator<T> implements
-            Iterator<T> {
+    private static final class ProgressTrackingIterator<T> implements Iterator<T> {
         private double total;
         private double completed;
         private Iterator<T> delegateIterator;

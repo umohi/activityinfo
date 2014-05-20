@@ -47,15 +47,14 @@ public class WorkStatus extends Status {
     @Inject
     public WorkStatus(EventBus eventBus) {
 
-        eventBus.addListener(SyncStatusEvent.TYPE,
-                new Listener<SyncStatusEvent>() {
+        eventBus.addListener(SyncStatusEvent.TYPE, new Listener<SyncStatusEvent>() {
 
-                    @Override
-                    public void handleEvent(SyncStatusEvent be) {
-                        setBusy(be.getTask() + " " + ((int) (be.getPercentComplete())) + "%");
-                        syncing = true;
-                    }
-                });
+            @Override
+            public void handleEvent(SyncStatusEvent be) {
+                setBusy(be.getTask() + " " + ((int) (be.getPercentComplete())) + "%");
+                syncing = true;
+            }
+        });
 
         eventBus.addListener(SyncErrorEvent.TYPE, new Listener<SyncErrorEvent>() {
 
@@ -65,23 +64,21 @@ public class WorkStatus extends Status {
                 lastErrorMessage = formatErrorMessage(event.getErrorType());
             }
         });
-        eventBus.addListener(SyncCompleteEvent.TYPE,
-                new Listener<SyncCompleteEvent>() {
+        eventBus.addListener(SyncCompleteEvent.TYPE, new Listener<SyncCompleteEvent>() {
 
-                    @Override
-                    public void handleEvent(SyncCompleteEvent event) {
-                        clearBusy();
-                    }
-                });
+            @Override
+            public void handleEvent(SyncCompleteEvent event) {
+                clearBusy();
+            }
+        });
 
-        eventBus.addListener(LocalStateChangeEvent.TYPE,
-                new Listener<LocalStateChangeEvent>() {
+        eventBus.addListener(LocalStateChangeEvent.TYPE, new Listener<LocalStateChangeEvent>() {
 
-                    @Override
-                    public void handleEvent(LocalStateChangeEvent be) {
-                        onOfflineStatusChange(be.getState());
-                    }
-                });
+            @Override
+            public void handleEvent(LocalStateChangeEvent be) {
+                onOfflineStatusChange(be.getState());
+            }
+        });
 
     }
 

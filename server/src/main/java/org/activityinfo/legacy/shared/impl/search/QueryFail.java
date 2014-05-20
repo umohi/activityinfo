@@ -5,8 +5,8 @@ import org.activityinfo.i18n.shared.I18N;
 import java.io.Serializable;
 
 /**
-* Created by alex on 1/23/14.
-*/
+ * Created by alex on 1/23/14.
+ */
 public interface QueryFail extends Serializable {
 
     public String fail();

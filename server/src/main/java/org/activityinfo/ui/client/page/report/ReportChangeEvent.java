@@ -40,8 +40,7 @@ public class ReportChangeEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return "ReportChangeEvent{ source= " + getSource().getClass()
-                + ", model = " + model + "}";
+        return "ReportChangeEvent{ source= " + getSource().getClass() + ", model = " + model + "}";
     }
 
     public ReportElement getModel() {

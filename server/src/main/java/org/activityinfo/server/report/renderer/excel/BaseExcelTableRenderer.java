@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BaseExcelTableRenderer<ElementT extends ReportElement, ColumnT extends TreeNode>
-        extends BaseExcelRenderer<ElementT> {
+public abstract class BaseExcelTableRenderer<ElementT extends ReportElement, ColumnT extends TreeNode> extends
+        BaseExcelRenderer<ElementT> {
 
     protected Map<ColumnT, Integer> colIndexMap;
     protected CellStyle colHeaderStyle;
@@ -83,16 +83,13 @@ public abstract class BaseExcelTableRenderer<ElementT extends ReportElement, Col
                     colIndex++;
                 } else {
                     Cell cell = row.createCell(colIndex);
-                    cell.setCellValue(factory.createRichTextString(col
-                            .getLabel()));
-                    cell.setCellStyle(col.isLeaf() ? leafColHeaderStyle
-                            : colHeaderStyle);
+                    cell.setCellValue(factory.createRichTextString(col.getLabel()));
+                    cell.setCellStyle(col.isLeaf() ? leafColHeaderStyle : colHeaderStyle);
 
                     int span = col.getLeaves().size();
 
                     if (span > 1) {
-                        sheet.addMergedRegion(new CellRangeAddress(rowIndex,
-                                rowIndex, colIndex, colIndex + span - 1));
+                        sheet.addMergedRegion(new CellRangeAddress(rowIndex, rowIndex, colIndex, colIndex + span - 1));
                     }
                     if (col.isLeaf()) {
                         colIndexMap.put(col, colIndex);

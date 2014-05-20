@@ -55,24 +55,19 @@ public class DimensionProxy extends RpcProxy<ListLoadResult<DimensionModel>> {
     }
 
     @Override
-    protected void load(Object loadConfig,
-                        final AsyncCallback<ListLoadResult<DimensionModel>> callback) {
+    protected void load(Object loadConfig, final AsyncCallback<ListLoadResult<DimensionModel>> callback) {
 
         final List<DimensionModel> list = Lists.newArrayList();
-        list.add(new DimensionModel(DimensionType.Indicator, I18N.CONSTANTS
-                .indicator()));
-        list.add(new DimensionModel(DimensionType.Partner, I18N.CONSTANTS
-                .partner()));
-        list.add(new DimensionModel(DimensionType.Project, I18N.CONSTANTS
-                .project()));
-        list.add(new DimensionModel(DimensionType.Target, I18N.CONSTANTS
-                .realizedOrTargeted()));
+        list.add(new DimensionModel(DimensionType.Indicator, I18N.CONSTANTS.indicator()));
+        list.add(new DimensionModel(DimensionType.Partner, I18N.CONSTANTS.partner()));
+        list.add(new DimensionModel(DimensionType.Project, I18N.CONSTANTS.project()));
+        list.add(new DimensionModel(DimensionType.Target, I18N.CONSTANTS.realizedOrTargeted()));
 
         list.add(new DimensionModel(DateUnit.YEAR));
         list.add(new DimensionModel(DateUnit.QUARTER));
         list.add(new DimensionModel(DateUnit.MONTH));
         list.add(new DimensionModel(DateUnit.WEEK_MON));
-        
+
         list.add(new DimensionModel(DimensionType.Location, I18N.CONSTANTS.location()));
 
         if (model.getIndicators().isEmpty()) {
@@ -95,10 +90,8 @@ public class DimensionProxy extends RpcProxy<ListLoadResult<DimensionModel>> {
         }
     }
 
-    private void addGeographicDimensions(
-            final List<DimensionModel> list, SchemaDTO schema) {
-        Set<CountryDTO> countries = schema.getCountriesForIndicators(model
-                .getIndicators());
+    private void addGeographicDimensions(final List<DimensionModel> list, SchemaDTO schema) {
+        Set<CountryDTO> countries = schema.getCountriesForIndicators(model.getIndicators());
 
         if (countries.size() == 1) {
             CountryDTO country = countries.iterator().next();

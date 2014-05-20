@@ -29,28 +29,26 @@ import org.activityinfo.legacy.shared.command.UpdateReportVisibility;
 import org.activityinfo.legacy.shared.command.result.VoidResult;
 import org.activityinfo.legacy.shared.model.ReportVisibilityDTO;
 
-public class UpdateReportVisibilityHandler implements
-        CommandHandlerAsync<UpdateReportVisibility, VoidResult> {
+public class UpdateReportVisibilityHandler implements CommandHandlerAsync<UpdateReportVisibility, VoidResult> {
 
     @Override
-    public void execute(UpdateReportVisibility command,
-                        ExecutionContext context, AsyncCallback<VoidResult> callback) {
+    public void execute(UpdateReportVisibility command, ExecutionContext context, AsyncCallback<VoidResult> callback) {
 
         SqlUpdate.delete(Tables.REPORT_VISIBILITY)
-                .where("reportid", command.getReportId())
-                .execute(context.getTransaction());
+                 .where("reportid", command.getReportId())
+                 .execute(context.getTransaction());
         for (ReportVisibilityDTO dto : command.getList()) {
             SqlUpdate.delete(Tables.REPORT_VISIBILITY)
-                    .where("reportid", command.getReportId())
-                    .where("databaseid", dto.getDatabaseId())
-                    .execute(context.getTransaction());
+                     .where("reportid", command.getReportId())
+                     .where("databaseid", dto.getDatabaseId())
+                     .execute(context.getTransaction());
 
             if (dto.isVisible()) {
                 SqlInsert.insertInto(Tables.REPORT_VISIBILITY)
-                        .value("reportid", command.getReportId())
-                        .value("databaseid", dto.getDatabaseId())
-                        .value("defaultDashboard", dto.isDefaultDashboard())
-                        .execute(context.getTransaction());
+                         .value("reportid", command.getReportId())
+                         .value("databaseid", dto.getDatabaseId())
+                         .value("defaultDashboard", dto.isDefaultDashboard())
+                         .execute(context.getTransaction());
             }
         }
         callback.onSuccess(null);

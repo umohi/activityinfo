@@ -28,9 +28,9 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.legacy.shared.command.Command;
 import org.activityinfo.ui.client.EventBus;
-import org.activityinfo.legacy.shared.Log;
 import org.activityinfo.ui.client.local.command.LocalDispatcher;
 import org.activityinfo.ui.client.local.sync.pipeline.InstallPipeline;
 import org.activityinfo.ui.client.local.sync.pipeline.SyncPipeline;
@@ -48,13 +48,12 @@ public class SynchronizerImpl implements Synchronizer {
     private SyncHistoryTable historyTable;
 
     @Inject
-    public SynchronizerImpl(
-            EventBus eventBus,
-            LocalDispatcher localDispatcher,
-            InstallPipeline installPipeline,
-            SyncPipeline syncPipeline,
-            SyncHistoryTable historyTable,
-            SchemaMigration migrator) {
+    public SynchronizerImpl(EventBus eventBus,
+                            LocalDispatcher localDispatcher,
+                            InstallPipeline installPipeline,
+                            SyncPipeline syncPipeline,
+                            SyncHistoryTable historyTable,
+                            SchemaMigration migrator) {
         this.localDispatcher = localDispatcher;
         this.migrator = migrator;
         this.installPipeline = installPipeline;
@@ -89,8 +88,7 @@ public class SynchronizerImpl implements Synchronizer {
             @Override
             public void onSuccess(Date result) {
                 if (result == null) {
-                    callback.onFailure(new RuntimeException(
-                            "Never synchronized"));
+                    callback.onFailure(new RuntimeException("Never synchronized"));
                 } else {
                     // apply any changes made to the schema
                     migrator.migrate(callback);

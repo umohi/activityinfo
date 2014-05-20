@@ -75,36 +75,32 @@ public class DatabaseForm extends FormPanel {
         binding.addFieldBinding(new FieldBinding(countryField, "country") {
             @Override
             public void updateModel() {
-                ((UserDatabaseDTO) model).setCountry((CountryDTO) field
-                        .getValue());
+                ((UserDatabaseDTO) model).setCountry((CountryDTO) field.getValue());
             }
         });
 
         add(countryField);
     }
 
-    private static ListStore<CountryDTO> createCountryStore(
-            final Dispatcher dispatcher, final Component component) {
+    private static ListStore<CountryDTO> createCountryStore(final Dispatcher dispatcher, final Component component) {
 
-        return new ListStore<CountryDTO>(new BaseListLoader<CountryResult>(
-                new DataProxy<CountryResult>() {
-                    @Override
-                    public void load(
-                            DataReader<CountryResult> countryResultDataReader,
-                            Object loadConfig,
-                            final AsyncCallback<CountryResult> callback) {
-                        dispatcher.execute(new GetCountries(),
-                                new MaskingAsyncMonitor(component,
-                                        I18N.CONSTANTS.loading()), callback);
+        return new ListStore<CountryDTO>(new BaseListLoader<CountryResult>(new DataProxy<CountryResult>() {
+            @Override
+            public void load(DataReader<CountryResult> countryResultDataReader,
+                             Object loadConfig,
+                             final AsyncCallback<CountryResult> callback) {
+                dispatcher.execute(new GetCountries(),
+                        new MaskingAsyncMonitor(component, I18N.CONSTANTS.loading()),
+                        callback);
 
-                    }
-                }));
+            }
+        }));
     }
 
     public FormBinding getBinding() {
         return binding;
     }
-    
+
     public void disableCountry() {
         countryField.setEnabled(false);
     }

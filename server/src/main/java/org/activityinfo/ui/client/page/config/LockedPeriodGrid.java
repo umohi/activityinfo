@@ -65,8 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LockedPeriodGrid extends ContentPanel implements
-        LockedPeriodListEditor {
+public class LockedPeriodGrid extends ContentPanel implements LockedPeriodListEditor {
 
     private EventBus eventBus = new SimpleEventBus();
     private boolean mustConfirmDelete = true;
@@ -102,8 +101,7 @@ public class LockedPeriodGrid extends ContentPanel implements
     private void createGrid() {
         List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-        ColumnConfig columnEnabled = new EditCheckColumnConfig("enabled",
-                I18N.CONSTANTS.enabledColumn(), 55);
+        ColumnConfig columnEnabled = new EditCheckColumnConfig("enabled", I18N.CONSTANTS.enabledColumn(), 55);
         columnEnabled.setSortable(false);
 
         ColumnConfig columnPeriodType = new ReadLockedPeriodTypeColumn();
@@ -111,27 +109,20 @@ public class LockedPeriodGrid extends ContentPanel implements
 
         configs.add(columnEnabled);
         configs.add(columnPeriodType);
-        configs.add(new ReadTextColumn("parentName", I18N.CONSTANTS
-                .parentName(), 150));
+        configs.add(new ReadTextColumn("parentName", I18N.CONSTANTS.parentName(), 150));
         configs.add(new ReadTextColumn("name", I18N.CONSTANTS.name(), 100));
-        configs.add(new EditableLocalDateColumn("fromDate", I18N.CONSTANTS
-                .fromDate(), 100));
-        configs.add(new EditableLocalDateColumn("toDate", I18N.CONSTANTS
-                .toDate(), 100));
+        configs.add(new EditableLocalDateColumn("fromDate", I18N.CONSTANTS.fromDate(), 100));
+        configs.add(new EditableLocalDateColumn("toDate", I18N.CONSTANTS.toDate(), 100));
 
-        lockedPeriodGrid = new EditorGrid<LockedPeriodDTO>(
-                lockedPeriodStore, new ColumnModel(configs));
+        lockedPeriodGrid = new EditorGrid<LockedPeriodDTO>(lockedPeriodStore, new ColumnModel(configs));
 
-        lockedPeriodGrid.addListener(Events.OnClick,
-                new Listener<ComponentEvent>() {
-                    @Override
-                    public void handleEvent(ComponentEvent be) {
-                        lockedPeriod = lockedPeriodGrid.getSelectionModel()
-                                .getSelectedItem();
-                        setDeleteEnabled(lockedPeriodGrid.getSelectionModel()
-                                .getSelectedItem() != null);
-                    }
-                });
+        lockedPeriodGrid.addListener(Events.OnClick, new Listener<ComponentEvent>() {
+            @Override
+            public void handleEvent(ComponentEvent be) {
+                lockedPeriod = lockedPeriodGrid.getSelectionModel().getSelectedItem();
+                setDeleteEnabled(lockedPeriodGrid.getSelectionModel().getSelectedItem() != null);
+            }
+        });
 
         add(lockedPeriodGrid);
     }
@@ -143,13 +134,12 @@ public class LockedPeriodGrid extends ContentPanel implements
 
     private void createListStore() {
         lockedPeriodStore = new ListStore<LockedPeriodDTO>();
-        lockedPeriodStore.addListener(Store.DataChanged,
-                new Listener<StoreEvent>() {
-                    @Override
-                    public void handleEvent(StoreEvent be) {
-                        actionToolbar.setUpdateEnabled(true);
-                    }
-                });
+        lockedPeriodStore.addListener(Store.DataChanged, new Listener<StoreEvent>() {
+            @Override
+            public void handleEvent(StoreEvent be) {
+                actionToolbar.setUpdateEnabled(true);
+            }
+        });
     }
 
     private void createActionToolbar() {
@@ -245,8 +235,7 @@ public class LockedPeriodGrid extends ContentPanel implements
     }
 
     @Override
-    public HandlerRegistration addConfirmDeleteHandler(
-            ConfirmDeleteHandler handler) {
+    public HandlerRegistration addConfirmDeleteHandler(ConfirmDeleteHandler handler) {
         return eventBus.addHandler(ConfirmDeleteEvent.TYPE, handler);
     }
 
@@ -287,19 +276,16 @@ public class LockedPeriodGrid extends ContentPanel implements
         lockedPeriodStore.add(filterLockedPeriodsByActivity(items));
     }
 
-    private List<LockedPeriodDTO> filterLockedPeriodsByActivity(
-            List<LockedPeriodDTO> items) {
+    private List<LockedPeriodDTO> filterLockedPeriodsByActivity(List<LockedPeriodDTO> items) {
 
         if (activityFilter != null) {
             // Remove LockedPeriods which have a different Activity then the
             // activiftyFilter
             List<LockedPeriodDTO> lockedPeriodsFilteredByActivity = new ArrayList<LockedPeriodDTO>();
             for (LockedPeriodDTO lockedPeriod : items) {
-                if (lockedPeriod.getParent() != null
-                        && lockedPeriod.getParent() instanceof ActivityDTO) {
+                if (lockedPeriod.getParent() != null && lockedPeriod.getParent() instanceof ActivityDTO) {
                     // Activity as parent, only add when activity equals filter
-                    if (lockedPeriod.getParent().getId() == activityFilter
-                            .getId()) {
+                    if (lockedPeriod.getParent().getId() == activityFilter.getId()) {
                         lockedPeriodsFilteredByActivity.add(lockedPeriod);
                     }
                 } else {
@@ -315,38 +301,32 @@ public class LockedPeriodGrid extends ContentPanel implements
     }
 
     @Override
-    public HandlerRegistration addCancelUpdateHandler(
-            CancelUpdateHandler handler) {
+    public HandlerRegistration addCancelUpdateHandler(CancelUpdateHandler handler) {
         return eventBus.addHandler(CancelUpdateEvent.TYPE, handler);
     }
 
     @Override
-    public HandlerRegistration addRequestDeleteHandler(
-            RequestDeleteHandler handler) {
+    public HandlerRegistration addRequestDeleteHandler(RequestDeleteHandler handler) {
         return eventBus.addHandler(RequestDeleteEvent.TYPE, handler);
     }
 
     @Override
-    public HandlerRegistration addCancelCreateHandler(
-            CanCreate.CancelCreateHandler handler) {
+    public HandlerRegistration addCancelCreateHandler(CanCreate.CancelCreateHandler handler) {
         return eventBus.addHandler(CancelCreateEvent.TYPE, handler);
     }
 
     @Override
-    public HandlerRegistration addStartCreateHandler(
-            CanCreate.StartCreateHandler handler) {
+    public HandlerRegistration addStartCreateHandler(CanCreate.StartCreateHandler handler) {
         return eventBus.addHandler(StartCreateEvent.TYPE, handler);
     }
 
     @Override
-    public HandlerRegistration addCancelDeleteHandler(
-            CanDelete.CancelDeleteHandler handler) {
+    public HandlerRegistration addCancelDeleteHandler(CanDelete.CancelDeleteHandler handler) {
         return eventBus.addHandler(CancelDeleteEvent.TYPE, handler);
     }
 
     @Override
-    public HandlerRegistration addRequestUpdateHandler(
-            CanUpdate.RequestUpdateHandler handler) {
+    public HandlerRegistration addRequestUpdateHandler(CanUpdate.RequestUpdateHandler handler) {
         return eventBus.addHandler(RequestUpdateEvent.TYPE, handler);
     }
 
@@ -475,8 +455,7 @@ public class LockedPeriodGrid extends ContentPanel implements
     }
 
     @Override
-    public HandlerRegistration addFilterHandler(
-            FilterHandler filter) {
+    public HandlerRegistration addFilterHandler(FilterHandler filter) {
         // TODO Auto-generated method stub
         return null;
     }

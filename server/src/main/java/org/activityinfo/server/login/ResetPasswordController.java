@@ -57,18 +57,12 @@ public class ResetPasswordController {
     @Inject
     private Provider<UserDAO> userDAO;
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    @LogException(emailAlert = true)
-    public Viewable getPage(@Context HttpServletRequest req)
-            throws ServletException, IOException {
+    @GET @Produces(MediaType.TEXT_HTML) @LogException(emailAlert = true)
+    public Viewable getPage(@Context HttpServletRequest req) throws ServletException, IOException {
         return new ResetPasswordPageModel().asViewable();
     }
 
-    @POST
-    @Produces(MediaType.TEXT_HTML)
-    @LogException(emailAlert = true)
-    @Transactional
+    @POST @Produces(MediaType.TEXT_HTML) @LogException(emailAlert = true) @Transactional
     public Viewable resetPassword(@FormParam("email") String email) {
         try {
             User user = userDAO.get().findUserByEmail(email);

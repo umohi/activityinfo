@@ -36,8 +36,7 @@ import org.activityinfo.ui.client.style.legacy.icon.IconImageBundle;
 
 import java.util.List;
 
-public class ChartTypeGroup extends BaseObservable implements
-        HasReportElement<PivotChartReportElement> {
+public class ChartTypeGroup extends BaseObservable implements HasReportElement<PivotChartReportElement> {
 
     private static final String TYPE_DATA = "chartType";
 

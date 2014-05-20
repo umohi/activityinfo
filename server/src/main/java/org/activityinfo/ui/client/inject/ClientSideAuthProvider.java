@@ -44,15 +44,13 @@ public class ClientSideAuthProvider implements Provider<AuthenticatedUser> {
     @Override
     public AuthenticatedUser get() {
 
-        String authToken = Cookies
-                .getCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE);
+        String authToken = Cookies.getCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE);
         String userId = Cookies.getCookie(AuthenticatedUser.USER_ID_COOKIE);
         String email = Cookies.getCookie(AuthenticatedUser.EMAIL_COOKIE);
 
         if (authToken != null && userId != null && email != null) {
 
-            return new AuthenticatedUser(
-                    authToken,
+            return new AuthenticatedUser(authToken,
                     Integer.parseInt(userId),
                     email.replaceAll("\"", ""),
                     currentLocale());
@@ -76,12 +74,9 @@ public class ClientSideAuthProvider implements Provider<AuthenticatedUser> {
 
         AuthenticatedUser user = new ClientSideAuthProvider().get();
 
-        Cookies.setCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE,
-                user.getAuthToken(), oneYearLater());
-        Cookies.setCookie(AuthenticatedUser.USER_ID_COOKIE,
-                Integer.toString(user.getUserId()), oneYearLater());
-        Cookies.setCookie(AuthenticatedUser.EMAIL_COOKIE, user.getEmail(),
-                oneYearLater());
+        Cookies.setCookie(AuthenticatedUser.AUTH_TOKEN_COOKIE, user.getAuthToken(), oneYearLater());
+        Cookies.setCookie(AuthenticatedUser.USER_ID_COOKIE, Integer.toString(user.getUserId()), oneYearLater());
+        Cookies.setCookie(AuthenticatedUser.EMAIL_COOKIE, user.getEmail(), oneYearLater());
     }
 
     private static Date oneYearLater() {

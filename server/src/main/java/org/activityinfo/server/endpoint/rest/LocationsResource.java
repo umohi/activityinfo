@@ -1,6 +1,7 @@
 package org.activityinfo.server.endpoint.rest;
 
 import com.sun.jersey.api.core.InjectParam;
+import org.activityinfo.legacy.client.KeyGenerator;
 import org.activityinfo.legacy.shared.command.GetLocations;
 import org.activityinfo.legacy.shared.command.result.LocationResult;
 import org.activityinfo.legacy.shared.model.AdminEntityDTO;
@@ -10,7 +11,6 @@ import org.activityinfo.server.database.hibernate.entity.AdminEntity;
 import org.activityinfo.server.database.hibernate.entity.Location;
 import org.activityinfo.server.database.hibernate.entity.LocationType;
 import org.activityinfo.server.endpoint.rest.model.NewLocation;
-import org.activityinfo.legacy.client.KeyGenerator;
 import org.codehaus.jackson.JsonGenerator;
 
 import javax.persistence.EntityManager;
@@ -31,10 +31,8 @@ public class LocationsResource {
         this.dispatcher = dispatcher;
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response query(@QueryParam("type") int typeId)
-            throws IOException {
+    @GET @Produces(MediaType.APPLICATION_JSON)
+    public Response query(@QueryParam("type") int typeId) throws IOException {
 
         GetLocations query = new GetLocations();
         query.setLocationTypeId(typeId);
@@ -71,10 +69,10 @@ public class LocationsResource {
         return Response.ok(writer.toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
 
-    @POST
-    @Path("/{typeId}")
+    @POST @Path("/{typeId}")
     public Response postNewLocations(@InjectParam EntityManager entityManager,
-                                     @PathParam("typeId") int locationTypeId, List<NewLocation> locations) {
+                                     @PathParam("typeId") int locationTypeId,
+                                     List<NewLocation> locations) {
 
         KeyGenerator generator = new KeyGenerator();
 
