@@ -64,12 +64,12 @@ public class ImportWithMultiClassRangeTest extends AbstractImporterTest {
     public static final int ECHO = 400;
     public static final int DEPLACEMENT = 63;
 
-    private static final Cuid PROVINCE_KATANGA = CuidAdapter.entity(141804);
-    private static final Cuid DISTRICT_TANGANIKA = CuidAdapter.entity(141845);
-    private static final Cuid TERRITOIRE_KALEMIE = CuidAdapter.entity(141979);
-    private static final Cuid SECTEUR_TUMBWE = CuidAdapter.entity(141979);
-    private static final Cuid GROUPEMENT_LAMBO_KATENGA = CuidAdapter.entity(148235);
-    private static final Cuid ZONE_SANTE_NYEMBA = CuidAdapter.entity(212931);
+    public static final Cuid PROVINCE_KATANGA = CuidAdapter.entity(141804);
+    public static final Cuid DISTRICT_TANGANIKA = CuidAdapter.entity(141845);
+    public static final Cuid TERRITOIRE_KALEMIE = CuidAdapter.entity(141979);
+    public static final Cuid SECTEUR_TUMBWE = CuidAdapter.entity(141979);
+    public static final Cuid GROUPEMENT_LAMBO_KATENGA = CuidAdapter.entity(148235);
+    public static final Cuid ZONE_SANTE_NYEMBA = CuidAdapter.entity(212931);
 
     private List<FormInstance> instances;
 

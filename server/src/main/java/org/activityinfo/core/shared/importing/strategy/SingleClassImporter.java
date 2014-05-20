@@ -36,8 +36,7 @@ public class SingleClassImporter implements FieldImporter {
      */
     private Map<FieldPath, Integer> referenceFields;
 
-    private List<Cuid> referenceInstanceIds;
-    private List<String[]> referenceValues;
+    private InstanceScoreSource scoreSource;
     private InstanceScorer instanceScorer = null;
 
     public SingleClassImporter(Cuid rangeClassId,
@@ -61,14 +60,8 @@ public class SingleClassImporter implements FieldImporter {
             @Nullable
             @Override
             public Void apply(List<Projection> projections) {
-                referenceInstanceIds = Lists.newArrayList();
-                referenceValues = Lists.newArrayList();
-
-                for (Projection projection : projections) {
-                    referenceInstanceIds.add(projection.getRootInstanceId());
-                    referenceValues.add(toArray(projection, referenceFields, sources.size()));
-                }
-                instanceScorer = new InstanceScorer(referenceValues, referenceInstanceIds, sources);
+                scoreSource = new InstanceScoreSourceBuilder(referenceFields, sources).build(projections);
+                instanceScorer = new InstanceScorer(scoreSource);
                 return null;
             }
         });
@@ -100,9 +93,9 @@ public class SingleClassImporter implements FieldImporter {
             } else if (bestMatchIndex == -1) {
                 results.add(ValidationResult.error("No match"));
             } else {
-                String matched = referenceValues.get(bestMatchIndex)[i];
+                String matched = scoreSource.getReferenceValues().get(bestMatchIndex)[i];
                 final ValidationResult converted = ValidationResult.converted(matched, score.getBestScores()[i]);
-                converted.setInstanceId(referenceInstanceIds.get(bestMatchIndex));
+                converted.setInstanceId(scoreSource.getReferenceInstanceIds().get(bestMatchIndex));
                 results.add(converted);
             }
         }

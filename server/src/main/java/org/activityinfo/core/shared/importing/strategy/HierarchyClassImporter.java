@@ -50,8 +50,7 @@ public class HierarchyClassImporter implements FieldImporter {
     private final Map<FieldPath, Integer> referenceFields;
     private final List<ColumnAccessor> sourceColumns;
     private final List<FieldImporterColumn> fieldImporterColumns;
-    private final Map<Cuid, List<Cuid>> referenceInstanceIds = Maps.newHashMap(); // range to reference instance ids
-    private final Map<Cuid, List<String[]>> referenceValues = Maps.newHashMap(); // range to reference values
+    private final Map<Cuid, InstanceScoreSource> scoreSources = Maps.newHashMap();
 
     public HierarchyClassImporter(FormTree.Node rootField,
                                   List<ColumnAccessor> sourceColumns,
@@ -72,15 +71,7 @@ public class HierarchyClassImporter implements FieldImporter {
             promise.then(new Function<List<Projection>, Void>() {
                 @Override
                 public Void apply(List<Projection> projections) {
-                    final List<Cuid> instanceCuidList = Lists.newArrayList();
-                    final List<String[]> referenceValueList = Lists.newArrayList();
-
-                    for (Projection projection : projections) {
-                        instanceCuidList.add(projection.getRootInstanceId());
-                        referenceValueList.add(SingleClassImporter.toArray(projection, referenceFields, sourceColumns.size()));
-                    }
-                    referenceInstanceIds.put(range, instanceCuidList);
-                    referenceValues.put(range, referenceValueList);
+                    scoreSources.put(range, new InstanceScoreSourceBuilder(referenceFields, sourceColumns).build(projections));
                     return null;
                 }
             });
@@ -95,9 +86,11 @@ public class HierarchyClassImporter implements FieldImporter {
         ValidationResult[] tempResult = new ValidationResult[sourceColumns.size()];
 
         for (final Cuid range : FormClassSet.of(rootField.getRange()).getElements()) {
-            InstanceScorer instanceScorer = new InstanceScorer(referenceValues.get(range), referenceInstanceIds.get(range), sourceColumns);
+            InstanceScoreSource scoreSource = scoreSources.get(range);
+            InstanceScorer instanceScorer = new InstanceScorer(scoreSource);
             final InstanceScorer.Score score = instanceScorer.score(row);
             final int bestMatchIndex = score.getBestMatchIndex();
+            final Cuid bestMatchCuid = scoreSource.getReferenceInstanceIds().get(bestMatchIndex);
 
             for (int i = 0; i != sourceColumns.size(); ++i) {
                 ValidationResult currentResult = tempResult[i];
@@ -116,14 +109,14 @@ public class HierarchyClassImporter implements FieldImporter {
 
                         if (currentResult == null || currentResult.getState() != ValidationResult.State.CONFIDENCE || currentResult.getConfidence() < confidence ||
                                 tempResult[i].getRangeInstanceIds().get(range) == null) {
-                            String matched = referenceValues.get(range).get(bestMatchIndex)[i];
+                            String matched = scoreSource.getReferenceValues().get(bestMatchIndex)[i];
                             final ValidationResult converted = ValidationResult.converted(matched, score.getBestScores()[i]);
-                            converted.getRangeInstanceIds().put(range, Sets.newHashSet(referenceInstanceIds.get(range).get(bestMatchIndex)));
+                            converted.getRangeInstanceIds().put(range, Sets.newHashSet(bestMatchCuid));
                             tempResult[i] = converted;
                         } else {
 
                             // if ok add cuid
-                            tempResult[i].getRangeInstanceIds().get(range).add(referenceInstanceIds.get(range).get(bestMatchIndex));
+                            tempResult[i].getRangeInstanceIds().get(range).add(scoreSource.getReferenceInstanceIds().get(bestMatchIndex));
                         }
                     }
                 }

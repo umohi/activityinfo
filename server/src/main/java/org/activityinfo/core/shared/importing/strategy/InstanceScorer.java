@@ -21,11 +21,8 @@ package org.activityinfo.core.shared.importing.strategy;
  * #L%
  */
 
-import org.activityinfo.core.shared.Cuid;
 import org.activityinfo.core.shared.importing.match.names.LatinPlaceNameScorer;
 import org.activityinfo.core.shared.importing.source.SourceRow;
-
-import java.util.List;
 
 /**
  * @author yuriyz on 5/19/14.
@@ -64,30 +61,26 @@ public class InstanceScorer {
 
     public static final double MINIMUM_SCORE = 0.5;
 
-    private final List<ColumnAccessor> sources;
-    private final List<Cuid> referenceInstanceIds;
-    private final List<String[]> referenceValues;
+    private final InstanceScoreSource source;
     private final LatinPlaceNameScorer scorer = new LatinPlaceNameScorer();
 
-    public InstanceScorer(List<String[]> referenceValues, List<Cuid> referenceInstanceIds, List<ColumnAccessor> sources) {
-        this.referenceValues = referenceValues;
-        this.referenceInstanceIds = referenceInstanceIds;
-        this.sources = sources;
+    public InstanceScorer(InstanceScoreSource source) {
+        this.source = source;
     }
 
     public Score score(SourceRow row) {
         double bestScore = 0;
-        double bestScores[] = new double[sources.size()];
+        double bestScores[] = new double[source.getSources().size()];
         int bestMatchIndex = -1;
 
         String[] imported = toArray(row);
 
-        if(imported != null) {
-            for(int i=0;i!=referenceInstanceIds.size();++i) {
-                double[] score = scorePotentialMatch(imported, referenceValues.get(i));
-                if(score != null) {
+        if (imported != null) {
+            for (int i = 0; i != source.getReferenceInstanceIds().size(); ++i) {
+                double[] score = scorePotentialMatch(imported, source.getReferenceValues().get(i));
+                if (score != null) {
                     double total = sum(score);
-                    if(total > bestScore) {
+                    if (total > bestScore) {
                         bestMatchIndex = i;
                         bestScore = total;
                         bestScores = score;
@@ -100,7 +93,7 @@ public class InstanceScorer {
 
     private double sum(double[] score) {
         double sum = 0;
-        for(int i=0;i!=score.length;++i) {
+        for (int i = 0; i != score.length; ++i) {
             sum += score[i];
         }
         return sum;
@@ -109,13 +102,13 @@ public class InstanceScorer {
     private double[] scorePotentialMatch(String[] imported, String[] reference) {
         double scores[] = new double[imported.length];
         double max = 0;
-        for(int i=0;i!=imported.length;++i) {
-            if(imported[i] != null && reference[i] != null) {
+        for (int i = 0; i != imported.length; ++i) {
+            if (imported[i] != null && reference[i] != null) {
                 scores[i] = scorer.score(imported[i], reference[i]);
                 max = Math.max(scores[i], max);
             }
         }
-        if(max > MINIMUM_SCORE) {
+        if (max > MINIMUM_SCORE) {
             return scores;
         } else {
             return null;
@@ -123,10 +116,10 @@ public class InstanceScorer {
     }
 
     private String[] toArray(SourceRow row) {
-        String[] values = new String[sources.size()];
-        for(int i=0;i!=sources.size();++i) {
-            if(!sources.get(i).isMissing(row)) {
-                values[i] = sources.get(i).getValue(row);
+        String[] values = new String[source.getSources().size()];
+        for (int i = 0; i != source.getSources().size(); ++i) {
+            if (!source.getSources().get(i).isMissing(row)) {
+                values[i] = source.getSources().get(i).getValue(row);
             }
         }
         return values;
