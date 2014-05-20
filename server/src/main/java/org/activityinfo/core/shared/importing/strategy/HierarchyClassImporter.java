@@ -39,9 +39,7 @@ import org.activityinfo.core.shared.importing.validation.ValidationResult;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author yuriyz on 5/19/14.
@@ -135,6 +133,8 @@ public class HierarchyClassImporter implements FieldImporter {
         for (ValidationResult currentResult : tempResult) {
             if (currentResult != null) {
                 results.add(currentResult);
+            } else {
+                results.add(ValidationResult.MISSING);
             }
         }
 
@@ -149,27 +149,43 @@ public class HierarchyClassImporter implements FieldImporter {
     public boolean updateInstance(SourceRow row, FormInstance instance) {
         final List<ValidationResult> validationResults = Lists.newArrayList();
         validateInstance(row, validationResults);
+
+        final Map<Cuid, Integer> levelOfSavedValue = Maps.newHashMap();
         for (ValidationResult result : validationResults) {
             if (result.shouldPersist() && !result.getRangeInstanceIds().isEmpty()) {
                 final Set<Cuid> toSave = Sets.newHashSet();
-                for (Map.Entry<Cuid, Set<Cuid>> entry : result.getRangeInstanceIds().entrySet()) {
+
+                Cuid mostGranularWithinRange = null;
+                int mostGranularLevel = -1;
+
+                for (Map.Entry<Cuid, Set<Cuid>> entry : Sets.newHashSet(result.getRangeInstanceIds().entrySet())) {
                     final Set<Cuid> valueSet = entry.getValue();
-                    for (Cuid value : valueSet) {
-                        if (value.getDomain() == CuidAdapter.ADMIN_LEVEL_DOMAIN) {
-//                        final int levelId = CuidAdapter.getBlock(cuid, 0);
-//                        final int fieldIndex = CuidAdapter.getBlock(cuid, 0);
-                            // todo !!! exclude redundant information
-                            toSave.add(value);
-                        } else {
-                            toSave.add(value);
+                    final Cuid range = entry.getKey();
+
+                    if (range.getDomain() == CuidAdapter.ADMIN_LEVEL_DOMAIN) {
+                        for (Cuid value : valueSet) {
+                            final int levelId = CuidAdapter.getBlock(range, 0);
+//                            final int fieldIndex = CuidAdapter.getBlock(range, 0);
+                            if (levelId > mostGranularLevel) {
+                                mostGranularLevel = levelId;
+                                mostGranularWithinRange = value;
+                            }
+
                         }
+                        toSave.add(mostGranularWithinRange);
+                    } else {
+                        toSave.addAll(entry.getValue());
                     }
-
                 }
-
-                instance.set(rootField.getFieldId(), toSave);
+                Integer integer = levelOfSavedValue.get(rootField.getFieldId());
+                if (integer == null || integer < mostGranularLevel) {
+                    instance.set(rootField.getFieldId(), toSave);
+                    levelOfSavedValue.put(rootField.getFieldId(), mostGranularLevel);
+                }
             }
         }
+
+
         return false;
     }
 
