@@ -88,6 +88,10 @@ public class InstanceScorer {
                 }
             }
         }
+//        if (bestMatchIndex != -1) {
+//            System.out.println("Score: " + Arrays.toString(bestScores) + "  " +
+//                    Arrays.toString(source.getReferenceValues().get(bestMatchIndex)));
+//        }
         return new Score(bestScore, bestScores, bestMatchIndex, imported);
     }
 

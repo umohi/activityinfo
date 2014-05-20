@@ -1,6 +1,5 @@
 package org.activityinfo.core.shared.importing.source;
 
-import com.google.common.base.Strings;
 import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
 
 public class SourceColumnAccessor implements ColumnAccessor {
@@ -25,7 +24,8 @@ public class SourceColumnAccessor implements ColumnAccessor {
 
     @Override
     public boolean isMissing(SourceRow row) {
-        return Strings.isNullOrEmpty(row.getColumnValue(columnIndex));
+        String value = row.getColumnValue(columnIndex);
+        return value == null || value.trim().length() == 0; // trim before check on length
     }
 
     @Override

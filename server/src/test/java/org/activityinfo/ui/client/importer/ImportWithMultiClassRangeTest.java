@@ -67,7 +67,7 @@ public class ImportWithMultiClassRangeTest extends AbstractImporterTest {
     public static final Cuid PROVINCE_KATANGA = CuidAdapter.entity(141804);
     public static final Cuid DISTRICT_TANGANIKA = CuidAdapter.entity(141845);
     public static final Cuid TERRITOIRE_KALEMIE = CuidAdapter.entity(141979);
-    public static final Cuid SECTEUR_TUMBWE = CuidAdapter.entity(141979);
+    public static final Cuid SECTEUR_TUMBWE = CuidAdapter.entity(142803);
     public static final Cuid GROUPEMENT_LAMBO_KATENGA = CuidAdapter.entity(148235);
     public static final Cuid ZONE_SANTE_NYEMBA = CuidAdapter.entity(212931);
 
@@ -192,7 +192,9 @@ public class ImportWithMultiClassRangeTest extends AbstractImporterTest {
     private Set<Cuid> school(String name) {
         for(FormInstance instance : instances) {
             if(name.equals(instance.getString(LocationClassAdapter.getNameFieldId(SCHOOL_FORM_CLASS)))) {
-                return instance.getReferences(ADMIN_FIELD);
+                Set<Cuid> references = instance.getReferences(ADMIN_FIELD);
+                System.out.println(name +", references: " + references);
+                return references;
             }
         }
         throw new AssertionError("No instance with name " + name);
