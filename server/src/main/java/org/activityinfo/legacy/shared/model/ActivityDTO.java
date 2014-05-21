@@ -425,6 +425,10 @@ public final class ActivityDTO extends BaseModelData implements EntityDTO, HasLo
         return partners;
     }
 
+    public void setPartners(List<PartnerDTO> partners) {
+        this.partners = partners;
+    }
+
     public LockedPeriodSet getLockedPeriodSet() {
         return new LockedPeriodSet(this);
     }

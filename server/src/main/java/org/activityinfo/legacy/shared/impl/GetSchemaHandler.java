@@ -437,10 +437,12 @@ public class GetSchemaHandler implements CommandHandlerAsync<GetSchema, SchemaDT
                     int databaseId = row.getInt("databaseId");
                     UserDatabaseDTO database = databaseMap.get(databaseId);
                     activity.setDatabase(database);
+                    activity.setPartners(database.getPartners());
                     database.getActivities().add(activity);
 
                     int locationTypeId = row.getInt("locationTypeId");
                     LocationTypeDTO locationType = locationTypes.get(locationTypeId);
+
                     if(locationType == null) {
                         throw new IllegalStateException("No location type for " + locationTypeId);
                     }
