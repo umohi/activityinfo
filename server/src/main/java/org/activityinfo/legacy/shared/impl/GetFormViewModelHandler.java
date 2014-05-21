@@ -20,7 +20,6 @@ public class GetFormViewModelHandler implements CommandHandlerAsync<GetFormViewM
             @Override
             public void onSuccess(SchemaDTO schema) {
                 ActivityDTO activity = schema.getActivityById(command.getActivityId());
-
                 callback.onSuccess(activity);
             }
         });
