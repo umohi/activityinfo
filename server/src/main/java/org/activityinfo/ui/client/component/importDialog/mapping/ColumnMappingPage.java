@@ -71,7 +71,7 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
 
         columnSelectionModel = new SingleSelectionModel<>();
 
-        dataGrid = new ColumnMappingGrid(importModel, columnSelectionModel);
+        dataGrid = new ColumnMappingGrid(importModel, columnSelectionModel, eventBus);
         actionSelector = new ColumnActionSelector(actions, importModel);
 
         initWidget(uiBinder.createAndBindUi(this));

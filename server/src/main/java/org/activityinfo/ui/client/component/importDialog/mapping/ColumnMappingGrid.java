@@ -5,6 +5,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.TableRowElement;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.Command;
@@ -14,9 +15,12 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import org.activityinfo.core.shared.importing.model.ColumnAction;
 import org.activityinfo.core.shared.importing.model.IgnoreAction;
+import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.source.SourceColumn;
 import org.activityinfo.core.shared.importing.source.SourceRow;
-import org.activityinfo.core.shared.importing.model.ImportModel;
+import org.activityinfo.core.shared.importing.source.SourceTable;
+import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.ui.client.component.importDialog.PageChangedEvent;
 import org.activityinfo.ui.client.style.table.DataGridResources;
 
 import java.util.List;
@@ -32,6 +36,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
     public static final int MAPPING_HEADER_ROW = 1;
 
     private final ImportModel model;
+    private final EventBus eventBus;
 
     private SingleSelectionModel<SourceColumn> columnSelectionModel;
     private List<SourceColumn> sourceColumns;
@@ -40,17 +45,17 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
 
     private int lastSelectedColumn = -1;
 
-    public ColumnMappingGrid(ImportModel model,
-                             SingleSelectionModel<SourceColumn> columnSelectionModel) {
-
+    public ColumnMappingGrid(ImportModel model, SingleSelectionModel<SourceColumn> columnSelectionModel,
+                             EventBus eventBus) {
 
         super(50, DataGridResources.INSTANCE);
-        
+
         ColumnMappingStyles.INSTANCE.ensureInjected();
         DataGridResources.INSTANCE.dataGridStyle().ensureInjected();
 
         this.model = model;
         this.columnSelectionModel = columnSelectionModel;
+        this.eventBus = eventBus;
 
         headerCell = new GridHeaderCell(model);
 
@@ -93,7 +98,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
         scrollColumnIntoView(newColumnIndex);
 
         // clear the selection styles from the old column
-        if(lastSelectedColumn != -1) {
+        if (lastSelectedColumn != -1) {
             removeHeaderStyleName(lastSelectedColumn, ColumnMappingStyles.INSTANCE.selected());
             this.removeColumnStyleName(lastSelectedColumn, ColumnMappingStyles.INSTANCE.selected());
         }
@@ -149,7 +154,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
     }
 
     private void toggleColumnStyle(int index, String className, boolean enabled) {
-        if(enabled) {
+        if (enabled) {
             this.addColumnStyleName(index, className);
             addHeaderStyleName(index, className);
 
@@ -160,7 +165,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
     }
 
     public void refresh() {
-        while(this.getColumnCount() > 0) {
+        while (this.getColumnCount() > 0) {
             this.removeColumn(0);
         }
         sourceColumns = model.getSource().getColumns();
@@ -171,6 +176,40 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
             this.setColumnWidth(gridColumn, 10, com.google.gwt.dom.client.Style.Unit.EM);
         }
         this.redrawHeaders();
+
+        // show already parsed data (it can be only part of it, not all)
         this.setRowData(model.getSource().getRows());
+
+        // update table if not all rows are parsed
+        if (!model.getSource().parsedAllRows()) {
+            // give some time to switch the page
+            Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+                @Override
+                public boolean execute() {
+                    refreshWithNewlyParsedRows();
+                    return false;
+                }
+            }, 2000); // wait 2 seconds
+        }
+    }
+
+    private void refreshWithNewlyParsedRows() {
+        eventBus.fireEvent(new PageChangedEvent(false, I18N.CONSTANTS.parsingRows()));
+        Scheduler.get().scheduleFixedPeriod(new Scheduler.RepeatingCommand() {
+            @Override
+            public boolean execute() {
+                SourceTable sourceTable = model.getSource();
+                if (!sourceTable.parsedAllRows()) {
+                    sourceTable.parseNextRows(50);
+                    ColumnMappingGrid.this.setRowData(model.getSource().getRows());
+                    ColumnMappingGrid.this.getRowElement(ColumnMappingGrid.this.getRowCount() - 1).scrollIntoView();
+                } else {
+                    ColumnMappingGrid.this.scrollColumnIntoView(0);
+                    eventBus.fireEvent(new PageChangedEvent(true, ""));
+                    return false;
+                }
+                return true;
+            }
+        }, 1);
     }
 }

@@ -38,7 +38,7 @@ public class GeographicPointImporter implements FieldImporter {
     }
 
     @Override
-    public Promise<Void> prepare(ResourceLocator locator, List<SourceRow> batch) {
+    public Promise<Void> prepare(ResourceLocator locator, List<? extends SourceRow> batch) {
         return Promise.done();
     }
 

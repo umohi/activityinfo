@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface FieldImporter {
 
-    Promise<Void> prepare(ResourceLocator locator, List<SourceRow> batch);
+    Promise<Void> prepare(ResourceLocator locator, List<? extends SourceRow> batch);
 
     void validateInstance(SourceRow row, List<ValidationResult> results);
 

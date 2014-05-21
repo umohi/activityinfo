@@ -35,8 +35,7 @@ public class DelimiterGuesser {
         // a more or less similar number of columns
 
         List<PastedRow> rows = new RowParser(text, delimiter)
-                .withMaxRows(ROWS_TO_SCAN)
-                .parseRows();
+                .parseRows(ROWS_TO_SCAN);
 
         int numColumns = -1;
 

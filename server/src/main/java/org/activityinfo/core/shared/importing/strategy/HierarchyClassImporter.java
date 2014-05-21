@@ -65,7 +65,7 @@ public class HierarchyClassImporter implements FieldImporter {
     }
 
     @Override
-    public Promise<Void> prepare(ResourceLocator locator, List<SourceRow> batch) {
+    public Promise<Void> prepare(ResourceLocator locator, List<? extends SourceRow> batch) {
         final List<Promise<Void>> promises = Lists.newArrayList();
         for (final Cuid range : FormClassSet.of(rootField.getRange()).getElements()) {
             InstanceQuery query = new InstanceQuery(Lists.newArrayList(referenceFields.keySet()), new ClassCriteria(range));

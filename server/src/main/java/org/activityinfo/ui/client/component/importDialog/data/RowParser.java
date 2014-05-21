@@ -11,7 +11,6 @@ public class RowParser {
 
     public static final char QUOTE_CHAR = '"';
 
-    private List<PastedRow> rows = Lists.newArrayList();
     private String text;
     private int length;
     private int currentPos = 0;
@@ -30,15 +29,31 @@ public class RowParser {
         return this;
     }
 
+    public List<PastedRow> parseAllRows() {
+        return parseRows(Integer.MAX_VALUE);
+    }
 
-    public List<PastedRow> parseRows() {
-        while(!eof() && rows.size() < maxRowCount) {
-            readNextLine();
+    public List<PastedRow> parseRows(int numberOfRowsToParse) {
+        if (numberOfRowsToParse <= 0) {
+            throw new IllegalArgumentException("Number of rows to count must be more than 0.");
+        }
+        List<PastedRow> rows = Lists.newArrayList();
+        int count = 0;
+        while(hasNextRow() && rows.size() < maxRowCount && count < numberOfRowsToParse) {
+            PastedRow parsedRow = readNextLine();
+            if (parsedRow != null) {
+                rows.add(parsedRow);
+                count++;
+            }
         }
         return rows;
     }
 
-    private void readNextLine() {
+    public boolean hasNextRow() {
+        return !eof();
+    }
+
+    private PastedRow readNextLine() {
         List<Integer> offsets = Lists.newArrayList();
         offsets.add(currentPos);
         while(advanceToNextColumn()) {
@@ -47,10 +62,9 @@ public class RowParser {
         offsets.add(currentPos);
 
         if (isEmptyRow(offsets)) { // skip if row is empty
-            return;
+            return null;
         }
-        PastedRow row = new PastedRow(text, offsets, rowIndex++);
-        rows.add(row);
+        return new PastedRow(text, offsets, rowIndex++);
     }
 
     private boolean isEmptyRow(List<Integer> offsets) {
@@ -113,8 +127,7 @@ public class RowParser {
         }
     }
 
-
-    private boolean eof() {
+    public boolean eof() {
         return currentPos >= length;
     }
 }

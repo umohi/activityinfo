@@ -51,7 +51,7 @@ public class SingleClassImporter implements FieldImporter {
         this.fieldId = fieldId;
     }
 
-    public Promise<Void> prepare(ResourceLocator locator, List<SourceRow> batch) {
+    public Promise<Void> prepare(ResourceLocator locator, List<? extends SourceRow> batch) {
 
         InstanceQuery query = new InstanceQuery(
                 Lists.newArrayList(referenceFields.keySet()),

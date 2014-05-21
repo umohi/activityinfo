@@ -3527,4 +3527,7 @@ public interface UiConstants extends Constants {
 
     @DefaultStringValue("Please provide valid comma separated text")
     String pleaseProvideCommaSeparatedText();
+
+    @DefaultStringValue("Parsing rows...")
+    String parsingRows();
 }
