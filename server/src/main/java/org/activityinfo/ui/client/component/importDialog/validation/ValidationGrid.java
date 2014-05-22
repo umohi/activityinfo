@@ -1,5 +1,6 @@
 package org.activityinfo.ui.client.component.importDialog.validation;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -7,6 +8,7 @@ import org.activityinfo.core.shared.importing.strategy.FieldImporterColumn;
 import org.activityinfo.core.shared.importing.validation.ValidatedRow;
 import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.ui.client.style.table.DataGridResources;
+import org.activityinfo.ui.client.util.GwtUtil;
 
 /**
  * A second DataGrid that allows the user to the resolve
@@ -19,10 +21,8 @@ public class ValidationGrid extends ResizeComposite {
     public ValidationGrid() {
         this.dataGrid = new DataGrid<>(100, DataGridResources.INSTANCE);
         initWidget(dataGrid);
-    }
-
-    private void syncColumns() {
-
+        this.dataGrid.setWidth("100%");
+        this.dataGrid.setHeight("100%");
     }
 
     public void refresh(ValidatedRowTable table) {
@@ -31,8 +31,10 @@ public class ValidationGrid extends ResizeComposite {
         }
         for(int i = 0; i< table.getColumns().size(); i++) {
             final FieldImporterColumn column = table.getColumns().get(i);
+            String columnHeader = column.getAccessor().getHeading();
             dataGrid.addColumn(new ValidationRowGridColumn(column.getAccessor(), i),
-                    new TextHeader(column.getAccessor().getHeading()));
+                    new TextHeader(columnHeader));
+            dataGrid.setColumnWidth(i, GwtUtil.columnWidthInEm(columnHeader), Style.Unit.EM);
         }
         dataGrid.setRowData(table.getRows());
     }

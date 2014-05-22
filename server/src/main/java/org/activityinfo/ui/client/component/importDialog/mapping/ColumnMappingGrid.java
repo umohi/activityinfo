@@ -22,6 +22,7 @@ import org.activityinfo.core.shared.importing.source.SourceTable;
 import org.activityinfo.i18n.shared.I18N;
 import org.activityinfo.ui.client.component.importDialog.PageChangedEvent;
 import org.activityinfo.ui.client.style.table.DataGridResources;
+import org.activityinfo.ui.client.util.GwtUtil;
 
 import java.util.List;
 
@@ -173,7 +174,7 @@ public class ColumnMappingGrid extends DataGrid<SourceRow> {
             GridColumn gridColumn = new GridColumn(sourceColumn);
             GridHeader gridHeader = new GridHeader(sourceColumn, headerCell, columnSelectionModel);
             this.addColumn(gridColumn, gridHeader);
-            this.setColumnWidth(gridColumn, 10, com.google.gwt.dom.client.Style.Unit.EM);
+            this.setColumnWidth(gridColumn, GwtUtil.columnWidthInEm(sourceColumn.getHeader()), com.google.gwt.dom.client.Style.Unit.EM);
         }
         this.redrawHeaders();
 
