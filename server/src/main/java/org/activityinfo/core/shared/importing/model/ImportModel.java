@@ -9,6 +9,7 @@ import org.activityinfo.core.shared.importing.source.SourceColumnAccessor;
 import org.activityinfo.core.shared.importing.source.SourceTable;
 import org.activityinfo.core.shared.importing.strategy.ColumnAccessor;
 import org.activityinfo.core.shared.importing.strategy.TargetSiteId;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class ImportModel {
 
     private SourceTable source;
     private FormTree formTree;
-
+    private ValidatedRowTable validatedRowTable;
 
     private final Map<SourceColumn, ColumnAction> columnActions = Maps.newHashMap();
 
@@ -93,5 +94,13 @@ public class ImportModel {
 
     public ColumnAction getColumnAction(SourceColumn column) {
         return columnActions.get(column);
+    }
+
+    public ValidatedRowTable getValidatedRowTable() {
+        return validatedRowTable;
+    }
+
+    public void setValidatedRowTable(ValidatedRowTable validatedRowTable) {
+        this.validatedRowTable = validatedRowTable;
     }
 }

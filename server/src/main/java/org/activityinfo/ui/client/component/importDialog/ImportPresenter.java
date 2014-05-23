@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import org.activityinfo.core.client.ResourceLocator;
 import org.activityinfo.core.client.form.tree.AsyncFormTreeBuilder;
 import org.activityinfo.core.shared.Cuid;
@@ -23,6 +24,7 @@ import org.activityinfo.ui.client.component.importDialog.mapping.ColumnMappingPa
 import org.activityinfo.ui.client.component.importDialog.source.ChooseSourcePage;
 import org.activityinfo.ui.client.component.importDialog.validation.ValidationPage;
 import org.activityinfo.ui.client.widget.FullScreenOverlay;
+import org.activityinfo.ui.client.widget.ModalDialog;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -44,10 +46,9 @@ public class ImportPresenter {
         this.importModel = new ImportModel(formTree);
         this.importer = new Importer(resourceLocator, formTree, FieldImportStrategies.get());
 
-        ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
-
-        ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions(), eventBus);
-        ValidationPage validationPage = new ValidationPage(importModel, importer);
+        final ChooseSourcePage chooseSourcePage = new ChooseSourcePage(importModel, eventBus);
+        final ColumnMappingPage matchingPage = new ColumnMappingPage(importModel, createMatchingColumnActions(), eventBus);
+        final ValidationPage validationPage = new ValidationPage(importModel, importer);
 
         pages = Lists.<ImportPage>newArrayList(chooseSourcePage, matchingPage, validationPage).listIterator();
 
@@ -78,7 +79,21 @@ public class ImportPresenter {
 
             @Override
             public void onClick(ClickEvent event) {
-                persistData();
+                int invalidRowsCount = validationPage.getInvalidRowsCount();
+                if (invalidRowsCount > 0) {
+                    final ModalDialog confirmDialog = new ModalDialog();
+                    confirmDialog.getModalBody().add(new HTML(I18N.MESSAGES.continueImportWithInvalidRows(invalidRowsCount)));
+                    confirmDialog.getOkButton().addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            confirmDialog.hide();
+                            persistData();
+                        }
+                    });
+                    confirmDialog.show();
+                } else { // all rows are valid -> persist directly
+                    persistData();
+                }
             }
         });
 

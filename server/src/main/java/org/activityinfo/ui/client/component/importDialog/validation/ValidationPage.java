@@ -67,6 +67,9 @@ public class ValidationPage extends Composite implements PromiseMonitor, ImportP
     public void fireStateChanged() {
     }
 
+    public int getInvalidRowsCount() {
+        return dataGrid.getInvalidRowsCount();
+    }
 
     @Override
     public void onPromiseStateChanged(Promise.State state) {

@@ -338,4 +338,7 @@ public interface UiMessages extends com.google.gwt.i18n.client.Messages {
 
     @DefaultMessage("Please map all mandatory columns, missed mapping for {0}")
     String pleaseMapAllMandatoryColumns(String columnLabels);
+
+    @DefaultMessage("{0} rows are invalid and won''t be imported. Continue?")
+    SafeHtml continueImportWithInvalidRows(int invalidRowsCount);
 }

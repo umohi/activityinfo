@@ -58,7 +58,9 @@ public class ValidateRowsImportCommand implements ImportCommand<ValidatedRowTabl
             }
             rows.add(new ValidatedRow(row, results));
         }
-        return new ValidatedRowTable(commandExecutor.getColumns(), rows);
+        ValidatedRowTable validatedRowTable = new ValidatedRowTable(commandExecutor.getColumns(), rows);
+        model.setValidatedRowTable(validatedRowTable);
+        return validatedRowTable;
     }
 
     public void setCommandExecutor(ImportCommandExecutor commandExecutor) {

@@ -38,4 +38,14 @@ public class ValidationGrid extends ResizeComposite {
         }
         dataGrid.setRowData(table.getRows());
     }
+
+    public int getInvalidRowsCount() {
+        int invalidRowsCount = 0;
+        for (ValidatedRow row : dataGrid.getVisibleItems()) {
+            if (!row.isValid()) {
+                invalidRowsCount++;
+            }
+        }
+        return invalidRowsCount;
+    }
 }

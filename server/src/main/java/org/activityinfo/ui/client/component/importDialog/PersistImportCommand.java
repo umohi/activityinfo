@@ -27,19 +27,20 @@ import org.activityinfo.core.shared.form.FormInstance;
 import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.strategy.FieldImporter;
+import org.activityinfo.core.shared.importing.validation.ValidatedRow;
+import org.activityinfo.core.shared.importing.validation.ValidatedRowTable;
 import org.activityinfo.fp.client.Promise;
 import org.activityinfo.legacy.shared.adapter.CuidAdapter;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @author yuriyz on 4/18/14.
  */
 public class PersistImportCommand implements ImportCommand<Void> {
 
-    private static final Logger LOGGER = Logger.getLogger(PersistImportCommand.class.getName());
+//    private static final Logger LOGGER = Logger.getLogger(PersistImportCommand.class.getName());
 
     private ImportCommandExecutor commandExecutor;
 
@@ -50,14 +51,18 @@ public class PersistImportCommand implements ImportCommand<Void> {
 
         final Cuid formClassId = model.getFormTree().getRootFields().iterator().next().getDefiningFormClass().getId();
         final List<FormInstance> toPersist = Lists.newArrayList();
+        final ValidatedRowTable validatedRowTable = model.getValidatedRowTable();
 
         for (SourceRow row : model.getSource().getRows()) {
-            // new instance per row
-            FormInstance newInstance = new FormInstance(CuidAdapter.newFormInstance(formClassId), formClassId);
-            for (FieldImporter importer : commandExecutor.getImporters()) {
-                importer.updateInstance(row, newInstance);
+            ValidatedRow validatedRow = validatedRowTable.getRow(row);
+            if (validatedRow.isValid()) { // persist instance only if it's valid
+                // new instance per row
+                FormInstance newInstance = new FormInstance(CuidAdapter.newFormInstance(formClassId), formClassId);
+                for (FieldImporter importer : commandExecutor.getImporters()) {
+                    importer.updateInstance(row, newInstance);
+                }
+                toPersist.add(newInstance);
             }
-            toPersist.add(newInstance);
         }
 
         return commandExecutor.getResourceLocator().persist(toPersist);

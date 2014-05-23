@@ -1,5 +1,6 @@
 package org.activityinfo.core.shared.importing.validation;
 
+import org.activityinfo.core.shared.importing.source.SourceRow;
 import org.activityinfo.core.shared.importing.strategy.FieldImporterColumn;
 
 import java.util.List;
@@ -23,5 +24,14 @@ public class ValidatedRowTable {
 
     public List<ValidatedRow> getRows() {
         return rows;
+    }
+
+    public ValidatedRow getRow(SourceRow sourceRow) {
+        for (ValidatedRow row : rows) {
+            if (row.getSourceRow().equals(sourceRow)) {
+                return row;
+            }
+        }
+        return null;
     }
 }

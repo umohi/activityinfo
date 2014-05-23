@@ -2,7 +2,6 @@ package org.activityinfo.core.shared.importing.validation;
 
 import com.google.common.collect.Lists;
 import org.activityinfo.core.shared.importing.source.SourceRow;
-import org.activityinfo.core.shared.importing.validation.ValidationResult;
 
 import java.util.List;
 
@@ -21,5 +20,19 @@ public class ValidatedRow {
 
     public SourceRow getSourceRow() {
         return row;
+    }
+
+    /**
+     * Row is valid if all column's results are valid, otherwise invalid.
+     *
+     * @return whether row is valid
+     */
+    public boolean isValid() {
+        for (ValidationResult column : columns) {
+            if (column.getState() == ValidationResult.State.ERROR) {
+                return false;
+            }
+        }
+        return true;
     }
 }

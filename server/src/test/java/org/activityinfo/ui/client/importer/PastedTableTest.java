@@ -81,6 +81,7 @@ public class PastedTableTest {
         long start = System.currentTimeMillis();
         PastedTable pastedTable = new PastedTable(
                 Resources.toString(getResource("org/activityinfo/core/shared/importing/nfi-import-test.csv"), Charsets.UTF_8));
+        pastedTable.parseAllRows();
         final List<SourceColumn> columns = pastedTable.getColumns();
         final List<? extends SourceRow> rows = pastedTable.getRows();
         long end = System.currentTimeMillis();
