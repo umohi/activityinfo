@@ -22,6 +22,7 @@ import org.activityinfo.core.shared.importing.model.ImportModel;
 import org.activityinfo.core.shared.importing.model.MapExistingAction;
 import org.activityinfo.core.shared.importing.strategy.ImportTarget;
 import org.activityinfo.i18n.shared.I18N;
+import org.activityinfo.ui.client.widget.Panel;
 import org.activityinfo.ui.client.widget.RadioButton;
 
 import java.util.List;
@@ -49,9 +50,9 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
     private ColumnAction value = IgnoreAction.INSTANCE;
     private final RadioButton ignoreButton;
     private final ImportModel importModel;
+    private final ScrollPanel scrollPanel;
 
-
-    public ColumnActionSelector(List<MapExistingAction> actions, ImportModel importModel) {
+    public ColumnActionSelector(List<MapExistingAction> actions, ImportModel importModel, final Panel fieldSelectorPanel) {
         this.importModel = importModel;
 
         FlowPanel panel = new FlowPanel();
@@ -71,7 +72,12 @@ public class ColumnActionSelector extends Composite implements HasValue<ColumnAc
             panel.add(button);
         }
 
-        initWidget(new ScrollPanel(panel));
+        scrollPanel = new ScrollPanel(panel);
+        initWidget(scrollPanel);
+    }
+
+    public ScrollPanel getScrollPanel() {
+        return scrollPanel;
     }
 
     private RadioButton createRadioButton(SafeHtml label, final ColumnAction action) {

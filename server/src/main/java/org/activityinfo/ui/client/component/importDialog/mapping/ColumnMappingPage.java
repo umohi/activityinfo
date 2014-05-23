@@ -3,6 +3,7 @@ package org.activityinfo.ui.client.component.importDialog.mapping;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -72,10 +73,21 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
         columnSelectionModel = new SingleSelectionModel<>();
 
         dataGrid = new ColumnMappingGrid(importModel, columnSelectionModel, eventBus);
-        actionSelector = new ColumnActionSelector(actions, importModel);
+        actionSelector = new ColumnActionSelector(actions, importModel, fieldSelectorPanel);
 
         initWidget(uiBinder.createAndBindUi(this));
-
+        addAttachHandler(new AttachEvent.Handler() {
+            @Override
+            public void onAttachOrDetach(AttachEvent event) {
+                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                    @Override
+                    public void execute() {
+                        int parentHeight = fieldSelectorPanel.getElement().getClientHeight();
+                        actionSelector.getScrollPanel().setHeight(parentHeight - 90 + "px");
+                    }
+                });
+            }
+        });
         columnSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
