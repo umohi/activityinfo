@@ -82,8 +82,10 @@ public class ColumnMappingPage extends ResizeComposite implements ImportPage {
                 Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
                     @Override
                     public void execute() {
-                        int parentHeight = fieldSelectorPanel.getElement().getClientHeight();
-                        actionSelector.getScrollPanel().setHeight(parentHeight - 90 + "px");
+                        int parentHeight = fieldSelectorPanel.getElement().getClientHeight() - 90;
+                        if (parentHeight > 0) {
+                            actionSelector.getScrollPanel().setHeight(parentHeight - 90 + "px");
+                        }
                     }
                 });
             }
